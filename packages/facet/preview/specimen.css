@@ -164,10 +164,7 @@ legend.fc-fieldset-title + * { clear: both; }
 .sp-glance-card:hover > .fc-link-action { color: var(--fc-text-primary); }
 .sp-glance-num { display: block; font: 500 12px/16px var(--fc-font-mono); color: var(--fc-brand-fg); letter-spacing: 0.4px; }
 .sp-lessonhead .sp-glance-num { margin-bottom: 8px; }
-/* Both example cells share the same 16px inset so samples never touch an edge and rows align; the Do cell adds a fill. */
-.sp-cmp > li:not(.sp-cmp-head) > .sp-cmp-cell { padding: 16px; border-radius: 12px; box-shadow: inset 0 0 0 1px var(--fc-border-default); }
-.sp-cmp > li:not(.sp-cmp-head) > .sp-cmp-cell:last-child { background: var(--fc-surface-subtle); box-shadow: none; }
-.sp-cmp > li.sp-cmp-head > .fc-guide { padding-left: 16px; }
+/* No containers around examples (owner feedback): the column headers and the row rules already frame them. */
 .sp-more { margin-top: -8px; }
 .sp-more > summary { display: inline-flex; align-items: center; gap: 6px; padding: 6px 0; cursor: pointer; list-style: none; font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); border-radius: var(--fc-radius-xs); }
 .sp-more > summary::-webkit-details-marker { display: none; }

@@ -175,6 +175,14 @@ th.fc-numeric > .fc-th-sort { flex-direction: row-reverse; }
   cursor: help;
 }
 .fc-has-tip:hover { --_dot: var(--fc-text-secondary); }
+/* The dots span the text only, never the whole control (owner rule, 2026-11-02). When the trigger is wider
+   than its words (a sortable header button with its arrow), wrap the words in .fc-tip-label. */
+.fc-has-tip:has(> .fc-tip-label) { background-image: none; }
+.fc-tip-label {
+  --_dot: var(--ds-gray-600);
+  background: radial-gradient(circle at 1px 1px, var(--_dot) 0.85px, transparent 1.15px) 0 100% / 4px 2px repeat-x;
+}
+.fc-has-tip:hover > .fc-tip-label { --_dot: var(--fc-text-secondary); }
 .fc-has-tip:focus-visible { border-radius: var(--fc-radius-xs); }
 /* Contained values (pills, badges, chips) never underline their text: the dotted line runs under the
    container instead, 3px below its edge, so it reads as a helper rather than a rendering glitch. */

@@ -150,7 +150,7 @@
   text-decoration: none;
   border-radius: var(--fc-radius-xs);
 }
-.fc-fieldset-status a:hover { text-decoration: underline; }
+.fc-fieldset-status a:not(.fc-link-action):hover { text-decoration: underline; }
 .fc-fieldset-status a svg { width: 14px; height: 14px; }
 /* Inheritance points at another setting, not at docs: primary text, underlined. */
 .fc-fieldset-status[data-kind="inheritance"] a { color: var(--fc-text-primary); font-weight: 500; text-decoration: underline; text-decoration-color: var(--fc-border-hover); }

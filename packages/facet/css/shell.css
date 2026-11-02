@@ -284,8 +284,7 @@
   white-space: nowrap;
   border-radius: var(--fc-radius-xs);
 }
-.fc-page-header-link:hover { text-decoration: underline; }
-.fc-page-header-link svg { width: 14px; height: 14px; }
+.fc-page-header-link:not(.fc-link-action):hover { text-decoration: underline; }
 .fc-page-header-scope, .fc-page-header-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--fc-space-2); min-width: 0; }
 .fc-page-header-actions { margin-left: auto; }
 /* In the title form the actions sit level with a 40px heading line (text-heading-32). */

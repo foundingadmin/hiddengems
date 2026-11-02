@@ -37,6 +37,7 @@ The reference writes UI labels in Title Case. Facet uses sentence case everywher
 | Input group | Input with prefix or suffix | P0 | [input-group.md](input-group.md) |
 | Stepper | Minus, value, plus | P1 | [stepper.md](stepper.md) |
 | Secret | One-time key reveal and masked value | P1 | [secret.md](secret.md) |
+| Action link | Standalone text link ending in an arrow that slides through on hover | P0 | [link-action.md](link-action.md) |
 | Guide marker | Correct and incorrect usage in docs; neutral by default, critical for hard rules | P0 | [guide-marker.md](guide-marker.md) |
 | Table | Sortable, comparable same-shape rows (the bet slate) | P0 | [table.md](table.md) |
 | Badge | Static status/category label (confidence tier) | P0 | [badge.md](badge.md) |

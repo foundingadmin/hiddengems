@@ -6,7 +6,7 @@
 //   durations       4.1s, 30s, 1m 20s, 2h 5m
 //   relative past   Just now, 4m ago, 3h ago, 2d ago      (a date after 7 days; formatAgo returns null)
 //   relative future in 5m, in 6h, in 1d 6h, Due now
-// Sentences spell units out instead ("every 5 minutes", "after 30 seconds"); these helpers are for values.
+// Sentences spell units out instead ("Every 5 minutes", "Timed out after 30 seconds"); these helpers are for values.
 // Relative times render in sans (<time data-relative>); clock and calendar times render in mono.
 //
 //   import { formatDuration, formatAgo, formatUntil, stampTimes } from '@foundingcreative/facet/js/time.mjs';

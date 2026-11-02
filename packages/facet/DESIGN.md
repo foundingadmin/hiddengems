@@ -104,6 +104,7 @@ Owner decisions on where a rank 1 source and an earlier Facet rule disagreed (20
 | Activity lines | Color the outcome, not the line: one token per line (money or the failure verb) in edge green, red or amber, always with its sign or word. Routine actions stay gray (`components/feed.md`) |
 | Deep links | Feed and log lines link their subject to the exact record elsewhere; the whole row is the target, the in-app arrow marks it, and the record glows in the brand tint on arrival (`components/feed.md`) |
 | Link arrows | Chevrons advance you within the space you are in (expand, select, drill a menu level). Arrows take you out of it: → to another place in the app (same tab), ↗ out of the app (new tab) (`components/link-action.md`) |
+| Contextual helpers | Helper text shows only while it applies. A helper that explains one option appears only while that option is chosen (`data-helper`, `js/forms.mjs`) |
 | Metric columns | One shape per column: bare numbers, word units in the label, changes as percent with the exact change in a helper (`components/metric-row.md`) |
 | Dotted underline | Always means a helper sits behind the text, opening on hover, keyboard focus or tap (`.fc-has-tip`, `js/tips.mjs`). Used instead of info icons, and never for anything else |
 | Change values | Color says whether a change is good, the arrow says which way it moved (`.fc-delta[data-polarity]`). Edge keeps direction coloring, because a positive edge is always good |

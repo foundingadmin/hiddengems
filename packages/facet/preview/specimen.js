@@ -33,5 +33,6 @@ if ('IntersectionObserver' in window) {
 // ---- hero fields and tips ----
 if (window.FacetField) window.FacetField.autoMount();
 if (window.FacetTips) window.FacetTips.mountTips();
+if (window.FacetForms) window.FacetForms.bindOptionHelpers();
 // Countdowns print once at load. The sample data is frozen at 6:00 PM ET on Nov 2, so the specimen counts from there.
 if (window.FacetTime) window.FacetTime.stampTimes(document, Date.parse('2026-11-02T18:00:00-05:00'));

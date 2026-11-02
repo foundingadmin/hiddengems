@@ -34,3 +34,7 @@ A native dropdown for picking one value from a short, fixed list.
 - **Week selector** (`Week 9`), **Sort By** (`Edge`, `Score`, `Kickoff`), **Odds format** if Switch does not fit.
 - Use `small` in the slate toolbar to match 32px buttons and inputs.
 - Sportsbook choice has more than 10 options and is multi-valued, so it belongs in FilterParams or MultiSelect, not Select.
+
+## Option helpers `[F]`
+
+Owner decision, 2026-11-02. Helper text must never outlive its context. A helper that explains one option shows only while that option is chosen: put the text on the option (`data-helper`) and point the select's `aria-describedby` at an `.fc-helper`; `bindOptionHelpers()` in `js/forms.mjs` fills it and hides it to match. Options that explain themselves ("Every day") carry no helper. Helpers that apply to every option stay static.

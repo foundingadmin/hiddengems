@@ -219,6 +219,13 @@
 .fc-feed-icon svg { width: 16px; height: 16px; }
 .fc-feed-text { min-width: 0; overflow-wrap: anywhere; }
 .fc-feed-text strong { font-weight: 500; color: var(--fc-text-primary); }
+/* Outcome (owner question, 2026-11-02): color the outcome, not the line. Only the one token that is the
+   result takes color, and it always carries its own word or sign. Icons, actors and routine actions stay gray.
+   good: a win or gain (edge green). bad: a loss, or a failure yours to fix (red). warn: a failure out of
+   your hands (amber, matching patterns/failures.md). */
+.fc-feed-text .fc-feed-outcome[data-tone="good"] { color: var(--fc-edge-positive); }
+.fc-feed-text .fc-feed-outcome[data-tone="bad"]  { color: var(--fc-edge-negative); }
+.fc-feed-text .fc-feed-outcome[data-tone="warn"] { color: var(--fc-status-warning-fg); }
 /* Size only: the time family comes from .fc-timestamp. */
 .fc-feed-time { font-size: 13px; line-height: 20px; color: var(--fc-text-secondary); text-align: right; white-space: nowrap; }
 .fc-feed-more { width: 100%; }

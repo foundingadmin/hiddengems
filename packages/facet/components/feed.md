@@ -40,3 +40,14 @@ An audit log for one user: what changed, what ran, what failed. Each row reads a
 
 ## Hidden Gems usage
 Settings > Activity: pulls, keys, book connections, setting changes, bet settlements, alerts fired. Security shows a short filtered copy linking here.
+
+## Outcome color `[F]`
+
+Owner question, 2026-11-02. Color the outcome, not the line. It is a rule for every activity-style line: feeds, logs, notifications and timelines.
+
+- Only the one token that is the result takes color (`.fc-feed-outcome[data-tone]`): the money on a settled bet, the verb of a failure.
+- `good`: a win or gain, edge green (`+$6.09`). `bad`: a loss, or a failure that is yours to fix, red (`−$7.00`, "rejected"). `warn`: a failure out of your hands, amber ("failed" when a provider timed out).
+- The token always carries its own sign or word, so color is never the only cue.
+- Icons, actors and the rest of the sentence stay gray. Routine actions (you changed a setting, created a key, disconnected a book) never take color.
+- At most one colored token per line. A feed where every line is colored has stopped meaning anything.
+- A feed is history, so it never carries the fix. The action lives on the thing's current state (the connection row's "Rotate key").

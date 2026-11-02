@@ -145,6 +145,10 @@
       <a class="fc-tab" href="#content" style="text-decoration:none">Content</a>
       <a class="fc-tab" href="#materials" style="text-decoration:none">Materials</a>
       <a class="fc-tab" href="#components" style="text-decoration:none">Components</a>
+      <a class="fc-tab" href="#shell" style="text-decoration:none">Screens</a>
+      <a class="fc-tab" href="#data" style="text-decoration:none">Data</a>
+      <a class="fc-tab" href="#charts" style="text-decoration:none">Charts</a>
+      <a class="fc-tab" href="#lists" style="text-decoration:none">Forms</a>
     </nav>
   </div>
 </div>
@@ -604,6 +608,2403 @@
       </dl>
     </div>
   </section>
+
+  <!-- ============================================================ Screens -->
+<!-- Facet preview part: app shell (B1), page header (B2), range select (B3), settings layer (B9).
+     Needs css/facet.css plus css/shell.css and css/settings.css (and css/lists.css for .fc-timestamp).
+     Sample data from the Week 8 prototype. -->
+<section id="shell" aria-labelledby="shell-h" class="fc-stack" style="--fc-gap: var(--fc-space-12)">
+  <h2 id="shell-h" class="text-heading-24">How screens are framed</h2>
+
+  <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+    <defs>
+      <symbol id="sh-i-gem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></symbol>
+      <symbol id="sh-i-updown" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></symbol>
+      <symbol id="sh-i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+      <symbol id="sh-i-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></symbol>
+      <symbol id="sh-i-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></symbol>
+      <symbol id="sh-i-more" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
+      <symbol id="sh-i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></symbol>
+      <symbol id="sh-i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+      <symbol id="sh-i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+      <symbol id="sh-i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+      <symbol id="sh-i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></symbol>
+      <symbol id="sh-i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+      <symbol id="sh-i-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/></symbol>
+      <symbol id="sh-i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.06 12.35a1 1 0 0 1 0-.7 10.75 10.75 0 0 1 19.88 0 1 1 0 0 1 0 .7 10.75 10.75 0 0 1-19.88 0"/><circle cx="12" cy="12" r="3"/></symbol>
+      <symbol id="sh-i-history" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></symbol>
+      <symbol id="sh-i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.27 21a2 2 0 0 0 3.46 0"/><path d="M3.26 15.33A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.67C19.41 13.96 18 12.5 18 8A6 6 0 0 0 6 8c0 4.5-1.41 5.96-2.74 7.33"/></symbol>
+      <symbol id="sh-i-db" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></symbol>
+      <symbol id="sh-i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></symbol>
+      <symbol id="sh-i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></symbol>
+      <symbol id="sh-i-out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol>
+    </defs>
+  </svg>
+
+  <!-- ============================================================ B1 + B2 controls form -->
+  <div class="fc-stack" style="--fc-gap: var(--fc-space-4)">
+    <h3 class="text-heading-20">App frame</h3>
+    <div class="fc-shell" data-embedded>
+      <aside class="fc-sidenav" id="sh-a-nav" aria-label="Main navigation">
+        <div class="fc-sidenav-head"><svg aria-hidden="true"><use href="#sh-i-gem"/></svg>Hidden Gems</div>
+        <nav class="fc-sidenav-level" id="sh-a-top" aria-label="Main">
+          <ul class="fc-sidenav-list" role="list">
+            <li><a class="fc-sidenav-item" href="#sh-a-nav" aria-current="page"><svg aria-hidden="true"><use href="#sh-i-list"/></svg><span>Slate</span></a></li>
+            <li><a class="fc-sidenav-item" href="#sh-a-nav"><svg aria-hidden="true"><use href="#sh-i-eye"/></svg><span>Watchlist</span></a></li>
+            <li><a class="fc-sidenav-item" href="#sh-a-nav"><svg aria-hidden="true"><use href="#sh-i-history"/></svg><span>History</span></a></li>
+          </ul>
+          <hr class="fc-sidenav-rule">
+          <ul class="fc-sidenav-list" role="list">
+            <li><a class="fc-sidenav-item" href="#sh-a-nav"><svg aria-hidden="true"><use href="#sh-i-bell"/></svg><span>Alerts</span></a></li>
+            <li><button class="fc-sidenav-item" type="button" data-sh-drill="sh-a-data"><svg aria-hidden="true"><use href="#sh-i-db"/></svg><span>Data</span><svg class="fc-sidenav-item-end" aria-hidden="true"><use href="#sh-i-right"/></svg></button></li>
+          </ul>
+          <hr class="fc-sidenav-rule">
+          <ul class="fc-sidenav-list" role="list">
+            <li><a class="fc-sidenav-item" href="#sh-a-nav"><svg aria-hidden="true"><use href="#sh-i-gear"/></svg><span>Settings</span></a></li>
+          </ul>
+        </nav>
+        <nav class="fc-sidenav-level" id="sh-a-data" aria-labelledby="sh-a-data-t" hidden>
+          <div class="fc-sidenav-back">
+            <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" data-sh-back="sh-a-top" aria-label="Back to main navigation"><svg aria-hidden="true"><use href="#sh-i-left"/></svg></button>
+            <span id="sh-a-data-t">Data</span>
+          </div>
+          <p class="fc-sidenav-label">Ingestion</p>
+          <ul class="fc-sidenav-list" role="list">
+            <li><a class="fc-sidenav-item" href="#sh-a-nav"><span>Odds pulls</span></a></li>
+            <li><a class="fc-sidenav-item" href="#sh-a-nav"><span>Injury reports</span></a></li>
+            <li><a class="fc-sidenav-item" href="#sh-a-nav"><span>Sources</span></a></li>
+          </ul>
+          <p class="fc-sidenav-label">Health</p>
+          <ul class="fc-sidenav-list" role="list">
+            <li><a class="fc-sidenav-item" href="#sh-a-nav"><span>Schedules</span></a></li>
+            <li><a class="fc-sidenav-item" href="#sh-a-nav"><span>Activity</span></a></li>
+          </ul>
+        </nav>
+        <div class="fc-sidenav-foot">
+          <span class="fc-status"><span class="fc-status-dot" data-state="live"></span><span>Odds pulled <time class="fc-timestamp" datetime="2026-11-01T13:00:04-05:00" title="Sun, Nov 1, 2026, 1:00:04 PM ET">2 min ago</time></span></span>
+        </div>
+      </aside>
+
+      <div class="fc-shell-main">
+        <header class="fc-topbar">
+          <div class="fc-topbar-start">
+            <button class="fc-button fc-shell-toggle" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-expanded="false" aria-controls="sh-a-nav" aria-label="Navigation">
+              <svg class="fc-shell-toggle-open" aria-hidden="true"><use href="#sh-i-menu"/></svg><svg class="fc-shell-toggle-close" aria-hidden="true"><use href="#sh-i-x"/></svg>
+            </button>
+            <div class="fc-scope">
+              <button class="fc-scope-trigger" type="button" id="sh-a-week" aria-haspopup="menu" aria-expanded="false" aria-controls="sh-a-week-menu"><span>Week 8</span><svg aria-hidden="true"><use href="#sh-i-updown"/></svg></button>
+              <div class="fc-dropdown" role="menu" id="sh-a-week-menu" aria-label="Week" hidden>
+                <button class="fc-dropdown-item" role="menuitemradio" aria-checked="false" type="button" tabindex="-1"><span>Week 9</span><span class="fc-dropdown-item-detail">Opens Tue</span></button>
+                <button class="fc-dropdown-item" role="menuitemradio" aria-checked="true" type="button" tabindex="-1"><span>Week 8</span></button>
+                <hr class="fc-dropdown-rule">
+                <div class="fc-dropdown-label" role="presentation">Settled</div>
+                <button class="fc-dropdown-item" role="menuitemradio" aria-checked="false" type="button" tabindex="-1"><span>Week 7</span></button>
+                <button class="fc-dropdown-item" role="menuitemradio" aria-checked="false" type="button" tabindex="-1"><span>Week 6</span></button>
+                <button class="fc-dropdown-item" role="menuitemradio" aria-checked="false" type="button" tabindex="-1"><span>Week 5</span></button>
+              </div>
+            </div>
+          </div>
+          <nav class="fc-breadcrumbs" aria-label="Breadcrumb"><ol><li><span aria-current="page">Slate</span></li></ol></nav>
+          <div class="fc-topbar-actions">
+            <button class="fc-button" data-variant="tertiary" data-size="small" type="button"><svg aria-hidden="true"><use href="#sh-i-plus"/></svg><span class="fc-topbar-label">Track bet</span></button>
+            <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="Search"><svg aria-hidden="true"><use href="#sh-i-search"/></svg></button>
+          </div>
+        </header>
+
+        <div class="fc-shell-content">
+          <div class="fc-page-header" data-variant="controls">
+            <div class="fc-page-header-scope">
+              <div class="fc-range-select" data-size="small">
+                <span class="fc-range-select-icon"><svg aria-hidden="true"><use href="#sh-i-clock"/></svg></span>
+                <select class="fc-range-select-control" aria-label="Kickoff window">
+                  <option selected>Early, 1:00 PM ET</option>
+                  <option>Afternoon, 4:05 PM ET</option>
+                  <option>Night, 8:20 PM ET</option>
+                  <option>All windows</option>
+                </select>
+                <svg class="fc-range-select-chevron" aria-hidden="true"><use href="#sh-i-down"/></svg>
+              </div>
+              <select class="fc-select" data-size="small" aria-label="Market"><option>All markets</option><option>Receiving yards</option><option>Rushing yards</option><option>Receptions</option></select>
+              <select class="fc-select" data-size="small" aria-label="Sportsbook"><option>All books</option><option>DraftKings</option><option>FanDuel</option><option>BetMGM</option></select>
+            </div>
+            <div class="fc-page-header-actions">
+              <button class="fc-button" data-variant="secondary" data-size="small" type="button"><svg aria-hidden="true"><use href="#sh-i-refresh"/></svg>Refresh odds</button>
+              <div class="fc-page-header-overflow">
+                <button class="fc-button" data-variant="secondary" data-size="small" data-shape="square" type="button" id="sh-a-more" aria-label="More actions" aria-haspopup="menu" aria-expanded="false" aria-controls="sh-a-more-menu"><svg aria-hidden="true"><use href="#sh-i-more"/></svg></button>
+                <div class="fc-dropdown" role="menu" id="sh-a-more-menu" aria-labelledby="sh-a-more" data-align="end" hidden>
+                  <button class="fc-dropdown-item" role="menuitem" type="button" tabindex="-1">Export CSV</button>
+                  <button class="fc-dropdown-item" role="menuitem" type="button" tabindex="-1">Copy link to this view</button>
+                  <button class="fc-dropdown-item" role="menuitem" type="button" tabindex="-1">Choose columns…</button>
+                  <hr class="fc-dropdown-rule">
+                  <button class="fc-dropdown-item" role="menuitem" type="button" tabindex="-1">Hide settled games</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="fc-table-wrap">
+            <table class="fc-table">
+              <caption>Early window picks, sorted by edge</caption>
+              <thead><tr><th scope="col">Pick</th><th scope="col">Book</th><th scope="col" data-align="numeric">Odds</th><th scope="col" data-align="numeric">Edge</th><th scope="col">Verdict</th><th scope="col">Tier</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Mike Gesicki receiving yards over 38.5</th><td>DraftKings</td><td data-align="numeric"><span class="fc-signed"><span class="fc-sign">-</span>110</span></td><td data-align="numeric"><span class="fc-delta" data-direction="positive">+9.0 pts</span></td><td><span class="fc-signal" data-signal="go">Go</span></td><td><span class="fc-gem" data-tier="polished" data-motion="none"><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Polished</span></td></tr>
+                <tr><th scope="row">Zay Flowers receptions over 4.5</th><td>FanDuel</td><td data-align="numeric"><span class="fc-signed"><span class="fc-sign">+</span>105</span></td><td data-align="numeric"><span class="fc-delta" data-direction="positive">+5.5 pts</span></td><td><span class="fc-signal" data-signal="go">Go</span></td><td><span class="fc-gem" data-tier="cut" data-motion="none"><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Cut</span></td></tr>
+                <tr><th scope="row">Tony Pollard rushing yards under 62.5</th><td>BetMGM</td><td data-align="numeric"><span class="fc-signed"><span class="fc-sign">-</span>115</span></td><td data-align="numeric"><span class="fc-delta" data-direction="positive">+2.5 pts</span></td><td><span class="fc-signal" data-signal="wait">Wait</span></td><td><span class="fc-gem" data-tier="rough" data-motion="none"><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Rough</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ B1 drill-in + B2 title form -->
+  <div class="fc-stack" style="--fc-gap: var(--fc-space-4)">
+    <h3 class="text-heading-20">Section drill-in</h3>
+    <div class="fc-shell" data-embedded>
+      <aside class="fc-sidenav" id="sh-b-nav" aria-label="Main navigation">
+        <div class="fc-sidenav-head"><svg aria-hidden="true"><use href="#sh-i-gem"/></svg>Hidden Gems</div>
+        <nav class="fc-sidenav-level" id="sh-b-top" aria-label="Main" hidden>
+          <ul class="fc-sidenav-list" role="list">
+            <li><a class="fc-sidenav-item" href="#sh-b-nav"><svg aria-hidden="true"><use href="#sh-i-list"/></svg><span>Slate</span></a></li>
+            <li><a class="fc-sidenav-item" href="#sh-b-nav"><svg aria-hidden="true"><use href="#sh-i-eye"/></svg><span>Watchlist</span></a></li>
+            <li><a class="fc-sidenav-item" href="#sh-b-nav"><svg aria-hidden="true"><use href="#sh-i-history"/></svg><span>History</span></a></li>
+          </ul>
+          <hr class="fc-sidenav-rule">
+          <ul class="fc-sidenav-list" role="list">
+            <li><a class="fc-sidenav-item" href="#sh-b-nav"><svg aria-hidden="true"><use href="#sh-i-bell"/></svg><span>Alerts</span></a></li>
+            <li><button class="fc-sidenav-item" type="button" data-sh-drill="sh-b-data"><svg aria-hidden="true"><use href="#sh-i-db"/></svg><span>Data</span><svg class="fc-sidenav-item-end" aria-hidden="true"><use href="#sh-i-right"/></svg></button></li>
+          </ul>
+          <hr class="fc-sidenav-rule">
+          <ul class="fc-sidenav-list" role="list">
+            <li><a class="fc-sidenav-item" href="#sh-b-nav"><svg aria-hidden="true"><use href="#sh-i-gear"/></svg><span>Settings</span></a></li>
+          </ul>
+        </nav>
+        <nav class="fc-sidenav-level" id="sh-b-data" aria-labelledby="sh-b-data-t">
+          <div class="fc-sidenav-back">
+            <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" data-sh-back="sh-b-top" aria-label="Back to main navigation"><svg aria-hidden="true"><use href="#sh-i-left"/></svg></button>
+            <span id="sh-b-data-t">Data</span>
+          </div>
+          <p class="fc-sidenav-label">Ingestion</p>
+          <ul class="fc-sidenav-list" role="list">
+            <li><a class="fc-sidenav-item" href="#sh-b-nav" aria-current="page"><span>Odds pulls</span></a></li>
+            <li><a class="fc-sidenav-item" href="#sh-b-nav"><span>Injury reports</span></a></li>
+            <li><a class="fc-sidenav-item" href="#sh-b-nav"><span>Sources</span></a></li>
+          </ul>
+          <p class="fc-sidenav-label">Health</p>
+          <ul class="fc-sidenav-list" role="list">
+            <li><a class="fc-sidenav-item" href="#sh-b-nav"><span>Schedules</span></a></li>
+            <li><a class="fc-sidenav-item" href="#sh-b-nav"><span>Activity</span></a></li>
+          </ul>
+        </nav>
+        <div class="fc-sidenav-foot">
+          <span class="fc-status"><span class="fc-status-dot" data-state="live"></span><span>Odds pulled <time class="fc-timestamp" datetime="2026-11-01T13:00:04-05:00" title="Sun, Nov 1, 2026, 1:00:04 PM ET">2 min ago</time></span></span>
+        </div>
+      </aside>
+
+      <div class="fc-shell-main">
+        <header class="fc-topbar">
+          <div class="fc-topbar-start">
+            <button class="fc-button fc-shell-toggle" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-expanded="false" aria-controls="sh-b-nav" aria-label="Navigation">
+              <svg class="fc-shell-toggle-open" aria-hidden="true"><use href="#sh-i-menu"/></svg><svg class="fc-shell-toggle-close" aria-hidden="true"><use href="#sh-i-x"/></svg>
+            </button>
+            <div class="fc-scope">
+              <button class="fc-scope-trigger" type="button" id="sh-b-week" aria-haspopup="menu" aria-expanded="false" aria-controls="sh-b-week-menu"><span>Week 8</span><svg aria-hidden="true"><use href="#sh-i-updown"/></svg></button>
+              <div class="fc-dropdown" role="menu" id="sh-b-week-menu" aria-label="Week" hidden>
+                <button class="fc-dropdown-item" role="menuitemradio" aria-checked="false" type="button" tabindex="-1"><span>Week 9</span><span class="fc-dropdown-item-detail">Opens Tue</span></button>
+                <button class="fc-dropdown-item" role="menuitemradio" aria-checked="true" type="button" tabindex="-1"><span>Week 8</span></button>
+                <hr class="fc-dropdown-rule">
+                <div class="fc-dropdown-label" role="presentation">Settled</div>
+                <button class="fc-dropdown-item" role="menuitemradio" aria-checked="false" type="button" tabindex="-1"><span>Week 7</span></button>
+                <button class="fc-dropdown-item" role="menuitemradio" aria-checked="false" type="button" tabindex="-1"><span>Week 6</span></button>
+              </div>
+            </div>
+          </div>
+          <nav class="fc-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="#sh-b-nav">Data</a></li><li><span aria-current="page">Odds pulls</span></li></ol></nav>
+          <div class="fc-topbar-actions">
+            <button class="fc-button" data-variant="tertiary" data-size="small" type="button"><svg aria-hidden="true"><use href="#sh-i-plus"/></svg><span class="fc-topbar-label">Track bet</span></button>
+            <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="Search"><svg aria-hidden="true"><use href="#sh-i-search"/></svg></button>
+          </div>
+        </header>
+
+        <div class="fc-shell-content">
+          <div class="fc-page-header">
+            <div class="fc-page-header-text">
+              <h4 class="text-heading-32">Odds pulls</h4>
+              <p class="fc-page-header-description text-copy-16">Every scheduled and manual pull, newest first. <a class="fc-page-header-link" href="#sh-b-nav">How pulls are scheduled<svg aria-hidden="true"><use href="#sh-i-out"/></svg></a></p>
+            </div>
+            <div class="fc-page-header-actions">
+              <div class="fc-range-select" data-size="small">
+                <span class="fc-range-select-icon"><svg aria-hidden="true"><use href="#sh-i-cal"/></svg></span>
+                <select class="fc-range-select-control" aria-label="Time range">
+                  <option>Last hour</option>
+                  <option selected>Last 24 hours</option>
+                  <option>Last 7 days</option>
+                  <option>This week</option>
+                </select>
+                <svg class="fc-range-select-chevron" aria-hidden="true"><use href="#sh-i-down"/></svg>
+              </div>
+              <button class="fc-button" data-variant="secondary" data-size="small" type="button">Run now</button>
+            </div>
+          </div>
+
+          <div class="fc-table-wrap">
+            <table class="fc-table">
+              <caption class="fc-visually-hidden">Odds pulls in the last 24 hours, newest first</caption>
+              <thead><tr><th scope="col">Time</th><th scope="col">Source</th><th scope="col">Status</th><th scope="col" data-align="numeric">Markets</th><th scope="col" data-align="numeric">Duration</th></tr></thead>
+              <tbody>
+                <tr><th scope="row"><time class="fc-timestamp" datetime="2026-11-01T13:00:04-05:00" title="Sun, Nov 1, 2026, 1:00:04 PM ET">1:00 PM</time></th><td>All books</td><td><span class="fc-status"><span class="fc-status-dot" data-state="live"></span>Succeeded</span></td><td data-align="numeric">412</td><td data-align="numeric">4.1 s</td></tr>
+                <tr><th scope="row"><time class="fc-timestamp" datetime="2026-11-01T12:55:03-05:00" title="Sun, Nov 1, 2026, 12:55:03 PM ET">12:55 PM</time></th><td>All books</td><td><span class="fc-status"><span class="fc-status-dot" data-state="live"></span>Succeeded</span></td><td data-align="numeric">409</td><td data-align="numeric">3.8 s</td></tr>
+                <tr><th scope="row"><time class="fc-timestamp" datetime="2026-11-01T12:50:02-05:00" title="Sun, Nov 1, 2026, 12:50:02 PM ET">12:50 PM</time></th><td>FanDuel</td><td><span class="fc-status"><span class="fc-status-dot" data-state="failed"></span>Failed</span></td><td data-align="numeric"><span aria-label="Unknown">–</span></td><td data-align="numeric">30.0 s</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ B3 -->
+  <div class="fc-stack" style="--fc-gap: var(--fc-space-4)">
+    <h3 class="text-heading-20">Range select</h3>
+    <div class="fc-row" style="flex-wrap: wrap; --fc-gap: var(--fc-space-3)">
+      <div class="fc-range-select" data-size="small">
+        <span class="fc-range-select-icon"><svg aria-hidden="true"><use href="#sh-i-cal"/></svg></span>
+        <select class="fc-range-select-control" aria-label="Week"><option>Week 9</option><option selected>Week 8</option><option>Week 7</option><option>Week 6</option></select>
+        <svg class="fc-range-select-chevron" aria-hidden="true"><use href="#sh-i-down"/></svg>
+      </div>
+      <div class="fc-range-select">
+        <span class="fc-range-select-icon"><svg aria-hidden="true"><use href="#sh-i-clock"/></svg></span>
+        <select class="fc-range-select-control" aria-label="Kickoff window"><option>Early, 1:00 PM ET</option><option>Afternoon, 4:05 PM ET</option><option>Night, 8:20 PM ET</option></select>
+        <svg class="fc-range-select-chevron" aria-hidden="true"><use href="#sh-i-down"/></svg>
+      </div>
+      <div class="fc-range-select" data-size="large">
+        <span class="fc-range-select-icon"><svg aria-hidden="true"><use href="#sh-i-cal"/></svg></span>
+        <select class="fc-range-select-control" aria-label="Time range"><option>Last 24 hours</option><option selected>Last 7 days</option><option>Last 4 weeks</option><option>This season</option></select>
+        <svg class="fc-range-select-chevron" aria-hidden="true"><use href="#sh-i-down"/></svg>
+      </div>
+      <div class="fc-range-select">
+        <span class="fc-range-select-icon"><svg aria-hidden="true"><use href="#sh-i-cal"/></svg></span>
+        <select class="fc-range-select-control" aria-label="Week" disabled><option>Week 8</option></select>
+        <svg class="fc-range-select-chevron" aria-hidden="true"><use href="#sh-i-down"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ B9 -->
+  <div class="fc-stack" style="--fc-gap: var(--fc-space-4)">
+    <h3 class="text-heading-20">Settings</h3>
+    <div class="fc-card" style="overflow: clip; border-radius: var(--fc-radius-lg)">
+      <div class="fc-settings">
+        <nav class="fc-settings-nav" aria-label="Settings sections">
+          <ul role="list">
+            <li><a class="fc-settings-nav-item" href="#sh-set" data-sh-page="">General</a></li>
+            <li><a class="fc-settings-nav-item" href="#sh-set" data-sh-page="sh-set-providers">Data providers</a></li>
+            <li><a class="fc-settings-nav-item" href="#sh-set" data-sh-page="">Sportsbooks</a></li>
+            <li><a class="fc-settings-nav-item" href="#sh-set" data-sh-page="sh-set-schedules" aria-current="page">Schedules</a></li>
+            <li><a class="fc-settings-nav-item" href="#sh-set" data-sh-page="">Alerts</a></li>
+            <li><a class="fc-settings-nav-item" href="#sh-set" data-sh-page="">Bankroll</a></li>
+            <li><a class="fc-settings-nav-item" href="#sh-set" data-sh-page="">Activity</a></li>
+            <li><a class="fc-settings-nav-item" href="#sh-set" data-sh-page="">Security</a></li>
+            <li><a class="fc-settings-nav-item" href="#sh-set" data-sh-page="sh-set-danger">Danger zone</a></li>
+          </ul>
+        </nav>
+
+        <div class="fc-settings-main" id="sh-set">
+          <p class="fc-visually-hidden" aria-live="polite" id="sh-live"></p>
+
+          <!-- Schedules -->
+          <div class="fc-settings-page" id="sh-set-schedules">
+            <form class="fc-fieldset" data-sh-save aria-labelledby="sh-pulls-t">
+              <div class="fc-fieldset-content">
+                <h4 class="fc-fieldset-title" id="sh-pulls-t">Odds pulls</h4>
+                <p class="fc-fieldset-subtitle">Pulls lines from every connected sportsbook on the game day schedule.</p>
+                <p class="fc-fieldset-consequence">Pausing stops every scheduled pull. Schedules keep their settings and run again when you resume.</p>
+                <label class="fc-fieldset-toggle"><input type="checkbox" class="fc-toggle" data-size="large" role="switch" checked aria-labelledby="sh-pulls-t" data-sh-state="sh-pulls-state"><span id="sh-pulls-state" aria-hidden="true" data-on="Running" data-off="Paused">Running</span></label>
+              </div>
+              <footer class="fc-fieldset-footer">
+                <p class="fc-fieldset-status" data-kind="scope">Refresh odds on the slate still works while paused.</p>
+                <div class="fc-fieldset-actions">
+                  <button class="fc-button fc-fieldset-cancel" data-variant="secondary" data-size="small" type="reset">Cancel</button>
+                  <button class="fc-button" data-size="small" type="submit" disabled>Save</button>
+                </div>
+              </footer>
+            </form>
+
+            <form class="fc-fieldset" data-sh-save data-sh-schedule aria-labelledby="sh-sched-t" id="sh-sched">
+              <div class="fc-fieldset-content">
+                <div class="fc-fieldset-header">
+                  <div>
+                    <h4 class="fc-fieldset-title" id="sh-sched-t">Game day schedule</h4>
+                    <p class="fc-fieldset-subtitle">When odds pulls run on Thursday, Sunday and Monday slates.</p>
+                  </div>
+                  <span class="fc-status"><span class="fc-status-dot" data-state="live"></span><span>Last run <time class="fc-timestamp" datetime="2026-11-01T13:00:04-05:00" title="Sun, Nov 1, 2026, 1:00:04 PM ET">2 min ago</time></span></span>
+                </div>
+                <div class="fc-fieldset-fields">
+                  <div><label class="fc-label" for="sh-freq">Frequency</label>
+                    <select class="fc-select" id="sh-freq" name="freq"><option value="5" selected>Every 5 minutes</option><option value="10">Every 10 minutes</option><option value="15">Every 15 minutes</option><option value="30">Every 30 minutes</option></select></div>
+                  <div><label class="fc-label" for="sh-start">Start (ET)</label>
+                    <select class="fc-select" id="sh-start" name="start"><option value="8">8:00 AM</option><option value="9" selected>9:00 AM</option><option value="10">10:00 AM</option><option value="11">11:00 AM</option></select></div>
+                  <div><label class="fc-label" for="sh-end">End (ET)</label>
+                    <select class="fc-select" id="sh-end" name="end"><option value="21">9:00 PM</option><option value="22">10:00 PM</option><option value="23" selected>11:00 PM</option><option value="24">Midnight</option></select></div>
+                </div>
+              </div>
+              <div class="fc-fieldset-section">
+                <span class="fc-label" id="sh-days-l">Days</span>
+                <div class="fc-segmented" role="radiogroup" aria-labelledby="sh-days-l" style="align-self: flex-start">
+                  <label><input type="radio" name="days" value="game" checked>Game days</label>
+                  <label><input type="radio" name="days" value="all">Every day</label>
+                </div>
+              </div>
+              <div class="fc-fieldset-section">
+                <span class="fc-label">Next runs</span>
+                <p class="text-label-14 tabular" data-sh-next>1:05 PM, 1:10 PM, 1:15 PM</p>
+                <p class="fc-helper">Cron <code class="fc-mono" data-sh-cron>*/5 9-22 * * 0,1,4</code></p>
+              </div>
+              <footer class="fc-fieldset-footer">
+                <p class="fc-fieldset-status" data-kind="quota" data-sh-quota>Projected 17,472 of 20,000 monthly requests.</p>
+                <div class="fc-fieldset-actions">
+                  <button class="fc-button fc-fieldset-cancel" data-variant="secondary" data-size="small" type="reset">Cancel</button>
+                  <button class="fc-button" data-size="small" type="submit" disabled>Save</button>
+                </div>
+              </footer>
+            </form>
+
+            <form class="fc-fieldset" aria-labelledby="sh-moves-t">
+              <div class="fc-fieldset-content">
+                <h4 class="fc-fieldset-title" id="sh-moves-t">Line movement checks</h4>
+                <p class="fc-fieldset-subtitle">Compares each pull with your locked prices and alerts you when a line moves past fair value.</p>
+                <div style="max-width: 280px"><label class="fc-label" for="sh-moves">Frequency</label>
+                  <select class="fc-select" id="sh-moves" disabled data-sh-mirror><option>Every 5 minutes</option></select></div>
+              </div>
+              <footer class="fc-fieldset-footer">
+                <p class="fc-fieldset-status" data-kind="inheritance">Runs after every odds pull. To change it, edit the <a href="#sh-sched">game day schedule</a>.</p>
+              </footer>
+            </form>
+          </div>
+
+          <!-- Data providers -->
+          <div class="fc-settings-page" id="sh-set-providers" hidden>
+            <section class="fc-fieldset" aria-labelledby="sh-oddsapi-t">
+              <div class="fc-fieldset-content">
+                <div class="fc-fieldset-header">
+                  <div>
+                    <h4 class="fc-fieldset-title" id="sh-oddsapi-t">The Odds API</h4>
+                    <p class="fc-fieldset-subtitle">Lines and props for DraftKings, FanDuel, BetMGM and Caesars.</p>
+                  </div>
+                  <span class="fc-status"><span class="fc-status-dot" data-state="live"></span>Connected</span>
+                </div>
+                <label class="fc-label" for="sh-key">API key</label>
+                <div class="fc-fieldset-value">
+                  <input class="fc-input" id="sh-key" readonly value="•••• •••• •••• 3f9a">
+                  <button class="fc-button" data-variant="secondary" type="button">Rotate key</button>
+                </div>
+                <p class="fc-helper">Added <time class="fc-timestamp" datetime="2026-10-02" title="Oct 2, 2026, 9:14 AM ET">Oct 2</time>, last used <time class="fc-timestamp" datetime="2026-11-01T13:00:04-05:00" title="Sun, Nov 1, 2026, 1:00:04 PM ET">2 min ago</time>.</p>
+              </div>
+              <footer class="fc-fieldset-footer">
+                <p class="fc-fieldset-status" data-kind="docs"><a href="#sh-set">Where to find your key<svg aria-hidden="true"><use href="#sh-i-out"/></svg></a></p>
+              </footer>
+            </section>
+
+            <form class="fc-fieldset" data-sh-save aria-labelledby="sh-sdio-t">
+              <div class="fc-fieldset-content">
+                <div class="fc-fieldset-header">
+                  <div>
+                    <h4 class="fc-fieldset-title" id="sh-sdio-t">SportsDataIO</h4>
+                    <p class="fc-fieldset-subtitle">Injury reports and inactive lists for every pick's signals.</p>
+                  </div>
+                  <span class="fc-status"><span class="fc-status-dot" data-state="queued"></span>Not connected</span>
+                </div>
+                <label class="fc-label" for="sh-sdio-key">API key</label>
+                <div class="fc-fieldset-value"><input class="fc-input" id="sh-sdio-key" name="key" autocomplete="off" spellcheck="false"></div>
+                <p class="fc-helper">Shown once in your SportsDataIO account, under API access.</p>
+              </div>
+              <footer class="fc-fieldset-footer">
+                <p class="fc-fieldset-status" data-kind="quota">The free tier includes 1,000 requests a month.</p>
+                <div class="fc-fieldset-actions">
+                  <button class="fc-button fc-fieldset-cancel" data-variant="secondary" data-size="small" type="reset">Cancel</button>
+                  <button class="fc-button" data-size="small" type="submit" disabled>Save</button>
+                </div>
+              </footer>
+            </form>
+          </div>
+
+          <!-- Danger zone -->
+          <div class="fc-settings-page" id="sh-set-danger" hidden>
+            <section class="fc-fieldset" data-type="warning" aria-labelledby="sh-fd-t">
+              <div class="fc-fieldset-content">
+                <h4 class="fc-fieldset-title" id="sh-fd-t">Disconnect FanDuel</h4>
+                <p class="fc-fieldset-subtitle">Stops pulling FanDuel lines and removes FanDuel prices from every pick.</p>
+              </div>
+              <footer class="fc-fieldset-footer">
+                <p class="fc-fieldset-status" data-kind="scope">Tracked FanDuel bets stay in History. You can reconnect at any time.</p>
+                <div class="fc-fieldset-actions"><button class="fc-button" data-variant="warning" data-size="small" type="button">Disconnect FanDuel</button></div>
+              </footer>
+            </section>
+
+            <section class="fc-fieldset" data-type="danger" aria-labelledby="sh-del-t">
+              <div class="fc-fieldset-content">
+                <h4 class="fc-fieldset-title" id="sh-del-t">Delete bet history</h4>
+                <p class="fc-fieldset-subtitle">Permanently deletes every tracked bet, settlement and closing line record.</p>
+                <div class="fc-fieldset-entity">
+                  <span class="fc-icon-tile" data-size="sm"><svg aria-hidden="true"><use href="#sh-i-history"/></svg></span>
+                  <div><strong>Tracked bets</strong><span>42 bets, Weeks 1 to 8, last settled <time class="fc-timestamp" datetime="2026-10-30" title="Fri, Oct 30, 2026, 11:42 PM ET">2 days ago</time></span></div>
+                </div>
+              </div>
+              <footer class="fc-fieldset-footer">
+                <p class="fc-fieldset-status" data-kind="scope">Picks, settings and API keys are kept.</p>
+                <div class="fc-fieldset-actions"><button class="fc-button" data-variant="error" data-size="small" type="button">Delete history</button></div>
+              </footer>
+            </section>
+          </div>
+
+          <!-- Sections outside this preview -->
+          <div class="fc-settings-page" id="sh-set-other" hidden>
+            <div class="fc-empty"><strong>Not in this preview</strong><span class="text-copy-14">Data providers, Schedules and Danger zone are built out.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const root = document.getElementById('shell');
+  if (!root) return;
+  const live = root.querySelector('#sh-live');
+  const say = (msg) => { if (live) { live.textContent = ''; requestAnimationFrame(() => { live.textContent = msg; }); } };
+
+  /* ---------- Dropdown menus (scope switcher, overflow) */
+  const items = (menu) => [...menu.querySelectorAll('.fc-dropdown-item:not(:disabled)')];
+  const close = (btn, focus) => {
+    const menu = document.getElementById(btn.getAttribute('aria-controls'));
+    if (!menu || menu.hidden) return;
+    menu.hidden = true;
+    btn.setAttribute('aria-expanded', 'false');
+    if (focus) btn.focus();
+  };
+  const open = (btn, last) => {
+    root.querySelectorAll('[aria-haspopup="menu"][aria-expanded="true"]').forEach((b) => close(b));
+    const menu = document.getElementById(btn.getAttribute('aria-controls'));
+    menu.hidden = false;
+    btn.setAttribute('aria-expanded', 'true');
+    const list = items(menu);
+    const target = last ? list[list.length - 1] : (list.find((i) => i.getAttribute('aria-checked') === 'true') || list[0]);
+    target && target.focus();
+  };
+  root.querySelectorAll('[aria-haspopup="menu"]').forEach((btn) => {
+    const menu = document.getElementById(btn.getAttribute('aria-controls'));
+    btn.addEventListener('click', () => (menu.hidden ? open(btn) : close(btn)));
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); open(btn, e.key === 'ArrowUp'); }
+    });
+    menu.addEventListener('keydown', (e) => {
+      const list = items(menu);
+      const i = list.indexOf(document.activeElement);
+      const go = (n) => { e.preventDefault(); list[(n + list.length) % list.length].focus(); };
+      if (e.key === 'ArrowDown') go(i + 1);
+      else if (e.key === 'ArrowUp') go(i - 1);
+      else if (e.key === 'Home') go(0);
+      else if (e.key === 'End') go(list.length - 1);
+      else if (e.key === 'Escape') { e.preventDefault(); close(btn, true); }
+      else if (e.key === 'Tab') close(btn);
+      else if (e.key.length === 1) {
+        const k = e.key.toLowerCase();
+        const hit = list.slice(i + 1).concat(list.slice(0, i + 1)).find((it) => it.textContent.trim().toLowerCase().startsWith(k));
+        if (hit) hit.focus();
+      }
+    });
+    menu.addEventListener('click', (e) => {
+      const item = e.target.closest('.fc-dropdown-item');
+      if (!item) return;
+      if (item.getAttribute('role') === 'menuitemradio') {
+        menu.querySelectorAll('[role="menuitemradio"]').forEach((r) => r.setAttribute('aria-checked', String(r === item)));
+        const label = item.querySelector('span').textContent;
+        btn.querySelector('span').textContent = label;
+        say(label + ' selected');
+      }
+      close(btn, true);
+    });
+  });
+  document.addEventListener('click', (e) => {
+    root.querySelectorAll('[aria-haspopup="menu"][aria-expanded="true"]').forEach((btn) => {
+      const menu = document.getElementById(btn.getAttribute('aria-controls'));
+      if (!btn.contains(e.target) && !menu.contains(e.target)) close(btn);
+    });
+  });
+
+  /* ---------- Shell: narrow toggle, drill-in, current item */
+  root.querySelectorAll('.fc-shell').forEach((shell) => {
+    const toggle = shell.querySelector('.fc-shell-toggle');
+    const setOpen = (on) => { shell.toggleAttribute('data-nav', on); if (on) shell.setAttribute('data-nav', 'open'); toggle.setAttribute('aria-expanded', String(on)); };
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    shell.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') { setOpen(false); toggle.focus(); }
+    });
+    const swap = (from, toId, focusSel) => {
+      const to = shell.querySelector('#' + toId);
+      from.hidden = true; to.hidden = false;
+      const f = to.querySelector(focusSel); if (f) f.focus();
+    };
+    shell.querySelectorAll('[data-sh-drill]').forEach((b) => b.addEventListener('click', () => swap(b.closest('.fc-sidenav-level'), b.dataset.shDrill, '[data-sh-back]')));
+    shell.querySelectorAll('[data-sh-back]').forEach((b) => b.addEventListener('click', () => {
+      const level = b.closest('.fc-sidenav-level');
+      swap(level, b.dataset.shBack, '[data-sh-drill="' + level.id + '"]');
+    }));
+    shell.querySelectorAll('a.fc-sidenav-item').forEach((a) => a.addEventListener('click', (e) => {
+      e.preventDefault();
+      shell.querySelectorAll('.fc-sidenav-item[aria-current]').forEach((c) => c.removeAttribute('aria-current'));
+      a.setAttribute('aria-current', 'page');
+      const crumb = shell.querySelector('.fc-breadcrumbs [aria-current="page"]');
+      if (crumb) crumb.textContent = a.textContent.trim();
+      setOpen(false);
+    }));
+  });
+
+  /* ---------- Settings: one page per section */
+  const pages = root.querySelectorAll('.fc-settings-page');
+  /* On narrow screens the section list scrolls sideways; start with the current section in view. */
+  root.querySelectorAll('.fc-settings-nav').forEach((nav) => {
+    const cur = nav.querySelector('[aria-current="page"]');
+    if (cur && nav.scrollWidth > nav.clientWidth) nav.scrollLeft = cur.offsetLeft - nav.clientWidth / 2 + cur.offsetWidth / 2;
+  });
+  root.querySelectorAll('.fc-settings-nav-item').forEach((a) => a.addEventListener('click', (e) => {
+    e.preventDefault();
+    root.querySelectorAll('.fc-settings-nav-item[aria-current]').forEach((c) => c.removeAttribute('aria-current'));
+    a.setAttribute('aria-current', 'page');
+    const id = a.dataset.shPage || 'sh-set-other';
+    pages.forEach((p) => { p.hidden = p.id !== id; });
+  }));
+
+  /* ---------- Save model: Save disabled until dirty, Cancel only while dirty, each card on its own */
+  const fieldDirty = (el) => {
+    if (el.type === 'checkbox' || el.type === 'radio') return el.checked !== el.defaultChecked;
+    if (el.tagName === 'SELECT') return [...el.options].some((o) => o.selected !== o.defaultSelected);
+    return el.value !== el.defaultValue;
+  };
+  const commit = (el) => {
+    if (el.type === 'checkbox' || el.type === 'radio') el.defaultChecked = el.checked;
+    else if (el.tagName === 'SELECT') [...el.options].forEach((o) => { o.defaultSelected = o.selected; });
+    else el.defaultValue = el.value;
+  };
+  const sync = (form) => {
+    const dirty = [...form.elements].some((el) => el.name !== undefined && !el.disabled && el.tagName !== 'BUTTON' && fieldDirty(el));
+    form.toggleAttribute('data-dirty', dirty);
+    form.querySelector('[type="submit"]').disabled = !dirty;
+    form.querySelectorAll('[data-sh-state]').forEach((t) => {
+      const w = document.getElementById(t.dataset.shState); w.textContent = t.checked ? w.dataset.on : w.dataset.off;
+    });
+    if (form.hasAttribute('data-sh-schedule')) schedule(form);
+  };
+  const schedule = (form) => {
+    const f = +form.freq.value, start = +form.start.value, end = +form.end.value;
+    const all = form.days.value === 'all';
+    const now = 13 * 60 + 2; /* demo clock: 1:02 PM ET */
+    const fmt = (m) => { const h = Math.floor(m / 60) % 24, mm = String(m % 60).padStart(2, '0'); return ((h + 11) % 12 + 1) + ':' + mm + (h < 12 ? ' AM' : ' PM'); };
+    let first = Math.ceil((now + 1) / f) * f;
+    form.querySelector('[data-sh-next]').textContent = [0, 1, 2].map((k) => fmt(first + k * f)).join(', ');
+    form.querySelector('[data-sh-cron]').textContent = '*/' + f + ' ' + start + '-' + (end - 1) + ' * * ' + (all ? '*' : '0,1,4');
+    const monthly = Math.round(((end - start) * 60 / f) * (all ? 30 : 13) * 8);
+    form.querySelector('[data-sh-quota]').textContent = monthly <= 20000
+      ? 'Projected ' + monthly.toLocaleString('en-US') + ' of 20,000 monthly requests.'
+      : 'Projected ' + monthly.toLocaleString('en-US') + ' monthly requests, over the 20,000 limit.';
+  };
+  root.querySelectorAll('form[data-sh-save]').forEach((form) => {
+    form.addEventListener('input', () => sync(form));
+    form.addEventListener('change', () => sync(form));
+    form.addEventListener('reset', () => setTimeout(() => sync(form)));
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      [...form.elements].forEach((el) => { if (el.tagName !== 'BUTTON') commit(el); });
+      if (form.hasAttribute('data-sh-schedule')) {
+        const mirror = root.querySelector('[data-sh-mirror]');
+        if (mirror) mirror.options[0].textContent = form.freq.selectedOptions[0].textContent;
+      }
+      sync(form);
+      say(form.querySelector('.fc-fieldset-title').textContent + ' saved');
+    });
+    sync(form);
+  });
+})();
+</script>
+</section>
+
+  <!-- ============================================================ Data -->
+<!-- Data display specimen. Needs css/facet.css and css/data.css. Page-owned layout only in the style block. -->
+<section id="data" aria-labelledby="data-h">
+  <style>
+    #data .data-block { display: flex; flex-direction: column; gap: var(--fc-space-4); min-width: 0; }
+    #data .data-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--fc-space-2) var(--fc-space-4); }
+    #data .data-pick { display: flex; flex-direction: column; gap: 2px; min-width: 0; --fc-truncate-max: 180px; }
+    #data .data-pick small { font: 400 13px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
+    #data .data-pick-btn { align-self: flex-start; padding: 0; border: 0; border-radius: var(--fc-radius-xs); background: none; font: inherit; font-weight: 500; color: var(--fc-text-primary); text-align: left; cursor: pointer; }
+    #data .data-pick-btn:hover { text-decoration: underline; text-underline-offset: 3px; }
+    #data .data-menu { min-width: 176px; padding: var(--fc-space-1); }
+    #data .data-menu:popover-open { display: flex; flex-direction: column; }
+    #data .data-menu > .fc-button { justify-content: flex-start; width: 100%; }
+    #data .data-panel { display: flex; flex-direction: column; gap: var(--fc-space-6); }
+    #data .data-panel[hidden] { display: none; }
+    @media (max-width: 480px) { #data .data-pick { --fc-truncate-max: 168px; } }
+  </style>
+
+  <h2 id="data-h" class="text-heading-24">Finding and inspecting picks</h2>
+
+  <!-- Stat with basis, shared hairline cells -->
+  <div class="data-block">
+    <h3 class="text-heading-20">Track record</h3>
+    <div class="fc-stat-strip" data-variant="cells" role="group" aria-label="Track record">
+      <div class="fc-stat">
+        <p class="fc-stat-label">Return on stake</p>
+        <p class="fc-stat-figure"><span class="fc-stat-value">+6.2%</span></p>
+        <p class="fc-stat-basis">41 picks, Weeks 1 to 8</p>
+      </div>
+      <div class="fc-stat">
+        <p class="fc-stat-label">Hit rate</p>
+        <p class="fc-stat-figure"><span class="fc-stat-value">55%</span><span class="fc-stat-qualifier">23 of 42</span></p>
+        <p class="fc-stat-basis">Settled picks only</p>
+      </div>
+      <div class="fc-stat">
+        <p class="fc-stat-label">Average gap</p>
+        <p class="fc-stat-figure"><span class="fc-stat-value">+4.0</span><span class="fc-stat-qualifier">pts</span></p>
+        <p class="fc-stat-basis">Our estimate minus priced chance</p>
+      </div>
+      <div class="fc-stat">
+        <p class="fc-stat-label">Beat the closing line</p>
+        <p class="fc-stat-figure"><span class="fc-stat-value">29</span><span class="fc-stat-qualifier">of 41</span></p>
+        <p class="fc-stat-basis">Price moved our way before kickoff</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slate: filter bar, sortable table with frozen pick column, selection and row actions -->
+  <div class="data-block">
+    <div class="data-head">
+      <h3 class="text-heading-20">Slate</h3>
+      <p class="fc-status">
+        <span class="fc-status-dot" data-state="live" aria-hidden="true"></span>
+        <span>Odds updated <time class="fc-time fc-has-tip" id="data-time" tabindex="0" aria-describedby="data-time-card">2 min ago</time></span>
+      </p>
+    </div>
+
+    <div class="fc-filter-bar" role="search" aria-label="Filter picks">
+      <div class="fc-filter-search">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>
+        <input class="fc-input" data-size="small" type="search" name="q" placeholder="Search players…" aria-label="Search players" autocomplete="off" spellcheck="false">
+      </div>
+      <button type="button" class="fc-button" data-variant="secondary" data-size="small" data-shape="rounded" aria-haspopup="menu">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2.5 4.5h11M4.5 8h7M6.5 11.5h3"/></svg>
+        Add filter
+      </button>
+      <div class="fc-filter-chip" data-state="readonly" role="group" aria-label="Week filter, set by the page">
+        <span class="fc-filter-key">Week</span><span class="fc-filter-value">8</span>
+        <button type="button" class="fc-filter-info" aria-label="About the week filter" aria-describedby="data-tip-week">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M8 7.25V11M8 5h.01"/></svg>
+        </button>
+      </div>
+      <div class="fc-filter-chip" role="group" aria-label="Book filter">
+        <button type="button" class="fc-filter-edit" aria-haspopup="menu"><span class="fc-filter-key">Book</span><span class="fc-filter-value">DraftKings</span></button>
+        <button type="button" class="fc-filter-remove" aria-label="Remove book filter">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="m4.5 4.5 7 7m0-7-7 7"/></svg>
+        </button>
+      </div>
+      <div class="fc-filter-chip" role="group" aria-label="Market filter">
+        <button type="button" class="fc-filter-edit" aria-haspopup="menu"><span class="fc-filter-key">Market</span><span class="fc-filter-value">Anytime TD</span><span class="fc-filter-value">First TD</span></button>
+        <button type="button" class="fc-filter-remove" aria-label="Remove market filter">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="m4.5 4.5 7 7m0-7-7 7"/></svg>
+        </button>
+      </div>
+      <button type="button" class="fc-filter-chip" data-state="suggested" data-key="Window" data-value="Early" aria-label="Add filter Window, Early">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M8 3.5v9M3.5 8h9"/></svg>
+        <span class="fc-filter-key">Window</span><span class="fc-filter-value">Early</span>
+      </button>
+      <div class="fc-filter-sort">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5h7M2.5 8h5M2.5 11.5h3M12 3.5v9m-2-2 2 2 2-2"/></svg>
+        <select class="fc-select" data-size="small" id="data-sort" aria-label="Sort picks by">
+          <option value="gap" selected>Gap</option>
+          <option value="kickoff">Kickoff</option>
+          <option value="odds">Odds</option>
+          <option value="est">Our estimate</option>
+          <option value="record">Hit rate</option>
+          <option value="pick">Pick</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="fc-table-wrap" id="data-wrap">
+      <table class="fc-table" id="data-table" data-interactive data-striped data-sticky-column>
+        <caption>Showing 5 of 31 picks. <span id="data-sort-desc">Sorted by gap, largest first.</span></caption>
+        <thead>
+          <tr>
+            <th scope="col" class="fc-cell-select"><label><input type="checkbox" class="fc-check" id="data-all" aria-label="Select all picks"></label></th>
+            <th scope="col" data-sort="pick" data-type="text"><button type="button" class="fc-th-sort">Pick</button></th>
+            <th scope="col" data-sort="kickoff" data-type="time"><button type="button" class="fc-th-sort">Kickoff</button></th>
+            <th scope="col" data-align="numeric" data-sort="odds"><button type="button" class="fc-th-sort">Odds</button></th>
+            <th scope="col" data-align="numeric"><span class="fc-has-tip" tabindex="0" aria-describedby="data-tip-priced">Priced</span></th>
+            <th scope="col" data-align="numeric" data-sort="est"><button type="button" class="fc-th-sort">Our est.</button></th>
+            <th scope="col" data-align="numeric" data-sort="gap" aria-sort="descending"><button type="button" class="fc-th-sort">Gap</button></th>
+            <th scope="col" data-align="numeric" data-sort="record"><button type="button" class="fc-th-sort">Hit rate</button></th>
+            <th scope="col">Verdict</th>
+            <th scope="col">Gem tier</th>
+            <th scope="col"><span class="fc-visually-hidden">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody id="data-body">
+          <tr data-key="gesicki" data-pick="Mike Gesicki" data-kickoff="660" data-odds="3.20" data-est="44" data-gap="13" data-record="67" data-market="TE · Anytime TD scorer">
+            <td class="fc-cell-select"><label><input type="checkbox" class="fc-check" aria-label="Select Mike Gesicki"></label></td>
+            <th scope="row"><span class="data-pick"><button type="button" class="data-pick-btn" aria-haspopup="dialog">Mike Gesicki</button><small>TE · Anytime TD scorer</small></span></th>
+            <td>11:00 AM</td>
+            <td data-align="numeric">3.20</td>
+            <td data-align="numeric">31%</td>
+            <td data-align="numeric"><span class="fc-has-tip" tabindex="0" aria-describedby="data-tip-sample">44%</span></td>
+            <td data-align="numeric"><span class="fc-delta" data-direction="positive">+13 pts</span></td>
+            <td data-align="numeric"><span class="fc-pie-value"><span class="fc-pie" style="--value:67" aria-hidden="true"></span>4 of 6</span></td>
+            <td><span class="fc-signal" data-signal="wait">Wait</span></td>
+            <td><span class="fc-gem" data-tier="flawless" data-motion="once"><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Flawless</span></td>
+            <td class="fc-cell-actions"><span class="fc-row-actions"><button type="button" class="fc-button" data-variant="tertiary" data-shape="square" data-size="small" aria-haspopup="menu" aria-expanded="false" aria-controls="data-menu" aria-label="More actions for Mike Gesicki"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="3.5" cy="8" r="1.25"/><circle cx="8" cy="8" r="1.25"/><circle cx="12.5" cy="8" r="1.25"/></svg></button></span></td>
+          </tr>
+          <tr data-key="diggs" data-pick="Stefon Diggs" data-kickoff="1100" data-odds="3.00" data-est="42" data-gap="9" data-record="71" data-market="WR · Anytime TD scorer">
+            <td class="fc-cell-select"><label><input type="checkbox" class="fc-check" aria-label="Select Stefon Diggs"></label></td>
+            <th scope="row"><span class="data-pick"><button type="button" class="data-pick-btn" aria-haspopup="dialog">Stefon Diggs</button><small>WR · Anytime TD scorer</small></span></th>
+            <td>6:20 PM</td>
+            <td data-align="numeric">3.00</td>
+            <td data-align="numeric">33%</td>
+            <td data-align="numeric">42%</td>
+            <td data-align="numeric"><span class="fc-delta" data-direction="positive">+9 pts</span></td>
+            <td data-align="numeric"><span class="fc-pie-value"><span class="fc-pie" style="--value:71" aria-hidden="true"></span>5 of 7</span></td>
+            <td><span class="fc-signal" data-signal="go">Go</span></td>
+            <td><span class="fc-gem" data-tier="polished" data-motion="once"><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Polished</span></td>
+            <td class="fc-cell-actions"><span class="fc-row-actions"><button type="button" class="fc-button" data-variant="tertiary" data-shape="square" data-size="small" aria-haspopup="menu" aria-expanded="false" aria-controls="data-menu" aria-label="More actions for Stefon Diggs"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="3.5" cy="8" r="1.25"/><circle cx="8" cy="8" r="1.25"/><circle cx="12.5" cy="8" r="1.25"/></svg></button></span></td>
+          </tr>
+          <tr data-key="cook-2h" data-pick="James Cook" data-kickoff="660" data-odds="2.65" data-est="44" data-gap="6" data-record="50" data-market="RB · Anytime TD scorer, 2nd half (incl. OT)">
+            <td class="fc-cell-select"><label><input type="checkbox" class="fc-check" aria-label="Select James Cook, 2nd half"></label></td>
+            <th scope="row"><span class="data-pick"><button type="button" class="data-pick-btn" aria-haspopup="dialog">James Cook</button><small><span class="fc-truncate" title="RB · Anytime TD scorer, 2nd half (incl. OT)"><span class="fc-truncate-start">RB · Anytime TD scorer, </span><span class="fc-truncate-end">2nd half (incl. OT)</span></span></small></span></th>
+            <td>11:00 AM</td>
+            <td data-align="numeric">2.65</td>
+            <td data-align="numeric">38%</td>
+            <td data-align="numeric">44%</td>
+            <td data-align="numeric"><span class="fc-delta" data-direction="positive">+6 pts</span></td>
+            <td data-align="numeric"><span class="fc-pie-value"><span class="fc-pie" style="--value:50" aria-hidden="true"></span>3 of 6</span></td>
+            <td><span class="fc-signal" data-signal="wait">Wait</span></td>
+            <td><span class="fc-gem" data-tier="cut" data-motion="once"><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Cut</span></td>
+            <td class="fc-cell-actions"><span class="fc-row-actions"><button type="button" class="fc-button" data-variant="tertiary" data-shape="square" data-size="small" aria-haspopup="menu" aria-expanded="false" aria-controls="data-menu" aria-label="More actions for James Cook, 2nd half"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="3.5" cy="8" r="1.25"/><circle cx="8" cy="8" r="1.25"/><circle cx="12.5" cy="8" r="1.25"/></svg></button></span></td>
+          </tr>
+          <tr data-key="gordon" data-pick="Ollie Gordon II" data-kickoff="865" data-odds="7.50" data-est="18" data-gap="5" data-record="33" data-market="RB · First TD scorer">
+            <td class="fc-cell-select"><label><input type="checkbox" class="fc-check" aria-label="Select Ollie Gordon II"></label></td>
+            <th scope="row"><span class="data-pick"><button type="button" class="data-pick-btn" aria-haspopup="dialog">Ollie Gordon II</button><small>RB · First TD scorer</small></span></th>
+            <td>2:25 PM</td>
+            <td data-align="numeric">7.50</td>
+            <td data-align="numeric">13%</td>
+            <td data-align="numeric">18%</td>
+            <td data-align="numeric"><span class="fc-delta" data-direction="positive">+5 pts</span></td>
+            <td data-align="numeric"><span class="fc-pie-value"><span class="fc-pie" style="--value:33" aria-hidden="true"></span>2 of 6</span></td>
+            <td><span class="fc-signal" data-signal="wait">Wait</span></td>
+            <td><span class="fc-gem" data-tier="rough" data-motion="once"><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Rough</span></td>
+            <td class="fc-cell-actions"><span class="fc-row-actions"><button type="button" class="fc-button" data-variant="tertiary" data-shape="square" data-size="small" aria-haspopup="menu" aria-expanded="false" aria-controls="data-menu" aria-label="More actions for Ollie Gordon II"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="3.5" cy="8" r="1.25"/><circle cx="8" cy="8" r="1.25"/><circle cx="12.5" cy="8" r="1.25"/></svg></button></span></td>
+          </tr>
+          <tr data-key="cook" data-pick="James Cook" data-kickoff="660" data-odds="1.69" data-est="63" data-gap="4" data-record="67" data-market="RB · Anytime TD scorer">
+            <td class="fc-cell-select"><label><input type="checkbox" class="fc-check" aria-label="Select James Cook"></label></td>
+            <th scope="row"><span class="data-pick"><button type="button" class="data-pick-btn" aria-haspopup="dialog">James Cook</button><small>RB · Anytime TD scorer</small></span></th>
+            <td>11:00 AM</td>
+            <td data-align="numeric">1.69</td>
+            <td data-align="numeric">59%</td>
+            <td data-align="numeric">63%</td>
+            <td data-align="numeric"><span class="fc-delta" data-direction="positive">+4 pts</span></td>
+            <td data-align="numeric"><span class="fc-pie-value"><span class="fc-pie" style="--value:67" aria-hidden="true"></span>4 of 6</span></td>
+            <td><span class="fc-signal" data-signal="wait">Wait</span></td>
+            <td><span class="fc-gem" data-tier="rough" data-motion="once"><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Rough</span></td>
+            <td class="fc-cell-actions"><span class="fc-row-actions"><button type="button" class="fc-button" data-variant="tertiary" data-shape="square" data-size="small" aria-haspopup="menu" aria-expanded="false" aria-controls="data-menu" aria-label="More actions for James Cook"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="3.5" cy="8" r="1.25"/><circle cx="8" cy="8" r="1.25"/><circle cx="12.5" cy="8" r="1.25"/></svg></button></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Entity rows -->
+  <div class="data-block">
+    <h3 class="text-heading-20" id="data-books-h">Sportsbooks</h3>
+    <ul class="fc-entity-list" aria-labelledby="data-books-h">
+      <li class="fc-entity">
+        <span class="fc-icon-tile" data-size="md"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4h11v2.5a1.5 1.5 0 0 0 0 3V12h-11V9.5a1.5 1.5 0 0 0 0-3z"/><path d="M9.5 4.5v7" stroke-dasharray="1.5 1.5"/></svg></span>
+        <div class="fc-entity-content">
+          <p class="fc-entity-title">DraftKings</p>
+          <p class="fc-entity-desc"><span class="fc-status-dot" data-state="live" aria-hidden="true"></span>Updated 2 min ago</p>
+        </div>
+        <span class="fc-entity-meta">31 markets</span>
+        <div class="fc-entity-actions">
+          <button type="button" class="fc-button" data-variant="tertiary" data-shape="square" data-size="small" aria-label="More actions for DraftKings"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="3.5" cy="8" r="1.25"/><circle cx="8" cy="8" r="1.25"/><circle cx="12.5" cy="8" r="1.25"/></svg></button>
+        </div>
+      </li>
+      <li class="fc-entity">
+        <span class="fc-icon-tile" data-size="md"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4h11v2.5a1.5 1.5 0 0 0 0 3V12h-11V9.5a1.5 1.5 0 0 0 0-3z"/><path d="M9.5 4.5v7" stroke-dasharray="1.5 1.5"/></svg></span>
+        <div class="fc-entity-content">
+          <p class="fc-entity-title">FanDuel</p>
+          <p class="fc-entity-desc"><span class="fc-status-dot" data-state="live" aria-hidden="true"></span>Updated 4 min ago</p>
+        </div>
+        <span class="fc-entity-meta">28 markets</span>
+        <div class="fc-entity-actions">
+          <button type="button" class="fc-button" data-variant="tertiary" data-shape="square" data-size="small" aria-label="More actions for FanDuel"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="3.5" cy="8" r="1.25"/><circle cx="8" cy="8" r="1.25"/><circle cx="12.5" cy="8" r="1.25"/></svg></button>
+        </div>
+      </li>
+      <li class="fc-entity">
+        <span class="fc-icon-tile" data-size="md"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4h11v2.5a1.5 1.5 0 0 0 0 3V12h-11V9.5a1.5 1.5 0 0 0 0-3z"/><path d="M9.5 4.5v7" stroke-dasharray="1.5 1.5"/></svg></span>
+        <div class="fc-entity-content">
+          <p class="fc-entity-title">BetMGM</p>
+          <p class="fc-entity-desc"><span class="fc-status-dot" data-state="stale" aria-hidden="true"></span>Stale, updated 19 min ago</p>
+        </div>
+        <span class="fc-entity-meta">24 markets</span>
+        <div class="fc-entity-actions">
+          <button type="button" class="fc-button" data-variant="secondary" data-size="small">Refresh</button>
+          <button type="button" class="fc-button" data-variant="tertiary" data-shape="square" data-size="small" aria-label="More actions for BetMGM"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="3.5" cy="8" r="1.25"/><circle cx="8" cy="8" r="1.25"/><circle cx="12.5" cy="8" r="1.25"/></svg></button>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Floating layer: tooltips, time card, row menu -->
+  <div class="fc-tooltip fc-float" popover="manual" role="tooltip" id="data-tip-priced">Implied by the odds, before removing the vig</div>
+  <div class="fc-tooltip fc-float" popover="manual" role="tooltip" id="data-tip-sample">From 6 games, so treat the gap as directional</div>
+  <div class="fc-tooltip fc-float" popover="manual" role="tooltip" id="data-tip-week">Set by the page you opened. Change the week from the week picker.</div>
+  <div class="fc-time-card fc-float" popover="manual" role="tooltip" id="data-time-card">
+    <dl class="fc-time-rows">
+      <div class="fc-time-row"><dt class="fc-time-zone" data-zone="local">Local</dt><dd class="fc-time-date" data-date="local"></dd><dd class="fc-time-clock" data-clock="local"></dd></div>
+      <div class="fc-time-row" data-row="utc"><dt class="fc-time-zone">UTC</dt><dd class="fc-time-date" data-date="utc"></dd><dd class="fc-time-clock" data-clock="utc"></dd></div>
+    </dl>
+  </div>
+  <div class="material-menu fc-float data-menu" popover="manual" role="menu" id="data-menu" aria-label="Pick actions">
+    <button type="button" class="fc-button" data-variant="tertiary" data-size="small" role="menuitem" data-action="open">Open detail</button>
+    <button type="button" class="fc-button" data-variant="tertiary" data-size="small" role="menuitem" data-action="track">Track pick</button>
+    <button type="button" class="fc-button" data-variant="tertiary" data-size="small" role="menuitem" data-action="link">Copy link</button>
+  </div>
+
+  <!-- Pick detail sheet -->
+  <dialog class="fc-sheet" id="data-sheet" aria-labelledby="data-sheet-title">
+    <header class="fc-sheet-header">
+      <div class="fc-sheet-titlebar">
+        <div class="fc-sheet-titles">
+          <h3 class="fc-sheet-title text-heading-20" id="data-sheet-title">Mike Gesicki</h3>
+          <p class="fc-sheet-subtitle text-copy-14" id="data-sheet-sub">TE · Anytime TD scorer</p>
+        </div>
+        <button type="button" class="fc-button fc-sheet-close" data-variant="tertiary" data-shape="square" data-size="small" aria-label="Close" data-close>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="m4 4 8 8m0-8-8 8"/></svg>
+        </button>
+      </div>
+      <div class="fc-sheet-badges" id="data-sheet-badges"></div>
+    </header>
+    <div class="fc-tabs fc-sheet-tabs" role="tablist" aria-label="Pick detail">
+      <button type="button" class="fc-tab" role="tab" id="data-tab-1" aria-selected="true" aria-controls="data-panel-1">Overview</button>
+      <button type="button" class="fc-tab" role="tab" id="data-tab-2" aria-selected="false" aria-controls="data-panel-2" tabindex="-1">Signals</button>
+      <button type="button" class="fc-tab" role="tab" id="data-tab-3" aria-selected="false" aria-controls="data-panel-3" tabindex="-1">Line history</button>
+    </div>
+    <div class="fc-sheet-body">
+      <div class="data-panel" role="tabpanel" id="data-panel-1" aria-labelledby="data-tab-1" tabindex="0">
+        <dl class="fc-description" id="data-sheet-overview"></dl>
+        <div class="fc-note" data-type="warning" id="data-sheet-watch"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1 15 14H1z" opacity=".25"/><path d="M7.25 6h1.5v4h-1.5zM7.25 11h1.5v1.5h-1.5z"/></svg><span>Gesicki depends on Chase and Higgins playing. Inactives post 9:30 AM MT.</span></div>
+      </div>
+      <div class="data-panel" role="tabpanel" id="data-panel-2" aria-labelledby="data-tab-2" tabindex="0" hidden>
+        <ul class="fc-entity-list" id="data-sheet-signals" aria-label="Signals"></ul>
+      </div>
+      <div class="data-panel" role="tabpanel" id="data-panel-3" aria-labelledby="data-tab-3" tabindex="0" hidden>
+        <dl class="fc-description" id="data-sheet-line"></dl>
+      </div>
+    </div>
+    <footer class="fc-sheet-footer">
+      <button type="button" class="fc-button" data-variant="secondary" data-size="small" data-action="link">Copy link</button>
+      <button type="button" class="fc-button" data-size="small" data-close>Track pick</button>
+    </footer>
+  </dialog>
+
+  <script>
+  (() => {
+    const root = document.getElementById('data');
+    const $ = (s, el = root) => el.querySelector(s);
+    const $$ = (s, el = root) => [...el.querySelectorAll(s)];
+
+    /* Floating layer: place a popover next to its trigger, flip below when there is no room. */
+    const place = (trigger, pop, { side = 'top', align = 'center' } = {}) => {
+      const r = trigger.getBoundingClientRect(), p = pop.getBoundingClientRect(), g = 6;
+      let top = side === 'top' ? r.top - p.height - g : r.bottom + g;
+      if (side === 'top' && top < 8) top = r.bottom + g;
+      if (side === 'bottom' && top + p.height > innerHeight - 8) top = r.top - p.height - g;
+      let left = align === 'end' ? r.right - p.width : r.left + r.width / 2 - p.width / 2;
+      left = Math.max(8, Math.min(left, innerWidth - p.width - 8));
+      pop.style.top = `${Math.round(top)}px`;
+      pop.style.left = `${Math.round(left)}px`;
+    };
+    const open = (pop) => { try { if (!pop.matches(':popover-open')) pop.showPopover(); } catch {} };
+    const close = (pop) => { try { if (pop.matches(':popover-open')) pop.hidePopover(); } catch {} };
+
+    /* Tooltips and the time card: hover (short delay), keyboard focus, Escape dismisses,
+       and the card stays open while the pointer is over it. */
+    let showT, hideT;
+    $$('[aria-describedby]').forEach(trigger => {
+      const pop = document.getElementById(trigger.getAttribute('aria-describedby'));
+      if (!pop || !pop.classList.contains('fc-float')) return;
+      const show = () => { clearTimeout(hideT); $$('.fc-float[role="tooltip"]').forEach(p => p !== pop && close(p)); open(pop); place(trigger, pop); };
+      const hide = () => { hideT = setTimeout(() => close(pop), 120); };
+      trigger.addEventListener('pointerenter', () => { clearTimeout(showT); showT = setTimeout(show, 250); });
+      trigger.addEventListener('pointerleave', () => { clearTimeout(showT); hide(); });
+      trigger.addEventListener('focus', show);
+      trigger.addEventListener('blur', hide);
+      pop.addEventListener('pointerenter', () => clearTimeout(hideT));
+      pop.addEventListener('pointerleave', hide);
+    });
+    addEventListener('scroll', () => $$('.fc-float[role="tooltip"]').forEach(close), { capture: true, passive: true });
+
+    /* Time card: exact time in the viewer's zone, then UTC. Rendered on the client only (AGT-02). */
+    const updated = new Date(Date.now() - 2 * 60 * 1000);
+    const fmt = (opts) => new Intl.DateTimeFormat(undefined, opts);
+    const zone = fmt({ timeZoneName: 'short' }).formatToParts(updated).find(p => p.type === 'timeZoneName');
+    $('[data-zone="local"]').textContent = zone ? zone.value : 'Local';
+    $('[data-date="local"]').textContent = fmt({ dateStyle: 'medium' }).format(updated);
+    $('[data-clock="local"]').textContent = fmt({ timeStyle: 'medium' }).format(updated);
+    $('[data-date="utc"]').textContent = fmt({ dateStyle: 'medium', timeZone: 'UTC' }).format(updated);
+    $('[data-clock="utc"]').textContent = fmt({ timeStyle: 'medium', timeZone: 'UTC' }).format(updated);
+    $('#data-time').setAttribute('datetime', updated.toISOString());
+    if (updated.getTimezoneOffset() === 0) $('[data-row="utc"]').hidden = true;
+
+    /* Sorting. One sorted column at a time; numbers start largest first, text and time start earliest. */
+    const table = $('#data-table'), body = $('#data-body'), select = $('#data-sort');
+    const names = { pick: 'pick', kickoff: 'kickoff', odds: 'odds', est: 'our estimate', gap: 'gap', record: 'hit rate' };
+    const words = (key, dir) => {
+      const t = $(`th[data-sort="${key}"]`).dataset.type;
+      if (t === 'text') return dir === 'ascending' ? 'A to Z' : 'Z to A';
+      if (t === 'time') return dir === 'ascending' ? 'earliest first' : 'latest first';
+      return dir === 'descending' ? 'largest first' : 'smallest first';
+    };
+    const sortBy = (key, dir) => {
+      const th = $(`th[data-sort="${key}"]`);
+      dir = dir || (th.dataset.type ? 'ascending' : 'descending');
+      $$('th[data-sort]').forEach(h => h.removeAttribute('aria-sort'));
+      th.setAttribute('aria-sort', dir);
+      const sign = dir === 'ascending' ? 1 : -1;
+      const val = (tr) => th.dataset.type === 'text' ? tr.dataset[key] : parseFloat(tr.dataset[key]);
+      [...body.rows].sort((a, b) => {
+        const x = val(a), y = val(b);
+        const c = typeof x === 'string' ? x.localeCompare(y) : x - y;
+        return sign * c || (parseFloat(b.dataset.gap) - parseFloat(a.dataset.gap));
+      }).forEach(tr => body.append(tr));
+      $('#data-sort-desc').textContent = `Sorted by ${names[key]}, ${words(key, dir)}.`;
+      select.value = key;
+    };
+    $$('.fc-th-sort').forEach(b => b.addEventListener('click', () => {
+      const th = b.closest('th'), cur = th.getAttribute('aria-sort');
+      sortBy(th.dataset.sort, cur ? (cur === 'ascending' ? 'descending' : 'ascending') : null);
+    }));
+    select.addEventListener('change', () => sortBy(select.value));
+
+    /* Selection: the header box reflects the rows (checked, mixed or empty). */
+    const all = $('#data-all');
+    const rowBoxes = () => $$('tbody .fc-check', table);
+    const syncAll = () => {
+      const n = rowBoxes().filter(c => c.checked).length;
+      all.checked = n === rowBoxes().length;
+      all.indeterminate = n > 0 && !all.checked;
+    };
+    all.addEventListener('change', () => { rowBoxes().forEach(c => { c.checked = all.checked; }); syncAll(); });
+    body.addEventListener('change', e => { if (e.target.matches('.fc-check')) syncAll(); });
+
+    /* Frozen column width, so keyboard focus scrolls clear of it. */
+    const setFrozen = () => {
+      const first = $('tbody tr th[scope="row"]');
+      if (first) $('#data-wrap').style.setProperty('--fc-frozen-width', `${Math.round(first.getBoundingClientRect().right - table.getBoundingClientRect().left)}px`);
+    };
+    setFrozen(); addEventListener('resize', setFrozen);
+
+    /* Filter chips: remove moves focus to the next control; a suggestion becomes an applied chip. */
+    const x = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="m4.5 4.5 7 7m0-7-7 7"/></svg>';
+    $('.fc-filter-bar').addEventListener('click', e => {
+      const remove = e.target.closest('.fc-filter-remove');
+      if (remove) {
+        const chip = remove.closest('.fc-filter-chip');
+        const next = chip.nextElementSibling && chip.nextElementSibling.querySelector('button, select') || chip.nextElementSibling;
+        chip.remove();
+        (next && next.focus ? next : $('.fc-filter-bar .fc-button')).focus();
+        return;
+      }
+      const sug = e.target.closest('.fc-filter-chip[data-state="suggested"]');
+      if (sug) {
+        const { key, value } = sug.dataset;
+        const chip = document.createElement('div');
+        chip.className = 'fc-filter-chip';
+        chip.setAttribute('role', 'group');
+        chip.setAttribute('aria-label', `${key} filter`);
+        chip.innerHTML = `<button type="button" class="fc-filter-edit" aria-haspopup="menu"><span class="fc-filter-key">${key}</span><span class="fc-filter-value">${value}</span></button><button type="button" class="fc-filter-remove" aria-label="Remove ${key.toLowerCase()} filter">${x}</button>`;
+        sug.replaceWith(chip);
+        chip.querySelector('.fc-filter-edit').focus();
+      }
+    });
+
+    /* Row menu: one shared popover menu, placed under the trigger. Arrow keys move, Escape returns focus. */
+    const menu = $('#data-menu');
+    let menuFor = null;
+    const closeMenu = (refocus) => {
+      if (!menuFor) return;
+      close(menu);
+      menuFor.setAttribute('aria-expanded', 'false');
+      if (refocus) menuFor.focus();
+      menuFor = null;
+    };
+    body.addEventListener('click', e => {
+      const more = e.target.closest('[aria-controls="data-menu"]');
+      if (more) {
+        const same = menuFor === more;
+        closeMenu(false);
+        if (same) return;
+        menuFor = more;
+        more.setAttribute('aria-expanded', 'true');
+        open(menu); place(more, menu, { side: 'bottom', align: 'end' });
+        menu.querySelector('[role="menuitem"]').focus();
+        return;
+      }
+      const name = e.target.closest('.data-pick-btn');
+      if (name) openSheet(name.closest('tr'), name);
+    });
+    menu.addEventListener('keydown', e => {
+      const items = $$('[role="menuitem"]', menu), i = items.indexOf(document.activeElement);
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        items[(i + (e.key === 'ArrowDown' ? 1 : items.length - 1)) % items.length].focus();
+      } else if (e.key === 'Tab') closeMenu(false);
+    });
+    menu.addEventListener('click', e => {
+      const item = e.target.closest('[role="menuitem"]');
+      if (!item || !menuFor) return;
+      const tr = menuFor.closest('tr'), trigger = menuFor;
+      closeMenu(item.dataset.action !== 'open');
+      if (item.dataset.action === 'open') openSheet(tr, trigger);
+      if (item.dataset.action === 'link') copyLink(tr.dataset.key);
+    });
+    document.addEventListener('pointerdown', e => {
+      if (menuFor && !menu.contains(e.target) && !menuFor.contains(e.target)) closeMenu(false);
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key !== 'Escape') return;
+      $$('.fc-float[role="tooltip"]').forEach(close);
+      closeMenu(true);
+    });
+
+    const copyLink = (key) => {
+      const url = new URL(location.href);
+      url.searchParams.set('pick', key);
+      try { navigator.clipboard.writeText(url.toString()); } catch {}
+    };
+
+    /* Sheet: native modal dialog. Escape closes; focus returns to the row that opened it. */
+    const sheet = $('#data-sheet');
+    let opener = null, current = null;
+    const SIGNALS = [
+      ['Setup', 'Role and snap share today'],
+      ['Track record', 'Hits in games with the same setup'],
+      ['Sample', 'How many games the record rests on'],
+      ['Price gap', 'Our estimate against the priced chance'],
+      ['Matchup', 'Opponent allowed rate at the position'],
+      ['Market', 'Line movement across books since open'],
+    ];
+    const SIG = {
+      gesicki: ['wait', 'go', 'wait', 'go', 'wait', 'wait'],
+      diggs: ['go', 'go', 'wait', 'go', 'go', 'go'],
+      'cook-2h': ['go', 'go', 'wait', 'wait', 'wait', 'wait'],
+      gordon: ['go', 'go', 'wait', 'go', 'stop', 'wait'],
+      cook: ['go', 'go', 'wait', 'wait', 'wait', 'wait'],
+    };
+    const label = { go: 'Go', wait: 'Wait', stop: 'Stop', none: 'Unchecked' };
+    const selectTab = (tab, focus) => {
+      $$('[role="tab"]', sheet).forEach(t => {
+        const on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+      if (focus) tab.focus();
+    };
+    const openSheet = (tr, trigger) => {
+      if (current) current.removeAttribute('aria-selected');
+      current = tr; opener = trigger;
+      tr.setAttribute('aria-selected', 'true');
+      const d = tr.dataset, cells = tr.cells;
+      $('#data-sheet-title').textContent = d.pick;
+      $('#data-sheet-sub').textContent = d.market;
+      $('#data-sheet-badges').innerHTML = cells[8].innerHTML.replace('class="fc-signal"', 'class="fc-signal" data-variant="pill"') + cells[9].innerHTML;
+      const fair = (100 / parseFloat(d.est)).toFixed(2);
+      $('#data-sheet-overview').innerHTML = `
+        <div><dt>Odds</dt><dd>${cells[3].textContent}<small>DraftKings</small></dd></div>
+        <div><dt>Priced</dt><dd>${cells[4].textContent}</dd></div>
+        <div><dt>Our estimate</dt><dd>${d.est}%</dd></div>
+        <div><dt>Gap</dt><dd>${cells[6].innerHTML}</dd></div>`;
+      $('#data-sheet-watch').hidden = d.key !== 'gesicki';
+      $('#data-sheet-signals').innerHTML = SIGNALS.map(([n, desc], i) => `
+        <li class="fc-entity"><div class="fc-entity-content"><p class="fc-entity-title">${n}</p><p class="fc-entity-desc">${desc}</p></div>
+        <span class="fc-signal" data-signal="${SIG[d.key][i]}">${label[SIG[d.key][i]]}</span></li>`).join('');
+      const opened = (parseFloat(d.odds) + 0.2).toFixed(2);
+      $('#data-sheet-line').innerHTML = `
+        <div><dt>Opened</dt><dd>${opened}<small>Tuesday, 9:12 AM</small></dd></div>
+        <div><dt>Now</dt><dd>${cells[3].textContent}</dd></div>
+        <div><dt>Our fair price</dt><dd>${fair}<small>100 divided by our estimate</small></dd></div>`;
+      selectTab($('#data-tab-1'));
+      if (!sheet.open) sheet.showModal();
+      $('[data-close]', sheet).focus();
+    };
+    sheet.addEventListener('click', e => {
+      if (e.target.closest('[data-close]')) sheet.close();
+      if (e.target.closest('[data-action="link"]') && current) copyLink(current.dataset.key);
+    });
+    sheet.addEventListener('close', () => {
+      if (current) current.removeAttribute('aria-selected');
+      if (opener && opener.isConnected) opener.focus();
+      current = null;
+    });
+    const tablist = $('[role="tablist"]', sheet);
+    tablist.addEventListener('click', e => { const t = e.target.closest('[role="tab"]'); if (t) selectTab(t); });
+    tablist.addEventListener('keydown', e => {
+      const tabs = $$('[role="tab"]', sheet), i = tabs.indexOf(document.activeElement);
+      const go = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+      if (go === undefined) return;
+      e.preventDefault();
+      selectTab(tabs[(go + tabs.length) % tabs.length], true);
+    });
+  })();
+  </script>
+</section>
+
+  <!-- ============================================================ Charts -->
+<!-- Facet charts and data health. Fragment for preview/index.html; needs css/facet.css and css/charts.css. -->
+<section id="charts" aria-labelledby="charts-h">
+  <style>
+    /* Page-owned layout only. Everything visual comes from Facet. */
+    .ch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: var(--fc-space-6); }
+        .ch-stack { display: flex; flex-direction: column; gap: var(--fc-space-5); }
+    .ch-alerts td:first-child { white-space: normal; min-width: 8rem; color: var(--fc-text-primary); }
+  </style>
+
+  <div class="sp-intro">
+    <h2 id="charts-h" class="text-heading-24">Charts and data health</h2>
+  </div>
+
+  <div class="ch-grid">
+
+    <!-- C1 + C2: single series, direct labels, threshold at our fair price, incomplete last bucket -->
+    <article class="fc-chart-card" aria-labelledby="ch-line-h">
+      <header class="fc-chart-card-header">
+        <div class="fc-chart-card-titlerow">
+          <div class="fc-chart-card-heading">
+            <h3 class="fc-chart-card-title" id="ch-line-h">Line movement</h3>
+            <span class="fc-chart-card-meta">Gesicki over 38.5 receiving yards, DraftKings</span>
+          </div>
+          <a class="fc-chart-card-drill" href="#charts" aria-label="Open line movement for Gesicki">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+        </div>
+      </header>
+      <div class="fc-chart-card-body">
+        <figure class="fc-chart" id="ch-line" role="img"></figure>
+      </div>
+      <footer class="fc-chart-card-footer">
+        <p class="fc-freshness"><span class="fc-status-dot" data-state="live" aria-hidden="true"></span><span>Updated <time datetime="2026-11-02T18:05:12-07:00" title="Nov 2, 2026, 6:05:12 PM MST">1 min ago</time></span></p>
+        <button class="fc-button" data-variant="secondary" data-size="small" type="button">Create alert</button>
+      </footer>
+    </article>
+
+    <!-- C1 + legend (D3): multi-series stacked histogram, totals in the legend, dashed incomplete hour -->
+    <article class="fc-chart-card" aria-labelledby="ch-pulls-h">
+      <header class="fc-chart-card-header">
+        <div class="fc-chart-card-titlerow">
+          <div class="fc-chart-card-heading">
+            <h3 class="fc-chart-card-title" id="ch-pulls-h">Odds pulls per hour</h3>
+          </div>
+          <a class="fc-chart-card-drill" href="#ch-log-h" aria-label="Open the pull log">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+        </div>
+        <ul class="fc-legend" role="list" aria-label="Totals for the last 12 hours">
+          <li class="fc-legend-item" data-series="1"><span class="fc-legend-key" aria-hidden="true"></span><span class="fc-legend-name">Scheduled</span><span class="fc-legend-value" data-total="scheduled">138</span></li>
+          <li class="fc-legend-item" data-series="2"><span class="fc-legend-key" aria-hidden="true"></span><span class="fc-legend-name">On demand</span><span class="fc-legend-value" data-total="ondemand">51</span></li>
+        </ul>
+      </header>
+      <div class="fc-chart-card-body">
+        <figure class="fc-chart" id="ch-pulls" role="img"></figure>
+        <div class="fc-table-wrap fc-chart-data" id="ch-pulls-table" hidden></div>
+      </div>
+      <footer class="fc-chart-card-footer">
+        <button class="fc-button" data-variant="secondary" data-size="small" type="button" aria-expanded="false" aria-controls="ch-pulls-table" id="ch-pulls-toggle">Show table</button>
+      </footer>
+    </article>
+
+    <!-- C3: metric row, results -->
+    <article class="fc-chart-card" aria-labelledby="ch-results-h">
+      <header class="fc-chart-card-header">
+        <div class="fc-chart-card-titlerow">
+          <div class="fc-chart-card-heading">
+            <h3 class="fc-chart-card-title" id="ch-results-h">Results</h3>
+            <span class="fc-chart-card-meta">Week 8, change vs week 7</span>
+          </div>
+        </div>
+      </header>
+      <div class="fc-chart-card-body">
+        <dl class="fc-metric-rows">
+          <div class="fc-metric-row">
+            <dt>Bankroll</dt>
+            <dd class="fc-metric-value">$214.00</dd>
+            <dd class="fc-metric-change"><span class="fc-delta" data-variant="pill" data-direction="positive" data-polarity="good">+$14.00</span></dd>
+            <dd><span class="fc-sparkline" data-spark="180,172,190,188,196,205,200,214" aria-hidden="true"></span></dd>
+          </div>
+          <div class="fc-metric-row">
+            <dt>Hit rate</dt>
+            <dd class="fc-metric-value">55%</dd>
+            <dd class="fc-metric-change"><span class="fc-delta" data-variant="pill" data-direction="negative" data-polarity="bad">&minus;3 pts</span></dd>
+            <dd><span class="fc-sparkline" data-spark="52,58,57,61,60,58,58,55" aria-hidden="true"></span></dd>
+          </div>
+          <div class="fc-metric-row">
+            <dt>Average gap</dt>
+            <dd class="fc-metric-value">+4.1 <small>pts</small></dd>
+            <dd class="fc-metric-change"><span class="fc-delta" data-variant="pill" data-direction="positive" data-polarity="good">+0.6 pts</span></dd>
+            <dd><span class="fc-sparkline" data-spark="3.0,3.4,3.1,3.6,3.9,3.5,3.5,4.1" aria-hidden="true"></span></dd>
+          </div>
+        </dl>
+      </div>
+    </article>
+
+    <!-- C4: ranked list with magnitude chip, shared-scale sparklines, overflow menu; B8 freshness line -->
+    <article class="fc-chart-card" aria-labelledby="ch-books-h">
+      <header class="fc-chart-card-header">
+        <div class="fc-chart-card-titlerow">
+          <div class="fc-chart-card-heading">
+            <h3 class="fc-chart-card-title" id="ch-books-h">Best price share</h3>
+            <span class="fc-chart-card-meta">Share of Week 8 markets where each book had the best price</span>
+          </div>
+        </div>
+      </header>
+      <div class="fc-chart-card-body" data-flush>
+        <ol class="fc-rank-list" data-striped id="ch-books" aria-labelledby="ch-books-h"></ol>
+      </div>
+      <footer class="fc-chart-card-footer">
+        <p class="fc-freshness"><span class="fc-status-dot" data-state="live" aria-hidden="true"></span><span>Updated <time datetime="2026-11-02T18:05:12-07:00" title="Nov 2, 2026, 6:05:12 PM MST">1 min ago</time>. Odds can be up to 2 min old.</span></p>
+      </footer>
+    </article>
+
+    <!-- C3 with polarity: a rise that is bad -->
+    <article class="fc-chart-card" aria-labelledby="ch-health-h">
+      <header class="fc-chart-card-header">
+        <div class="fc-chart-card-titlerow">
+          <div class="fc-chart-card-heading">
+            <h3 class="fc-chart-card-title" id="ch-health-h">Data health</h3>
+            <span class="fc-chart-card-meta">Last 12 hours, change vs the 12 hours before</span>
+          </div>
+        </div>
+      </header>
+      <div class="fc-chart-card-body">
+        <dl class="fc-metric-rows">
+          <div class="fc-metric-row">
+            <dt>Odds pulls</dt>
+            <dd class="fc-metric-value">189</dd>
+            <dd class="fc-metric-change"><span class="fc-delta" data-variant="pill" data-direction="positive" data-polarity="neutral">+4%</span></dd>
+            <dd><span class="fc-sparkline" data-spark="13,12,12,14,15,20,26,21,16,14,17,9" data-incomplete aria-hidden="true"></span></dd>
+          </div>
+          <div class="fc-metric-row">
+            <dt>Failed pulls</dt>
+            <dd class="fc-metric-value">2</dd>
+            <dd class="fc-metric-change"><span class="fc-delta" data-variant="pill" data-direction="negative" data-polarity="good">&minus;1</span></dd>
+            <dd><span class="fc-sparkline" data-spark="0,0,1,0,0,0,1,0,0,0,0,0" data-incomplete aria-hidden="true"></span></dd>
+          </div>
+          <div class="fc-metric-row">
+            <dt>Average pull time</dt>
+            <dd class="fc-metric-value">1.4 <small>s</small></dd>
+            <dd class="fc-metric-change"><span class="fc-delta" data-variant="pill" data-direction="positive" data-polarity="bad">+67%</span></dd>
+            <dd><span class="fc-sparkline" data-spark="0.8,0.9,0.8,0.9,1.0,1.3,1.8,1.7,1.5,1.6,1.4,1.4" data-incomplete aria-hidden="true"></span></dd>
+          </div>
+        </dl>
+      </div>
+    </article>
+
+    <!-- C1 empty: axes kept, centered message, neutral icon tile (D1) -->
+    <article class="fc-chart-card" aria-labelledby="ch-failed-h">
+      <header class="fc-chart-card-header">
+        <div class="fc-chart-card-titlerow">
+          <div class="fc-chart-card-heading">
+            <h3 class="fc-chart-card-title" id="ch-failed-h">Failed pulls</h3>
+          </div>
+          <a class="fc-chart-card-drill" href="#ch-log-h" aria-label="Open failed pulls in the pull log">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+        </div>
+      </header>
+      <div class="fc-chart-card-body">
+        <figure class="fc-chart" id="ch-failed" role="img" aria-label="No failed pulls in the last 3 hours">
+          <div class="fc-chart-empty">
+            <div>
+              <span class="fc-icon-tile" data-size="sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m9 12 2 2 4-4"/></svg></span>
+              <span>No failed pulls in the last 3 hours</span>
+            </div>
+          </div>
+        </figure>
+      </div>
+    </article>
+
+    <!-- C5: quota meters -->
+    <article class="fc-chart-card" aria-labelledby="ch-quota-h">
+      <header class="fc-chart-card-header">
+        <div class="fc-chart-card-titlerow">
+          <div class="fc-chart-card-heading">
+            <h3 class="fc-chart-card-title" id="ch-quota-h">API quota</h3>
+            <span class="fc-chart-card-meta">November, resets Dec 1</span>
+          </div>
+        </div>
+      </header>
+      <div class="fc-chart-card-body ch-stack">
+        <div class="fc-meter" data-meter="41280/50000">
+          <div class="fc-meter-head"><span class="fc-meter-label" id="ch-m1">Odds requests</span><span class="fc-meter-value"></span></div>
+          <div class="fc-meter-track" role="meter" aria-labelledby="ch-m1"><span class="fc-meter-fill"></span><span class="fc-meter-stop" style="--at:80" aria-hidden="true"></span></div>
+          <div class="fc-meter-foot"><span class="fc-meter-pct"></span><span>Warning at 80%</span></div>
+        </div>
+        <div class="fc-meter" data-meter="3120/10000">
+          <div class="fc-meter-head"><span class="fc-meter-label" id="ch-m2">Injury feed requests</span><span class="fc-meter-value"></span></div>
+          <div class="fc-meter-track" role="meter" aria-labelledby="ch-m2"><span class="fc-meter-fill"></span><span class="fc-meter-stop" style="--at:80" aria-hidden="true"></span></div>
+          <div class="fc-meter-foot"><span class="fc-meter-pct"></span></div>
+        </div>
+        <div class="fc-meter" data-meter="5000/5000">
+          <div class="fc-meter-head"><span class="fc-meter-label" id="ch-m3">Weather requests</span><span class="fc-meter-value"></span></div>
+          <div class="fc-meter-track" role="meter" aria-labelledby="ch-m3"><span class="fc-meter-fill"></span><span class="fc-meter-stop" style="--at:80" aria-hidden="true"></span></div>
+          <div class="fc-meter-foot"><span class="fc-meter-pct"></span><span>Paused until Dec 1</span></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- C11: progress types, stops, threshold colors -->
+    <article class="fc-chart-card" aria-labelledby="ch-runs-h">
+      <header class="fc-chart-card-header">
+        <div class="fc-chart-card-titlerow">
+          <div class="fc-chart-card-heading">
+            <h3 class="fc-chart-card-title" id="ch-runs-h">Runs and limits</h3>
+          </div>
+        </div>
+      </header>
+      <div class="fc-chart-card-body ch-stack">
+        <div class="fc-stack" style="--fc-gap:8px">
+          <div class="fc-progress-row"><strong id="ch-p1">Scoring 182 of 412 markets</strong><span>Step 3 of 4</span></div>
+          <div class="fc-progress" role="progressbar" aria-labelledby="ch-p1" aria-valuemin="0" aria-valuemax="412" aria-valuenow="182" aria-valuetext="Step 3 of 4, scoring 182 of 412 markets">
+            <span class="fc-progress-fill" style="--value:61"></span>
+            <span class="fc-progress-stop" style="--at:25"></span><span class="fc-progress-stop" style="--at:50"></span><span class="fc-progress-stop" style="--at:75"></span>
+          </div>
+        </div>
+        <div class="fc-stack" style="--fc-gap:8px">
+          <div class="fc-progress-row"><strong id="ch-p2">Staked this week</strong><span>$38 of $50, near limit</span></div>
+          <div class="fc-progress" data-progress-thresholds role="progressbar" aria-labelledby="ch-p2" aria-valuemin="0" aria-valuemax="50" aria-valuenow="38" aria-valuetext="$38 of $50, 76%, near your limit">
+            <span class="fc-progress-fill" style="--value:76"></span>
+          </div>
+        </div>
+        <div class="fc-stack" style="--fc-gap:8px">
+          <div class="fc-progress-row"><strong id="ch-p3">Books refreshed</strong><span>3 of 3</span></div>
+          <progress class="fc-progress" data-type="success" value="3" max="3" aria-labelledby="ch-p3">3 of 3</progress>
+        </div>
+      </div>
+    </article>
+
+    <!-- C8: severity -->
+    <article class="fc-chart-card" aria-labelledby="ch-alerts-h">
+      <header class="fc-chart-card-header">
+        <div class="fc-chart-card-titlerow">
+          <div class="fc-chart-card-heading">
+            <h3 class="fc-chart-card-title" id="ch-alerts-h">Alerts</h3>
+          </div>
+        </div>
+      </header>
+      <div class="fc-chart-card-body">
+        <div class="fc-table-wrap">
+          <table class="fc-table ch-alerts" data-density="compact">
+            <caption class="fc-visually-hidden">Alerts from today, most severe first</caption>
+            <thead><tr><th scope="col">Alert</th><th scope="col">Severity</th><th scope="col" data-align="numeric">Triggered</th></tr></thead>
+            <tbody>
+              <tr><td>FanDuel pulls failed 3 times in a row</td><td><span class="fc-severity" data-level="4"><span class="fc-severity-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Critical</span></td><td data-align="numeric">6:02 PM</td></tr>
+              <tr><td>Gap above 8 pts, Sunday early window</td><td><span class="fc-severity" data-level="3"><span class="fc-severity-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>High</span></td><td data-align="numeric">5:41 PM</td></tr>
+              <tr><td>Odds requests above 80% of quota</td><td><span class="fc-severity" data-level="2"><span class="fc-severity-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Medium</span></td><td data-align="numeric">2:15 PM</td></tr>
+              <tr><td>Burke injury status changed</td><td><span class="fc-severity" data-level="1"><span class="fc-severity-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Low</span></td><td data-align="numeric">11:20 AM</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <!-- C6: data operations view -->
+  <div class="fc-stack" style="--fc-gap:16px">
+    <h3 class="text-heading-20" id="ch-log-h">Pull log</h3>
+    <div class="fc-dataops">
+      <aside class="fc-dataops-rail" aria-label="Filters">
+        <details class="fc-facet-group" open>
+          <summary>Level<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <ul class="fc-facet-list" role="list">
+            <li><label class="fc-facet"><input type="checkbox" checked><span class="fc-facet-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="fc-level" data-level="info" aria-hidden="true"></span><span class="fc-facet-label">Info</span><span class="fc-facet-count">169</span></label></li>
+            <li><label class="fc-facet"><input type="checkbox" checked><span class="fc-facet-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="fc-level" data-level="warning" aria-hidden="true"></span><span class="fc-facet-label">Warning</span><span class="fc-facet-count">18</span></label></li>
+            <li><label class="fc-facet"><input type="checkbox" checked><span class="fc-facet-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="fc-level" data-level="error" aria-hidden="true"></span><span class="fc-facet-label">Error</span><span class="fc-facet-count">2</span></label></li>
+          </ul>
+        </details>
+        <details class="fc-facet-group" open>
+          <summary>Source<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <ul class="fc-facet-list" role="list">
+            <li><label class="fc-facet"><input type="checkbox" checked><span class="fc-facet-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="fc-facet-label">DraftKings</span><span class="fc-facet-count">63</span></label></li>
+            <li><label class="fc-facet"><input type="checkbox" checked><span class="fc-facet-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="fc-facet-label">FanDuel</span><span class="fc-facet-count">63</span></label></li>
+            <li><label class="fc-facet"><input type="checkbox" checked><span class="fc-facet-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="fc-facet-label">BetMGM</span><span class="fc-facet-count">63</span></label></li>
+          </ul>
+        </details>
+        <details class="fc-facet-group">
+          <summary>Market<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <ul class="fc-facet-list" role="list">
+            <li><label class="fc-facet"><input type="checkbox" checked><span class="fc-facet-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="fc-facet-label">Receiving yards</span><span class="fc-facet-count">189</span></label></li>
+            <li><label class="fc-facet"><input type="checkbox" checked><span class="fc-facet-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="fc-facet-label">Rushing yards</span><span class="fc-facet-count">189</span></label></li>
+            <li><label class="fc-facet"><input type="checkbox" checked><span class="fc-facet-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="fc-facet-label">Anytime TD</span><span class="fc-facet-count">189</span></label></li>
+          </ul>
+        </details>
+      </aside>
+
+      <div class="fc-dataops-main">
+        <div class="fc-dataops-toolbar">
+          <input class="fc-input" data-size="small" type="search" aria-label="Search pulls" placeholder="Source, market or message">
+          <button class="fc-button fc-live" data-variant="secondary" data-size="small" type="button" aria-pressed="true" id="ch-live">Live</button>
+          <button class="fc-button" data-variant="secondary" data-size="small" data-shape="square" type="button" aria-label="Refresh">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M8 16H3v5"/></svg>
+          </button>
+        </div>
+        <figure class="fc-chart" data-size="timeline" id="ch-timeline" role="img"></figure>
+        <p class="fc-dataops-status" id="ch-live-status" role="status" hidden></p>
+        <div class="fc-table-wrap">
+          <table class="fc-table" data-density="compact">
+            <caption>Newest first, 8 of 189 pulls</caption>
+            <thead><tr><th scope="col">Time</th><th scope="col">Level</th><th scope="col">Source</th><th scope="col">Message</th><th scope="col" data-align="numeric">Lag</th><th scope="col">Request</th></tr></thead>
+            <tbody>
+              <tr><td class="fc-log-time"><time datetime="2026-11-02T18:05:12-07:00">6:05:12 PM</time></td><td><span class="fc-level" data-level="info">Info</span></td><td>DraftKings</td><td class="fc-log-message">Pulled 412 markets</td><td data-align="numeric">1.2 s</td><td class="fc-log-id">req_8f2a91c4</td></tr>
+              <tr><td class="fc-log-time"><time datetime="2026-11-02T18:05:09-07:00">6:05:09 PM</time></td><td><span class="fc-level" data-level="error">Error</span></td><td>FanDuel</td><td class="fc-log-message">Failed to pull, timed out after 30 s</td><td data-align="numeric">30.0 s</td><td class="fc-log-id">req_77c0d2e1</td></tr>
+              <tr><td class="fc-log-time"><time datetime="2026-11-02T18:05:04-07:00">6:05:04 PM</time></td><td><span class="fc-level" data-level="info">Info</span></td><td>BetMGM</td><td class="fc-log-message">Pulled 398 markets</td><td data-align="numeric">1.6 s</td><td class="fc-log-id">req_1b9e4a07</td></tr>
+              <tr><td class="fc-log-time"><time datetime="2026-11-02T18:00:11-07:00">6:00:11 PM</time></td><td><span class="fc-level" data-level="warning">Warning</span></td><td>FanDuel</td><td class="fc-log-message">Rate limited, retrying in 60 s</td><td data-align="numeric">4.8 s</td><td class="fc-log-id">req_c3d5f810</td></tr>
+              <tr><td class="fc-log-time"><time datetime="2026-11-02T18:00:08-07:00">6:00:08 PM</time></td><td><span class="fc-level" data-level="info">Info</span></td><td>DraftKings</td><td class="fc-log-message">Pulled 412 markets</td><td data-align="numeric">1.1 s</td><td class="fc-log-id">req_5e60ab3d</td></tr>
+              <tr><td class="fc-log-time"><time datetime="2026-11-02T18:00:03-07:00">6:00:03 PM</time></td><td><span class="fc-level" data-level="warning">Warning</span></td><td>BetMGM</td><td class="fc-log-message">Pulled 386 markets, 12 suspended</td><td data-align="numeric">2.3 s</td><td class="fc-log-id">req_9a14c6f2</td></tr>
+              <tr><td class="fc-log-time"><time datetime="2026-11-02T17:55:10-07:00">5:55:10 PM</time></td><td><span class="fc-level" data-level="info">Info</span></td><td>FanDuel</td><td class="fc-log-message">Pulled 405 markets</td><td data-align="numeric">1.4 s</td><td class="fc-log-id">req_e28b7d55</td></tr>
+              <tr><td class="fc-log-time"><time datetime="2026-11-02T17:55:06-07:00">5:55:06 PM</time></td><td><span class="fc-level" data-level="info">Info</span></td><td>DraftKings</td><td class="fc-log-message">Pulled 412 markets</td><td data-align="numeric">0.9 s</td><td class="fc-log-id">req_40fd1c98</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+(function () {
+
+  /* FacetCharts: a tiny dependency-free SVG helper. Lines, stacked bar histograms and sparklines from arrays.
+     Rules it enforces (DESIGN.md, rules 3, 5 and 7): bars start at zero, horizontal gridlines only, 3 to 5 ticks,
+     peers can share one domain (sharedDomain), endpoints-only relative x labels, dashed incomplete last bucket.
+     Colors come from CSS: marks read --_s from data-series="1".."6" (gray, blue, teal, pink, gray, gray). */
+  (() => {
+    const NS = 'http://www.w3.org/2000/svg';
+    const DIGIT = 7.2; // Facet Sans tabular digit at 12px (600 units)
+    const mk = (tag, attrs = {}, parent) => {
+      const n = document.createElementNS(NS, tag);
+      for (const k in attrs) if (attrs[k] != null && attrs[k] !== false) n.setAttribute(k, attrs[k] === true ? '' : attrs[k]);
+      if (parent) parent.appendChild(n);
+      return n;
+    };
+    const text = (parent, x, y, str, attrs = {}) => { const t = mk('text', { x, y, ...attrs }, parent); t.textContent = str; return t; };
+
+    // Tick values for a domain: 3 to 5 round steps.
+    function ticks(min, max, count = 4) {
+      const span = max - min || 1;
+      const raw = span / count;
+      const pow = Math.pow(10, Math.floor(Math.log10(raw)));
+      const step = [1, 2, 2.5, 5, 10].map(m => m * pow).find(s => span / s <= count) || raw;
+      const out = [];
+      const end = Math.ceil(max / step - 1e-9) * step;
+      for (let v = Math.floor(min / step) * step; v <= end + step * 1e-6; v += step) out.push(+v.toFixed(10));
+      return out;
+    }
+    // One domain for a set of peers, so equal values sit at equal heights (rule 5).
+    function sharedDomain(arrays, { zero = true } = {}) {
+      const all = arrays.flat();
+      return [zero ? Math.min(0, ...all) : Math.min(...all), Math.max(...all)];
+    }
+    const compact = v => Math.abs(v) >= 1000 ? (v / 1000).toFixed(v >= 10000 ? 0 : 1).replace(/\.0$/, '') + 'k' : String(v);
+
+    // Shared frame: gutters, scales, gridlines, y ticks, x labels.
+    function frame(host, o, n, band) {
+      host.querySelector(':scope > svg')?.remove();
+      const w = Math.max(host.clientWidth, 120), h = host.clientHeight || 160;
+      const yt = o.yTicks;
+      const fmt = o.yFormat || compact;
+      const gutter = o.hideY ? 0 : Math.ceil(Math.max(...yt.map(v => fmt(v).length)) * DIGIT) + 8;
+      const top = 8, bottom = o.xLabels ? 22 : 4, right = o.rightGutter || 0;
+      const p = { x0: gutter, x1: w - right, y0: top, y1: h - bottom };
+      const [lo, hi] = [Math.min(...yt), Math.max(...yt)];
+      const y = v => p.y1 - (v - lo) / (hi - lo) * (p.y1 - p.y0);
+      const x = band ? i => p.x0 + (i + 0.5) * (p.x1 - p.x0) / n : i => p.x0 + (n < 2 ? 0 : i / (n - 1) * (p.x1 - p.x0));
+      host.style.setProperty('--fc-chart-gutter', gutter + 'px');
+      const svg = mk('svg', { width: w, height: h, 'aria-hidden': 'true', focusable: 'false' });
+      host.prepend(svg);
+      const skip = o.threshold ? v => Math.abs(y(v) - y(o.threshold.value)) < 16 : () => false;
+      for (const v of yt) {
+        const yy = Math.round(y(v)) + 0.5;
+        mk('line', { class: v === 0 && band ? 'fc-chart-baseline' : 'fc-chart-grid', x1: p.x0, x2: p.x1, y1: yy, y2: yy }, svg);
+        if (!o.hideY && !skip(v)) text(svg, p.x0 - 8, yy + 4, fmt(v), { class: 'fc-chart-tick', 'text-anchor': 'end' });
+      }
+      if (o.xLabels) {
+        const ly = h - 4;
+        if (o.xLabels.length === 2 && typeof o.xLabels[0] === 'string') {
+          text(svg, p.x0, ly, o.xLabels[0], { class: 'fc-chart-tick', 'text-anchor': 'start' });
+          text(svg, p.x1, ly, o.xLabels[1], { class: 'fc-chart-tick', 'text-anchor': 'end' });
+        } else {
+          // Labels at either end align to the plot edge so they never overhang it.
+          for (const l of o.xLabels) {
+            const edge = l.at === 0 ? ['start', p.x0] : l.at === n - 1 ? ['end', p.x1] : ['middle', x(l.at)];
+            text(svg, edge[1], ly, l.text, { class: 'fc-chart-tick', 'text-anchor': edge[0] });
+          }
+        }
+      }
+      return { svg, p, x, y, w, h };
+    }
+
+    function threshold(f, t, fmt) {
+      const g = mk('g', { class: 'fc-chart-threshold', 'data-tone': t.tone }, f.svg);
+      const yy = Math.round(f.y(t.value)) + 0.5;
+      mk('line', { x1: f.p.x0, x2: f.p.x1, y1: yy, y2: yy }, g);
+      // Value in the axis lane, led by a dashed glyph so it reads as the line's label without color.
+      text(g, f.p.x0 - 8, yy + 4, fmt(t.value), { 'text-anchor': 'end' });
+      if (t.label) text(g, f.p.x0 + 6, yy - 6, t.label, { class: 'fc-chart-halo' });
+    }
+
+    function line(host, o) {
+      const s = o.series || [];
+      const n = s[0]?.values.length || 2;
+      const f = frame(host, o, n, false);
+      const fmt = o.yFormat || compact;
+      if (o.threshold) threshold(f, o.threshold, fmt);
+      for (const ser of s) {
+        const g = mk('g', { 'data-series': ser.slot || 1 }, f.svg);
+        const pts = ser.values.map((v, i) => [f.x(i), f.y(v)]);
+        const solid = o.incomplete ? pts.slice(0, -1) : pts;
+        const d = a => a.map((q, i) => (i ? 'L' : 'M') + q[0].toFixed(1) + ' ' + q[1].toFixed(1)).join('');
+        if (o.area) mk('path', { class: 'fc-chart-area', d: d(pts) + `L${f.p.x1} ${f.p.y1}L${f.p.x0} ${f.p.y1}Z` }, g);
+        mk('path', { class: 'fc-chart-line', d: d(solid) }, g);
+        if (o.incomplete) mk('path', { class: 'fc-chart-line', 'data-incomplete': true, d: d(pts.slice(-2)) }, g);
+        if (o.directLabels && s.length === 1) {
+          const [first, last] = [pts[0], pts[pts.length - 1]];
+          const vals = ser.values;
+          mk('circle', { class: 'fc-chart-point', cx: first[0], cy: first[1], r: 3 }, g);
+          mk('circle', { class: 'fc-chart-point', cx: last[0], cy: last[1], r: 3 }, g);
+          const directLabel = (x, y, name, v, anchor) => {
+            const t = text(g, x, y, '', { class: 'fc-chart-label fc-chart-halo', 'text-anchor': anchor });
+            mk('tspan', {}, t).textContent = name + ' ';
+            const b = mk('tspan', { 'data-strong': true, class: 'fc-chart-label' }, t); b.textContent = fmt(v);
+          };
+          directLabel(first[0] + 6, first[1] - 8, o.directLabels.first, vals[0], 'start');
+          directLabel(last[0] + 8, last[1] + 4, o.directLabels.last, vals[vals.length - 1], 'start');
+        }
+      }
+    }
+
+    function bars(host, o) {
+      const s = o.series || [];
+      const n = s[0]?.values.length || o.buckets || 12;
+      const f = frame(host, o, n, true);
+      const bw = (f.p.x1 - f.p.x0) / n, gap = bw > 8 ? 2 : 1;
+      const stack = new Array(n).fill(0);
+      s.forEach(ser => {
+        const g = mk('g', { 'data-series': ser.slot || 1 }, f.svg);
+        ser.values.forEach((v, i) => {
+          if (!v) return;
+          const yTop = f.y(stack[i] + v), yBot = f.y(stack[i]);
+          stack[i] += v;
+          const inc = o.incomplete && i === n - 1;
+          mk('rect', { class: 'fc-chart-bar', 'data-incomplete': inc, x: (f.p.x0 + i * bw + gap / 2 + (inc ? 0.5 : 0)).toFixed(1), y: (yTop + (inc ? 0.5 : 0)).toFixed(1), width: Math.max(1, bw - gap - (inc ? 1 : 0)).toFixed(1), height: Math.max(0, yBot - yTop - (inc ? 1 : 0) - (s.indexOf(ser) ? 1 : 0)).toFixed(1) }, g);
+        });
+      });
+      if (o.threshold) threshold(f, o.threshold, o.yFormat || compact);
+    }
+
+    // Sparkline: no axes, scales its path (stroke stays 1.25px), optional shared domain and incomplete tail.
+    function sparkline(host, values, { domain, incomplete } = {}) {
+      host.querySelector(':scope > svg')?.remove();
+      const [lo, hi] = domain || [Math.min(...values), Math.max(...values)];
+      const W = 100, H = 24, pad = 2;
+      const pts = values.map((v, i) => [i / (values.length - 1) * W, H - pad - (v - lo) / ((hi - lo) || 1) * (H - pad * 2)]);
+      const d = a => a.map((q, i) => (i ? 'L' : 'M') + q[0].toFixed(2) + ' ' + q[1].toFixed(2)).join('');
+      const svg = mk('svg', { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: 'none', 'aria-hidden': 'true', focusable: 'false' });
+      mk('path', { class: 'fc-chart-line', d: d(incomplete ? pts.slice(0, -1) : pts), 'vector-effect': 'non-scaling-stroke' }, svg);
+      if (incomplete) mk('path', { class: 'fc-chart-line', 'data-incomplete': true, d: d(pts.slice(-2)), 'vector-effect': 'non-scaling-stroke' }, svg);
+      host.prepend(svg);
+    }
+
+    // Redraw on resize so text stays at its real size.
+    const registry = new Map();
+    const ro = 'ResizeObserver' in window ? new ResizeObserver(entries => {
+      for (const e of entries) { const r = registry.get(e.target); if (r) requestAnimationFrame(r); }
+    }) : null;
+    const mount = (fn) => (host, o) => {
+      const draw = () => fn(host, o);
+      draw();
+      if (o.summary) host.setAttribute('aria-label', o.summary);
+      registry.set(host, draw);
+      ro?.observe(host);
+    };
+
+    window.FacetCharts = { line: mount(line), bars: mount(bars), sparkline, sharedDomain, ticks, compact };
+  })();
+
+  /* ---- Demo data (Hidden Gems, sample) ---- */
+  (() => {
+    const C = window.FacetCharts;
+    const odds = v => (v > 0 ? '+' : '−') + Math.abs(v);
+
+    // Line movement: DraftKings price every 6 hours for 7 days; our fair price is the threshold.
+    const price = [-105,-105,-106,-108,-108,-110,-110,-112,-111,-112,-114,-115,-115,-116,-118,-118,-117,-119,-120,-122,-122,-121,-123,-124,-126,-125,-127,-128,-128];
+    const fair = -140;
+    C.line(document.getElementById('ch-line'), {
+      series: [{ name: 'DraftKings', values: price, slot: 1 }],
+      yTicks: [-150, -125, -100], yFormat: odds,
+      xLabels: ['7d ago', 'now'], incomplete: true, rightGutter: 76,
+      threshold: { value: fair, label: 'Our fair price' },
+      directLabels: { first: 'Open', last: 'Now' },
+      summary: `DraftKings price moved from ${odds(price[0])} at open to ${odds(price.at(-1))} now over 7 days, short of our fair price of ${odds(fair)}. The last 6 hours are still updating.`,
+    });
+
+    // Odds pulls per hour, stacked by trigger. Legend totals come from the same arrays.
+    const scheduled = [12,12,12,12,12,12,12,12,12,12,12,6];
+    const ondemand  = [1,0,0,2,3,8,14,9,4,2,5,3];
+    const sum = a => a.reduce((x, y) => x + y, 0);
+    document.querySelector('[data-total="scheduled"]').textContent = C.compact(sum(scheduled));
+    document.querySelector('[data-total="ondemand"]').textContent = C.compact(sum(ondemand));
+    const peak = Math.max(...scheduled.map((v, i) => v + ondemand[i]));
+    C.bars(document.getElementById('ch-pulls'), {
+      series: [{ name: 'Scheduled', values: scheduled, slot: 1 }, { name: 'On demand', values: ondemand, slot: 2 }],
+      yTicks: C.ticks(0, peak, 3), xLabels: ['12h ago', 'now'], incomplete: true,
+      summary: `Odds pulls per hour for the last 12 hours: ${sum(scheduled)} scheduled and ${sum(ondemand)} on demand, peaking at ${peak} in hour 7. The current hour is still filling.`,
+    });
+    const tbl = document.getElementById('ch-pulls-table');
+    tbl.innerHTML = `<table class="fc-table" data-density="compact"><caption class="fc-visually-hidden">Odds pulls per hour, oldest first</caption><thead><tr><th scope="col">Hour</th><th scope="col" data-align="numeric">Scheduled</th><th scope="col" data-align="numeric">On demand</th></tr></thead><tbody>${
+      scheduled.map((v, i) => `<tr><th scope="row">${i === 11 ? 'Current hour' : (12 - i) + 'h ago'}</th><td data-align="numeric">${v}</td><td data-align="numeric">${ondemand[i]}</td></tr>`).join('')}</tbody></table>`;
+    const tg = document.getElementById('ch-pulls-toggle');
+    tg.addEventListener('click', () => {
+      const open = tg.getAttribute('aria-expanded') !== 'true';
+      tg.setAttribute('aria-expanded', String(open));
+      tg.textContent = open ? 'Hide table' : 'Show table';
+      tbl.hidden = !open;
+    });
+
+    // Empty chart: axes kept, no series.
+    C.line(document.getElementById('ch-failed'), { series: [], yTicks: [0, 2, 4], xLabels: ['3h ago', 'now'] });
+
+    // Sparklines in metric rows: each metric on its own scale (different units), same time window.
+    document.querySelectorAll('.fc-metric-row [data-spark]').forEach(el =>
+      C.sparkline(el, el.dataset.spark.split(',').map(Number), { incomplete: el.hasAttribute('data-incomplete') }));
+
+    // Rank list: best price share by book. Chip fill is the share of all markets (0 to 100%).
+    // Sparklines share one domain, because they plot the same measure.
+    const books = [
+      { name: 'DraftKings', share: 38, daily: [34,36,35,39,40,37,38] },
+      { name: 'FanDuel',    share: 27, daily: [29,28,27,26,27,26,27] },
+      { name: 'BetMGM',     share: 18, daily: [15,16,18,19,18,19,18] },
+      { name: 'Caesars',    share: 11, daily: [13,12,12,10,9,11,11] },
+      { name: 'ESPN Bet',   share: 6,  daily: [9,8,8,6,6,7,6] },
+    ];
+    const domain = C.sharedDomain(books.map(b => b.daily));
+    const list = document.getElementById('ch-books');
+    list.innerHTML = books.map(b => `<li class="fc-rank-row">
+        <span class="fc-rank-label"><span>${b.name}</span></span>
+        <span class="fc-rank-chip" style="--share:${b.share}"><span>${b.share}%</span></span>
+        <span class="fc-sparkline" data-daily="${b.daily}" aria-hidden="true"></span>
+        <button class="fc-button" data-variant="tertiary" data-size="tiny" data-shape="square" type="button" aria-label="More actions for ${b.name}" aria-haspopup="menu"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg></button>
+      </li>`).join('');
+    list.querySelectorAll('[data-daily]').forEach(el => C.sparkline(el, el.dataset.daily.split(',').map(Number), { domain }));
+
+    // Quota meters: gray below 80%, amber from 80%, red at the limit.
+    const n = new Intl.NumberFormat('en-US');
+    document.querySelectorAll('[data-meter]').forEach(m => {
+      const [used, limit] = m.dataset.meter.split('/').map(Number);
+      const pct = Math.round(used / limit * 100);
+      const level = pct >= 100 ? 'error' : pct >= 80 ? 'warning' : 'ok';
+      const word = { ok: '', warning: 'near limit', error: 'limit reached' }[level];
+      m.dataset.level = level;
+      m.querySelector('.fc-meter-value').innerHTML = `<strong>${n.format(used)}</strong> of ${n.format(limit)}`;
+      m.querySelector('.fc-meter-pct').innerHTML = `${pct}% used${word ? `, <span class="fc-meter-state">${word}</span>` : ''}`;
+      m.querySelector('.fc-meter-fill').style.setProperty('--value', used / limit * 100);
+      const t = m.querySelector('[role="meter"]');
+      Object.entries({ 'aria-valuemin': 0, 'aria-valuemax': limit, 'aria-valuenow': used, 'aria-valuetext': `${n.format(used)} of ${n.format(limit)}, ${pct}%${word ? ', ' + word : ''}` }).forEach(([k, v]) => t.setAttribute(k, v));
+    });
+
+    // Progress threshold colors: the same breakpoints as the meter (75% for a self-set limit).
+    document.querySelectorAll('[data-progress-thresholds]').forEach(p => {
+      const v = +p.getAttribute('aria-valuenow') / +p.getAttribute('aria-valuemax') * 100;
+      p.dataset.level = v >= 100 ? 'error' : v >= 75 ? 'warning' : '';
+    });
+
+    // Timeline: pulls per 5 minutes over the last 2 hours, clock ticks in Sans with tabular figures.
+    const tl = [8,7,8,8,9,8,7,8,10,9,8,8,7,8,9,8,12,11,9,8,8,9,8,4];
+    C.bars(document.getElementById('ch-timeline'), {
+      series: [{ name: 'Pulls', values: tl, slot: 5 }], yTicks: [0, 12], hideY: true, incomplete: true,
+      xLabels: [{ at: 0, text: '4:05 PM' }, { at: 12, text: '5:05 PM' }, { at: 23, text: '6:00 PM' }],
+      summary: 'Pulls every 5 minutes from 4:05 PM to now, steady at 7 to 12, with the current 5 minutes still filling.',
+    });
+
+    // Live toggle: aria-pressed, constant label, no pulse.
+    const live = document.getElementById('ch-live'), status = document.getElementById('ch-live-status');
+    const showStatus = () => {
+      const on = live.getAttribute('aria-pressed') === 'true';
+      status.textContent = on ? '' : 'Paused at 6:05:12 PM. New pulls wait until you resume.';
+      status.hidden = on;
+    };
+    live.addEventListener('click', () => { live.setAttribute('aria-pressed', String(live.getAttribute('aria-pressed') !== 'true')); showStatus(); });
+    showStatus();
+  })();
+  
+})();
+</script>
+</section>
+
+  <!-- ============================================================ Forms -->
+<!-- Lists and settings forms. Fragment for preview/index.html. Needs css/lists.css, css/forms.css
+     and css/shell.css (.fc-dropdown for overflow menus). Sample clock: Monday, Nov 2, 2026, 6:02 PM ET. -->
+<section id="lists" aria-labelledby="lists-h">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="lf-ticket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></symbol>
+      <symbol id="lf-database" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></symbol>
+      <symbol id="lf-more" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
+      <symbol id="lf-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+      <symbol id="lf-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+      <symbol id="lf-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></symbol>
+      <symbol id="lf-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+      <symbol id="lf-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></symbol>
+      <symbol id="lf-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+      <symbol id="lf-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+      <symbol id="lf-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+      <symbol id="lf-receipt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/></symbol>
+      <symbol id="lf-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="fc-stack" style="--fc-gap:8px">
+    <h2 id="lists-h" class="text-heading-24">Lists and settings forms</h2>
+  </div>
+
+  <div class="fc-grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));--fc-gap:48px 40px;align-items:start">
+
+    <!-- ============================================ B10 list + connection rows -->
+    <div class="fc-stack" style="--fc-gap:16px">
+      <h3 class="text-heading-20">Connection rows</h3>
+      <div class="fc-stack" style="--fc-gap:8px">
+        <h4 class="text-label-14" id="lf-books" style="color:var(--fc-text-secondary)">Sportsbooks</h4>
+        <ul class="fc-list" role="list" aria-labelledby="lf-books">
+          <li class="fc-list-row" data-state="connected">
+            <span class="fc-list-row-lead"><span class="fc-icon-tile" data-size="md"><svg aria-hidden="true"><use href="#lf-ticket"/></svg></span></span>
+            <div class="fc-list-row-main">
+              <p class="fc-list-row-title">DraftKings</p>
+              <p class="fc-meta"><span>412 markets</span><span>Tracking bets</span></p>
+            </div>
+            <div class="fc-list-row-aside"><span class="fc-status"><span class="fc-status-dot" data-state="live"></span>Connected</span></div>
+            <div class="fc-list-row-actions">
+              <time class="fc-timestamp" datetime="2026-11-02T18:00-05:00" title="Monday, Nov 2, 2026, 6:00 PM ET">Last used 2 min ago</time>
+              <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="More actions for DraftKings" data-menu="Test|Rotate key|Disconnect!"><svg aria-hidden="true"><use href="#lf-more"/></svg></button>
+            </div>
+          </li>
+          <li class="fc-list-row" data-state="failed">
+            <span class="fc-list-row-lead"><span class="fc-icon-tile" data-size="md"><svg aria-hidden="true"><use href="#lf-ticket"/></svg></span></span>
+            <div class="fc-list-row-main">
+              <p class="fc-list-row-title">FanDuel</p>
+              <p class="fc-meta"><span>388 markets</span><span>Tracking bets</span></p>
+            </div>
+            <div class="fc-list-row-aside"><span class="fc-status"><span class="fc-status-dot" data-state="failed"></span>Failed</span></div>
+            <div class="fc-list-row-actions">
+              <time class="fc-timestamp" datetime="2026-11-02T15:04-05:00" title="Monday, Nov 2, 2026, 3:04 PM ET">Last used 3 hr ago</time>
+              <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="More actions for FanDuel" data-menu="Test|Rotate key|Disconnect!"><svg aria-hidden="true"><use href="#lf-more"/></svg></button>
+            </div>
+            <div class="fc-list-row-note">
+              <div class="fc-note" data-type="error" data-action><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#lf-alert"/></svg><span>FanDuel rejected the key, so its odds are 3 hours old.</span><button class="fc-button fc-note-action" data-variant="secondary" data-size="small" type="button">Rotate key</button></div>
+            </div>
+          </li>
+          <li class="fc-list-row" data-state="available">
+            <span class="fc-list-row-lead"><span class="fc-icon-tile" data-size="md"><svg aria-hidden="true"><use href="#lf-ticket"/></svg></span></span>
+            <div class="fc-list-row-main">
+              <p class="fc-list-row-title">BetMGM</p>
+              <p class="fc-meta"><span>Adds 296 markets</span></p>
+            </div>
+            <div class="fc-list-row-actions">
+              <button class="fc-button" data-size="small" type="button" aria-label="Connect BetMGM">Connect</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="fc-stack" style="--fc-gap:8px">
+        <h4 class="text-label-14" id="lf-providers" style="color:var(--fc-text-secondary)">Data providers</h4>
+        <ul class="fc-list" role="list" aria-labelledby="lf-providers">
+          <li class="fc-list-row" data-state="connected">
+            <span class="fc-list-row-lead"><span class="fc-icon-tile" data-size="md"><svg aria-hidden="true"><use href="#lf-database"/></svg></span></span>
+            <div class="fc-list-row-main">
+              <p class="fc-list-row-title">The Odds API</p>
+              <p class="fc-meta"><span>Key ending <span class="fc-mono">3f9a</span></span><span>1,412 of 20,000 requests</span></p>
+            </div>
+            <div class="fc-list-row-aside"><span class="fc-status"><span class="fc-status-dot" data-state="live"></span>Connected</span></div>
+            <div class="fc-list-row-actions">
+              <button class="fc-button" data-variant="secondary" data-size="small" type="button" aria-label="Manage The Odds API">Manage</button>
+            </div>
+          </li>
+          <li class="fc-list-row" data-state="connected">
+            <span class="fc-list-row-lead"><span class="fc-icon-tile" data-size="md"><svg aria-hidden="true"><use href="#lf-database"/></svg></span></span>
+            <div class="fc-list-row-main">
+              <p class="fc-list-row-title">SportsDataIO</p>
+              <p class="fc-meta"><span>Injuries and depth charts</span></p>
+            </div>
+            <div class="fc-list-row-aside"><span class="fc-status"><span class="fc-status-dot" data-state="live"></span>Connected</span></div>
+            <div class="fc-list-row-actions">
+              <time class="fc-timestamp" datetime="2026-11-02T17:58-05:00" title="Monday, Nov 2, 2026, 5:58 PM ET">Last used 4 min ago</time>
+              <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="More actions for SportsDataIO" data-menu="Test|Rotate key|Disconnect!"><svg aria-hidden="true"><use href="#lf-more"/></svg></button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ============================================ B11 snippet + secret -->
+    <div class="fc-stack" style="--fc-gap:20px">
+      <h3 class="text-heading-20">Snippets and secrets</h3>
+      <div>
+        <span class="fc-label" id="lf-sid-l">Schedule ID</span>
+        <div class="fc-snippet" role="group" aria-labelledby="lf-sid-l">
+          <code class="fc-snippet-value">sch_odds_all_5m</code>
+          <button class="fc-button fc-snippet-copy" data-variant="tertiary" data-size="tiny" data-shape="square" type="button" aria-label="Copy schedule ID" data-copy><svg class="fc-icon-copy" aria-hidden="true"><use href="#lf-copy"/></svg><svg class="fc-icon-check" aria-hidden="true"><use href="#lf-check"/></svg></button>
+          <span class="fc-visually-hidden" aria-live="polite"></span>
+        </div>
+      </div>
+      <div>
+        <span class="fc-label" id="lf-cron-l">Cron</span>
+        <div class="fc-snippet" role="group" aria-labelledby="lf-cron-l">
+          <code class="fc-snippet-value">*/5 9-22 * * 0,1,4</code>
+          <button class="fc-button fc-snippet-copy" data-variant="tertiary" data-size="tiny" data-shape="square" type="button" aria-label="Copy cron" data-copy><svg class="fc-icon-copy" aria-hidden="true"><use href="#lf-copy"/></svg><svg class="fc-icon-check" aria-hidden="true"><use href="#lf-check"/></svg></button>
+          <span class="fc-visually-hidden" aria-live="polite"></span>
+        </div>
+      </div>
+      <div>
+        <span class="fc-label" id="lf-new-l">Export key</span>
+        <div class="fc-secret" data-state="new" id="lf-secret-new">
+          <div class="fc-snippet" role="group" aria-labelledby="lf-new-l">
+            <code class="fc-snippet-value" data-secret-value>hg_live_9f3KqT7mW2xR8bLp4Vn6Yc1Hd5Jz7e4c</code>
+            <button class="fc-button fc-snippet-copy" data-variant="tertiary" data-size="tiny" data-shape="square" type="button" aria-label="Copy export key" data-copy><svg class="fc-icon-copy" aria-hidden="true"><use href="#lf-copy"/></svg><svg class="fc-icon-check" aria-hidden="true"><use href="#lf-check"/></svg></button>
+            <span class="fc-visually-hidden" aria-live="polite"></span>
+          </div>
+          <div class="fc-note" data-type="warning" data-secret-once><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#lf-alert"/></svg><span>Hidden Gems shows the full key only once.</span></div>
+          <div data-secret-once><button class="fc-button" data-size="small" type="button" data-secret-done>Done</button></div>
+          <p class="fc-meta" data-secret-meta hidden><span>Added just now</span></p>
+          <span class="fc-visually-hidden" aria-live="polite" data-secret-live></span>
+        </div>
+      </div>
+      <div>
+        <span class="fc-label" id="lf-sdio-l">SportsDataIO key</span>
+        <div class="fc-secret" data-state="masked">
+          <div class="fc-secret-row">
+            <div class="fc-snippet" role="group" aria-labelledby="lf-sdio-l" style="flex:1 1 200px">
+              <code class="fc-snippet-value" aria-label="Key ending 8c21"><span class="fc-secret-mask" aria-hidden="true">•••• •••• ••••</span> 8c21</code>
+            </div>
+            <button class="fc-button" data-variant="secondary" data-size="small" type="button">Rotate key</button>
+          </div>
+          <p class="fc-meta"><span>Added <time class="fc-timestamp" datetime="2026-10-02" title="Friday, Oct 2, 2026">Oct 2</time></span><span>Last used <time class="fc-timestamp" datetime="2026-11-02T17:58-05:00" title="Monday, Nov 2, 2026, 5:58 PM ET">4 min ago</time></span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================ B12 schedules + global pause -->
+    <div class="fc-stack" style="--fc-gap:16px;grid-column:1/-1">
+      <h3 class="text-heading-20">Odds pull schedules</h3>
+      <form class="fc-fieldset" aria-labelledby="lf-pause-t" data-dirty-form>
+        <div class="fc-fieldset-content">
+          <h4 class="fc-fieldset-title" id="lf-pause-t">Scheduled pulls</h4>
+          <p class="fc-fieldset-subtitle">Pulls odds and injuries on the schedules below.</p>
+          <p class="fc-fieldset-consequence" id="lf-pause-c">Pausing stops every scheduled pull until you turn it back on. Schedules keep their settings.</p>
+          <label class="fc-row" style="--fc-gap:12px;align-self:flex-start">
+            <input type="checkbox" class="fc-toggle" data-size="large" checked aria-labelledby="lf-pause-t" aria-describedby="lf-pause-c" data-pause>
+            <span class="text-label-14" data-pause-word aria-hidden="true">Enabled</span>
+          </label>
+        </div>
+        <div class="fc-fieldset-footer">
+          <span>Manual refresh still works.</span>
+          <div class="fc-row">
+            <button class="fc-button" data-variant="secondary" data-size="small" type="reset" hidden data-cancel>Cancel</button>
+            <button class="fc-button" data-size="small" type="submit" disabled data-save>Save</button>
+          </div>
+          <span class="fc-visually-hidden" aria-live="polite" data-form-live></span>
+        </div>
+      </form>
+
+      <ul class="fc-list" role="list" aria-label="Schedules" id="lf-schedules">
+        <li class="fc-list-row fc-schedule-row" data-state="succeeded">
+          <div class="fc-list-row-main">
+            <p class="fc-list-row-title">Odds, all books</p>
+            <p class="fc-meta"><span>Every 5 min on game days</span><span>9 AM to 11 PM ET</span></p>
+            <code class="fc-schedule-cron">*/5 9-22 * * 0,1,4</code>
+          </div>
+          <span class="fc-schedule-status fc-status"><span class="fc-status-dot" data-state="live"></span><span data-status-word>Succeeded</span></span>
+          <p class="fc-schedule-runs">
+            <span>Next <b><time class="fc-timestamp" datetime="2026-11-02T18:05-05:00" title="Monday, Nov 2, 2026, 6:05 PM ET">Today 6:05 PM</time></b></span>
+            <span data-last>Last <time class="fc-timestamp" datetime="2026-11-02T18:00-05:00" title="Monday, Nov 2, 2026, 6:00 PM ET">6:00 PM</time>, 4.1 s</span>
+          </p>
+          <div class="fc-list-row-actions">
+            <button class="fc-button" data-variant="secondary" data-size="small" type="button" data-run aria-label="Run Odds, all books now">Run now</button>
+            <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="More actions for Odds, all books" data-menu="Edit|View runs|Pause"><svg aria-hidden="true"><use href="#lf-more"/></svg></button>
+          </div>
+        </li>
+        <li class="fc-list-row fc-schedule-row" data-state="failed">
+          <div class="fc-list-row-main">
+            <p class="fc-list-row-title">Injuries and depth charts</p>
+            <p class="fc-meta"><span>Hourly Tuesday to Saturday</span><span>SportsDataIO</span></p>
+            <code class="fc-schedule-cron">0 * * * 2-6</code>
+          </div>
+          <span class="fc-schedule-status fc-status"><span class="fc-status-dot" data-state="failed"></span><span data-status-word>Failed</span></span>
+          <p class="fc-schedule-runs">
+            <span>Next <b><time class="fc-timestamp" datetime="2026-11-03T00:00-05:00" title="Tuesday, Nov 3, 2026, 12:00 AM ET">Tue 12:00 AM</time></b></span>
+            <span data-last>Last <time class="fc-timestamp" datetime="2026-10-31T23:00-04:00" title="Saturday, Oct 31, 2026, 11:00 PM ET">Sat 11:00 PM</time>, timed out</span>
+          </p>
+          <div class="fc-list-row-actions">
+            <button class="fc-button" data-variant="secondary" data-size="small" type="button" data-run aria-label="Run Injuries and depth charts now">Run now</button>
+            <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="More actions for Injuries and depth charts" data-menu="Edit|View runs|Pause"><svg aria-hidden="true"><use href="#lf-more"/></svg></button>
+          </div>
+          <div class="fc-list-row-note">
+            <div class="fc-note" data-type="error"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#lf-alert"/></svg><span>SportsDataIO timed out after 30 s, so injuries are from Saturday 10:00 PM.</span></div>
+          </div>
+        </li>
+        <li class="fc-list-row fc-schedule-row" data-state="paused">
+          <div class="fc-list-row-main">
+            <p class="fc-list-row-title">Closing lines</p>
+            <p class="fc-meta"><span>Every 15 min on game days</span><span>6 PM to 11 PM ET</span></p>
+            <code class="fc-schedule-cron">*/15 18-22 * * 0,1,4</code>
+          </div>
+          <span class="fc-schedule-status fc-status"><span class="fc-status-dot" data-state="paused"></span><span data-status-word>Paused</span></span>
+          <p class="fc-schedule-runs">
+            <span>Next <b class="fc-value-empty">None</b></span>
+            <span data-last>Last <time class="fc-timestamp" datetime="2026-11-01T22:45-05:00" title="Sunday, Nov 1, 2026, 10:45 PM ET">Sun 10:45 PM</time>, 3.9 s</span>
+          </p>
+          <div class="fc-list-row-actions">
+            <button class="fc-button" data-variant="secondary" data-size="small" type="button" data-run aria-label="Run Closing lines now">Run now</button>
+            <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="More actions for Closing lines" data-menu="Edit|View runs|Resume"><svg aria-hidden="true"><use href="#lf-more"/></svg></button>
+          </div>
+        </li>
+      </ul>
+      <p class="fc-visually-hidden" aria-live="polite" id="lf-sched-live"></p>
+    </div>
+
+    <!-- ============================================ B12 schedule editor -->
+    <div class="fc-stack" style="--fc-gap:16px">
+      <h3 class="text-heading-20">Schedule editor</h3>
+      <form class="fc-fieldset" aria-labelledby="lf-ed-t" id="lf-editor" data-dirty-form>
+        <div class="fc-fieldset-content">
+          <h4 class="fc-fieldset-title" id="lf-ed-t">Odds, all books</h4>
+          <p class="fc-fieldset-subtitle">Pulls odds from every connected book.</p>
+          <div class="fc-stack" style="--fc-gap:20px">
+            <div class="fc-schedule-editor">
+              <div>
+                <label class="fc-label" for="lf-ed-freq">Frequency</label>
+                <select class="fc-select" id="lf-ed-freq" name="freq">
+                  <option value="1">Every minute</option>
+                  <option value="5" selected>Every 5 min</option>
+                  <option value="15">Every 15 min</option>
+                  <option value="60">Hourly</option>
+                </select>
+              </div>
+              <div>
+                <label class="fc-label" for="lf-ed-days">Days</label>
+                <select class="fc-select" id="lf-ed-days" name="days" aria-describedby="lf-ed-days-h">
+                  <option value="game" selected>Game days</option>
+                  <option value="tue-sat">Tuesday to Saturday</option>
+                  <option value="all">Every day</option>
+                </select>
+                <p class="fc-helper" id="lf-ed-days-h">Game days are Sunday, Monday and Thursday.</p>
+              </div>
+              <div>
+                <label class="fc-label" for="lf-ed-from">From</label>
+                <select class="fc-select" id="lf-ed-from" name="from">
+                  <option value="6">6 AM</option><option value="7">7 AM</option><option value="8">8 AM</option><option value="9" selected>9 AM</option><option value="10">10 AM</option><option value="11">11 AM</option><option value="12">12 PM</option>
+                </select>
+              </div>
+              <div>
+                <label class="fc-label" for="lf-ed-to">To</label>
+                <select class="fc-select" id="lf-ed-to" name="to">
+                  <option value="18">6 PM</option><option value="19">7 PM</option><option value="20">8 PM</option><option value="21">9 PM</option><option value="22">10 PM</option><option value="23" selected>11 PM</option><option value="24">12 AM</option>
+                </select>
+              </div>
+              <div data-span="all">
+                <label class="fc-label" for="lf-ed-tz">Time zone</label>
+                <select class="fc-select" id="lf-ed-tz" name="tz">
+                  <option value="ET" selected>Eastern</option><option value="CT">Central</option><option value="MT">Mountain</option><option value="PT">Pacific</option>
+                </select>
+              </div>
+            </div>
+            <div class="fc-schedule-preview" aria-live="polite">
+              <span id="lf-ed-next-l">Next 3 runs, <span data-tz>ET</span></span>
+              <ol aria-labelledby="lf-ed-next-l" id="lf-ed-next"><li>Today 6:05 PM</li><li>Today 6:10 PM</li><li>Today 6:15 PM</li></ol>
+            </div>
+            <details class="fc-schedule-advanced">
+              <summary><svg aria-hidden="true"><use href="#lf-chevron"/></svg>Advanced</summary>
+              <div>
+                <span class="fc-label" id="lf-ed-cron-l">Cron</span>
+                <div class="fc-snippet" role="group" aria-labelledby="lf-ed-cron-l">
+                  <code class="fc-snippet-value" id="lf-ed-cron">*/5 9-22 * * 0,1,4</code>
+                  <button class="fc-button fc-snippet-copy" data-variant="tertiary" data-size="tiny" data-shape="square" type="button" aria-label="Copy cron" data-copy><svg class="fc-icon-copy" aria-hidden="true"><use href="#lf-copy"/></svg><svg class="fc-icon-check" aria-hidden="true"><use href="#lf-check"/></svg></button>
+                  <span class="fc-visually-hidden" aria-live="polite"></span>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+        <div class="fc-fieldset-footer">
+          <span id="lf-ed-quota">About 2,200 of 20,000 monthly requests</span>
+          <div class="fc-row">
+            <button class="fc-button" data-variant="secondary" data-size="small" type="reset" hidden data-cancel>Cancel</button>
+            <button class="fc-button" data-size="small" type="submit" disabled data-save>Save</button>
+          </div>
+          <span class="fc-visually-hidden" aria-live="polite" data-form-live></span>
+        </div>
+      </form>
+    </div>
+
+    <!-- ============================================ C7 activity feed -->
+    <div class="fc-stack" style="--fc-gap:16px">
+      <h3 class="text-heading-20">Activity feed</h3>
+      <div class="fc-feed">
+        <section class="fc-feed-group" aria-labelledby="lf-day-0">
+          <h4 class="fc-feed-heading" id="lf-day-0">Today</h4>
+          <ul class="fc-feed-list" role="list">
+            <li class="fc-feed-row"><span class="fc-feed-icon" title="Scheduler"><svg aria-hidden="true"><use href="#lf-clock"/></svg></span><span class="fc-feed-text"><strong>Odds pull</strong> completed for <strong>Week 8</strong>, <strong>31 markets</strong></span><time class="fc-feed-time fc-timestamp" datetime="2026-11-02T17:58-05:00" title="Monday, Nov 2, 2026, 5:58 PM ET">4 min ago</time></li>
+            <li class="fc-feed-row"><span class="fc-feed-icon" title="You"><svg aria-hidden="true"><use href="#lf-user"/></svg></span><span class="fc-feed-text"><strong>You</strong> created an <strong>export key</strong></span><time class="fc-feed-time fc-timestamp" datetime="2026-11-02T17:44-05:00" title="Monday, Nov 2, 2026, 5:44 PM ET">18 min ago</time></li>
+            <li class="fc-feed-row"><span class="fc-feed-icon" title="You"><svg aria-hidden="true"><use href="#lf-user"/></svg></span><span class="fc-feed-text"><strong>You</strong> changed <strong>max stake</strong> from <strong>$75</strong> to <strong>$50</strong></span><time class="fc-feed-time fc-timestamp" datetime="2026-11-02T16:02-05:00" title="Monday, Nov 2, 2026, 4:02 PM ET">2 hr ago</time></li>
+            <li class="fc-feed-row"><span class="fc-feed-icon" title="Sportsbook"><svg aria-hidden="true"><use href="#lf-ticket"/></svg></span><span class="fc-feed-text"><strong>FanDuel</strong> rejected the <strong>data key</strong></span><time class="fc-feed-time fc-timestamp" datetime="2026-11-02T15:04-05:00" title="Monday, Nov 2, 2026, 3:04 PM ET">3 hr ago</time></li>
+          </ul>
+        </section>
+        <section class="fc-feed-group" aria-labelledby="lf-day-1">
+          <h4 class="fc-feed-heading" id="lf-day-1">Yesterday</h4>
+          <ul class="fc-feed-list" role="list">
+            <li class="fc-feed-row"><span class="fc-feed-icon" title="Bet"><svg aria-hidden="true"><use href="#lf-receipt"/></svg></span><span class="fc-feed-text"><strong>Kelce over 64.5 receiving yards</strong> settled as a <strong>win</strong>, <strong>+$6.09</strong></span><time class="fc-feed-time fc-timestamp" datetime="2026-11-01T19:31-05:00" title="Sunday, Nov 1, 2026, 7:31 PM ET">7:31 PM</time></li>
+            <li class="fc-feed-row"><span class="fc-feed-icon" title="You"><svg aria-hidden="true"><use href="#lf-user"/></svg></span><span class="fc-feed-text"><strong>You</strong> disconnected <strong>BetMGM</strong></span><time class="fc-feed-time fc-timestamp" datetime="2026-11-01T11:14-05:00" title="Sunday, Nov 1, 2026, 11:14 AM ET">11:14 AM</time></li>
+          </ul>
+        </section>
+        <section class="fc-feed-group" aria-labelledby="lf-day-2">
+          <h4 class="fc-feed-heading" id="lf-day-2">Saturday, Oct 31</h4>
+          <ul class="fc-feed-list" role="list">
+            <li class="fc-feed-row"><span class="fc-feed-icon" title="Scheduler"><svg aria-hidden="true"><use href="#lf-clock"/></svg></span><span class="fc-feed-text"><strong>Injuries and depth charts</strong> failed, <strong>SportsDataIO</strong> timed out</span><time class="fc-feed-time fc-timestamp" datetime="2026-10-31T23:00-04:00" title="Saturday, Oct 31, 2026, 11:00 PM ET">11:00 PM</time></li>
+            <li class="fc-feed-row"><span class="fc-feed-icon" title="Alert"><svg aria-hidden="true"><use href="#lf-bell"/></svg></span><span class="fc-feed-text">Alert <strong>Line moved past fair price</strong> fired for <strong>Gesicki over 3.5 receptions</strong></span><time class="fc-feed-time fc-timestamp" datetime="2026-10-31T14:12-04:00" title="Saturday, Oct 31, 2026, 2:12 PM ET">2:12 PM</time></li>
+          </ul>
+        </section>
+        <button class="fc-button fc-feed-more" data-variant="secondary" type="button">Load more</button>
+      </div>
+    </div>
+
+    <!-- ============================================ C10 input group + stepper -->
+    <div class="fc-stack" style="--fc-gap:16px">
+      <h3 class="text-heading-20">Input groups and stepper</h3>
+      <form class="fc-fieldset" aria-labelledby="lf-bk-t" id="lf-bankroll" data-dirty-form novalidate>
+        <div class="fc-fieldset-content">
+          <h4 class="fc-fieldset-title" id="lf-bk-t">Bankroll limits</h4>
+          <p class="fc-fieldset-subtitle">Applies to every pick you track from now on.</p>
+          <div class="fc-stack" style="--fc-gap:20px">
+            <div class="fc-grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr));--fc-gap:20px 16px">
+              <div>
+                <label class="fc-label" for="lf-bk-stake">Max stake per pick<span class="fc-visually-hidden">, in dollars</span></label>
+                <div class="fc-input-group">
+                  <span class="fc-input-affix" aria-hidden="true">$</span>
+                  <input class="fc-input fc-num" id="lf-bk-stake" name="stake" inputmode="decimal" value="50" aria-describedby="lf-bk-stake-h">
+                </div>
+                <p class="fc-helper" id="lf-bk-stake-h">From $1 to $500.</p>
+              </div>
+              <div>
+                <label class="fc-label" for="lf-bk-edge">Minimum edge<span class="fc-visually-hidden">, in percentage points</span></label>
+                <div class="fc-input-group">
+                  <input class="fc-input fc-num" id="lf-bk-edge" name="edge" inputmode="decimal" value="2.0" aria-describedby="lf-bk-edge-h">
+                  <span class="fc-input-affix" aria-hidden="true">pts</span>
+                </div>
+                <p class="fc-helper" id="lf-bk-edge-h">Smaller edges stay off the slate.</p>
+              </div>
+              <div>
+                <label class="fc-label" for="lf-bk-stale">Stale after<span class="fc-visually-hidden">, in minutes</span></label>
+                <div class="fc-input-group">
+                  <input class="fc-input fc-num" id="lf-bk-stale" name="stale" inputmode="numeric" value="15" aria-describedby="lf-bk-stale-h">
+                  <span class="fc-input-affix" aria-hidden="true">min</span>
+                </div>
+                <p class="fc-helper" id="lf-bk-stale-h">Older odds show as stale.</p>
+              </div>
+            </div>
+            <div>
+              <label class="fc-label" for="lf-bk-picks">Max picks per week</label>
+              <div class="fc-stepper-field">
+                <div class="fc-stepper">
+                  <button class="fc-stepper-button" type="button" data-step="-1" aria-label="Decrease max picks per week" aria-controls="lf-bk-picks"><svg aria-hidden="true"><use href="#lf-minus"/></svg></button>
+                  <input class="fc-stepper-input" type="number" id="lf-bk-picks" name="picks" value="7" min="1" max="15" step="1" aria-describedby="lf-bk-total">
+                  <button class="fc-stepper-button" type="button" data-step="1" aria-label="Increase max picks per week" aria-controls="lf-bk-picks"><svg aria-hidden="true"><use href="#lf-plus"/></svg></button>
+                </div>
+                <p class="fc-stepper-total" id="lf-bk-total" aria-live="polite">Weekly exposure <strong>$350</strong>, 7 picks at $50</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fc-fieldset-footer">
+          <span>Tracked bets keep their stakes.</span>
+          <div class="fc-row">
+            <button class="fc-button" data-variant="secondary" data-size="small" type="reset" hidden data-cancel>Cancel</button>
+            <button class="fc-button" data-size="small" type="submit" disabled data-save>Save</button>
+          </div>
+          <span class="fc-visually-hidden" aria-live="polite" data-form-live></span>
+        </div>
+      </form>
+    </div>
+
+    <!-- ============================================ C10 choicebox + key/value rows -->
+    <div class="fc-stack" style="--fc-gap:40px">
+      <div class="fc-stack" style="--fc-gap:16px">
+        <h3 class="text-heading-20">Choicebox</h3>
+        <fieldset class="fc-choicebox-fieldset">
+          <legend class="fc-label">Odds format</legend>
+          <div class="fc-choicebox-group">
+            <label class="fc-choicebox">
+              <input type="radio" name="lf-odds-format" value="american" checked>
+              <span class="fc-choicebox-body">
+                <span class="fc-choicebox-title">American <span class="fc-badge" data-size="sm" data-contrast="low">Default</span></span>
+                <span class="fc-choicebox-detail">−110, +150</span>
+              </span>
+            </label>
+            <label class="fc-choicebox">
+              <input type="radio" name="lf-odds-format" value="decimal">
+              <span class="fc-choicebox-body">
+                <span class="fc-choicebox-title">Decimal</span>
+                <span class="fc-choicebox-detail">1.91, 2.50</span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
+      </div>
+      <div class="fc-stack" style="--fc-gap:16px">
+        <h3 class="text-heading-20">Key and value rows</h3>
+        <dl class="fc-description" data-layout="rows" aria-label="The Odds API">
+          <div><dt>Provider</dt><dd>The Odds API</dd></div>
+          <div><dt>Status</dt><dd><span class="fc-status"><span class="fc-status-dot" data-state="live"></span>Connected</span></dd></div>
+          <div><dt>Plan</dt><dd>20,000 requests a month</dd></div>
+          <div><dt>Books</dt><dd>DraftKings, FanDuel</dd></div>
+          <div><dt>Key</dt><dd><span class="fc-mono" aria-label="Key ending 3f9a"><span aria-hidden="true">•••• </span>3f9a</span></dd></div>
+          <div><dt>Webhook</dt><dd class="fc-value-empty">None</dd></div>
+          <div><dt>Alert routing</dt><dd class="fc-value-empty">None</dd></div>
+          <div><dt>Added</dt><dd><time class="fc-timestamp" datetime="2026-10-02" title="Friday, Oct 2, 2026">Oct 2</time></dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (() => {
+    const root = document.getElementById('lists');
+    if (!root) return;
+    const $ = (s, el = root) => el.querySelector(s);
+    const $$ = (s, el = root) => Array.from(el.querySelectorAll(s));
+
+    // ---- copy (snippet, secret): check icon for 2s and a polite "Copied"
+    async function copyText(text) {
+      try { await navigator.clipboard.writeText(text); return true; } catch {}
+      try {
+        const t = document.createElement('textarea');
+        t.value = text; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
+        document.body.append(t); t.select();
+        const ok = document.execCommand('copy'); t.remove(); return ok;
+      } catch { return false; }
+    }
+    root.addEventListener('click', async e => {
+      const b = e.target.closest('[data-copy]');
+      if (!b) return;
+      const box = b.closest('.fc-snippet');
+      const live = box.querySelector('[aria-live]');
+      const ok = await copyText(box.querySelector('.fc-snippet-value').textContent.trim());
+      live.textContent = ok ? 'Copied' : "Couldn't copy. Select the value and copy it.";
+      if (ok) b.setAttribute('data-copied', '');
+      clearTimeout(b._t);
+      b._t = setTimeout(() => { b.removeAttribute('data-copied'); live.textContent = ''; }, 2000);
+    });
+
+    // ---- secret: shown once, then only the last 4 remain in the page
+    const secret = $('#lf-secret-new');
+    $('[data-secret-done]', secret)?.addEventListener('click', () => {
+      const v = $('[data-secret-value]', secret);
+      const last4 = v.textContent.trim().slice(-4);
+      v.innerHTML = '<span class="fc-secret-mask" aria-hidden="true">•••• •••• ••••</span> ' + last4;
+      v.setAttribute('aria-label', 'Key ending ' + last4);
+      v.removeAttribute('data-secret-value');
+      $('[data-copy]', secret).remove();
+      $$('[data-secret-once]', secret).forEach(n => n.remove());
+      $('[data-secret-meta]', secret).hidden = false;
+      secret.dataset.state = 'masked';
+      $('[data-secret-live]', secret).textContent = 'Key saved. Only its last 4 characters stay visible.';
+    });
+
+    // ---- overflow menus (.fc-dropdown from shell.css)
+    let openMenu = null;
+    const closeMenu = (focus) => {
+      if (!openMenu) return;
+      openMenu.menu.remove();
+      openMenu.btn.setAttribute('aria-expanded', 'false');
+      if (focus) openMenu.btn.focus();
+      openMenu = null;
+    };
+    $$('[data-menu]').forEach(btn => {
+      btn.setAttribute('aria-haspopup', 'menu');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const wasOpen = openMenu && openMenu.btn === btn;
+        closeMenu(false);
+        if (wasOpen) return;
+        const menu = document.createElement('div');
+        menu.className = 'fc-dropdown material-menu';
+        menu.setAttribute('role', 'menu');
+        menu.setAttribute('data-align', 'end');
+        menu.setAttribute('aria-label', btn.getAttribute('aria-label'));
+        btn.dataset.menu.split('|').forEach(label => {
+          const danger = label.endsWith('!');
+          const item = document.createElement('button');
+          item.type = 'button'; item.className = 'fc-dropdown-item'; item.setAttribute('role', 'menuitem'); item.tabIndex = -1;
+          if (danger) item.dataset.variant = 'danger';
+          item.textContent = danger ? label.slice(0, -1) : label;
+          item.addEventListener('click', () => closeMenu(true));
+          menu.append(item);
+        });
+        btn.after(menu);
+        btn.setAttribute('aria-expanded', 'true');
+        openMenu = { btn, menu };
+        menu.querySelector('button').focus();
+        menu.addEventListener('keydown', ev => {
+          const items = Array.from(menu.querySelectorAll('[role="menuitem"]'));
+          const i = items.indexOf(document.activeElement);
+          if (ev.key === 'ArrowDown') { ev.preventDefault(); items[(i + 1) % items.length].focus(); }
+          else if (ev.key === 'ArrowUp') { ev.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+          else if (ev.key === 'Home') { ev.preventDefault(); items[0].focus(); }
+          else if (ev.key === 'End') { ev.preventDefault(); items[items.length - 1].focus(); }
+          else if (ev.key === 'Escape' || ev.key === 'Tab') { ev.preventDefault(); closeMenu(true); }
+        });
+      });
+    });
+    document.addEventListener('click', e => { if (openMenu && !openMenu.menu.contains(e.target)) closeMenu(false); });
+
+    // ---- Run now: Running (blue dot + word), then Succeeded, announced once
+    const schedLive = $('#lf-sched-live');
+    const setStatus = (row, state, word) => {
+      row.dataset.state = state;
+      $('.fc-status-dot', row).dataset.state = { running: 'recent', succeeded: 'live', failed: 'failed', paused: 'paused' }[state];
+      $('[data-status-word]', row).textContent = word;
+    };
+    $$('[data-run]').forEach(btn => btn.addEventListener('click', () => {
+      const row = btn.closest('.fc-schedule-row');
+      if (row.dataset.state === 'running') return;
+      const name = $('.fc-list-row-title', row).textContent;
+      const before = { state: row.dataset.state, word: $('[data-status-word]', row).textContent };
+      setStatus(row, 'running', 'Running');
+      btn.setAttribute('aria-disabled', 'true');
+      schedLive.textContent = name + ' is running.';
+      setTimeout(() => {
+        setStatus(row, before.state === 'paused' ? 'paused' : 'succeeded', before.state === 'paused' ? 'Paused' : 'Succeeded');
+        $('[data-last]', row).innerHTML = 'Last <time class="fc-timestamp">Just now</time>, 3.8 s';
+        $('.fc-list-row-note', row)?.remove();
+        btn.removeAttribute('aria-disabled');
+        schedLive.textContent = name + ' finished in 3.8 seconds.';
+      }, 1500);
+    }));
+
+    // ---- setting cards: Save stays disabled until the card is dirty; Cancel appears only when dirty
+    const snapshot = f => JSON.stringify(Array.from(f.elements).filter(el => el.name || el.type === 'checkbox').map(el => el.type === 'checkbox' || el.type === 'radio' ? el.checked : el.value));
+    $$('[data-dirty-form]').forEach(f => {
+      f._clean = snapshot(f);
+      const update = () => {
+        const dirty = snapshot(f) !== f._clean;
+        const invalid = !!f.querySelector('[aria-invalid="true"]');
+        $('[data-save]', f).disabled = !dirty || invalid;
+        $('[data-cancel]', f).hidden = !dirty;
+        f.dispatchEvent(new CustomEvent('lf-update'));
+      };
+      f.addEventListener('input', update);
+      f.addEventListener('change', update);
+      f.addEventListener('reset', () => setTimeout(update));
+      f.addEventListener('submit', e => {
+        e.preventDefault();
+        Array.from(f.elements).forEach(el => {
+          if (el.type === 'checkbox' || el.type === 'radio') el.defaultChecked = el.checked;
+          else if (el.tagName === 'SELECT') Array.from(el.options).forEach(o => { o.defaultSelected = o.selected; });
+          else if ('defaultValue' in el) el.defaultValue = el.value;
+        });
+        f._clean = snapshot(f);
+        update();
+        $('[data-form-live]', f).textContent = 'Saved';
+        setTimeout(() => { $('[data-form-live]', f).textContent = ''; }, 2000);
+      });
+      f._update = update;
+    });
+
+    // ---- global pause: the toggle label carries state, the title names the setting
+    const pause = $('[data-pause]');
+    const pauseForm = pause.form;
+    pauseForm.addEventListener('lf-update', () => { $('[data-pause-word]').textContent = pause.checked ? 'Enabled' : 'Paused'; });
+
+    // ---- schedule editor: live next 3 runs, cron and quota
+    const ed = $('#lf-editor');
+    const NOW = new Date(2026, 10, 2, 18, 2); // sample clock, wall time in the chosen zone
+    const DAYS = { game: [0, 1, 4], 'tue-sat': [2, 3, 4, 5, 6], all: [0, 1, 2, 3, 4, 5, 6] };
+    const CRON_DAYS = { game: '0,1,4', 'tue-sat': '2-6', all: '*' };
+    const WD = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const clock = d => d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    const dayLabel = d => {
+      const diff = Math.round((new Date(d.getFullYear(), d.getMonth(), d.getDate()) - new Date(NOW.getFullYear(), NOW.getMonth(), NOW.getDate())) / 864e5);
+      return diff === 0 ? 'Today' : diff === 1 ? 'Tomorrow' : WD[d.getDay()];
+    };
+    const fmt = new Intl.NumberFormat('en-US');
+    function renderEditor() {
+      const freq = +ed.freq.value, from = +ed.from.value, to = +ed.to.value, days = ed.days.value;
+      const runs = [];
+      const t = new Date(NOW); t.setSeconds(0, 0);
+      for (let i = 0; i < 8 * 1440 && runs.length < 3; i++) {
+        t.setMinutes(t.getMinutes() + 1);
+        const h = t.getHours(), m = t.getMinutes();
+        if (!DAYS[days].includes(t.getDay()) || h < from || h >= to) continue;
+        if (freq === 60 ? m !== 0 : m % freq !== 0) continue;
+        runs.push(dayLabel(t) + ' ' + clock(t));
+      }
+      $('#lf-ed-next').innerHTML = runs.map(r => '<li>' + r + '</li>').join('');
+      $('[data-tz]', ed).textContent = ed.tz.value;
+      const minute = freq === 1 ? '*' : freq === 60 ? '0' : '*/' + freq;
+      $('#lf-ed-cron').textContent = minute + ' ' + from + '-' + (to - 1) + ' * * ' + CRON_DAYS[days];
+      const perMonth = Math.round(((to - from) * 60 / freq) * DAYS[days].length * 4.35 / 100) * 100;
+      const over = perMonth > 20000;
+      $('#lf-ed-quota').textContent = 'About ' + fmt.format(perMonth) + ' of 20,000 monthly requests' + (over ? ', over the plan limit' : '');
+    }
+    ed.addEventListener('lf-update', renderEditor);
+    renderEditor();
+
+    // ---- bankroll: stepper bounds, derived weekly exposure, stake validation
+    const bk = $('#lf-bankroll');
+    const picks = $('#lf-bk-picks'), stake = $('#lf-bk-stake'), stakeHelp = $('#lf-bk-stake-h');
+    const money = n => '$' + fmt.format(Math.round(n * 100) / 100);
+    function renderBankroll() {
+      const min = +picks.min, max = +picks.max;
+      let n = Math.round(+picks.value);
+      if (!Number.isFinite(n)) n = min;
+      const s = parseFloat(stake.value.replace(/[$,]/g, ''));
+      const stakeOk = Number.isFinite(s) && s >= 1 && s <= 500;
+      stake.setAttribute('aria-invalid', String(!stakeOk));
+      stakeHelp.dataset.type = stakeOk ? '' : 'error';
+      stakeHelp.textContent = stakeOk ? 'From $1 to $500.' : 'Enter an amount from $1 to $500.';
+      $('[data-step="-1"]', bk).disabled = n <= min;
+      $('[data-step="1"]', bk).disabled = n >= max;
+      $('#lf-bk-total').innerHTML = stakeOk
+        ? 'Weekly exposure <strong>' + money(n * s) + '</strong>, ' + n + (n === 1 ? ' pick' : ' picks') + ' at ' + money(s)
+        : 'Weekly exposure needs a valid stake';
+    }
+    $$('[data-step]', bk).forEach(b => b.addEventListener('click', () => {
+      const n = Math.min(+picks.max, Math.max(+picks.min, Math.round(+picks.value || 0) + +b.dataset.step));
+      picks.value = n;
+      picks.dispatchEvent(new Event('input', { bubbles: true }));
+    }));
+    picks.addEventListener('change', () => {
+      const n = Math.min(+picks.max, Math.max(+picks.min, Math.round(+picks.value) || +picks.min));
+      if (String(n) !== picks.value) { picks.value = n; picks.dispatchEvent(new Event('input', { bubbles: true })); }
+    });
+    bk.addEventListener("input", renderBankroll, true);
+    bk.addEventListener('lf-update', renderBankroll);
+    renderBankroll();
+  })();
+  </script>
+</section>
 </main>
 
 <script src="semantic-map.js"></script>

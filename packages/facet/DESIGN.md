@@ -130,7 +130,8 @@ Decorative gradients, glows, glass, textures or grid backgrounds. Gradient text.
 ## How to use it
 
 - **Plain HTML or a Claude artifact:** link `css/facet.css` (or inline it), then use the classes. See `preview/index.html`.
-- **Next.js + Tailwind v4:** `@import "tailwindcss"; @import "@foundingcreative/facet/css/tailwind.css";` then `base.css`, `typography.css` and `components.css`. Load fonts with the `geist` package (`geist/font/sans`, `geist/font/mono`); Facet picks up `--font-geist-sans` and `--font-geist-mono` automatically.
+- **Next.js + Tailwind v4:** `@import "tailwindcss"; @import "@foundingcreative/facet/css/tailwind.css";` then `base.css`, `typography.css`, `components.css` and the layers you need (`data.css`, `charts.css`, `lists.css`, `forms.css`, `shell.css`, `settings.css`, `surfaces.css`). `facet.css` imports all of them. Load fonts with the `geist` package (`geist/font/sans`, `geist/font/mono`); Facet picks up `--font-geist-sans` and `--font-geist-mono` automatically.
+- **Hero field:** `import { autoMount } from '@foundingcreative/facet/js/field.mjs'` mounts every `canvas[data-fc-field]`.
 - **Canvas or SVG charts:** `import { token } from '@foundingcreative/facet/js/tokens.mjs'` for resolved hex values per theme.
 - **Checking color use:** `node packages/facet/scripts/lint-color.mjs apps` (fails on raw colors and hue steps).
 - **Changing tokens:** edit `tokens/*.json`, run `node scripts/build.mjs`. To re-sync primitives with vercel.com, run `node scripts/sync-primitives.mjs` and review the diff like any design decision.

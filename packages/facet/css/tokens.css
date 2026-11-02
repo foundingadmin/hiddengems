@@ -159,6 +159,17 @@
   --fc-row-header: 36px;
   --fc-row-body: 40px;
   --fc-row-compact: 32px;
+  --fc-shell-sidenav-width: 232px;
+  --fc-shell-topbar-height: 48px;
+  --fc-settings-nav-width: 256px;
+  --fc-measure-settings: 912px;
+  --fc-sheet-width: 512px;
+  --fc-sheet-inset: 12px;
+  --fc-row-list: 64px;
+  --fc-row-list-single: 48px;
+  --fc-chart-height: 160px;
+  --fc-chart-height-small: 120px;
+  --fc-meter-height: 8px;
   --fc-page-width: 1400px;
   --fc-page-margin: 24px;
   --fc-z-drawer: 200;
@@ -246,6 +257,8 @@
   --fc-chart-muted: var(--ds-gray-600);
   --fc-chart-grid: var(--ds-gray-300);
   --fc-chart-axis: var(--ds-gray-500);
+  --fc-chart-threshold: var(--ds-gray-900);
+  --fc-chart-magnitude: var(--ds-gray-300);
   --fc-badge-gray: var(--ds-gray-900);
   --fc-badge-blue: var(--ds-blue-800);
   --fc-badge-purple: var(--ds-purple-900);
@@ -353,6 +366,8 @@
   --fc-chart-muted: var(--ds-gray-600);
   --fc-chart-grid: var(--ds-gray-300);
   --fc-chart-axis: var(--ds-gray-500);
+  --fc-chart-threshold: var(--ds-gray-900);
+  --fc-chart-magnitude: var(--ds-gray-300);
   --fc-badge-gray: var(--ds-gray-500);
   --fc-badge-blue: var(--ds-blue-800);
   --fc-badge-purple: var(--ds-purple-500);
@@ -560,6 +575,8 @@
     --fc-chart-muted: var(--ds-gray-600);
     --fc-chart-grid: var(--ds-gray-300);
     --fc-chart-axis: var(--ds-gray-500);
+    --fc-chart-threshold: var(--ds-gray-900);
+    --fc-chart-magnitude: var(--ds-gray-300);
     --fc-badge-gray: var(--ds-gray-500);
     --fc-badge-blue: var(--ds-blue-800);
     --fc-badge-purple: var(--ds-purple-500);

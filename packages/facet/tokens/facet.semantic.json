@@ -428,6 +428,16 @@
       "$type": "color",
       "$value": "{color.gray.500}",
       "$description": "Chart axes and ticks."
+    },
+    "threshold": {
+      "$type": "color",
+      "$value": "{color.gray.900}",
+      "$description": "Threshold and reference lines, always dashed and labelled."
+    },
+    "magnitude": {
+      "$type": "color",
+      "$value": "{color.gray.300}",
+      "$description": "Share-of-total fill behind a ranked value."
     }
   },
   "badge": {

@@ -63,7 +63,7 @@ Dimensions (measured, not written in the prose docs):
 - For dense mode, the reference has no compact table. If the 40px row is too tall, any Facet `density="compact"` option is a Facet extension and must be documented as one.
 
 ## Facet additions `[F]`
-Implemented in `css/data.css` (load after `components.css`). Specimen: `preview/parts/data.html`.
+Implemented in `css/data.css` (load after `components.css`). Specimen: `preview/index.html#data`.
 
 ### Sortable headers
 ```html

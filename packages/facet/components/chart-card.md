@@ -1,6 +1,6 @@
 # Chart card
 
-> Facet component `[F]`, modeled on the chart cards in the vercel.com app (Observability, Firewall, CDN; captured 2026-11-01). CSS in `css/charts.css`; drawing helper in `preview/parts/charts.html` (`FacetCharts`).
+> Facet component `[F]`, modeled on the chart cards in the vercel.com app (Observability, Firewall, CDN; captured 2026-11-01). CSS in `css/charts.css`; drawing helper in `preview/index.html#charts` (`FacetCharts`).
 
 ## Purpose
 One surface that holds one chart and everything needed to read it: what it measures, its scale, how fresh it is, and where to go next.

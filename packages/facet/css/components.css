@@ -656,7 +656,7 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
   animation: fc-gem-flare-once 560ms ease-out calc(var(--fc-gem-delay, 0s) + var(--_n) * var(--_step)) both;
 }
 .fc-gem[data-motion="none"] .fc-gem-facets,
-.fc-gem[data-motion="none"] .fc-gem-facets > i { animation: none; }
+.fc-gem[data-motion="none"][data-tier] .fc-gem-facets > i:nth-child(n) { animation: none; }
 .fc-gem[data-size="lg"] { gap: 8px; font: 500 16px/24px var(--fc-font-sans); }
 .fc-gem[data-size="lg"] .fc-gem-facets { gap: 3px; }
 .fc-gem[data-size="lg"] .fc-gem-facets > i { width: 11px; height: 18px; }
@@ -771,3 +771,8 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
 }
 .fc-guide[data-guide="do"][data-critical]   { --_ic: var(--fc-status-success-solid); --_fg: var(--fc-status-success-fg); }
 .fc-guide[data-guide="dont"][data-critical] { --_ic: var(--fc-status-error-solid);   --_fg: var(--fc-status-error-fg); }
+
+/* Phones: inputs render at 16px so iOS does not zoom the page on focus (guidelines INT-05). */
+@media (max-width: 600px) {
+  .fc-input, .fc-select, .fc-input-group input, .fc-stepper-input { font-size: 16px; }
+}

@@ -1328,6 +1328,63 @@
         "$value": "32px",
         "$description": "Facet addition for dense ledgers. Not a reference value."
       }
+    },
+    "layout": {
+      "shell-sidenav-width": {
+        "$type": "dimension",
+        "$value": "232px",
+        "$description": "App sidebar (measured on the reference dashboard)."
+      },
+      "shell-topbar-height": {
+        "$type": "dimension",
+        "$value": "48px",
+        "$description": "App top bar."
+      },
+      "settings-nav-width": {
+        "$type": "dimension",
+        "$value": "256px",
+        "$description": "Settings section nav."
+      },
+      "measure-settings": {
+        "$type": "dimension",
+        "$value": "912px",
+        "$description": "Settings content column."
+      },
+      "sheet-width": {
+        "$type": "dimension",
+        "$value": "512px",
+        "$description": "Side sheet."
+      },
+      "sheet-inset": {
+        "$type": "dimension",
+        "$value": "12px",
+        "$description": "Gap between a sheet and the viewport."
+      },
+      "row-list": {
+        "$type": "dimension",
+        "$value": "64px",
+        "$description": "Two-line list row."
+      },
+      "row-list-single": {
+        "$type": "dimension",
+        "$value": "48px",
+        "$description": "One-line list row."
+      },
+      "chart-height": {
+        "$type": "dimension",
+        "$value": "160px",
+        "$description": "Default chart plot height."
+      },
+      "chart-height-small": {
+        "$type": "dimension",
+        "$value": "120px",
+        "$description": "Compact chart plot height."
+      },
+      "meter-height": {
+        "$type": "dimension",
+        "$value": "8px",
+        "$description": "Quota meter bar."
+      }
     }
   },
   "z": {

@@ -59,6 +59,7 @@ for (const [k, t] of Object.entries(prim.space)) scalars.push(`--fc-space-${k.re
 for (const [k, t] of Object.entries(prim.radius)) scalars.push(`--fc-radius-${k}: ${t.$value};`);
 for (const [k, t] of Object.entries(prim.size.control)) scalars.push(`--fc-control-${k}: ${t.$value};`);
 for (const [k, t] of Object.entries(prim.size.row)) scalars.push(`--fc-row-${k}: ${t.$value};`);
+for (const [k, t] of Object.entries(prim.size.layout || {})) scalars.push(`--fc-${k}: ${t.$value};`);
 scalars.push(`--fc-page-width: ${prim.size.page.$value};`, `--fc-page-margin: ${prim.size['page-margin'].$value};`);
 for (const [k, t] of Object.entries(prim.z)) scalars.push(`--fc-z-${k}: ${t.$value};`);
 for (const [k, t] of Object.entries(prim.motion.easing)) scalars.push(`--fc-ease-${k}: cubic-bezier(${t.$value.join(', ')});`);

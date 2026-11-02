@@ -13,13 +13,13 @@
    Any chart mark reads its color from --_s. Set data-series="1".."6" on the mark or a parent. */
 .fc-chart, .fc-legend { --_s: var(--fc-chart-1); }
 .fc-sparkline { --_s: var(--fc-chart-5); } /* trend at a glance: one gray step below series 1 */
-[data-series="1"] { --_s: var(--fc-chart-1); }
-[data-series="2"] { --_s: var(--fc-chart-2); }
-[data-series="3"] { --_s: var(--fc-chart-3); }
-[data-series="4"] { --_s: var(--fc-chart-4); }
-[data-series="5"] { --_s: var(--fc-chart-5); }
-[data-series="6"] { --_s: var(--fc-chart-6); }
-[data-series="muted"] { --_s: var(--fc-chart-muted); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline) [data-series="1"] { --_s: var(--fc-chart-1); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline) [data-series="2"] { --_s: var(--fc-chart-2); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline) [data-series="3"] { --_s: var(--fc-chart-3); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline) [data-series="4"] { --_s: var(--fc-chart-4); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline) [data-series="5"] { --_s: var(--fc-chart-5); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline) [data-series="6"] { --_s: var(--fc-chart-6); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline) [data-series="muted"] { --_s: var(--fc-chart-muted); }
 
 /* ================================================================== Chart card
    Title row (title, optional meta, optional drill link), optional legend, chart area, optional footer.

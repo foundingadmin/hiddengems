@@ -45,7 +45,7 @@ Not specified by the reference. Inferred: Badge/pill and Menu/Combobox tokens, `
 - Use one URL key per filter (`books`, `markets`, `minEdge`) so links to a filtered slate are shareable.
 
 ## Facet implementation `[F]`
-Implemented in `css/data.css` as `.fc-filter-bar`. Specimen: `preview/parts/data.html`.
+Implemented in `css/data.css` as `.fc-filter-bar`. Specimen: `preview/index.html#data`.
 
 ### Order
 Search, Add filter, readonly context, applied chips, suggestions, then the sort control at the end. Everything wraps; the sort stays at the right edge.

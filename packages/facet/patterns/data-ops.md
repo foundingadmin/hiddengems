@@ -1,6 +1,6 @@
 # Data operations view
 
-> Facet pattern `[F]`. Modeled on the Logs and Observability screens in the vercel.com app (captured 2026-11-01). CSS in `css/charts.css`; demo in `preview/parts/charts.html`.
+> Facet pattern `[F]`. Modeled on the Logs and Observability screens in the vercel.com app (captured 2026-11-01). CSS in `css/charts.css`; demo in `preview/index.html#charts`.
 
 ## Purpose
 Lets someone check that data is flowing and find the pull that failed: filters on the left, a timeline and a log on the right.

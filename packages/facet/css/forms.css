@@ -163,7 +163,7 @@
 .fc-choicebox:has(input:disabled) .fc-choicebox-detail { color: var(--fc-text-disabled); }
 
 /* Option helpers (js/forms.mjs): the line stays reserved while empty, so a dense form never shifts. */
-.fc-helper[data-option-helper] { min-height: 1lh; }
+.fc-helper[data-option-helper] { min-height: 1lh; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } /* one line, always */
 .fc-helper[data-option-helper][data-empty] { visibility: hidden; }
 
 /* ------------------------------------------------------------------ Key/value rows

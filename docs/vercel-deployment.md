@@ -8,7 +8,7 @@ Practical plan for deploying this pnpm + Turborepo monorepo (`apps/web` Next.js 
 2. Root `package.json` declares `packageManager` and `pnpm-workspace.yaml` lists `apps/*` and `packages/*`. `apps/web` depends on `@hiddengems/facet` with `workspace:*` so Vercel can tell which commits affect the app.
 3. Turn on "Skip deployment" for unaffected projects (GitHub only). Link the Turborepo Remote Cache.
 4. Declare build-affecting env vars per task in `turbo.json` so caches never cross environments.
-5. Plan on the **Pro** plan before launch: Hobby is non-commercial only and limits cron jobs to once per day.
+5. **Confirmed (2026-11-02): the account is on Pro**, so sub-daily cron with per-minute precision is available. Hidden Gems is a private, single-user tool: protect production too, not just previews (see section on access).
 
 ## 1. Project setup
 
@@ -135,7 +135,8 @@ Source: https://vercel.com/docs/ai-sdk.md (2026-10-05).
 ## 4. Plan and policy notes
 
 - **Hobby is non-commercial, personal use only** (https://vercel.com/docs/plans/hobby.md, citing fair use guidelines). A monetized Hidden Gems requires Pro. Hobby also caps cron at daily and Global Config writes at 250/month.
-- **Content policy (Unverified):** the Acceptable Use Policy page (https://vercel.com/legal/acceptable-use-policy) contained no mention of gambling or betting when searched on 2026-11-02. We provide research, not wagering, but the full Terms of Service were not reviewed.
+- **Content policy:** the Acceptable Use Policy page (https://vercel.com/legal/acceptable-use-policy) contained no mention of gambling or betting when searched on 2026-11-02. Resolved for our purposes: Hidden Gems is a private research tool for one person, not a public or wagering service.
+- **Access (owner decision, 2026-11-02):** the app is private. Gate every deployment, production included: either Vercel Authentication set to cover all deployments (check which protection scope the Pro plan includes before relying on it), or app-level auth in `apps/web` (for example a middleware check against a single allowed account). Never expose odds or stake data on an unauthenticated URL.
 
 ## 5. Checklist
 
@@ -144,7 +145,8 @@ Source: https://vercel.com/docs/ai-sdk.md (2026-10-05).
 - [ ] Vercel project: Root Directory `apps/web`, include outside files on, Skip deployment on, Node 26.x.
 - [ ] `turbo login` + `turbo link` for Remote Cache.
 - [ ] Env vars created as Secret/Config per environment; `vercel env pull` for local; build-affecting vars listed under `web#build.env`.
-- [ ] Pro plan before enabling sub-daily cron or any commercial launch.
+- [x] Pro plan (confirmed 2026-11-02).
+- [ ] Production access gated (Vercel Authentication on all deployments, or app-level auth).
 - [ ] `apps/web/vercel.json` (or `vercel.ts`) with `crons`; `CRON_SECRET`; idempotent, locked cron handlers.
 - [ ] Marketplace Postgres + Upstash; `@vercel/global-config` (not `@vercel/edge-config`) for runtime config.
 - [ ] `<Analytics />` and `<SpeedInsights />` in the root layout.

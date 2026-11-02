@@ -181,6 +181,11 @@ th.fc-numeric > .fc-th-sort { flex-direction: row-reverse; }
 /* A sortable header can carry help too: the underline stays, the cursor says it still sorts. */
 .fc-th-sort.fc-has-tip { cursor: pointer; }
 
+/* Time cell [F] (owner feedback 2026-11-02): a time column shows the clock time with its day word (mono),
+   and the relative time under it (sans, secondary), the same pairing as schedule runs. */
+.fc-time-cell > time { display: block; white-space: nowrap; }
+.fc-time-cell-rel { font-size: 13px; line-height: 18px; color: var(--fc-text-secondary); }
+
 /* Floating layer. Tooltips, time cards and menus open as popovers (top layer, never clipped by
    a scrolling table) and are placed by script next to their trigger. This resets the UA popover box. */
 .fc-float[popover] {

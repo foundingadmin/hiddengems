@@ -37,3 +37,7 @@ A short stack of peer metrics, each with its value, its change and its recent tr
 ## Hidden Gems usage
 - Results: bankroll, hit rate, average gap, change vs last week.
 - Data health: odds pulls, failed pulls, average pull time, change vs the previous 12 hours. A rise in pull time is bad, so it reads red with an up arrow.
+
+## Sparkline scrub `[F]`
+
+Owner feedback, 2026-11-02. A metric row sparkline is a focusable image: hover, tap or the arrow keys mark one point and show its period and value ("1 PM to 2 PM, 26 pulls"; "Week 6, $205.00"). Its accessible name summarizes the line (low, high, latest). Lone values in the tooltip keep their units.

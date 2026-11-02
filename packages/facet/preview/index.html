@@ -857,19 +857,19 @@
             <dt>Bankroll</dt>
             <dd class="fc-metric-value">$214.00</dd>
             <dd class="fc-metric-change"><span class="fc-delta fc-has-tip" data-variant="pill" data-direction="positive" data-polarity="good" data-tip="+$14.00, from $200.00">+7%</span></dd>
-            <dd><span class="fc-sparkline" data-spark="180,172,190,188,196,205,200,214" aria-hidden="true"></span></dd>
+            <dd><span class="fc-sparkline" data-spark="180,172,190,188,196,205,200,214" data-spark-labels="weeks" data-spark-format="money" data-spark-name="Bankroll"></span></dd>
           </div>
           <div class="fc-metric-row">
             <dt>Hit rate</dt>
             <dd class="fc-metric-value">55%</dd>
             <dd class="fc-metric-change"><span class="fc-delta fc-has-tip" data-variant="pill" data-direction="negative" data-polarity="bad" data-tip="Down 3 points, from 58%">&minus;5%</span></dd>
-            <dd><span class="fc-sparkline" data-spark="52,58,57,61,60,58,58,55" aria-hidden="true"></span></dd>
+            <dd><span class="fc-sparkline" data-spark="52,58,57,61,60,58,58,55" data-spark-labels="weeks" data-spark-format="pct" data-spark-name="Hit rate"></span></dd>
           </div>
           <div class="fc-metric-row">
             <dt>Average gap (pts)</dt>
             <dd class="fc-metric-value">+4.1</dd>
             <dd class="fc-metric-change"><span class="fc-delta fc-has-tip" data-variant="pill" data-direction="positive" data-polarity="good" data-tip="+0.6 pts, from +3.5">+17%</span></dd>
-            <dd><span class="fc-sparkline" data-spark="3.0,3.4,3.1,3.6,3.9,3.5,3.5,4.1" aria-hidden="true"></span></dd>
+            <dd><span class="fc-sparkline" data-spark="3.0,3.4,3.1,3.6,3.9,3.5,3.5,4.1" data-spark-labels="weeks" data-spark-format="pts" data-spark-name="Average gap"></span></dd>
           </div>
         </dl>
       </div>
@@ -910,19 +910,19 @@
             <dt>Odds pulls</dt>
             <dd class="fc-metric-value">189</dd>
             <dd class="fc-metric-change"><span class="fc-delta fc-has-tip" data-variant="pill" data-direction="positive" data-polarity="neutral" data-tip="7 more, from 182">+4%</span></dd>
-            <dd><span class="fc-sparkline" data-spark="13,12,12,14,15,20,26,21,16,14,17,9" data-incomplete aria-hidden="true"></span></dd>
+            <dd><span class="fc-sparkline" data-spark="13,12,12,14,15,20,26,21,16,14,17,9" data-spark-labels="hours" data-spark-format="pulls" data-spark-name="Odds pulls" data-incomplete></span></dd>
           </div>
           <div class="fc-metric-row">
             <dt>Failed pulls</dt>
             <dd class="fc-metric-value">2</dd>
             <dd class="fc-metric-change"><span class="fc-delta fc-has-tip" data-variant="pill" data-direction="negative" data-polarity="good" data-tip="1 fewer, from 3">&minus;33%</span></dd>
-            <dd><span class="fc-sparkline" data-spark="0,0,1,0,0,0,1,0,0,0,0,0" data-incomplete aria-hidden="true"></span></dd>
+            <dd><span class="fc-sparkline" data-spark="0,0,1,0,0,0,1,0,0,0,0,0" data-spark-labels="hours" data-spark-format="failed" data-spark-name="Failed pulls" data-incomplete></span></dd>
           </div>
           <div class="fc-metric-row">
             <dt>Average pull time (s)</dt>
             <dd class="fc-metric-value">1.4</dd>
             <dd class="fc-metric-change"><span class="fc-delta fc-has-tip" data-variant="pill" data-direction="positive" data-polarity="bad" data-tip="0.56s slower, from 0.84s">+67%</span></dd>
-            <dd><span class="fc-sparkline" data-spark="0.8,0.9,0.8,0.9,1.0,1.3,1.8,1.7,1.5,1.6,1.4,1.4" data-incomplete aria-hidden="true"></span></dd>
+            <dd><span class="fc-sparkline" data-spark="0.8,0.9,0.8,0.9,1.0,1.3,1.8,1.7,1.5,1.6,1.4,1.4" data-spark-labels="hours" data-spark-format="sec" data-spark-name="Average pull time" data-incomplete></span></dd>
           </div>
         </dl>
       </div>
@@ -1026,10 +1026,10 @@
             <caption class="fc-visually-hidden">Alerts from today, most severe first</caption>
             <thead><tr><th scope="col">Alert</th><th scope="col">Severity</th><th scope="col" data-align="numeric">Triggered</th></tr></thead>
             <tbody>
-              <tr><td>FanDuel pulls failed 3 times in a row</td><td><span class="fc-severity" data-level="4"><span class="fc-severity-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Critical</span></td><td data-align="numeric">6:02 PM</td></tr>
-              <tr><td>Gap above 8 pts, Sunday early window</td><td><span class="fc-severity" data-level="3"><span class="fc-severity-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>High</span></td><td data-align="numeric">5:41 PM</td></tr>
-              <tr><td>Odds requests above 80% of quota</td><td><span class="fc-severity" data-level="2"><span class="fc-severity-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Medium</span></td><td data-align="numeric">2:15 PM</td></tr>
-              <tr><td>Burke injury status changed</td><td><span class="fc-severity" data-level="1"><span class="fc-severity-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Low</span></td><td data-align="numeric">11:20 AM</td></tr>
+              <tr><td>FanDuel pulls failed 3 times in a row</td><td><span class="fc-severity" data-level="4"><span class="fc-severity-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Critical</span></td><td data-align="numeric" class="fc-time-cell"><time datetime="2026-11-02T17:52-05:00">Today 5:52 PM</time><time class="fc-time-cell-rel" datetime="2026-11-02T17:52-05:00" data-relative data-stamp>8m ago</time></td></tr>
+              <tr><td>Gap above 8 pts, Sunday early window</td><td><span class="fc-severity" data-level="3"><span class="fc-severity-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>High</span></td><td data-align="numeric" class="fc-time-cell"><time datetime="2026-11-02T17:41-05:00">Today 5:41 PM</time><time class="fc-time-cell-rel" datetime="2026-11-02T17:41-05:00" data-relative data-stamp>19m ago</time></td></tr>
+              <tr><td>Odds requests above 80% of quota</td><td><span class="fc-severity" data-level="2"><span class="fc-severity-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Medium</span></td><td data-align="numeric" class="fc-time-cell"><time datetime="2026-11-02T14:15-05:00">Today 2:15 PM</time><time class="fc-time-cell-rel" datetime="2026-11-02T14:15-05:00" data-relative data-stamp>3h ago</time></td></tr>
+              <tr><td>Burke injury status changed</td><td><span class="fc-severity" data-level="1"><span class="fc-severity-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Low</span></td><td data-align="numeric" class="fc-time-cell"><time datetime="2026-11-02T11:20-05:00">Today 11:20 AM</time><time class="fc-time-cell-rel" datetime="2026-11-02T11:20-05:00" data-relative data-stamp>6h ago</time></td></tr>
             </tbody>
           </table>
         </div>
@@ -1310,7 +1310,7 @@
     }
 
     // Sparkline: no axes, scales its path (stroke stays 1.25px), optional shared domain and incomplete tail.
-    function sparkline(host, values, { domain, incomplete } = {}) {
+    function sparkline(host, values, { domain, incomplete, tip } = {}) {
       host.querySelector(':scope > svg')?.remove();
       const [lo, hi] = domain || [Math.min(...values), Math.max(...values)];
       const W = 100, H = 24, pad = 2;
@@ -1320,6 +1320,44 @@
       mk('path', { class: 'fc-chart-line', d: d(incomplete ? pts.slice(0, -1) : pts), 'vector-effect': 'non-scaling-stroke' }, svg);
       if (incomplete) mk('path', { class: 'fc-chart-line', 'data-incomplete': true, d: d(pts.slice(-2)), 'vector-effect': 'non-scaling-stroke' }, svg);
       host.prepend(svg);
+      if (tip) sparkTips(host, values, pts, W, H, tip);
+    }
+
+    // Sparkline scrub (owner feedback 2026-11-02): hover, tap or arrow keys show one point's period and value.
+    function sparkTips(host, values, pts, W, H, { labels, fmt, name }) {
+      host.querySelector(':scope > .fc-sparkline-dot')?.remove();
+      const dot = document.createElement('span'); dot.className = 'fc-sparkline-dot'; dot.hidden = true; host.appendChild(dot);
+      let pop = host._tip;
+      if (!pop) { pop = host._tip = document.createElement('div'); pop.className = 'fc-tooltip fc-float fc-chart-tip'; pop.setAttribute('popover', 'manual'); pop.setAttribute('role', 'tooltip'); document.body.appendChild(pop); }
+      const lo = Math.min(...values), hi = Math.max(...values);
+      host.tabIndex = 0;
+      host.setAttribute('role', 'img');
+      const plain = l => l.replace(/<[^>]+>/g, '');
+      host.setAttribute('aria-label', `${name}, ${plain(labels[0]).split(' to ')[0]} to ${plain(labels.at(-1)).split(' to ').pop()}: low ${fmt(lo)}, high ${fmt(hi)}, latest ${fmt(values.at(-1))}`);
+      let cur = values.length - 1;
+      const show = (i) => {
+        cur = i;
+        const r = host.getBoundingClientRect();
+        const x = pts[i][0] / W * r.width, y = pts[i][1] / H * r.height;
+        dot.hidden = false; dot.style.left = `${x}px`; dot.style.top = `${y}px`;
+        pop.innerHTML = `<p class="fc-chart-tip-head">${labels[i]}</p><p class="fc-sparkline-tip-value">${fmt(values[i])}</p>`;
+        try { if (!pop.matches(':popover-open')) pop.showPopover(); } catch {}
+        const t = pop.getBoundingClientRect();
+        pop.style.top = `${Math.round(Math.max(8, r.top + y - t.height - 10))}px`;
+        pop.style.left = `${Math.round(Math.max(8, Math.min(r.left + x - t.width / 2, innerWidth - t.width - 8)))}px`;
+      };
+      const hide = () => { dot.hidden = true; try { pop.hidePopover(); } catch {} };
+      const at = (e) => { const r = host.getBoundingClientRect(); return Math.max(0, Math.min(values.length - 1, Math.round((e.clientX - r.left) / r.width * (values.length - 1)))); };
+      host.onpointermove = (e) => show(at(e));
+      host.onpointerdown = (e) => show(at(e));
+      host.onpointerleave = hide;
+      host.onfocus = () => { if (host.matches(':focus-visible')) show(cur); };
+      host.onblur = hide;
+      host.onkeydown = (e) => {
+        const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (e.key === 'Escape') hide();
+        if (!d) return; e.preventDefault(); show(Math.max(0, Math.min(values.length - 1, cur + d)));
+      };
     }
 
     // Redraw on resize so text stays at its real size.
@@ -1386,8 +1424,18 @@
     C.line(document.getElementById('ch-failed'), { series: [{ name: 'Sample', values: [0, 1, 0, 0, 2, 1, 0, 3, 1, 0, 0, 2, 1, 0, 1, 0, 0, 2] }], yTicks: [0, 2, 4], xLabels: ['3h ago', 'now'], area: true });
 
     // Sparklines in metric rows: each metric on its own scale (different units), same time window.
-    document.querySelectorAll('.fc-metric-row [data-spark]').forEach(el =>
-      C.sparkline(el, el.dataset.spark.split(',').map(Number), { incomplete: el.hasAttribute('data-incomplete') }));
+    // Sparkline scrub labels and formats (sample: weeks 1 to 8; hours ending at the current 6 PM hour).
+    const clock = x => `${(x + 11) % 12 + 1} ${x % 24 < 12 ? 'AM' : 'PM'}`;
+    const LABELS = {
+      weeks: n => Array.from({ length: n }, (_, i) => `Week ${i + 1}`),
+      hours: n => Array.from({ length: n }, (_, i) => { const h = 18 - (n - 1 - i); return i === n - 1 ? `<time>${clock(h)}</time> to now` : `<time>${clock(h)}</time> to <time>${clock(h + 1)}</time>`; }),
+    };
+    const FMT = { money: v => `$${v.toFixed(2)}`, pct: v => `${v}%`, pts: v => `${v > 0 ? '+' : ''}${v.toFixed(1)} pts`, pulls: v => `${v} pulls`, failed: v => `${v} failed`, sec: v => `${v.toFixed(1)}s` };
+    document.querySelectorAll('.fc-metric-row [data-spark]').forEach(el => {
+      const values = el.dataset.spark.split(',').map(Number);
+      C.sparkline(el, values, { incomplete: el.hasAttribute('data-incomplete'),
+        tip: { labels: LABELS[el.dataset.sparkLabels](values.length), fmt: FMT[el.dataset.sparkFormat], name: el.dataset.sparkName } });
+    });
 
     // Rank list: best price share by book. Chip fill is the share of all markets (0 to 100%).
     // Sparklines share one domain, because they plot the same measure.

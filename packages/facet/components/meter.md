@@ -51,3 +51,5 @@ Owner feedback, 2026-11-02. A meter near or at its limit carries one action link
 - **Near the limit** (amber): slow usage down, inside the app: "Lower usage" (→ the schedule editor).
 - **At the limit** (red): lift it, usually at the provider: "Raise limit" (↗ the provider's plan page). What the limit already caused stays in the status line ("100% used, limit reached, paused until Dec 1").
 - **Below the warning line:** no action; the meter is information.
+
+**Threshold line.** The tick on the track marks the warning point. Like progress stops, it is explained once, in a helper on the meter's label ("The line marks 80% (40,000)..."), never in a footer line.

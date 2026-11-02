@@ -26,7 +26,7 @@ Show and edit when odds and injury pulls run, whether the last run worked, and w
 - Main: the plain-language schedule is the fast path; the cron is the audit path, in mono, secondary, 12px.
 - Status words and dots: Succeeded (`live`, green), Failed (`failed`, red), Running (`recent`, blue), Paused (no freshness state, gray). The word always shows.
 - Every run time carries its day word ("Today 6:00 PM", "Tue 12:00 AM", "Oct 31 11:00 PM"), so peers in a column read the same way (owner feedback, 2026-11-02).
-- Next run: the time in primary, then a countdown in secondary (`<time class="fc-schedule-detail" datetime data-relative data-stamp>`, filled by `stampTimes()` in `js/time.mjs`): "in 5m", "in 6h", "in 1d 6h". Printed once at load, never animated (owner decision, 2026-11-02). A paused row has no countdown. Last run: the time in primary, then what happened in secondary (`.fc-schedule-detail`): "Took 4.1s" or "Timed out after 30s", never a bare number. A paused row reads Next "None" (`.fc-value-empty`).
+- Next run: the time in primary, then a countdown in secondary (`<time class="fc-schedule-detail" datetime data-relative data-stamp>`, filled by `stampTimes()` in `js/time.mjs`): "in 5m", "in 6h", "in 1d 6h". Printed once at load, never animated (owner decision, 2026-11-02). A paused row has no countdown. Last run: the time in primary, then what happened in secondary (`.fc-schedule-detail`): "Ran 4.1s" or "Timed out after 30s", never a bare number. A paused row reads Next "None" (`.fc-value-empty`).
 - Failed: a `.fc-list-row-note` error note under the row says what failed and what is stale.
 - Menu: Edit, View runs, Pause (or Resume).
 - Under 640px the row stacks: name and actions, then status, then runs on one line.

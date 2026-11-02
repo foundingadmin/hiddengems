@@ -1589,7 +1589,7 @@
           </div>
           <span class="fc-schedule-status fc-status"><span class="fc-status-dot" data-state="live"></span><span data-status-word>Succeeded</span></span>
           <p class="fc-schedule-next"><span class="fc-schedule-label">Next run</span><time class="fc-timestamp" datetime="2026-11-02T18:05-05:00" title="Monday, Nov 2, 2026, 6:05 PM ET" >Today 6:05 PM</time><time class="fc-schedule-detail" datetime="2026-11-02T18:05-05:00" data-relative data-stamp>in 5m</time></p>
-          <p class="fc-schedule-last" data-last><span class="fc-schedule-label">Last run</span><time class="fc-timestamp" datetime="2026-11-02T18:00-05:00" title="Monday, Nov 2, 2026, 6:00 PM ET">Today 6:00 PM</time><span class="fc-schedule-detail">Took 4.1s</span></p>
+          <p class="fc-schedule-last" data-last><span class="fc-schedule-label">Last run</span><time class="fc-timestamp" datetime="2026-11-02T18:00-05:00" title="Monday, Nov 2, 2026, 6:00 PM ET">Today 6:00 PM</time><span class="fc-schedule-detail">Ran 4.1s</span></p>
           <div class="fc-list-row-actions">
             <button class="fc-button" data-variant="secondary" data-size="small" type="button" data-run aria-label="Run Odds, all books now">Run now</button>
             <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="More actions for Odds, all books" data-menu="Edit|View runs|Pause"><svg aria-hidden="true"><use href="#lf-more"/></svg></button>
@@ -1620,7 +1620,7 @@
           </div>
           <span class="fc-schedule-status fc-status"><span class="fc-status-dot" data-state="paused"></span><span data-status-word>Paused</span></span>
           <p class="fc-schedule-next"><span class="fc-schedule-label">Next run</span><span class="fc-value-empty">None</span></p>
-          <p class="fc-schedule-last" data-last><span class="fc-schedule-label">Last run</span><time class="fc-timestamp" datetime="2026-11-01T22:45-05:00" title="Sunday, Nov 1, 2026, 10:45 PM ET">Sun 10:45 PM</time><span class="fc-schedule-detail">Took 3.9s</span></p>
+          <p class="fc-schedule-last" data-last><span class="fc-schedule-label">Last run</span><time class="fc-timestamp" datetime="2026-11-01T22:45-05:00" title="Sunday, Nov 1, 2026, 10:45 PM ET">Sun 10:45 PM</time><span class="fc-schedule-detail">Ran 3.9s</span></p>
           <div class="fc-list-row-actions">
             <button class="fc-button" data-variant="secondary" data-size="small" type="button" data-run aria-label="Run Closing lines now">Run now</button>
             <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="More actions for Closing lines" data-menu="Edit|View runs|Resume"><svg aria-hidden="true"><use href="#lf-more"/></svg></button>
@@ -1943,7 +1943,7 @@
       schedLive.textContent = name + ' is running.';
       setTimeout(() => {
         setStatus(row, before.state === 'paused' ? 'paused' : 'succeeded', before.state === 'paused' ? 'Paused' : 'Succeeded');
-        $('[data-last]', row).innerHTML = '<span class="fc-schedule-label">Last run</span><time class="fc-timestamp" data-relative>Just now</time><span class="fc-schedule-detail">Took 3.8s</span>';
+        $('[data-last]', row).innerHTML = '<span class="fc-schedule-label">Last run</span><time class="fc-timestamp" data-relative>Just now</time><span class="fc-schedule-detail">Ran 3.8s</span>';
         $('.fc-list-row-note', row)?.remove();
         btn.removeAttribute('aria-disabled');
         schedLive.textContent = name + ' finished in 3.8 seconds.';

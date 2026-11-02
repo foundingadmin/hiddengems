@@ -15,8 +15,8 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
   `packages/facet/SOURCES.md`.
 - Hue allocation is a hard rule (see `packages/facet/DESIGN.md`, "Hue allocation"). Every hue has one
   job; purple is for gems and the brand accent (focus, selection, checked controls) only. Run `node packages/facet/scripts/lint-color.mjs apps` before pushing UI.
-- Hidden Gems encodings are fixed: verdict = dot + word, edge = sign + arrow + color, gem tier =
-  facet count + purple intensity, freshness = status dot + relative time, team = logo plus name or abbreviation, player = team logo tile plus name with trailing #number, team colors and logos inside those marks only. Color is never the only cue.
+- Hidden Gems encodings are fixed: verdict = dot + word, edge = sign + arrow + color, gem rating =
+  one 0 to 100 number + purple intensity that rises with it (no tiers), freshness = status dot + relative time, team = logo plus name or abbreviation, player = team logo tile plus name with trailing #number, team colors and logos inside those marks only. Color is never the only cue.
 - Do not use Vercel logos, the Vercel name, or Vercel authorship styling in the product.
 - Review UI changes against `packages/facet/guidelines/web-interface-guidelines.md` and cite rule IDs.
 
@@ -54,3 +54,4 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 - `apps/artifact/` the app as hosted today (claude.ai artifact; `pnpm artifact:build`, data in its db as `hg/slate` and `hg/health`)
 - `apps/web/` Hidden Gems app for a full deployment (Next.js, deploys on Vercel with Root Directory `apps/web`)
 - `docs/` project documentation
+- `ops/directives/` scheduled task directives; the Claude app tasks are stubs that read these from `main`

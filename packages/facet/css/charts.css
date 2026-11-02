@@ -144,7 +144,7 @@
 .fc-chart[data-ghost] :is(.fc-chart-tick, .fc-chart-grid, .fc-chart-baseline) { filter: blur(2px); opacity: 0.45; }
 .fc-chart[data-ghost] .fc-chart-line { stroke-width: 2; }
 .fc-chart[data-ghost] .fc-chart-area { fill-opacity: 0.18; }
-.fc-chart[data-ghost] .fc-chart-empty > div { background: color-mix(in srgb, var(--fc-surface-canvas) 88%, transparent); border-radius: var(--fc-radius-md); box-shadow: var(--ds-shadow-border-small); }
+.fc-chart[data-ghost] .fc-chart-empty > div { padding: var(--fc-space-4) var(--fc-space-6); background: color-mix(in srgb, var(--fc-surface-canvas) 88%, transparent); border-radius: var(--fc-radius-lg); box-shadow: var(--ds-shadow-border-small); }
 .fc-chart[data-ghost] :is(.fc-chart-label, .fc-chart-point) { display: none; }
 @media (prefers-reduced-transparency: reduce) { .fc-chart[data-ghost] g[data-series] { filter: none; opacity: 0.3; } }
 .fc-chart-empty {
@@ -176,7 +176,7 @@
 .fc-chart-empty[data-kind] .fc-status { font: 400 13px/18px var(--fc-font-sans); margin-bottom: var(--fc-space-1); }
 .fc-chart-empty-title { font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
 .fc-chart-empty > div > :is(a, button) { margin-top: var(--fc-space-2); pointer-events: auto; }
-.fc-chart[data-size="message"] { --fc-chart-height: 200px; }
+.fc-chart[data-size="message"] { --fc-chart-height: 240px; }
 
 /* Takeaway [F] (owner feedback 2026-11-02): a chart whose movement can be good or bad for you states the
    reading in one line under the title: the measure that matters, its value, and a change pill whose color

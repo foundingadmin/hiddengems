@@ -110,7 +110,7 @@ Use the guide marker (`.fc-guide`, see `components/guide-marker.md`) for every D
 |---|---|
 | Case | Sentence case for headings, labels and buttons. Every sentence and sentence-like fragment starts with a capital, including detail lines ("Timed out after 30s") and examples quoted in docs |
 | Titles | No colons in titles, headings or nav labels |
-| Dashes | No em dashes, anywhere |
+| Dashes and semicolons | No em dashes, anywhere. No semicolons in UI copy: split the sentence or use a comma |
 | Hedges | Cut "FYI", "Heads up" and "Note" |
 | Notes | One sentence, active voice, naming the impact. An optional 1 to 2 word label names the topic and is never repeated by the sentence |
 | Numbers | Peer values share precision. A lone value keeps its unit beside it ("+4.0 pts"). In a column of mixed metrics the word unit moves to the label ("Average gap (pts)"), symbols that are part of the number stay ($, %), and changes are percent with the exact change in a helper |

@@ -1572,7 +1572,7 @@
         <div class="fc-fieldset-footer">
           <span>Manual pulls still work.</span>
           <div class="fc-row">
-            <button class="fc-button" data-variant="secondary" data-size="small" type="reset" hidden data-cancel>Cancel</button>
+            <button class="fc-button" data-variant="secondary" data-size="small" type="reset" hidden data-cancel>Undo</button>
             <button class="fc-button" data-size="small" type="submit" disabled data-save>Save</button>
           </div>
           <span class="fc-visually-hidden" aria-live="polite" data-form-live></span>
@@ -1696,7 +1696,7 @@
         <div class="fc-fieldset-footer">
           <span id="lf-ed-quota">About 2,200 of 20,000 monthly requests</span>
           <div class="fc-row">
-            <button class="fc-button" data-variant="secondary" data-size="small" type="reset" hidden data-cancel>Cancel</button>
+            <button class="fc-button" data-variant="secondary" data-size="small" type="reset" hidden data-cancel>Undo</button>
             <button class="fc-button" data-size="small" type="submit" disabled data-save>Save</button>
           </div>
           <span class="fc-visually-hidden" aria-live="polite" data-form-live></span>
@@ -1786,7 +1786,7 @@
         <div class="fc-fieldset-footer">
           <span>Tracked bets keep their stakes.</span>
           <div class="fc-row">
-            <button class="fc-button" data-variant="secondary" data-size="small" type="reset" hidden data-cancel>Cancel</button>
+            <button class="fc-button" data-variant="secondary" data-size="small" type="reset" hidden data-cancel>Undo</button>
             <button class="fc-button" data-size="small" type="submit" disabled data-save>Save</button>
           </div>
           <span class="fc-visually-hidden" aria-live="polite" data-form-live></span>
@@ -1950,7 +1950,7 @@
       }, 1500);
     }));
 
-    // ---- setting cards: Save stays disabled until the card is dirty; Cancel appears only when dirty
+    // ---- setting cards: Save stays disabled until the card is dirty; Undo appears only when dirty
     const snapshot = f => JSON.stringify(Array.from(f.elements).filter(el => el.name || el.type === 'checkbox').map(el => el.type === 'checkbox' || el.type === 'radio' ? el.checked : el.value));
     $$('[data-dirty-form]').forEach(f => {
       f._clean = snapshot(f);

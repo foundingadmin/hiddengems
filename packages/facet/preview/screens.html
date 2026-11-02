@@ -424,7 +424,7 @@
               <footer class="fc-fieldset-footer">
                 <p class="fc-fieldset-status" data-kind="scope">Pull odds on the slate still works while paused.</p>
                 <div class="fc-fieldset-actions">
-                  <button class="fc-button fc-fieldset-cancel" data-variant="secondary" data-size="small" type="reset">Cancel</button>
+                  <button class="fc-button fc-fieldset-cancel" data-variant="secondary" data-size="small" type="reset">Undo</button>
                   <button class="fc-button" data-size="small" type="submit" disabled>Save</button>
                 </div>
               </footer>
@@ -463,7 +463,7 @@
               <footer class="fc-fieldset-footer">
                 <p class="fc-fieldset-status" data-kind="quota" data-sh-quota>Projected 17,472 of 20,000 monthly requests.</p>
                 <div class="fc-fieldset-actions">
-                  <button class="fc-button fc-fieldset-cancel" data-variant="secondary" data-size="small" type="reset">Cancel</button>
+                  <button class="fc-button fc-fieldset-cancel" data-variant="secondary" data-size="small" type="reset">Undo</button>
                   <button class="fc-button" data-size="small" type="submit" disabled>Save</button>
                 </div>
               </footer>
@@ -521,7 +521,7 @@
               <footer class="fc-fieldset-footer">
                 <p class="fc-fieldset-status" data-kind="quota">The free tier includes 1,000 requests a month.</p>
                 <div class="fc-fieldset-actions">
-                  <button class="fc-button fc-fieldset-cancel" data-variant="secondary" data-size="small" type="reset">Cancel</button>
+                  <button class="fc-button fc-fieldset-cancel" data-variant="secondary" data-size="small" type="reset">Undo</button>
                   <button class="fc-button" data-size="small" type="submit" disabled>Save</button>
                 </div>
               </footer>
@@ -675,7 +675,7 @@
     pages.forEach((p) => { p.hidden = p.id !== id; });
   }));
 
-  /* ---------- Save model: Save disabled until dirty, Cancel only while dirty, each card on its own */
+  /* ---------- Save model: Save disabled until dirty, Undo only while dirty, each card on its own */
   const fieldDirty = (el) => {
     if (el.type === 'checkbox' || el.type === 'radio') return el.checked !== el.defaultChecked;
     if (el.tagName === 'SELECT') return [...el.options].some((o) => o.selected !== o.defaultSelected);

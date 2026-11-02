@@ -72,6 +72,19 @@ Labels that sit together and describe the same thing share one root word, so the
 
 Hidden Gems roots: **pull** (odds data in), **run** (a scheduled job), **track** (a bet you placed), **connect** (a book or provider). Reloading a view is not a pull; it is "Reload".
 
+## Undo, Cancel and Reset
+
+Three words that all seem to mean "go back". Each has one job.
+
+| Word | What it does | Where it appears | Confirm? |
+|---|---|---|---|
+| **Undo** | Takes back your own changes: unsaved edits since the last save, or an action you just completed | A form footer while it has unsaved edits (beside Save); a toast after an action ("Pick removed. Undo") | No |
+| **Cancel** | Leaves a flow without doing it. Nothing changes, and whatever opened closes | Dialogs, sheets, confirmations and multi-step flows, beside the flow's main verb | No |
+| **Reset** | Returns settings to Hidden Gems defaults, discarding saved values too | A section menu or the danger zone, always as "Reset to defaults" | Yes, it is a destructive verb |
+
+- A form that stays on screen never says Cancel: there is no flow to leave, only edits to take back.
+- Undo never appears without something to undo; Reset never appears where Undo would do.
+
 ## Marking right and wrong
 
 Use the guide marker (`.fc-guide`, see `components/guide-marker.md`) for every Do and Don't. It is neutral by default: a gray check or cross plus the word. Add color (`data-critical`) only where misuse breaks the system, such as the hue allocation. If it appears everywhere, nobody sees it.

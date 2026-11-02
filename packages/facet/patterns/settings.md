@@ -41,12 +41,12 @@ A setting card is a `.fc-fieldset`. Use a `<form>` when it saves, or a `<section
 | `.fc-fieldset-toggle` | A large toggle (`data-size="large"`) and its state word ("Running", "Paused"). The title names the setting, so the toggle uses `aria-labelledby` on the title and the word carries state |
 | `.fc-fieldset-value` | A read-only machine value (masked key, ID) in mono, joined to its action ("Rotate key") |
 | `.fc-fieldset-status` | The footer's left slot: one of the four kinds below, or empty |
-| `.fc-fieldset-actions` | The footer's right slot; `.fc-fieldset-cancel` on the Cancel button |
+| `.fc-fieldset-actions` | The footer's right slot; `.fc-fieldset-cancel` on the Undo button |
 
 ## Save model
 - **Each card saves on its own.** Save in one card never commits another. There is no page-level save bar and no global dirty state.
 - **Save is disabled until the card is dirty.** Render `disabled` on the footer's primary small button; enable it when any value differs from its saved value, and disable it again when the reader changes it back.
-- **Cancel exists only while the card is dirty.** Set `data-dirty` on the `.fc-fieldset`; `.fc-fieldset-cancel` is hidden without it. Cancel restores the saved values.
+- **Undo exists only while the card is dirty.** Set `data-dirty` on the `.fc-fieldset`; `.fc-fieldset-cancel` is hidden without it. Undo restores the saved values.
 - **Toggles inside a card are staged** and saved with the footer button. A toggle outside any card (a toolbar) persists on change with a toast. Never mix the two models in one card.
 - **Derived values update while dirty.** If a value has a consequence (requests per month, next run times), show the new consequence before Save.
 - **Leaving with unsaved changes** asks first (router guard or `beforeunload`, FRM-15).
@@ -71,7 +71,7 @@ A card with nothing useful to say keeps the footer for its button alone. A read-
 - The description lists everything that goes. A `.fc-fieldset-entity` preview shows exactly what will be removed (neutral `.fc-icon-tile`, name, one meta line with counts and the last change).
 - The footer uses the `scope` kind to say what is kept.
 - The button names verb and object ("Delete history", "Disconnect FanDuel") and opens the typed confirmation modal (`components/misc.md`) with Cancel focused (INT-14). Never act on the first click.
-- In a row that edits in place, Remove sits on the left and Cancel + Save on the right, so the destructive verb is never beside Save.
+- In a row that edits in place, Remove sits on the left and Undo + Save on the right, so the destructive verb is never beside Save.
 
 ## Copy
 - Card titles name the setting ("Game day schedule"), not the action, except destructive cards, which name the action.

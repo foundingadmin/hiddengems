@@ -22,7 +22,7 @@ A failure note always carries its next step. Yours to fix: a button (`.fc-note-a
 
 ## Ghost
 
-An empty or failed chart draws a blurred, gray sample of its shape under the message (`data-ghost` on `.fc-chart`), so the reader sees what the chart shows when it works while the message keeps focus. The sample is blurred past reading, never colored and never labelled. Reduced transparency drops the blur for a faint flat sample.
+An empty or failed chart draws a blurred, gray sample of its shape under the message (`data-ghost` on `.fc-chart`), so the reader sees what the chart shows when it works while the message keeps focus. The sample is blurred past reading, never colored and never labelled. Axis numbers and gridlines blur and dim with it, the sample sits at half strength, and the message card carries a hairline border and a small shadow so it lifts clear of the field. Reduced transparency drops the blur for a faint flat sample.
 
 ## Copy
 

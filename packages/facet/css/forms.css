@@ -191,7 +191,7 @@
    exists ("Rotate"). Read-only facts (status, dates, names) get none. Removing happens where the value
    is owned, behind a confirmation, never from these rows. */
 .fc-description[data-layout="rows"][data-actions] > div { grid-template-columns: minmax(0, 35%) minmax(0, 1fr) auto; }
-.fc-description-action { margin: 0; justify-self: end; font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
+.fc-description-action { margin: 0; justify-self: end; font: 400 14px/20px var(--fc-font-sans); }
 @container fc-desc (max-width: 400px) {
   .fc-description[data-layout="rows"] > div,
   .fc-description[data-layout="rows"][data-actions] > div { grid-template-columns: minmax(0, 1fr) auto; }

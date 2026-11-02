@@ -840,6 +840,10 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
           mask: var(--_arrow) 0 0 / 12px 12px no-repeat;
 }
 .fc-link-action[data-external]::after { content: "" / ", opens in a new tab"; }
+/* Quiet tone: a repeated row-level action that must not compete with the row's value (key/value rows,
+   dense lists). Secondary gray at rest, like the feed's arrows; primary on hover and focus. */
+.fc-link-action[data-tone="quiet"] { font-weight: 400; color: var(--fc-text-secondary); }
+.fc-link-action[data-tone="quiet"]:is(:hover, :focus-visible) { color: var(--fc-text-primary); }
 .fc-link-action:is(:hover, :focus-visible)::after { animation: fc-arrow-pass 360ms var(--fc-ease-swift); }
 @keyframes fc-arrow-pass {
   0%   { -webkit-mask-position: 0 0; mask-position: 0 0; }
@@ -848,4 +852,8 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
   100% { -webkit-mask-position: 0 0; mask-position: 0 0; }
 }
 @media (prefers-reduced-motion: reduce) { .fc-link-action[data-external]::after { content: "" / ", opens in a new tab"; }
+/* Quiet tone: a repeated row-level action that must not compete with the row's value (key/value rows,
+   dense lists). Secondary gray at rest, like the feed's arrows; primary on hover and focus. */
+.fc-link-action[data-tone="quiet"] { font-weight: 400; color: var(--fc-text-secondary); }
+.fc-link-action[data-tone="quiet"]:is(:hover, :focus-visible) { color: var(--fc-text-primary); }
 .fc-link-action:is(:hover, :focus-visible)::after { animation: none; } }

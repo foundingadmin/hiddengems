@@ -30,6 +30,7 @@ Chevron direction (owner rule): **a chevron points where the new content will ap
 - **Hover and keyboard focus:** the arrow slides out through its own 12px box and back in from the opposite side, one quick pass (360ms, swift easing). Right for internal links, up-right for external. Reduced motion keeps it still.
 - **Color:** inherits from its context, so it takes a note's severity color and a page header's link blue.
 - **Weight:** 500.
+- **Quiet tone** (`data-tone="quiet"`): for an action repeated down a list of rows, where it must not compete with the row's value (key/value rows). Weight 400 and secondary gray at rest, like the feed's arrows; primary on hover and focus, with the same tint and arrow pass.
 - **In a container edge:** where the link sits against a container's edge (a note's right side), its hover surface keeps an equal 4px inset from the top, bottom and side edges with a concentric corner, by growing into the container's padding with negative margins.
 - **Where:** note actions (`.fc-note-link`), page header docs links, fieldset footers, failure overlays, card footers. One per container.
 - **Not for:** links inside a sentence, which keep their underline so they read as links without the arrow. Destructive actions, which are buttons that confirm.

@@ -101,6 +101,18 @@
 }
 .fc-list-row-actions .fc-timestamp { font-size: 13px; line-height: 20px; color: var(--fc-text-secondary); }
 
+/* Lanes [F] (owner feedback 2026-11-02): status and actions sit in fixed-width lanes so they line up down
+   the list whatever the row holds. The aside stacks status over its relative time (the paired-time pattern);
+   a row with no status keeps an empty aside so its lane is still reserved. */
+.fc-list[data-lanes] > .fc-list-row > .fc-list-row-aside {
+  flex: 0 0 var(--fc-list-aside-w, 136px);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+}
+.fc-list[data-lanes] > .fc-list-row > .fc-list-row-aside > .fc-timestamp { font-size: 13px; line-height: 18px; color: var(--fc-text-secondary); }
+.fc-list[data-lanes] > .fc-list-row > .fc-list-row-actions { flex: 0 0 var(--fc-list-actions-w, 112px); }
+
 /* A note that belongs to the row (failed connection). Starts under the title, full width. */
 .fc-list-row-note { flex: 1 0 100%; min-width: 0; }
 .fc-list-row:has(> .fc-list-row-lead) > .fc-list-row-note { padding-left: calc(var(--_lead) + var(--fc-space-3)); }
@@ -115,6 +127,9 @@
   .fc-list-row > .fc-list-row-note { order: 4; }
   .fc-list-row:has(> .fc-list-row-lead) > .fc-list-row-aside { padding-left: calc(var(--_lead) + var(--fc-space-3)); }
   .fc-list-row:has(> .fc-list-row-lead) > .fc-list-row-note { padding-left: 0; }
+  .fc-list[data-lanes] > .fc-list-row > .fc-list-row-aside { flex: 1 0 100%; }
+  .fc-list[data-lanes] > .fc-list-row > .fc-list-row-aside:empty { display: none; }
+  .fc-list[data-lanes] > .fc-list-row > .fc-list-row-actions { flex: 0 0 auto; }
 }
 
 /* ------------------------------------------------------------------ Connection row

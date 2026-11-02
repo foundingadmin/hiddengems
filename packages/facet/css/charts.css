@@ -527,6 +527,12 @@
 .fc-log-time { white-space: nowrap; color: var(--fc-text-secondary); }
 .fc-log-message { min-width: 16rem; color: var(--fc-text-primary); }
 .fc-log-id { font-family: var(--fc-font-mono); font-size: 12px; color: var(--fc-text-secondary); white-space: nowrap; }
+/* Every log row opens its full record in a sheet: the whole row is clickable, a right chevron at the end. */
+.fc-log-open { width: 32px; padding-block: 4px !important; text-align: right; }
+.fc-log-open .fc-button { color: var(--fc-text-secondary); }
+tr[data-clickable] { cursor: pointer; }
+#log-sheet-note:not(:empty) { margin-bottom: var(--fc-space-4); }
+tr[data-clickable]:hover .fc-log-open .fc-button { color: var(--fc-text-primary); }
 
 @media (prefers-reduced-motion: reduce) {
   .fc-meter-fill, .fc-progress > .fc-progress-fill, .fc-facet-group > summary svg, .fc-chart-card-drill { transition: none; }

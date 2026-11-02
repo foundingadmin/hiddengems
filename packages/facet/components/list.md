@@ -51,3 +51,7 @@ Default, hover (interactive lists only), and per-row state through `data-state` 
 
 ## Hidden Gems usage
 Sportsbooks, data providers, schedules (`components/schedule.md`), sessions on Security, alert rules.
+
+## Lanes `[F]`
+
+Owner feedback, 2026-11-02. Add `data-lanes` to a list whose rows carry status and actions. The aside (status, with its relative time stacked under it in secondary) and the actions sit in fixed-width lanes (`--fc-list-aside-w` 136px, `--fc-list-actions-w` 112px), so every status lines up down the list however long the times or buttons are. A row without a status keeps an empty aside to hold its lane. Narrow lists still drop the aside under the title.

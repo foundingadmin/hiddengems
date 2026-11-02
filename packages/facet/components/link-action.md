@@ -25,6 +25,7 @@ Chevron direction (owner rule): **a chevron points where the new content will ap
 | Content below, in place | Down | Up (rotate 180°) | "Advanced" in the schedule editor, collapse, filter groups in the pull log |
 | A menu below | Down | Down (the menu covers it) | Selects, range select, scope switcher |
 | A menu level that slides in from the right | Right › | (a back button ‹ returns) | Sidenav "Data" |
+| A sheet that slides in from the right, over the same page | Right › | (Close or Escape returns) | Pull log rows, pick rows |
 
 - **Hover:** a soft tint of the link's own color (12%) appears behind the text, reaching 4px past it on every side. It is drawn with a box-shadow spread, so nothing moves and the baseline stays put.
 - **Hover and keyboard focus:** the arrow slides out through its own 12px box and back in from the opposite side, one quick pass (360ms, swift easing). Right for internal links, up-right for external. Reduced motion keeps it still.

@@ -61,3 +61,5 @@ A 56px bar histogram of events per bucket on the same time window as the table, 
 Data, then Odds pulls: Level, Source (sportsbook) and Market facets; scheduled pulls every 5 minutes on game days; an Error row links to its request and to a retry.
 
 **Paused state (owner feedback, 2026-11-02).** When the live view is paused, the state is a small gray note above the table with a "Resume" link, not a line of caption-weight text. The table caption ("Newest first, 8 of 189 pulls") stays quiet metadata, so the two never compete: a state you should notice sits in a note, facts about the list sit in the caption.
+
+**Row detail (owner question, 2026-11-02).** A log row is a summary; its full record opens in a sheet: level, source, markets, lag, response, endpoint and request ID, with a note when the pull failed or warned (the Failures pattern decides whose problem it is). The whole row is clickable and ends in a right chevron, because the sheet slides in over the same page. The sheet footer offers the next step: copy the request ID, and open the source's connection row.

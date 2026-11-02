@@ -242,7 +242,8 @@
 .fc-dropdown-item svg { flex: 0 0 auto; width: 16px; height: 16px; color: var(--fc-text-secondary); }
 .fc-dropdown-item-detail { margin-left: auto; padding-left: var(--fc-space-4); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }
 /* The selected option carries a check; it is also announced through aria-checked. */
-.fc-dropdown-item[role="menuitemradio"]::after { content: ""; flex: 0 0 16px; width: 16px; height: 16px; }
+.fc-dropdown-item[role="menuitemradio"]::after { content: ""; flex: 0 0 16px; width: 16px; height: 16px; margin-left: auto; }
+.fc-dropdown-item:has(.fc-dropdown-item-detail)::after { margin-left: 0; }
 .fc-dropdown-item[aria-checked="true"]::after {
   background: var(--fc-text-primary);
   -webkit-mask: var(--_check) center / 16px no-repeat;
@@ -381,6 +382,8 @@
     box-shadow: var(--ds-shadow-menu);
     animation: fc-sheet-in var(--fc-duration-overlay) var(--fc-ease-swift);
   }
+  .fc-shell[data-embedded] .fc-sidenav { top: 0; }
+  .fc-sidenav-item { height: var(--fc-control-large); } /* touch targets (INT-04) */
   .fc-shell[data-nav="open"] .fc-sidenav { display: flex; }
   .fc-sidenav-head { display: none; }
   .fc-shell-toggle { display: inline-flex; }
@@ -397,6 +400,7 @@
 @container fc-shell (max-width: 479px) {
   /* Keep only the current page; the parent is one tap away in the rail. */
   .fc-topbar .fc-breadcrumbs li:not(:last-child) { display: none; }
+  .fc-topbar .fc-breadcrumbs li + li::before { content: none; }
 }
 @keyframes fc-sheet-in { from { opacity: 0; transform: translateY(-8px); } }
 

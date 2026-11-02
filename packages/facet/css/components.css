@@ -318,7 +318,7 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
    Header row 36px, th 14px/500 gray-900, 1px gray-400 rule under the header.
    Body rows 40px, td padding 10px 8px, 14px gray-900, primary cell gray-1000.
    Striped rows use background-200 with 6px rounded row ends. */
-.fc-table-wrap { width: 100%; overflow-x: auto; container-type: inline-size; }
+.fc-table-wrap { position: relative; width: 100%; overflow-x: auto; container-type: inline-size; } /* relative: keeps visually hidden cells inside the scroller */
 .fc-table {
   width: 100%;
   border-collapse: separate;

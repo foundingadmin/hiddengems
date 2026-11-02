@@ -418,7 +418,7 @@ button.fc-entity:hover { background: var(--fc-surface-fill); }
 @media (max-width: 480px) {
   .fc-entity { gap: var(--fc-space-3); padding: var(--fc-space-3); }
   .fc-entity-desc { white-space: normal; align-items: baseline; }
-  .fc-entity-desc .fc-status-dot { align-self: center; }
+  .fc-entity-desc .fc-status-dot { align-self: flex-start; margin-top: 6px; }
   .fc-entity-meta { display: none; }
 }
 

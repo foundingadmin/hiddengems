@@ -1,27 +1,38 @@
 # Description
-> Source: https://vercel.com/geist/description (captured 2026-11-02)
+> Source: https://vercel.com/geist/description (captured 2026-11-02). The rows layout is Facet [F], from the rank 1 alerts capture (sheet key/value boxes). CSS: grid in `css/components.css`, rows in `css/forms.css`.
 
 ## Purpose
-A key/value pair: a short heading with its value, with optional tooltip context.
+Key/value pairs: a short term with its value.
 
 ## Anatomy
-- Renders `<dl>` / `<dt>` / `<dd>`. `title` (term), `content` (value), optional `tooltip` (info icon next to title).
+Renders `<dl>` with one `<div>` per pair holding `<dt>` and `<dd>`. Optional `<small>` inside `dd` for a second line.
 
 ## Variants & sizes
-- `right` (right-aligned text), `ellipsis` (truncate long content to one line). No size prop.
+- Grid (default, `.fc-description`): pairs flow into equal columns of at least 200px; term 14px secondary above a 14px, 500, primary value.
+- Rows (`.fc-description[data-layout="rows"]`): a bordered box, one pair per row, the term column about 35%, rows divided by one rule, 40px minimum row height. Under 400px of width the term stacks above the value.
+```html
+<dl class="fc-description" data-layout="rows" aria-label="The Odds API">
+  <div><dt>Plan</dt><dd>20,000 requests a month</dd></div>
+  <div><dt>Webhook</dt><dd class="fc-value-empty">None</dd></div>
+</dl>
+```
 
 ## States
-Static. Tooltip on hover or focus.
+- Set values: primary, 500.
+- Unset values: the word "None" with `.fc-value-empty` (secondary, 400). No badge, no dash.
 
 ## Tokens
-Not specified. Inferred: `text-label-13`/`14` `--ds-gray-900` title, `text-copy-14` `--ds-gray-1000` value.
+`--fc-text-secondary` term and empty value, `--fc-text-primary` value, `--fc-border-default` ring and dividers, `--fc-radius-sm`, `--fc-row-body`.
 
 ## Rules
-- Use for definition-list metadata (`Last Deployed`, `Region`). Use the field's helper text for form hints.
-- Keep the dl/dt/dd semantics. Do not wrap in extra paragraphs.
-- Title is a Title Case noun. Content is sentence case unless it is a literal ID or timestamp.
-- Add `tooltip` only when the title is ambiguous. One sentence ending in a period.
-- No interactive controls in the title slot.
+- Use for metadata and configuration a reader audits at once (a provider, an alert rule). Use helper text for form hints.
+- Keep the dl/dt/dd semantics.
+- Terms are sentence-case nouns. Values are sentence case unless they are literal IDs (mono) or times (`.fc-timestamp`).
+- Empty reads "None", always the same word.
+- The rows box may sit inside a sheet or fieldset as the one inset container there.
+- No interactive controls in the term.
 
 ## Hidden Gems usage
-- **Bet Sheet summary grid**: `Sportsbook` DraftKings, `Line` o64.5, `Odds` -115, `Implied Prob` 53.5%, `Model Prob` 58.9%, `Edge` +5.4% (tooltip defining Edge), `Updated` (RelativeTimeCard). Use `right` for numbers in two-column layouts.
+- Provider detail (rows): Provider, Status, Plan, Books, Key (masked), Webhook "None", Alert routing "None", Added.
+- Alert rule overview (rows): Trigger, Books, Channels.
+- Bet sheet summary (grid): Sportsbook, Line, Odds, Implied, Model, Edge, Updated.

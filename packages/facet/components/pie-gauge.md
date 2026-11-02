@@ -29,3 +29,15 @@ Static. No interactive states documented.
 - **Signal agreement** (share of signals agreeing with the pick) in signal-breakdown rows.
 - **Book coverage** (share of tracked books offering the market) next to the market name.
 - Never use it alone in a cell. The number always goes next to it.
+
+## Facet implementation `[F]`
+Implemented in `css/data.css`.
+
+```html
+<span class="fc-pie-value"><span class="fc-pie" style="--value:67" aria-hidden="true"></span>4 of 6</span>
+```
+- `.fc-pie` draws a ring (10% of the box) and a `conic-gradient` wedge (50% of the box) from 12 o'clock, matching the reference proportions. `--value` is clamped to 0 to 100.
+- Sizes: default 16px, `data-size="13"`, `"24"`, `"32"`.
+- Color inherits `currentColor` (gray in a table). `data-signal="go|wait|stop"` maps to verdict colors, only once the score bands are defined in data.
+- `.fc-pie-value` pairs the glyph with its number 8px apart and keeps the number on the row baseline.
+- Hidden Gems: the hit rate column shows the pie plus the record as "n of m", never a bare percentage for samples under 20.

@@ -30,3 +30,24 @@ Not specified by the reference. Inferred: popover material (`--ds-shadow-menu` o
 - **Line moved** times in Line History (`Moved 18m ago`).
 - **News published** times on qualitative signals.
 - Hidden Gems note: odds go stale within minutes. Pair the time with freshness color (Badge or Facet StatusDot extension) once older than the stale threshold. The card itself carries no staleness color.
+
+## Facet implementation `[F]`
+Implemented in `css/data.css` as `.fc-time` (trigger) and `.fc-time-card` (popover).
+
+```html
+<p class="fc-status"><span class="fc-status-dot" data-state="live" aria-hidden="true"></span>
+  <span>Odds updated <time class="fc-time fc-has-tip" datetime="2026-11-02T18:31:25Z" tabindex="0" aria-describedby="odds-time">2 min ago</time></span></p>
+<div class="fc-time-card fc-float" popover="manual" role="tooltip" id="odds-time">
+  <dl class="fc-time-rows">
+    <div class="fc-time-row"><dt class="fc-time-zone">MST</dt><dd class="fc-time-date">Nov 2, 2026</dd><dd class="fc-time-clock">11:31:25 AM</dd></div>
+    <div class="fc-time-row"><dt class="fc-time-zone">UTC</dt><dd class="fc-time-date">Nov 2, 2026</dd><dd class="fc-time-clock">6:31:25 PM</dd></div>
+  </dl>
+</div>
+```
+- Human times, relative and absolute, are Facet Sans with tabular figures (owner decision D2). Mono stays for machine values.
+- The trigger is a focusable `<time>` with the dotted tip underline. Freshness pairs it with a status dot; the card itself carries no staleness color.
+- The card lists the viewer's zone first, then UTC (deviation: the reference lists UTC first; Hidden Gems kickoffs are local). When the viewer is on UTC, show one row.
+- `.fc-time-card-head` is optional. Leave it out when it would only repeat the trigger text.
+- Tooltip material: 6px radius, `--ds-shadow-tooltip`, 8px by 12px padding, zone chips on `--fc-surface-fill`, three-column grid shared by both rows.
+- Opens on hover after a short delay and on keyboard focus, stays open while the pointer is over it, and Escape closes it (WCAG 1.4.13). It is a `popover` placed by script, so a scrolling table never clips it.
+- Render times on the client only to avoid hydration mismatch (AGT-02); format with `Intl.DateTimeFormat` in the viewer's locale (CON-15).

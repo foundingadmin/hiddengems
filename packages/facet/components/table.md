@@ -61,3 +61,42 @@ Dimensions (measured, not written in the prose docs):
 - Sorting by Edge or Score uses header buttons. Persist sort and filter state in the URL, alongside `FilterParams`.
 - Use `TableFooter` only for real aggregates (e.g. slate count or average edge). Skip it otherwise.
 - For dense mode, the reference has no compact table. If the 40px row is too tall, any Facet `density="compact"` option is a Facet extension and must be documented as one.
+
+## Facet additions `[F]`
+Implemented in `css/data.css` (load after `components.css`). Specimen: `preview/parts/data.html`.
+
+### Sortable headers
+```html
+<th scope="col" data-align="numeric" aria-sort="descending"><button type="button" class="fc-th-sort">Gap</button></th>
+```
+- The `<th>` carries `aria-sort` (`ascending` or `descending`) on the one sorted column; remove it from the others. The label is a `<button class="fc-th-sort">`.
+- Indicator: a chevron in a soft circle (the reference's AI Gateway table), drawn by CSS. It shows on the sorted column only, and at half strength on hover or keyboard focus as a preview. Ascending rotates it.
+- Numeric headers (`data-align="numeric"`) put the indicator on the inner side so the label stays aligned with the values.
+- Numbers start largest first, text A to Z, times earliest first. A second click reverses.
+- The caption states the sort in words and updates with it ("Sorted by gap, largest first."). Keep any sort select in the filter bar in sync with the headers.
+
+### Frozen first column
+`<table class="fc-table" data-sticky-column>` freezes the row-header column (plus the selection column when it comes first) while the rest scrolls inside `.fc-table-wrap`. A 1px `--fc-border-default` hairline marks the edge. Frozen cells repaint stripes, hover, checked and open rows, so fills never break. Set `--fc-frozen-width` on the wrap to the frozen width so keyboard focus scrolls clear of it (INT-02).
+
+### Selection column
+```html
+<td class="fc-cell-select"><label><input type="checkbox" class="fc-check" aria-label="Select Mike Gesicki"></label></td>
+```
+- 40px column, 16px box, the whole cell is the hit target (INT-04). The header cell holds "Select all" and goes `indeterminate` when some rows are checked.
+- Checked rows take `--fc-surface-fill`; the open row (the one shown in a sheet) keeps `aria-selected="true"` and gray-200. The check mark is the non-color cue.
+- `.fc-check` is the 16px checkbox: unchecked ring `--fc-border-hover`, checked `--fc-surface-contrast` with an inverse check.
+
+### Row actions
+```html
+<td class="fc-cell-actions"><span class="fc-row-actions"><button class="fc-button" data-variant="tertiary" data-shape="square" data-size="small" aria-haspopup="menu" aria-expanded="false" aria-label="More actions for Mike Gesicki">…</button></span></td>
+```
+- Last column, header text visually hidden ("Actions"). One overflow button; put the rest in its menu.
+- With a fine pointer the buttons appear on row hover, and always while focus is in the row or the menu is open. Touch screens always show them.
+- The accessible name includes the row ("More actions for Mike Gesicki").
+
+### Tip affordance
+`.fc-has-tip` adds a 1px dotted gray-600 underline to a value or header that carries an explanation. Make it focusable (`tabindex="0"`) and point it at its tooltip with `aria-describedby`. Tooltips, time cards and menus open as `popover` elements with `.fc-float`, so a scrolling table never clips them. Tips add information (the vig basis, a small sample); never restate the value.
+
+### Notes
+- `.fc-table-wrap` is now `position: relative`, so visually hidden header text and sticky cells stay inside the scroller instead of widening the page.
+- Headers in Facet are sentence case (house rule), not Title Case as the reference says.

@@ -404,7 +404,7 @@
                   <span class="fc-status"><span class="fc-status-dot" data-state="queued"></span>Not connected</span>
                 </div>
                 <label class="fc-label" for="sh-sdio-key">API key</label>
-                <input class="fc-input fc-mono" id="sh-sdio-key" name="key" autocomplete="off" spellcheck="false">
+                <div class="fc-fieldset-value"><input class="fc-input" id="sh-sdio-key" name="key" autocomplete="off" spellcheck="false"></div>
                 <p class="fc-helper">Shown once in your SportsDataIO account, under API access.</p>
               </div>
               <footer class="fc-fieldset-footer">
@@ -551,6 +551,11 @@
 
   /* ---------- Settings: one page per section */
   const pages = root.querySelectorAll('.fc-settings-page');
+  /* On narrow screens the section list scrolls sideways; start with the current section in view. */
+  root.querySelectorAll('.fc-settings-nav').forEach((nav) => {
+    const cur = nav.querySelector('[aria-current="page"]');
+    if (cur && nav.scrollWidth > nav.clientWidth) nav.scrollLeft = cur.offsetLeft - nav.clientWidth / 2 + cur.offsetWidth / 2;
+  });
   root.querySelectorAll('.fc-settings-nav-item').forEach((a) => a.addEventListener('click', (e) => {
     e.preventDefault();
     root.querySelectorAll('.fc-settings-nav-item[aria-current]').forEach((c) => c.removeAttribute('aria-current'));

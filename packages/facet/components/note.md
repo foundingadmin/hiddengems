@@ -60,3 +60,7 @@ Owner feedback, 2026-11-02. A note that needs a next step always offers one; the
 - One action per note, button or link, never both. The CTA never repeats the message.
 - **Links adopt the note's color** (owner decision, 2026-11-02), so the CTA reads at the same severity as the message: amber in a warning, red in an error, blue in info, gray in a default note. Weight 500, the arrow and the right-edge position separate it from the message, so color is never the only cue. Buttons (`.fc-note-action`) stay neutral, like every button.
 - **Never put a destructive action in a note link.** Red already means error and destructive; a red "Delete" link would read as both. Destructive actions are buttons that confirm.
+
+## Brand note `[F]`
+
+`data-type="brand"` tints the note with the brand accent (`--fc-brand-*`). It is for guidance and brand moments only, such as a lesson's test question or an onboarding tip, never for a status: status keeps its own hues.

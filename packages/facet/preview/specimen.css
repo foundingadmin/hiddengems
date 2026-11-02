@@ -133,9 +133,9 @@ legend.fc-fieldset-title + * { clear: both; }
 .sp-lessonhead { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: end; padding-bottom: 8px; }
 .sp-lessonhead h2 { margin: 0; }
 .sp-lessonhead p { margin: 8px 0 0; max-width: 56ch; color: var(--fc-text-secondary); }
-.sp-test { margin: 0; padding: 16px 20px; border-radius: 12px; background: var(--fc-surface-subtle); box-shadow: var(--ds-shadow-border); }
-.sp-test span { display: block; font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); }
-.sp-test strong { display: block; margin-top: 4px; font: 500 16px/24px var(--fc-font-sans); color: var(--fc-text-primary); text-wrap: balance; }
+.sp-test { margin: 0; padding: 16px 20px; border-radius: 12px; }
+.sp-test-label { display: block; font: 500 12px/16px var(--fc-font-sans); opacity: 0.85; }
+.sp-test strong { display: block; margin-top: 4px; font: 500 16px/24px var(--fc-font-sans); text-wrap: balance; }
 @media (max-width: 860px) { .sp-lessonhead { grid-template-columns: 1fr; gap: 16px; } }
 .sp-cmp { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
 .sp-cmp > li { display: grid; grid-template-columns: minmax(180px, 240px) minmax(0, 1fr) minmax(0, 1fr); gap: 24px; padding: 20px 0; border-top: 1px solid var(--ds-gray-400); align-items: start; }
@@ -164,7 +164,10 @@ legend.fc-fieldset-title + * { clear: both; }
 .sp-glance-card:hover > .fc-link-action { color: var(--fc-text-primary); }
 .sp-glance-num { display: block; font: 500 12px/16px var(--fc-font-mono); color: var(--fc-brand-fg); letter-spacing: 0.4px; }
 .sp-lessonhead .sp-glance-num { margin-bottom: 8px; }
-.sp-cmp-cell:last-child { padding: 10px 12px; margin: -10px 0 -10px -12px; border-radius: 8px; background: var(--fc-surface-subtle); }
+/* Both example cells share the same 16px inset so samples never touch an edge and rows align; the Do cell adds a fill. */
+.sp-cmp > li:not(.sp-cmp-head) > .sp-cmp-cell { padding: 16px; border-radius: 12px; box-shadow: inset 0 0 0 1px var(--fc-border-default); }
+.sp-cmp > li:not(.sp-cmp-head) > .sp-cmp-cell:last-child { background: var(--fc-surface-subtle); box-shadow: none; }
+.sp-cmp > li.sp-cmp-head > .fc-guide { padding-left: 16px; }
 .sp-more { margin-top: -8px; }
 .sp-more > summary { display: inline-flex; align-items: center; gap: 6px; padding: 6px 0; cursor: pointer; list-style: none; font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); border-radius: var(--fc-radius-xs); }
 .sp-more > summary::-webkit-details-marker { display: none; }
@@ -190,3 +193,7 @@ legend.fc-fieldset-title + * { clear: both; }
 .sp-band:not(.sp-band-header) { align-items: stretch; }
 .sp-band .sp-cell { min-height: 100%; }
 .sp-band .sp-sw { flex: 1 1 auto; min-height: 40px; }
+/* Content guide: text-heavy, so each lesson starts after a clear break, a hairline with 64px on either side. */
+main:has(#glance) { gap: 64px; }
+main:has(#glance) > section + section { padding-top: 64px; border-top: 1px solid var(--fc-border-default); }
+main:has(#glance) > section#glance { padding-top: 0; border-top: 0; }

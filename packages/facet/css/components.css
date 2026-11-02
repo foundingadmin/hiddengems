@@ -157,6 +157,8 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
 .fc-note[data-type="success"] { --_fg: var(--fc-status-success-fg); --_bd: var(--fc-status-success-border); }
 .fc-note[data-type="warning"] { --_fg: var(--fc-status-warning-fg); --_bd: var(--fc-status-warning-border); }
 .fc-note[data-type="error"]   { --_fg: var(--fc-status-error-fg);   --_bd: var(--fc-status-error-border); }
+/* Brand [F]: guidance and brand moments only (a lesson's test question, onboarding), never a status. */
+.fc-note[data-type="brand"]   { --_fg: var(--fc-brand-fg); --_bd: var(--fc-brand-border); --_bg: color-mix(in srgb, var(--fc-brand-bg) 55%, transparent); }
 .fc-note[data-type][data-fill] { --_bd: transparent; }
 .fc-note[data-type="info"][data-fill]    { --_bg: var(--fc-status-info-bg); }
 .fc-note[data-type="success"][data-fill] { --_bg: var(--fc-status-success-bg); }

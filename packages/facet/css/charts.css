@@ -181,8 +181,10 @@
 /* Takeaway [F] (owner feedback 2026-11-02): a chart whose movement can be good or bad for you states the
    reading in one line under the title: the measure that matters, its value, and a change pill whose color
    says good or bad. The chart stays neutral; only the pill is colored. */
-.fc-chart-card-takeaway { display: flex; flex-wrap: wrap; align-items: center; gap: var(--fc-space-2); margin: var(--fc-space-2) 0 0; font: 400 13px/20px var(--fc-font-sans); color: var(--fc-text-secondary); }
-.fc-chart-card-takeaway strong { font-weight: 500; color: var(--fc-text-primary); font-variant-numeric: tabular-nums; }
+/* The takeaway leads with its value at headline size, so it never reads as a second meta line. */
+.fc-chart-card-takeaway { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--fc-space-2); row-gap: var(--fc-space-1); margin: var(--fc-space-3) 0 0; font: 400 13px/20px var(--fc-font-sans); color: var(--fc-text-secondary); }
+.fc-chart-card-takeaway strong { font: 600 20px/28px var(--fc-font-sans); letter-spacing: -0.4px; color: var(--fc-text-primary); font-variant-numeric: tabular-nums; }
+.fc-chart-card-takeaway > .fc-delta, .fc-chart-card-takeaway > .fc-link-action { align-self: center; }
 
 /* Table alternative revealed from the card footer. */
 .fc-chart-data[hidden] { display: none; }

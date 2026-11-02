@@ -152,6 +152,8 @@ th.fc-numeric > .fc-th-sort { flex-direction: row-reverse; }
 .fc-table[data-sticky-column] tr > .fc-cell-select + * { left: var(--_select-w); }
 .fc-table[data-sticky-column] tr > :first-child:not(.fc-cell-select),
 .fc-table[data-sticky-column] tr > .fc-cell-select + * { box-shadow: inset -1px 0 0 var(--fc-border-default); }
+/* The first cell past the frozen column's divider gets 16px, so text never sits against the line (owner feedback). */
+.fc-table[data-sticky-column] tr > .fc-cell-select + * + * { padding-left: var(--fc-space-4); }
 .fc-table[data-sticky-column] thead tr > :first-child,
 .fc-table[data-sticky-column] thead tr > .fc-cell-select + * { z-index: 3; }
 /* Keyboard focus never lands under the frozen column (INT-02). Set --fc-frozen-width to its rendered width. */

@@ -70,7 +70,7 @@ Marks read `--_s` from `data-series="1"` to `"6"` (`--fc-chart-1` to `-6`: gray-
 
 ## Takeaway `[F]`
 
-Owner feedback, 2026-11-02: "I don't know if this movement is positive or negative for me." A chart whose movement can be good or bad for the reader states the reading in one line under the title (`.fc-chart-card-takeaway`): the measure that matters, its value, and a change pill colored by polarity, with the explanation in its helper.
+Owner feedback, 2026-11-02: "I don't know if this movement is positive or negative for me." A chart whose movement can be good or bad for the reader states the reading in one line under the title (`.fc-chart-card-takeaway`), leading with its value at headline size (20/28, 600) so it never reads as a second meta line: the value, what it measures ("+2.2 pts gap left"), and a change pill colored by polarity, with the explanation in its helper.
 
 - The chart itself stays neutral; only the pill carries color (color the outcome, not the line).
 - Judge movement from the reader's position. Line movement on an untracked pick reads as **Gap left** (value shrinking is bad). Once the bet is tracked, the same chart reads as **Beat the close** (the line moving your way is good).

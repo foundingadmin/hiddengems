@@ -737,9 +737,9 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
 .fc-note-action { margin-left: auto; flex: 0 0 auto; }
 /* Note link action [F]: an action link (.fc-link-action) hugging the note's right edge, outside the message.
    It adopts the note's severity color. One per note. */
-.fc-note a.fc-note-link { margin-left: auto; flex: 0 0 auto; padding-left: var(--fc-space-3); }
+.fc-note a.fc-note-link { margin-left: auto; flex: 0 0 auto; }
 .fc-note:has(> .fc-note-link) { flex-wrap: wrap; align-items: center; }
-.fc-note:has(> .fc-note-link) > span { flex: 1 1 200px; min-width: 0; }
+.fc-note:has(> .fc-note-link) > span { flex: 1 1 200px; min-width: 0; padding-right: var(--fc-space-2); }
 .fc-note[data-disabled] { --_fg: var(--ds-gray-700); --_bd: var(--ds-gray-400); }
 
 /* ------------------------------------------------------------------ Guide marker [F]
@@ -785,7 +785,8 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
 /* ================================================================== Action link [F]
    A standalone text link that ends in an arrow (owner decision, 2026-11-02). The arrow says "link",
    so there is no underline. Hover and keyboard focus send the arrow out through its own box and back in
-   from the opposite side (one quick pass, 360ms); reduced motion keeps it still.
+   from the opposite side (one quick pass, 360ms), and a soft tint of the link color appears behind the text.
+   Reduced motion keeps the arrow still; the tint stays.
    <a class="fc-link-action" href="...">View runs</a>                → arrow right, stays in the app
    <a class="fc-link-action" data-external href="...">Provider status</a>  → arrow up-right, leaves the app
    Inline links inside a sentence keep their underline; this is for links that stand on their own. */
@@ -801,7 +802,16 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
   text-decoration: none;
   white-space: nowrap;
   border-radius: var(--fc-radius-xs);
+  transition: background-color var(--fc-duration-fast) ease, box-shadow var(--fc-duration-fast) ease;
 }
+/* Text feedback: a soft tint of the link's own color grows 4px around it. Drawn with a box-shadow spread,
+   so nothing moves and the baseline stays put. */
+.fc-link-action:hover {
+  --_tint: color-mix(in srgb, currentColor 12%, transparent);
+  background: var(--_tint);
+  box-shadow: 0 0 0 4px var(--_tint);
+}
+.fc-link-action:focus-visible { background: none; }
 .fc-link-action[data-external] {
   --_arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 7h10v10'/%3E%3Cpath d='M7 17 17 7'/%3E%3C/svg%3E");
   --_dy: -12px;

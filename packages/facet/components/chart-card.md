@@ -76,3 +76,7 @@ Owner feedback, 2026-11-02: "I don't know if this movement is positive or negati
 - Judge movement from the reader's position. Line movement on an untracked pick reads as **Gap left** (value shrinking is bad). Once the bet is tracked, the same chart reads as **Beat the close** (the line moving your way is good).
 
 **Gap to a target.** When the reading is "how far from a target" (price vs our fair price), the chart shades the space between the line and the target line in the edge color (`gap: { to }`, `.fc-chart-gap`) and marks what is left now with a bracket at the right edge. A wedge that narrows says value is closing before any number is read; the takeaway line states the number.
+
+**Label the reading in place.** When the chart's shape carries the reading (a gap to a target), label it where it happens instead of in a takeaway line: the value at open inside the wedge ("+7.1 pts at open") and what is left now beside the bracket ("+2.2 pts left", edge color). Use the takeaway line only when the reading is not a point on the chart (reach at your books).
+
+**Ghosted future.** When the movement has a deadline (kickoff), the chart runs past Now to the event: a faint band marks the future, a dashed gray projection continues at the recent pace, and the zone past the target is tinted red and labelled "No value". Where the projection crosses into it, a red marker names when the edge would flip ("Flips in ~2.5d"). Projections are always dashed, gray and labelled, never drawn like data; the summary for screen readers says the same in words.

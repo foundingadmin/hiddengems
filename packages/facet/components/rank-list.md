@@ -38,4 +38,4 @@ Best price share by sportsbook, biggest line moves, top failing sources.
 
 ## Reach `[F]`
 
-Owner question, 2026-11-02: is this data neutral? A ranking of where value sits is neutral until it meets what you can act on. When rows are things you may or may not have access to (sportsbooks), rows you cannot use read secondary with the reason ("Not connected"), and the card takeaway states your reach ("At your books 65%") with the one action that grows it ("Connect BetMGM for 83%", a quiet action link). No red or green: missing a book is an opportunity, not a failure.
+Owner question, 2026-11-02: is this data neutral? A ranking of where value sits is neutral until it meets what you can act on. When rows are things you may or may not have access to (sportsbooks), rows you cannot use read secondary and carry their own action, in the row it belongs to: a quiet "Connect (+18%)" link that says how much reach it adds. The card takeaway states your reach ("65% at your books"). No red or green: missing a book is an opportunity, not a failure.

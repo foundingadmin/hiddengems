@@ -807,7 +807,6 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
           </a>
         </div>
-        <p class="fc-chart-card-takeaway"><strong>+2.2 pts</strong> gap left <span class="fc-delta fc-has-tip" data-variant="pill" data-direction="negative" data-polarity="bad" data-tip="Down from +7.1 at open. The market moved toward our fair price, so less value is left.">&minus;4.9 pts</span></p>
       </header>
       <div class="fc-chart-card-body">
         <figure class="fc-chart" id="ch-line" role="img"></figure>
@@ -886,7 +885,7 @@
             <span class="fc-chart-card-meta">Share of Week 8 markets where each book had the best price</span>
           </div>
         </div>
-        <p class="fc-chart-card-takeaway"><strong>65%</strong> at your books <a class="fc-link-action" data-tone="quiet" href="#lf-conn-betmgm">Connect BetMGM for 83%</a></p>
+        <p class="fc-chart-card-takeaway"><strong>65%</strong> at your books</p>
       </header>
       <div class="fc-chart-card-body" data-flush>
         <ol class="fc-rank-list" data-striped id="ch-books" aria-labelledby="ch-books-h"></ol>
@@ -1203,7 +1202,7 @@
           // Labels at either end align to the plot edge so they never overhang it.
           for (const l of o.xLabels) {
             const edge = l.at === 0 ? ['start', p.x0] : l.at === n - 1 ? ['end', p.x1] : ['middle', x(l.at)];
-            text(svg, edge[1], ly, l.text, { class: 'fc-chart-tick', 'data-time': '', 'text-anchor': edge[0] });
+            text(svg, edge[1], ly, l.text, { class: 'fc-chart-tick', 'data-time': l.time ? '' : null, 'text-anchor': edge[0] });
           }
         }
       }
@@ -1221,9 +1220,18 @@
 
     function line(host, o) {
       const s = o.series || [];
-      const n = s[0]?.values.length || 2;
+      const n = (s[0]?.values.length || 2) + (o.future ? o.future.values.length : 0);
       const f = frame(host, o, n, false);
       const fmt = o.yFormat || compact;
+      // Ghosted future (owner feedback 2026-11-02): past the last real point, a faint projection at the current
+      // pace runs to the event, and the zone past the target is tinted as "no value". Where the projection
+      // crosses into it, a marker names when the edge would flip. Projections are always dashed and gray.
+      if (o.future && o.gap) {
+        const nowX = f.x(s[0].values.length - 1), gy = f.y(o.gap.to);
+        mk('rect', { class: 'fc-chart-future', x: nowX, y: f.p.y0, width: f.p.x1 - nowX, height: f.p.y1 - f.p.y0 }, f.svg);
+        mk('rect', { class: 'fc-chart-flipzone', x: nowX, y: gy, width: f.p.x1 - nowX, height: f.p.y1 - gy }, f.svg);
+        text(f.svg, nowX + 6, f.p.y1 - 5, 'No value', { class: 'fc-chart-label fc-chart-flip-label' });
+      }
       if (o.threshold) threshold(f, o.threshold, fmt);
       for (const ser of s) {
         const g = mk('g', { 'data-series': ser.slot || 1 }, f.svg);
@@ -1237,9 +1245,24 @@
           const gy = f.y(o.gap.to), last = pts[pts.length - 1];
           mk('path', { class: 'fc-chart-gap', d: d(pts) + `L${last[0].toFixed(1)} ${gy.toFixed(1)}L${pts[0][0].toFixed(1)} ${gy.toFixed(1)}Z` }, f.svg);
           mk('line', { class: 'fc-chart-gap-bracket', x1: last[0] - 1.5, x2: last[0] - 1.5, y1: last[1], y2: gy }, f.svg);
+          // The reading lives where it happens: what was there at open, inside the wedge, and what is left now,
+          // beside the bracket (owner feedback). No separate takeaway line needed.
+          if (o.gap.open) { const t = text(f.svg, pts[0][0] + 10, pts[0][1] + (gy - pts[0][1]) * 0.66 + 4, '', { class: 'fc-chart-label' }); mk('tspan', { 'data-strong': true, class: 'fc-chart-label' }, t).textContent = o.gap.open; mk('tspan', {}, t).textContent = ' at open'; }
+          if (o.gap.left) { const t = text(f.svg, last[0] - 8, (last[1] + gy) / 2 + 4, '', { class: 'fc-chart-label fc-chart-gap-label', 'text-anchor': 'end' }); mk('tspan', { 'data-strong': true, class: 'fc-chart-label fc-chart-gap-label' }, t).textContent = o.gap.left; mk('tspan', {}, t).textContent = ' left'; }
         }
         if (o.area) mk('path', { class: 'fc-chart-area', d: d(pts) + `L${f.p.x1} ${f.p.y1}L${f.p.x0} ${f.p.y1}Z` }, g);
         mk('path', { class: 'fc-chart-line', d: d(solid) }, g);
+        if (o.future) {
+          const base = ser.values.length - 1;
+          const fpts = [pts[pts.length - 1], ...o.future.values.map((v, k) => [f.x(base + k + 1), f.y(v)])];
+          mk('path', { class: 'fc-chart-line', 'data-projection': true, d: d(fpts) }, f.svg);
+          const k = o.future.values.findIndex(v => v < o.gap.to);
+          if (k >= 0) {
+            const [cx, cy] = [f.x(base + k + 1), f.y(o.future.values[k])];
+            mk('circle', { class: 'fc-chart-flip', cx, cy, r: 3.5 }, f.svg);
+            const near = cx > f.p.x1 - 96; text(f.svg, near ? cx - 6 : cx + 6, cy - 8, o.future.flipLabel || 'Flips', { class: 'fc-chart-label fc-chart-flip-label fc-chart-halo', 'text-anchor': near ? 'end' : 'start' });
+          }
+        }
         if (o.incomplete) mk('path', { class: 'fc-chart-line', 'data-incomplete': true, d: d(pts.slice(-2)) }, g);
         if (o.directLabels && s.length === 1) {
           const [first, last] = [pts[0], pts[pts.length - 1]];
@@ -1252,7 +1275,7 @@
             const b = mk('tspan', { 'data-strong': true, class: 'fc-chart-label' }, t); b.textContent = fmt(v);
           };
           directLabel(first[0] + 6, first[1] - 8, o.directLabels.first, vals[0], 'start');
-          directLabel(last[0] + 8, last[1] + 4, o.directLabels.last, vals[vals.length - 1], 'start');
+          if (o.future) directLabel(last[0] - 6, last[1] - 10, o.directLabels.last, vals[vals.length - 1], 'end'); else directLabel(last[0] + 8, o.gap ? last[1] - 2 : last[1] + 4, o.directLabels.last, vals[vals.length - 1], 'start');
         }
       }
     }
@@ -1397,11 +1420,13 @@
     C.line(document.getElementById('ch-line'), {
       series: [{ name: 'DraftKings', values: price, slot: 1 }],
       yTicks: [-150, -125, -100], yFormat: odds,
-      xLabels: ['7d ago', 'now'], incomplete: true, rightGutter: 76,
+      xLabels: [{ at: 0, text: '7d ago' }, { at: 28, text: 'Now' }, { at: 44, text: 'Kickoff' }], incomplete: true, rightGutter: 0,
       threshold: { value: fair, label: 'Our fair price' },
-      gap: { to: fair },
+      gap: { to: fair, open: '+7.1 pts', left: '+2.2 pts' },
+      // At the pace of the last 2 days (about 1.25 cents every 6 hours), projected to kickoff.
+      future: { values: Array.from({ length: 16 }, (_, k) => +(price.at(-1) - 1.25 * (k + 1)).toFixed(1)), flipLabel: 'Flips in ~2.5d' },
       directLabels: { first: 'Open', last: 'Now' },
-      summary: `DraftKings price moved from ${odds(price[0])} at open to ${odds(price.at(-1))} now over 7 days, short of our fair price of ${odds(fair)}. The last 6 hours are still updating.`,
+      summary: `DraftKings price moved from ${odds(price[0])} at open to ${odds(price.at(-1))} now over 7 days, 2.2 points short of our fair price of ${odds(fair)}. At this pace it passes our fair price in about 2.5 days, before kickoff, and the value is gone.`,
     });
 
     // Odds pulls per hour, stacked by trigger. Legend totals come from the same arrays.
@@ -1453,14 +1478,14 @@
     const books = [
       { name: 'DraftKings', share: 38, daily: [34,36,35,39,40,37,38], yours: true },
       { name: 'FanDuel',    share: 27, daily: [29,28,27,26,27,26,27], yours: true },
-      { name: 'BetMGM',     share: 18, daily: [15,16,18,19,18,19,18] },
+      { name: 'BetMGM',     share: 18, daily: [15,16,18,19,18,19,18], href: '#lf-conn-betmgm' },
       { name: 'Caesars',    share: 11, daily: [13,12,12,10,9,11,11] },
       { name: 'ESPN Bet',   share: 6,  daily: [9,8,8,6,6,7,6] },
     ];
     const domain = C.sharedDomain(books.map(b => b.daily));
     const list = document.getElementById('ch-books');
     list.innerHTML = books.map(b => `<li class="fc-rank-row">
-        <span class="fc-rank-label"${b.yours ? '' : ' data-muted'}><span>${b.name}</span>${b.yours ? '' : '<small>Not connected</small>'}</span>
+        <span class="fc-rank-label"${b.yours ? '' : ' data-muted'}><span>${b.name}</span>${b.yours ? '' : `<a class="fc-link-action fc-rank-connect" data-tone="quiet" href="${b.href || '#lists'}">Connect (+${b.share}%)</a>`}</span>
         <span class="fc-rank-chip" style="--share:${b.share}"><span>${b.share}%</span></span>
         <span class="fc-sparkline" data-daily="${b.daily}" aria-hidden="true"></span>
         <button class="fc-button" data-variant="tertiary" data-size="tiny" data-shape="square" type="button" aria-label="More actions for ${b.name}" aria-haspopup="menu"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg></button>
@@ -1493,7 +1518,7 @@
     C.bars(document.getElementById('ch-timeline'), {
       series: [{ name: 'Pulls', values: tl, slot: 5 }], yTicks: [0, 12], hideY: true, incomplete: true,
       labels: tl.map((_, i) => { const m = 16 * 60 + 5 + i * 5, t = x => `${(Math.floor(x / 60) + 11) % 12 + 1}:${String(x % 60).padStart(2, '0')} ${Math.floor(x / 60) < 12 ? 'AM' : 'PM'}`; return i === tl.length - 1 ? `<time>${t(m)}</time> to now` : `<time>${t(m)}</time> to <time>${t(m + 5)}</time>`; }),
-      xLabels: [{ at: 0, text: '4:05 PM' }, { at: 12, text: '5:05 PM' }, { at: 23, text: '6:00 PM' }],
+      xLabels: [{ at: 0, text: '4:05 PM', time: true }, { at: 12, text: '5:05 PM', time: true }, { at: 23, text: '6:00 PM', time: true }],
       summary: 'Pulls every 5 minutes from 4:05 PM to now, steady at 7 to 12, with the current 5 minutes still filling.',
     });
 

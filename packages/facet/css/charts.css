@@ -97,6 +97,13 @@
 /* Gap to a target: the value left, shaded in the edge color, with a bracket at the right edge. */
 .fc-chart-gap { fill: var(--fc-edge-positive); fill-opacity: 0.12; stroke: none; }
 .fc-chart-gap-bracket { stroke: var(--fc-edge-positive); stroke-width: 3; stroke-linecap: round; }
+.fc-chart-label.fc-chart-gap-label, .fc-chart-gap-label > tspan { fill: var(--fc-edge-positive); }
+/* Ghosted future: faint band, dashed gray projection, a red-tinted "no value" zone past the target. */
+.fc-chart-future { fill: var(--fc-surface-subtle); }
+.fc-chart-line[data-projection] { stroke: var(--fc-chart-muted); stroke-dasharray: 3 4; opacity: 0.8; }
+.fc-chart-flipzone { fill: var(--fc-edge-negative); fill-opacity: 0.08; }
+.fc-chart-flip { fill: var(--fc-edge-negative); stroke: var(--fc-surface-canvas); stroke-width: 2; }
+.fc-chart-label.fc-chart-flip-label { fill: var(--fc-edge-negative); }
 .fc-chart-bar { fill: color-mix(in srgb, var(--_s) 55%, var(--fc-surface-canvas)); shape-rendering: crispEdges; transition: fill var(--fc-duration-fast) ease; }
 /* Filled marks are softened (owner feedback 2026-11-02): a full-strength fill reads as a loud block, so bars
    mix 55% of the series color into the canvas. The bucket being read returns to full strength over a faint band. */
@@ -282,6 +289,7 @@
 /* Books you cannot bet at read secondary, with the reason; they stay ranked so the opportunity is visible. */
 .fc-rank-label[data-muted] { color: var(--fc-text-secondary); }
 .fc-rank-label > small { flex: 0 0 auto; font: 400 12px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
+.fc-rank-connect { flex: 0 0 auto; font-size: 12px; line-height: 16px; }
 .fc-rank-chip {
   position: relative;
   display: flex;

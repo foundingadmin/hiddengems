@@ -4,6 +4,10 @@
    odds pull schedule editor. Depends on tokens.css and components.css (.fc-input, .fc-label,
    .fc-helper, .fc-button, .fc-description, .fc-note). Font shorthands follow typography.css roles. */
 
+/* Cancel appears only when a card is dirty, so footer buttons honor [hidden]
+   (.fc-button's display would otherwise win). */
+.fc-fieldset-footer .fc-button[hidden] { display: none; }
+
 /* ------------------------------------------------------------------ Input group
    <div class="fc-input-group"><span class="fc-input-affix" aria-hidden="true">$</span>
    <input class="fc-input fc-num" ...></div>. The group owns the ring, so the affix and the
@@ -22,7 +26,7 @@
 }
 .fc-input-group:hover { box-shadow: 0 0 0 1px var(--fc-border-hover); }
 .fc-input-group:has(.fc-input:focus-visible) { box-shadow: var(--ds-focus-border); }
-.fc-input-group:has([aria-invalid="true"]) { box-shadow: 0 0 0 1px var(--fc-status-error-fg), 0 0 0 4px var(--fc-status-error-bg); }
+.fc-input-group:has(.fc-input[aria-invalid="true"]) { box-shadow: 0 0 0 1px var(--fc-status-error-fg), 0 0 0 4px var(--fc-status-error-bg); }
 .fc-input-group > .fc-input {
   flex: 1 1 auto;
   min-width: 0;
@@ -179,7 +183,8 @@
 .fc-description[data-layout="rows"] > div + div { border-top: 1px solid var(--fc-border-default); }
 .fc-description[data-layout="rows"] dt { font: 400 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); }
 .fc-description[data-layout="rows"] dd { min-width: 0; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
-.fc-value-empty { font-weight: 400; color: var(--fc-text-secondary); }
+.fc-value-empty,
+.fc-description dd.fc-value-empty { font-weight: 400; color: var(--fc-text-secondary); }
 @container fc-desc (max-width: 400px) {
   .fc-description[data-layout="rows"] > div { grid-template-columns: minmax(0, 1fr); }
 }
@@ -231,7 +236,8 @@
 /* ------------------------------------------------------------------ Schedule editor [F]
    Frequency, window, days and time zone, then a live preview of the next 3 runs. The raw
    cron sits in an Advanced disclosure, never on the fast path. */
-.fc-schedule-editor { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 168px), 1fr)); gap: var(--fc-space-4) var(--fc-space-3); }
+/* Two columns at most (frequency and days, from and to), one when narrower than 2 x 200px. */
+.fc-schedule-editor { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, max(200px, calc((100% - var(--fc-space-3)) / 2))), 1fr)); gap: var(--fc-space-4) var(--fc-space-3); }
 .fc-schedule-editor > * { min-width: 0; }
 .fc-schedule-editor [data-span="all"] { grid-column: 1 / -1; }
 .fc-schedule-preview {

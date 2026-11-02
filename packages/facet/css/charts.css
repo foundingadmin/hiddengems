@@ -88,8 +88,8 @@
   font-variant-numeric: tabular-nums;
 }
 .fc-chart-label[data-strong] { fill: var(--fc-text-primary); font-weight: 500; }
-/* Knock-out behind any label drawn over marks, so lines never cross text. */
-.fc-chart-knockout { fill: var(--fc-surface-canvas); }
+/* Halo behind any label drawn over marks, so lines never cross text. */
+.fc-chart-halo { paint-order: stroke; stroke: var(--fc-surface-canvas); stroke-width: 4px; stroke-linejoin: round; }
 
 .fc-chart-line { fill: none; stroke: var(--_s); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
 .fc-chart-area { fill: var(--_s); fill-opacity: 0.06; stroke: none; }
@@ -112,7 +112,6 @@
 .fc-chart-threshold[data-tone="warning"] { --_t: var(--fc-status-warning-solid); }
 .fc-chart-threshold[data-tone="error"]   { --_t: var(--fc-status-error-solid); }
 .fc-chart-threshold line { stroke: var(--_t); stroke-width: 1; stroke-dasharray: 4 3; shape-rendering: crispEdges; }
-.fc-chart-threshold .fc-chart-glyph { stroke: var(--_t); stroke-width: 1.5; stroke-dasharray: 3 2; }
 .fc-chart-threshold text { fill: var(--fc-text-primary); font: 500 12px/16px var(--fc-font-sans); font-variant-numeric: tabular-nums; }
 
 /* Empty chart: axes and gridlines stay, a centered message sits on a knock-out. */

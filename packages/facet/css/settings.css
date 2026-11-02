@@ -21,6 +21,7 @@
   --_nav-w: var(--fc-settings-nav-width, 256px);
   --_measure: var(--fc-measure-settings, 912px);
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
   min-width: 0;
   background: var(--fc-surface-canvas);
@@ -36,8 +37,6 @@
   max-height: calc(100dvh - var(--fc-settings-top, 0px));
   padding: var(--fc-space-2);
   overflow-y: auto;
-  align-self: stretch;
-  box-shadow: inset -1px 0 0 var(--fc-border-default);
 }
 .fc-settings-nav ul { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; list-style: none; }
 .fc-settings-nav-item {
@@ -66,6 +65,9 @@
   align-items: center;
   gap: var(--fc-space-8);
   padding: var(--fc-space-6) var(--fc-space-6) var(--fc-space-16);
+  align-self: stretch;
+  /* The rule between nav and column belongs to the column, so it runs the full page height. */
+  box-shadow: inset 1px 0 0 var(--fc-border-default);
 }
 .fc-settings-main > * { width: 100%; max-width: var(--_measure); min-width: 0; }
 .fc-settings-main > [hidden] { display: none; }
@@ -73,12 +75,12 @@
 .fc-settings-page { display: flex; flex-direction: column; gap: var(--fc-space-8); }
 .fc-settings-page[hidden] { display: none; }
 
-/* Narrow: the section list becomes one scrollable row above the column. */
+/* Narrow: the section list becomes one scrollable row above the column.
+   (A container cannot restyle itself, so the children take full-width rows of the wrapping flex.) */
 @container fc-settings (max-width: 767px) {
-  .fc-settings { flex-direction: column; align-items: stretch; }
+  .fc-settings-nav, .fc-settings-main { flex: 1 1 100%; }
   .fc-settings-nav {
     position: static;
-    flex: 0 0 auto;
     width: auto;
     max-height: none;
     padding: var(--fc-space-2) var(--fc-space-2) 0;
@@ -87,7 +89,7 @@
     box-shadow: inset 0 -1px 0 var(--fc-border-default);
   }
   .fc-settings-nav ul { flex-direction: row; gap: var(--fc-space-1); padding-bottom: var(--fc-space-2); }
-  .fc-settings-main { padding: var(--fc-space-4) var(--fc-space-4) var(--fc-space-12); }
+  .fc-settings-main { padding: var(--fc-space-4) var(--fc-space-4) var(--fc-space-12); box-shadow: none; }
 }
 
 /* ================================================================== Fieldset extensions */

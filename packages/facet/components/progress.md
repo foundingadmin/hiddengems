@@ -36,3 +36,20 @@ Empty (0), partial, full. No disabled or indeterminate state (use Spinner or Gau
 - **Bankroll or unit exposure vs a self-set limit**: The reference would choose Gauge for quota-style values, but a thin bar (`height={4}`) next to the label also works in dense headers.
 - **Closing-line countdown is not progress.** Do not use Progress for time-to-kickoff.
 - Note that `type="success"` renders blue. If Hidden Gems wants green for "complete", pass `colors` explicitly.
+
+## Facet additions `[F]`
+CSS in `css/charts.css`. All of these work on the native `<progress>` and on the div form; only the div form takes stops.
+
+```html
+<div class="fc-progress" role="progressbar" aria-labelledby="run" aria-valuemin="0" aria-valuemax="412" aria-valuenow="182" aria-valuetext="Step 3 of 4, scoring 182 of 412 markets">
+  <span class="fc-progress-fill" style="--value:61"></span>
+  <span class="fc-progress-stop" style="--at:25"></span><span class="fc-progress-stop" style="--at:50"></span><span class="fc-progress-stop" style="--at:75"></span>
+</div>
+```
+
+- **Types follow the hue allocation.** `data-type="success"` is green (`--fc-status-success-solid`), not the reference's blue; `warning` amber, `error` red, `secondary` gray (`--fc-chart-5`). Default stays gray-1000. Success means a check passed (`Books refreshed, 3 of 3`), never "money" or "done" by itself.
+- **Stops.** `.fc-progress-stop` with `--at` (0 to 100): a 1px canvas-colored tick across fill and track. Stops are decorative (`aria-hidden` by default); the current stage is written next to the bar (`Step 3 of 4`) and in `aria-valuetext`.
+- **Threshold colors.** Set `data-level="warning"` or `"error"` from the product's shared breakpoints (the same ones Meter and Gauge use). When the bar turns a color, the text beside it says why (`$38 of $50, near limit`), so color is never alone.
+- **Row.** `.fc-progress-row` puts the work (500, primary) and the count or stage (secondary, tabular) on one line above the bar.
+- `data-height="4"` gives the thin dense-header bar.
+- Quota against a limit is not progress: use `meter.md`.

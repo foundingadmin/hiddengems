@@ -30,8 +30,10 @@
   color: var(--fc-text-secondary);
   font-variant-numeric: tabular-nums;
 }
+.fc-meta[hidden] { display: none; }
 .fc-meta > * { min-width: 0; }
-.fc-meta > * + *::before {
+/* The dot trails its item, so a wrapped line never starts with a separator. */
+.fc-meta > :not(:last-child)::after {
   content: "\00B7";
   content: "\00B7" / "";
   display: inline-block;
@@ -102,7 +104,7 @@
   justify-content: flex-end;
   gap: var(--fc-space-2);
 }
-.fc-list-row-actions .fc-timestamp { font: 400 13px/20px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }
+.fc-list-row-actions .fc-timestamp { font-size: 13px; line-height: 20px; color: var(--fc-text-secondary); }
 
 /* A note that belongs to the row (failed connection). Starts under the title, full width. */
 .fc-list-row-note { flex: 1 0 100%; min-width: 0; }
@@ -164,6 +166,7 @@
 }
 .fc-schedule-runs > * { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .fc-schedule-runs b { font-weight: 400; color: var(--fc-text-primary); }
+.fc-schedule-runs .fc-value-empty { color: var(--fc-text-secondary); }
 .fc-schedule-row[data-state="running"] .fc-list-row-actions .fc-button[data-run] { pointer-events: none; }
 
 @container fc-list (max-width: 640px) {
@@ -199,5 +202,6 @@
 .fc-feed-icon svg { width: 16px; height: 16px; }
 .fc-feed-text { min-width: 0; overflow-wrap: anywhere; }
 .fc-feed-text strong { font-weight: 500; color: var(--fc-text-primary); }
-.fc-feed-time { font: 400 13px/20px var(--fc-font-sans); color: var(--fc-text-secondary); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* Size only: the time family comes from .fc-timestamp. */
+.fc-feed-time { font-size: 13px; line-height: 20px; color: var(--fc-text-secondary); text-align: right; white-space: nowrap; }
 .fc-feed-more { width: 100%; }

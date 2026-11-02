@@ -9,6 +9,10 @@
 
 /* ================================================================== Table additions [F] */
 
+/* The wrap is the containing block, so visually hidden header text and sticky cells
+   stay inside the scroller instead of widening the page at 390px. */
+.fc-table-wrap { position: relative; }
+
 /* Sortable header. The <th> carries aria-sort; the label is a <button class="fc-th-sort">.
    The indicator (chevron in a soft circle) shows only on the sorted column, and as a
    preview on hover or keyboard focus. Numeric headers put it on the inner (left) side
@@ -16,7 +20,7 @@
 .fc-th-sort {
   --_ind: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill-opacity='.16'/%3E%3Cpath d='M5 6.75l3 3 3-3' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   gap: var(--fc-space-1);
   margin: -4px -6px;
   padding: 4px 6px;
@@ -29,9 +33,12 @@
   cursor: pointer;
   transition: color var(--fc-duration-fast) ease, background-color var(--fc-duration-fast) ease;
 }
+/* The indicator centers on the label; the label alone sets the baseline, so sorted and
+   plain headers line up whichever side the indicator sits on. */
 .fc-th-sort::after {
   content: "";
   flex: 0 0 auto;
+  align-self: center;
   width: 16px;
   height: 16px;
   background: currentColor;
@@ -320,12 +327,14 @@ button.fc-filter-chip:focus-visible { box-shadow: var(--ds-focus-ring); }
 .fc-pie[data-signal="wait"] { color: var(--fc-signal-wait-fg); }
 .fc-pie[data-signal="stop"] { color: var(--fc-signal-stop-fg); }
 /* Pie plus its number as one unit, 8px apart [G]. */
-.fc-pie-value { display: inline-flex; align-items: center; gap: var(--fc-space-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fc-pie-value { display: inline-flex; align-items: baseline; gap: var(--fc-space-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fc-pie-value > .fc-pie { align-self: center; }
 
 /* ================================================================== Middle truncate [F]
    Two spans split in markup: the start ellipsizes, the end always shows.
-   <span class="fc-truncate" title="full string"><span class="fc-truncate-start">Anytime TD scorer,</span><span class="fc-truncate-end"> 2nd half (incl. OT)</span></span>
-   white-space: pre keeps the space at the split. Cap the width with --fc-truncate-max or a <colgroup>. */
+   <span class="fc-truncate" title="full string"><span class="fc-truncate-start">Anytime TD scorer, </span><span class="fc-truncate-end">2nd half (incl. OT)</span></span>
+   Keep the space at the end of the start span (white-space: pre holds it) so it is cut with
+   the start. Cap the width with --fc-truncate-max or a <colgroup>. */
 .fc-truncate {
   display: inline-flex;
   min-width: 0;
@@ -361,6 +370,7 @@ button.fc-filter-chip:focus-visible { box-shadow: var(--ds-focus-ring); }
   margin: 0;
 }
 .fc-time-row { display: contents; }
+.fc-time-row[hidden] { display: none; }
 .fc-time-row > dd { margin: 0; }
 .fc-time-zone {
   justify-self: start;
@@ -404,8 +414,11 @@ button.fc-entity:hover { background: var(--fc-surface-fill); }
 .fc-entity-desc .fc-status-dot { width: 8px; height: 8px; }
 .fc-entity-meta { flex: 0 0 auto; font: 400 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .fc-entity-actions { display: flex; flex: 0 0 auto; align-items: center; gap: var(--fc-space-2); margin-left: auto; }
+/* Narrow screens: descriptions wrap rather than cut a state word, secondary meta steps aside. */
 @media (max-width: 480px) {
   .fc-entity { gap: var(--fc-space-3); padding: var(--fc-space-3); }
+  .fc-entity-desc { white-space: normal; align-items: baseline; }
+  .fc-entity-desc .fc-status-dot { align-self: center; }
   .fc-entity-meta { display: none; }
 }
 

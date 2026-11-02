@@ -530,7 +530,9 @@
 /* Every log row opens its full record in a sheet: the whole row is clickable, a right chevron at the end. */
 .fc-log-open { width: 32px; padding-block: 4px !important; text-align: right; }
 .fc-log-open .fc-button { color: var(--fc-text-secondary); }
-tr[data-clickable] { cursor: pointer; }
+tr[data-clickable] { cursor: pointer; transition: background-color var(--fc-duration-fast) ease; }
+/* Same hover as feed rows: the whole row fills, the chevron darkens. */
+.fc-table tbody tr[data-clickable]:hover { background: var(--fc-surface-fill); }
 #log-sheet-note:not(:empty) { margin-bottom: var(--fc-space-4); }
 tr[data-clickable]:hover .fc-log-open .fc-button { color: var(--fc-text-primary); }
 

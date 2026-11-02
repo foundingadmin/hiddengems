@@ -42,11 +42,16 @@
 </div>
 
 <main id="main" class="fc-page">
-  <section id="design-hero" class="fc-hero" data-size="band" data-surface="marketing" aria-labelledby="design-h">
+  <section id="design-hero" class="fc-hero" data-surface="marketing" aria-labelledby="design-h">
     <canvas class="fc-hero-field" data-fc-field aria-hidden="true"></canvas>
     <div class="fc-hero-body">
+      <span class="fc-hero-context">Founding Creative design system</span>
       <h1 id="design-h" class="fc-hero-title">Building blocks</h1>
       <p class="fc-hero-lede">Tokens and components behind every Hidden Gems screen, ready to reuse in other products.</p>
+      <div class="fc-hero-actions">
+        <a class="fc-button" data-shape="rounded" data-size="large" href="#components">Browse components</a>
+        <a class="fc-button" data-variant="secondary" data-shape="rounded" data-size="large" href="#color">Color rules</a>
+      </div>
     </div>
   </section>
 
@@ -2289,7 +2294,7 @@ document.getElementById('bands').innerHTML = head + HUES.map(h => {
   const cells = st.map(n => {
     const ref = `${h.key}-${n}`;
     const toks = byStep[ref] || [];
-    return `<div class="sp-cell"><i class="sp-sw" style="background:var(--ds-${ref})" title="--ds-${ref}"></i><span class="sp-cellstep">${n}</span>${toks.length ? `<a class="sp-count" href="#${rowId(toks[0].tok)}">${toks.length} ${toks.length === 1 ? 'token' : 'tokens'}</a>` : ''}</div>`;
+    return `<div class="sp-cell"><i class="sp-sw" style="background:var(--ds-${ref})" title="--ds-${ref}"></i><span class="sp-cellstep">${n}</span>${toks.length ? `<a class="sp-count" href="#${rowId(toks[0].tok)}">${toks.length} ${toks.length === 1 ? 'token' : 'tokens'}</a>` : '<span class="sp-count" aria-hidden="true">&nbsp;</span>'}</div>`;
   }).join('') + (h.steps ? `<div class="sp-cell-fill" style="grid-column:span ${10 - st.length}"></div>` : '');
   return `<article class="sp-band${h.gem ? ' is-gem' : ''}" role="listitem" aria-label="${h.name}">
     <header class="sp-band-head">

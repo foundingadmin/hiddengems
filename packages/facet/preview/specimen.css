@@ -152,3 +152,39 @@ legend.fc-fieldset-title + * { clear: both; }
 .sp-keep h3 { margin: 0 0 12px; }
 .sp-rulebook th[scope="row"] { white-space: nowrap; }
 .sp-rulebook td:last-child { color: var(--fc-text-secondary); }
+
+/* Content guide, second pass: scannable layers (glance cards, numbered lessons, folded examples, grouped style). */
+.sp-glance { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 12px; }
+.sp-glance-card { display: flex; flex-direction: column; gap: 6px; padding: 20px; border-radius: 12px; box-shadow: var(--ds-shadow-border); color: var(--fc-text-secondary); text-decoration: none; font: 400 14px/20px var(--fc-font-sans); transition: box-shadow var(--fc-duration-fast) ease, background-color var(--fc-duration-fast) ease; }
+.sp-glance-card:hover { background: var(--fc-surface-subtle); box-shadow: var(--ds-shadow-border-small); }
+.sp-glance-card > strong { font: 600 16px/24px var(--fc-font-sans); color: var(--fc-text-primary); }
+.sp-glance-card > .fc-link-action { margin-top: auto; padding-top: 8px; align-self: flex-start; }
+.sp-glance-card:hover > .fc-link-action { color: var(--fc-text-primary); }
+.sp-glance-num { display: block; font: 500 12px/16px var(--fc-font-mono); color: var(--fc-brand-fg); letter-spacing: 0.4px; }
+.sp-lessonhead .sp-glance-num { margin-bottom: 8px; }
+.sp-cmp-cell:last-child { padding: 10px 12px; margin: -10px -12px; border-radius: 8px; background: var(--fc-surface-subtle); }
+.sp-more { margin-top: -8px; }
+.sp-more > summary { display: inline-flex; align-items: center; gap: 6px; padding: 6px 0; cursor: pointer; list-style: none; font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); border-radius: var(--fc-radius-xs); }
+.sp-more > summary::-webkit-details-marker { display: none; }
+.sp-more > summary:hover { color: var(--fc-text-primary); }
+.sp-more > summary svg { width: 16px; height: 16px; transition: transform var(--fc-duration-fast) ease; }
+.sp-more[open] > summary svg { transform: rotate(180deg); }
+.sp-style { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 960px) { .sp-style { grid-template-columns: 1fr; } }
+.sp-style-group { padding: 20px; border-radius: 12px; box-shadow: var(--ds-shadow-border); }
+.sp-style-group h3 { margin: 0 0 8px; }
+.sp-style-group dl { margin: 0; }
+.sp-style-group dl > div { display: grid; grid-template-columns: 120px minmax(0, 1fr); column-gap: 16px; row-gap: 4px; padding: 12px 0; border-top: 1px solid var(--fc-border-default); }
+.sp-style-group dl > div:first-child { border-top: 0; }
+.sp-style-group dt { grid-row: span 2; font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
+.sp-style-group dd { margin: 0; font: 400 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); }
+.sp-style-group dd.sp-style-ex { justify-self: start; padding: 2px 8px; border-radius: 6px; background: var(--fc-surface-subtle); font-size: 13px; line-height: 18px; color: var(--fc-text-primary); }
+@media (max-width: 600px) { .sp-style-group dl > div { grid-template-columns: 1fr; } .sp-style-group dt { grid-row: auto; } }
+
+/* Exceptions read as small cards, not a list wall. */
+.sp-keep .fc-description { grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)) !important; gap: 12px; }
+.sp-keep .fc-description > div { padding: 16px; border-radius: 12px; background: var(--fc-surface-subtle); }
+/* Color bands: swatches stretch to the height of the band's text column (owner feedback). */
+.sp-band:not(.sp-band-header) { align-items: stretch; }
+.sp-band .sp-cell { min-height: 100%; }
+.sp-band .sp-sw { flex: 1 1 auto; min-height: 40px; }

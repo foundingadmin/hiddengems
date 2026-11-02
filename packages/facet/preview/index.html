@@ -628,7 +628,7 @@
   const cap = s => s[0].toUpperCase() + s.slice(1);
   const gem = (t, attrs = '') => `<span class="fc-gem" data-tier="${t}"${attrs}><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>${cap(t)}</span>`;
   const body = document.getElementById('slate-body');
-  const MOTION = { sync: () => '', cascade: i => ` style="--fc-gem-delay:${i * 160}ms"`, once: () => ' data-motion="once"', still: () => ' data-motion="none"' };
+  const MOTION = { sync: () => '', cascade: i => ` style="--fc-gem-delay:${(picks.length - 1 - i) * 160}ms"`, once: () => ' data-motion="once"', still: () => ' data-motion="none"' };
   const renderSlate = (mode = 'cascade') => { body.innerHTML = picks.map((r, i) => {
     const gap = r.est - r.ip;
     const counts = r.sig.reduce((a, s) => (a[s] = (a[s] || 0) + 1, a), {});

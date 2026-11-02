@@ -98,7 +98,7 @@ Each is a conscious Facet call, recorded so nobody "fixes" it back by accident.
 | Unknown values render as an em dash | En dash `–` with `aria-label="Unknown"` in numeric cells, the word "Unknown" where it fits | House rule: no em dashes in any output |
 | Table has one density | Adds `data-density="compact"` (32px rows) for long ledgers | Sunday slates can run 100+ props |
 | Icons from `@vercel/geistcn-assets` | Lucide at 16px / 1.5 stroke | The reference icon package is not public |
-| Rejects glows and decorative looping motion | One exception: the gem tier. Each 5.6s cycle lights the facets left to right up to the tier count, fires a quick flash burst after the last one, holds lit, then dims and repeats; a row delay cascades it down ranked tables; rough never moves; reduced motion stops it all | Motion is part of the rank encoding (owner decision): the cascade says where a pick sits, the facet count says how far it climbs |
+| Rejects glows and decorative looping motion | One exception: the gem tier. Each 5.6s cycle lights the facets left to right up to the tier count, fires a quick flash burst after the last one, holds lit, then dims and repeats; a row delay cascades it up ranked tables, so the top rank lands last; rough never moves; reduced motion stops it all | Motion is part of the rank encoding (owner decision): the cascade says where a pick sits, the facet count says how far it climbs |
 
 ## Content
 

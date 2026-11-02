@@ -488,7 +488,7 @@
      2. a quick flash burst fires the moment the last facet lands
      3. the gem holds, fully lit, for most of the cycle
      4. it dims briefly, then the cycle repeats
-   So the row's start delay (--fc-gem-delay, used to cascade down a ranked table) sets when
+   So the row's start delay (--fc-gem-delay, used to cascade up a ranked table so the top rank lands last) sets when
    motion begins, and the facet count sets when each sequence ends. Rough never moves.
      data-motion="once"  one sequence and burst, then rests lit
      data-motion="none"  still

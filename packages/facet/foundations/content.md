@@ -57,6 +57,10 @@ Name the purpose in simple, objective words, and let the content carry the speci
 
 Data-driven statements ("Gesicki carries the widest gap") belong in the content itself, generated from the data, where they update with it.
 
+## Marking right and wrong
+
+Use the guide marker (`.fc-guide`, see `components/guide-marker.md`) for every Do and Don't. It is neutral by default: a gray check or cross plus the word. Add color (`data-critical`) only where misuse breaks the system, such as the hue allocation. If it appears everywhere, nobody sees it.
+
 ## House style
 
 | Topic | Rule |

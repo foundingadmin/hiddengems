@@ -106,6 +106,7 @@ Full lessons in [`foundations/content.md`](foundations/content.md). The short ve
 
 - **Say it once.** A tab, heading, label, column header, icon or control has already told the reader something; never restate it. Before every line, ask what the reader already knows from what sits above and around it.
 - **Earn every line.** If a line disappeared, would the reader understand less? If not, cut it. Keep disclosures, caveats that change a reading, first-use definitions, and the why on a Don't.
+- **Marking right and wrong.** Use `.fc-guide` for every Do and Don't. It stays neutral unless the rule is a hard rule (`data-critical`).
 - **Headlines that last.** Simple, objective, purpose-naming headlines. Specifics live in the content, so a headline never goes stale when the data changes.
 - **House style.** Sentence case. No colons in titles. No em dashes. No hedges. Notes are one sentence in active voice.
 

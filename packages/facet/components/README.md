@@ -15,6 +15,7 @@ Synthesized component specs for **Facet**, the design system behind **Hidden Gem
 ## Index
 | Component | Purpose | Tier | Spec |
 |---|---|---|---|
+| Guide marker | Correct and incorrect usage in docs; neutral by default, critical for hard rules | P0 | [guide-marker.md](guide-marker.md) |
 | Table | Sortable, comparable same-shape rows (the bet slate) | P0 | [table.md](table.md) |
 | Badge | Static status/category label (confidence tier) | P0 | [badge.md](badge.md) |
 | Status Dot | 10px lifecycle dot (deployments only in the reference; feed freshness as a Facet extension) | P0 | [status-dot.md](status-dot.md) |

@@ -189,6 +189,8 @@
 .fc-chart-card-takeaway strong { font: 600 20px/28px var(--fc-font-sans); letter-spacing: -0.4px; color: var(--fc-text-primary); font-variant-numeric: tabular-nums; }
 /* Pills and links sit on the text baseline with the value and label, never centered by box. */
 .fc-chart-card-takeaway > :is(.fc-delta, .fc-link-action) { align-self: baseline; }
+/* An action in the takeaway hugs the card's right edge, apart from the reading (owner feedback). */
+.fc-chart-card-takeaway > .fc-link-action { margin-left: auto; }
 
 /* Table alternative revealed from the card footer. */
 .fc-chart-data[hidden] { display: none; }

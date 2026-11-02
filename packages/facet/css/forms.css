@@ -185,8 +185,17 @@
 .fc-description[data-layout="rows"] dd { min-width: 0; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
 .fc-value-empty,
 .fc-description dd.fc-value-empty { font-weight: 400; color: var(--fc-text-secondary); }
+/* Actions variant [F] (owner question, 2026-11-02). Key/value rows never edit in place. A row whose value
+   can change carries one action in a trailing column, an in-app action link to where that value is owned
+   (its form, connection row or key flow): "Edit" for a set value, "Add" for None, a named verb when one
+   exists ("Rotate"). Read-only facts (status, dates, names) get none. Removing happens where the value
+   is owned, behind a confirmation, never from these rows. */
+.fc-description[data-layout="rows"][data-actions] > div { grid-template-columns: minmax(0, 35%) minmax(0, 1fr) auto; }
+.fc-description-action { margin: 0; justify-self: end; font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
 @container fc-desc (max-width: 400px) {
-  .fc-description[data-layout="rows"] > div { grid-template-columns: minmax(0, 1fr); }
+  .fc-description[data-layout="rows"] > div,
+  .fc-description[data-layout="rows"][data-actions] > div { grid-template-columns: minmax(0, 1fr) auto; }
+  .fc-description[data-layout="rows"] > div > dt { grid-column: 1 / -1; }
 }
 
 /* ------------------------------------------------------------------ Snippet

@@ -738,6 +738,18 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
 /* Note link action [F]: an action link (.fc-link-action) hugging the note's right edge, outside the message.
    It adopts the note's severity color. One per note. */
 .fc-note a.fc-note-link { margin-left: auto; flex: 0 0 auto; }
+/* Inside a note the hover surface sits exactly 4px from the note's top, bottom and right edges, with a
+   concentric corner. The link grows into the note's padding with negative margins, so nothing moves. */
+.fc-note a.fc-note-link {
+  --_inset: 4px;
+  --_py: calc(7px - var(--_inset));
+  --_px: calc(12px - var(--_inset));
+  padding: var(--_py) var(--_px);
+  margin: calc(-1 * var(--_py)) calc(-1 * var(--_px)) calc(-1 * var(--_py)) auto;
+  border-radius: calc(var(--fc-radius-sm) - var(--_inset));
+}
+.fc-note[data-size="small"] a.fc-note-link { --_py: calc(6px - var(--_inset)); --_px: calc(8px - var(--_inset)); }
+.fc-note a.fc-note-link:hover { box-shadow: none; }
 .fc-note:has(> .fc-note-link) { flex-wrap: wrap; align-items: center; }
 .fc-note:has(> .fc-note-link) > span { flex: 1 1 200px; min-width: 0; padding-right: var(--fc-space-2); }
 .fc-note[data-disabled] { --_fg: var(--ds-gray-700); --_bd: var(--ds-gray-400); }

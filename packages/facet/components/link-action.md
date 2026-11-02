@@ -5,9 +5,18 @@
 A standalone text link that ends in an arrow. The arrow says "link", so there is no underline, and text and arrow share one baseline with whatever sits beside them.
 
 ```html
-<a class="fc-link-action" href="/runs">View runs</a>                          <!-- arrow right: stays in the app -->
-<a class="fc-link-action" data-external href="https://...">Provider status</a> <!-- arrow up-right: leaves the app -->
+<a class="fc-link-action" href="/runs">View runs</a>
+<a class="fc-link-action" data-external href="https://..." target="_blank" rel="noopener noreferrer">Provider status</a>
 ```
+
+**Ingress and egress** (owner decision, 2026-11-02). Exactly two arrows, used by every arrow link and row affordance in Facet (`--fc-arrow-in`, `--fc-arrow-out` in base.css):
+
+| Arrow | Means | Behavior |
+|---|---|---|
+| → in | Somewhere inside the app | Same tab |
+| ↗ out | Somewhere outside the app | New tab (`target="_blank" rel="noopener noreferrer"`); screen readers hear "opens in a new tab" |
+
+A chevron is never used for navigation; chevrons belong to disclosure (expand, select, drill-in menus).
 
 - **Hover:** a soft tint of the link's own color (12%) appears behind the text, reaching 4px past it on every side. It is drawn with a box-shadow spread, so nothing moves and the baseline stays put.
 - **Hover and keyboard focus:** the arrow slides out through its own 12px box and back in from the opposite side, one quick pass (360ms, swift easing). Right for internal links, up-right for external. Reduced motion keeps it still.

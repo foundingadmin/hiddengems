@@ -222,8 +222,8 @@
 .fc-feed-text strong { font-weight: 500; color: var(--fc-text-primary); }
 /* Jump to the source (owner question, 2026-11-02). A line whose subject lives somewhere else in the app makes
    that subject its one link (.fc-feed-subject), pointing at the exact record, not the top of a page. The link
-   covers the whole row; a gray chevron at the row's end says "this opens", and on hover the row fills and the
-   chevron darkens and passes through. Lines with nowhere to go have no chevron. */
+   covers the whole row; a gray in-app arrow at the row's end says "this opens", and on hover the row fills and
+   the arrow darkens and passes through. Lines with nowhere to go have no arrow. */
 .fc-feed-subject { font-weight: 500; color: var(--fc-text-primary); text-decoration: none; border-radius: var(--fc-radius-xs); }
 .fc-feed-subject::before { content: ""; position: absolute; z-index: 1; inset: 0; border-radius: var(--fc-radius-sm); }
 .fc-feed-row:has(.fc-feed-subject) { margin-inline: calc(-1 * var(--fc-space-2)); padding-inline: var(--fc-space-2); border-radius: var(--fc-radius-sm); transition: background-color var(--fc-duration-fast) ease; }
@@ -238,9 +238,8 @@
   height: 12px;
   background: var(--fc-text-secondary);
   opacity: 0.6;
-  -webkit-mask: var(--_chev) 0 0 / 12px 12px no-repeat;
-          mask: var(--_chev) 0 0 / 12px 12px no-repeat;
-  --_chev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E");
+  -webkit-mask: var(--fc-arrow-in) 0 0 / 12px 12px no-repeat;
+          mask: var(--fc-arrow-in) 0 0 / 12px 12px no-repeat;
   --_dx: 12px; --_dy: 0px;
 }
 .fc-feed-row:has(.fc-feed-subject):hover { background: var(--fc-surface-fill); }

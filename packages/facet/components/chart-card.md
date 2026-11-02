@@ -8,7 +8,7 @@ One surface that holds one chart and everything needed to read it: what it measu
 ## Anatomy
 - `.fc-chart-card`: canvas surface, `--ds-shadow-border`, radius `--fc-radius-lg` (12).
 - `.fc-chart-card-header`: 16px padding, then
-  - `.fc-chart-card-titlerow`: `.fc-chart-card-title` (14/20, 500, primary) with optional `.fc-chart-card-meta` under it (13/18, secondary), and an optional `.fc-chart-card-drill` link (24px square, chevron, named with `aria-label`).
+  - `.fc-chart-card-titlerow`: `.fc-chart-card-title` (14/20, 500, primary) with optional `.fc-chart-card-meta` under it (13/18, secondary), and an optional `.fc-chart-card-drill` link (24px square, the in-app arrow →, named with `aria-label`).
   - Optional `.fc-legend` (see `legend.md`). Default for multi-series charts.
 - `.fc-chart-card-body`: 16px padding; `data-flush` drops the side padding to 8px for row lists that carry their own inset.
 - `.fc-chart`: the plot. `<figure role="img" aria-label="summary">` containing one `<svg aria-hidden="true">` drawn at its real pixel width.

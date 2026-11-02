@@ -64,6 +64,13 @@ time, .fc-time, .fc-timestamp {
 }
 time[data-relative], .fc-time[data-relative], .fc-timestamp[data-relative] { font-family: var(--fc-font-sans); font-feature-settings: normal; }
 
+/* The two link arrows (owner decision, 2026-11-02). In: somewhere inside the app, same tab.
+   Out: somewhere outside the app, new tab. Every arrow link and row affordance uses these two masks. */
+:root {
+  --fc-arrow-in: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m13 6 6 6-6 6'/%3E%3C/svg%3E");
+  --fc-arrow-out: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 7h10v10'/%3E%3Cpath d='M7 17 17 7'/%3E%3C/svg%3E");
+}
+
 /* Deep links land clear of sticky headers: a shell with a sticky top bar sets --fc-scroll-offset. */
 :target { scroll-margin-top: var(--fc-scroll-offset, var(--fc-space-4)); }
 

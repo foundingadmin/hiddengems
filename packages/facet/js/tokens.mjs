@@ -305,7 +305,7 @@ export const semantic = {
     "border-hover": "#454545",
     "border-active": "#878787",
     "border-alpha": "#ffffff24",
-    "focus-color": "#8e4ec6",
+    "focus-color": "#763da9",
     "status-info-fg": "#52a8ff",
     "status-info-solid": "#0072f5",
     "status-info-bg": "#10233d",
@@ -375,12 +375,12 @@ export const semantic = {
     "badge-teal": "#0c9784",
     "control-thumb": "#ededed",
     "control-thumb-ring": "#ffffff82",
-    "control-on": "#8e4ec6",
+    "control-on": "#763da9",
     "control-on-fg": "#ededed",
     "action-destructive": "#d93036",
     "action-destructive-hover": "#ff6166",
     "brand-fg": "#bf7af0",
-    "brand-solid": "#8e4ec6",
+    "brand-solid": "#763da9",
     "brand-bg": "#2e1938",
     "brand-border": "#4f2768"
   }

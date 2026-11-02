@@ -562,7 +562,12 @@
     "solid": {
       "$type": "color",
       "$value": "{color.purple.700}",
-      "$description": "Brand fills and the hero field sparkle."
+      "$extensions": {
+        "facet": {
+          "dark": "{color.purple.800}"
+        }
+      },
+      "$description": "Brand fills: focus rings, checked and on controls, the hero field sparkle. One step deeper in dark mode (purple 800), so light marks on it never glare (owner feedback, 2026-11-02)."
     },
     "bg": {
       "$type": "color",

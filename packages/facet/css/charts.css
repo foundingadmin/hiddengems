@@ -94,6 +94,9 @@
 
 .fc-chart-line { fill: none; stroke: var(--_s); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
 .fc-chart-area { fill: var(--_s); fill-opacity: 0.06; stroke: none; }
+/* Gap to a target: the value left, shaded in the edge color, with a bracket at the right edge. */
+.fc-chart-gap { fill: var(--fc-edge-positive); fill-opacity: 0.12; stroke: none; }
+.fc-chart-gap-bracket { stroke: var(--fc-edge-positive); stroke-width: 3; stroke-linecap: round; }
 .fc-chart-bar { fill: color-mix(in srgb, var(--_s) 55%, var(--fc-surface-canvas)); shape-rendering: crispEdges; transition: fill var(--fc-duration-fast) ease; }
 /* Filled marks are softened (owner feedback 2026-11-02): a full-strength fill reads as a loud block, so bars
    mix 55% of the series color into the canvas. The bucket being read returns to full strength over a faint band. */

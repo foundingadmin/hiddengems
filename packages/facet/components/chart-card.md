@@ -74,3 +74,5 @@ Owner feedback, 2026-11-02: "I don't know if this movement is positive or negati
 
 - The chart itself stays neutral; only the pill carries color (color the outcome, not the line).
 - Judge movement from the reader's position. Line movement on an untracked pick reads as **Gap left** (value shrinking is bad). Once the bet is tracked, the same chart reads as **Beat the close** (the line moving your way is good).
+
+**Gap to a target.** When the reading is "how far from a target" (price vs our fair price), the chart shades the space between the line and the target line in the edge color (`gap: { to }`, `.fc-chart-gap`) and marks what is left now with a bracket at the right edge. A wedge that narrows says value is closing before any number is read; the takeaway line states the number.

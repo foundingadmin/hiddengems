@@ -1230,6 +1230,14 @@
         const pts = ser.values.map((v, i) => [f.x(i), f.y(v)]);
         const solid = o.incomplete ? pts.slice(0, -1) : pts;
         const d = a => a.map((q, i) => (i ? 'L' : 'M') + q[0].toFixed(1) + ' ' + q[1].toFixed(1)).join('');
+        // Gap (owner feedback 2026-11-02): shade the value between the line and a target (our fair price),
+        // so the reading is visible at a glance: a wedge that narrows means value is closing. A bracket at the
+        // right edge marks what is left now.
+        if (o.gap) {
+          const gy = f.y(o.gap.to), last = pts[pts.length - 1];
+          mk('path', { class: 'fc-chart-gap', d: d(pts) + `L${last[0].toFixed(1)} ${gy.toFixed(1)}L${pts[0][0].toFixed(1)} ${gy.toFixed(1)}Z` }, f.svg);
+          mk('line', { class: 'fc-chart-gap-bracket', x1: last[0] - 1.5, x2: last[0] - 1.5, y1: last[1], y2: gy }, f.svg);
+        }
         if (o.area) mk('path', { class: 'fc-chart-area', d: d(pts) + `L${f.p.x1} ${f.p.y1}L${f.p.x0} ${f.p.y1}Z` }, g);
         mk('path', { class: 'fc-chart-line', d: d(solid) }, g);
         if (o.incomplete) mk('path', { class: 'fc-chart-line', 'data-incomplete': true, d: d(pts.slice(-2)) }, g);
@@ -1391,6 +1399,7 @@
       yTicks: [-150, -125, -100], yFormat: odds,
       xLabels: ['7d ago', 'now'], incomplete: true, rightGutter: 76,
       threshold: { value: fair, label: 'Our fair price' },
+      gap: { to: fair },
       directLabels: { first: 'Open', last: 'Now' },
       summary: `DraftKings price moved from ${odds(price[0])} at open to ${odds(price.at(-1))} now over 7 days, short of our fair price of ${odds(fair)}. The last 6 hours are still updating.`,
     });

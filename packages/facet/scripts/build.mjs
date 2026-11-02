@@ -328,3 +328,7 @@ write('css/shadcn.css', shadcn);
   const src = readFileSync(join(root, 'js/tips.mjs'), 'utf8').replace(/^export /gm, '');
   write('preview/tips.js', `// GENERATED from js/tips.mjs by scripts/build.mjs. Do not edit by hand.\n(function () {\n${src}\nwindow.FacetTips = { mountTips };\n})();\n`);
 }
+{
+  const src = readFileSync(join(root, 'js/time.mjs'), 'utf8').replace(/^export /gm, '');
+  write('preview/time.js', `// GENERATED from js/time.mjs by scripts/build.mjs. Do not edit by hand.\n(function () {\n${src}\nwindow.FacetTime = { formatUntil, stampUntil };\n})();\n`);
+}

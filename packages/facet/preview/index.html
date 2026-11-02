@@ -1588,7 +1588,7 @@
             <code class="fc-schedule-cron">*/5 9-22 * * 0,1,4</code>
           </div>
           <span class="fc-schedule-status fc-status"><span class="fc-status-dot" data-state="live"></span><span data-status-word>Succeeded</span></span>
-          <p class="fc-schedule-next"><span class="fc-schedule-label">Next run</span><time class="fc-timestamp" datetime="2026-11-02T18:05-05:00" title="Monday, Nov 2, 2026, 6:05 PM ET">Today 6:05 PM</time></p>
+          <p class="fc-schedule-next"><span class="fc-schedule-label">Next run</span><time class="fc-timestamp" datetime="2026-11-02T18:05-05:00" title="Monday, Nov 2, 2026, 6:05 PM ET" data-until>Today 6:05 PM</time><span class="fc-schedule-detail" data-until-out>in 5 min</span></p>
           <p class="fc-schedule-last" data-last><span class="fc-schedule-label">Last run</span><time class="fc-timestamp" datetime="2026-11-02T18:00-05:00" title="Monday, Nov 2, 2026, 6:00 PM ET">Today 6:00 PM</time><span class="fc-schedule-detail">4.1 s</span></p>
           <div class="fc-list-row-actions">
             <button class="fc-button" data-variant="secondary" data-size="small" type="button" data-run aria-label="Run Odds, all books now">Run now</button>
@@ -1602,7 +1602,7 @@
             <code class="fc-schedule-cron">0 * * * 2-6</code>
           </div>
           <span class="fc-schedule-status fc-status"><span class="fc-status-dot" data-state="failed"></span><span data-status-word>Failed</span></span>
-          <p class="fc-schedule-next"><span class="fc-schedule-label">Next run</span><time class="fc-timestamp" datetime="2026-11-03T00:00-05:00" title="Tuesday, Nov 3, 2026, 12:00 AM ET">Tue 12:00 AM</time></p>
+          <p class="fc-schedule-next"><span class="fc-schedule-label">Next run</span><time class="fc-timestamp" datetime="2026-11-03T00:00-05:00" title="Tuesday, Nov 3, 2026, 12:00 AM ET" data-until>Tue 12:00 AM</time><span class="fc-schedule-detail" data-until-out>in 6 hr</span></p>
           <p class="fc-schedule-last" data-last><span class="fc-schedule-label">Last run</span><time class="fc-timestamp" datetime="2026-10-31T23:00-04:00" title="Saturday, Oct 31, 2026, 11:00 PM ET">Sat 11:00 PM</time><span class="fc-schedule-detail">Timed out</span></p>
           <div class="fc-list-row-actions">
             <button class="fc-button" data-variant="secondary" data-size="small" type="button" data-run aria-label="Run Injuries and depth charts now">Run now</button>
@@ -2057,6 +2057,7 @@
 <script src="semantic-map.js"></script>
 <script src="field.js"></script>
 <script src="tips.js"></script>
+<script src="time.js"></script>
 <script src="specimen.js"></script>
 <script>
 const drawGems = () => { document.getElementById('gems').innerHTML = ['rough', 'cut', 'polished', 'flawless'].map(t => gem(t)).join(''); };

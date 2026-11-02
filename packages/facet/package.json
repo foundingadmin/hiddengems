@@ -16,7 +16,8 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "capture": "node scripts/capture-geist.mjs",
-    "check": "node scripts/build.mjs && git diff --exit-code -- css js"
+    "check": "node scripts/build.mjs && git diff --exit-code -- css js",
+    "lint:color": "node scripts/lint-color.mjs ../../apps"
   },
   "devDependencies": {
     "playwright": "^1.63.0"

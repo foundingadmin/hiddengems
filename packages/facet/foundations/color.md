@@ -38,6 +38,10 @@ Backgrounds: Background 1 (`--ds-background-100`, white / #0a0a0a) for nearly ev
 - Solid badges use the 900 step for most hues, blue uses 800, and amber uses 700 with black text (measured on the live Badge component).
 - The legacy Geist StatusDot still paints with older brand hex values (`#50e3c2`, `#f5a623`, `#e00`). Facet maps dots to the current scales instead.
 
+## Hue allocation
+
+Each hue has exactly one job. This is a hard rule, enforced by `scripts/lint-color.mjs`; the full table lives in [`DESIGN.md`](../DESIGN.md#hue-allocation-hard-rule-f) and at the top of the color section in `preview/index.html`. Purple is reserved for gems only.
+
 ## Facet semantic layer `[F]`
 
 Product code reads semantic names first (`--fc-*`), primitives second (`--ds-*`), raw values never. Full list in `tokens/facet.semantic.json`.
@@ -52,7 +56,7 @@ Product code reads semantic names first (`--fc-*`), primitives second (`--ds-*`)
 | Edge | positive, negative, neutral | green-900, red-900, gray-900 |
 | Gem | fg, solid, bg, border, tier.rough/cut/polished/flawless | purple, tiers gray-700 then purple 600/700/900 |
 | Freshness | live, recent, stale, failed, unknown | green-700, blue-700, amber-700, red-700, gray-600 |
-| Chart | 1 to 6, muted, grid, axis | gray-1000, blue, amber, teal, pink, purple at 700; gray-600/300/500 |
+| Chart | 1 to 6, muted, grid, axis | gray-1000, blue-700, teal-700, pink-700, gray-700, gray-500; gray-600/300/500 |
 
 ### Contrast rules
 
@@ -62,4 +66,4 @@ Product code reads semantic names first (`--fc-*`), primitives second (`--ds-*`)
 
 ### Chart color
 
-Vercel's own report foundation maps all six chart slots to grays. Facet keeps `chart-1` as gray-1000 and adds hues in a fixed order only when series must be distinguished and direct labels are not enough. A series keeps its slot across every view. A gradient is allowed only as a labelled continuous scale.
+Vercel's own report foundation maps all six chart slots to grays. Facet keeps `chart-1` as gray-1000 and adds blue, teal and pink in a fixed order only when series must be distinguished and direct labels are not enough. Verdict hues (green, amber, red) and purple are never series colors, so a chart can't be misread as a verdict or a gem. A series keeps its slot across every view. A gradient is allowed only as a labelled continuous scale.

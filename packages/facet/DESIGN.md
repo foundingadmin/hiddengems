@@ -54,6 +54,25 @@ Vercel handles dense data well because of a few disciplines applied without exce
 11. **Freshness is always visible** for any number that can go stale (odds, injuries): a status dot plus a relative time, with the exact timestamp on hover.
 12. **Skeletons, not spinners, for layout we already know.** Preserve the shape so the page does not jump.
 
+## Hue allocation (hard rule) `[F]`
+
+The interface is gray. Each hue has exactly one job, and appears only to do that job. Product code reaches color through the semantic token for the job (`--fc-*`), never a hue step (`--ds-purple-700`, `bg-red-400`) or a raw value. `scripts/lint-color.mjs` fails on violations, and purple has no Tailwind utility at all.
+
+| Hue | Its job | Use it for | Never for | Reach it through |
+|---|---|---|---|---|
+| Gray | Everything by default | Text, surfaces, borders, primary buttons, chart series 1 | Carrying meaning by itself | `--fc-text-*`, `--fc-surface-*`, `--fc-border-*` |
+| **Purple** | **Gems, and only gems** | "This is a Hidden Gem" designation, the gem tier ladder | Links, buttons, focus, selection, highlights, chart series, brand decoration, anything that is not a gem | `--fc-gem-*`, `.fc-gem` |
+| Green | Go, and good for the bettor | Go verdict, positive edge, success, live data | Money or wins because they look nice, "important" values | `--fc-signal-go-*`, `--fc-edge-positive`, `--fc-status-success-*` |
+| Amber | Wait, and caution | Wait verdict, warnings, stale data | Highlighting, emphasis, a chart series | `--fc-signal-wait-*`, `--fc-status-warning-*` |
+| Red | Stop, and bad for the bettor | Stop verdict, negative edge, errors, failed data, destructive actions | Decoration, "hot" picks, urgency | `--fc-signal-stop-*`, `--fc-edge-negative`, `--fc-status-error-*` |
+| Blue | Interaction and information | Links, focus ring, toggles on, info notes, recent data, chart series 2 | Verdicts, gems, success | `--fc-text-link`, `--fc-focus-color`, `--fc-status-info-*` |
+| Teal, pink | Chart series only | Series 3 and 4 when direct labels and grays are not enough | Any UI element | `--fc-chart-3`, `--fc-chart-4` |
+
+- **Color is never the only cue.** Verdict: dot plus word. Edge: sign plus arrow plus color. Gem tier: facet count plus purple intensity. Freshness: dot plus relative time.
+- **Charts:** monochrome first. A chart that encodes verdicts or gems uses the signal or gem tokens, because that is their job.
+- **Badges:** Geist badges come in every hue; a badge's hue still follows this table. A purple badge means a gem.
+- **Exceptions** need a reviewed reason on the same line: `facet-allow-color: <reason>`.
+
 ## Hidden Gems semantic language `[F]`
 
 | Meaning | Encoding | Tokens |
@@ -64,7 +83,7 @@ Vercel handles dense data well because of a few disciplines applied without exce
 | Gem tier: rough < cut < polished < flawless | 1 to 4 filled facets + rising purple intensity (`.fc-gem`) | `--fc-gem-tier-*` |
 | "This is a Hidden Gem" | The single brand accent: purple | `--fc-gem-*` |
 | Data freshness | Status dot + relative time (`.fc-status`) | `--fc-freshness-*` |
-| Charts | Monochrome first; hues in fixed order only when series must be told apart | `--fc-chart-1..6`, `--fc-chart-muted` |
+| Charts | Monochrome first; blue, teal, pink only when series must be told apart (never verdict hues or purple) | `--fc-chart-1..6`, `--fc-chart-muted` |
 
 Why purple for gems: green, amber and red already mean go, wait and stop, and blue already means links, focus and info. Purple is the only Geist hue left with no job, and an amethyst reads as "gem" without decoration. Why a single hue for tiers: tiers are a ranking, and a ranking should read as more or less of one thing, not as four unrelated categories.
 
@@ -93,4 +112,5 @@ Decorative gradients, glows, glass, textures or grid backgrounds. Gradient text.
 - **Plain HTML or a Claude artifact:** link `css/facet.css` (or inline it), then use the classes. See `preview/index.html`.
 - **Next.js + Tailwind v4:** `@import "tailwindcss"; @import "@foundingcreative/facet/css/tailwind.css";` then `base.css`, `typography.css` and `components.css`. Load fonts with the `geist` package (`geist/font/sans`, `geist/font/mono`); Facet picks up `--font-geist-sans` and `--font-geist-mono` automatically.
 - **Canvas or SVG charts:** `import { token } from '@foundingcreative/facet/js/tokens.mjs'` for resolved hex values per theme.
+- **Checking color use:** `node packages/facet/scripts/lint-color.mjs apps` (fails on raw colors and hue steps).
 - **Changing tokens:** edit `tokens/*.json`, run `node scripts/build.mjs`. To re-sync with Vercel, run `node scripts/capture-geist.mjs` and review the diff like any design decision.

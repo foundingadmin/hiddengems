@@ -156,6 +156,9 @@ write('css/materials.css', matCss);
 // ---------- tailwind.css (Tailwind v4 theme bridge) ----------
 const twColors = [];
 for (const [scale, steps] of Object.entries(geist.color)) {
+  // Hue allocation (DESIGN.md): purple belongs to gems only, so no bg-purple-* / text-purple-*
+  // utilities exist. Gem styling goes through the semantic fc-gem-* utilities instead.
+  if (scale === 'purple') continue;
   for (const step of Object.keys(steps)) twColors.push(`--color-${scale}-${step}: var(--ds-${scale}-${step});`);
 }
 const tw = HEADER + `/* Tailwind CSS v4 bridge. Usage in an app's global CSS:

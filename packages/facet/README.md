@@ -36,6 +36,7 @@ packages/facet/
   scripts/
     build.mjs               tokens/*.json -> css/*.css + js/tokens.mjs (zero dependencies)
     capture-geist.mjs       Re-sync primitives from vercel.com (needs Playwright)
+    lint-color.mjs          Color guard: fails on raw colors and hue steps outside Facet
 ```
 
 ## Use it

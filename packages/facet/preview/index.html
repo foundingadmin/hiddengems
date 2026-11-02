@@ -37,6 +37,25 @@
   .sp-type span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .sp-mats { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 24px; padding: 24px; background: var(--fc-surface-subtle); border-radius: 12px; }
   .sp-mats div { height: 96px; display: flex; align-items: flex-end; padding: 12px; font: 400 12px/16px var(--fc-font-mono); color: var(--fc-text-secondary); }
+  .sp-code { font: 400 12px/16px var(--fc-font-mono); color: var(--fc-text-primary); white-space: nowrap; }
+  .sp-hue { display: inline-flex; align-items: center; gap: 6px; }
+  .sp-hue i { width: 12px; height: 12px; border-radius: 3px; box-shadow: inset 0 0 0 1px var(--ds-gray-alpha-300); }
+  .sp-hue i + i { margin-left: -4px; }
+  .sp-alloc td { white-space: normal; min-width: 140px; }
+  .sp-alloc td:last-child { min-width: 200px; }
+  .sp-alloc td:last-child .sp-code { display: inline-block; margin: 0 6px 4px 0; }
+  .sp-alloc .sp-alloc-gem { background: var(--fc-gem-bg); }
+  .sp-alloc .sp-alloc-gem td, .sp-alloc .sp-alloc-gem th { color: var(--fc-text-primary); }
+  .sp-rules { display: flex; flex-direction: column; gap: 8px; max-width: 80ch; padding-left: 0; }
+  .sp-rules li { font: 400 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); }
+  .sp-rules strong { color: var(--fc-text-primary); font-weight: 500; }
+  .sp-dodont { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .sp-dodont figure { margin: 0; display: flex; flex-direction: column; gap: 12px; padding: 16px; border-radius: 12px; box-shadow: var(--ds-shadow-border); }
+  /* Deliberate misuse samples, drawn with primitives on purpose to show what not to do. */
+  .sp-misuse { --_bg: var(--ds-purple-700); --_fg: #fff; --_bg-hover: var(--ds-purple-700); pointer-events: none; } /* facet-allow-color: misuse demo */
+  .sp-misuse-link { color: var(--ds-purple-900); text-decoration: underline; text-underline-offset: 3px; pointer-events: none; }
+  .sp-misuse-amber { font: 600 16px/24px var(--fc-font-sans); color: var(--ds-amber-900); }
+  .sp-misuse-green { font: 600 16px/24px var(--fc-font-sans); color: var(--ds-green-900); font-variant-numeric: tabular-nums; }
   .sp-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
   .sp-gallery > figure { margin: 0; display: flex; flex-direction: column; gap: 16px; padding: 20px; box-shadow: var(--ds-shadow-border); border-radius: 12px; min-width: 0; }
   .sp-gallery figcaption { font: 500 14px/20px var(--fc-font-sans); }
@@ -132,6 +151,40 @@
       <h2 id="color-h" class="text-heading-24">Color: Geist's ten step scales, verbatim</h2>
       <p class="text-copy-14">Captured from vercel.com's computed styles, light and dark, with Display P3 upgrades on capable screens. Steps 100 to 300 are fills, 400 to 600 borders, 700 and 800 solid fills, 900 secondary text, 1000 primary text.</p>
     </div>
+    <div class="fc-stack" id="hue-allocation" style="--fc-gap:16px">
+      <div class="sp-intro">
+        <h3 class="text-heading-20">Every hue has one job</h3>
+        <p class="text-copy-14">A hard rule. The interface is gray; a hue appears only to do its job below, and never as decoration. Product code reaches color through the semantic token for the job (<code class="sp-code">--fc-*</code>), never a hue step directly. <code class="sp-code">lint-color.mjs</code> fails the build on raw colors or hue steps, and purple has no Tailwind utility at all.</p>
+      </div>
+      <div class="fc-table-wrap">
+        <table class="fc-table sp-alloc">
+          <caption>Hue allocation. Each row is the complete list of jobs for that hue.</caption>
+          <thead><tr><th scope="col">Hue</th><th scope="col">Its job</th><th scope="col">Use it for</th><th scope="col">Never for</th><th scope="col">Reach it through</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><span class="sp-hue"><i style="background:var(--ds-gray-1000)"></i><i style="background:var(--ds-gray-400)"></i>Gray</span></th><td>Everything by default</td><td>Text, surfaces, borders, primary buttons, chart series 1</td><td>Carrying meaning by itself</td><td><code class="sp-code">--fc-text-*</code> <code class="sp-code">--fc-surface-*</code> <code class="sp-code">--fc-border-*</code></td></tr>
+            <tr class="sp-alloc-gem"><th scope="row"><span class="sp-hue"><i style="background:var(--fc-gem-solid)"></i>Purple</span></th><td><strong>Gems, and only gems</strong></td><td>"This is a Hidden Gem" designation, the gem tier ladder (rough, cut, polished, flawless)</td><td>Links, buttons, focus, selection, highlights, chart series, brand decoration, anything that is not a gem</td><td><code class="sp-code">--fc-gem-*</code> <code class="sp-code">.fc-gem</code></td></tr>
+            <tr><th scope="row"><span class="sp-hue"><i style="background:var(--fc-signal-go-solid)"></i>Green</span></th><td>Go, and good for the bettor</td><td>Go verdict, positive edge, success, live data</td><td>Money or wins just because they look nice, "important" values</td><td><code class="sp-code">--fc-signal-go-*</code> <code class="sp-code">--fc-edge-positive</code></td></tr>
+            <tr><th scope="row"><span class="sp-hue"><i style="background:var(--fc-signal-wait-solid)"></i>Amber</span></th><td>Wait, and caution</td><td>Wait verdict, warnings, stale data</td><td>Highlighting, emphasis, a chart series</td><td><code class="sp-code">--fc-signal-wait-*</code> <code class="sp-code">--fc-status-warning-*</code></td></tr>
+            <tr><th scope="row"><span class="sp-hue"><i style="background:var(--fc-signal-stop-solid)"></i>Red</span></th><td>Stop, and bad for the bettor</td><td>Stop verdict, negative edge, errors, failed data, destructive actions</td><td>Decoration, "hot" picks, urgency</td><td><code class="sp-code">--fc-signal-stop-*</code> <code class="sp-code">--fc-edge-negative</code></td></tr>
+            <tr><th scope="row"><span class="sp-hue"><i style="background:var(--ds-blue-700)"></i>Blue</span></th><td>Interaction and information</td><td>Links, focus ring, toggles on, info notes, recent data, chart series 2</td><td>Verdicts, gems, success</td><td><code class="sp-code">--fc-text-link</code> <code class="sp-code">--fc-focus-color</code> <code class="sp-code">--fc-status-info-*</code></td></tr>
+            <tr><th scope="row"><span class="sp-hue"><i style="background:var(--ds-teal-700)"></i><i style="background:var(--ds-pink-700)"></i>Teal, pink</span></th><td>Chart series only</td><td>Series 3 and 4 when direct labels and grays are not enough</td><td>Any UI element</td><td><code class="sp-code">--fc-chart-3</code> <code class="sp-code">--fc-chart-4</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="sp-rules" role="list">
+        <li><strong>Color is never the only cue.</strong> Verdict: dot plus word. Edge: sign plus arrow plus color. Gem tier: facet count plus purple intensity. Freshness: dot plus relative time.</li>
+        <li><strong>Exception for charts:</strong> a chart that encodes verdicts or gems uses the signal or gem tokens, because that is their job.</li>
+        <li><strong>Geist badges come in every hue.</strong> A badge's hue must still follow this table; a purple badge means a gem.</li>
+      </ul>
+      <div class="sp-dodont">
+        <figure><figcaption><span class="fc-signal" data-signal="go">Do</span></figcaption><div class="sp-wrap"><span id="gem-do"></span> <span class="fc-badge" data-variant="purple" data-contrast="low">Hidden Gem</span></div><p class="sp-caption">Purple marks a gem and its tier.</p></figure>
+        <figure><figcaption><span class="fc-signal" data-signal="stop">Don't</span></figcaption><div class="sp-wrap" inert aria-label="Example of misuse"><button class="fc-button sp-misuse" type="button">Lock pick</button><a class="sp-misuse-link">View sources</a></div><p class="sp-caption">A purple button or link spends the gem color on something that is not a gem.</p></figure>
+        <figure><figcaption><span class="fc-signal" data-signal="go">Do</span></figcaption><div class="sp-wrap"><span class="fc-delta" data-direction="positive">9 pts</span><span class="fc-signal" data-signal="wait">Wait</span></div><p class="sp-caption">Green and amber carry a verdict, always with a sign or a word.</p></figure>
+        <figure><figcaption><span class="fc-signal" data-signal="stop">Don't</span></figcaption><div class="sp-wrap"><span class="sp-misuse-amber">$50 slate</span><span class="sp-misuse-green">+$212.40</span></div><p class="sp-caption">Amber for emphasis or green for money reads as a verdict that was never made.</p></figure>
+      </div>
+    </div>
+
+    <h3 class="text-heading-20">The scales</h3>
     <div class="sp-scales" id="scales"></div>
     <h3 class="text-heading-16">Facet semantics</h3>
     <div class="sp-sem" id="semantics"></div>
@@ -302,6 +355,7 @@
     return `<div class="fc-bar" role="listitem"><span class="fc-bar-label">${r.p}${r.m.includes('2nd') ? ' (2H)' : ''}</span><span class="fc-bar-track"><span class="fc-bar-fill" style="--value:${gap / 15 * 100}"></span></span><span class="fc-bar-value">+${gap} pts</span></div>`;
   }).join('');
   document.getElementById('gems').innerHTML = ['rough', 'cut', 'polished', 'flawless'].map(gem).join('');
+  document.getElementById('gem-do').outerHTML = gem('polished');
 
   // ---- foundations ----
   const scales = ['gray', 'blue', 'red', 'amber', 'green', 'teal', 'purple', 'pink'];

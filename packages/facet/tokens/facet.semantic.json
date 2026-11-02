@@ -263,7 +263,7 @@
     }
   },
   "gem": {
-    "$description": "The single brand accent. Purple (amethyst) is reserved for 'this is a Hidden Gem' designation and the ordinal gem tier ladder. It deliberately avoids green/amber/red (verdicts) and blue (links, focus, info).",
+    "$description": "HARD RULE: purple belongs to gems and nothing else. It marks 'this is a Hidden Gem' and the ordinal gem tier ladder. Never for links, buttons, focus, selection, highlights, chart series, decoration or any other meaning. It deliberately avoids green/amber/red (verdicts) and blue (links, focus, info).",
     "fg": {
       "$type": "color",
       "$value": "{color.purple.900}"
@@ -324,7 +324,7 @@
     }
   },
   "chart": {
-    "$description": "Monochrome first (Vercel's own report foundation maps chart-1..6 to grays). Reach for the categorical hues only when series must be told apart and direct labels are not enough. Order is fixed so a series keeps its color across views.",
+    "$description": "Monochrome first (Vercel's own report foundation maps chart-1..6 to grays). Series hues come only from hues with no other job (teal, pink) plus blue, so a chart can never be mistaken for a verdict (green/amber/red) or a gem (purple). Exception: a chart that encodes verdicts or gems uses the --fc-signal-* or --fc-gem-* tokens. Order is fixed so a series keeps its color across views.",
     "1": {
       "$type": "color",
       "$value": "{color.gray.1000}"
@@ -335,19 +335,19 @@
     },
     "3": {
       "$type": "color",
-      "$value": "{color.amber.700}"
+      "$value": "{color.teal.700}"
     },
     "4": {
       "$type": "color",
-      "$value": "{color.teal.700}"
+      "$value": "{color.pink.700}"
     },
     "5": {
       "$type": "color",
-      "$value": "{color.pink.700}"
+      "$value": "{color.gray.700}"
     },
     "6": {
       "$type": "color",
-      "$value": "{color.purple.700}"
+      "$value": "{color.gray.500}"
     },
     "muted": {
       "$type": "color",

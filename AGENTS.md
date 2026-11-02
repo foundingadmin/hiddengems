@@ -43,3 +43,4 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 - `packages/facet/` design system (self-contained, reusable in other projects)
 - `apps/web/` Hidden Gems app (Next.js, deploys on Vercel with Root Directory `apps/web`)
 - `docs/` project documentation
+- `ops/directives/` scheduled task directives; the Claude app tasks are stubs that read these from `main`

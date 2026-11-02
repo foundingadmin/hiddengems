@@ -1,0 +1,109 @@
+/* DRAFT for packages/facet/css/shadcn.css (review only, not in the repo yet).
+   Facet to shadcn/ui bridge: lets components copied from shadcn/ui (Tailwind v4 flavour) render
+   with Facet tokens, so shadcn supplies behaviour and Facet supplies every value.
+
+   Usage in an app's global CSS, in this order:
+     @import "tailwindcss";
+     @import "@foundingcreative/facet/css/tailwind.css";
+     @import "@foundingcreative/facet/css/shadcn.css";
+   Then delete the :root, .dark and @theme inline blocks that `shadcn init` writes into globals.css,
+   and set "cssVariables": true in components.json.
+
+   Rules
+   - Only the Tailwind v4 variable format works (variables hold whole colors, read as var(--x)).
+     The v3 format (HSL triplets read as hsl(var(--x))) cannot be bridged; do not use it.
+   - Only semantic Facet tokens on the right-hand side. One exception, --destructive, mirrors
+     .fc-button[data-variant="error"] until a semantic --fc-action-destructive token exists.
+   - Nothing maps to purple. Purple stays reachable only through --fc-gem-*.
+   - Radius is not redefined here: Facet's tailwind.css already owns rounded-xs..xl
+     (4, 6, 8, 12, 16). shadcn's own `--radius-* : calc(var(--radius) ...)` block must not be pasted.
+   - Dark mode: tailwind.css already declares the `dark` custom variant for .dark-theme and
+     data-theme="dark". The variables below re-resolve per theme because they are declared on every
+     theme selector Facet uses. Do not add a separate .dark block.
+*/
+
+:root,
+.light-theme,
+[data-theme="light"],
+.dark-theme,
+[data-theme="dark"] {
+  /* Surfaces and text */
+  --background: var(--fc-surface-canvas);
+  --foreground: var(--fc-text-primary);
+  --card: var(--fc-surface-canvas);              /* Facet cards are canvas plus a material shadow, never a tint */
+  --card-foreground: var(--fc-text-primary);
+  --popover: var(--fc-surface-canvas);           /* menus: pair with .material-menu for the shadow */
+  --popover-foreground: var(--fc-text-primary);
+
+  /* Actions */
+  --primary: var(--fc-surface-contrast);         /* gray-1000 fill, like the default button */
+  --primary-foreground: var(--fc-text-inverse);
+  --secondary: var(--fc-surface-fill);           /* shadcn secondary is a filled button; Facet's is canvas plus ring */
+  --secondary-foreground: var(--fc-text-primary);
+  --muted: var(--fc-surface-fill);
+  --muted-foreground: var(--fc-text-secondary);
+  --accent: var(--fc-surface-fill);              /* shadcn uses accent for hover rows, never a brand hue */
+  --accent-foreground: var(--fc-text-primary);
+  --destructive: var(--ds-red-800);              /* TODO: var(--fc-action-destructive) once added */
+  --destructive-foreground: var(--ds-white);
+
+  /* Edges and focus */
+  --border: var(--fc-border-default);
+  --input: var(--fc-border-alpha);               /* inputs use the alpha ring, as .fc-input does */
+  --ring: var(--fc-focus-color);
+  --radius: var(--fc-radius-sm);                 /* only for components that read var(--radius) directly */
+
+  /* Charts: monochrome first, then blue, teal, pink. Never verdict hues, never purple. */
+  --chart-1: var(--fc-chart-1);
+  --chart-2: var(--fc-chart-2);
+  --chart-3: var(--fc-chart-3);
+  --chart-4: var(--fc-chart-4);
+  --chart-5: var(--fc-chart-5);
+
+  /* Sidebar */
+  --sidebar: var(--fc-surface-subtle);
+  --sidebar-foreground: var(--fc-text-primary);
+  --sidebar-primary: var(--fc-surface-contrast);
+  --sidebar-primary-foreground: var(--fc-text-inverse);
+  --sidebar-accent: var(--fc-surface-fill);
+  --sidebar-accent-foreground: var(--fc-text-primary);
+  --sidebar-border: var(--fc-border-default);
+  --sidebar-ring: var(--fc-focus-color);
+}
+
+/* Expose the shadcn names as Tailwind colors. tailwind.css resets --color-* first, so these are
+   the only shadcn utilities that exist (bg-background, text-muted-foreground, border-border ...). */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}

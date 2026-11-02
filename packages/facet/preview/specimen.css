@@ -194,6 +194,9 @@ legend.fc-fieldset-title + * { clear: both; }
 main:has(#glance) { gap: 64px; }
 main:has(#glance) > section + section { padding-top: 64px; border-top: 1px solid var(--fc-border-default); }
 main:has(#glance) > section#glance { padding-top: 0; border-top: 0; }
-/* Sample tabs inside lesson examples: the standard underline tabs, sized down, so they read as tabs at a glance. */
-.sp-mini-tabs { width: auto !important; margin-bottom: 4px; }
-.sp-mini-tabs .fc-tab { height: 32px; font-size: 13px; }
+/* A UI sample in a lesson reads as a small panel: hairline frame, tab row ruled across the top, content below. */
+.sp-mock { width: 100%; max-width: 360px; border-radius: 8px; box-shadow: var(--ds-shadow-border); background: var(--fc-surface-canvas); overflow: hidden; }
+.sp-mock .sp-mini-tabs { display: flex; gap: 20px; padding: 0 16px; box-shadow: inset 0 -1px 0 var(--fc-border-default); }
+.sp-mock .sp-mini-tabs .fc-tab { height: 36px; font-size: 13px; }
+.sp-mock-body { display: flex; flex-direction: column; gap: 2px; padding: 12px 16px 14px; }
+.sp-mock-body p { margin: 0; }

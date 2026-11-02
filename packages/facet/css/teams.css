@@ -1,4 +1,4 @@
-/* Facet team identity: team marks, matchups, jerseys and player rows. Needs a sport kit (kits/nfl/teams.css),
+/* Facet team identity: team marks, matchups and player rows. Needs a sport kit (kits/nfl/teams.css),
    which sets --team-1 (fill), --team-2 (trim) and --team-ink on [data-team] and points each mark at its logo.
    Hue rule: team colors and logos live only inside identity marks. Rows, text, charts and status stay Facet. */
 
@@ -93,44 +93,42 @@
 .fc-matchup-value { font: 400 14px/20px var(--fc-font-mono); font-variant-numeric: tabular-nums; color: var(--fc-text-secondary); }
 .fc-matchup-value[data-strong] { color: var(--fc-text-primary); font-weight: 500; }
 
-/* ------------------------------------------------------------------ Jersey
-   The player's number on a jersey in team colors, on a neutral tile. Drawn by jerseyHTML(), no assets. */
-.fc-jersey {
+/* ------------------------------------------------------------------ Player
+   One team logo tile per player, with the jersey number in a badge floating on its upper right. The number
+   badge is neutral (inverted), so it reads on every team's tile. Then the name and a detail line. */
+.fc-player { display: inline-flex; align-items: center; gap: var(--fc-space-3); min-width: 0; vertical-align: middle; }
+.fc-player-avatar {
   --_s: 40px;
+  position: relative;
   box-sizing: border-box;
-  display: inline-grid;
-  place-items: center;
   flex: none;
   width: var(--_s);
   height: var(--_s);
   border-radius: var(--fc-radius-md);
-  background: var(--fc-surface-fill);
-  vertical-align: middle;
+  background: var(--team-1, var(--fc-surface-fill)) center / cover no-repeat;
+  box-shadow: inset 0 0 0 1px var(--fc-border-alpha);
 }
-.fc-jersey[data-size="sm"] { --_s: 32px; border-radius: var(--fc-radius-sm); }
-.fc-jersey[data-size="lg"] { --_s: 56px; border-radius: var(--fc-radius-lg); }
-.fc-jersey svg { width: 84%; height: 84%; overflow: visible; }
-.fc-jersey-body { fill: var(--team-1, var(--fc-text-secondary)); stroke: var(--fc-border-alpha); stroke-width: 0.75; stroke-linejoin: round; }
-.fc-jersey-trim { fill: var(--team-2, transparent); }
-.fc-jersey-collar { fill: none; stroke: var(--team-2, transparent); stroke-width: 1.5; stroke-linecap: round; }
-.fc-jersey-number {
-  fill: var(--team-number, var(--fc-text-inverse));
-  stroke: var(--team-2, transparent);
-  stroke-width: 0.9;
-  paint-order: stroke;
-  font: 700 12.5px/1 var(--fc-font-sans);
-  letter-spacing: -0.4px;
+.fc-player-avatar[data-size="sm"] { --_s: 32px; border-radius: var(--fc-radius-sm); }
+.fc-player-avatar[data-size="lg"] { --_s: 56px; border-radius: var(--fc-radius-lg); }
+.fc-player-number {
+  position: absolute;
+  top: -5px;
+  right: -7px;
+  box-sizing: border-box;
+  min-width: 18px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: var(--fc-radius-full);
+  background: var(--fc-surface-contrast);
+  color: var(--fc-text-inverse);
+  box-shadow: 0 0 0 2px var(--fc-surface-canvas);
+  font: 600 10px/16px var(--fc-font-sans);
   font-variant-numeric: tabular-nums;
+  text-align: center;
+  white-space: nowrap;
 }
-
-/* ------------------------------------------------------------------ Player
-   Jersey, name, then the team and a detail line. The team line carries the logo, so the jersey's colors
-   never have to identify the team alone. */
-.fc-player { display: inline-flex; align-items: center; gap: var(--fc-space-3); min-width: 0; vertical-align: middle; }
+.fc-player-avatar[data-size="lg"] .fc-player-number { top: -6px; right: -8px; min-width: 22px; height: 20px; font-size: 12px; line-height: 20px; padding: 0 6px; }
 .fc-player-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .fc-player-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
-.fc-player-meta { display: flex; align-items: center; gap: 6px; min-width: 0; font: 400 13px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
-.fc-player-meta > span:not(.fc-team) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.fc-player-meta .fc-team-name { font-weight: 500; color: var(--fc-text-primary); }
-.fc-player-meta .fc-team + span::before { content: "\00B7"; margin-right: 6px; }
+.fc-player-meta { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 400 13px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
 .fc-player[data-size="lg"] .fc-player-name { font: 600 20px/28px var(--fc-font-sans); }

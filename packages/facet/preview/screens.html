@@ -6,6 +6,7 @@
 <title>Facet screens</title>
 <meta name="description" content="Hidden Gems screens composed from Facet: the slate, the app frame and settings.">
 <link rel="stylesheet" href="../css/facet.css">
+<link rel="stylesheet" href="../kits/nfl/teams.css">
 <link rel="stylesheet" href="specimen.css">
 </head>
 <body>
@@ -733,6 +734,7 @@
 
 
 <script src="field.js"></script>
+<script src="teams.js"></script>
 <script src="tips.js"></script>
 <script src="time.js"></script>
 <script src="forms.js"></script>
@@ -741,13 +743,13 @@
 // ---- Week 8 sample data (from the prototype) ----
 const G = 'go', W = 'wait', R = 'stop', N = 'none';
 const picks = [
-  { p: 'Mike Gesicki',  pos: 'TE', m: 'Anytime TD scorer',            t: '11:00 AM', o: 3.20, ip: 31, est: 44, sig: [W,G,W,G,W,W], v: W },
-  { p: 'Ollie Gordon II', pos: 'RB', m: 'Anytime TD scorer',          t: '2:25 PM',  o: 2.55, ip: 39, est: 49, sig: [G,G,W,G,R,W], v: W },
-  { p: 'Stefon Diggs',  pos: 'WR', m: 'Anytime TD scorer',            t: '6:20 PM',  o: 3.00, ip: 33, est: 42, sig: [G,G,W,G,G,G], v: G },
-  { p: 'Denzel Burke',  pos: 'CB', m: 'Assists, under 0.5',           t: '11:00 AM', o: 2.73, ip: 37, est: 45, sig: [N,G,W,G,W,G], v: N },
-  { p: 'Zay Flowers',   pos: 'WR', m: 'First team reception',         t: '11:00 AM', o: 2.65, ip: 38, est: 44, sig: [G,G,W,W,G,G], v: G },
-  { p: 'James Cook',    pos: 'RB', m: 'Anytime TD scorer, 2nd half',  t: '11:00 AM', o: 2.65, ip: 38, est: 44, sig: [G,G,W,W,W,W], v: W },
-  { p: 'James Cook',    pos: 'RB', m: 'Anytime TD scorer',            t: '11:00 AM', o: 1.69, ip: 59, est: 63, sig: [G,G,W,W,W,W], v: W },
+  { p: 'Mike Gesicki',  tm: 'cin', no: 88, pos: 'TE', m: 'Anytime TD scorer',            t: '11:00 AM', o: 3.20, ip: 31, est: 44, sig: [W,G,W,G,W,W], v: W },
+  { p: 'Ollie Gordon II', tm: 'mia', no: 31, pos: 'RB', m: 'Anytime TD scorer',          t: '2:25 PM',  o: 2.55, ip: 39, est: 49, sig: [G,G,W,G,R,W], v: W },
+  { p: 'Stefon Diggs',  tm: 'ne', no: 8, pos: 'WR', m: 'Anytime TD scorer',            t: '6:20 PM',  o: 3.00, ip: 33, est: 42, sig: [G,G,W,G,G,G], v: G },
+  { p: 'Denzel Burke',  tm: 'ari', no: 29, pos: 'CB', m: 'Assists, under 0.5',           t: '11:00 AM', o: 2.73, ip: 37, est: 45, sig: [N,G,W,G,W,G], v: N },
+  { p: 'Zay Flowers',   tm: 'bal', no: 4, pos: 'WR', m: 'First team reception',         t: '11:00 AM', o: 2.65, ip: 38, est: 44, sig: [G,G,W,W,G,G], v: G },
+  { p: 'James Cook',    tm: 'buf', no: 4, pos: 'RB', m: 'Anytime TD scorer, 2nd half',  t: '11:00 AM', o: 2.65, ip: 38, est: 44, sig: [G,G,W,W,W,W], v: W },
+  { p: 'James Cook',    tm: 'buf', no: 4, pos: 'RB', m: 'Anytime TD scorer',            t: '11:00 AM', o: 1.69, ip: 59, est: 63, sig: [G,G,W,W,W,W], v: W },
 ];
 const label = { go: 'Go', wait: 'Wait', stop: 'Stop', none: 'Unchecked' };
 const body = document.getElementById('slate-body');
@@ -757,7 +759,7 @@ const renderSlate = (mode = 'cascade') => { body.innerHTML = picks.map((r, i) =>
   const counts = r.sig.reduce((a, s) => (a[s] = (a[s] || 0) + 1, a), {});
   const aria = Object.entries(counts).map(([k, n]) => `${n} ${label[k].toLowerCase()}`).join(', ');
   return `<tr>
-    <th scope="row"><span class="sp-pick">${r.p} <small>${r.pos} · ${r.m}</small></span></th>
+    <th scope="row"><span class="fc-player">${window.FacetTeams ? FacetTeams.playerAvatarHTML(FacetTeams.findTeam(r.tm), r.no, { size: 'sm' }) : ''}<span class="sp-pick">${r.p} <small>${r.pos} · ${r.m}</small></span></span></th>
     <td><time class="fc-time">${r.t}</time></td>
     <td data-align="numeric">${r.o.toFixed(2)}</td>
     <td data-align="numeric">${r.ip}%</td>

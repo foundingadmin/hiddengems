@@ -1,8 +1,8 @@
-# Team mark, matchup, jersey and player
+# Team mark, matchup and player
 
 > Facet component `[F]`, owner decisions 2026-11-02. CSS in `css/teams.css`, colors and logos from a sport kit (`kits/nfl/teams.css`, `kits/nfl/logos/`), helpers in `js/teams.mjs`.
 
-Team identity at a glance: the team's logo, its colors on a jersey with the player's number, and matchups that read away @ home.
+Team identity at a glance: the team's logo, the player's number on it, and matchups that read away @ home.
 
 ```html
 <link rel="stylesheet" href="@foundingcreative/facet/kits/nfl/teams.css">
@@ -10,11 +10,11 @@ Team identity at a glance: the team's logo, its colors on a jersey with the play
 <!-- Empty elements are filled by mountTeams(document, findTeam) -->
 <span class="fc-team" data-team="kc"></span>                               <!-- logo + Chiefs -->
 <span class="fc-team" data-team="kc" data-size="sm" data-name="abbr"></span> <!-- logo + KC -->
-<span class="fc-jersey" data-team="sea" data-number="11"></span>
+<span class="fc-player-avatar" data-team="sea" data-number="11"></span>
 <span class="fc-matchup" data-away="buf" data-home="kc"></span>
 ```
 
-Or write markup with the helpers: `teamHTML(findTeam('KC'), { name: 'name' })`, `jerseyHTML(findTeam('SEA'), 11)`, `playerHTML(findTeam('SEA'), { name: 'Jaxon Smith-Njigba', number: 11, detail: 'WR' })`, `matchupHTML(away, home)`.
+Or write markup with the helpers: `teamHTML(findTeam('KC'), { name: 'name' })`, `playerHTML(findTeam('SEA'), { name: 'Jaxon Smith-Njigba', number: 11, detail: 'WR · 8 TDs' })`, `matchupHTML(away, home)`.
 
 ## Team mark
 
@@ -38,17 +38,14 @@ Or write markup with the helpers: `teamHTML(findTeam('KC'), { name: 'name' })`, 
 | default | 24px | Lists and inline text |
 | `lg` | 40px | Game headers, with `data-name="stack"` |
 
-## Jersey
-
-The player's number on a jersey in team colors (body, sleeve stripes and collar in the second color), on a neutral tile. It is drawn, so it needs no assets and works for any team in a kit.
-
-- **Sizes:** `sm` 32px in table rows, default 40px in lists, `lg` 56px in sheets and headers.
-- **Number color:** white whenever it clears 3:1 on the jersey (large bold numerals), otherwise black, outlined in the second color.
-- **Label:** "Seattle Seahawks, number 11". Without a number the jersey still shows the team.
-
 ## Player
 
-Jersey, name, then a meta line: the team (logo and abbreviation) and a detail such as position or market. The team line is always there, because two navy jerseys look alike. In the slate the pick button takes the name's place, so the row still opens the pick.
+One logo per player (owner decision, 2026-11-02): the team's logo tile with the jersey number in a badge floating on its upper right, then the name and a detail line (position, market, stat).
+
+- **The logo appears once.** The detail line does not repeat the team, so a pick reads "[logo 88] Mike Gesicki, TE · Anytime TD scorer".
+- **Number badge:** neutral and inverted (`--fc-surface-contrast`), so it reads on every team's tile, with a 2px ring of the canvas to lift it off the tile. Sans 600, tabular.
+- **Sizes:** `sm` 32px in table rows, default 40px in lists, `lg` 56px in sheets and headers.
+- **Label:** the tile carries "Cincinnati Bengals, number 88". Without a number it is just the team logo.
 
 ## Matchup
 
@@ -58,7 +55,7 @@ Away first, home second, joined by `@` (screen readers hear "at"). A neutral sit
 
 ## Rules
 
-- **Team colors and logos stay inside identity marks** (team mark, jersey). Never tint rows, cells, text, borders, chart series or status with them. A red team must never read as a loss, and a purple one never as a gem.
+- **Team colors and logos stay inside identity marks** (team mark, player tile). Never tint rows, cells, text, borders, chart series or status with them. A red team must never read as a loss, and a purple one never as a gem.
 - **Charts** keep Facet's palette. Put team marks in the legend or direct labels.
 - **A name or abbreviation is always next to a mark**, unless the mark carries the full name as its label. Color is never the only cue.
 - **Logos are NFL trademarks**, used because Hidden Gems is private. Reusing Facet for client work means `data-mark="abbr"` or a licensed logo set.

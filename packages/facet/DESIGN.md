@@ -85,7 +85,7 @@ The interface is gray. Each hue has exactly one job, and appears only to do that
 | "This is a Hidden Gem" | The single brand accent: purple | `--fc-gem-*` |
 | Data freshness | Status dot + relative time (`.fc-status`) | `--fc-freshness-*` |
 | Team | Logo plus name or abbreviation (`.fc-team`); matchups read away @ home | `kits/nfl/teams.css`, `js/teams.mjs` |
-| Player | Team logo tile with the jersey number badged on its upper right, then name and detail (`.fc-player`) | same |
+| Player | Team logo tile, then the name with the jersey number trailing it (#88), then detail (`.fc-player`) | same |
 | Charts | Monochrome first; blue, teal, pink only when series must be told apart (never verdict hues or purple) | `--fc-chart-1..6`, `--fc-chart-muted` |
 
 Why purple for gems: green, amber and red already mean go, wait and stop, and blue already means links and info. Purple was the only hue left with no job, and an amethyst reads as "gem" without decoration. Why the brand accent shares it: purple marks what the app finds (gems) and what you do (focus, selection, your choices), so every interaction carries the brand. Gems stay distinct because they always carry facets and a tier word. Why a single hue for tiers: tiers are a ranking, and a ranking should read as more or less of one thing, not as four unrelated categories.
@@ -96,7 +96,7 @@ Owner decisions on where a rank 1 source and an earlier Facet rule disagreed (20
 
 | Topic | Rule |
 |---|---|
-| Team identity | Imported from the NFL Colors community kit as a sport kit (`kits/nfl`): colors and logos. Logos are used because the project is private; an abbreviation chip covers kits without them. Players show their team logo once, with the jersey number in a badge on its corner. Team colors appear only inside these marks, so the hue table stays intact |
+| Team identity | Imported from the NFL Colors community kit as a sport kit (`kits/nfl`): colors and logos. Logos are used because the project is private; an abbreviation chip covers kits without them. Players show their team logo once, with the jersey number trailing their name. Team colors appear only inside these marks, so the hue table stays intact |
 | Icon tiles | Allowed wherever one speeds recognition: empty states, list and connection rows, entity leads, integrations. Neutral only (`.fc-icon-tile`), one per item, never decorative or colored |
 | Times | Clock and calendar times are mono ("11:00 AM", "Today 6:05 PM", "Oct 31", log times, clock-time axes). Relative times are words and stay sans ("4m ago", "in 5m", "12h ago"), marked `data-relative`. Set in base.css. Paired, the clock time leads in primary and the relative time or detail sits under it in secondary (schedule runs, table time cells) |
 | Legends | Multi-series charts default to a legend that carries each series' total (`.fc-legend`). Single-series charts use a direct label |

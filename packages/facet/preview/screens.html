@@ -759,7 +759,7 @@ const renderSlate = (mode = 'cascade') => { body.innerHTML = picks.map((r, i) =>
   const counts = r.sig.reduce((a, s) => (a[s] = (a[s] || 0) + 1, a), {});
   const aria = Object.entries(counts).map(([k, n]) => `${n} ${label[k].toLowerCase()}`).join(', ');
   return `<tr>
-    <th scope="row"><span class="fc-player">${window.FacetTeams ? FacetTeams.playerAvatarHTML(FacetTeams.findTeam(r.tm), r.no, { size: 'sm' }) : ''}<span class="sp-pick">${r.p} <small>${r.pos} · ${r.m}</small></span></span></th>
+    <th scope="row"><span class="fc-player">${FacetTeams.playerAvatarHTML(FacetTeams.findTeam(r.tm), { size: 'sm' })}<span class="sp-pick"><span class="fc-player-line"><span class="fc-player-name">${r.p}</span>${FacetTeams.playerNumberHTML(r.no)}</span><small>${r.pos} · ${r.m}</small></span></span></th>
     <td><time class="fc-time">${r.t}</time></td>
     <td data-align="numeric">${r.o.toFixed(2)}</td>
     <td data-align="numeric">${r.ip}%</td>

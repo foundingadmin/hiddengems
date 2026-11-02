@@ -46,19 +46,22 @@ export function matchupHTML(away, home, { name = 'abbr', size, mark, neutral = f
   return `${teamHTML(away, { name, size, mark })}${sep}${teamHTML(home, { name, size, mark })}`;
 }
 
-// A player: the team logo tile with the jersey number badged on its upper right, then the name and a detail line.
-export function playerAvatarHTML(t, number, { size } = {}) {
+// A player: the team logo tile once, then the name with the jersey number trailing it, then a detail line.
+export function playerAvatarHTML(t, { size } = {}) {
   if (!t) return '';
-  const n = number == null || number === '' ? '' : String(number);
-  const label = `${t.city} ${t.name}${n ? `, number ${n}` : ''}`;
-  return `<span class="fc-player-avatar" data-team="${t.id}"${size ? ` data-size="${size}"` : ''} role="img" aria-label="${esc(label)}">`
-    + `${n ? `<span class="fc-player-number" aria-hidden="true">${esc(n)}</span>` : ''}</span>`;
+  return `<span class="fc-player-avatar" data-team="${t.id}"${size ? ` data-size="${size}"` : ''} role="img" aria-label="${esc(`${t.city} ${t.name}`)}"></span>`;
+}
+
+export function playerNumberHTML(number) {
+  if (number == null || number === '') return '';
+  const n = esc(String(number));
+  return `<span class="fc-player-number"><span aria-hidden="true">#${n}</span><span class="fc-visually-hidden">, number ${n}</span></span>`;
 }
 
 export function playerHTML(t, { name, number, detail = '', size } = {}) {
   if (!t) return '';
-  return `<span class="fc-player"${size ? ` data-size="${size}"` : ''}>${playerAvatarHTML(t, number, { size })}`
-    + `<span class="fc-player-main"><span class="fc-player-name">${esc(name)}</span>`
+  return `<span class="fc-player"${size ? ` data-size="${size}"` : ''}>${playerAvatarHTML(t, { size })}`
+    + `<span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">${esc(name)}</span>${playerNumberHTML(number)}</span>`
     + `${detail ? `<span class="fc-player-meta">${esc(detail)}</span>` : ''}</span></span>`;
 }
 
@@ -77,7 +80,12 @@ export function mountTeams(root = document, find) {
   });
   root.querySelectorAll('.fc-player-avatar[data-team]:empty').forEach((el) => {
     const t = find(el.dataset.team);
-    if (t) fill(el, playerAvatarHTML(t, el.dataset.number, { size: el.dataset.size }));
+    if (t) fill(el, playerAvatarHTML(t, { size: el.dataset.size }));
+  });
+  root.querySelectorAll('.fc-player-number[data-number]:empty').forEach((el) => {
+    const tmp = document.createElement('span');
+    tmp.innerHTML = playerNumberHTML(el.dataset.number);
+    el.innerHTML = tmp.firstElementChild ? tmp.firstElementChild.innerHTML : '';
   });
   root.querySelectorAll('.fc-matchup[data-away][data-home]:empty').forEach((el) => {
     el.innerHTML = matchupHTML(find(el.dataset.away), find(el.dataset.home), {

@@ -2,7 +2,7 @@
 
 > Facet component `[F]`, owner decisions 2026-11-02. CSS in `css/teams.css`, colors and logos from a sport kit (`kits/nfl/teams.css`, `kits/nfl/logos/`), helpers in `js/teams.mjs`.
 
-Team identity at a glance: the team's logo, the player's number on it, and matchups that read away @ home.
+Team identity at a glance: the team's logo, players with their number, and matchups that read away @ home.
 
 ```html
 <link rel="stylesheet" href="@foundingcreative/facet/kits/nfl/teams.css">
@@ -10,7 +10,7 @@ Team identity at a glance: the team's logo, the player's number on it, and match
 <!-- Empty elements are filled by mountTeams(document, findTeam) -->
 <span class="fc-team" data-team="kc"></span>                               <!-- logo + Chiefs -->
 <span class="fc-team" data-team="kc" data-size="sm" data-name="abbr"></span> <!-- logo + KC -->
-<span class="fc-player-avatar" data-team="sea" data-number="11"></span>
+<span class="fc-player-avatar" data-team="sea"></span>
 <span class="fc-matchup" data-away="buf" data-home="kc"></span>
 ```
 
@@ -40,12 +40,22 @@ Or write markup with the helpers: `teamHTML(findTeam('KC'), { name: 'name' })`, 
 
 ## Player
 
-One logo per player (owner decision, 2026-11-02): the team's logo tile with the jersey number in a badge floating on its upper right, then the name and a detail line (position, market, stat).
+The team logo tile once, then the name with the jersey number trailing it, then a detail line (position, market, stat). Owner decisions, 2026-11-02.
 
-- **The logo appears once.** The detail line does not repeat the team, so a pick reads "[logo 88] Mike Gesicki, TE · Anytime TD scorer".
-- **Number badge:** neutral and inverted (`--fc-surface-contrast`), so it reads on every team's tile, with a 2px ring of the canvas to lift it off the tile. Sans 600, tabular.
-- **Sizes:** `sm` 32px in table rows, default 40px in lists, `lg` 56px in sheets and headers.
-- **Label:** the tile carries "Cincinnati Bengals, number 88". Without a number it is just the team logo.
+```html
+<span class="fc-player">
+  <span class="fc-player-avatar" data-team="cin" data-size="sm"></span>
+  <span class="fc-player-main">
+    <span class="fc-player-line"><span class="fc-player-name">Mike Gesicki</span><span class="fc-player-number" data-number="88"></span></span>
+    <span class="fc-player-meta">TE · Anytime TD scorer</span>
+  </span>
+</span>
+```
+
+- **The logo appears once.** The detail line does not repeat the team.
+- **Number:** "#88" in secondary text right after the name, tabular. Screen readers hear "number 88". The name truncates before the number does.
+- **Tile sizes:** `sm` 32px in table rows, default 40px in lists, `lg` 56px in sheets and headers. The tile carries the team's full name as its label.
+- **Clickable names:** put the button or link in `.fc-player-line` in place of `.fc-player-name`, so the number still trails it (the slate does this).
 
 ## Matchup
 

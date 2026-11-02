@@ -265,7 +265,7 @@
     #data .data-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--fc-space-2) var(--fc-space-4); }
     #data .data-pick { display: flex; flex-direction: column; gap: 2px; min-width: 0; --fc-truncate-max: 180px; }
     #data .data-pick small { font: 400 13px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
-    #data .data-pick-btn { align-self: flex-start; padding: 0; border: 0; border-radius: var(--fc-radius-xs); background: none; font: inherit; font-weight: 500; color: var(--fc-text-primary); text-align: left; cursor: pointer; }
+    #data .data-pick-btn { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0; border: 0; border-radius: var(--fc-radius-xs); background: none; font: inherit; font-weight: 500; color: var(--fc-text-primary); text-align: left; cursor: pointer; }
     #data .data-pick-btn:hover { text-decoration: underline; text-underline-offset: 3px; }
     #data .data-menu { min-width: 176px; padding: var(--fc-space-1); }
     #data .data-menu:popover-open { display: flex; flex-direction: column; }
@@ -379,7 +379,7 @@
         <tbody id="data-body">
           <tr data-key="gesicki" data-pick="Mike Gesicki" data-kickoff="660" data-odds="3.20" data-est="44" data-gap="13" data-record="67" data-market="TE · Anytime TD scorer">
             <td class="fc-cell-select"><label><input type="checkbox" class="fc-check" aria-label="Select Mike Gesicki"></label></td>
-            <th scope="row"><span class="fc-player"><span class="fc-player-avatar" data-team="cin" data-number="88" data-size="sm"></span><span class="data-pick"><button type="button" class="data-pick-btn" aria-haspopup="dialog">Mike Gesicki</button><small>TE · Anytime TD scorer</small></span></span></th>
+            <th scope="row"><span class="fc-player"><span class="fc-player-avatar" data-team="cin" data-size="sm"></span><span class="data-pick"><span class="fc-player-line"><button type="button" class="data-pick-btn" aria-haspopup="dialog">Mike Gesicki</button><span class="fc-player-number" data-number="88"></span></span><small>TE · Anytime TD scorer</small></span></span></th>
             <td><time class="fc-time">11:00 AM</time></td>
             <td data-align="numeric">3.20</td>
             <td data-align="numeric">31%</td>
@@ -392,7 +392,7 @@
           </tr>
           <tr data-key="diggs" data-pick="Stefon Diggs" data-kickoff="1100" data-odds="3.00" data-est="42" data-gap="9" data-record="71" data-market="WR · Anytime TD scorer">
             <td class="fc-cell-select"><label><input type="checkbox" class="fc-check" aria-label="Select Stefon Diggs"></label></td>
-            <th scope="row"><span class="fc-player"><span class="fc-player-avatar" data-team="ne" data-number="8" data-size="sm"></span><span class="data-pick"><button type="button" class="data-pick-btn" aria-haspopup="dialog">Stefon Diggs</button><small>WR · Anytime TD scorer</small></span></span></th>
+            <th scope="row"><span class="fc-player"><span class="fc-player-avatar" data-team="ne" data-size="sm"></span><span class="data-pick"><span class="fc-player-line"><button type="button" class="data-pick-btn" aria-haspopup="dialog">Stefon Diggs</button><span class="fc-player-number" data-number="8"></span></span><small>WR · Anytime TD scorer</small></span></span></th>
             <td><time class="fc-time">6:20 PM</time></td>
             <td data-align="numeric">3.00</td>
             <td data-align="numeric">33%</td>
@@ -405,7 +405,7 @@
           </tr>
           <tr data-key="cook-2h" data-pick="James Cook" data-kickoff="660" data-odds="2.65" data-est="44" data-gap="6" data-record="50" data-market="RB · Anytime TD scorer, 2nd half (incl. OT)">
             <td class="fc-cell-select"><label><input type="checkbox" class="fc-check" aria-label="Select James Cook, 2nd half"></label></td>
-            <th scope="row"><span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-number="4" data-size="sm"></span><span class="data-pick"><button type="button" class="data-pick-btn" aria-haspopup="dialog">James Cook</button><small><span class="fc-truncate" title="RB · Anytime TD scorer, 2nd half (incl. OT)"><span class="fc-truncate-start">RB · Anytime TD scorer, </span><span class="fc-truncate-end">2nd half (incl. OT)</span></span></small></span></span></th>
+            <th scope="row"><span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm"></span><span class="data-pick"><span class="fc-player-line"><button type="button" class="data-pick-btn" aria-haspopup="dialog">James Cook</button><span class="fc-player-number" data-number="4"></span></span><small><span class="fc-truncate" title="RB · Anytime TD scorer, 2nd half (incl. OT)"><span class="fc-truncate-start">RB · Anytime TD scorer, </span><span class="fc-truncate-end">2nd half (incl. OT)</span></span></small></span></span></th>
             <td><time class="fc-time">11:00 AM</time></td>
             <td data-align="numeric">2.65</td>
             <td data-align="numeric">38%</td>
@@ -418,7 +418,7 @@
           </tr>
           <tr data-key="gordon" data-pick="Ollie Gordon II" data-kickoff="865" data-odds="7.50" data-est="18" data-gap="5" data-record="33" data-market="RB · First TD scorer">
             <td class="fc-cell-select"><label><input type="checkbox" class="fc-check" aria-label="Select Ollie Gordon II"></label></td>
-            <th scope="row"><span class="fc-player"><span class="fc-player-avatar" data-team="mia" data-number="31" data-size="sm"></span><span class="data-pick"><button type="button" class="data-pick-btn" aria-haspopup="dialog">Ollie Gordon II</button><small>RB · First TD scorer</small></span></span></th>
+            <th scope="row"><span class="fc-player"><span class="fc-player-avatar" data-team="mia" data-size="sm"></span><span class="data-pick"><span class="fc-player-line"><button type="button" class="data-pick-btn" aria-haspopup="dialog">Ollie Gordon II</button><span class="fc-player-number" data-number="31"></span></span><small>RB · First TD scorer</small></span></span></th>
             <td><time class="fc-time">2:25 PM</time></td>
             <td data-align="numeric">7.50</td>
             <td data-align="numeric">13%</td>
@@ -431,7 +431,7 @@
           </tr>
           <tr data-key="cook" data-pick="James Cook" data-kickoff="660" data-odds="1.69" data-est="63" data-gap="4" data-record="67" data-market="RB · Anytime TD scorer">
             <td class="fc-cell-select"><label><input type="checkbox" class="fc-check" aria-label="Select James Cook"></label></td>
-            <th scope="row"><span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-number="4" data-size="sm"></span><span class="data-pick"><button type="button" class="data-pick-btn" aria-haspopup="dialog">James Cook</button><small>RB · Anytime TD scorer</small></span></span></th>
+            <th scope="row"><span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm"></span><span class="data-pick"><span class="fc-player-line"><button type="button" class="data-pick-btn" aria-haspopup="dialog">James Cook</button><span class="fc-player-number" data-number="4"></span></span><small>RB · Anytime TD scorer</small></span></span></th>
             <td><time class="fc-time">11:00 AM</time></td>
             <td data-align="numeric">1.69</td>
             <td data-align="numeric">59%</td>
@@ -2264,7 +2264,7 @@
     #teams .tm-cell { display: grid; grid-template-rows: auto 1fr; align-items: center; justify-items: start; gap: var(--fc-space-3); min-width: 0; }
     #teams .tm-board { width: min(100%, 320px); }
     #teams .tm-players { display: flex; flex-direction: column; gap: var(--fc-space-4); width: min(100%, 320px); margin: 0; padding: 0; list-style: none; }
-    #teams .tm-inline { display: flex; align-items: center; gap: var(--fc-space-6); padding-top: 6px; }
+    #teams .tm-inline { display: flex; align-items: center; gap: var(--fc-space-4); }
     #teams .tm-header { width: min(100%, 640px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--fc-space-3) var(--fc-space-6); }
   </style>
 
@@ -2295,12 +2295,12 @@
     <h3 class="text-heading-20">Players</h3>
     <div class="tm-row">
       <ul class="tm-players" role="list" aria-label="Anytime TD scorers">
-        <li><span class="fc-player"><span class="fc-player-avatar" data-team="sea" data-number="11"></span><span class="fc-player-main"><span class="fc-player-name">Jaxon Smith-Njigba</span><span class="fc-player-meta">WR · 8 TDs</span></span></span></li>
-        <li><span class="fc-player"><span class="fc-player-avatar" data-team="cin" data-number="1"></span><span class="fc-player-main"><span class="fc-player-name">Ja'Marr Chase</span><span class="fc-player-meta">WR · 6 TDs</span></span></span></li>
-        <li><span class="fc-player"><span class="fc-player-avatar" data-team="kc" data-number="87"></span><span class="fc-player-main"><span class="fc-player-name">Travis Kelce</span><span class="fc-player-meta">TE · 5 TDs</span></span></span></li>
-        <li><span class="fc-player"><span class="fc-player-avatar" data-team="no" data-number="12"></span><span class="fc-player-main"><span class="fc-player-name">Chris Olave</span><span class="fc-player-meta">WR · 4 TDs</span></span></span></li>
+        <li><span class="fc-player"><span class="fc-player-avatar" data-team="sea"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">Jaxon Smith-Njigba</span><span class="fc-player-number" data-number="11"></span></span><span class="fc-player-meta">WR · 8 TDs</span></span></span></li>
+        <li><span class="fc-player"><span class="fc-player-avatar" data-team="cin"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">Ja'Marr Chase</span><span class="fc-player-number" data-number="1"></span></span><span class="fc-player-meta">WR · 6 TDs</span></span></span></li>
+        <li><span class="fc-player"><span class="fc-player-avatar" data-team="kc"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">Travis Kelce</span><span class="fc-player-number" data-number="87"></span></span><span class="fc-player-meta">TE · 5 TDs</span></span></span></li>
+        <li><span class="fc-player"><span class="fc-player-avatar" data-team="no"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">Chris Olave</span><span class="fc-player-number" data-number="12"></span></span><span class="fc-player-meta">WR · 4 TDs</span></span></span></li>
       </ul>
-      <div class="tm-cell" style="grid-template-rows:auto"><span class="text-label-12 tm-label">Sizes</span><span class="tm-inline"><span class="fc-player-avatar" data-team="lv" data-number="17" data-size="sm"></span><span class="fc-player-avatar" data-team="lv" data-number="17"></span><span class="fc-player-avatar" data-team="lv" data-number="17" data-size="lg"></span></span></div>
+      <div class="tm-cell" style="grid-template-rows:auto"><span class="text-label-12 tm-label">Tile sizes</span><span class="tm-inline"><span class="fc-player-avatar" data-team="lv" data-size="sm"></span><span class="fc-player-avatar" data-team="lv"></span><span class="fc-player-avatar" data-team="lv" data-size="lg"></span></span></div>
     </div>
   </div>
 

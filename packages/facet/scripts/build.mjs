@@ -375,7 +375,7 @@ export const teams = [
 export const findTeam = createTeamIndex(teams);
 `);
     if (league === 'nfl') {
-      write('preview/teams.js', `// GENERATED from js/teams.mjs and kits/nfl/teams.json by scripts/build.mjs. Do not edit by hand.\n(function () {\n${teamsSrc}\nconst teams = ${JSON.stringify(data)};\nconst conferences = ${JSON.stringify(kit.conferences)};\nconst divisions = ${JSON.stringify(kit.divisions)};\nwindow.FacetTeams = { teams, conferences, divisions, findTeam: createTeamIndex(teams), teamHTML, matchupHTML, playerAvatarHTML, playerHTML, mountTeams };\n})();\n`);
+      write('preview/teams.js', `// GENERATED from js/teams.mjs and kits/nfl/teams.json by scripts/build.mjs. Do not edit by hand.\n(function () {\n${teamsSrc}\nconst teams = ${JSON.stringify(data)};\nconst conferences = ${JSON.stringify(kit.conferences)};\nconst divisions = ${JSON.stringify(kit.divisions)};\nwindow.FacetTeams = { teams, conferences, divisions, findTeam: createTeamIndex(teams), teamHTML, matchupHTML, playerAvatarHTML, playerNumberHTML, playerHTML, mountTeams };\n})();\n`);
     }
   }
 }

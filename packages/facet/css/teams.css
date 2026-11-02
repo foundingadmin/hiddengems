@@ -94,12 +94,11 @@
 .fc-matchup-value[data-strong] { color: var(--fc-text-primary); font-weight: 500; }
 
 /* ------------------------------------------------------------------ Player
-   One team logo tile per player, with the jersey number in a badge floating on its upper right. The number
-   badge is neutral (inverted), so it reads on every team's tile. Then the name and a detail line. */
+   The team logo tile once, then the name with the jersey number trailing it (#88, secondary), then a detail line.
+   The name truncates before the number does. */
 .fc-player { display: inline-flex; align-items: center; gap: var(--fc-space-3); min-width: 0; vertical-align: middle; }
 .fc-player-avatar {
   --_s: 40px;
-  position: relative;
   box-sizing: border-box;
   flex: none;
   width: var(--_s);
@@ -110,25 +109,10 @@
 }
 .fc-player-avatar[data-size="sm"] { --_s: 32px; border-radius: var(--fc-radius-sm); }
 .fc-player-avatar[data-size="lg"] { --_s: 56px; border-radius: var(--fc-radius-lg); }
-.fc-player-number {
-  position: absolute;
-  top: -5px;
-  right: -7px;
-  box-sizing: border-box;
-  min-width: 18px;
-  height: 16px;
-  padding: 0 4px;
-  border-radius: var(--fc-radius-full);
-  background: var(--fc-surface-contrast);
-  color: var(--fc-text-inverse);
-  box-shadow: 0 0 0 2px var(--fc-surface-canvas);
-  font: 600 10px/16px var(--fc-font-sans);
-  font-variant-numeric: tabular-nums;
-  text-align: center;
-  white-space: nowrap;
-}
-.fc-player-avatar[data-size="lg"] .fc-player-number { top: -6px; right: -8px; min-width: 22px; height: 20px; font-size: 12px; line-height: 20px; padding: 0 6px; }
 .fc-player-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.fc-player-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
+.fc-player-line { display: flex; align-items: baseline; gap: 6px; min-width: 0; }
+.fc-player-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
+.fc-player-number { flex: none; font: 400 13px/20px var(--fc-font-sans); font-variant-numeric: tabular-nums; color: var(--fc-text-secondary); white-space: nowrap; }
 .fc-player-meta { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 400 13px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
 .fc-player[data-size="lg"] .fc-player-name { font: 600 20px/28px var(--fc-font-sans); }
+.fc-player[data-size="lg"] .fc-player-number { font-size: 16px; line-height: 28px; }

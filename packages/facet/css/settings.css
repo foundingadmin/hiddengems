@@ -1,0 +1,195 @@
+/* Facet settings layer [F, measured on rank 1 dashboard captures]
+   Source: reference/inbox-review-2026-11-02/02-dashboard-settings.md. Pattern doc: patterns/settings.md.
+   Depends on tokens.css and components.css (.fc-fieldset, .fc-button, .fc-toggle, .fc-icon-tile).
+
+   .fc-settings          fixed section nav (256) + centered content column (max 912), one route per section
+   .fc-settings-nav      36px items, filled active state, aria-current="page"
+   .fc-fieldset additions (components.css stays untouched; everything here extends it):
+     [data-type="danger"]        irreversible action: red ring, tinted footer, red action, entity preview
+     .fc-fieldset-header         title block left, badge or control right
+     .fc-fieldset-section        sub-section with an edge-to-edge rule
+     .fc-fieldset-consequence    primary sentence stating what changes
+     .fc-fieldset-entity         what a danger card removes, shown before the action
+     .fc-fieldset-status         footer status slot: one of four kinds (data-kind), or empty
+     .fc-fieldset-actions        footer actions; .fc-fieldset-cancel shows only while the card is dirty
+
+   Proposed tokens, read here with their measured values as fallbacks:
+   --fc-settings-nav-width (256px), --fc-measure-settings (912px). */
+
+/* ================================================================== Layout */
+.fc-settings {
+  --_nav-w: var(--fc-settings-nav-width, 256px);
+  --_measure: var(--fc-measure-settings, 912px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  min-width: 0;
+  background: var(--fc-surface-canvas);
+  container: fc-settings / inline-size;
+}
+
+.fc-settings-nav {
+  position: sticky;
+  top: var(--fc-settings-top, 0px);
+  flex: 0 0 var(--_nav-w);
+  width: var(--_nav-w);
+  min-width: 0;
+  max-height: calc(100dvh - var(--fc-settings-top, 0px));
+  padding: var(--fc-space-2);
+  overflow-y: auto;
+}
+.fc-settings-nav ul { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.fc-settings-nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--fc-space-2);
+  height: var(--fc-control-medium);
+  padding: 0 var(--fc-space-2);
+  border-radius: var(--fc-radius-sm);
+  color: var(--fc-text-secondary);
+  font: 400 14px/20px var(--fc-font-sans);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--fc-duration-fast) ease, color var(--fc-duration-fast) ease;
+}
+.fc-settings-nav-item:hover { background: var(--fc-surface-fill); color: var(--fc-text-primary); }
+.fc-settings-nav-item[aria-current="page"] { background: var(--fc-surface-fill-hover); color: var(--fc-text-primary); }
+.fc-settings-nav-item:focus-visible { box-shadow: var(--ds-focus-ring); }
+
+/* One section per page: a centered column of setting cards, 32px apart. */
+.fc-settings-main {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--fc-space-8);
+  padding: var(--fc-space-6) var(--fc-space-6) var(--fc-space-16);
+  align-self: stretch;
+  /* The rule between nav and column belongs to the column, so it runs the full page height. */
+  box-shadow: inset 1px 0 0 var(--fc-border-default);
+}
+.fc-settings-main > * { width: 100%; max-width: var(--_measure); min-width: 0; }
+.fc-settings-main > [hidden] { display: none; }
+/* A section page groups its cards; the gap between cards is the same 32px. */
+.fc-settings-page { display: flex; flex-direction: column; gap: var(--fc-space-8); }
+.fc-settings-page[hidden] { display: none; }
+
+/* Narrow: the section list becomes one scrollable row above the column.
+   (A container cannot restyle itself, so the children take full-width rows of the wrapping flex.) */
+@container fc-settings (max-width: 767px) {
+  .fc-settings-nav, .fc-settings-main { flex: 1 1 100%; }
+  .fc-settings-nav {
+    position: static;
+    width: auto;
+    max-height: none;
+    padding: var(--fc-space-2) var(--fc-space-2) 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    box-shadow: inset 0 -1px 0 var(--fc-border-default);
+  }
+  .fc-settings-nav ul { flex-direction: row; gap: var(--fc-space-1); padding-bottom: var(--fc-space-2); }
+  .fc-settings-main { padding: var(--fc-space-4) var(--fc-space-4) var(--fc-space-12); box-shadow: none; }
+}
+
+/* ================================================================== Fieldset extensions */
+
+/* Header: title and subtitle on the left, one badge, status or control on the right. */
+.fc-fieldset-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--fc-space-3) var(--fc-space-4);
+  margin-bottom: var(--fc-space-5);
+}
+.fc-fieldset-header:last-child { margin-bottom: 0; }
+.fc-fieldset-header > :first-child { flex: 1 1 280px; min-width: 0; }
+.fc-fieldset-header > :not(:first-child) { flex: 0 0 auto; }
+.fc-fieldset-header .fc-fieldset-subtitle { margin-bottom: 0; }
+
+/* Consequence: the sentence that says what changes, in primary text, 8px under the subtitle. */
+.fc-fieldset-consequence {
+  margin: 0 0 var(--fc-space-5);
+  max-width: 68ch;
+  font: 400 14px/20px var(--fc-font-sans);
+  color: var(--fc-text-primary);
+}
+.fc-fieldset-subtitle:has(+ .fc-fieldset-consequence) { margin-bottom: var(--fc-space-2); }
+.fc-fieldset-consequence:last-child { margin-bottom: 0; }
+
+/* Sub-section: a direct child of .fc-fieldset after .fc-fieldset-content, ruled edge to edge. */
+.fc-fieldset-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fc-space-2);
+  padding: var(--fc-space-5);
+  border-top: 1px solid var(--fc-border-default);
+  min-width: 0;
+}
+.fc-fieldset-section > .fc-label { margin-bottom: 0; }
+.fc-fieldset-section > .fc-helper { margin-top: 0; }
+
+/* Field grid for related controls side by side (two selects, a time window). */
+.fc-fieldset-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: var(--fc-space-4);
+  min-width: 0;
+}
+.fc-fieldset-fields > * { min-width: 0; }
+
+/* Footer slots. Status holds exactly one kind, or stays empty: docs, scope, inheritance, quota. */
+.fc-fieldset-status { flex: 1 1 240px; min-width: 0; margin: 0; }
+.fc-fieldset-status:empty { display: none; }
+.fc-fieldset-status a {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--fc-text-link);
+  text-decoration: none;
+  border-radius: var(--fc-radius-xs);
+}
+.fc-fieldset-status a:not(.fc-link-action):hover { text-decoration: underline; }
+.fc-fieldset-status a svg { width: 14px; height: 14px; }
+/* Inheritance points at another setting, not at docs: primary text, underlined. */
+.fc-fieldset-status[data-kind="inheritance"] a { color: var(--fc-text-primary); font-weight: 500; text-decoration: underline; text-decoration-color: var(--fc-border-hover); }
+.fc-fieldset-status[data-kind="quota"] { font-variant-numeric: tabular-nums; }
+.fc-fieldset-actions { display: flex; align-items: center; gap: var(--fc-space-2); margin-left: auto; }
+/* Save model: Save is disabled until the card is dirty; Cancel exists only while it is dirty. */
+.fc-fieldset:not([data-dirty]) .fc-fieldset-cancel { display: none; }
+
+/* Toggle row inside a setting card: large toggle, then the state word ("Running", "Paused"). */
+.fc-fieldset-toggle { display: inline-flex; align-items: center; gap: var(--fc-space-3); align-self: flex-start; font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); cursor: pointer; }
+.fc-fieldset-toggle:has(:disabled) { color: var(--fc-text-disabled); cursor: not-allowed; }
+
+/* ------------------------------------------------------------------ Danger
+   For irreversible actions. data-type="error" stays reserved for a save that failed. */
+.fc-fieldset[data-type="danger"] {
+  --_ring: var(--fc-status-error-border);
+  --_foot-bg: color-mix(in srgb, var(--fc-status-error-bg) 45%, var(--fc-surface-canvas));
+  --_foot-bd: var(--fc-status-error-border);
+  --_foot-fg: var(--fc-status-error-fg);
+}
+
+/* Entity preview: exactly what goes, shown above the footer. Lead tile, name, one meta line. */
+.fc-fieldset-entity {
+  display: flex;
+  align-items: center;
+  gap: var(--fc-space-3);
+  min-width: 0;
+  padding: var(--fc-space-3);
+  border-radius: var(--fc-radius-sm);
+  box-shadow: 0 0 0 1px var(--fc-border-default);
+}
+.fc-fieldset-entity > div { display: flex; flex-direction: column; min-width: 0; }
+.fc-fieldset-entity strong { font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); overflow-wrap: anywhere; }
+.fc-fieldset-entity span { font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }
+
+/* Read-only machine value (masked key, ID): mono, joined to its action. */
+.fc-fieldset-value { display: flex; flex-wrap: wrap; align-items: center; gap: var(--fc-space-2); min-width: 0; }
+.fc-fieldset-value > .fc-input { flex: 1 1 220px; width: auto; min-width: 0; font-family: var(--fc-font-mono); font-size: 13px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fc-settings-nav-item { transition: none; }
+}

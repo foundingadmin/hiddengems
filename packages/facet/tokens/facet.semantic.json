@@ -1,0 +1,583 @@
+{
+  "$description": "Facet semantic layer. Every value is an alias to a Facet primitive ({color.<scale>.<step>}). Light/dark switching happens in the primitive layer, so aliases never need a dark override unless the step itself changes per theme ($extensions.facet.dark). Rule: product code uses these names first, primitives second, raw values never.",
+  "text": {
+    "primary": {
+      "$type": "color",
+      "$value": "{color.gray.1000}",
+      "$description": "Body copy, values and icons."
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": "{color.gray.900}",
+      "$description": "Labels, metadata and supporting copy. The lowest step allowed for readable text."
+    },
+    "disabled": {
+      "$type": "color",
+      "$value": "{color.gray.700}",
+      "$description": "Disabled controls only, never meaningful copy."
+    },
+    "inverse": {
+      "$type": "color",
+      "$value": "{color.background.100}",
+      "$description": "Copy on a gray-1000 fill, such as primary buttons and selected tabs."
+    },
+    "link": {
+      "$type": "color",
+      "$value": "{color.blue.900}",
+      "$description": "Inline links."
+    }
+  },
+  "surface": {
+    "canvas": {
+      "$type": "color",
+      "$value": "{color.background.100}",
+      "$description": "Pages and components. Use in most instances."
+    },
+    "subtle": {
+      "$type": "color",
+      "$value": "{color.background.200}",
+      "$description": "Sparingly, for sidebars, wells and the table header band."
+    },
+    "fill": {
+      "$type": "color",
+      "$value": "{color.gray.100}",
+      "$description": "Resting fill for chips, rows and small controls."
+    },
+    "fill-hover": {
+      "$type": "color",
+      "$value": "{color.gray.200}",
+      "$description": "Hovered fill. On a canvas-colored component, hover uses gray-100 instead."
+    },
+    "fill-active": {
+      "$type": "color",
+      "$value": "{color.gray.300}",
+      "$description": "Pressed and selected fill."
+    },
+    "contrast": {
+      "$type": "color",
+      "$value": "{color.gray.1000}",
+      "$description": "Primary buttons and the selected segmented control."
+    },
+    "contrast-hover": {
+      "$type": "color",
+      "$value": "{color.gray.900}",
+      "$description": "Primary button hover."
+    }
+  },
+  "border": {
+    "default": {
+      "$type": "color",
+      "$value": "{color.gray.400}",
+      "$description": "Dividers and resting edges. Solid gray, never alpha, by default."
+    },
+    "hover": {
+      "$type": "color",
+      "$value": "{color.gray.500}",
+      "$description": "Edges under the pointer."
+    },
+    "active": {
+      "$type": "color",
+      "$value": "{color.gray.600}",
+      "$description": "Pressed or focused edges."
+    },
+    "alpha": {
+      "$type": "color",
+      "$value": "{color.gray-alpha.400}",
+      "$description": "Only where an edge must blend with a tinted surface. Overlapping alpha edges darken where they cross."
+    }
+  },
+  "focus": {
+    "$description": "Keyboard focus. Follows the brand accent, so focus is a branded moment in every Facet product.",
+    "color": {
+      "$type": "color",
+      "$value": "{brand.solid}",
+      "$description": "Focus rings and focus halos."
+    }
+  },
+  "status": {
+    "info": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.blue.900}",
+        "$description": "Info text and icons."
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.blue.700}",
+        "$description": "Info dot or solid mark."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.blue.200}",
+        "$description": "Info note fill."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.blue.400}",
+        "$description": "Info note border."
+      },
+      "$description": "Info notes and messages."
+    },
+    "success": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.green.900}",
+        "$description": "Success text and icons."
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.green.700}",
+        "$description": "Success dot or solid mark."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.green.200}",
+        "$description": "Success note fill."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.green.400}",
+        "$description": "Success note border."
+      },
+      "$description": "Success notes and passed checks."
+    },
+    "warning": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.amber.900}",
+        "$description": "Warning text and icons."
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.amber.700}",
+        "$description": "Warning dot or solid mark."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.amber.200}",
+        "$description": "Warning note fill."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.amber.400}",
+        "$description": "Warning note border."
+      },
+      "$description": "Warning notes and caution states."
+    },
+    "error": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.red.900}",
+        "$description": "Error text and icons."
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.red.700}",
+        "$description": "Error dot or solid mark."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.red.200}",
+        "$description": "Error note fill."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.red.400}",
+        "$description": "Error note border and invalid input ring."
+      },
+      "$description": "Errors, failed data and invalid input."
+    },
+    "neutral": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.gray.900}",
+        "$description": "Neutral status text."
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.gray.700}",
+        "$description": "Neutral status dot."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.gray.200}",
+        "$description": "Neutral status fill."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.gray.400}",
+        "$description": "Neutral status border."
+      },
+      "$description": "Status with no meaning attached."
+    }
+  },
+  "signal": {
+    "$description": "Hidden Gems verdict language (the prototype's go / wait / stop / none). Always paired with a non-color cue: a word, a glyph, or a position. Color alone never carries the verdict.",
+    "go": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.green.900}",
+        "$description": "The word \"Go\" and go-colored text."
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.green.700}",
+        "$description": "Go dot in the verdict and the signal strip."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.green.200}",
+        "$description": "Go pill fill."
+      },
+      "$description": "Go verdict: word, dot and pill."
+    },
+    "wait": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.amber.900}",
+        "$description": "The word \"Wait\"."
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.amber.700}",
+        "$description": "Wait dot."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.amber.200}",
+        "$description": "Wait pill fill."
+      },
+      "$description": "Wait verdict: word, dot and pill."
+    },
+    "stop": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.red.900}",
+        "$description": "The word \"Stop\"."
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.red.700}",
+        "$description": "Stop dot."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.red.200}",
+        "$description": "Stop pill fill."
+      },
+      "$description": "Stop verdict: word, dot and pill."
+    },
+    "none": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.gray.900}",
+        "$description": "The word \"Unchecked\"."
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.gray.600}",
+        "$description": "Unchecked dot or hollow ring."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.gray.200}",
+        "$description": "Unchecked pill fill."
+      },
+      "$description": "Unchecked verdict: word, dot or hollow ring, and pill."
+    }
+  },
+  "edge": {
+    "$description": "Value relative to the market (our price vs the book). Positive and negative are about the bettor's value, never about the number going up or down.",
+    "positive": {
+      "$type": "color",
+      "$value": "{color.green.900}",
+      "$description": "Gap in the bettor's favor (with an up arrow and a plus sign)."
+    },
+    "negative": {
+      "$type": "color",
+      "$value": "{color.red.900}",
+      "$description": "Gap against the bettor (with a down arrow and a minus sign)."
+    },
+    "neutral": {
+      "$type": "color",
+      "$value": "{color.gray.900}",
+      "$description": "No meaningful gap."
+    }
+  },
+  "gem": {
+    "$description": "Purple in Hidden Gems: the Hidden Gem designation and the tier ladder. Purple's other job is the brand accent (focus, selection and your choices); never links, buttons, highlights, chart series or decoration.",
+    "fg": {
+      "$type": "color",
+      "$value": "{color.purple.900}",
+      "$description": "Gem text, labels and the tier word."
+    },
+    "solid": {
+      "$type": "color",
+      "$value": "{color.purple.700}",
+      "$description": "Gem mark and solid gem fills."
+    },
+    "bg": {
+      "$type": "color",
+      "$value": "{color.purple.200}",
+      "$description": "Gem badge and highlight fill."
+    },
+    "border": {
+      "$type": "color",
+      "$value": "{color.purple.400}",
+      "$description": "Gem badge or panel border."
+    },
+    "tier": {
+      "$description": "Ordinal ladder (rough < cut < polished < flawless). Gray, then purple 500, 700 and 900, so rank reads as rising intensity in both themes. Always paired with the filled facet count and the tier word; flawless and polished also carry the gem glow.",
+      "rough": {
+        "$type": "color",
+        "$value": "{color.gray.700}",
+        "$description": "Tier 1 of 4 facets. Gray, because a rough stone is not yet a gem."
+      },
+      "cut": {
+        "$type": "color",
+        "$value": "{color.purple.500}",
+        "$description": "Tier 2 of 4 facets, the first purple."
+      },
+      "polished": {
+        "$type": "color",
+        "$value": "{color.purple.700}",
+        "$description": "Tier 3 of 4 facets, with a faint glow."
+      },
+      "flawless": {
+        "$type": "color",
+        "$value": "{color.purple.900}",
+        "$description": "Tier 4 of 4 facets, the strongest purple and the fullest glow."
+      }
+    }
+  },
+  "freshness": {
+    "$description": "How recent a data point is (odds pull, injury report). Mirrors the status dot semantics.",
+    "live": {
+      "$type": "color",
+      "$value": "{color.green.700}",
+      "$description": "Pulled within the live window."
+    },
+    "recent": {
+      "$type": "color",
+      "$value": "{color.blue.700}",
+      "$description": "Recent but not live."
+    },
+    "stale": {
+      "$type": "color",
+      "$value": "{color.amber.700}",
+      "$description": "Old enough to re-check before acting."
+    },
+    "failed": {
+      "$type": "color",
+      "$value": "{color.red.700}",
+      "$description": "The last refresh failed; values are the last good pull."
+    },
+    "unknown": {
+      "$type": "color",
+      "$value": "{color.gray.600}",
+      "$description": "No timestamp available."
+    }
+  },
+  "chart": {
+    "$description": "Series colors in a fixed order, monochrome first. Verdict hues and purple are never series colors.",
+    "1": {
+      "$type": "color",
+      "$value": "{color.gray.1000}",
+      "$description": "First series. Gray-1000, monochrome first."
+    },
+    "2": {
+      "$type": "color",
+      "$value": "{color.blue.700}",
+      "$description": "Second series."
+    },
+    "3": {
+      "$type": "color",
+      "$value": "{color.teal.700}",
+      "$description": "Third series."
+    },
+    "4": {
+      "$type": "color",
+      "$value": "{color.pink.700}",
+      "$description": "Fourth series."
+    },
+    "5": {
+      "$type": "color",
+      "$value": "{color.gray.700}",
+      "$description": "Fifth series, back to gray."
+    },
+    "6": {
+      "$type": "color",
+      "$value": "{color.gray.500}",
+      "$description": "Sixth series, lighter gray."
+    },
+    "muted": {
+      "$type": "color",
+      "$value": "{color.gray.600}",
+      "$description": "De-emphasized series, comparison baseline, market line."
+    },
+    "grid": {
+      "$type": "color",
+      "$value": "{color.gray.300}",
+      "$description": "Chart gridlines."
+    },
+    "axis": {
+      "$type": "color",
+      "$value": "{color.gray.500}",
+      "$description": "Chart axes and ticks."
+    },
+    "threshold": {
+      "$type": "color",
+      "$value": "{color.gray.900}",
+      "$description": "Threshold and reference lines, always dashed and labelled."
+    },
+    "magnitude": {
+      "$type": "color",
+      "$value": "{color.gray.300}",
+      "$description": "Share-of-total fill behind a ranked value."
+    }
+  },
+  "badge": {
+    "$description": "Solid badge fills, measured per theme on the vercel.com reference badge (it uses different steps in light and dark). Text is white except amber (black).",
+    "gray": {
+      "$type": "color",
+      "$value": "{color.gray.900}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.gray.500}"
+        }
+      }
+    },
+    "blue": {
+      "$type": "color",
+      "$value": "{color.blue.800}"
+    },
+    "purple": {
+      "$type": "color",
+      "$value": "{color.purple.900}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.purple.500}"
+        }
+      }
+    },
+    "amber": {
+      "$type": "color",
+      "$value": "{color.amber.700}"
+    },
+    "red": {
+      "$type": "color",
+      "$value": "{color.red.900}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.red.800}"
+        }
+      }
+    },
+    "pink": {
+      "$type": "color",
+      "$value": "{color.pink.900}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.pink.600}"
+        }
+      }
+    },
+    "green": {
+      "$type": "color",
+      "$value": "{color.green.900}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.green.600}"
+        }
+      }
+    },
+    "teal": {
+      "$type": "color",
+      "$value": "{color.teal.900}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.teal.600}"
+        }
+      }
+    }
+  },
+  "control": {
+    "$description": "Parts of controls that must stay legible in both themes.",
+    "thumb": {
+      "$type": "color",
+      "$value": "{color.background.100}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.gray.1000}"
+        }
+      },
+      "$description": "Toggle and slider thumbs. Light in both themes."
+    },
+    "thumb-ring": {
+      "$type": "color",
+      "$value": "{color.gray-alpha.400}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.gray-alpha.600}"
+        }
+      },
+      "$description": "Hairline around a thumb."
+    },
+    "on": {
+      "$type": "color",
+      "$value": "{brand.solid}",
+      "$description": "Checked and on controls: toggle, checkbox, radio, choicebox, menu checks. Follows the brand accent."
+    },
+    "on-fg": {
+      "$type": "color",
+      "$value": "{color.background.100}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.gray.1000}"
+        }
+      },
+      "$description": "Check marks and thumbs on an on control. Light in both themes."
+    }
+  },
+  "action": {
+    "$description": "Action fills with a fixed meaning.",
+    "destructive": {
+      "$type": "color",
+      "$value": "{color.red.800}",
+      "$description": "Destructive buttons, such as delete."
+    },
+    "destructive-hover": {
+      "$type": "color",
+      "$value": "{color.red.900}",
+      "$description": "Destructive button hover."
+    }
+  },
+  "brand": {
+    "$description": "The product's one accent, swapped per product so Facet can be reused (owner decision D6). Hidden Gems maps it to purple, its gem color. Focus rings, text selection, checked and on controls, and marketing surfaces all read from it, so changing these four tokens rebrands every interaction.",
+    "fg": {
+      "$type": "color",
+      "$value": "{color.purple.900}",
+      "$description": "Brand text and marks."
+    },
+    "solid": {
+      "$type": "color",
+      "$value": "{color.purple.700}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.purple.800}"
+        }
+      },
+      "$description": "Brand fills: focus rings, checked and on controls, the hero field sparkle. One step deeper in dark mode (purple 800), so light marks on it never glare (owner feedback, 2026-11-02)."
+    },
+    "bg": {
+      "$type": "color",
+      "$value": "{color.purple.200}",
+      "$description": "Brand tints."
+    },
+    "border": {
+      "$type": "color",
+      "$value": "{color.purple.400}",
+      "$description": "Brand edges."
+    }
+  }
+}

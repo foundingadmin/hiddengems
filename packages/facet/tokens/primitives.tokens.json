@@ -1,0 +1,1452 @@
+{
+  "$description": "Facet design tokens. Primitive layer is captured verbatim from the live vercel.com reference (computed in Chromium, 2026-11-02). Do not hand-edit primitives; re-run scripts/sync-primitives.mjs to re-sync. Semantic layer is Facet-owned.",
+  "color": {
+    "gray": {
+      "100": {
+        "$type": "color",
+        "$value": "#f2f2f2",
+        "$extensions": {
+          "facet": {
+            "dark": "#1a1a1a"
+          }
+        }
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#ebebeb",
+        "$extensions": {
+          "facet": {
+            "dark": "#1f1f1f"
+          }
+        }
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#e6e6e6",
+        "$extensions": {
+          "facet": {
+            "dark": "#292929"
+          }
+        }
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#ebebeb",
+        "$extensions": {
+          "facet": {
+            "dark": "#2e2e2e"
+          }
+        }
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#c9c9c9",
+        "$extensions": {
+          "facet": {
+            "dark": "#454545"
+          }
+        }
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#a8a8a8",
+        "$extensions": {
+          "facet": {
+            "dark": "#878787"
+          }
+        }
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#8f8f8f",
+        "$extensions": {
+          "facet": {
+            "dark": "#8f8f8f"
+          }
+        }
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#7d7d7d",
+        "$extensions": {
+          "facet": {
+            "dark": "#7d7d7d"
+          }
+        }
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#4d4d4d",
+        "$extensions": {
+          "facet": {
+            "dark": "#a1a1a1"
+          }
+        }
+      },
+      "1000": {
+        "$type": "color",
+        "$value": "#171717",
+        "$extensions": {
+          "facet": {
+            "dark": "#ededed"
+          }
+        }
+      }
+    },
+    "blue": {
+      "100": {
+        "$type": "color",
+        "$value": "#f0f7ff",
+        "$extensions": {
+          "facet": {
+            "dark": "#0f1c2e",
+            "p3": "oklch(97.32% .0141 251.56)",
+            "p3Dark": "oklch(22.17% .069 259.89)"
+          }
+        }
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#ebf5ff",
+        "$extensions": {
+          "facet": {
+            "dark": "#10233d",
+            "p3": "oklch(96.29% .0195 250.59)",
+            "p3Dark": "oklch(25.45% .0811 255.8)"
+          }
+        }
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#e0f0ff",
+        "$extensions": {
+          "facet": {
+            "dark": "#0f2f57",
+            "p3": "oklch(94.58% .0293 249.849)",
+            "p3Dark": "oklch(30.86% .1022 255.21)"
+          }
+        }
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#cce6ff",
+        "$extensions": {
+          "facet": {
+            "dark": "#0d3868",
+            "p3": "oklch(91.58% .0473 245.116)",
+            "p3Dark": "oklch(34.1% .121 254.74)"
+          }
+        }
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#99ceff",
+        "$extensions": {
+          "facet": {
+            "dark": "#0a4380",
+            "p3": "oklch(82.75% .0979 248.48)",
+            "p3Dark": "oklch(38.5% .1403 254.4)"
+          }
+        }
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#52aeff",
+        "$extensions": {
+          "facet": {
+            "dark": "#0091ff",
+            "p3": "oklch(73.08% .1583 248.133)",
+            "p3Dark": "oklch(64.94% .1982 251.813)"
+          }
+        }
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#0072f5",
+        "$extensions": {
+          "facet": {
+            "dark": "#0072f5",
+            "p3": "oklch(57.61% .2508 258.23)",
+            "p3Dark": "oklch(57.61% .2321 258.23)"
+          }
+        }
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#0062d1",
+        "$extensions": {
+          "facet": {
+            "dark": "#0062d1",
+            "p3": "oklch(51.51% .2399 257.85)",
+            "p3Dark": "oklch(51.51% .2307 257.85)"
+          }
+        }
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#0068d6",
+        "$extensions": {
+          "facet": {
+            "dark": "#52a8ff",
+            "p3": "oklch(53.18% .2399 256.99)",
+            "p3Dark": "oklch(71.7% .1648 250.794)"
+          }
+        }
+      },
+      "1000": {
+        "$type": "color",
+        "$value": "#00254d",
+        "$extensions": {
+          "facet": {
+            "dark": "#ebf6ff",
+            "p3": "oklch(26.67% .1099 254.34)",
+            "p3Dark": "oklch(96.75% .0179 242.423)"
+          }
+        }
+      }
+    },
+    "red": {
+      "100": {
+        "$type": "color",
+        "$value": "#fff0f0",
+        "$extensions": {
+          "facet": {
+            "dark": "#2a1314",
+            "p3": "oklch(96.5% .0223 13.09)",
+            "p3Dark": "oklch(22.1% .0657 15.11)"
+          }
+        }
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#ffebeb",
+        "$extensions": {
+          "facet": {
+            "dark": "#3c1618",
+            "p3": "oklch(95.41% .0299 14.2526)",
+            "p3Dark": "oklch(25.93% .0834 19.02)"
+          }
+        }
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#ffe6e6",
+        "$extensions": {
+          "facet": {
+            "dark": "#561a1e",
+            "p3": "oklch(94.33% .0369 15.0115)",
+            "p3Dark": "oklch(31.47% .1105 20.96)"
+          }
+        }
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#fdd8d8",
+        "$extensions": {
+          "facet": {
+            "dark": "#671e21",
+            "p3": "oklch(91.51% .0471 19.8)",
+            "p3Dark": "oklch(35.27% .1273 21.23)"
+          }
+        }
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#f8b9b9",
+        "$extensions": {
+          "facet": {
+            "dark": "#832126",
+            "p3": "oklch(84.47% .1018 17.71)",
+            "p3Dark": "oklch(40.68% .1479 23.16)"
+          }
+        }
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#f87275",
+        "$extensions": {
+          "facet": {
+            "dark": "#e5484d",
+            "p3": "oklch(71.12% .1881 21.22)",
+            "p3Dark": "oklch(62.56% .2277 23.03)"
+          }
+        }
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#e5484d",
+        "$extensions": {
+          "facet": {
+            "dark": "#e5484d",
+            "p3": "oklch(62.56% .2524 23.03)",
+            "p3Dark": "oklch(62.56% .2234 23.03)"
+          }
+        }
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#da2f35",
+        "$extensions": {
+          "facet": {
+            "dark": "#d93036",
+            "p3": "oklch(58.19% .2482 25.15)",
+            "p3Dark": "oklch(58.01% .227 25.12)"
+          }
+        }
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#cb2a2f",
+        "$extensions": {
+          "facet": {
+            "dark": "#ff6166",
+            "p3": "oklch(54.99% .232 25.29)",
+            "p3Dark": "oklch(69.96% .2136 22.03)"
+          }
+        }
+      },
+      "1000": {
+        "$type": "color",
+        "$value": "#391417",
+        "$extensions": {
+          "facet": {
+            "dark": "#feecee",
+            "p3": "oklch(24.8% .1041 18.86)",
+            "p3Dark": "oklch(95.6% .0293 6.61)"
+          }
+        }
+      }
+    },
+    "amber": {
+      "100": {
+        "$type": "color",
+        "$value": "#fff6e6",
+        "$extensions": {
+          "facet": {
+            "dark": "#291800",
+            "p3": "oklch(97.48% .0331 85.79)",
+            "p3Dark": "oklch(22.46% .0538 76.04)"
+          }
+        }
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#fff4d6",
+        "$extensions": {
+          "facet": {
+            "dark": "#331b00",
+            "p3": "oklch(96.81% .0495 90.2423)",
+            "p3Dark": "oklch(24.95% .0642 64.78)"
+          }
+        }
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#fef0cd",
+        "$extensions": {
+          "facet": {
+            "dark": "#4d2a00",
+            "p3": "oklch(95.93% .0636 90.52)",
+            "p3Dark": "oklch(32.34% .0837 63.83)"
+          }
+        }
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#ffdd8f",
+        "$extensions": {
+          "facet": {
+            "dark": "#573300",
+            "p3": "oklch(91.02% .1322 88.25)",
+            "p3Dark": "oklch(35.53% .0903 66.2971)"
+          }
+        }
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#ffc96b",
+        "$extensions": {
+          "facet": {
+            "dark": "#6b4105",
+            "p3": "oklch(86.55% .1583 79.63)",
+            "p3Dark": "oklch(41.55% .1044 67.98)"
+          }
+        }
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#f5b047",
+        "$extensions": {
+          "facet": {
+            "dark": "#e79d13",
+            "p3": "oklch(80.25% .1953 73.59)",
+            "p3Dark": "oklch(75.04% .1737 74.49)"
+          }
+        }
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#ffb224",
+        "$extensions": {
+          "facet": {
+            "dark": "#ffb224",
+            "p3": "oklch(81.87% .1969 76.46)",
+            "p3Dark": "oklch(81.87% .1969 76.46)"
+          }
+        }
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#ff990a",
+        "$extensions": {
+          "facet": {
+            "dark": "#ff990a",
+            "p3": "oklch(77.21% .1991 64.28)",
+            "p3Dark": "oklch(77.21% .1991 64.28)"
+          }
+        }
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#a35200",
+        "$extensions": {
+          "facet": {
+            "dark": "#f2a20d",
+            "p3": "oklch(52.79% .1496 54.65)",
+            "p3Dark": "oklch(77.21% .1991 64.28)"
+          }
+        }
+      },
+      "1000": {
+        "$type": "color",
+        "$value": "#4e2009",
+        "$extensions": {
+          "facet": {
+            "dark": "#fef3dc",
+            "p3": "oklch(30.83% .099 45.48)",
+            "p3Dark": "oklch(96.7% .0418 84.59)"
+          }
+        }
+      }
+    },
+    "green": {
+      "100": {
+        "$type": "color",
+        "$value": "#effbef",
+        "$extensions": {
+          "facet": {
+            "dark": "#0b2212",
+            "p3": "oklch(97.59% .0289 145.42)",
+            "p3Dark": "oklch(23.09% .0716 149.68)"
+          }
+        }
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#ebfaeb",
+        "$extensions": {
+          "facet": {
+            "dark": "#0f2e18",
+            "p3": "oklch(96.92% .037 147.15)",
+            "p3Dark": "oklch(27.12% .0895 150.09)"
+          }
+        }
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#daf6da",
+        "$extensions": {
+          "facet": {
+            "dark": "#12361b",
+            "p3": "oklch(94.6% .0674 144.23)",
+            "p3Dark": "oklch(29.84% .096 149.25)"
+          }
+        }
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#c6f1c7",
+        "$extensions": {
+          "facet": {
+            "dark": "#0c451b",
+            "p3": "oklch(91.49% .0976 146.24)",
+            "p3Dark": "oklch(34.39% .1039 147.78)"
+          }
+        }
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#99e69e",
+        "$extensions": {
+          "facet": {
+            "dark": "#126426",
+            "p3": "oklch(85.45% .1627 146.3)",
+            "p3Dark": "oklch(44.19% .1484 147.2)"
+          }
+        }
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#6cda75",
+        "$extensions": {
+          "facet": {
+            "dark": "#1a9338",
+            "p3": "oklch(80.25% .214 145.18)",
+            "p3Dark": "oklch(58.11% .1815 146.55)"
+          }
+        }
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#45a557",
+        "$extensions": {
+          "facet": {
+            "dark": "#45a557",
+            "p3": "oklch(64.58% .1746 147.27)",
+            "p3Dark": "oklch(64.58% .199 147.27)"
+          }
+        }
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#398e4a",
+        "$extensions": {
+          "facet": {
+            "dark": "#398e4a",
+            "p3": "oklch(57.81% .1507 147.5)",
+            "p3Dark": "oklch(57.81% .1776 147.5)"
+          }
+        }
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#297a3a",
+        "$extensions": {
+          "facet": {
+            "dark": "#62c073",
+            "p3": "oklch(51.75% .1453 147.65)",
+            "p3Dark": "oklch(73.1% .2158 148.29)"
+          }
+        }
+      },
+      "1000": {
+        "$type": "color",
+        "$value": "#1b311e",
+        "$extensions": {
+          "facet": {
+            "dark": "#e5fbea",
+            "p3": "oklch(29.15% .1197 147.38)",
+            "p3Dark": "oklch(96.76% .056 154.18)"
+          }
+        }
+      }
+    },
+    "teal": {
+      "100": {
+        "$type": "color",
+        "$value": "#eefcf9",
+        "$extensions": {
+          "facet": {
+            "dark": "#04201b",
+            "p3": "oklch(97.72% .0359 186.7)",
+            "p3Dark": "oklch(22.1% .0544 178.74)"
+          }
+        }
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#e5faf6",
+        "$extensions": {
+          "facet": {
+            "dark": "#062822",
+            "p3": "oklch(97.06% .0347 180.66)",
+            "p3Dark": "oklch(25.06% .062 178.76)"
+          }
+        }
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#d4f7f0",
+        "$extensions": {
+          "facet": {
+            "dark": "#083a33",
+            "p3": "oklch(94.92% .0478 182.07)",
+            "p3Dark": "oklch(31.5% .0767 180.99)"
+          }
+        }
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#bef4eb",
+        "$extensions": {
+          "facet": {
+            "dark": "#053d35",
+            "p3": "oklch(92.76% .0718 183.78)",
+            "p3Dark": "oklch(32.43% .0763 180.13)"
+          }
+        }
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#86ead9",
+        "$extensions": {
+          "facet": {
+            "dark": "#085e53",
+            "p3": "oklch(86.88% .1344 182.42)",
+            "p3Dark": "oklch(43.35% .1055 180.97)"
+          }
+        }
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#45dec5",
+        "$extensions": {
+          "facet": {
+            "dark": "#0c9784",
+            "p3": "oklch(81.5% .161 178.96)",
+            "p3Dark": "oklch(60.71% .1485 180.24)"
+          }
+        }
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#12a594",
+        "$extensions": {
+          "facet": {
+            "dark": "#12a594",
+            "p3": "oklch(64.92% .1572 181.95)",
+            "p3Dark": "oklch(64.92% .1403 181.95)"
+          }
+        }
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#0d8c7d",
+        "$extensions": {
+          "facet": {
+            "dark": "#0d8c7d",
+            "p3": "oklch(57.53% .1392 181.66)",
+            "p3Dark": "oklch(57.53% .1392 181.66)"
+          }
+        }
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#067a6e",
+        "$extensions": {
+          "facet": {
+            "dark": "#0ac7b4",
+            "p3": "oklch(52.08% .1251 182.93)",
+            "p3Dark": "oklch(74.56% .1765 182.8)"
+          }
+        }
+      },
+      "1000": {
+        "$type": "color",
+        "$value": "#073c34",
+        "$extensions": {
+          "facet": {
+            "dark": "#e0faf4",
+            "p3": "oklch(32.11% .0788 179.82)",
+            "p3Dark": "oklch(96.46% .056 180.29)"
+          }
+        }
+      }
+    },
+    "purple": {
+      "100": {
+        "$type": "color",
+        "$value": "#f9f0ff",
+        "$extensions": {
+          "facet": {
+            "dark": "#231528",
+            "p3": "oklch(96.65% .0244 312.189)",
+            "p3Dark": "oklch(22.34% .0779 316.87)"
+          }
+        }
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#f9f1fe",
+        "$extensions": {
+          "facet": {
+            "dark": "#2e1938",
+            "p3": "oklch(96.73% .0228 309.8)",
+            "p3Dark": "oklch(25.91% .0921 314.41)"
+          }
+        }
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#f4e8fc",
+        "$extensions": {
+          "facet": {
+            "dark": "#422154",
+            "p3": "oklch(94.85% .0364 310.15)",
+            "p3Dark": "oklch(31.98% .1219 312.41)"
+          }
+        }
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#eddcf9",
+        "$extensions": {
+          "facet": {
+            "dark": "#4f2768",
+            "p3": "oklch(91.77% .0614 312.82)",
+            "p3Dark": "oklch(35.93% .1504 309.78)"
+          }
+        }
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#d5b1f1",
+        "$extensions": {
+          "facet": {
+            "dark": "#5f2e85",
+            "p3": "oklch(81.26% .1409 310.8)",
+            "p3Dark": "oklch(40.99% .1721 307.92)"
+          }
+        }
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#bf89ec",
+        "$extensions": {
+          "facet": {
+            "dark": "#8e4ec6",
+            "p3": "oklch(72.07% .2083 308.19)",
+            "p3Dark": "oklch(55.5% .2191 306.12)"
+          }
+        }
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#8e4ec6",
+        "$extensions": {
+          "facet": {
+            "dark": "#8e4ec6",
+            "p3": "oklch(55.5% .3008 306.12)",
+            "p3Dark": "oklch(55.5% .2186 306.12)"
+          }
+        }
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#763da9",
+        "$extensions": {
+          "facet": {
+            "dark": "#763da9",
+            "p3": "oklch(48.58% .2638 305.73)",
+            "p3Dark": "oklch(48.58% .2102 305.73)"
+          }
+        }
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#7820bc",
+        "$extensions": {
+          "facet": {
+            "dark": "#bf7af0",
+            "p3": "oklch(47.18% .2579 304)",
+            "p3Dark": "oklch(69.87% .2037 309.51)"
+          }
+        }
+      },
+      "1000": {
+        "$type": "color",
+        "$value": "#2e004d",
+        "$extensions": {
+          "facet": {
+            "dark": "#f8edfc",
+            "p3": "oklch(23.96% .13 305.66)",
+            "p3Dark": "oklch(96.1% .0304 316.46)"
+          }
+        }
+      }
+    },
+    "pink": {
+      "100": {
+        "$type": "color",
+        "$value": "#ffebf5",
+        "$extensions": {
+          "facet": {
+            "dark": "#28151d",
+            "p3": "oklch(95.69% .0359 344.622)",
+            "p3Dark": "oklch(22.67% .0628 354.73)"
+          }
+        }
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#feecf2",
+        "$extensions": {
+          "facet": {
+            "dark": "#3a1726",
+            "p3": "oklch(95.71% .0321 353.14)",
+            "p3Dark": "oklch(26.2% .0859 356.68)"
+          }
+        }
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#fce3ec",
+        "$extensions": {
+          "facet": {
+            "dark": "#4f1c31",
+            "p3": "oklch(93.83% .0451 356.29)",
+            "p3Dark": "oklch(31.15% .1067 355.93)"
+          }
+        }
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#f9d7e2",
+        "$extensions": {
+          "facet": {
+            "dark": "#551b33",
+            "p3": "oklch(91.12% .0573 358.82)",
+            "p3Dark": "oklch(32.13% .1174 356.71)"
+          }
+        }
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#f5b8cc",
+        "$extensions": {
+          "facet": {
+            "dark": "#6c1e3e",
+            "p3": "oklch(84.28% .0915 356.99)",
+            "p3Dark": "oklch(37.01% .1453 358.39)"
+          }
+        }
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#ee87a7",
+        "$extensions": {
+          "facet": {
+            "dark": "#b31a57",
+            "p3": "oklch(74.33% .1547 .24)",
+            "p3Dark": "oklch(50.33% .2089 4.33)"
+          }
+        }
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#ea3e83",
+        "$extensions": {
+          "facet": {
+            "dark": "#ea3e83",
+            "p3": "oklch(63.52% .238 1.01)",
+            "p3Dark": "oklch(63.52% .2346 1.01)"
+          }
+        }
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#df2670",
+        "$extensions": {
+          "facet": {
+            "dark": "#df2670",
+            "p3": "oklch(59.51% .2339 4.21)",
+            "p3Dark": "oklch(59.51% .2429 4.21)"
+          }
+        }
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#bd2864",
+        "$extensions": {
+          "facet": {
+            "dark": "#f75f8f",
+            "p3": "oklch(53.5% .2058 2.84)",
+            "p3Dark": "oklch(69.36% .2223 3.91)"
+          }
+        }
+      },
+      "1000": {
+        "$type": "color",
+        "$value": "#430a23",
+        "$extensions": {
+          "facet": {
+            "dark": "#feecf4",
+            "p3": "oklch(26% .0977 359)",
+            "p3Dark": "oklch(95.74% .0326 350.08)"
+          }
+        }
+      }
+    },
+    "gray-alpha": {
+      "100": {
+        "$type": "color",
+        "$value": "#0000000d",
+        "$extensions": {
+          "facet": {
+            "dark": "#ffffff0f"
+          }
+        }
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#00000014",
+        "$extensions": {
+          "facet": {
+            "dark": "#ffffff17"
+          }
+        }
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#0000001a",
+        "$extensions": {
+          "facet": {
+            "dark": "#ffffff21"
+          }
+        }
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#00000014",
+        "$extensions": {
+          "facet": {
+            "dark": "#ffffff24"
+          }
+        }
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#00000036",
+        "$extensions": {
+          "facet": {
+            "dark": "#ffffff3d"
+          }
+        }
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#00000057",
+        "$extensions": {
+          "facet": {
+            "dark": "#ffffff82"
+          }
+        }
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#00000070",
+        "$extensions": {
+          "facet": {
+            "dark": "#ffffff8a"
+          }
+        }
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#00000082",
+        "$extensions": {
+          "facet": {
+            "dark": "#ffffff78"
+          }
+        }
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#000000b3",
+        "$extensions": {
+          "facet": {
+            "dark": "#ffffff9c"
+          }
+        }
+      },
+      "1000": {
+        "$type": "color",
+        "$value": "#000000e8",
+        "$extensions": {
+          "facet": {
+            "dark": "#ffffffeb"
+          }
+        }
+      }
+    },
+    "background": {
+      "100": {
+        "$type": "color",
+        "$value": "#ffffff",
+        "$extensions": {
+          "facet": {
+            "dark": "#0a0a0a"
+          }
+        }
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#fafafa",
+        "$extensions": {
+          "facet": {
+            "dark": "#000000"
+          }
+        }
+      }
+    }
+  },
+  "shadow": {
+    "border-base": {
+      "$type": "shadow",
+      "$value": "0 0 0 1px #00000014",
+      "$extensions": {
+        "facet": {
+          "dark": "0 0 0 1px #ffffff25"
+        }
+      }
+    },
+    "border-inset": {
+      "$type": "shadow",
+      "$value": "inset 0 0 0 1px #00000014",
+      "$extensions": {
+        "facet": {
+          "dark": "inset 0 0 0 1px #ffffff1a"
+        }
+      }
+    },
+    "2xs": {
+      "$type": "shadow",
+      "$value": "0px 1px 1px #0000000a",
+      "$extensions": {
+        "facet": {
+          "dark": "0px 1px 1px #00000029"
+        }
+      }
+    },
+    "xs": {
+      "$type": "shadow",
+      "$value": "0px 1px 2px #0000000a",
+      "$extensions": {
+        "facet": {
+          "dark": "0px 1px 2px #00000029"
+        }
+      }
+    },
+    "small": {
+      "$type": "shadow",
+      "$value": "0px 2px 2px #0000000a",
+      "$extensions": {
+        "facet": {
+          "dark": "0px 1px 2px #00000029"
+        }
+      }
+    },
+    "medium": {
+      "$type": "shadow",
+      "$value": "0px 2px 2px #0000000a, 0px 8px 8px -8px #0000000a",
+      "$extensions": {
+        "facet": {
+          "dark": "0px 2px 2px #00000052, 0px 8px 8px -8px #00000029"
+        }
+      }
+    },
+    "large": {
+      "$type": "shadow",
+      "$value": "0px 2px 2px #0000000a, 0px 8px 16px -4px #0000000a",
+      "$extensions": {
+        "facet": {
+          "dark": "0px 2px 2px #0000000a, 0px 8px 16px -4px #0000000a"
+        }
+      }
+    },
+    "xl": {
+      "$type": "shadow",
+      "$value": "0px 1px 1px #00000005, 0px 4px 8px -4px #0000000a, 0px 16px 24px -8px #0000000f",
+      "$extensions": {
+        "facet": {
+          "dark": "0px 1px 1px #00000005, 0px 4px 8px -4px #0000000a, 0px 16px 24px -8px #0000000f"
+        }
+      }
+    },
+    "2xl": {
+      "$type": "shadow",
+      "$value": "0px 1px 1px #00000005, 0px 8px 16px -4px #0000000a, 0px 24px 32px -8px #0000000f",
+      "$extensions": {
+        "facet": {
+          "dark": "0px 1px 1px #00000005, 0px 8px 16px -4px #0000000a, 0px 24px 32px -8px #0000000f"
+        }
+      }
+    },
+    "border": {
+      "$type": "shadow",
+      "$value": "0 0 0 1px #00000014, 0 0 0 1px var(--ds-background-200)",
+      "$extensions": {
+        "facet": {
+          "dark": "0 0 0 1px #ffffff25, 0 0 0 1px var(--ds-background-200)"
+        }
+      }
+    },
+    "border-small": {
+      "$type": "shadow",
+      "$value": "0 0 0 1px #00000014, 0px 2px 2px #0000000a, 0 0 0 1px var(--ds-background-200)",
+      "$extensions": {
+        "facet": {
+          "dark": "0 0 0 1px #ffffff25, 0px 1px 2px #00000029, 0 0 0 1px var(--ds-background-200)"
+        }
+      }
+    },
+    "border-medium": {
+      "$type": "shadow",
+      "$value": "0 0 0 1px #00000014, 0px 2px 2px #0000000a, 0px 8px 8px -8px #0000000a, 0 0 0 1px var(--ds-background-200)",
+      "$extensions": {
+        "facet": {
+          "dark": "0 0 0 1px #ffffff25, 0px 2px 2px #00000052, 0px 8px 8px -8px #00000029, 0 0 0 1px var(--ds-background-200)"
+        }
+      }
+    },
+    "border-large": {
+      "$type": "shadow",
+      "$value": "0 0 0 1px #00000014, 0px 2px 2px #0000000a, 0px 8px 16px -4px #0000000a, 0 0 0 1px var(--ds-background-200)",
+      "$extensions": {
+        "facet": {
+          "dark": "0 0 0 1px #ffffff25, 0px 2px 2px #0000000a, 0px 8px 16px -4px #0000000a, 0 0 0 1px var(--ds-background-200)"
+        }
+      }
+    },
+    "tooltip": {
+      "$type": "shadow",
+      "$value": "0 0 0 1px #00000014, 0px 1px 1px #00000005, 0px 4px 8px #0000000a, 0 0 0 1px var(--ds-background-200)",
+      "$extensions": {
+        "facet": {
+          "dark": "0 0 0 1px #ffffff25, 0px 1px 1px #00000005, 0px 4px 8px #0000000a, 0 0 0 1px var(--ds-background-200)"
+        }
+      }
+    },
+    "menu": {
+      "$type": "shadow",
+      "$value": "0 0 0 1px #00000014, 0px 1px 1px #00000005, 0px 4px 8px -4px #0000000a, 0px 16px 24px -8px #0000000f, 0 0 0 1px var(--ds-background-200)",
+      "$extensions": {
+        "facet": {
+          "dark": "0 0 0 1px #ffffff25, 0px 1px 1px #00000005, 0px 4px 8px -4px #0000000a, 0px 16px 24px -8px #0000000f, 0 0 0 1px var(--ds-background-200)"
+        }
+      }
+    },
+    "modal": {
+      "$type": "shadow",
+      "$value": "0 0 0 1px #00000014, 0px 1px 1px #00000005, 0px 8px 16px -4px #0000000a, 0px 24px 32px -8px #0000000f, 0 0 0 1px var(--ds-background-200)",
+      "$extensions": {
+        "facet": {
+          "dark": "0 0 0 1px #ffffff25, 0px 1px 1px #00000005, 0px 8px 16px -4px #0000000a, 0px 24px 32px -8px #0000000f, 0 0 0 1px var(--ds-background-200)"
+        }
+      }
+    },
+    "modal-elevated": {
+      "$type": "shadow",
+      "$value": "0px 0px 0px 1px #00000014, 0px 32px 72px -12px #0000000f, 0px 8px 32px -12px #00000014, 0px 8px 24px -12px #0000001f",
+      "$extensions": {
+        "facet": {
+          "dark": "0 0 0 1px #ffffff24, 0px 32px 72px -12px #0000000f, 0px 8px 32px -12px #00000014, 0px 8px 24px -12px #0000001f"
+        }
+      }
+    },
+    "fullscreen": {
+      "$type": "shadow",
+      "$value": "0 0 0 1px #00000014, 0px 1px 1px #00000005, 0px 8px 16px -4px #0000000a, 0px 24px 32px -8px #0000000f, 0 0 0 1px var(--ds-background-200)",
+      "$extensions": {
+        "facet": {
+          "dark": "0 0 0 1px #ffffff25, 0px 1px 1px #00000005, 0px 8px 16px -4px #0000000a, 0px 24px 32px -8px #0000000f, 0 0 0 1px var(--ds-background-200)"
+        }
+      }
+    }
+  },
+  "font": {
+    "family": {
+      "sans": {
+        "$type": "fontFamily",
+        "$value": "var(--font-geist-sans, \"Geist\"), \"Geist Fallback\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+        "$description": "Honors next/font (--font-geist-sans) when present, else the vendored @font-face \"Geist\"."
+      },
+      "mono": {
+        "$type": "fontFamily",
+        "$value": "var(--font-geist-mono, \"Geist Mono\"), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+      }
+    },
+    "weight": {
+      "normal": {
+        "$type": "fontWeight",
+        "$value": 400
+      },
+      "medium": {
+        "$type": "fontWeight",
+        "$value": 500
+      },
+      "strong": {
+        "$type": "fontWeight",
+        "$value": 550
+      },
+      "semibold": {
+        "$type": "fontWeight",
+        "$value": 600
+      },
+      "bold": {
+        "$type": "fontWeight",
+        "$value": 700
+      }
+    }
+  },
+  "space": {
+    "0": {
+      "$type": "dimension",
+      "$value": "0px"
+    },
+    "px": {
+      "$type": "dimension",
+      "$value": "1px"
+    },
+    "0.5": {
+      "$type": "dimension",
+      "$value": "2px"
+    },
+    "1": {
+      "$type": "dimension",
+      "$value": "4px"
+    },
+    "1.5": {
+      "$type": "dimension",
+      "$value": "6px"
+    },
+    "2": {
+      "$type": "dimension",
+      "$value": "8px"
+    },
+    "3": {
+      "$type": "dimension",
+      "$value": "12px"
+    },
+    "4": {
+      "$type": "dimension",
+      "$value": "16px"
+    },
+    "5": {
+      "$type": "dimension",
+      "$value": "20px"
+    },
+    "6": {
+      "$type": "dimension",
+      "$value": "24px"
+    },
+    "8": {
+      "$type": "dimension",
+      "$value": "32px"
+    },
+    "10": {
+      "$type": "dimension",
+      "$value": "40px"
+    },
+    "12": {
+      "$type": "dimension",
+      "$value": "48px"
+    },
+    "16": {
+      "$type": "dimension",
+      "$value": "64px"
+    },
+    "24": {
+      "$type": "dimension",
+      "$value": "96px"
+    },
+    "32": {
+      "$type": "dimension",
+      "$value": "128px"
+    }
+  },
+  "radius": {
+    "xs": {
+      "$type": "dimension",
+      "$value": "4px"
+    },
+    "sm": {
+      "$type": "dimension",
+      "$value": "6px"
+    },
+    "md": {
+      "$type": "dimension",
+      "$value": "8px"
+    },
+    "lg": {
+      "$type": "dimension",
+      "$value": "12px"
+    },
+    "xl": {
+      "$type": "dimension",
+      "$value": "16px"
+    },
+    "full": {
+      "$type": "dimension",
+      "$value": "9999px"
+    }
+  },
+  "size": {
+    "control": {
+      "tiny": {
+        "$type": "dimension",
+        "$value": "24px",
+        "$description": "Icon-only tiny button (measured on the vercel.com reference button)."
+      },
+      "small": {
+        "$type": "dimension",
+        "$value": "32px",
+        "$description": "Geist size=\"small\": 14px text, 6px radius."
+      },
+      "medium": {
+        "$type": "dimension",
+        "$value": "36px",
+        "$description": "Geist default control height (buttons, inputs, selects): 14px text, 6px radius."
+      },
+      "large": {
+        "$type": "dimension",
+        "$value": "40px",
+        "$description": "Geist size=\"large\": 16px text, 8px radius."
+      }
+    },
+    "page": {
+      "$type": "dimension",
+      "$value": "1400px"
+    },
+    "page-margin": {
+      "$type": "dimension",
+      "$value": "24px"
+    },
+    "row": {
+      "header": {
+        "$type": "dimension",
+        "$value": "36px",
+        "$description": "Geist Table header row."
+      },
+      "body": {
+        "$type": "dimension",
+        "$value": "40px",
+        "$description": "Geist Table body row (10px block padding, 8px inline)."
+      },
+      "compact": {
+        "$type": "dimension",
+        "$value": "32px",
+        "$description": "Facet addition for dense ledgers. Not a reference value."
+      }
+    },
+    "layout": {
+      "shell-sidenav-width": {
+        "$type": "dimension",
+        "$value": "232px",
+        "$description": "App sidebar (measured on the reference dashboard)."
+      },
+      "shell-topbar-height": {
+        "$type": "dimension",
+        "$value": "48px",
+        "$description": "App top bar."
+      },
+      "settings-nav-width": {
+        "$type": "dimension",
+        "$value": "256px",
+        "$description": "Settings section nav."
+      },
+      "measure-settings": {
+        "$type": "dimension",
+        "$value": "912px",
+        "$description": "Settings content column."
+      },
+      "sheet-width": {
+        "$type": "dimension",
+        "$value": "512px",
+        "$description": "Side sheet."
+      },
+      "sheet-inset": {
+        "$type": "dimension",
+        "$value": "12px",
+        "$description": "Gap between a sheet and the viewport."
+      },
+      "row-list": {
+        "$type": "dimension",
+        "$value": "64px",
+        "$description": "Two-line list row."
+      },
+      "row-list-single": {
+        "$type": "dimension",
+        "$value": "48px",
+        "$description": "One-line list row."
+      },
+      "chart-height": {
+        "$type": "dimension",
+        "$value": "160px",
+        "$description": "Default chart plot height."
+      },
+      "chart-height-small": {
+        "$type": "dimension",
+        "$value": "120px",
+        "$description": "Compact chart plot height."
+      },
+      "meter-height": {
+        "$type": "dimension",
+        "$value": "8px",
+        "$description": "Quota meter bar."
+      }
+    }
+  },
+  "z": {
+    "drawer": {
+      "$type": "number",
+      "$value": 200
+    },
+    "modal": {
+      "$type": "number",
+      "$value": 300
+    },
+    "menu": {
+      "$type": "number",
+      "$value": 2001
+    },
+    "toast": {
+      "$type": "number",
+      "$value": 5000
+    },
+    "tooltip": {
+      "$type": "number",
+      "$value": 99999
+    }
+  },
+  "motion": {
+    "easing": {
+      "swift": {
+        "$type": "cubicBezier",
+        "$value": [
+          0.175,
+          0.885,
+          0.32,
+          1.1
+        ]
+      },
+      "standard": {
+        "$type": "cubicBezier",
+        "$value": [
+          0.25,
+          0.1,
+          0.25,
+          1
+        ]
+      }
+    },
+    "duration": {
+      "instant": {
+        "$type": "duration",
+        "$value": "100ms"
+      },
+      "fast": {
+        "$type": "duration",
+        "$value": "150ms"
+      },
+      "popover": {
+        "$type": "duration",
+        "$value": "200ms"
+      },
+      "overlay": {
+        "$type": "duration",
+        "$value": "300ms"
+      }
+    }
+  }
+}

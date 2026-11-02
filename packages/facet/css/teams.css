@@ -1,0 +1,118 @@
+/* Facet team identity: team marks, matchups and player rows. Needs a sport kit (kits/nfl/teams.css),
+   which sets --team-1 (fill), --team-2 (trim) and --team-ink on [data-team] and points each mark at its logo.
+   Hue rule: team colors and logos live only inside identity marks. Rows, text, charts and status stay Facet. */
+
+/* ------------------------------------------------------------------ Team */
+.fc-team {
+  --_h: 24px;
+  --_fs: 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fc-space-2);
+  min-width: 0;
+  vertical-align: middle;
+  color: var(--fc-text-primary);
+}
+.fc-team[data-size="sm"] { --_h: 18px; --_fs: 10px; gap: 6px; }
+.fc-team[data-size="lg"] { --_h: 40px; --_fs: 14px; gap: var(--fc-space-3); }
+
+/* Logo (default): the kit's full-color tile. Falls back to a plain team-color square when a kit has no logos. */
+.fc-team-mark {
+  box-sizing: border-box;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--_h);
+  height: var(--_h);
+  border-radius: var(--fc-radius-xs);
+  background: var(--team-1, var(--fc-surface-fill)) center / cover no-repeat;
+  box-shadow: inset 0 0 0 1px var(--fc-border-alpha);
+}
+.fc-team[data-size="lg"] .fc-team-mark { border-radius: var(--fc-radius-md); }
+
+/* Mono: the logo silhouette in the current text color, for quiet, dense places (feeds, legends). */
+.fc-team[data-mark="mono"] .fc-team-mark {
+  border-radius: 0;
+  background: currentColor;
+  box-shadow: none;
+  mask-position: center;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-mode: luminance;
+}
+
+/* Abbreviation chip: needs no assets. Abbreviation on the fill with a band of the second color.
+   Fixed width (1.5 times the height), so two- and three-letter chips line up in a column. */
+.fc-team[data-mark="abbr"] { --_band: 3px; }
+.fc-team[data-mark="abbr"][data-size="sm"] { --_band: 2px; }
+.fc-team[data-mark="abbr"][data-size="lg"] { --_band: 4px; }
+.fc-team[data-mark="abbr"] .fc-team-mark {
+  width: calc(var(--_h) * 1.5);
+  padding-bottom: var(--_band);
+  background: var(--team-1, var(--fc-surface-fill));
+  color: var(--team-ink, var(--fc-text-primary));
+  box-shadow: inset 0 calc(var(--_band) * -1) 0 var(--team-2, transparent), inset 0 0 0 1px var(--fc-border-alpha);
+  font: 600 var(--_fs)/1 var(--fc-font-sans);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.fc-team-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: 500 14px/20px var(--fc-font-sans);
+}
+.fc-team[data-size="sm"] .fc-team-name { font-size: 13px; line-height: 16px; }
+.fc-team-city { display: block; font-weight: 400; font-size: 13px; line-height: 16px; color: var(--fc-text-secondary); }
+.fc-team[data-size="lg"] .fc-team-name { font: 600 16px/20px var(--fc-font-sans); }
+
+/* ------------------------------------------------------------------ Matchup
+   Away first, home second (@). A neutral site reads "vs". */
+.fc-matchup {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fc-space-2);
+  min-width: 0;
+  vertical-align: middle;
+}
+.fc-matchup-sep { flex: none; font: 400 13px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
+.fc-matchup:has(.fc-team[data-size="lg"]) { gap: var(--fc-space-4); }
+
+/* Stacked: a scoreboard. Away on top, home below. Values (.fc-matchup-value, mono) line up in trailing
+   columns; set --fc-matchup-values to their count (default 1). data-strong marks the best price. */
+.fc-matchup[data-layout="stack"] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) repeat(var(--fc-matchup-values, 1), max-content);
+  align-items: center;
+  gap: var(--fc-space-2) var(--fc-space-6);
+}
+.fc-matchup-row { display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; align-items: center; }
+.fc-matchup-row > :not(:first-child) { justify-self: end; }
+.fc-matchup-value { font: 400 14px/20px var(--fc-font-mono); font-variant-numeric: tabular-nums; color: var(--fc-text-secondary); }
+.fc-matchup-value[data-strong] { color: var(--fc-text-primary); font-weight: 500; }
+
+/* ------------------------------------------------------------------ Player
+   The team logo tile once, then the name with the jersey number trailing it (#88, secondary), then a detail line.
+   The name truncates before the number does. */
+.fc-player { display: inline-flex; align-items: center; gap: var(--fc-space-3); min-width: 0; vertical-align: middle; }
+.fc-player-avatar {
+  --_s: 40px;
+  box-sizing: border-box;
+  flex: none;
+  width: var(--_s);
+  height: var(--_s);
+  border-radius: var(--fc-radius-md);
+  background: var(--team-1, var(--fc-surface-fill)) center / cover no-repeat;
+  box-shadow: inset 0 0 0 1px var(--fc-border-alpha);
+}
+.fc-player-avatar[data-size="sm"] { --_s: 32px; border-radius: var(--fc-radius-sm); }
+.fc-player-avatar[data-size="lg"] { --_s: 56px; border-radius: var(--fc-radius-lg); }
+.fc-player-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.fc-player-line { display: flex; align-items: baseline; gap: 6px; min-width: 0; }
+.fc-player-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
+.fc-player-number { flex: none; font: 400 13px/20px var(--fc-font-sans); font-variant-numeric: tabular-nums; color: var(--fc-text-secondary); white-space: nowrap; }
+.fc-player-meta { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 400 13px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
+.fc-player[data-size="lg"] .fc-player-name { font: 600 20px/28px var(--fc-font-sans); }
+.fc-player[data-size="lg"] .fc-player-number { font-size: 16px; line-height: 28px; }

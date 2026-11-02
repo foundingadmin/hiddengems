@@ -1,0 +1,81 @@
+/* Facet marketing surfaces inside a product (owner decision D5).
+   Dense product screens need moments of reprieve: onboarding, the start of a week, how-it-works
+   explainers, recaps, empty seasons. Those moments use data-surface="marketing", which unlocks a
+   small, scoped set of allowances. Everything outside it keeps the product rules.
+
+   Allowed inside data-surface="marketing":
+   - display type (text-heading-40 to 72) and roomier spacing (--fc-space-section-*)
+   - the animated field (js/field.mjs), one per view, lightness-only plus brand sparkles
+   - pill buttons and a bolder lede
+   Still banned: hue decoration, gradient text, glass, purple outside the brand accent, cards in cards. */
+
+[data-surface="marketing"] {
+  --fc-space-section-sm: 64px;
+  --fc-space-section-md: 96px;
+  --fc-space-section-lg: 128px;
+}
+
+/* ------------------------------------------------------------------ Hero
+   <section class="fc-hero" data-surface="marketing">
+     <canvas class="fc-hero-field" data-fc-field aria-hidden="true"></canvas>
+     <div class="fc-hero-body"> h1, lede, actions </div>
+   </section>
+   Sizes: default (page moments, about 420px tall), data-size="band" (section headers, about 200px). */
+.fc-hero {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-items: end;
+  min-height: 420px;
+  overflow: hidden;
+  border-radius: var(--fc-radius-lg);
+  background: var(--fc-surface-canvas);
+  box-shadow: var(--ds-shadow-border);
+}
+.fc-hero[data-size="band"] { min-height: 200px; }
+.fc-hero[data-bleed] { border-radius: 0; box-shadow: none; border-block: 1px solid var(--ds-gray-400); }
+.fc-hero-field {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  /* Fade the field out under the text so the copy always reads; lightness only. */
+  -webkit-mask-image: linear-gradient(to top, transparent 0%, color-mix(in srgb, black 35%, transparent) 38%, black 78%);
+          mask-image: linear-gradient(to top, transparent 0%, color-mix(in srgb, black 35%, transparent) 38%, black 78%);
+}
+.fc-hero[data-align="side"] .fc-hero-field {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, color-mix(in srgb, black 30%, transparent) 42%, black 80%);
+          mask-image: linear-gradient(to right, transparent 0%, color-mix(in srgb, black 30%, transparent) 42%, black 80%);
+}
+.fc-hero-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: 720px;
+  padding: 48px 40px;
+}
+.fc-hero[data-size="band"] .fc-hero-body { gap: 8px; padding: 32px; }
+.fc-hero-title {
+  margin: 0;
+  font: 600 56px/56px var(--fc-font-sans);
+  letter-spacing: -3.36px;
+  color: var(--fc-text-primary);
+  text-wrap: balance;
+}
+.fc-hero[data-size="band"] .fc-hero-title { font-size: 32px; line-height: 40px; letter-spacing: -1.28px; }
+.fc-hero-lede { margin: 0; max-width: 56ch; font: 400 18px/28px var(--fc-font-sans); color: var(--fc-text-secondary); }
+.fc-hero[data-size="band"] .fc-hero-lede { font-size: 16px; line-height: 24px; }
+.fc-hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+/* A small context line above the title: sentence case, never an all-caps eyebrow. */
+.fc-hero-context { display: inline-flex; align-items: center; gap: 8px; font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); }
+@media (max-width: 600px) {
+  .fc-hero { min-height: 360px; }
+  .fc-hero-body { padding: 32px 20px; }
+  .fc-hero-title { font-size: 40px; line-height: 48px; letter-spacing: -2.4px; }
+  .fc-hero-lede { font-size: 16px; line-height: 24px; }
+}
+
+/* Pill buttons are a marketing allowance. */
+[data-surface="marketing"] .fc-button[data-shape="rounded"] { --_px: 16px; }

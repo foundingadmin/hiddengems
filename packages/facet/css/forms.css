@@ -1,0 +1,280 @@
+/* Facet form parts [F]. Settings form pieces built from the rank 1 dashboard captures
+   (reference/inbox-review-2026-11-02/02-dashboard-settings.md): input groups with affixes,
+   the stepper with a derived total, choice tiles, key/value rows, snippets, secrets and the
+   odds pull schedule editor. Depends on tokens.css and components.css (.fc-input, .fc-label,
+   .fc-helper, .fc-button, .fc-description, .fc-note). Font shorthands follow typography.css roles. */
+
+/* Cancel appears only when a card is dirty, so footer buttons honor [hidden]
+   (.fc-button's display would otherwise win). */
+.fc-fieldset-footer .fc-button[hidden] { display: none; }
+
+/* ------------------------------------------------------------------ Input group
+   <div class="fc-input-group"><span class="fc-input-affix" aria-hidden="true">$</span>
+   <input class="fc-input fc-num" ...></div>. The group owns the ring, so the affix and the
+   field read as one control. Put the unit in the label for screen readers. */
+.fc-input-group {
+  --_h: var(--fc-control-medium);
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  height: var(--_h);
+  border-radius: var(--fc-radius-sm);
+  background: var(--fc-surface-canvas);
+  box-shadow: 0 0 0 1px var(--fc-border-alpha);
+  overflow: hidden;
+  transition: box-shadow var(--fc-duration-fast) ease;
+}
+.fc-input-group:hover { box-shadow: 0 0 0 1px var(--fc-border-hover); }
+.fc-input-group:has(.fc-input:focus-visible) { box-shadow: var(--ds-focus-border); }
+.fc-input-group:has(.fc-input[aria-invalid="true"]) { box-shadow: 0 0 0 1px var(--fc-status-error-fg), 0 0 0 4px var(--fc-status-error-bg); }
+.fc-input-group > .fc-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.fc-input-group > .fc-input:hover,
+.fc-input-group > .fc-input:focus-visible,
+.fc-input-group > .fc-input[aria-invalid="true"] { box-shadow: none; }
+.fc-input-affix {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--fc-space-3);
+  background: var(--fc-surface-subtle);
+  color: var(--fc-text-secondary);
+  font: 400 14px/20px var(--fc-font-sans);
+  white-space: nowrap;
+  user-select: none;
+}
+.fc-input-affix:first-child { box-shadow: inset -1px 0 0 var(--fc-border-alpha); }
+.fc-input-affix:last-child  { box-shadow: inset 1px 0 0 var(--fc-border-alpha); }
+.fc-input-group:has(.fc-input:disabled) { background: var(--fc-surface-fill); }
+.fc-input-group:has(.fc-input:disabled) .fc-input-affix { color: var(--fc-text-disabled); }
+.fc-input-group[data-size="small"] { --_h: var(--fc-control-small); }
+.fc-input-group[data-size="large"] { --_h: var(--fc-control-large); border-radius: var(--fc-radius-md); }
+.fc-input-group[data-size="large"] > *,
+.fc-input-group[data-size="large"] .fc-input { font-size: 16px; line-height: 24px; }
+/* Short numeric fields keep a width that fits the value, not the column. */
+.fc-input-group[data-width="short"] { max-width: calc(var(--fc-space-32) + var(--fc-space-8)); }
+
+/* ------------------------------------------------------------------ Stepper
+   <div class="fc-stepper-field"><div class="fc-stepper"> [-] <input type="number"> [+] </div>
+   <p class="fc-stepper-total" aria-live="polite">...</p></div>
+   Minus and plus are buttons with accessible names; the number stays typeable. The total
+   line shows the consequence of the number as it changes. */
+.fc-stepper-field { display: flex; flex-wrap: wrap; align-items: center; column-gap: var(--fc-space-4); row-gap: var(--fc-space-2); }
+.fc-stepper {
+  display: inline-flex;
+  align-items: stretch;
+  height: var(--fc-control-medium);
+  border-radius: var(--fc-radius-sm);
+  background: var(--fc-surface-canvas);
+  box-shadow: 0 0 0 1px var(--fc-border-alpha);
+}
+.fc-stepper-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--fc-control-medium);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fc-text-primary);
+  transition: background-color var(--fc-duration-fast) ease;
+}
+.fc-stepper-button:first-child { border-radius: var(--fc-radius-sm) 0 0 var(--fc-radius-sm); }
+.fc-stepper-button:last-child  { border-radius: 0 var(--fc-radius-sm) var(--fc-radius-sm) 0; }
+.fc-stepper-button:hover { background: var(--fc-surface-fill); }
+.fc-stepper-button:focus-visible { z-index: 1; box-shadow: var(--ds-focus-ring); }
+.fc-stepper-button:disabled { background: transparent; color: var(--fc-text-disabled); }
+.fc-stepper-button svg { width: 16px; height: 16px; }
+.fc-stepper-input {
+  width: calc(var(--fc-space-12) + var(--fc-space-2));
+  margin: 0;
+  padding: 0 var(--fc-space-1);
+  border: 0;
+  border-inline: 1px solid var(--fc-border-alpha);
+  background: transparent;
+  color: var(--fc-text-primary);
+  font: 500 14px/20px var(--fc-font-sans);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.fc-stepper-input::-webkit-inner-spin-button,
+.fc-stepper-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.fc-stepper-input:focus-visible { position: relative; z-index: 1; box-shadow: var(--ds-focus-border); }
+.fc-stepper-total { margin: 0; font: 400 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }
+.fc-stepper-total strong { font-weight: 500; color: var(--fc-text-primary); }
+
+/* ------------------------------------------------------------------ Choicebox
+   Tile radio (or checkbox). <fieldset> + <legend class="fc-label">, then
+   <div class="fc-choicebox-group"> of <label class="fc-choicebox"><input type="radio">
+   <span class="fc-choicebox-body"><span class="fc-choicebox-title">..</span>
+   <span class="fc-choicebox-detail">..</span></span></label>.
+   Selected = blue ring (interaction blue, the focus color) + filled radio mark, never the ring alone. */
+.fc-choicebox-fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+.fc-choicebox-fieldset > legend { padding: 0; }
+.fc-choicebox-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: var(--fc-space-3); }
+.fc-choicebox {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--fc-space-3);
+  min-width: 0;
+  padding: var(--fc-space-4);
+  border-radius: var(--fc-radius-sm);
+  background: var(--fc-surface-canvas);
+  box-shadow: 0 0 0 1px var(--fc-border-default);
+  cursor: pointer;
+  transition: box-shadow var(--fc-duration-fast) ease, background-color var(--fc-duration-fast) ease;
+}
+.fc-choicebox:hover { box-shadow: 0 0 0 1px var(--fc-border-hover); }
+.fc-choicebox:has(input:checked) {
+  background: var(--fc-selected-bg, color-mix(in srgb, var(--fc-control-on) 6%, var(--fc-surface-canvas)));
+  box-shadow: 0 0 0 1px var(--fc-control-on), inset 0 0 0 1px var(--fc-control-on);
+}
+.fc-choicebox:has(input:focus-visible) { box-shadow: var(--ds-focus-ring); }
+.fc-choicebox > input {
+  order: 2;
+  flex: 0 0 auto;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin: 2px 0 0 auto;
+  border-radius: var(--fc-radius-full);
+  background: var(--fc-surface-canvas);
+  box-shadow: inset 0 0 0 1px var(--fc-border-active);
+  transition: box-shadow var(--fc-duration-fast) ease;
+}
+.fc-choicebox > input[type="checkbox"] { border-radius: var(--fc-radius-xs); }
+.fc-choicebox > input:checked,
+.fc-choicebox > input:checked:focus-visible { box-shadow: inset 0 0 0 5px var(--fc-control-on); }
+.fc-choicebox > input:focus-visible { box-shadow: inset 0 0 0 1px var(--fc-border-active); }
+.fc-choicebox-body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: var(--fc-space-0_5); }
+.fc-choicebox-title { display: flex; flex-wrap: wrap; align-items: center; gap: var(--fc-space-2); font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
+.fc-choicebox-detail { font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }
+.fc-choicebox:has(input:disabled) { cursor: not-allowed; background: var(--fc-surface-fill); box-shadow: 0 0 0 1px var(--fc-border-default); }
+.fc-choicebox:has(input:disabled) .fc-choicebox-title,
+.fc-choicebox:has(input:disabled) .fc-choicebox-detail { color: var(--fc-text-disabled); }
+
+/* Option helpers (js/forms.mjs): the line stays reserved while empty, so a dense form never shifts. */
+.fc-helper[data-option-helper] { min-height: 1lh; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } /* one line, always */
+.fc-helper[data-option-helper][data-empty] { visibility: hidden; }
+
+/* ------------------------------------------------------------------ Key/value rows
+   .fc-description[data-layout="rows"]: a bordered <dl>, one pair per row, label column
+   about 35%. Unset values read "None" in secondary (.fc-value-empty); set values are primary. */
+.fc-description[data-layout="rows"] {
+  container: fc-desc / inline-size;
+  display: block;
+  border-radius: var(--fc-radius-sm);
+  box-shadow: 0 0 0 1px var(--fc-border-default);
+}
+.fc-description[data-layout="rows"] > div {
+  display: grid;
+  grid-template-columns: minmax(0, 35%) minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: var(--fc-space-4);
+  row-gap: var(--fc-space-1);
+  min-height: var(--fc-row-body);
+  padding: var(--fc-space-2) var(--fc-space-4);
+}
+.fc-description[data-layout="rows"] > div + div { border-top: 1px solid var(--fc-border-default); }
+.fc-description[data-layout="rows"] dt { font: 400 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); }
+.fc-description[data-layout="rows"] dd { min-width: 0; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.fc-value-empty,
+.fc-description dd.fc-value-empty { font-weight: 400; color: var(--fc-text-secondary); }
+/* Actions variant [F] (owner question, 2026-11-02). Key/value rows never edit in place. A row whose value
+   can change carries one action in a trailing column, an in-app action link to where that value is owned
+   (its form, connection row or key flow): "Edit" for a set value, "Add" for None, a named verb when one
+   exists ("Rotate"). Read-only facts (status, dates, names) get none. Removing happens where the value
+   is owned, behind a confirmation, never from these rows. */
+.fc-description[data-layout="rows"][data-actions] > div { grid-template-columns: minmax(0, 35%) minmax(0, 1fr) auto; }
+.fc-description-action { margin: 0; justify-self: end; font: 400 14px/20px var(--fc-font-sans); }
+@container fc-desc (max-width: 400px) {
+  .fc-description[data-layout="rows"] > div,
+  .fc-description[data-layout="rows"][data-actions] > div { grid-template-columns: minmax(0, 1fr) auto; }
+  .fc-description[data-layout="rows"] > div > dt { grid-column: 1 / -1; }
+}
+
+/* ------------------------------------------------------------------ Snippet
+   A machine value to copy exactly (ID, URL, cron). Mono value + copy button. The button
+   swaps to a check for 2s and a polite live region inside the snippet says "Copied". */
+.fc-snippet {
+  display: flex;
+  align-items: center;
+  gap: var(--fc-space-1);
+  min-width: 0;
+  max-width: 100%;
+  min-height: var(--fc-control-medium);
+  padding: var(--fc-space-1) var(--fc-space-1_5) var(--fc-space-1) var(--fc-space-3);
+  border-radius: var(--fc-radius-sm);
+  background: var(--fc-surface-canvas);
+  box-shadow: 0 0 0 1px var(--fc-border-alpha);
+}
+.fc-snippet-value {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+  font: 400 13px/20px var(--fc-font-mono);
+  color: var(--fc-text-primary);
+}
+.fc-snippet-value::-webkit-scrollbar { display: none; }
+.fc-snippet-copy { flex: 0 0 auto; color: var(--fc-text-secondary); }
+.fc-snippet-copy:hover { color: var(--fc-text-primary); }
+.fc-snippet-copy .fc-icon-check,
+.fc-snippet-copy[data-copied] .fc-icon-copy { display: none; }
+.fc-snippet-copy[data-copied] .fc-icon-check { display: block; }
+/* Inline: no box, for an ID inside a header or a key/value row. */
+.fc-snippet[data-variant="inline"] { display: inline-flex; min-height: 0; padding: 0; box-shadow: none; background: transparent; }
+
+/* ------------------------------------------------------------------ Secret
+   A key shown in full exactly once, at creation (data-state="new": the value wraps so all
+   of it is visible, with a warning note and Copy). After that (data-state="masked") only the
+   last 4 characters render and the full value is gone from the page. Never re-shown. */
+.fc-secret { display: flex; flex-direction: column; gap: var(--fc-space-2); min-width: 0; }
+.fc-secret[data-state="new"] .fc-snippet { align-items: flex-start; }
+.fc-secret[data-state="new"] .fc-snippet-value { white-space: normal; overflow-wrap: anywhere; overflow-x: visible; padding-block: var(--fc-space-0_5); }
+.fc-secret[data-state="new"] .fc-snippet-copy { margin-top: var(--fc-space-0_5); }
+.fc-secret-mask { letter-spacing: 0.08em; color: var(--fc-text-secondary); }
+.fc-secret-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--fc-space-2) var(--fc-space-3); }
+
+/* ------------------------------------------------------------------ Schedule editor [F]
+   Frequency, window, days and time zone, then a live preview of the next 3 runs. The raw
+   cron sits in an Advanced disclosure, never on the fast path. */
+/* Two columns at most (frequency and days, from and to), one when narrower than 2 x 200px. */
+.fc-schedule-editor { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, max(200px, calc((100% - var(--fc-space-3)) / 2))), 1fr)); gap: var(--fc-space-4) var(--fc-space-3); }
+.fc-schedule-editor > * { min-width: 0; }
+.fc-schedule-editor [data-span="all"] { grid-column: 1 / -1; }
+.fc-schedule-preview {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--fc-space-1) var(--fc-space-3);
+  margin: 0;
+  font: 400 14px/20px var(--fc-font-sans);
+  color: var(--fc-text-secondary);
+}
+.fc-schedule-preview ol { display: contents; }
+.fc-schedule-preview li { list-style: none; color: var(--fc-text-primary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fc-schedule-advanced > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fc-space-1);
+  border-radius: var(--fc-radius-xs);
+  font: 500 14px/20px var(--fc-font-sans);
+  color: var(--fc-text-primary);
+  cursor: pointer;
+  list-style: none;
+}
+.fc-schedule-advanced > summary::-webkit-details-marker { display: none; }
+.fc-schedule-advanced > summary svg { width: 16px; height: 16px; transition: transform var(--fc-duration-fast) ease; }
+.fc-schedule-advanced[open] > summary svg { transform: rotate(180deg); }
+.fc-schedule-advanced > summary + * { margin-top: var(--fc-space-2); }

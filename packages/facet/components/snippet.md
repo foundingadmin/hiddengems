@@ -32,7 +32,7 @@ Idle; copied (check icon for 2s, live region announces once, then both reset); c
 `--fc-font-mono`, `--fc-text-primary` value, `--fc-text-secondary` button, `--fc-border-alpha`, `--fc-surface-canvas`.
 
 ## Rules
-- Mono only for machine values (owner decision D2). Human text and human times are never snippets.
+- Snippets hold machine values only. Human text and times are never snippets.
 - The button's accessible name names the value ("Copy schedule ID"), not just "Copy".
 - Never type a leading `$`. One value per snippet.
 - The check is a second cue for the live announcement; never rely on the icon alone.

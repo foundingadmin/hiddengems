@@ -22,7 +22,7 @@ An on/off control for a single boolean setting that takes effect as soon as it i
 Off, on, disabled-off, disabled-on, focus-visible (`--ds-focus-ring` ring on the track).
 
 ## Tokens
-`--ds-gray-400` (track off), `--geist-success` (on; Facet equivalent `--ds-blue-700`, inferred), `--ds-background-100` (thumb), `--ds-focus-ring`. The rendered label is 12px medium in legacy `--geist-secondary` (measured).
+`--ds-gray-400` (track off), `--geist-success` (on; Facet uses `--fc-control-on`, the brand accent), `--ds-background-100` (thumb), `--ds-focus-ring`. The rendered label is 12px medium in legacy `--geist-secondary` (measured).
 
 ## Rules
 - Use for one immediate boolean. Use `Checkbox` for multi-select lists and `Switch` for 2–3 mutually exclusive views.

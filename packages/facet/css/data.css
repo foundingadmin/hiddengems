@@ -92,14 +92,14 @@ th.fc-numeric > .fc-th-sort { flex-direction: row-reverse; }
   content: "";
   width: 16px;
   height: 16px;
-  background: var(--fc-text-inverse);
+  background: var(--fc-control-on-fg);
   -webkit-mask: var(--_check) center / contain no-repeat;
           mask: var(--_check) center / contain no-repeat;
   opacity: 0;
 }
 .fc-check:hover { box-shadow: inset 0 0 0 1px var(--fc-border-active); }
 .fc-check:checked,
-.fc-check:indeterminate { background: var(--fc-surface-contrast); box-shadow: none; }
+.fc-check:indeterminate { background: var(--fc-control-on); box-shadow: none; }
 .fc-check:checked::before { opacity: 1; }
 .fc-check:indeterminate::before { opacity: 1; -webkit-mask-image: var(--_dash); mask-image: var(--_dash); }
 .fc-check:focus-visible { box-shadow: inset 0 0 0 1px var(--fc-border-hover), var(--ds-focus-ring); }
@@ -157,8 +157,9 @@ th.fc-numeric > .fc-th-sort { flex-direction: row-reverse; }
 /* Keyboard focus never lands under the frozen column (INT-02). Set --fc-frozen-width to its rendered width. */
 .fc-table-wrap:has(> .fc-table[data-sticky-column]) { scroll-padding-inline-start: var(--fc-frozen-width, 0px); }
 
-/* Tip affordance. A dotted underline says "this value has an explanation".
-   The trigger is focusable (tabindex="0") and points at its tooltip with aria-describedby. */
+/* Tip affordance (owner rule, 2026-11-02): a dotted underline always means a helper sits behind it,
+   opening on hover, keyboard focus or tap (js/tips.mjs). Never use it for anything else, and use it
+   instead of info icons. */
 .fc-has-tip {
   text-decoration: underline dotted var(--ds-gray-600) 1px;
   text-underline-offset: 3px;
@@ -166,6 +167,8 @@ th.fc-numeric > .fc-th-sort { flex-direction: row-reverse; }
 }
 .fc-has-tip:hover { text-decoration-color: var(--fc-text-secondary); }
 .fc-has-tip:focus-visible { border-radius: var(--fc-radius-xs); }
+/* A sortable header can carry help too: the underline stays, the cursor says it still sorts. */
+.fc-th-sort.fc-has-tip { cursor: pointer; }
 
 /* Floating layer. Tooltips, time cards and menus open as popovers (top layer, never clipped by
    a scrolling table) and are placed by script next to their trigger. This resets the UA popover box. */
@@ -349,8 +352,7 @@ button.fc-filter-chip:focus-visible { box-shadow: var(--ds-focus-ring); }
 /* ================================================================== Relative time card [G layout]
    Trigger: <time class="fc-time fc-has-tip" datetime="..." tabindex="0" aria-describedby="id">2 min ago</time>
    Card: a .fc-float popover listing the exact time in the viewer's zone, then UTC.
-   Human times are Facet Sans with tabular figures (owner decision D2). */
-.fc-time { font-variant-numeric: tabular-nums; white-space: nowrap; }
+   Times are mono (base.css). */
 .fc-time-card {
   min-width: 248px;
   max-width: calc(100vw - 2 * var(--fc-space-4));
@@ -380,8 +382,8 @@ button.fc-filter-chip:focus-visible { box-shadow: var(--ds-focus-ring); }
   color: var(--fc-text-secondary);
   font: 400 12px/18px var(--fc-font-sans);
 }
-.fc-time-date { color: var(--fc-text-primary); white-space: nowrap; }
-.fc-time-clock { color: var(--fc-text-secondary); text-align: right; white-space: nowrap; }
+.fc-time-date { color: var(--fc-text-primary); white-space: nowrap; font-family: var(--fc-font-mono); }
+.fc-time-clock { color: var(--fc-text-secondary); text-align: right; white-space: nowrap; font-family: var(--fc-font-mono); }
 
 /* ================================================================== Entity [G]
    A descriptive row: leading visual (.fc-icon-tile, avatar or checkbox), title, description,

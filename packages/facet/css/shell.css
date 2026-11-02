@@ -92,7 +92,7 @@
   border: 0;
   border-radius: var(--fc-radius-sm);
   background: transparent;
-  color: var(--fc-text-secondary);
+  color: var(--fc-text-primary);
   font: 400 14px/20px var(--fc-font-sans);
   text-align: left;
   text-decoration: none;
@@ -109,11 +109,15 @@
 
 /* Groups: a full-bleed hairline between groups at the top level, a sentence-case label inside a section. */
 .fc-sidenav-rule { height: 1px; margin: var(--fc-space-2) calc(-1 * var(--fc-space-2)); border: 0; background: var(--fc-border-default); }
+/* Labels must never read as links: items are primary text at 14px, labels are secondary at 12px,
+   sit flush left of the item text column with no hover, and carry extra space above. */
 .fc-sidenav-label {
   margin: 0;
-  padding: var(--fc-space-4) var(--fc-space-2) var(--fc-space-1_5);
-  font: 400 12px/16px var(--fc-font-sans);
+  padding: var(--fc-space-5) var(--fc-space-2) var(--fc-space-1);
+  font: 500 12px/16px var(--fc-font-sans);
   color: var(--fc-text-secondary);
+  cursor: default;
+  user-select: none;
 }
 .fc-sidenav-label:first-child { padding-top: var(--fc-space-2); }
 
@@ -245,7 +249,7 @@
 .fc-dropdown-item[role="menuitemradio"]::after { content: ""; flex: 0 0 16px; width: 16px; height: 16px; margin-left: auto; }
 .fc-dropdown-item:has(.fc-dropdown-item-detail)::after { margin-left: 0; }
 .fc-dropdown-item[aria-checked="true"]::after {
-  background: var(--fc-text-primary);
+  background: var(--fc-control-on);
   -webkit-mask: var(--_check) center / 16px no-repeat;
   mask: var(--_check) center / 16px no-repeat;
 }

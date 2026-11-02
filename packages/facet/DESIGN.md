@@ -28,14 +28,14 @@ Vercel handles dense data well because of a few disciplines applied without exce
 | Color steps | 100 to 300 fills (default, hover, active), 400 to 600 borders, 700 to 800 solid fills, 900 secondary text, 1000 primary text | `--ds-<scale>-<step>` |
 | Backgrounds | Background 1 almost everywhere; Background 2 sparingly for subtle separation | `--fc-surface-canvas`, `--fc-surface-subtle` |
 | Borders | Solid gray-400 by default; gray-alpha only when the edge must blend. Draw each border once | `--fc-border-*` |
-| Type | Use a Facet role class, never a loose font-size. Sans for everything people read, including numbers and times (tabular figures); Mono only for machine values such as IDs, keys and cron expressions | `.text-heading-*`, `.text-label-*`, `.text-copy-*`, `.text-button-*` |
+| Type | Use a Facet role class, never a loose font-size. Sans for everything people read, including numbers (tabular figures); Mono for every time and for machine values such as IDs, keys and cron expressions | `.text-heading-*`, `.text-label-*`, `.text-copy-*`, `.text-button-*` |
 | Numbers | Tabular figures anywhere values are compared | `.tabular`, `.fc-num` |
 | Controls | Heights 32 (small), 36 (default), 40 (large), 24 (tiny icon) | `--fc-control-*` |
 | Table rows | Header 36, body 40, compact 32 `[F]` | `--fc-row-*` |
 | Spacing | 4px base: 4, 8, 12, 16, 20, 24, 32, 40, 48, 64 | `--fc-space-*` |
 | Radius | 6 (controls, small surfaces), 8 (large controls), 12 (raised surfaces, menus, modals), 16 (fullscreen), full (pills) | `--fc-radius-*` |
 | Elevation | Material presets, shadows include a hairline ring so no border is needed | `.material-*`, `--ds-shadow-*` |
-| Focus | Buttons, tabs, toggles: 2px canvas gap + 2px blue ring. Inputs, selects: dark 1px ring + soft 4px halo. Keyboard only (`:focus-visible`) | `--ds-focus-ring`, `--ds-focus-border` |
+| Focus | Buttons, tabs, toggles: 2px canvas gap + 2px brand ring. Inputs, selects: 1px brand ring + soft 4px brand halo. Keyboard only (`:focus-visible`) | `--ds-focus-ring`, `--ds-focus-border` |
 | Motion | Swift easing `cubic-bezier(.175,.885,.32,1.1)`, 200ms popovers, 300ms overlays, honor reduced motion | `--fc-ease-swift`, `--fc-duration-*` |
 | Layout | 12 columns desktop, 6 tablet, 4 mobile; page max 1400 + 24 margins | `.fc-page` |
 
@@ -61,11 +61,11 @@ The interface is gray. Each hue has exactly one job, and appears only to do that
 | Hue | Its job | Use it for | Never for | Reach it through |
 |---|---|---|---|---|
 | Gray | Everything by default | Text, surfaces, borders, primary buttons, chart series 1 | Carrying meaning by itself | `--fc-text-*`, `--fc-surface-*`, `--fc-border-*` |
-| **Purple** | **Gems, and only gems** | "This is a Hidden Gem" designation, the gem tier ladder | Links, buttons, focus, selection, highlights, chart series, brand decoration, anything that is not a gem | `--fc-gem-*`, `.fc-gem` |
+| **Purple** | **Gems, and the brand accent** | "This is a Hidden Gem" designation, the gem tier ladder; through the brand slot, focus rings, text selection, checked and on controls, marketing fields | Links, buttons, highlights, chart series, status, decoration | `--fc-gem-*`, `.fc-gem`; `--fc-brand-*`, `--fc-focus-color`, `--fc-control-on` |
 | Green | Go, and good for the bettor | Go verdict, positive edge, success, live data | Money or wins because they look nice, "important" values | `--fc-signal-go-*`, `--fc-edge-positive`, `--fc-status-success-*` |
 | Amber | Wait, and caution | Wait verdict, warnings, stale data | Highlighting, emphasis, a chart series | `--fc-signal-wait-*`, `--fc-status-warning-*` |
 | Red | Stop, and bad for the bettor | Stop verdict, negative edge, errors, failed data, destructive actions | Decoration, "hot" picks, urgency | `--fc-signal-stop-*`, `--fc-edge-negative`, `--fc-status-error-*` |
-| Blue | Interaction and information | Links, focus ring, toggles on, info notes, recent data, chart series 2 | Verdicts, gems, success | `--fc-text-link`, `--fc-focus-color`, `--fc-status-info-*` |
+| Blue | Information | Links, info notes, recent data, chart series 2 | Verdicts, gems, success, focus, selected controls | `--fc-text-link`, `--fc-status-info-*` |
 | Teal, pink | Chart series only | Series 3 and 4 when direct labels and grays are not enough | Any UI element | `--fc-chart-3`, `--fc-chart-4` |
 
 - **Color is never the only cue.** Verdict: dot plus word. Edge: sign plus arrow plus color. Gem tier: facet count plus purple intensity. Freshness: dot plus relative time.
@@ -85,7 +85,7 @@ The interface is gray. Each hue has exactly one job, and appears only to do that
 | Data freshness | Status dot + relative time (`.fc-status`) | `--fc-freshness-*` |
 | Charts | Monochrome first; blue, teal, pink only when series must be told apart (never verdict hues or purple) | `--fc-chart-1..6`, `--fc-chart-muted` |
 
-Why purple for gems: green, amber and red already mean go, wait and stop, and blue already means links, focus and info. Purple is the only hue in the palette left with no job, and an amethyst reads as "gem" without decoration. Why a single hue for tiers: tiers are a ranking, and a ranking should read as more or less of one thing, not as four unrelated categories.
+Why purple for gems: green, amber and red already mean go, wait and stop, and blue already means links and info. Purple was the only hue left with no job, and an amethyst reads as "gem" without decoration. Why the brand accent shares it: purple marks what the app finds (gems) and what you do (focus, selection, your choices), so every interaction carries the brand. Gems stay distinct because they always carry facets and a tier word. Why a single hue for tiers: tiers are a ranking, and a ranking should read as more or less of one thing, not as four unrelated categories.
 
 ## Settled decisions
 
@@ -94,10 +94,13 @@ Owner decisions on where a rank 1 source and an earlier Facet rule disagreed (20
 | Topic | Rule |
 |---|---|
 | Icon tiles | Allowed wherever one speeds recognition: empty states, list and connection rows, entity leads, integrations. Neutral only (`.fc-icon-tile`), one per item, never decorative or colored |
-| Times | Times people read are sans with tabular figures (kickoff, "2 min ago", next run). Mono is for machine values only (IDs, keys, cron) |
+| Times | Always mono: kickoff, "2 min ago", next run, log and feed times, time axes. `time`, `.fc-time` and `.fc-timestamp` set it (base.css). Revised 2026-11-02, replacing sans times |
 | Legends | Multi-series charts default to a legend that carries each series' total (`.fc-legend`). Single-series charts use a direct label |
 | Marketing moments | Onboarding, week openings, explainers and recaps may use `data-surface="marketing"`: display type, roomier spacing, pill buttons and one animated field per view (`patterns/surfaces.md`). Hue decoration and gradient text stay banned |
-| Brand accent | One accent per product through `--fc-brand-*`; Hidden Gems maps it to purple, its gem color |
+| Brand accent | One accent per product through `--fc-brand-*`; Hidden Gems maps it to purple, its gem color. Focus, text selection, native `accent-color`, and checked or on controls (toggle, checkbox, choicebox, menu checks) all read it, so rebranding is four tokens. Primary buttons, tabs, nav and links stay neutral |
+| Header help | Data-rich tables put a tip on every derived or jargon column header so headers stay short (`components/table.md`) |
+| Failures | Say whose problem it is. Yours to fix: red "Failed", "Couldn't ..." and the action that starts the fix. Out of your hands: amber "Provider down", who owns it, what happens next and how old the data is, never a fix button. Empty or failed charts show a blurred gray ghost of their shape (`patterns/failures.md`) |
+| Dotted underline | Always means a helper sits behind the text, opening on hover, keyboard focus or tap (`.fc-has-tip`, `js/tips.mjs`). Used instead of info icons, and never for anything else |
 | Change values | Color says whether a change is good, the arrow says which way it moved (`.fc-delta[data-polarity]`). Edge keeps direction coloring, because a positive edge is always good |
 
 ## Deliberate deviations from the vercel.com reference
@@ -129,9 +132,10 @@ Decorative gradients, glows, glass, textures or grid backgrounds. Gradient text.
 
 ## How to use it
 
-- **Plain HTML or a Claude artifact:** link `css/facet.css` (or inline it), then use the classes. See `preview/index.html`.
+- **Plain HTML or a Claude artifact:** link `css/facet.css` (or inline it), then use the classes. The specimen has three guides: `preview/index.html` (Design), `preview/screens.html` (Screens) and `preview/content.html` (Content).
 - **Next.js + Tailwind v4:** `@import "tailwindcss"; @import "@foundingcreative/facet/css/tailwind.css";` then `base.css`, `typography.css`, `components.css` and the layers you need (`data.css`, `charts.css`, `lists.css`, `forms.css`, `shell.css`, `settings.css`, `surfaces.css`). `facet.css` imports all of them. Load fonts with the `geist` package (`geist/font/sans`, `geist/font/mono`); Facet picks up `--font-geist-sans` and `--font-geist-mono` automatically.
 - **Hero field:** `import { autoMount } from '@foundingcreative/facet/js/field.mjs'` mounts every `canvas[data-fc-field]`.
+- **Tips:** `import { mountTips } from '@foundingcreative/facet/js/tips.mjs'` wires every `.fc-has-tip` for hover, focus and tap.
 - **Canvas or SVG charts:** `import { token } from '@foundingcreative/facet/js/tokens.mjs'` for resolved hex values per theme.
 - **Checking color use:** `node packages/facet/scripts/lint-color.mjs apps` (fails on raw colors and hue steps).
 - **Changing tokens:** edit `tokens/*.json`, run `node scripts/build.mjs`. To re-sync primitives with vercel.com, run `node scripts/sync-primitives.mjs` and review the diff like any design decision.

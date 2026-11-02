@@ -53,9 +53,20 @@ a { color: inherit; text-underline-offset: 3px; }
 /* Grid and flex children must be allowed to shrink (Vercel: give them min-width: 0). */
 .fc-stack > *, .fc-row > *, .fc-grid > * { min-width: 0; }
 
+/* Times are always mono (owner decision, 2026-11-02): kickoff, "2 min ago", next run, log and feed
+   times, chart time axes. Size comes from the context. Wrap in <time datetime> with the exact time in title. */
+time, .fc-time, .fc-timestamp {
+  font-family: var(--fc-font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "liga" 0, "calt" 0;
+  white-space: nowrap;
+}
+
+/* Brand moments: selection, focus and native controls all read the brand accent (--fc-brand-*). */
+:root { accent-color: var(--fc-control-on); }
 ::selection {
-  background: var(--ds-gray-1000);
-  color: var(--ds-gray-100);
+  background: color-mix(in srgb, var(--fc-brand-solid) 28%, transparent);
+  color: inherit;
 }
 
 /* Focus: a 2px canvas gap then a 2px focus-color ring, only for keyboard focus. */

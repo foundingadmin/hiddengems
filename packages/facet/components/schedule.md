@@ -45,7 +45,7 @@ The first card on the Schedules page, a `.fc-fieldset`:
 - Footer: the quota line (cost or quota footer kind), "About 2,200 of 20,000 monthly requests", recomputed live, with ", over the plan limit" when it is.
 
 ## Rules
-- Human times use `.fc-timestamp` (sans, tabular, owner decision D2) with the exact time in `title`. Cron and IDs stay mono.
+- Times use `.fc-timestamp` (mono) with the exact time in `title`. Cron and IDs are mono too.
 - Run now works on paused schedules (it is manual). While running, the button is `aria-disabled` and one polite announcement says when it finishes.
 - Run history lives in Activity filtered by Schedules, not in a second log.
 - One verb per action everywhere: "Run now", "Pause", "Resume", "Edit".

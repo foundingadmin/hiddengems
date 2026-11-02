@@ -97,6 +97,8 @@ Implemented in `css/data.css` (load after `components.css`). Specimen: `preview/
 ### Tip affordance
 `.fc-has-tip` adds a 1px dotted gray-600 underline to a value or header that carries an explanation. Make it focusable (`tabindex="0"`) and point it at its tooltip with `aria-describedby`. Tooltips, time cards and menus open as `popover` elements with `.fc-float`, so a scrolling table never clips them. Tips add information (the vig basis, a small sample); never restate the value.
 
+**Header help (owner decision, 2026-11-02).** Data-rich tables give every derived or jargon column header a tip, so headers stay one or two words and never wrap. A sortable header puts `.fc-has-tip` and `aria-describedby` on its `.fc-th-sort` button; the underline stays and the cursor stays a pointer. The tip defines the column in under ten words ("Our estimate minus the priced chance") and never repeats the header. Plain columns (Pick, Kickoff) get none.
+
 ### Notes
 - `.fc-table-wrap` is now `position: relative`, so visually hidden header text and sticky cells stay inside the scroller instead of widening the page.
 - Headers in Facet are sentence case (house rule), not Title Case as the reference says.

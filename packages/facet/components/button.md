@@ -31,7 +31,7 @@ Runs an action (submit, open a dialog, mutate state). `ButtonLink` has the same 
 
 ## States
 - Hover: background changes per variant (above). Transition 150ms ease-in-out (measured).
-- Focus: `box-shadow: var(--ds-focus-ring)`, a 2px background-colored gap and then a 2px blue-700 ring (measured).
+- Focus: `box-shadow: var(--ds-focus-ring)`, a 2px background-colored gap and then a 2px ring (measured blue-700 in the reference; Facet uses the brand accent).
 - Disabled: text `--ds-gray-700`, background `--ds-gray-100`, ring `--ds-gray-400`, `cursor: not-allowed`. Tertiary disabled is transparent at 50% opacity.
 - Loading: spinner replaces content. The button stays focusable and reports busy.
 

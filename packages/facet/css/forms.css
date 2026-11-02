@@ -135,8 +135,8 @@
 }
 .fc-choicebox:hover { box-shadow: 0 0 0 1px var(--fc-border-hover); }
 .fc-choicebox:has(input:checked) {
-  background: var(--fc-selected-bg, color-mix(in srgb, var(--fc-focus-color) 6%, var(--fc-surface-canvas)));
-  box-shadow: 0 0 0 1px var(--fc-focus-color), inset 0 0 0 1px var(--fc-focus-color);
+  background: var(--fc-selected-bg, color-mix(in srgb, var(--fc-control-on) 6%, var(--fc-surface-canvas)));
+  box-shadow: 0 0 0 1px var(--fc-control-on), inset 0 0 0 1px var(--fc-control-on);
 }
 .fc-choicebox:has(input:focus-visible) { box-shadow: var(--ds-focus-ring); }
 .fc-choicebox > input {
@@ -153,7 +153,7 @@
 }
 .fc-choicebox > input[type="checkbox"] { border-radius: var(--fc-radius-xs); }
 .fc-choicebox > input:checked,
-.fc-choicebox > input:checked:focus-visible { box-shadow: inset 0 0 0 5px var(--fc-focus-color); }
+.fc-choicebox > input:checked:focus-visible { box-shadow: inset 0 0 0 5px var(--fc-control-on); }
 .fc-choicebox > input:focus-visible { box-shadow: inset 0 0 0 1px var(--fc-border-active); }
 .fc-choicebox-body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: var(--fc-space-0_5); }
 .fc-choicebox-title { display: flex; flex-wrap: wrap; align-items: center; gap: var(--fc-space-2); font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }

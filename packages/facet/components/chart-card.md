@@ -19,7 +19,7 @@ One surface that holds one chart and everything needed to read it: what it measu
 |---|---|---|
 | Gridlines | `.fc-chart-grid` | Horizontal only, 1px `--fc-chart-grid`, 3 to 5 lines. No vertical lines, no frame. |
 | Baseline | `.fc-chart-baseline` | Zero line on bar charts, `--fc-chart-axis`. |
-| Tick labels | `.fc-chart-tick` | 12/16 Sans, secondary, tabular figures. Abbreviated units (`2k`, `1.4 s`). |
+| Tick labels | `.fc-chart-tick` | 12/16 Sans, secondary, tabular figures. Abbreviated units (`2k`, `1.4 s`). Time axis labels add `data-time` and set in Mono. |
 | Line | `.fc-chart-line` | 1.5px, round joins, no markers. Sparklines 1.25px. |
 | Area | `.fc-chart-area` | Optional, series color at 6% opacity. |
 | Bar | `.fc-chart-bar` | Series fill, 2px gap (1px when bars are under 8px wide). Always from zero. |

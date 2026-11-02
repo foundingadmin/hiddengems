@@ -14,7 +14,7 @@ A two-state control (checked or unchecked) used for multi-select lists and ackno
 Unchecked, checked, indeterminate, disabled (each of the three).
 
 ## Tokens
-Inferred: `--ds-gray-1000` checked fill, `--ds-gray-alpha-400`/`500` border, `--ds-focus-ring`.
+Facet: `--fc-control-on` checked fill (brand accent; the reference uses gray-1000), `--ds-gray-alpha-400`/`500` border, `--ds-focus-ring`.
 
 ## Rules
 - Use for multi-select lists, table row pickers and acknowledgements. Use Toggle for a single boolean setting.

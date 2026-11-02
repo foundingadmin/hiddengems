@@ -44,7 +44,7 @@ Implemented in `css/data.css` as `.fc-time` (trigger) and `.fc-time-card` (popov
   </dl>
 </div>
 ```
-- Human times, relative and absolute, are Facet Sans with tabular figures (owner decision D2). Mono stays for machine values.
+- Times, relative and absolute, are Facet Mono (owner decision, 2026-11-02).
 - The trigger is a focusable `<time>` with the dotted tip underline. Freshness pairs it with a status dot; the card itself carries no staleness color.
 - The card lists the viewer's zone first, then UTC (deviation: the reference lists UTC first; Hidden Gems kickoffs are local). When the viewer is on UTC, show one row.
 - `.fc-time-card-head` is optional. Leave it out when it would only repeat the trigger text.

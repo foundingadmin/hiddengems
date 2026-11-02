@@ -40,15 +40,16 @@ for (const [k, t] of Object.entries(prim.shadow)) {
   light.push(`--ds-shadow-${k}: ${t.$value};`);
   if (ext(t).dark && ext(t).dark !== t.$value) dark.push(`--ds-shadow-${k}: ${ext(t).dark};`);
 }
+// Focus follows the Facet brand accent (owner decision, 2026-11-02): ring and input halo both read --fc-focus-color.
 light.push(
-  '--ds-focus-color: var(--ds-blue-700);',
+  '--ds-focus-color: var(--fc-focus-color);',
   '--ds-focus-ring: 0 0 0 2px var(--ds-background-100), 0 0 0 4px var(--ds-focus-color);',
   '--ds-focus-ring-outline: 2px solid var(--ds-focus-color);',
-  '--ds-focus-border: 0 0 0 1px var(--ds-gray-alpha-600), 0px 0px 0px 4px #00000029;',
+  '--ds-focus-border: 0 0 0 1px var(--ds-focus-color), 0px 0px 0px 4px color-mix(in srgb, var(--ds-focus-color) 24%, transparent);',
   '--ds-overlay-backdrop-color: var(--ds-gray-100);',
   '--ds-overlay-backdrop-opacity: .8;'
 );
-dark.push('--ds-focus-color: var(--ds-blue-900);', '--ds-focus-border: 0 0 0 1px var(--ds-gray-alpha-600), 0px 0px 0px 4px #ffffff3d;', '--ds-overlay-backdrop-color: var(--ds-background-200);');
+dark.push('--ds-focus-border: 0 0 0 1px var(--ds-focus-color), 0px 0px 0px 4px color-mix(in srgb, var(--ds-focus-color) 32%, transparent);', '--ds-overlay-backdrop-color: var(--ds-background-200);');
 
 // ---------- scalar tokens ----------
 const scalars = [];
@@ -66,8 +67,20 @@ for (const [k, t] of Object.entries(prim.motion.easing)) scalars.push(`--fc-ease
 for (const [k, t] of Object.entries(prim.motion.duration)) scalars.push(`--fc-duration-${k}: ${t.$value};`);
 
 // ---------- semantic aliases ----------
+// A semantic token may point at another semantic token ({brand.solid}); CSS keeps the reference live,
+// and deref() follows it to the color step for resolved values and the specimen map.
+const SEMREF = /^\{(?!color\.)([a-z-]+)\.([a-z0-9-]+)\}$/;
+const semAt = (g, k) => sem[g] && sem[g][k];
+const deref = (val, mode) => {
+  const m = String(val).match(SEMREF);
+  if (!m) return val;
+  const t = semAt(m[1], m[2]);
+  if (!t) throw new Error(`Unknown semantic reference ${val}`);
+  return deref(mode === 'dark' ? (ext(t).dark || t.$value) : t.$value, mode);
+};
 const alias = (v) =>
-  String(v).replace(/\{color\.([a-z-]+)\.(\d+)\}/g, (_, s, n) => `var(--ds-${s}-${n})`);
+  String(v).replace(SEMREF, (_, g, k) => `var(--fc-${g}-${k})`)
+    .replace(/\{color\.([a-z-]+)\.(\d+)\}/g, (_, s, n) => `var(--ds-${s}-${n})`);
 const semLight = [], semDark = [];
 (function walk(node, path) {
   for (const [k, v] of Object.entries(node)) {
@@ -233,8 +246,8 @@ const semResolved = { light: {}, dark: {} };
     if (isTok(v)) {
       const key = p.join('-');
       const pick = (val, mode) => String(val).replace(/\{color\.([a-z-]+)\.(\d+)\}/, (_, s, n) => resolved[mode][`${s}-${n}`]);
-      semResolved.light[key] = pick(v.$value, 'light');
-      semResolved.dark[key] = pick(ext(v).dark || v.$value, 'dark');
+      semResolved.light[key] = pick(deref(v.$value, 'light'), 'light');
+      semResolved.dark[key] = pick(deref(ext(v).dark || v.$value, 'dark'), 'dark');
     } else if (v && typeof v === 'object') walk(v, p);
   }
 })(sem, []);
@@ -260,8 +273,8 @@ const aliasMap = { light: {}, dark: {}, desc: {}, groups: {} };
     if (isTok(v)) {
       if (v.$description) aliasMap.desc[p.join('-')] = v.$description;
       const ref = (x) => { const m = String(x).match(/\{color\.([a-z-]+)\.(\d+)\}/); return m ? `${m[1]}-${m[2]}` : null; };
-      aliasMap.light[p.join('-')] = ref(v.$value);
-      aliasMap.dark[p.join('-')] = ref(ext(v).dark || v.$value);
+      aliasMap.light[p.join('-')] = ref(deref(v.$value, 'light'));
+      aliasMap.dark[p.join('-')] = ref(deref(ext(v).dark || v.$value, 'dark'));
     } else if (v && typeof v === 'object') walk(v, p);
   }
 })(sem, []);
@@ -310,4 +323,8 @@ write('css/shadcn.css', shadcn);
 {
   const src = readFileSync(join(root, 'js/field.mjs'), 'utf8').replace(/^export /gm, '');
   write('preview/field.js', `// GENERATED from js/field.mjs by scripts/build.mjs. Do not edit by hand.\n(function () {\n${src}\nwindow.FacetField = { mountField, autoMount };\n})();\n`);
+}
+{
+  const src = readFileSync(join(root, 'js/tips.mjs'), 'utf8').replace(/^export /gm, '');
+  write('preview/tips.js', `// GENERATED from js/tips.mjs by scripts/build.mjs. Do not edit by hand.\n(function () {\n${src}\nwindow.FacetTips = { mountTips };\n})();\n`);
 }

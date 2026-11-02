@@ -44,7 +44,7 @@ for (const f of files) {
         // An HTML entity or URL fragment like href="#top" is not a color.
         if (m[0].startsWith('#') && /(href|id|to)=["'][^"']*$/.test(line.slice(0, m.index))) continue;
         problems++;
-        const purple = /purple/.test(m[0]) ? ' (purple is reserved for gems: use --fc-gem-*)' : '';
+        const purple = /purple/.test(m[0]) ? ' (purple is reserved for gems and the brand accent: use --fc-gem-*, --fc-brand-*, --fc-focus-color or --fc-control-on)' : '';
         console.log(`${relative(process.cwd(), f)}:${i + 1}  ${m[0]}  ${why}${purple}`);
       }
     }

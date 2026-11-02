@@ -286,7 +286,7 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
   box-shadow: var(--ds-shadow-small), 0 0 0 1px var(--fc-control-thumb-ring);
   transition: transform 150ms ease;
 }
-.fc-toggle:checked { background: var(--ds-blue-700); }
+.fc-toggle:checked { background: var(--fc-control-on); }
 .fc-toggle:checked::after { transform: translateX(calc(var(--_w) - var(--_h))); }
 .fc-toggle[data-size="medium"] { --_w: 36px; --_h: 20px; --_t: 17px; }
 .fc-toggle[data-size="large"]  { --_w: 40px; --_h: 24px; --_t: 21px; }

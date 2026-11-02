@@ -6,14 +6,9 @@
 
 /* ------------------------------------------------------------------ Timestamp
    Every human-readable time (kickoff, "2 min ago", "Today 6:05 PM", feed times) goes through
-   this one class, so the time treatment is a one-line change. Owner decision D2: sans with
-   tabular figures. Machine values (cron, IDs, keys, hashes) stay mono and never use it.
+   this one class (family set in base.css: times are always mono). Machine values (cron, IDs,
+   keys, hashes) are mono too but use their own classes.
    Wrap in <time datetime="..."> and put the exact timestamp in title (DESIGN.md rule 11). */
-.fc-timestamp {
-  font-family: var(--fc-font-sans);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
 
 /* ------------------------------------------------------------------ Meta line
    Secondary metadata joined by one middle dot: two items at most, same order on every row.

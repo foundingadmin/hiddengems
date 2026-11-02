@@ -87,6 +87,7 @@
   font: 400 12px/16px var(--fc-font-sans); /* text-label-12 */
   font-variant-numeric: tabular-nums;
 }
+.fc-chart-tick[data-time] { font-family: var(--fc-font-mono); }
 .fc-chart-label[data-strong] { fill: var(--fc-text-primary); font-weight: 500; }
 /* Halo behind any label drawn over marks, so lines never cross text. */
 .fc-chart-halo { paint-order: stroke; stroke: var(--fc-surface-canvas); stroke-width: 4px; stroke-linejoin: round; }
@@ -115,6 +116,15 @@
 .fc-chart-threshold text { fill: var(--fc-text-primary); font: 500 12px/16px var(--fc-font-sans); font-variant-numeric: tabular-nums; }
 
 /* Empty chart: axes and gridlines stay, a centered message sits on a knock-out. */
+/* Ghost (owner decision, 2026-11-02): an empty or failed chart draws a blurred, gray sample of its shape
+   under the message, so the reader sees what the chart shows when it works while the message keeps focus.
+   Blurred past reading, never colored, never labelled. Set data-ghost on .fc-chart and draw sample series. */
+.fc-chart[data-ghost] g[data-series] { --_s: var(--fc-chart-muted); filter: blur(2.5px); opacity: 0.85; }
+.fc-chart[data-ghost] .fc-chart-line { stroke-width: 2; }
+.fc-chart[data-ghost] .fc-chart-area { fill-opacity: 0.18; }
+.fc-chart[data-ghost] .fc-chart-empty > div { background: color-mix(in srgb, var(--fc-surface-canvas) 72%, transparent); border-radius: var(--fc-radius-md); }
+.fc-chart[data-ghost] :is(.fc-chart-label, .fc-chart-point) { display: none; }
+@media (prefers-reduced-transparency: reduce) { .fc-chart[data-ghost] g[data-series] { filter: none; opacity: 0.3; } }
 .fc-chart-empty {
   position: absolute;
   inset: 0 0 20px var(--fc-chart-gutter, 40px);
@@ -135,6 +145,16 @@
   font: 400 13px/18px var(--fc-font-sans);
   color: var(--fc-text-secondary);
 }
+
+/* Failure overlays (owner decision, 2026-11-02). Two kinds, told apart by status word, dot, copy and action:
+   - data-kind="fix": yours to fix. Red "Failed" dot, "Couldn't ..." and the action that starts the fix.
+   - data-kind="outage": out of your hands. Amber "Provider down" dot, who owns it, what Hidden Gems is
+     doing about it, how old the data on screen is, and at most a link to follow it. Never a fix button. */
+.fc-chart-empty[data-kind] > div { gap: var(--fc-space-1); max-width: 36ch; }
+.fc-chart-empty[data-kind] .fc-status { font: 400 13px/18px var(--fc-font-sans); margin-bottom: var(--fc-space-1); }
+.fc-chart-empty-title { font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
+.fc-chart-empty > div > :is(a, button) { margin-top: var(--fc-space-2); pointer-events: auto; }
+.fc-chart[data-size="message"] { --fc-chart-height: 200px; }
 
 /* Table alternative revealed from the card footer. */
 .fc-chart-data[hidden] { display: none; }
@@ -352,7 +372,6 @@
 }
 .fc-freshness > .fc-status-dot { width: 8px; height: 8px; }
 .fc-freshness time { color: var(--fc-text-primary); }
-.fc-freshness time[title] { text-decoration: underline dotted var(--fc-border-active); text-underline-offset: 3px; }
 
 /* ================================================================== Level (logs)
    Dot plus word for log levels and pull status. Info stays gray; color only when it means something. */
@@ -434,7 +453,7 @@
   color: transparent;
 }
 .fc-facet-check svg { width: 12px; height: 12px; }
-.fc-facet > input:checked + .fc-facet-check { background: var(--fc-surface-contrast); box-shadow: none; color: var(--fc-text-inverse); }
+.fc-facet > input:checked + .fc-facet-check { background: var(--fc-control-on); box-shadow: none; color: var(--fc-control-on-fg); }
 .fc-facet > input:focus-visible + .fc-facet-check { box-shadow: var(--ds-focus-ring); }
 .fc-facet > .fc-level { gap: var(--fc-space-2); color: var(--fc-text-primary); }
 .fc-facet-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -465,7 +484,7 @@
 .fc-live[aria-pressed="true"]::before { background: var(--fc-freshness-live); box-shadow: none; }
 
 /* Log table cells. Human-read times are Sans with tabular figures; Mono is for machine values only. */
-.fc-log-time { white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--fc-text-secondary); }
+.fc-log-time { white-space: nowrap; color: var(--fc-text-secondary); }
 .fc-log-message { min-width: 16rem; color: var(--fc-text-primary); }
 .fc-log-id { font-family: var(--fc-font-mono); font-size: 12px; color: var(--fc-text-secondary); white-space: nowrap; }
 

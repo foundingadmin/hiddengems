@@ -42,9 +42,9 @@ The frame every Hidden Gems screen sits in: a left rail for navigation, a thin t
 | Part | Measure | Notes |
 |---|---|---|
 | `.fc-sidenav` | 232 wide (`--fc-shell-sidenav-width`, proposed), full height, sticky | Right hairline `--fc-border-default` |
-| `.fc-sidenav-item` | 32 tall (`--fc-control-small`), 8px inline padding, radius 6, 16px icon | Rest `--fc-text-secondary`; hover `--fc-surface-fill`; current `--fc-surface-fill-hover` + primary text. Never a colored rail |
+| `.fc-sidenav-item` | 32 tall (`--fc-control-small`), 8px inline padding, radius 6, 16px icon | Rest `--fc-text-primary`; hover `--fc-surface-fill`; current `--fc-surface-fill-hover`. Never a colored rail |
 | `.fc-sidenav-rule` | 1px, full bleed | Separates groups at the top level, where groups have no names |
-| `.fc-sidenav-label` | 12/16 secondary, sentence case | Names groups inside a drilled-in section. Never uppercase |
+| `.fc-sidenav-label` | 12/16 medium, secondary, 20px above, sentence case | Names groups inside a drilled-in section. Smaller, grayer and unhoverable, so it never reads as a link (owner feedback). Never uppercase |
 | `.fc-sidenav-back` | 32px back button, centered section title | Replaces the rail's top level |
 | `.fc-topbar` | 48 tall (`--fc-shell-topbar-height`, proposed), bottom hairline, sticky | Three slots: start (scope), center (breadcrumb), end (actions) |
 | `.fc-scope` | 32 tall trigger, 500 14/20 name + up/down chevrons | Opens a `.fc-dropdown` |

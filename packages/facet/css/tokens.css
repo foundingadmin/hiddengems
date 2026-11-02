@@ -117,10 +117,10 @@
   --ds-shadow-modal: 0 0 0 1px #00000014, 0px 1px 1px #00000005, 0px 8px 16px -4px #0000000a, 0px 24px 32px -8px #0000000f, 0 0 0 1px var(--ds-background-200);
   --ds-shadow-modal-elevated: 0px 0px 0px 1px #00000014, 0px 32px 72px -12px #0000000f, 0px 8px 32px -12px #00000014, 0px 8px 24px -12px #0000001f;
   --ds-shadow-fullscreen: 0 0 0 1px #00000014, 0px 1px 1px #00000005, 0px 8px 16px -4px #0000000a, 0px 24px 32px -8px #0000000f, 0 0 0 1px var(--ds-background-200);
-  --ds-focus-color: var(--ds-blue-700);
+  --ds-focus-color: var(--fc-focus-color);
   --ds-focus-ring: 0 0 0 2px var(--ds-background-100), 0 0 0 4px var(--ds-focus-color);
   --ds-focus-ring-outline: 2px solid var(--ds-focus-color);
-  --ds-focus-border: 0 0 0 1px var(--ds-gray-alpha-600), 0px 0px 0px 4px #00000029;
+  --ds-focus-border: 0 0 0 1px var(--ds-focus-color), 0px 0px 0px 4px color-mix(in srgb, var(--ds-focus-color) 24%, transparent);
   --ds-overlay-backdrop-color: var(--ds-gray-100);
   --ds-overlay-backdrop-opacity: .8;
   --fc-font-sans: var(--font-geist-sans, "Geist"), "Geist Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -199,7 +199,7 @@
   --fc-border-hover: var(--ds-gray-500);
   --fc-border-active: var(--ds-gray-600);
   --fc-border-alpha: var(--ds-gray-alpha-400);
-  --fc-focus-color: var(--ds-blue-700);
+  --fc-focus-color: var(--fc-brand-solid);
   --fc-status-info-fg: var(--ds-blue-900);
   --fc-status-info-solid: var(--ds-blue-700);
   --fc-status-info-bg: var(--ds-blue-200);
@@ -269,6 +269,8 @@
   --fc-badge-teal: var(--ds-teal-900);
   --fc-control-thumb: var(--ds-background-100);
   --fc-control-thumb-ring: var(--ds-gray-alpha-400);
+  --fc-control-on: var(--fc-brand-solid);
+  --fc-control-on-fg: var(--ds-background-100);
   --fc-action-destructive: var(--ds-red-800);
   --fc-action-destructive-hover: var(--ds-red-900);
   --fc-brand-fg: var(--ds-purple-900);
@@ -287,10 +289,10 @@
   --ds-shadow-menu: 0 0 0 1px #ffffff25, 0px 1px 1px #00000005, 0px 4px 8px -4px #0000000a, 0px 16px 24px -8px #0000000f, 0 0 0 1px var(--ds-background-200);
   --ds-shadow-modal: 0 0 0 1px #ffffff25, 0px 1px 1px #00000005, 0px 8px 16px -4px #0000000a, 0px 24px 32px -8px #0000000f, 0 0 0 1px var(--ds-background-200);
   --ds-shadow-fullscreen: 0 0 0 1px #ffffff25, 0px 1px 1px #00000005, 0px 8px 16px -4px #0000000a, 0px 24px 32px -8px #0000000f, 0 0 0 1px var(--ds-background-200);
-  --ds-focus-color: var(--ds-blue-900);
+  --ds-focus-color: var(--fc-focus-color);
   --ds-focus-ring: 0 0 0 2px var(--ds-background-100), 0 0 0 4px var(--ds-focus-color);
   --ds-focus-ring-outline: 2px solid var(--ds-focus-color);
-  --ds-focus-border: 0 0 0 1px var(--ds-gray-alpha-600), 0px 0px 0px 4px #ffffff3d;
+  --ds-focus-border: 0 0 0 1px var(--ds-focus-color), 0px 0px 0px 4px color-mix(in srgb, var(--ds-focus-color) 32%, transparent);
   --ds-overlay-backdrop-color: var(--ds-background-200);
   --fc-text-primary: var(--ds-gray-1000);
   --fc-text-secondary: var(--ds-gray-900);
@@ -308,7 +310,7 @@
   --fc-border-hover: var(--ds-gray-500);
   --fc-border-active: var(--ds-gray-600);
   --fc-border-alpha: var(--ds-gray-alpha-400);
-  --fc-focus-color: var(--ds-blue-900);
+  --fc-focus-color: var(--fc-brand-solid);
   --fc-status-info-fg: var(--ds-blue-900);
   --fc-status-info-solid: var(--ds-blue-700);
   --fc-status-info-bg: var(--ds-blue-200);
@@ -378,6 +380,8 @@
   --fc-badge-teal: var(--ds-teal-600);
   --fc-control-thumb: var(--ds-gray-1000);
   --fc-control-thumb-ring: var(--ds-gray-alpha-600);
+  --fc-control-on: var(--fc-brand-solid);
+  --fc-control-on-fg: var(--ds-gray-1000);
   --fc-action-destructive: var(--ds-red-800);
   --fc-action-destructive-hover: var(--ds-red-900);
   --fc-brand-fg: var(--ds-purple-900);
@@ -496,10 +500,10 @@
     --ds-shadow-menu: 0 0 0 1px #ffffff25, 0px 1px 1px #00000005, 0px 4px 8px -4px #0000000a, 0px 16px 24px -8px #0000000f, 0 0 0 1px var(--ds-background-200);
     --ds-shadow-modal: 0 0 0 1px #ffffff25, 0px 1px 1px #00000005, 0px 8px 16px -4px #0000000a, 0px 24px 32px -8px #0000000f, 0 0 0 1px var(--ds-background-200);
     --ds-shadow-fullscreen: 0 0 0 1px #ffffff25, 0px 1px 1px #00000005, 0px 8px 16px -4px #0000000a, 0px 24px 32px -8px #0000000f, 0 0 0 1px var(--ds-background-200);
-    --ds-focus-color: var(--ds-blue-900);
+    --ds-focus-color: var(--fc-focus-color);
     --ds-focus-ring: 0 0 0 2px var(--ds-background-100), 0 0 0 4px var(--ds-focus-color);
     --ds-focus-ring-outline: 2px solid var(--ds-focus-color);
-    --ds-focus-border: 0 0 0 1px var(--ds-gray-alpha-600), 0px 0px 0px 4px #ffffff3d;
+    --ds-focus-border: 0 0 0 1px var(--ds-focus-color), 0px 0px 0px 4px color-mix(in srgb, var(--ds-focus-color) 32%, transparent);
     --ds-overlay-backdrop-color: var(--ds-background-200);
     --fc-text-primary: var(--ds-gray-1000);
     --fc-text-secondary: var(--ds-gray-900);
@@ -517,7 +521,7 @@
     --fc-border-hover: var(--ds-gray-500);
     --fc-border-active: var(--ds-gray-600);
     --fc-border-alpha: var(--ds-gray-alpha-400);
-    --fc-focus-color: var(--ds-blue-900);
+    --fc-focus-color: var(--fc-brand-solid);
     --fc-status-info-fg: var(--ds-blue-900);
     --fc-status-info-solid: var(--ds-blue-700);
     --fc-status-info-bg: var(--ds-blue-200);
@@ -587,6 +591,8 @@
     --fc-badge-teal: var(--ds-teal-600);
     --fc-control-thumb: var(--ds-gray-1000);
     --fc-control-thumb-ring: var(--ds-gray-alpha-600);
+    --fc-control-on: var(--fc-brand-solid);
+    --fc-control-on-fg: var(--ds-gray-1000);
     --fc-action-destructive: var(--ds-red-800);
     --fc-action-destructive-hover: var(--ds-red-900);
     --fc-brand-fg: var(--ds-purple-900);

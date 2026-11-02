@@ -32,7 +32,9 @@ packages/facet/
   guidelines/               Vercel Web Interface Guidelines digest (rule IDs for reviews)
   reference/                Raw captures (computed tokens, P3 values, component measurements),
                             Vercel ecosystem notes, and inbox/ for third-party material
-  preview/index.html        Living specimen: foundations, components, and an applied slate
+  preview/index.html        Design guide: foundations and components
+  preview/screens.html      Screens guide: the slate, app frame and settings
+  preview/content.html      Content guide: how to write for a Facet product
   scripts/
     build.mjs               tokens/*.json -> css/*.css + js/tokens.mjs (zero dependencies)
     sync-primitives.mjs       Re-sync primitives from vercel.com (needs Playwright)

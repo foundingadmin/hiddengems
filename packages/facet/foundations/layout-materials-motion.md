@@ -76,7 +76,7 @@ Restraint: do not wrap every metric in a card, and never nest cards. A surface m
 
 ## Focus
 
-`:focus-visible` only. Ring: `0 0 0 2px var(--ds-background-100), 0 0 0 4px var(--ds-focus-color)`; focus color is blue-700 in light and blue-900 in dark. Inputs use a softer gray ring on focus (measured). Sticky headers must never cover the focused cell; set `scroll-padding-top` to the header height.
+`:focus-visible` only. Ring: `0 0 0 2px var(--ds-background-100), 0 0 0 4px var(--ds-focus-color)`; focus color is the brand accent (`--fc-focus-color`, from `--fc-brand-solid`). Inputs use a 1px brand ring with a soft 4px brand halo. Sticky headers must never cover the focused cell; set `scroll-padding-top` to the header height.
 
 ## Icons
 

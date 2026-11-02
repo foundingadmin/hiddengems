@@ -97,7 +97,7 @@ export function mountField(canvas, opts = {}) {
       ctx.stroke();
       if (t.gem) {
         // A hidden gem: it flashes purple as the light passes, then fades back into the field.
-        const g = reduce.matches ? 0.65 : Math.max(0, 1 - Math.abs(d + beamW * 0.15) / (beamW * 0.55));
+        const g = Math.max(0, 1 - Math.abs(d + beamW * 0.15) / (beamW * 0.55)); // the still frame shows only the gems in the beam
         if (g > 0.01) {
           ctx.save();
           ctx.globalAlpha = Math.min(1, g * 1.1);

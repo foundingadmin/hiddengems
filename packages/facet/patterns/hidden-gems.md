@@ -19,7 +19,7 @@ A bettor opens Hidden Gems to decide **which available bets are worth placing, a
 | Our estimate | Whole percent | `44%` | Always shown beside the priced chance on the same basis |
 | Gap / edge | Signed percentage points | `+13 pts` | Points, not percent. Sign + arrow + color (`.fc-delta`) |
 | Stake and payout | Currency, 2 decimals | `$7.00` | Right-aligned, tabular |
-| Kickoff | Local time, Sans with tabular figures | `11:00 AM` | `Intl.DateTimeFormat` in the viewer's zone; exact zone on hover |
+| Kickoff | Local time, Mono in `<time>` | `11:00 AM` | `Intl.DateTimeFormat` in the viewer's zone; exact zone on hover |
 | Freshness | Relative + absolute on hover | `2 min ago` | Status dot color follows `--fc-freshness-*` |
 | Record | "n of m" | `5 of 6` | Never a bare percentage for samples under 20 |
 

@@ -1,6 +1,6 @@
 # Content
 
-Lessons for every heading, label and sentence in a Facet product. Each one removes a review step, because the page gets it right the first time. The living version is the Content section of `preview/index.html`.
+Lessons for every heading, label and sentence in a Facet product. The living version is the Content guide, `preview/content.html`.
 
 ## Say it once
 
@@ -73,6 +73,7 @@ Use the guide marker (`.fc-guide`, see `components/guide-marker.md`) for every D
 | Numbers | Units stay beside the value they qualify; peer values share precision |
 | Verbs | One verb per action everywhere: if the button says Remove, the menu item, toast and confirmation say Remove too |
 | Separators | At most one middle dot per metadata line; use columns in tables |
-| Times | Relative under 7 days ("2 min ago"), a date after that, the exact time on hover |
-| Errors | Say what went wrong and how to fix it; "Couldn't" for user state, "Failed to" for system faults |
+| Times | Always mono. Relative under 7 days ("2 min ago"), a date after that, the exact time on hover |
+| Errors | Say whose problem it is. Yours to fix: what failed plus the action that fixes it. Out of your hands: who owns it, what happens next and how old the data is. "Couldn't" for user state, "Failed to" for system faults (`patterns/failures.md`) |
+| Helpers | A dotted underline means a helper opens on hover, focus or tap; use it instead of info icons, and never for anything else |
 | Plain words | Plain words on the fast path, exact terms in the audit path; define a term at first use |

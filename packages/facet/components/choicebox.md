@@ -28,7 +28,7 @@ A large-tile version of Radio or Checkbox, with room for a detail line and a big
 Radio (single) or checkbox (multi). Disabled per tile. No size prop.
 
 ## States
-- Selected: blue ring (`--fc-focus-color`, the interaction blue, 1px outside plus 1px inside), a faint blue tint (`--fc-selected-bg`, proposed; falls back to a 6% mix) and the filled mark. Never the ring alone.
+- Selected: brand ring (`--fc-control-on`, 1px outside plus 1px inside), a faint brand tint (`--fc-selected-bg`, proposed; falls back to a 6% mix) and the filled mark. Never the ring alone.
 - Keyboard focus: `--ds-focus-ring` on the tile.
 - Hover: ring steps to `--fc-border-hover`.
 - Disabled: fill, disabled text, not-allowed cursor; explain why nearby.

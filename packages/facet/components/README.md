@@ -6,7 +6,7 @@ Synthesized component specs for **Facet**, the design system behind **Hidden Gem
 
 ## Cross-cutting facts
 - **Control height scale:** small **32px** (`--ds-size-small`), medium **36px** (`--ds-size-medium`, default), large **40px** (`--ds-size-large`). Used by Button, Input, Select, Switch, Note min-height and Table header. Button also has `tiny` 24px for icon-only buttons.
-- **Focus:** buttons, tabs and switch use `--ds-focus-ring` (2px background gap + 2px blue-700). Text inputs and select use `--ds-focus-border` (1px dark ring + 4px soft halo) on focus.
+- **Focus:** buttons, tabs and switch use `--ds-focus-ring` (2px background gap + 2px ring in the brand accent; the reference uses blue-700). Text inputs and select use `--ds-focus-border` (1px dark ring + 4px soft halo) on focus.
 - **Borders:** controls draw a 1px ring with `--ds-gray-alpha-400`, which moves to 500 on hover and 600 on focus. Static dividers use solid `--ds-gray-400`.
 - **Materials:** 6px radius (base and small surfaces, tooltip), 12px (medium/large surfaces, menu, modal), 16px (fullscreen).
 - **Motion:** popovers .2s, overlays .3s with scale .96, curve `--ds-motion-timing-swift`. Control transitions 150ms.

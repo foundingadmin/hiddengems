@@ -14,7 +14,7 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
   Vercel's Web Interface Guidelines > Facet decisions > third-party references. See
   `packages/facet/SOURCES.md`.
 - Hue allocation is a hard rule (see `packages/facet/DESIGN.md`, "Hue allocation"). Every hue has one
-  job; purple is for gems only. Run `node packages/facet/scripts/lint-color.mjs apps` before pushing UI.
+  job; purple is for gems and the brand accent (focus, selection, checked controls) only. Run `node packages/facet/scripts/lint-color.mjs apps` before pushing UI.
 - Hidden Gems encodings are fixed: verdict = dot + word, edge = sign + arrow + color, gem tier =
   facet count + purple intensity, freshness = status dot + relative time. Color is never the only cue.
 - Do not use Vercel logos, the Vercel name, or Vercel authorship styling in the product.

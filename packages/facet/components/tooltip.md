@@ -40,3 +40,12 @@ Hidden, shown (hover or focus), closed with Escape (focus returns to trigger).
 - **Full values** for MiddleTruncated prop names, unless you use copy-on-click instead.
 - Add `Kbd` in text for shortcuts (`Track bet T`).
 - For richer hover content (line history mini-table, book list) use ContextCard, not Tooltip.
+
+## Dotted underline rule `[F]`
+
+Owner decision, 2026-11-02. A dotted underline (`.fc-has-tip`) always means a helper sits behind the text, and nothing else uses it. It replaces info icons, so labels and headers stay short.
+
+- The helper opens on hover (250ms delay), keyboard focus and tap. `js/tips.mjs` (`mountTips()`) wires every trigger and makes it focusable.
+- Point `aria-describedby` at a `.fc-tooltip.fc-float` popover, or give the trigger `data-tip="..."` and the tooltip is created.
+- Escape, a tap elsewhere or scrolling closes it. A rich helper (the relative time card) uses the same trigger.
+- The helper adds information and never restates the text it sits behind.

@@ -1,11 +1,10 @@
-/* Facet team marks and matchups. Needs a sport kit for colors (kits/nfl/teams.css), which sets
-   --team-1 (fill), --team-2 (band) and --team-ink (abbreviation) on [data-team].
-   Hue rule: team colors live only inside .fc-team-mark. Rows, text, charts and status stay Facet. */
+/* Facet team identity: team marks, matchups, jerseys and player rows. Needs a sport kit (kits/nfl/teams.css),
+   which sets --team-1 (fill), --team-2 (trim) and --team-ink on [data-team] and points each mark at its logo.
+   Hue rule: team colors and logos live only inside identity marks. Rows, text, charts and status stay Facet. */
 
 /* ------------------------------------------------------------------ Team */
 .fc-team {
   --_h: 24px;
-  --_band: 3px;
   --_fs: 11px;
   display: inline-flex;
   align-items: center;
@@ -14,28 +13,49 @@
   vertical-align: middle;
   color: var(--fc-text-primary);
 }
-.fc-team[data-size="sm"] { --_h: 18px; --_band: 2px; --_fs: 10px; gap: 6px; }
-.fc-team[data-size="lg"] { --_h: 40px; --_band: 4px; --_fs: 14px; gap: var(--fc-space-3); }
+.fc-team[data-size="sm"] { --_h: 18px; --_fs: 10px; gap: 6px; }
+.fc-team[data-size="lg"] { --_h: 40px; --_fs: 14px; gap: var(--fc-space-3); }
 
-/* Fixed width per size, so two- and three-letter marks line up in a column. */
+/* Logo (default): the kit's full-color tile. Falls back to a plain team-color square when a kit has no logos. */
 .fc-team-mark {
   box-sizing: border-box;
   display: inline-grid;
   place-items: center;
   flex: none;
-  width: calc(var(--_h) * 1.5);
+  width: var(--_h);
   height: var(--_h);
-  padding-bottom: var(--_band);
   border-radius: var(--fc-radius-xs);
+  background: var(--team-1, var(--fc-surface-fill)) center / cover no-repeat;
+  box-shadow: inset 0 0 0 1px var(--fc-border-alpha);
+}
+.fc-team[data-size="lg"] .fc-team-mark { border-radius: var(--fc-radius-md); }
+
+/* Mono: the logo silhouette in the current text color, for quiet, dense places (feeds, legends). */
+.fc-team[data-mark="mono"] .fc-team-mark {
+  border-radius: 0;
+  background: currentColor;
+  box-shadow: none;
+  mask-position: center;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-mode: luminance;
+}
+
+/* Abbreviation chip: needs no assets. Abbreviation on the fill with a band of the second color.
+   Fixed width (1.5 times the height), so two- and three-letter chips line up in a column. */
+.fc-team[data-mark="abbr"] { --_band: 3px; }
+.fc-team[data-mark="abbr"][data-size="sm"] { --_band: 2px; }
+.fc-team[data-mark="abbr"][data-size="lg"] { --_band: 4px; }
+.fc-team[data-mark="abbr"] .fc-team-mark {
+  width: calc(var(--_h) * 1.5);
+  padding-bottom: var(--_band);
   background: var(--team-1, var(--fc-surface-fill));
   color: var(--team-ink, var(--fc-text-primary));
   box-shadow: inset 0 calc(var(--_band) * -1) 0 var(--team-2, transparent), inset 0 0 0 1px var(--fc-border-alpha);
   font: 600 var(--_fs)/1 var(--fc-font-sans);
   letter-spacing: 0.02em;
   white-space: nowrap;
-  font-variant-numeric: tabular-nums;
 }
-.fc-team[data-size="lg"] .fc-team-mark { border-radius: var(--fc-radius-sm); }
 
 .fc-team-name {
   min-width: 0;
@@ -72,3 +92,45 @@
 .fc-matchup-row > :not(:first-child) { justify-self: end; }
 .fc-matchup-value { font: 400 14px/20px var(--fc-font-mono); font-variant-numeric: tabular-nums; color: var(--fc-text-secondary); }
 .fc-matchup-value[data-strong] { color: var(--fc-text-primary); font-weight: 500; }
+
+/* ------------------------------------------------------------------ Jersey
+   The player's number on a jersey in team colors, on a neutral tile. Drawn by jerseyHTML(), no assets. */
+.fc-jersey {
+  --_s: 40px;
+  box-sizing: border-box;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--_s);
+  height: var(--_s);
+  border-radius: var(--fc-radius-md);
+  background: var(--fc-surface-fill);
+  vertical-align: middle;
+}
+.fc-jersey[data-size="sm"] { --_s: 32px; border-radius: var(--fc-radius-sm); }
+.fc-jersey[data-size="lg"] { --_s: 56px; border-radius: var(--fc-radius-lg); }
+.fc-jersey svg { width: 84%; height: 84%; overflow: visible; }
+.fc-jersey-body { fill: var(--team-1, var(--fc-text-secondary)); stroke: var(--fc-border-alpha); stroke-width: 0.75; stroke-linejoin: round; }
+.fc-jersey-trim { fill: var(--team-2, transparent); }
+.fc-jersey-collar { fill: none; stroke: var(--team-2, transparent); stroke-width: 1.5; stroke-linecap: round; }
+.fc-jersey-number {
+  fill: var(--team-number, var(--fc-text-inverse));
+  stroke: var(--team-2, transparent);
+  stroke-width: 0.9;
+  paint-order: stroke;
+  font: 700 12.5px/1 var(--fc-font-sans);
+  letter-spacing: -0.4px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ Player
+   Jersey, name, then the team and a detail line. The team line carries the logo, so the jersey's colors
+   never have to identify the team alone. */
+.fc-player { display: inline-flex; align-items: center; gap: var(--fc-space-3); min-width: 0; vertical-align: middle; }
+.fc-player-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.fc-player-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
+.fc-player-meta { display: flex; align-items: center; gap: 6px; min-width: 0; font: 400 13px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
+.fc-player-meta > span:not(.fc-team) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fc-player-meta .fc-team-name { font-weight: 500; color: var(--fc-text-primary); }
+.fc-player-meta .fc-team + span::before { content: "\00B7"; margin-right: 6px; }
+.fc-player[data-size="lg"] .fc-player-name { font: 600 20px/28px var(--fc-font-sans); }

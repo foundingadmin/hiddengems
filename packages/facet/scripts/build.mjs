@@ -4,7 +4,7 @@
 // css/materials.css, css/tailwind.css and js/tokens.mjs.
 // Never hand-edit the generated files; edit the JSON and rebuild.
 
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -346,12 +346,22 @@ write('css/shadcn.css', shadcn);
     return 0.2126 * r + 0.7152 * g + 0.0722 * b;
   };
   const ink = (hex) => { const L = lum(hex); return 1.05 / (L + 0.05) >= (L + 0.05) / 0.05 ? '#fff' : '#000'; };
+  // Jersey numbers are large bold numerals, so white holds whenever it clears 3:1, as on most real uniforms.
+  const numberInk = (hex) => (1.05 / (lum(hex) + 0.05) >= 3 ? '#fff' : '#000');
   const teamsSrc = readFileSync(join(root, 'js/teams.mjs'), 'utf8').replace(/^export /gm, '').replace(/^import .*$/gm, '');
   for (const league of ['nfl']) {
     const kit = read(`kits/${league}/teams.json`);
-    const css = kit.teams.map((t) => `[data-team="${t.id}"] { --team-1: ${t.colors[0]}; --team-2: ${t.colors[1] || t.colors[0]}; --team-ink: ${t.ink || ink(t.colors[0])}; }`).join('\n');
+    const hasLogo = (t, suffix = '') => existsSync(join(root, `kits/${league}/logos/${t.id}${suffix}.svg`));
+    // Logos are set here, not through a custom property, because a url() inside a custom property resolves
+    // against the page that uses it rather than this file.
+    const css = kit.teams.map((t) => [
+      `[data-team="${t.id}"] { --team-1: ${t.colors[0]}; --team-2: ${t.colors[1] || t.colors[0]}; --team-ink: ${t.ink || ink(t.colors[0])}; --team-number: ${numberInk(t.colors[0])}; }`,
+      hasLogo(t) ? `.fc-team[data-team="${t.id}"]:not([data-mark]) > .fc-team-mark { background-image: url("logos/${t.id}.svg"); }` : '',
+      hasLogo(t, '-mono') ? `.fc-team[data-team="${t.id}"][data-mark="mono"] > .fc-team-mark { mask-image: url("logos/${t.id}-mono.svg"); }` : '',
+    ].filter(Boolean).join('\n')).join('\n');
     write(`kits/${league}/teams.css`, `${HEADER}/* ${kit.league} team identity for .fc-team marks. Source: ${kit.source.name}, captured ${kit.source.captured}.
-   These colors live only inside .fc-team-mark (hue rule): never rows, fills, text, charts or status. */
+   Logos (logos/<id>.svg full-color tiles, logos/<id>-mono.svg silhouettes) are NFL trademarks, used here for a private tool.
+   These colors and logos live only inside identity marks (hue rule): never rows, fills, text, charts or status. */
 ${css}
 `);
     const data = kit.teams.map((t) => ({ ...t, ink: t.ink || ink(t.colors[0]) }));
@@ -367,7 +377,7 @@ export const teams = [
 export const findTeam = createTeamIndex(teams);
 `);
     if (league === 'nfl') {
-      write('preview/teams.js', `// GENERATED from js/teams.mjs and kits/nfl/teams.json by scripts/build.mjs. Do not edit by hand.\n(function () {\n${teamsSrc}\nconst teams = ${JSON.stringify(data)};\nconst conferences = ${JSON.stringify(kit.conferences)};\nconst divisions = ${JSON.stringify(kit.divisions)};\nwindow.FacetTeams = { teams, conferences, divisions, findTeam: createTeamIndex(teams), teamHTML, matchupHTML, mountTeams };\n})();\n`);
+      write('preview/teams.js', `// GENERATED from js/teams.mjs and kits/nfl/teams.json by scripts/build.mjs. Do not edit by hand.\n(function () {\n${teamsSrc}\nconst teams = ${JSON.stringify(data)};\nconst conferences = ${JSON.stringify(kit.conferences)};\nconst divisions = ${JSON.stringify(kit.divisions)};\nwindow.FacetTeams = { teams, conferences, divisions, findTeam: createTeamIndex(teams), teamHTML, matchupHTML, jerseyHTML, playerHTML, mountTeams };\n})();\n`);
     }
   }
 }

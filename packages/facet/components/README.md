@@ -28,7 +28,7 @@ The reference writes UI labels in Title Case. Facet uses sentence case everywher
 | Legend | Series key with totals | P0 | [legend.md](legend.md) |
 | Metric row | Value, change and sparkline in one row | P0 | [metric-row.md](metric-row.md) |
 | Rank list | Top-N bars (best price share) | P1 | [rank-list.md](rank-list.md) |
-| Team mark | Team identity and matchups (sport kits) | P0 | [team.md](team.md) |
+| Team mark | Team logos, jerseys, players and matchups (sport kits) | P0 | [team.md](team.md) |
 | Meter | Quota and limit bars | P0 | [meter.md](meter.md) |
 | Severity | Alert level glyph and word | P1 | [severity.md](severity.md) |
 | Freshness line | How old the data on a panel can be | P0 | [freshness.md](freshness.md) |

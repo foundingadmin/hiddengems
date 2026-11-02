@@ -11,7 +11,7 @@ Captured 2026-11-02. When sources conflict, the higher row wins.
 | 2 | Vercel Web Interface Guidelines (vercel-labs/web-interface-guidelines, commit 434b7f9, 2026-10-05) | Interaction, animation, layout, content, forms, performance, accessibility rules | `guidelines/web-interface-guidelines.md` |
 | 2 | `geist` npm package 1.9.0 (vercel/geist-font) | Variable WOFF2 fonts and the OFL license | `fonts/` |
 | 2 | vercel-labs/agent-skills, official Vercel templates, Vercel docs | Engineering patterns, deployment guidance | `reference/vercel-ecosystem.md`, `/docs/vercel-deployment.md` |
-| 2 | NFL Colors (Community), Figma file 9yagbCQHhA5KU1tCP0ncF7, read through the Figma MCP | 32 team color sets, by division | `kits/nfl/teams.json` |
+| 2 | NFL Colors (Community), Figma file 9yagbCQHhA5KU1tCP0ncF7, read through the Figma MCP | 32 team color sets and logos (full-color tiles and silhouettes), by division | `kits/nfl/teams.json`, `kits/nfl/logos/` |
 | 3 | Facet decisions | Semantic layer, Hidden Gems components ([F] marks), deviations table in `DESIGN.md` | `tokens/facet.semantic.json`, `patterns/` |
 | 4 | Third-party jumpstarts, screenshots, inspiration | Ideas only, never authoritative | `reference/inbox/` |
 

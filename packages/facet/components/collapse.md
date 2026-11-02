@@ -8,7 +8,7 @@ An accordion of stacked headings that each open a related section.
 - `CollapseGroup` (`multiple`) > `Collapse` (`title`, `defaultExpanded`, `size`) > content.
 
 ## Variants & sizes
-- `size="small"`. Default size otherwise. Pixel values **not specified by Geist**.
+- `size="small"`. Default size otherwise. Pixel values **not specified by the reference**.
 - `defaultExpanded`. `CollapseGroup multiple` allows several panels open at once (default is one at a time, inferred).
 
 ## States

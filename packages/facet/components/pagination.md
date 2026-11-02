@@ -5,7 +5,7 @@
 Previous/Next links between sibling pages in a sequence (docs-style). It is not a numbered pager.
 
 ## Anatomy
-- `Pagination` with `previous={ title, href }` and `next={ title, href }`. Geist renders the `Previous` / `Next` label, a chevron, and an accessible label of the form `Go to {direction} page: {title}`.
+- `Pagination` with `previous={ title, href }` and `next={ title, href }`. The reference renders the `Previous` / `Next` label, a chevron, and an accessible label of the form `Go to {direction} page: {title}`.
 
 ## Variants & sizes
 None documented.
@@ -14,10 +14,10 @@ None documented.
 Either slot can be omitted. At the start or end of a sequence, hide it rather than disabling it.
 
 ## Tokens
-Not specified by Geist.
+Not specified by the reference.
 
 ## Rules
-- Use for sequential sibling pages (articles, onboarding steps). Use `ShowMore` or a numbered pager for more rows of the same dataset. Geist does not document a numbered pager.
+- Use for sequential sibling pages (articles, onboarding steps). Use `ShowMore` or a numbered pager for more rows of the same dataset. The reference does not document a numbered pager.
 - Titles are destination names in Title Case, short, with the distinctive word first, because long titles get truncated.
 - Do not put ordinals (`Page 3 of 10`) in the titles.
 

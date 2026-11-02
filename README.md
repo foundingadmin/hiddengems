@@ -6,7 +6,7 @@ qualitative reporting, and ranks available sportsbook bets as custom "gem" tiers
 ## Repository
 
 ```
-packages/facet/   Facet, the Geist-derived design system (start with packages/facet/DESIGN.md)
+packages/facet/   Facet, the design system (start with packages/facet/DESIGN.md)
 apps/web/         The Hidden Gems app (placeholder until the UI migrates in)
 docs/             Project docs (deployment plan, and soon architecture and data)
 ```

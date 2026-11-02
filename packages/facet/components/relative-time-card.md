@@ -16,7 +16,7 @@ Shows a short relative time (`2m ago`). Hovering opens a popover with the exact 
 Idle, hover/focus (popover open).
 
 ## Tokens
-Not specified by Geist. Inferred: popover material (`--ds-shadow-menu` or tooltip shadow), `text-label-13` / `text-copy-13`.
+Not specified by the reference. Inferred: popover material (`--ds-shadow-menu` or tooltip shadow), `text-label-13` / `text-copy-13`.
 
 ## Rules
 - Use for recent timestamps in scannable places (Table cells, Entity rows, feeds). In prose, write absolute dates (`Mar 14, 2026`) once older than 7 days.

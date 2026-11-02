@@ -1,15 +1,15 @@
 {
-  "$description": "Facet semantic layer. Every value is an alias to a Geist primitive ({color.<scale>.<step>}). Light/dark switching happens in the primitive layer, so aliases never need a dark override unless the step itself changes per theme ($extensions.facet.dark). Rule: product code uses these names first, primitives second, raw values never.",
+  "$description": "Facet semantic layer. Every value is an alias to a Facet primitive ({color.<scale>.<step>}). Light/dark switching happens in the primitive layer, so aliases never need a dark override unless the step itself changes per theme ($extensions.facet.dark). Rule: product code uses these names first, primitives second, raw values never.",
   "text": {
     "primary": {
       "$type": "color",
       "$value": "{color.gray.1000}",
-      "$description": "Primary text and icons (Geist step 10)."
+      "$description": "Primary text and icons (step 1000)."
     },
     "secondary": {
       "$type": "color",
       "$value": "{color.gray.900}",
-      "$description": "Secondary text and icons (Geist step 9). The lowest-contrast step allowed for readable text."
+      "$description": "Secondary text and icons (step 900). The lowest-contrast step allowed for readable text."
     },
     "disabled": {
       "$type": "color",
@@ -30,12 +30,12 @@
     "canvas": {
       "$type": "color",
       "$value": "{color.background.100}",
-      "$description": "Default page and component background (Geist Background 1). Use in most instances."
+      "$description": "Default page and component background (Background 1). Use in most instances."
     },
     "subtle": {
       "$type": "color",
       "$value": "{color.background.200}",
-      "$description": "Sparing secondary background (Geist Background 2): sidebars, wells, table header band."
+      "$description": "Sparing secondary background (Background 2): sidebars, wells, table header band."
     },
     "fill": {
       "$type": "color",
@@ -301,7 +301,7 @@
     }
   },
   "freshness": {
-    "$description": "How recent a data point is (odds pull, injury report). Mirrors Geist StatusDot semantics.",
+    "$description": "How recent a data point is (odds pull, injury report). Mirrors the status dot semantics.",
     "live": {
       "$type": "color",
       "$value": "{color.green.700}"
@@ -364,7 +364,7 @@
     }
   },
   "badge": {
-    "$description": "Solid badge fills, measured per theme on vercel.com/geist/badge (Geist uses different steps in light and dark). Text is white except amber (black).",
+    "$description": "Solid badge fills, measured per theme on the vercel.com reference badge (it uses different steps in light and dark). Text is white except amber (black).",
     "gray": {
       "$type": "color",
       "$value": "{color.gray.900}",

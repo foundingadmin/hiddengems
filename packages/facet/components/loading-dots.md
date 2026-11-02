@@ -8,7 +8,7 @@ Three animated dots that show background work in progress, usually inline with t
 - Dot sequence, optionally with `children` text before it.
 
 ## Variants & sizes
-- `size`: the example uses `sm` | `md` | `lg`, but the best-practice prose says `size` is a number (dot diameter in px). Pixel values are **not specified by Geist**. See contradiction note.
+- `size`: the example uses `sm` | `md` | `lg`, but the best-practice prose says `size` is a number (dot diameter in px). Pixel values are **not specified by the reference**. See contradiction note.
 
 ## States
 Animating only.

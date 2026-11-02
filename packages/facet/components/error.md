@@ -9,7 +9,7 @@ An inline error message block for a resource or section that failed to load.
 - With `error={{ message, action, link }}`: message plus an action link.
 
 ## Variants & sizes
-- `size`: `small` | default | `large`. Pixel values **not specified by Geist**.
+- `size`: `small` | default | `large`. Pixel values **not specified by the reference**.
 - Examples import both `Error` and `GeistError`.
 
 ## States

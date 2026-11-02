@@ -9,7 +9,7 @@ A full-width button that appends the next batch of items to a paginated list.
 
 ## Variants & sizes
 - `loading`, `noGap` (removes the spacing above it, inferred from the name), `noBorderRadius`, custom label text (`Show More Results`).
-- Heights **not specified by Geist**.
+- Heights **not specified by the reference**.
 
 ## States
 Idle, loading.

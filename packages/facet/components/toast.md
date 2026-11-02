@@ -10,7 +10,7 @@ A short, temporary message that confirms something the user just did.
 
 ## Variants & sizes
 - message (default), success, warning, error. Multi-line. With link. `preserve` (no auto-dismiss). `action` label plus `onAction`. `onUndoAction` (Undo snackbar).
-- Sizes **not specified by Geist**.
+- Sizes **not specified by the reference**.
 
 ## States
 Entering, visible, auto-dismissed, preserved, action clicked. Renders above Modals and stays interactive.

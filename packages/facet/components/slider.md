@@ -14,7 +14,7 @@ Picks a value or range by dragging along a track.
 Idle, dragging, committed, disabled.
 
 ## Tokens
-Not specified by Geist.
+Not specified by the reference.
 
 ## Rules
 - Use when shape and proximity matter more than precision. Pair with a numeric Input for exact values.

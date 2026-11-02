@@ -33,6 +33,6 @@ Empty (0), partial, full. No disabled or indeterminate state (use Spinner or Gau
 
 ## Hidden Gems usage
 - **Slate ingestion / model run progress** (`Scoring 182 of 412 markets`) in the toolbar or on a status page.
-- **Bankroll or unit exposure vs a self-set limit**: Geist would choose Gauge for quota-style values, but a thin bar (`height={4}`) next to the label also works in dense headers.
+- **Bankroll or unit exposure vs a self-set limit**: The reference would choose Gauge for quota-style values, but a thin bar (`height={4}`) next to the label also works in dense headers.
 - **Closing-line countdown is not progress.** Do not use Progress for time-to-kickoff.
 - Note that `type="success"` renders blue. If Hidden Gems wants green for "complete", pass `colors` explicitly.

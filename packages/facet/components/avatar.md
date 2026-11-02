@@ -25,7 +25,7 @@ Inferred: `--ds-gray-alpha-*` border ring, `--ds-gray-*` placeholder fill.
 ## Rules
 - Use a single Avatar for one entity. Use AvatarGroup for two or more (correct overlap and one accessible label).
 - `src` first, fall back to `letter`. `placeholder` is only for loading, never a permanent fallback.
-- `title` is the literal entity name. Geist already prefixes initials for screen readers.
+- `title` is the literal entity name. The reference already prefixes initials for screen readers.
 - Letters are uppercase from the name. No emoji or punctuation.
 - Size follows nearby type: 20–24px with `text-label-14`, 32px with `text-label-16`, 48–64px in headers.
 

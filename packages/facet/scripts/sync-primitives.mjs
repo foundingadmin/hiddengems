@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-// Re-sync Facet's primitive layer from the live Geist system on vercel.com.
+// Re-sync Facet's primitive layer from the live reference design system on vercel.com.
 //
-//   node scripts/capture-geist.mjs        (needs `playwright` + a Chromium)
+//   node scripts/sync-primitives.mjs        (needs `playwright` + a Chromium)
 //   node scripts/build.mjs
 //
 // What it does:
@@ -10,9 +10,9 @@
 //      the P3 oklch overrides from the production stylesheets.
 //   3. Reads the .text-* type roles from the same stylesheets.
 //   4. Writes reference/geist-computed-<date>.json, reference/geist-p3-oklch-<date>.json
-//      and regenerates tokens/geist.tokens.json (colors + shadows only; it keeps the
+//      and regenerates tokens/primitives.tokens.json (colors + shadows only; it keeps the
 //      hand-curated font/space/radius/size/z/motion sections) and tokens/typography.tokens.json.
-// Review the git diff afterwards: a Geist change is a design decision, not a silent update.
+// Review the git diff afterwards: an upstream change is a design decision, not a silent update.
 
 import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -83,7 +83,7 @@ const hex = (s) => {
   return m[4] !== undefined ? h + Math.round(+m[4] * 255).toString(16).padStart(2, '0') : h;
 };
 const L = capture.light, D = capture.dark;
-const tokPath = join(root, 'tokens/geist.tokens.json');
+const tokPath = join(root, 'tokens/primitives.tokens.json');
 const tok = JSON.parse(readFileSync(tokPath, 'utf8'));
 for (const scale of ['gray', 'blue', 'red', 'amber', 'green', 'teal', 'purple', 'pink']) {
   for (let s = 100; s <= 1000; s += 100) {
@@ -132,4 +132,4 @@ if (Object.keys(typo).length >= 20) {
 } else {
   console.warn('Type roles not found in stylesheet text; typography.tokens.json left unchanged.');
 }
-console.log(`Captured Geist on ${today}. Now run: node scripts/build.mjs && git diff tokens/`);
+console.log(`Captured the vercel.com reference on ${today}. Now run: node scripts/build.mjs && git diff tokens/`);

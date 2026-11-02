@@ -14,7 +14,7 @@ Collects short text feedback together with an emoji rating.
 Collapsed, open, submitting, submitted (panel closes and focus returns).
 
 ## Tokens
-Not specified by Geist.
+Not specified by the reference.
 
 ## Rules
 - Place at the end of a page, doc or completed flow. Not on a surface the user just opened.

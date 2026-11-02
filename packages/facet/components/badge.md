@@ -46,6 +46,6 @@ Static only. No hover, active or disabled states, by design.
 ## Hidden Gems usage
 - **Confidence tier** in the slate: `contrast="low"`, `size="sm"`. Map `green` = High, `amber` = Medium, `gray` = Low. Keep the label (`High`) so color is never the only signal.
 - **Market type / book tags** (e.g. `Player Prop`, `Spread`): `gray` subtle. Never more than one badge per cell.
-- **Signal freshness** for non-deployment states: Geist sends these to Badge, not StatusDot (`Stale` amber-subtle, `Live` green-subtle).
+- **Signal freshness** for non-deployment states: The reference sends these to Badge, not StatusDot (`Stale` amber-subtle, `Live` green-subtle).
 - **Injury / news flags** from the qualitative pipeline: `red` or `amber` subtle with a Tooltip carrying the source headline.
 - Do not use solid fills in table cells. Keep solid badges for page-level emphasis (e.g. a `Beta` model badge in the header).

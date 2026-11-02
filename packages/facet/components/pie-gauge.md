@@ -10,8 +10,8 @@ An icon-sized inline indicator that shows a percentage as a filled pie inside a 
 
 ## Variants & sizes
 - `value`: 0–100. Out-of-range values are clamped. Non-finite values render as 0.
-- `size`: default **16px**. Geist uses **13px** on compact surfaces (e.g. build cache summary). The demo also shows 24px and 32px. `width` / `height` can be set separately.
-- `color`: takes a Geist color token name (e.g. `blue-900`, `amber-900`, `red-900`). When omitted, it inherits `currentColor` from the surrounding text.
+- `size`: default **16px**. The reference uses **13px** on compact surfaces (e.g. build cache summary). The demo also shows 24px and 32px. `width` / `height` can be set separately.
+- `color`: takes a the reference color token name (e.g. `blue-900`, `amber-900`, `red-900`). When omitted, it inherits `currentColor` from the surrounding text.
 
 ## States
 Static. No interactive states documented.
@@ -22,7 +22,7 @@ Static. No interactive states documented.
 ## Rules
 - Every demo marks the icon `aria-hidden="true"` and writes the value as visible text next to it (`50%`). Follow that pattern so the number is always readable and announced.
 - Use the 13px size inside dense rows. Match the size to the adjacent type.
-- Best-practice prose is **not specified by Geist** for this page.
+- Best-practice prose is **not specified by the reference** for this page.
 
 ## Hidden Gems usage
 - **Score column in the bet slate**: `<PieGauge size={13} aria-hidden /> 72` with `text-label-13` tabular numbers. Color by score band using the same thresholds as `Gauge` (e.g. green-900 / amber-900 / red-900 or inherited gray).

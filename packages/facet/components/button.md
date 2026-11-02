@@ -45,7 +45,7 @@ Runs an action (submit, open a dialog, mutate state). `ButtonLink` has the same 
 - Use `loading`, not a hand-swapped spinner.
 - Only disable when the action is currently impossible, and pair it with a Tooltip explaining why.
 - Labels are Title Case and say what happens (`Deploy Project`). No bare `Submit` / `OK` / `Confirm`. Destructive buttons use `Verb + Noun` and match their toast (`Delete Project` → `Project deleted`). Mode switches end with `Instead`.
-- Icon-only buttons need `svgOnly` and an `aria-label` that names action and target (`Copy deployment URL`). Geist's validator throws without them.
+- Icon-only buttons need `svgOnly` and an `aria-label` that names action and target (`Copy deployment URL`). The reference's validator throws without them.
 - Never add `aria-label` to a button that already has visible text.
 
 ## Hidden Gems usage

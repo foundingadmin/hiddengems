@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Facet Specimen</title>
-<meta name="description" content="Facet design system specimen: Geist foundations applied to the Hidden Gems research slate.">
+<meta name="description" content="Facet design system specimen: foundations and components applied to the Hidden Gems research slate.">
 <link rel="stylesheet" href="../css/facet.css">
 <style>
   /* Page-owned layout only. Everything visual comes from Facet. */
@@ -23,14 +23,6 @@
   .sp-mono { font-family: var(--fc-font-mono); font-size: 13px; white-space: nowrap; }
   .sp-caption { font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); }
 
-  .sp-scales { display: grid; grid-template-columns: 96px repeat(10, minmax(0, 1fr)); gap: 4px; align-items: center; }
-  .sp-scales .sw { height: 36px; border-radius: 4px; box-shadow: inset 0 0 0 1px var(--ds-gray-alpha-200); }
-  .sp-scales .lab { font: 400 12px/16px var(--fc-font-mono); color: var(--fc-text-secondary); }
-  .sp-scales .step { font: 400 12px/16px var(--fc-font-mono); color: var(--fc-text-secondary); text-align: center; }
-  .sp-sem { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px 24px; }
-  .sp-sem div { display: flex; align-items: center; gap: 10px; min-width: 0; }
-  .sp-sem i { flex: 0 0 auto; width: 24px; height: 24px; border-radius: 6px; box-shadow: inset 0 0 0 1px var(--ds-gray-alpha-300); }
-  .sp-sem code { font: 400 12px/16px var(--fc-font-mono); color: var(--fc-text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .sp-type { display: flex; flex-direction: column; }
   .sp-type > div { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 16px; align-items: baseline; padding: 12px 0; border-top: 1px solid var(--ds-gray-400); }
   .sp-type code { font: 400 12px/16px var(--fc-font-mono); color: var(--fc-text-secondary); }
@@ -38,15 +30,38 @@
   .sp-mats { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 24px; padding: 24px; background: var(--fc-surface-subtle); border-radius: 12px; }
   .sp-mats div { height: 96px; display: flex; align-items: flex-end; padding: 12px; font: 400 12px/16px var(--fc-font-mono); color: var(--fc-text-secondary); }
   .sp-code { font: 400 12px/16px var(--fc-font-mono); color: var(--fc-text-primary); white-space: nowrap; }
-  .sp-hue { display: inline-flex; align-items: center; gap: 6px; }
-  .sp-hue { gap: 8px; }
-  .sp-hue i { flex: 0 0 12px; width: 12px; height: 12px; border-radius: 3px; box-shadow: inset 0 0 0 1px var(--ds-gray-alpha-300); }
-  .sp-hue i + i { margin-left: -5px; } /* paired chips sit 3px apart, same size */
-  .sp-alloc td { white-space: normal; min-width: 140px; }
-  .sp-alloc td:last-child { min-width: 200px; }
-  .sp-alloc td:last-child .sp-code { display: inline-block; margin: 0 6px 4px 0; }
-  .sp-alloc .sp-alloc-gem { background: var(--fc-gem-bg); }
-  .sp-alloc .sp-alloc-gem td, .sp-alloc .sp-alloc-gem th { color: var(--fc-text-primary); }
+  .sp-bands { display: flex; flex-direction: column; }
+  .sp-band { display: grid; grid-template-columns: minmax(200px, 260px) repeat(10, minmax(0, 1fr)); column-gap: 6px; row-gap: 8px; padding: 20px 0; border-top: 1px solid var(--ds-gray-400); align-items: start; }
+  .sp-band-header { padding: 0 0 10px; border-top: 0; row-gap: 4px; position: sticky; top: 113px; z-index: 2; background: var(--fc-surface-canvas); }
+  .sp-band-header > span:first-child { grid-row: span 2; }
+  .sp-grp { font: 500 12px/16px var(--fc-font-sans); color: var(--fc-text-primary); padding-bottom: 4px; border-bottom: 1px solid var(--ds-gray-500); margin-right: 2px; }
+  .sp-stepnum { font: 400 12px/16px var(--fc-font-mono); color: var(--fc-text-secondary); }
+  .sp-band-head { display: flex; flex-direction: column; gap: 6px; padding-right: 20px; min-width: 0; }
+  .sp-band-head h3 { display: flex; align-items: center; gap: 8px; }
+  .sp-band-job { font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
+  .sp-band.is-gem .sp-band-job { color: var(--fc-gem-fg); }
+  .sp-band-dl { display: flex; flex-direction: column; gap: 6px; margin: 4px 0 0; }
+  .sp-band-dl dt { font: 400 12px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
+  .sp-band-dl dd { margin: 0; font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-primary); }
+  .sp-cell { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .sp-sw { display: block; height: 40px; border-radius: 6px; box-shadow: inset 0 0 0 1px var(--ds-gray-alpha-300); }
+  .sp-cellstep { display: none; font: 400 11px/14px var(--fc-font-mono); color: var(--fc-text-secondary); }
+  .sp-cell ul { display: flex; flex-direction: column; gap: 4px; margin: 0; padding: 0; list-style: none; }
+  .sp-cell li { font: 400 11px/14px var(--fc-font-mono); color: var(--fc-text-secondary); overflow-wrap: normal; }
+  .sp-band.is-gem .sp-cell li { color: var(--fc-gem-fg); }
+  .sp-band-list { display: none; }
+  @media (max-width: 860px) {
+    .sp-band { grid-template-columns: repeat(10, minmax(0, 1fr)); column-gap: 4px; }
+    .sp-band-head { grid-column: 1 / -1; padding-right: 0; }
+    .sp-band-header { display: none; }
+    .sp-cellstep { display: block; text-align: center; font-size: 10px; }
+    .sp-sw { height: 28px; border-radius: 4px; }
+    .sp-cell ul { display: none; }
+    .sp-band-list { display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; grid-column: 1 / -1; margin: 4px 0 0; padding: 0; list-style: none; }
+    .sp-band-list li { display: contents; }
+    .sp-band-list li { font: 400 12px/16px var(--fc-font-mono); color: var(--fc-text-secondary); }
+    .sp-band-list li span { color: var(--fc-text-primary); text-align: right; }
+  }
   .sp-rules { display: flex; flex-direction: column; gap: 8px; max-width: 80ch; padding-left: 0; }
   .sp-rules li { font: 400 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); }
   .sp-rules strong { color: var(--fc-text-primary); font-weight: 500; }
@@ -66,9 +81,7 @@
   .sp-gallery figcaption { font: 500 14px/20px var(--fc-font-sans); }
   .sp-wrap { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
   @media (max-width: 720px) {
-    .sp-scales { grid-template-columns: 64px repeat(10, minmax(0, 1fr)); }
-    .sp-scales .step { display: none; }
-    .sp-type > div { grid-template-columns: 1fr; gap: 4px; }
+        .sp-type > div { grid-template-columns: 1fr; gap: 4px; }
   }
 </style>
 </head>
@@ -153,29 +166,11 @@
   <!-- ============================================================ Color -->
   <section id="color" aria-labelledby="color-h">
     <div class="sp-intro">
-      <h2 id="color-h" class="text-heading-24">Geist's ten step color scales, verbatim</h2>
-      <p class="text-copy-14">Captured from vercel.com's computed styles, light and dark, with Display P3 upgrades on capable screens. Steps 100 to 300 are fills, 400 to 600 borders, 700 and 800 solid fills, 900 secondary text, 1000 primary text.</p>
+      <h2 id="color-h" class="text-heading-24">Gray by default, and every hue has one job</h2>
+      <p class="text-copy-14">Each band is a hue's whole contract: its job, its ten step scale, and the semantic tokens that draw from each step. Product code uses the semantic token, never the step itself. Every step is redefined for dark mode and wide-gamut screens, so a token stays correct in both themes.</p>
     </div>
-    <div class="fc-stack" id="hue-allocation" style="--fc-gap:16px">
-      <div class="sp-intro">
-        <h3 class="text-heading-20">Every hue has one job</h3>
-        <p class="text-copy-14">A hard rule. The interface is gray; a hue appears only to do its job below, and never as decoration. Product code reaches color through the semantic token for the job (<code class="sp-code">--fc-*</code>), never a hue step directly. <code class="sp-code">lint-color.mjs</code> fails the build on raw colors or hue steps, and purple has no Tailwind utility at all.</p>
-      </div>
-      <div class="fc-table-wrap">
-        <table class="fc-table sp-alloc">
-          <caption>Hue allocation. Each row is the complete list of jobs for that hue.</caption>
-          <thead><tr><th scope="col">Hue</th><th scope="col">Its job</th><th scope="col">Use it for</th><th scope="col">Never for</th><th scope="col">Reach it through</th></tr></thead>
-          <tbody>
-            <tr><th scope="row"><span class="sp-hue"><i style="background:var(--ds-gray-1000)"></i><i style="background:var(--ds-gray-400)"></i>Gray</span></th><td>Everything by default</td><td>Text, surfaces, borders, primary buttons, chart series 1</td><td>Carrying meaning by itself</td><td><code class="sp-code">--fc-text-*</code> <code class="sp-code">--fc-surface-*</code> <code class="sp-code">--fc-border-*</code></td></tr>
-            <tr class="sp-alloc-gem"><th scope="row"><span class="sp-hue"><i style="background:var(--fc-gem-solid)"></i>Purple</span></th><td><strong>Gems, and only gems</strong></td><td>"This is a Hidden Gem" designation, the gem tier ladder (rough, cut, polished, flawless)</td><td>Links, buttons, focus, selection, highlights, chart series, brand decoration, anything that is not a gem</td><td><code class="sp-code">--fc-gem-*</code> <code class="sp-code">.fc-gem</code></td></tr>
-            <tr><th scope="row"><span class="sp-hue"><i style="background:var(--fc-signal-go-solid)"></i>Green</span></th><td>Go, and good for the bettor</td><td>Go verdict, positive edge, success, live data</td><td>Money or wins just because they look nice, "important" values</td><td><code class="sp-code">--fc-signal-go-*</code> <code class="sp-code">--fc-edge-positive</code></td></tr>
-            <tr><th scope="row"><span class="sp-hue"><i style="background:var(--fc-signal-wait-solid)"></i>Amber</span></th><td>Wait, and caution</td><td>Wait verdict, warnings, stale data</td><td>Highlighting, emphasis, a chart series</td><td><code class="sp-code">--fc-signal-wait-*</code> <code class="sp-code">--fc-status-warning-*</code></td></tr>
-            <tr><th scope="row"><span class="sp-hue"><i style="background:var(--fc-signal-stop-solid)"></i>Red</span></th><td>Stop, and bad for the bettor</td><td>Stop verdict, negative edge, errors, failed data, destructive actions</td><td>Decoration, "hot" picks, urgency</td><td><code class="sp-code">--fc-signal-stop-*</code> <code class="sp-code">--fc-edge-negative</code></td></tr>
-            <tr><th scope="row"><span class="sp-hue"><i style="background:var(--ds-blue-700)"></i>Blue</span></th><td>Interaction and information</td><td>Links, focus ring, toggles on, info notes, recent data, chart series 2</td><td>Verdicts, gems, success</td><td><code class="sp-code">--fc-text-link</code> <code class="sp-code">--fc-focus-color</code> <code class="sp-code">--fc-status-info-*</code></td></tr>
-            <tr><th scope="row"><span class="sp-hue"><i style="background:var(--ds-teal-700)"></i><i style="background:var(--ds-pink-700)"></i>Teal, pink</span></th><td>Chart series only</td><td>Series 3 and 4 when direct labels and grays are not enough</td><td>Any UI element</td><td><code class="sp-code">--fc-chart-3</code> <code class="sp-code">--fc-chart-4</code></td></tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="fc-stack" id="hue-allocation" style="--fc-gap:24px">
+      <div class="sp-bands" id="bands" role="list" aria-label="Color scales and their jobs"></div>
       <fieldset class="fc-fieldset">
         <div class="fc-fieldset-content">
           <legend class="fc-fieldset-title">Color always travels with a second cue</legend>
@@ -191,7 +186,7 @@
       </fieldset>
       <div class="sp-notes">
         <div class="fc-note" data-type="info"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span><strong>Charts.</strong> A chart that shows verdicts or gems uses the signal or gem colors, because that is their job.</span></div>
-        <div class="fc-note"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span><strong>Badges.</strong> Geist badges come in every hue, but a badge still follows this table. A purple badge means a gem.</span></div>
+        <div class="fc-note"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span><strong>Badges.</strong> Badges come in every hue, but a badge still follows this table. A purple badge means a gem.</span></div>
       </div>
       <hr class="fc-separator">
       <div class="sp-dodont">
@@ -202,16 +197,13 @@
       </div>
     </div>
 
-    <h3 class="text-heading-20">The scales</h3>
-    <div class="sp-scales" id="scales"></div>
-    <h3 class="text-heading-16">Facet semantics</h3>
-    <div class="sp-sem" id="semantics"></div>
+
   </section>
 
   <!-- ============================================================ Type -->
   <section id="type" aria-labelledby="type-h">
     <div class="sp-intro">
-      <h2 id="type-h" class="text-heading-24">Geist type roles, never loose sizes</h2>
+      <h2 id="type-h" class="text-heading-24">Type roles, never loose sizes</h2>
       <p class="text-copy-14">Each role fixes size, line height, weight and tracking together. Numbers that get compared use tabular figures.</p>
     </div>
     <div class="sp-type" id="type-roles"></div>
@@ -239,7 +231,7 @@
   <section id="components" aria-labelledby="comp-h">
     <div class="sp-intro">
       <h2 id="comp-h" class="text-heading-24">Components</h2>
-      <p class="text-copy-14">Measured from the live Geist demos (heights 32, 36, 40), plus Hidden Gems pieces built only from Geist tokens.</p>
+      <p class="text-copy-14">Controls come in three heights (32, 36 and 40), and the Hidden Gems pieces are built only from Facet tokens.</p>
     </div>
     <div class="sp-gallery">
       <figure>
@@ -322,6 +314,7 @@
   </section>
 </main>
 
+<script src="semantic-map.js"></script>
 <script>
   // ---- theme control (specimen only) ----
   const root = document.documentElement;
@@ -377,18 +370,48 @@
   document.getElementById('gem-rule').outerHTML = gem('flawless');
 
   // ---- foundations ----
-  const scales = ['gray', 'blue', 'red', 'amber', 'green', 'teal', 'purple', 'pink'];
+  // ---- color bands: job + ten step scale + the semantic tokens on each step ----
+  const A = (window.FACET_ALIASES || { light: {}, dark: {} });
   const steps = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
-  document.getElementById('scales').innerHTML =
-    '<span></span>' + steps.map(s => `<span class="step">${s}</span>`).join('') +
-    ['background'].concat(scales, ['gray-alpha']).map(sc => {
-      const st = sc === 'background' ? [100, 200] : steps;
-      return `<span class="lab">${sc}</span>` + st.map(s => `<span class="sw" title="--ds-${sc}-${s}" style="background:var(--ds-${sc}-${s})"></span>`).join('') + (sc === 'background' ? '<span></span>'.repeat(8) : '');
-    }).join('');
-  const sem = ['text-primary','text-secondary','text-disabled','surface-canvas','surface-subtle','surface-fill','border-default','border-hover','focus-color',
-    'signal-go-solid','signal-wait-solid','signal-stop-solid','signal-none-solid','edge-positive','edge-negative','gem-solid','gem-bg',
-    'gem-tier-rough','gem-tier-cut','gem-tier-polished','gem-tier-flawless','freshness-live','freshness-stale','chart-1','chart-2','chart-3','chart-4','chart-5','chart-6'];
-  document.getElementById('semantics').innerHTML = sem.map(n => `<div><i style="background:var(--fc-${n})"></i><code>--fc-${n}</code></div>`).join('');
+  const HUES = [
+    { key: 'background', name: 'Background', job: 'The canvas', use: 'Page and component backgrounds. Background 2 sparingly, for subtle separation', never: 'Cards on cards', steps: [100, 200] },
+    { key: 'gray', name: 'Gray', job: 'Everything by default', use: 'Text, surfaces, borders, primary buttons, chart series 1', never: 'Carrying meaning by itself' },
+    { key: 'purple', name: 'Purple', job: 'Gems, and only gems', use: 'The Hidden Gem designation and the gem tier ladder', never: 'Links, buttons, focus, selection, highlights, chart series, decoration', gem: true },
+    { key: 'green', name: 'Green', job: 'Go, good for the bettor', use: 'Go verdict, positive edge, success, live data', never: 'Money or wins because they look nice' },
+    { key: 'amber', name: 'Amber', job: 'Wait, and caution', use: 'Wait verdict, warnings, stale data', never: 'Highlighting, emphasis, chart series' },
+    { key: 'red', name: 'Red', job: 'Stop, bad for the bettor', use: 'Stop verdict, negative edge, errors, failed data, destructive actions', never: 'Decoration, hot picks, urgency' },
+    { key: 'blue', name: 'Blue', job: 'Interaction and information', use: 'Links, focus ring, toggles on, info notes, recent data, chart series 2', never: 'Verdicts, gems, success' },
+    { key: 'teal', name: 'Teal', job: 'Chart series only', use: 'Series 3, when direct labels and grays are not enough', never: 'Any interface element' },
+    { key: 'pink', name: 'Pink', job: 'Chart series only', use: 'Series 4, when direct labels and grays are not enough', never: 'Any interface element' },
+    { key: 'gray-alpha', name: 'Gray alpha', job: 'Edges that blend', use: 'Overlays, shadows, an edge on a tinted surface', never: 'Default borders, which stay solid gray' },
+  ];
+  const byStep = {};
+  for (const [tok, ref] of Object.entries(A.light)) {
+    if (!ref || tok.startsWith('badge-')) continue;
+    (byStep[ref] ||= []).push({ tok, dark: A.dark[tok] !== ref ? A.dark[tok] : null });
+  }
+  const brk = t => t.replace(/-/g, '-<wbr>');
+  const tokLabel = (t, key) => t.tok + (t.dark ? ` (dark ${t.dark.replace(key + '-', '')})` : '');
+  const groups = [['Fills', 3], ['Borders', 3], ['Solid', 2], ['Text', 2]];
+  const head = `<div class="sp-band sp-band-header" aria-hidden="true"><span></span>${groups.map(([g, n]) => `<span class="sp-grp" style="grid-column:span ${n}">${g}</span>`).join('')}${steps.map(n => `<span class="sp-stepnum">${n}</span>`).join('')}</div>`;
+  document.getElementById('bands').innerHTML = head + HUES.map(h => {
+    const st = h.steps || steps;
+    const cells = st.map(n => {
+      const ref = `${h.key}-${n}`;
+      const toks = byStep[ref] || [];
+      return `<div class="sp-cell"><i class="sp-sw" style="background:var(--ds-${ref})" title="--ds-${ref}"></i><span class="sp-cellstep">${n}</span>${toks.length ? `<ul role="list">${toks.map(t => `<li>${brk(tokLabel(t, h.key))}</li>`).join('')}</ul>` : ''}</div>`;
+    }).join('') + (h.steps ? `<div class="sp-cell-fill" style="grid-column:span ${10 - st.length}"></div>` : '');
+    const list = st.flatMap(n => (byStep[`${h.key}-${n}`] || []).map(t => `<li><span>${n}</span>${tokLabel(t, h.key)}</li>`)).join('');
+    return `<article class="sp-band${h.gem ? ' is-gem' : ''}" role="listitem" aria-label="${h.name}">
+      <header class="sp-band-head">
+        <h3 class="text-heading-16">${h.name}${h.gem ? ' <span class="fc-badge" data-size="sm" data-variant="purple" data-contrast="low">Gems only</span>' : ''}</h3>
+        <p class="sp-band-job">${h.job}</p>
+        <dl class="sp-band-dl"><div><dt>Use for</dt><dd>${h.use}</dd></div><div><dt>Never for</dt><dd>${h.never}</dd></div></dl>
+      </header>
+      ${cells}
+      ${list ? `<ul class="sp-band-list" role="list">${list}</ul>` : ''}
+    </article>`;
+  }).join('');
   const roles = ['heading-48','heading-40','heading-32','heading-24','heading-20','heading-16','heading-14','label-16','label-14','label-13','label-12','label-13-mono','copy-18','copy-16','copy-14','copy-13','copy-13-mono','button-14'];
   document.getElementById('type-roles').innerHTML = roles.map(r => `<div><code>text-${r}</code><span class="text-${r}">${r.startsWith('label') ? 'Stefon Diggs, anytime TD 3.00' : r.startsWith('copy') ? 'Both of his empty weeks came with a backup QB, so the setup check comes first.' : 'Gesicki carries the widest gap'}</span></div>`).join('');
   const badgeVariants = ['gray','blue','purple','amber','red','pink','green','teal','inverted'];

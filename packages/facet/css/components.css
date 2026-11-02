@@ -1,7 +1,7 @@
 /* Facet components. Framework-agnostic CSS classes (work in plain HTML, React, Svelte...).
-   Every measurement marked [G] was measured on the live vercel.com/geist component demos
+   Every measurement marked [G] was measured on the live vercel.com reference component demos
    (see reference/geist-component-measurements-*.json). [F] marks Facet additions for the
-   Hidden Gems domain, built only from Geist tokens.
+   Hidden Gems domain, built only from Facet tokens.
    Naming: .fc-<component>, modifiers as data attributes (data-variant, data-size, data-state)
    so a React wrapper can map props 1:1. */
 
@@ -108,7 +108,7 @@
 .fc-badge[data-contrast="low"][data-variant="teal"]     { --_bg: var(--ds-teal-200);   --_fg: var(--ds-teal-900); }
 
 /* ------------------------------------------------------------------ Status dot [G]
-   10px circle. Geist demo states: queued, building, error, ready, canceled.
+   10px circle. Reference demo states: queued, building, error, ready, canceled.
    Facet maps them to data freshness. Always render the label next to the dot. */
 .fc-status {
   display: inline-flex;
@@ -225,7 +225,7 @@
 .fc-tabs[data-variant="secondary"] .fc-tab[aria-selected="true"] { background: var(--ds-gray-200); color: var(--ds-gray-1000); }
 
 /* ------------------------------------------------------------------ Segmented control [G]
-   (Geist "Switch": a radio group of options.) Items 28px (sm 24, lg 32), radius 4px,
+   (The reference calls this "Switch": a radio group of options.) Items 28px (sm 24, lg 32), radius 4px,
    selected gray-100 fill + gray-1000 text, 14px/500. */
 .fc-segmented {
   display: inline-flex;
@@ -259,7 +259,7 @@
 
 /* ------------------------------------------------------------------ Toggle (on/off switch) [G]
    Measured: default track 28x14 (thumb 11), medium 36x20, large 40x24. Off track gray-400,
-   on track Geist's blue (legacy --geist-success). Thumb background-100 with a small shadow. */
+   on track blue, as in the reference. Thumb background-100 with a small shadow. */
 .fc-toggle {
   --_w: 28px; --_h: 14px; --_t: 11px;
   appearance: none;
@@ -407,7 +407,7 @@
 /* ------------------------------------------------------------------ Gauge [G-inferred]
    SVG ring: <svg class="fc-gauge" viewBox="0 0 36 36"><circle class="fc-gauge-track" .../>
    <circle class="fc-gauge-value" pathLength="100" stroke-dasharray="72 100" .../></svg>
-   Geist gauges color the arc by threshold; Facet ties that to signal tokens. */
+   Reference gauges color the arc by threshold; Facet ties that to signal tokens. */
 .fc-gauge { --_c: var(--ds-gray-1000); width: var(--fc-gauge-size, 32px); height: var(--fc-gauge-size, 32px); transform: rotate(-90deg); }
 .fc-gauge circle { fill: none; stroke-width: 3.5; }
 .fc-gauge-track { stroke: var(--ds-gray-200); }
@@ -511,7 +511,7 @@
 .fc-empty { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 48px 24px; text-align: center; color: var(--ds-gray-900); }
 .fc-empty > strong { font: 600 16px/24px var(--fc-font-sans); letter-spacing: -0.32px; color: var(--ds-gray-1000); }
 
-/* Signed numbers (American odds, deltas) [F]. In Geist Sans, tabular figures equalize digits
+/* Signed numbers (American odds, deltas) [F]. In Facet Sans, tabular figures equalize digits
    (600 units) but "+" (558), "-" (419) and "−" (520) keep their own widths, so +150 and -110
    drift apart in a column. Wrap the sign in .fc-sign to give it a fixed digit-width slot:
    <span class="fc-signed"><span class="fc-sign">+</span>150</span>  */

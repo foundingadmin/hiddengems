@@ -16,7 +16,7 @@ const write = (p, s) => {
   console.log('wrote', p);
 };
 
-const geist = read('tokens/geist.tokens.json');
+const prim = read('tokens/primitives.tokens.json');
 const type = read('tokens/typography.tokens.json').typography;
 const sem = read('tokens/facet.semantic.json');
 
@@ -26,7 +26,7 @@ const ext = (t) => (t.$extensions && t.$extensions.facet) || {};
 
 // ---------- primitives ----------
 const light = [], dark = [], p3l = [], p3d = [];
-for (const [scale, steps] of Object.entries(geist.color)) {
+for (const [scale, steps] of Object.entries(prim.color)) {
   for (const [step, t] of Object.entries(steps)) {
     const name = `--ds-${scale}-${step}`;
     light.push(`${name}: ${t.$value};`);
@@ -36,7 +36,7 @@ for (const [scale, steps] of Object.entries(geist.color)) {
   }
 }
 light.push('--ds-white: #fff;', '--ds-black: #000;');
-for (const [k, t] of Object.entries(geist.shadow)) {
+for (const [k, t] of Object.entries(prim.shadow)) {
   light.push(`--ds-shadow-${k}: ${t.$value};`);
   if (ext(t).dark && ext(t).dark !== t.$value) dark.push(`--ds-shadow-${k}: ${ext(t).dark};`);
 }
@@ -52,17 +52,17 @@ dark.push('--ds-focus-color: var(--ds-blue-900);', '--ds-focus-border: 0 0 0 1px
 
 // ---------- scalar tokens ----------
 const scalars = [];
-const ff = geist.font.family;
+const ff = prim.font.family;
 scalars.push(`--fc-font-sans: ${ff.sans.$value};`, `--fc-font-mono: ${ff.mono.$value};`);
-for (const [k, t] of Object.entries(geist.font.weight)) scalars.push(`--fc-weight-${k}: ${t.$value};`);
-for (const [k, t] of Object.entries(geist.space)) scalars.push(`--fc-space-${k.replace('.', '_')}: ${t.$value};`);
-for (const [k, t] of Object.entries(geist.radius)) scalars.push(`--fc-radius-${k}: ${t.$value};`);
-for (const [k, t] of Object.entries(geist.size.control)) scalars.push(`--fc-control-${k}: ${t.$value};`);
-for (const [k, t] of Object.entries(geist.size.row)) scalars.push(`--fc-row-${k}: ${t.$value};`);
-scalars.push(`--fc-page-width: ${geist.size.page.$value};`, `--fc-page-margin: ${geist.size['page-margin'].$value};`);
-for (const [k, t] of Object.entries(geist.z)) scalars.push(`--fc-z-${k}: ${t.$value};`);
-for (const [k, t] of Object.entries(geist.motion.easing)) scalars.push(`--fc-ease-${k}: cubic-bezier(${t.$value.join(', ')});`);
-for (const [k, t] of Object.entries(geist.motion.duration)) scalars.push(`--fc-duration-${k}: ${t.$value};`);
+for (const [k, t] of Object.entries(prim.font.weight)) scalars.push(`--fc-weight-${k}: ${t.$value};`);
+for (const [k, t] of Object.entries(prim.space)) scalars.push(`--fc-space-${k.replace('.', '_')}: ${t.$value};`);
+for (const [k, t] of Object.entries(prim.radius)) scalars.push(`--fc-radius-${k}: ${t.$value};`);
+for (const [k, t] of Object.entries(prim.size.control)) scalars.push(`--fc-control-${k}: ${t.$value};`);
+for (const [k, t] of Object.entries(prim.size.row)) scalars.push(`--fc-row-${k}: ${t.$value};`);
+scalars.push(`--fc-page-width: ${prim.size.page.$value};`, `--fc-page-margin: ${prim.size['page-margin'].$value};`);
+for (const [k, t] of Object.entries(prim.z)) scalars.push(`--fc-z-${k}: ${t.$value};`);
+for (const [k, t] of Object.entries(prim.motion.easing)) scalars.push(`--fc-ease-${k}: cubic-bezier(${t.$value.join(', ')});`);
+for (const [k, t] of Object.entries(prim.motion.duration)) scalars.push(`--fc-duration-${k}: ${t.$value};`);
 
 // ---------- semantic aliases ----------
 const alias = (v) =>
@@ -97,7 +97,7 @@ const DARK_SEL = '.dark-theme, [data-theme="dark"]';
 const AUTO_DARK_SEL = ':root:not(.light-theme):not([data-theme="light"])';
 const tokensCss =
   HEADER +
-  `/* Facet tokens. Layer 1: Geist primitives (--ds-*), captured verbatim from vercel.com.
+  `/* Facet tokens. Layer 1: Facet primitives (--ds-*), captured verbatim from the vercel.com reference.
    Layer 2: Facet semantics (--fc-*). Theme: light by default, follows the OS, and can be
    forced with class="dark-theme" | "light-theme" or data-theme="dark" | "light" on <html>. */\n\n` +
   block(':root, .light-theme, [data-theme="light"]', ['color-scheme: light;', ...light, ...scalars, ...semLight]) +
@@ -115,7 +115,7 @@ write('css/tokens.css', tokensCss);
 
 // ---------- typography.css ----------
 const resolveFam = (v) => (v.includes('mono') ? 'var(--fc-font-mono)' : 'var(--fc-font-sans)');
-let typo = HEADER + `/* Geist type roles. Each class sets size, line-height, weight and tracking together.
+let typo = HEADER + `/* Facet type roles. Each class sets size, line-height, weight and tracking together.
    Nest <strong> for the Strong (copy/label) or Subtle (heading) modifier. */\n\n`;
 const twUtil = [];
 for (const [name, t] of Object.entries(type)) {
@@ -142,12 +142,12 @@ typo += `\n/* Numeric helpers. Tabular figures for any column, KPI or value that
   block('.fc-mono', ['font-family: var(--fc-font-mono);']);
 write('css/typography.css', typo);
 
-// ---------- materials.css (exact Geist presets) ----------
+// ---------- materials.css (exact presets) ----------
 const mats = {
   base: ['border', '6px'], small: ['border-small', '6px'], medium: ['border-medium', '12px'], large: ['border-large', '12px'],
   tooltip: ['tooltip', '6px'], menu: ['menu', '12px'], modal: ['modal', '12px'], fullscreen: ['fullscreen', '16px'],
 };
-let matCss = HEADER + `/* Geist materials: surface (on the page) and floating (above the page). */\n\n`;
+let matCss = HEADER + `/* Facet materials: surface (on the page) and floating (above the page). */\n\n`;
 for (const [k, [sh, r]] of Object.entries(mats)) {
   matCss += block(`.material-${k}`, ['background-color: var(--ds-background-100);', `box-shadow: var(--ds-shadow-${sh});`, `border-radius: ${r};`]);
 }
@@ -155,7 +155,7 @@ write('css/materials.css', matCss);
 
 // ---------- tailwind.css (Tailwind v4 theme bridge) ----------
 const twColors = [];
-for (const [scale, steps] of Object.entries(geist.color)) {
+for (const [scale, steps] of Object.entries(prim.color)) {
   // Hue allocation (DESIGN.md): purple belongs to gems only, so no bg-purple-* / text-purple-*
   // utilities exist. Gem styling goes through the semantic fc-gem-* utilities instead.
   if (scale === 'purple') continue;
@@ -164,7 +164,7 @@ for (const [scale, steps] of Object.entries(geist.color)) {
 const tw = HEADER + `/* Tailwind CSS v4 bridge. Usage in an app's global CSS:
      @import "tailwindcss";
      @import "@foundingcreative/facet/css/tailwind.css";
-   Tailwind's default palette is removed so only Geist steps exist (bg-gray-100, text-gray-900,
+   Tailwind's default palette is removed so only Facet steps exist (bg-gray-100, text-gray-900,
    border-gray-400, bg-background-100, text-blue-900 ...), which mirrors how vercel.com itself
    writes classes. */\n
 @import "./tokens.css";
@@ -212,7 +212,7 @@ write('css/tailwind.css', tw);
 
 // ---------- js/tokens.mjs (resolved values for canvas/SVG charts) ----------
 const resolved = { light: {}, dark: {} };
-for (const [scale, steps] of Object.entries(geist.color)) {
+for (const [scale, steps] of Object.entries(prim.color)) {
   for (const [step, t] of Object.entries(steps)) {
     resolved.light[`${scale}-${step}`] = t.$value;
     resolved.dark[`${scale}-${step}`] = ext(t).dark || t.$value;
@@ -242,3 +242,18 @@ export function token(name, mode = 'light') {
 }
 `;
 write('js/tokens.mjs', js);
+
+// ---------- preview/semantic-map.js (lets the specimen draw which semantic token uses which step) ----------
+const aliasMap = { light: {}, dark: {} };
+(function walk(node, path) {
+  for (const [k, v] of Object.entries(node)) {
+    if (k.startsWith('$')) continue;
+    const p = [...path, k];
+    if (isTok(v)) {
+      const ref = (x) => { const m = String(x).match(/\{color\.([a-z-]+)\.(\d+)\}/); return m ? `${m[1]}-${m[2]}` : null; };
+      aliasMap.light[p.join('-')] = ref(v.$value);
+      aliasMap.dark[p.join('-')] = ref(ext(v).dark || v.$value);
+    } else if (v && typeof v === 'object') walk(v, p);
+  }
+})(sem, []);
+write('preview/semantic-map.js', `// GENERATED by packages/facet/scripts/build.mjs. Do not edit by hand.\nwindow.FACET_ALIASES = ${JSON.stringify(aliasMap)};\n`);

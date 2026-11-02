@@ -37,5 +37,5 @@ Default, filled, disabled. A Note has no dismissed state by design.
 - **Data-quality caveats** next to a bet's signal breakdown: `variant="warning" size="small"` with `<NoteLabel>Stale Odds</NoteLabel>` and `Last price from this book is over 30 minutes old.`
 - **Model limitations** above a market section (e.g. `Low Sample`: `Fewer than 5 games of usage data for this player.`): default or `secondary`.
 - **Responsible-gambling / jurisdiction notices**: `secondary`, persistent, one per page.
-- Watch out for `variant="success"` rendering blue. For "positive edge confirmed", decide whether Facet keeps Geist's blue or adds a green-success option (a deviation).
+- Watch out for `variant="success"` rendering blue. For "positive edge confirmed", decide whether Facet keeps the reference's blue or adds a green-success option (a deviation).
 - Use small size in table-adjacent panels. Keep medium for detail sheets.

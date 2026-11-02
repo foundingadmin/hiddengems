@@ -13,7 +13,7 @@ A blocking dialog for a decision the user must make before going back to the pag
 ## Variants & sizes
 - `sticky`: header and actions stay pinned while long content scrolls.
 - Single full-width action. Disabled primary. Inset section. Initial focus control (button or input).
-- No width or size prop is shown on the page (**not specified by Geist**).
+- No width or size prop is shown on the page (**not specified by the reference**).
 
 ## States
 Closed, open, submitting (use action `disabled` / loading), error inside (focus stays), mobile bottom-sheet.

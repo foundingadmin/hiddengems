@@ -17,7 +17,7 @@ A keyboard-friendly dropdown for checking several values from a known list, with
 Row checked or unchecked. Hover or focus reveals the action label. Checkbox focus vs action-button focus. Open or closed.
 
 ## Tokens
-Not specified by Geist. Inferred: popover material (`--ds-shadow-menu`, 12px radius), `--ds-popover-row-height` 36px, Checkbox tokens.
+Not specified by the reference. Inferred: popover material (`--ds-shadow-menu`, 12px radius), `--ds-popover-row-height` 36px, Checkbox tokens.
 
 ## Rules
 - Use for picking several values from a known list. Use `Select` for one value, `Combobox` when filtering matters more, and `Toggle` for booleans.

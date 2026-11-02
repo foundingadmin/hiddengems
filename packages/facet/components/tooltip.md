@@ -6,7 +6,7 @@ A small floating label shown on hover or keyboard focus. It explains why somethi
 
 ## Anatomy
 - Trigger (any element: span, Button, Badge, Spinner).
-- Floating box with optional triangular tip (stem). Per Geist materials, tooltips are the only floating element with a stem.
+- Floating box with optional triangular tip (stem). Per the reference materials, tooltips are the only floating element with a stem.
 - `text` (string or JSX, including `Kbd`).
 
 ## Variants & sizes

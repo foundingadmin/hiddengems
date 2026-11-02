@@ -4,7 +4,7 @@ Captured 2026-11-02. When sources conflict, the higher row wins.
 
 | Rank | Source | What we took | Where it lives |
 |---|---|---|---|
-| 1 | vercel.com production CSS, computed in Chromium (light and dark color schemes) via `scripts/capture-geist.mjs` | All 92 color primitives (sRGB), 70 Display P3 oklch overrides, 18 shadows, focus ring, motion, z-index, the 30 `.text-*` type roles, the 8 `.material-*` presets | `tokens/geist.tokens.json`, `tokens/typography.tokens.json`, `reference/geist-computed-2026-11-02.json`, `reference/geist-p3-oklch-2026-11-02.json` |
+| 1 | vercel.com production CSS, computed in Chromium (light and dark color schemes) via `scripts/sync-primitives.mjs` | All 92 color primitives (sRGB), 70 Display P3 oklch overrides, 18 shadows, focus ring, motion, z-index, the 30 `.text-*` type roles, the 8 `.material-*` presets | `tokens/primitives.tokens.json`, `tokens/typography.tokens.json`, `reference/geist-computed-2026-11-02.json`, `reference/geist-p3-oklch-2026-11-02.json` |
 | 1 | Live Geist component demos at vercel.com/geist/*, measured in Chromium | Control heights, padding, radii, colors for Button, Badge, Status Dot, Note, Input, Select, Tabs, Switch, Toggle, Table, Kbd, Progress, Skeleton | `css/components.css` ([G] marks), `reference/geist-component-measurements-*.json` |
 | 1 | `vercel.com/geist/<page>.md` (84 pages; Vercel publishes every docs page as Markdown) | Usage rules, variants, states, props | `foundations/`, `components/` (synthesized, with links) |
 | 1 | `vercel.com/design.md` (Vercel's own agent skill for data-led report pages) and its report foundation stylesheet | Rules for evidence, tables, alignment, numeric treatment, color restraint, chart palette defaults, spacing ladder | `DESIGN.md`, `foundations/` |
@@ -28,4 +28,4 @@ Captured 2026-11-02. When sources conflict, the higher row wins.
 
 ## Re-sync
 
-`node scripts/capture-geist.mjs` re-captures everything in rank 1 that is machine-readable and rewrites the primitive token files. It was verified to reproduce the committed color and shadow tokens exactly on 2026-11-02.
+`node scripts/sync-primitives.mjs` re-captures everything in rank 1 that is machine-readable and rewrites the primitive token files. It was verified to reproduce the committed color and shadow tokens exactly on 2026-11-02.

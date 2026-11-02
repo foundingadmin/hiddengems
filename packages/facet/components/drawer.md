@@ -8,7 +8,7 @@ A mobile-only bottom sheet for short, focused tasks.
 - `Drawer` (`show`, `onDismiss`, `height`) wrapping content (title, body, actions). The best-practice prose mentions `DrawerTitle`, `verticalScroll` and `customHeight`.
 
 ## Variants & sizes
-- Default height or custom `height` (e.g. 200). Exact default height is **not specified by Geist**.
+- Default height or custom `height` (e.g. 200). Exact default height is **not specified by the reference**.
 
 ## States
 Hidden, shown, dismissing (tap outside, swipe down, Escape, system back).

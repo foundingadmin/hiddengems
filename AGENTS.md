@@ -5,12 +5,12 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 ## UI work must use Facet
 
 - Read `packages/facet/DESIGN.md` before designing or building any interface.
-- Use Facet tokens and classes. Semantic names first (`--fc-*`), Geist primitives second
+- Use Facet tokens and classes. Semantic names first (`--fc-*`), Facet primitives second
   (`--ds-*`), raw hex or px values never. Type uses the `.text-*` role classes only.
 - Never edit generated files (`packages/facet/css/tokens.css`, `typography.css`, `materials.css`,
   `tailwind.css`, `js/tokens.mjs`). Edit `packages/facet/tokens/*.json` and run
   `node packages/facet/scripts/build.mjs`.
-- Truth hierarchy for design questions: vercel.com (captured tokens, measurements, Geist docs) >
+- Truth hierarchy for design questions: vercel.com (captured tokens, measurements, reference docs) >
   Vercel's Web Interface Guidelines > Facet decisions > third-party references. See
   `packages/facet/SOURCES.md`.
 - Hue allocation is a hard rule (see `packages/facet/DESIGN.md`, "Hue allocation"). Every hue has one
@@ -25,6 +25,8 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 - Never use em dashes in any output: code comments, docs, UI copy, commit messages.
 - Sentence case for headings and UI labels; headings state a finding or question.
 - No colons in titles, headings or nav labels.
+- The design system is called Facet. Never call it Geist in UI copy, docs or comments; the upstream
+  name appears only in provenance (`packages/facet/SOURCES.md`, `reference/`) and real package names.
 
 ## Repo layout
 

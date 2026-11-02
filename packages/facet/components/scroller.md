@@ -16,7 +16,7 @@ A container for content that overflows along one axis (or both), with optional s
 Scrolled to start, middle or end. Buttons shown with `withButtons`.
 
 ## Tokens
-Not specified by Geist.
+Not specified by the reference.
 
 ## Rules
 - Use for overflowing peer items on one axis (chip rows, log streams). Use `both` only when content really scrolls both ways.

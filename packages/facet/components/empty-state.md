@@ -16,7 +16,7 @@ Fills a view that has no content yet, or none right now, and explains why and wh
 Static. After an async filter change, wrap it in a live region.
 
 ## Tokens
-Not specified by Geist. Inferred: `text-heading-*` or `text-label-16` title, `text-copy-14` `--ds-gray-900` description, `--ds-gray-*` icon container.
+Not specified by the reference. Inferred: `text-heading-*` or `text-label-16` title, `text-copy-14` `--ds-gray-900` description, `--ds-gray-*` icon container.
 
 ## Rules
 - Pick by situation: no-results for zero filtered rows, blank or informational for never-created, cleared for done, permission for blocked access.

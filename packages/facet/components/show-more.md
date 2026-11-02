@@ -27,4 +27,4 @@ Inferred: `--ds-gray-400` rule, `text-label-12` (typography page: label-12 is us
 ## Hidden Gems usage
 - **Signals list** in the Sheet: show the top 5 signals, then `Show 7 More`.
 - **Book prices** per market: show the best 3 books, then `Show 9 More`.
-- Collapsed slate preview on a landing or summary card, as in Geist's virtualized-table demo.
+- Collapsed slate preview on a landing or summary card, as in the reference's virtualized-table demo.

@@ -1,12 +1,12 @@
 # Facet design rules
 
-Facet is Founding Creative's working design system for dense data products, derived from Vercel's Geist. Hidden Gems is its first product. This file is the rulebook: read it before designing or building any screen. Details live in `foundations/`, `components/` and `patterns/`.
+Facet is Founding Creative's design system for dense data products. Hidden Gems is its first product. This file is the rulebook: read it before designing or building any screen. Details live in `foundations/`, `components/` and `patterns/`.
 
 ## Source of truth, in order
 
-1. **vercel.com itself.** Token values were captured from vercel.com's production CSS and computed in a real browser (light, dark, Display P3). Component sizes were measured on the live Geist demos. Written guidance comes from `vercel.com/geist/*.md` and `vercel.com/design.md`.
+1. **vercel.com itself.** Token values were captured from vercel.com's production CSS and computed in a real browser (light, dark, Display P3). Component sizes were measured on the live reference demos on vercel.com. Written guidance comes from vercel.com's design system docs and `vercel.com/design.md`. Exact upstream URLs live in `SOURCES.md`.
 2. **Vercel's published guidelines** (Web Interface Guidelines, see `guidelines/`).
-3. **Facet decisions** for the Hidden Gems domain, built only from Geist tokens and marked `[F]`.
+3. **Facet decisions** for the Hidden Gems domain, built only from Facet tokens and marked `[F]`.
 4. **Third-party jumpstarts and references** (`reference/inbox/`). Useful for ideas, never authoritative. If one conflicts with 1 or 2, vercel.com wins.
 
 We adopt Vercel's judgment, not Vercel's identity. Never use the Vercel wordmark, triangle, or "Vercel" authorship styling in our products.
@@ -28,7 +28,7 @@ Vercel handles dense data well because of a few disciplines applied without exce
 | Color steps | 100 to 300 fills (default, hover, active), 400 to 600 borders, 700 to 800 solid fills, 900 secondary text, 1000 primary text | `--ds-<scale>-<step>` |
 | Backgrounds | Background 1 almost everywhere; Background 2 sparingly for subtle separation | `--fc-surface-canvas`, `--fc-surface-subtle` |
 | Borders | Solid gray-400 by default; gray-alpha only when the edge must blend. Draw each border once | `--fc-border-*` |
-| Type | Use a Geist role class, never a loose font-size. Sans for everything incl. numbers; Mono only for code, IDs, timestamps | `.text-heading-*`, `.text-label-*`, `.text-copy-*`, `.text-button-*` |
+| Type | Use a Facet role class, never a loose font-size. Sans for everything incl. numbers; Mono only for code, IDs, timestamps | `.text-heading-*`, `.text-label-*`, `.text-copy-*`, `.text-button-*` |
 | Numbers | Tabular figures anywhere values are compared | `.tabular`, `.fc-num` |
 | Controls | Heights 32 (small), 36 (default), 40 (large), 24 (tiny icon) | `--fc-control-*` |
 | Table rows | Header 36, body 40, compact 32 `[F]` | `--fc-row-*` |
@@ -70,7 +70,7 @@ The interface is gray. Each hue has exactly one job, and appears only to do that
 
 - **Color is never the only cue.** Verdict: dot plus word. Edge: sign plus arrow plus color. Gem tier: facet count plus purple intensity. Freshness: dot plus relative time.
 - **Charts:** monochrome first. A chart that encodes verdicts or gems uses the signal or gem tokens, because that is their job.
-- **Badges:** Geist badges come in every hue; a badge's hue still follows this table. A purple badge means a gem.
+- **Badges:** badges come in every hue; a badge's hue still follows this table. A purple badge means a gem.
 - **Exceptions** need a reviewed reason on the same line: `facet-allow-color: <reason>`.
 
 ## Hidden Gems semantic language `[F]`
@@ -85,19 +85,19 @@ The interface is gray. Each hue has exactly one job, and appears only to do that
 | Data freshness | Status dot + relative time (`.fc-status`) | `--fc-freshness-*` |
 | Charts | Monochrome first; blue, teal, pink only when series must be told apart (never verdict hues or purple) | `--fc-chart-1..6`, `--fc-chart-muted` |
 
-Why purple for gems: green, amber and red already mean go, wait and stop, and blue already means links, focus and info. Purple is the only Geist hue left with no job, and an amethyst reads as "gem" without decoration. Why a single hue for tiers: tiers are a ranking, and a ranking should read as more or less of one thing, not as four unrelated categories.
+Why purple for gems: green, amber and red already mean go, wait and stop, and blue already means links, focus and info. Purple is the only hue in the palette left with no job, and an amethyst reads as "gem" without decoration. Why a single hue for tiers: tiers are a ranking, and a ranking should read as more or less of one thing, not as four unrelated categories.
 
-## Deliberate deviations from Geist
+## Deliberate deviations from the vercel.com reference
 
 Each is a conscious Facet call, recorded so nobody "fixes" it back by accident.
 
-| Geist does | Facet does | Why |
+| The reference does | Facet does | Why |
 |---|---|---|
-| "Success" renders blue (Note, Progress, Toggle on-state) | Status success is green; toggles stay blue as in Geist | Green already means "go" in the verdict language; a blue success would contradict it on the same screen |
+| "Success" renders blue (Note, Progress, Toggle on-state) | Status success is green; toggles stay blue as in the reference | Green already means "go" in the verdict language; a blue success would contradict it on the same screen |
 | StatusDot is only for deployment lifecycle | StatusDot also shows data freshness, mapped to current `--ds-*` scales | Freshness is the dashboard's version of deploy state; the legacy dot hex values are retired |
 | Unknown values render as an em dash | En dash `–` with `aria-label="Unknown"` in numeric cells, the word "Unknown" where it fits | House rule: no em dashes in any output |
 | Table has one density | Adds `data-density="compact"` (32px rows) for long ledgers | Sunday slates can run 100+ props |
-| Icons from `@vercel/geistcn-assets` | Lucide at 16px / 1.5 stroke | The Geist icon package is not public |
+| Icons from `@vercel/geistcn-assets` | Lucide at 16px / 1.5 stroke | The reference icon package is not public |
 
 ## Writing
 
@@ -113,4 +113,4 @@ Decorative gradients, glows, glass, textures or grid backgrounds. Gradient text.
 - **Next.js + Tailwind v4:** `@import "tailwindcss"; @import "@foundingcreative/facet/css/tailwind.css";` then `base.css`, `typography.css` and `components.css`. Load fonts with the `geist` package (`geist/font/sans`, `geist/font/mono`); Facet picks up `--font-geist-sans` and `--font-geist-mono` automatically.
 - **Canvas or SVG charts:** `import { token } from '@foundingcreative/facet/js/tokens.mjs'` for resolved hex values per theme.
 - **Checking color use:** `node packages/facet/scripts/lint-color.mjs apps` (fails on raw colors and hue steps).
-- **Changing tokens:** edit `tokens/*.json`, run `node scripts/build.mjs`. To re-sync with Vercel, run `node scripts/capture-geist.mjs` and review the diff like any design decision.
+- **Changing tokens:** edit `tokens/*.json`, run `node scripts/build.mjs`. To re-sync primitives with vercel.com, run `node scripts/sync-primitives.mjs` and review the diff like any design decision.

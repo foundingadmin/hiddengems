@@ -15,7 +15,7 @@
   "files": ["css", "js", "tokens", "fonts", "DESIGN.md", "README.md"],
   "scripts": {
     "build": "node scripts/build.mjs",
-    "capture": "node scripts/capture-geist.mjs",
+    "capture": "node scripts/sync-primitives.mjs",
     "check": "node scripts/build.mjs && git diff --exit-code -- css js",
     "lint:color": "node scripts/lint-color.mjs ../../apps"
   },

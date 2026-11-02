@@ -18,7 +18,7 @@ A popover date / date-range picker with presets, min/max bounds and timezone han
 Empty, range selected, preset active, out-of-bounds days disabled, popover open or closed.
 
 ## Tokens
-Not specified by Geist. `text-label-12` is noted for "capitals in Calendars" (typography page).
+Not specified by the reference. `text-label-12` is noted for "capitals in Calendars" (typography page).
 
 ## Rules
 - Use for analytics ranges where weekday and month context matter. Use a free-form Input for pasted ISO dates or `7d` shorthand.
@@ -32,4 +32,4 @@ Not specified by Geist. `text-label-12` is noted for "capitals in Calendars" (ty
 ## Hidden Gems usage
 - **Historical results / backtest range** with presets `This Week`, `Last 4 Weeks`, `Season to Date`, bounded to seasons in the database.
 - Kickoff windows in the live slate are better as FilterParams `date-range` presets.
-- Pin timezone only if the product standardizes on ET for NFL kickoffs. Otherwise follow the user's timezone (Geist default).
+- Pin timezone only if the product standardizes on ET for NFL kickoffs. Otherwise follow the user's timezone (the reference default).

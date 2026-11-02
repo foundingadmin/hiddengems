@@ -1,7 +1,7 @@
 /* Facet base layer: fonts, document defaults, focus, selection, motion.
    Hand-written. Depends on tokens.css. */
 
-/* Geist Sans + Geist Mono, variable (100 to 900). SIL OFL 1.1, see fonts/OFL-LICENSE.txt.
+/* Facet Sans + Mono (the open-source `geist` typeface), variable (100 to 900). SIL OFL 1.1, see fonts/OFL-LICENSE.txt.
    In Next.js prefer the `geist` package (next/font) and skip these @font-face rules;
    both paths expose the same family names. */
 @font-face {
@@ -58,7 +58,7 @@ a { color: inherit; text-underline-offset: 3px; }
   color: var(--ds-gray-100);
 }
 
-/* Geist focus: a 2px canvas gap then a 2px focus-color ring, only for keyboard focus. */
+/* Focus: a 2px canvas gap then a 2px focus-color ring, only for keyboard focus. */
 :focus { outline: none; }
 :focus-visible {
   outline: none;

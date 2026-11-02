@@ -1,7 +1,7 @@
 # Misc Components
 > Source: https://vercel.com/geist/<slug> for each entry below (captured 2026-11-02)
 
-Smaller or less relevant Geist components, grouped here. Each entry follows the standard sections in condensed form.
+Smaller or less relevant the reference components, grouped here. Each entry follows the standard sections in condensed form.
 
 ---
 

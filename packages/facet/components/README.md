@@ -1,6 +1,6 @@
 # Facet component specs
 
-Synthesized component specs for **Facet**, the Geist-derived design system behind **Hidden Gems** (NFL bet-research dashboard). Source: Vercel Geist docs, captured 2026-11-02 (Markdown pages plus rendered-page measurements where the prose is silent). Values marked *(measured)* were read from the rendered vercel.com/geist pages. *(inferred)* marks conservative guesses. "Not specified by Geist" means no value was found.
+Synthesized component specs for **Facet**, the design system behind **Hidden Gems** (NFL bet-research dashboard). Source: vercel.com reference docs, captured 2026-11-02 (Markdown pages plus rendered-page measurements where the prose is silent). Values marked *(measured)* were read from the rendered vercel.com/geist pages. *(inferred)* marks conservative guesses. "Not specified by the reference" means no value was found.
 
 **Tiers:** **P0** needed for the first slate/detail release. **P1** soon after. **P2** later or optional.
 
@@ -10,14 +10,14 @@ Synthesized component specs for **Facet**, the Geist-derived design system behin
 - **Borders:** controls draw a 1px ring with `--ds-gray-alpha-400`, which moves to 500 on hover and 600 on focus. Static dividers use solid `--ds-gray-400`.
 - **Materials:** 6px radius (base and small surfaces, tooltip), 12px (medium/large surfaces, menu, modal), 16px (fullscreen).
 - **Motion:** popovers .2s, overlays .3s with scale .96, curve `--ds-motion-timing-swift`. Control transitions 150ms.
-- **"success" means blue in Geist** (Note `success`, Progress `success`, Toggle on-state). Decide explicitly whether Facet follows this.
+- **"success" means blue in the reference** (Note `success`, Progress `success`, Toggle on-state). Decide explicitly whether Facet follows this.
 
 ## Index
 | Component | Purpose | Tier | Spec |
 |---|---|---|---|
 | Table | Sortable, comparable same-shape rows (the bet slate) | P0 | [table.md](table.md) |
 | Badge | Static status/category label (confidence tier) | P0 | [badge.md](badge.md) |
-| Status Dot | 10px lifecycle dot (deployments only in Geist; feed freshness as a Facet extension) | P0 | [status-dot.md](status-dot.md) |
+| Status Dot | 10px lifecycle dot (deployments only in the reference; feed freshness as a Facet extension) | P0 | [status-dot.md](status-dot.md) |
 | Gauge | Circular 0–100 meter (composite gem score) | P0 | [gauge.md](gauge.md) |
 | Pie Gauge | Inline 13–16px percentage icon (score column) | P0 | [pie-gauge.md](pie-gauge.md) |
 | Note | Inline persistent contextual message (data caveats) | P0 | [note.md](note.md) |

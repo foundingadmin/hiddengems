@@ -1,12 +1,12 @@
 # Typography
 
-> Source: https://vercel.com/geist/typography and the `.text-*` rules in vercel.com production CSS (2026-11-02). Values in `tokens/typography.tokens.json`.
+> Source: the `.text-*` rules in vercel.com production CSS (2026-11-02, see `SOURCES.md`). Values in `tokens/typography.tokens.json`.
 
 ## Typefaces
 
-- **Geist Sans** for everything a person reads: prose, headings, labels, controls, tables, KPIs, dates, counts, percentages, odds and money.
-- **Geist Mono** only for code, commands, raw IDs and timestamps. Set only the identifier in Mono, never the whole sentence or table.
-- Fonts are vendored in `fonts/` (variable, 100 to 900, SIL OFL 1.1, byte-identical to `geist@1.9.0`). Self-hosting keeps OpenType features that the Google Fonts build strips (stylistic sets, `case`, the plain-zero Mono option).
+- **Facet Sans** for everything a person reads: prose, headings, labels, controls, tables, KPIs, dates, counts, percentages, odds and money.
+- **Facet Mono** only for code, commands, raw IDs and timestamps. Set only the identifier in Mono, never the whole sentence or table.
+- Fonts are vendored in `fonts/`. Facet Sans and Facet Mono are the open-source `geist` typeface (variable, 100 to 900, SIL OFL 1.1, byte-identical to `geist@1.9.0`). Self-hosting keeps OpenType features that the Google Fonts build strips (stylistic sets, `case`, the plain-zero Mono option).
 - In Next.js, load with the `geist` package (`geist/font/sans`, `geist/font/mono`). It sets `--font-geist-sans` and `--font-geist-mono`, which Facet's family tokens already read. The package export is upright only; add italics deliberately if ever needed.
 
 ## Roles
@@ -53,7 +53,7 @@ Every role fixes size, line height, weight and tracking together. Use the class;
 ## Numbers
 
 - `font-variant-numeric: tabular-nums` (`.tabular` / `.fc-num`) on any column, KPI or value that is compared. Tables in Facet set it by default.
-- Tabular figures equalize digits only. Signs and separators keep their own widths in Geist Sans (`+` 558, `-` 419, `−` 520, `.` and `,` 201 units, digits 600). For American odds and signed deltas in a column, wrap the sign: `<span class="fc-signed"><span class="fc-sign">+</span>150</span>`, or right-align and accept the sign drift for single-sign columns.
+- Tabular figures equalize digits only. Signs and separators keep their own widths in Facet Sans (`+` 558, `-` 419, `−` 520, `.` and `,` 201 units, digits 600). For American odds and signed deltas in a column, wrap the sign: `<span class="fc-signed"><span class="fc-sign">+</span>150</span>`, or right-align and accept the sign drift for single-sign columns.
 - Keep peer precision consistent (all odds to 2 decimals, all percentages whole numbers). No fake precision.
 
 ## Measure and rhythm

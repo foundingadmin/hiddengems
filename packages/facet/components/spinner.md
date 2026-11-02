@@ -8,7 +8,7 @@ A rotating indicator for loading triggered by a user action (button, pagination,
 - Single spinning glyph that inherits `currentColor` (colored with `text-*` classes).
 
 ## Variants & sizes
-- `size`: `sm`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`. Pixel values are **not specified by Geist**. Button renders a 16px spinner at small size (measured on button page).
+- `size`: `sm`, `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl`. Pixel values are **not specified by the reference**. Button renders a 16px spinner at small size (measured on button page).
 - Color via class (`text-red-700`, `text-green-700`, `text-blue-700`). Default color not specified.
 
 ## States

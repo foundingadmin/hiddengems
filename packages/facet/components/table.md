@@ -45,8 +45,8 @@ Dimensions (measured, not written in the prose docs):
 
 ## Rules
 - Choose Table for comparable, same-shape rows. Use `Entity` for a descriptive row with one or two actions. Use `Description` for key/value metadata. Do not build a two-column table for those.
-- Geist renders unknown or not-applicable values as an em dash. **Facet deviation:** render an en dash `–` with `aria-label="Unknown"` in numeric cells, or the word "Unknown" where there is room (house rule: no em dashes anywhere). Never use `N/A`, `null` or an empty cell.
-- Numeric columns use tabular figures (or Geist Mono) so digits line up.
+- The reference renders unknown or not-applicable values as an em dash. **Facet deviation:** render an en dash `–` with `aria-label="Unknown"` in numeric cells, or the word "Unknown" where there is room (house rule: no em dashes anywhere). Never use `N/A`, `null` or an empty cell.
+- Numeric columns use tabular figures (or Facet Mono) so digits line up.
 - A sortable header is a `<button>`. The visible label stays Title Case. The arrow is decorative, and the button announces the *next* sort state to assistive tech.
 - Headers are Title Case nouns: `Last Used`, `Requests (7d)`. Never write a header as a sentence.
 - Timestamps in cells use the short relative form (`2m ago`, `5h ago`), then an absolute date (`Mar 14, 2026`) once older than 7 days. Use `RelativeTimeCard` for these.
@@ -60,4 +60,4 @@ Dimensions (measured, not written in the prose docs):
 - Missing book prices or unavailable markets render `–` (Facet placeholder). A missing price never renders as `0` or blank.
 - Sorting by Edge or Score uses header buttons. Persist sort and filter state in the URL, alongside `FilterParams`.
 - Use `TableFooter` only for real aggregates (e.g. slate count or average edge). Skip it otherwise.
-- For dense mode, Geist has no compact table. If the 40px row is too tall, any Facet `density="compact"` option is a Facet extension and must be documented as one.
+- For dense mode, the reference has no compact table. If the 40px row is too tall, any Facet `density="compact"` option is a Facet extension and must be documented as one.

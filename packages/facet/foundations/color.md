@@ -1,10 +1,10 @@
 # Color
 
-> Source: https://vercel.com/geist/colors and vercel.com production CSS, computed in Chromium on 2026-11-02 (`reference/geist-computed-2026-11-02.json`, `reference/geist-p3-oklch-2026-11-02.json`).
+> Source: vercel.com production CSS (see `SOURCES.md`), computed in Chromium on 2026-11-02 (`reference/geist-computed-2026-11-02.json`, `reference/geist-p3-oklch-2026-11-02.json`).
 
 ## The system
 
-Geist has 10 scales: `background`, `gray`, `gray-alpha`, `blue`, `red`, `amber`, `green`, `teal`, `purple`, `pink`. Every scale except background has 10 steps, and **the step number is the job**, not the lightness:
+Facet has 10 scales: `background`, `gray`, `gray-alpha`, `blue`, `red`, `amber`, `green`, `teal`, `purple`, `pink`. Every scale except background has 10 steps, and **the step number is the job**, not the lightness:
 
 | Step | Job | Example |
 |---|---|---|
@@ -23,7 +23,7 @@ Because dark mode redefines every step, a component written as "border uses 400,
 
 Backgrounds: Background 1 (`--ds-background-100`, white / #0a0a0a) for nearly everything; Background 2 (`--ds-background-200`, #fafafa / #000) sparingly for subtle separation (sidebars, wells, striped rows).
 
-## Rules from Geist
+## Rules carried from the reference
 
 - **Gray** for text, icons, fills, borders and dividers by default. **Gray-alpha** only when the background must show through (overlays, shadows, an edge on a tinted surface).
 - **Draw each border once.** Overlapping alpha borders darken at intersections.
@@ -36,7 +36,7 @@ Backgrounds: Background 1 (`--ds-background-100`, white / #0a0a0a) for nearly ev
 - Light gray-400 equals gray-200 (`#ebebeb`). Borders are deliberately whisper-light in light mode; contrast comes from type, not lines.
 - Dark gray-700 and gray-800 equal their light values (`#8f8f8f`, `#7d7d7d`). Mid steps are shared across themes; the ends flip.
 - Solid badges use the 900 step for most hues, blue uses 800, and amber uses 700 with black text (measured on the live Badge component).
-- The legacy Geist StatusDot still paints with older brand hex values (`#50e3c2`, `#f5a623`, `#e00`). Facet maps dots to the current scales instead.
+- The reference's legacy status dot still paints with older brand hex values (`#50e3c2`, `#f5a623`, `#e00`). Facet maps dots to the current scales instead.
 
 ## Hue allocation
 

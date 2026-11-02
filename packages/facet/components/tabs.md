@@ -31,5 +31,5 @@ Default, hover (text darkens), selected, disabled (whole set or per tab; per-tab
 
 ## Hidden Gems usage
 - **Bet detail Sheet**: primary tabs `Overview` / `Signals` / `Line History` / `News`.
-- **Slate scope** above the table: secondary tabs `All` / `Props` / `Spreads` / `Totals`, synced to a URL query param. Geist's guidance means market-type *filtering* with multiple values belongs in `FilterParams`. Tabs only fit if these are truly separate views.
+- **Slate scope** above the table: secondary tabs `All` / `Props` / `Spreads` / `Totals`, synced to a URL query param. The reference's guidance means market-type *filtering* with multiple values belongs in `FilterParams`. Tabs only fit if these are truly separate views.
 - Show per-tab counts (e.g. new gems) in a small badge slot, never in the title. Drop the badge at zero.

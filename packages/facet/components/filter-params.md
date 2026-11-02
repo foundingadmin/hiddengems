@@ -22,7 +22,7 @@ A filter bar backed by URL parameters. It shows the active constraints as pills,
 No filters / all. Filter applied (pill). Suggestion offered. Readonly. AI thinking (abortable).
 
 ## Tokens
-Not specified by Geist. Inferred: Badge/pill and Menu/Combobox tokens, `text-label-13` / `text-label-14`.
+Not specified by the reference. Inferred: Badge/pill and Menu/Combobox tokens, `text-label-13` / `text-label-14`.
 
 ## Rules
 - Use on list or search pages where active constraints should be visible, linkable and kept on refresh.

@@ -30,7 +30,7 @@ Off, on, disabled-off, disabled-on, focus-visible (`--ds-focus-ring` ring on the
 - Persist on change and confirm with a success toast (`Password protection enabled`). Only add a Save footer if the setting really needs an explicit save.
 - Only disable when the action is impossible, with helper text or a Tooltip naming the fix.
 - The label comes from `children`. It is a Title Case noun phrase of 1–4 words describing the ON state (`Password Protection`, not `Enable …`). An optional one-sentence description below explains ON only.
-- Needs an accessible name from `children`, `aria-label` or `aria-labelledby` (Geist warns in dev otherwise). Use `aria-label` only when the visible label sits elsewhere on the row.
+- Needs an accessible name from `children`, `aria-label` or `aria-labelledby` (the reference warns in dev otherwise). Use `aria-label` only when the visible label sits elsewhere on the row.
 
 ## Hidden Gems usage
 - Slate display settings: `Hide Stale Odds`, `Show Only Positive Edge`, `Auto-Refresh`. Default size keeps them compact in toolbars.

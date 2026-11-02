@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<title>The Jeweler</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/facet/tokens.css">
+<link rel="stylesheet" href="ds/facet/components/bundle.css">
+<link rel="stylesheet" href="hg-wire.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:var(--fc-text-link)}a:hover{color:var(--fc-text-primary)}
+</style>
+</helmet>
+<div class="fc-shell hg-board" data-theme="dark">
+  <aside class="fc-sidenav" aria-label="Main navigation">
+    <div class="fc-sidenav-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>Hidden Gems</div>
+    <nav class="fc-sidenav-level" aria-label="Main">
+      <ul class="fc-sidenav-list" role="list">
+        <li><a class="fc-sidenav-item" href="DesktopMain.dc.html" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg><span>Gems</span><span style="margin-left: auto;"><span class="fc-badge" data-variant="purple" data-size="sm" data-contrast="low">3 new</span></span></a></li>
+        <li><a class="fc-sidenav-item" href="DesktopSlip.dc.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg><span>Slips</span></a></li>
+      </ul>
+    </nav>
+    <div class="hg-rail-spacer"></div>
+    <section class="hg-railslip fc-card" aria-label="Slip in progress">
+        <div class="hg-railslip-row"><span class="text-heading-14">Slip 1</span><span class="text-label-12 hg-secondary">Suggested parlay</span></div>
+        <div class="hg-railslip-row text-label-13"><span>James Cook</span><span class="hg-num">2.60</span></div><div class="hg-railslip-row text-label-13"><span>Deebo Samuel</span><span class="hg-num">2.55</span></div>
+        <hr class="fc-separator">
+        <div class="hg-railslip-row text-label-13"><span class="hg-secondary">$15 pays</span><span class="hg-num">$99.45</span></div>
+        <div class="hg-railslip-row text-label-13"><span class="hg-secondary">Lose it all</span><span class="hg-num">77%</span></div>
+        <a class="fc-button" data-size="small" href="DesktopSlip.dc.html" style="width: 100%; margin-top: var(--fc-space-1);">Review slip</a>
+      </section>
+    <ul class="fc-sidenav-list hg-rail-jeweler" role="list">
+      <li><a class="fc-sidenav-item" href="DesktopJeweler.dc.html" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg><span>Ask the Jeweler</span></a></li>
+    </ul>
+    <div class="fc-sidenav-foot"><span class="fc-status"><span class="fc-status-dot" data-state="live" aria-hidden="true"></span><span>Odds pulled <time class="fc-timestamp" title="Sun, Nov 8, 2026, 8:43 AM MT" data-relative="">2m ago</time></span></span></div>
+  </aside>
+  <div class="fc-shell-main">
+    <header class="fc-topbar">
+      <div class="fc-topbar-start">
+        <div class="fc-scope"><button class="fc-scope-trigger" type="button" aria-haspopup="menu" aria-expanded="false"><span>Week 9</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg></button></div>
+      </div>
+      <nav class="fc-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="DesktopMain.dc.html">Gems</a></li><li><span aria-current="page">The Jeweler</span></li></ol></nav>
+      <div class="fc-topbar-actions"><button type="button" class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" aria-label="Search gems"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></button></div>
+    </header>
+    <main class="fc-shell-content">
+      <section class="fc-stack" style="--fc-gap: var(--fc-space-4);" aria-labelledby="new-h">
+        <div class="hg-section-head">
+          <div class="hg-head-text"><h2 id="new-h" class="text-heading-20" style="margin: 0;">New gems</h2>
+          <p class="text-copy-13 hg-secondary" style="margin: 0;">3 since your last look, <time class="fc-time">Sat 8:00 PM</time>. Unread ones clear at kickoff.</p></div>
+          <div class="fc-row"><button type="button" class="fc-button" data-variant="tertiary" data-size="small">Mark all read</button><button type="button" class="fc-button" data-variant="secondary" data-size="small" data-shape="square" aria-label="Scroll back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><button type="button" class="fc-button" data-variant="secondary" data-size="small" data-shape="square" aria-label="Scroll forward"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></div>
+        </div>
+        <div class="hg-strip-wrap"><div class="hg-strip" role="list"><article class="hg-newcard fc-card" aria-label="James Cook, new gem">
+          <div class="hg-newcard-head">
+            <span class="hg-gem" data-size="lg" data-live="" style="--r: 92; --hg-delay: 0.0s;" aria-label="Gem rating 92"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="hg-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="hg-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>92</span></span>
+            <span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm" role="img" aria-label="Buffalo Bills"></span><span class="fc-player-main"><span class="fc-player-line"><a class="fc-player-name" href="DesktopGem.dc.html">James Cook</a><span class="fc-player-number" data-number="4">#4</span></span><span class="fc-player-meta">RB · MIA @ BUF</span></span></span>
+            <div class="fc-stack" style="--fc-gap: var(--fc-space-1); align-items: flex-end;"><span class="hg-price text-label-14">2.60</span><span class="fc-delta" data-direction="positive">11 pts</span></div>
+          </div>
+          <div class="fc-stack" style="--fc-gap: var(--fc-space-2);">
+            <h3 class="text-heading-14" style="margin: 0;">Why it's a gem</h3>
+            <ul class="hg-why text-copy-14"><li>Priced like a 38% shot, we read 49%</li><li>Gets 9 of Buffalo's 12 carries inside the 5</li><li>Miami allowed a rushing TD in 6 straight games</li></ul>
+          </div>
+          <div class="hg-newcard-foot">
+            <span class="text-label-13 hg-secondary">Found Sat 8:04 PM</span>
+            <button type="button" class="fc-button" data-variant="tertiary" data-size="small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Mark read</button>
+          </div>
+        </article><article class="hg-newcard fc-card" aria-label="Terry McLaurin, new gem">
+          <div class="hg-newcard-head">
+            <span class="hg-gem" data-size="lg" data-live="" style="--r: 90; --hg-delay: 0.16s;" aria-label="Gem rating 90"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="hg-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="hg-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>90</span></span>
+            <span class="fc-player"><span class="fc-player-avatar" data-team="was" data-size="sm" role="img" aria-label="Washington Commanders"></span><span class="fc-player-main"><span class="fc-player-line"><a class="fc-player-name" href="DesktopGem.dc.html">Terry McLaurin</a><span class="fc-player-number" data-number="17">#17</span></span><span class="fc-player-meta">WR · NYG @ WAS</span></span></span>
+            <div class="fc-stack" style="--fc-gap: var(--fc-space-1); align-items: flex-end;"><span class="hg-price text-label-14">3.40</span><span class="fc-delta" data-direction="positive">12 pts</span></div>
+          </div>
+          <div class="fc-stack" style="--fc-gap: var(--fc-space-2);">
+            <h3 class="text-heading-14" style="margin: 0;">Why it's a gem</h3>
+            <ul class="hg-why text-copy-14"><li>Priced like a 29% shot, we read 41%</li><li>Leads Washington in end zone targets</li><li>Giants allow the most WR TDs in the league</li></ul>
+          </div>
+          <div class="hg-newcard-foot">
+            <span class="text-label-13 hg-secondary">Found Sat 8:04 PM</span>
+            <button type="button" class="fc-button" data-variant="tertiary" data-size="small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Mark read</button>
+          </div>
+        </article><article class="hg-newcard fc-card" aria-label="Khalil Shakir, new gem">
+          <div class="hg-newcard-head">
+            <span class="hg-gem" data-size="lg" data-live="" style="--r: 88; --hg-delay: 0.32s;" aria-label="Gem rating 88"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="hg-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="hg-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>88</span></span>
+            <span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm" role="img" aria-label="Buffalo Bills"></span><span class="fc-player-main"><span class="fc-player-line"><a class="fc-player-name" href="DesktopGem.dc.html">Khalil Shakir</a><span class="fc-player-number" data-number="10">#10</span></span><span class="fc-player-meta">WR · MIA @ BUF</span></span></span>
+            <div class="fc-stack" style="--fc-gap: var(--fc-space-1); align-items: flex-end;"><span class="hg-price text-label-14">3.10</span><span class="fc-delta" data-direction="positive">10 pts</span></div>
+          </div>
+          <div class="fc-stack" style="--fc-gap: var(--fc-space-2);">
+            <h3 class="text-heading-14" style="margin: 0;">Why it's a gem</h3>
+            <ul class="hg-why text-copy-14"><li>Price drifted out while his read held</li><li>Slot snaps up every week since Week 6</li><li>No new injury on the final report</li></ul>
+          </div>
+          <div class="hg-newcard-foot">
+            <span class="text-label-13 hg-secondary">Jumped 71 to 88 at 9:00 AM</span>
+            <button type="button" class="fc-button" data-variant="tertiary" data-size="small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Mark read</button>
+          </div>
+        </article></div></div>
+      </section>
+      <section class="fc-stack" style="--fc-gap: var(--fc-space-4);" aria-labelledby="all-h">
+        <div class="hg-section-head"><h2 id="all-h" class="text-heading-20" style="margin: 0;">All gems</h2><span class="fc-status"><span class="fc-status-dot" data-state="live" aria-hidden="true"></span><span>Odds updated <time class="fc-timestamp" title="Sun, Nov 8, 2026, 8:43 AM MT" data-relative="">2m ago</time></span></span></div>
+        <div class="fc-filter-bar" role="search" aria-label="Filter gems">
+          <div class="fc-filter-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><input class="fc-input" data-size="small" type="search" placeholder="Search players…" aria-label="Search players"></div>
+          <button type="button" class="fc-button" data-variant="secondary" data-size="small" data-shape="rounded"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M7 12h10"/><path d="M10 18h4"/></svg>Add filter</button>
+          <div class="fc-filter-chip" role="group" aria-label="Market filter"><button type="button" class="fc-filter-edit"><span class="fc-filter-key">Market</span><span class="fc-filter-value">Anytime TD</span></button></div>
+          <button type="button" class="fc-filter-chip" data-state="suggested" aria-label="Add filter Window, Morning"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg><span class="fc-filter-key">Window</span><span class="fc-filter-value">Morning</span></button>
+          <button type="button" class="fc-filter-chip" data-state="suggested" aria-label="Add filter Hide Fool's Gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg><span class="fc-filter-key">Hide</span><span class="fc-filter-value">Fool's Gold</span></button>
+          <div class="fc-filter-sort"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h10"/><path d="M3 12h7"/><path d="M3 18h4"/><path d="M18 5v14"/><path d="m15 16 3 3 3-3"/></svg><select class="fc-select" data-size="small" aria-label="Sort gems by"><option selected="">Recommended</option><option>Rating</option><option>Edge</option><option>Kickoff</option><option>Price</option></select></div>
+        </div>
+        <div class="fc-table-wrap">
+          <table class="fc-table" data-interactive="" data-sticky="">
+            <caption class="fc-visually-hidden">Gems, sorted by recommended: hit chance weighted by clarity, best first.</caption>
+            <thead><tr>
+              <th scope="col">Rating</th>
+              <th scope="col" data-grow="">Pick<span class="fc-th-count">8 of 24</span></th>
+              <th scope="col">Kickoff</th>
+              <th scope="col" data-align="numeric">Price</th>
+              <th scope="col" data-align="numeric"><span class="fc-has-tip" tabindex="0" title="The chance the price implies">Priced</span></th>
+              <th scope="col" data-align="numeric"><span class="fc-has-tip" tabindex="0" title="Our chance he scores">Our est.</span></th>
+              <th scope="col" data-align="numeric"><span class="fc-has-tip" tabindex="0" title="Our estimate minus the priced chance">Edge</span></th>
+              <th scope="col" data-align="numeric"><span class="fc-has-tip" tabindex="0" title="How well the notes agree with the numbers, 0 to 100">Clarity</span></th>
+              <th scope="col" data-align="numeric"><span class="fc-has-tip" tabindex="0" title="Other Hidden Gems users holding it">Mined by</span></th>
+              <th scope="col"><span class="fc-visually-hidden">Slip</span></th>
+            </tr></thead>
+            <tbody><tr>
+              <td><span class="hg-gem" data-live="" style="--r: 63; --hg-delay: 1.28s;" aria-label="Gem rating 63"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="hg-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="hg-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>63</span></span></td>
+              <th scope="row"><span class="fc-player"><span class="fc-player-avatar" data-team="cin" data-size="sm" role="img" aria-label="Cincinnati Bengals"></span><span class="fc-player-main"><span class="fc-player-line"><a class="fc-player-name" href="DesktopGem.dc.html">Ja&#x27;Marr Chase</a><span class="fc-player-number" data-number="1">#1</span></span><span class="fc-player-meta">WR · CIN @ KC</span></span></span></th>
+              <td><time class="fc-time">2:25 PM</time></td>
+              <td data-align="numeric">2.05</td>
+              <td data-align="numeric">49%</td>
+              <td data-align="numeric">56%</td>
+              <td data-align="numeric"><span class="fc-delta" data-direction="positive">7 pts</span></td>
+              <td data-align="numeric">90</td>
+              <td data-align="numeric">288</td>
+              <td data-align="numeric"><button type="button" class="fc-button" data-variant="secondary" data-size="small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>Add</button></td>
+            </tr><tr>
+              <td><span class="hg-gem" data-live="" style="--r: 92; --hg-delay: 1.12s;" aria-label="Gem rating 92"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="hg-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="hg-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>92</span></span></td>
+              <th scope="row"><span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm" role="img" aria-label="Buffalo Bills"></span><span class="fc-player-main"><span class="fc-player-line"><a class="fc-player-name" href="DesktopGem.dc.html">James Cook</a><span class="fc-player-number" data-number="4">#4</span> <span class="fc-badge" data-variant="purple" data-size="sm" data-contrast="low">New</span></span><span class="fc-player-meta">RB · MIA @ BUF</span></span></span></th>
+              <td><time class="fc-time">11:00 AM</time></td>
+              <td data-align="numeric">2.60</td>
+              <td data-align="numeric">38%</td>
+              <td data-align="numeric">49%</td>
+              <td data-align="numeric"><span class="fc-delta" data-direction="positive">11 pts</span></td>
+              <td data-align="numeric">92</td>
+              <td data-align="numeric">70</td>
+              <td data-align="numeric"><button type="button" class="fc-button" data-variant="tertiary" data-size="small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>On slip</button></td>
+            </tr><tr>
+              <td><span class="hg-gem" data-live="" style="--r: 76; --hg-delay: 0.96s;" aria-label="Gem rating 76"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="hg-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="hg-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>76</span></span></td>
+              <th scope="row"><span class="fc-player"><span class="fc-player-avatar" data-team="was" data-size="sm" role="img" aria-label="Washington Commanders"></span><span class="fc-player-main"><span class="fc-player-line"><a class="fc-player-name" href="DesktopGem.dc.html">Deebo Samuel</a><span class="fc-player-number" data-number="1">#1</span></span><span class="fc-player-meta">WR · NYG @ WAS</span></span></span></th>
+              <td><time class="fc-time">2:25 PM</time></td>
+              <td data-align="numeric">2.55</td>
+              <td data-align="numeric">39%</td>
+              <td data-align="numeric">47%</td>
+              <td data-align="numeric"><span class="fc-delta" data-direction="positive">8 pts</span></td>
+              <td data-align="numeric">95</td>
+              <td data-align="numeric">41</td>
+              <td data-align="numeric"><button type="button" class="fc-button" data-variant="tertiary" data-size="small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>On slip</button></td>
+            </tr><tr>
+              <td><span class="hg-gem" data-live="" style="--r: 56; --hg-delay: 0.8s;" aria-label="Gem rating 56"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="hg-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="hg-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>56</span></span></td>
+              <th scope="row"><span class="fc-player"><span class="fc-player-avatar" data-team="det" data-size="sm" role="img" aria-label="Detroit Lions"></span><span class="fc-player-main"><span class="fc-player-line"><a class="fc-player-name" href="DesktopGem.dc.html">Amon-Ra St. Brown</a><span class="fc-player-number" data-number="14">#14</span></span><span class="fc-player-meta">WR · DET @ PHI</span></span></span></th>
+              <td><time class="fc-time">6:20 PM</time></td>
+              <td data-align="numeric">2.30</td>
+              <td data-align="numeric">43%</td>
+              <td data-align="numeric">50%</td>
+              <td data-align="numeric"><span class="fc-delta" data-direction="positive">7 pts</span></td>
+              <td data-align="numeric">80</td>
+              <td data-align="numeric">196</td>
+              <td data-align="numeric"><button type="button" class="fc-button" data-variant="secondary" data-size="small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>Add</button></td>
+            </tr><tr>
+              <td><span class="hg-gem" data-live="" style="--r: 88; --hg-delay: 0.64s;" aria-label="Gem rating 88"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="hg-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="hg-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>88</span></span></td>
+              <th scope="row"><span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm" role="img" aria-label="Buffalo Bills"></span><span class="fc-player-main"><span class="fc-player-line"><a class="fc-player-name" href="DesktopGem.dc.html">Khalil Shakir</a><span class="fc-player-number" data-number="10">#10</span> <span class="fc-badge" data-variant="purple" data-size="sm" data-contrast="low">New</span></span><span class="fc-player-meta">WR · MIA @ BUF</span></span></span></th>
+              <td><time class="fc-time">11:00 AM</time></td>
+              <td data-align="numeric">3.10</td>
+              <td data-align="numeric">32%</td>
+              <td data-align="numeric">42%</td>
+              <td data-align="numeric"><span class="fc-delta" data-direction="positive">10 pts</span></td>
+              <td data-align="numeric">88</td>
+              <td data-align="numeric">9</td>
+              <td data-align="numeric"><button type="button" class="fc-button" data-variant="secondary" data-size="small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>Add</button></td>
+            </tr><tr>
+              <td><span class="hg-gem" data-live="" style="--r: 90; --hg-delay: 0.48s;" aria-label="Gem rating 90"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="hg-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="hg-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>90</span></span></td>
+              <th scope="row"><span class="fc-player"><span class="fc-player-avatar" data-team="was" data-size="sm" role="img" aria-label="Washington Commanders"></span><span class="fc-player-main"><span class="fc-player-line"><a class="fc-player-name" href="DesktopGem.dc.html">Terry McLaurin</a><span class="fc-player-number" data-number="17">#17</span> <span class="fc-badge" data-variant="purple" data-size="sm" data-contrast="low">New</span></span><span class="fc-player-meta">WR · NYG @ WAS</span></span></span></th>
+              <td><time class="fc-time">2:25 PM</time></td>
+              <td data-align="numeric">3.40</td>
+              <td data-align="numeric">29%</td>
+              <td data-align="numeric">41%</td>
+              <td data-align="numeric"><span class="fc-delta" data-direction="positive">12 pts</span></td>
+              <td data-align="numeric">90</td>
+              <td data-align="numeric">22</td>
+              <td data-align="numeric"><button type="button" class="fc-button" data-variant="secondary" data-size="small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>Add</button></td>
+            </tr><tr>
+              <td><span class="hg-gem" data-live="" style="--r: 42; --hg-delay: 0.32s;" aria-label="Gem rating 42"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="hg-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="hg-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>42</span></span></td>
+              <th scope="row"><span class="fc-player"><span class="fc-player-avatar" data-team="nyg" data-size="sm" role="img" aria-label="New York Giants"></span><span class="fc-player-main"><span class="fc-player-line"><a class="fc-player-name" href="DesktopGem.dc.html">Theo Johnson</a><span class="fc-player-number" data-number="84">#84</span></span><span class="fc-player-meta">TE · NYG @ WAS</span></span></span></th>
+              <td><time class="fc-time">2:25 PM</time></td>
+              <td data-align="numeric">4.50</td>
+              <td data-align="numeric">22%</td>
+              <td data-align="numeric">28%</td>
+              <td data-align="numeric"><span class="fc-delta" data-direction="positive">6 pts</span></td>
+              <td data-align="numeric">70</td>
+              <td data-align="numeric">6</td>
+              <td data-align="numeric"><button type="button" class="fc-button" data-variant="secondary" data-size="small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>Add</button></td>
+            </tr><tr>
+              <td><span class="fc-row"><span class="hg-gem" data-fools="" aria-label="Fool's Gold, does not beat the price"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="hg-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="hg-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg></span><span class="hg-fools text-label-12">Fool's Gold</span></span></td>
+              <th scope="row"><span class="fc-player"><span class="fc-player-avatar" data-team="mia" data-size="sm" role="img" aria-label="Miami Dolphins"></span><span class="fc-player-main"><span class="fc-player-line"><a class="fc-player-name" href="DesktopGem.dc.html">De&#x27;Von Achane</a><span class="fc-player-number" data-number="28">#28</span></span><span class="fc-player-meta">RB · MIA @ BUF</span></span></span></th>
+              <td><time class="fc-time">11:00 AM</time></td>
+              <td data-align="numeric">2.10</td>
+              <td data-align="numeric">48%</td>
+              <td data-align="numeric">46%</td>
+              <td data-align="numeric"><span class="fc-delta" data-direction="negative">2 pts</span></td>
+              <td data-align="numeric">85</td>
+              <td data-align="numeric">412</td>
+              <td data-align="numeric"></td>
+            </tr></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+<div class="fc-sheet-backdrop" aria-hidden="true"></div>
+  <div class="fc-sheet hg-sheet" role="dialog" aria-modal="true" aria-labelledby="jw-title">
+    <header class="fc-sheet-header">
+      <div class="fc-sheet-titlebar">
+        <div class="fc-sheet-titles"><h2 id="jw-title" class="fc-sheet-title text-heading-20">The Jeweler</h2><p class="fc-sheet-subtitle text-copy-14">Answers from this week's gems, prices and notes</p></div>
+        <button type="button" class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+      </div>
+      <div class="fc-sheet-badges"><span class="fc-badge" data-size="sm" data-contrast="low">About James Cook</span><span class="fc-badge" data-size="sm" data-contrast="low">Slip 1</span></div>
+    </header>
+    <div class="fc-sheet-body" style="border-top: 1px solid var(--fc-border-default);">
+      <div class="hg-chat">
+        <div class="hg-msg text-copy-14" data-from="you">Why is Cook rated above Shakir when Shakir pays more?</div>
+        <div class="hg-msg text-copy-14" data-from="jeweler"><span class="hg-msg-by text-label-12"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>The Jeweler</span>
+          <p style="margin: 0;">Both clear the price by 10 points or more, so edge counts in full for each. The difference is clarity. Cook's notes agree with his numbers, 92. Shakir's read rests on a slot role that only started in Week 6, so his clarity is 88.</p>
+          <p style="margin: 0;">The longer price pays more when it hits, not more often. Cook is the likelier of the two, 49% to 42%.</p>
+        </div>
+        <div class="hg-msg text-copy-14" data-from="you">Should Slip 1 be a parlay or two singles?</div>
+        <div class="hg-msg text-copy-14" data-from="jeweler"><span class="hg-msg-by text-label-12"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>The Jeweler</span>
+          <p style="margin: 0;">The suggested play is the parlay: $15 pays $99.45 and loses it all about 3 Sundays in 4. Two singles at $7.50 each lose everything only about 1 in 4 and pay less when both hit. Same edge either way. The parlay trades steadiness for a bigger payout.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="fc-sheet-footer" style="flex-direction: column; align-items: stretch;">
+      <div class="hg-suggest"><button type="button" class="fc-button" data-variant="secondary" data-size="small" data-shape="rounded">What could change before kickoff?</button><button type="button" class="fc-button" data-variant="secondary" data-size="small" data-shape="rounded">Compare with McLaurin</button></div>
+      <form class="hg-composer"><input class="fc-input" type="text" placeholder="Ask about a gem or your slip" aria-label="Ask the Jeweler"><button type="button" class="fc-button" data-shape="square" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 21.7a.5.5 0 0 0 .9-.1l6.5-19a.5.5 0 0 0-.6-.6l-19 6.5a.5.5 0 0 0-.1.9l7.9 3.2a2 2 0 0 1 1.1 1.1z"/><path d="m21.9 2.1-10.9 10.9"/></svg></button></form>
+    </footer>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+/* Hidden Gems wireframe layer. Built only from Facet tokens (--fc-* first, --ds-* second).
+   Fills the gaps Facet does not cover yet: the one gem rating mark (PR 4 replaces tiers),
+   the new gems row, the slip rail panel, chat bubbles and the phone frame.
+   Candidates to promote into packages/facet once the product settles. */
+
+/* Dark theme on a board root. Semantic tokens resolve where they are declared, so a dark
+   board re-declares them on itself (same mappings as tokens.css, generated). */
+.hg-board[data-theme="dark"], .hg-phone[data-theme="dark"] {
+  --ds-focus-color: var(--fc-focus-color); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --ds-overlay-backdrop-color: var(--ds-gray-100); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-text-primary: var(--ds-gray-1000); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-text-secondary: var(--ds-gray-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-text-disabled: var(--ds-gray-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-text-inverse: var(--ds-background-100); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-text-link: var(--ds-blue-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-surface-canvas: var(--ds-background-100); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-surface-subtle: var(--ds-background-200); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-surface-fill: var(--ds-gray-100); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-surface-fill-hover: var(--ds-gray-200); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-surface-fill-active: var(--ds-gray-300); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-surface-contrast: var(--ds-gray-1000); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-surface-contrast-hover: var(--ds-gray-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-border-default: var(--ds-gray-400); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-border-hover: var(--ds-gray-500); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-border-active: var(--ds-gray-600); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-border-alpha: var(--ds-gray-alpha-400); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-focus-color: var(--fc-brand-solid);
+  --fc-status-info-fg: var(--ds-blue-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-status-info-solid: var(--ds-blue-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-status-info-bg: var(--ds-blue-200); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-status-info-border: var(--ds-blue-400); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-status-success-fg: var(--ds-green-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-status-success-solid: var(--ds-green-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-status-success-bg: var(--ds-green-200); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-status-success-border: var(--ds-green-400); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-status-warning-fg: var(--ds-amber-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-status-warning-solid: var(--ds-amber-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-status-warning-bg: var(--ds-amber-200); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-status-warning-border: var(--ds-amber-400); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-status-error-fg: var(--ds-red-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-status-error-solid: var(--ds-red-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-status-error-bg: var(--ds-red-200); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-status-error-border: var(--ds-red-400); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-status-neutral-fg: var(--ds-gray-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-status-neutral-solid: var(--ds-gray-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-status-neutral-bg: var(--ds-gray-200); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-status-neutral-border: var(--ds-gray-400); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-signal-go-fg: var(--ds-green-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-signal-go-solid: var(--ds-green-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-signal-go-bg: var(--ds-green-200); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-signal-wait-fg: var(--ds-amber-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-signal-wait-solid: var(--ds-amber-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-signal-wait-bg: var(--ds-amber-200); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-signal-stop-fg: var(--ds-red-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-signal-stop-solid: var(--ds-red-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-signal-stop-bg: var(--ds-red-200); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-signal-none-fg: var(--ds-gray-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-signal-none-solid: var(--ds-gray-600); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-signal-none-bg: var(--ds-gray-200); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-edge-positive: var(--ds-green-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-edge-negative: var(--ds-red-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-edge-neutral: var(--ds-gray-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-gem-fg: var(--ds-purple-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-gem-solid: var(--ds-purple-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-gem-bg: var(--ds-purple-200); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-gem-border: var(--ds-purple-400); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-gem-tier-rough: var(--ds-gray-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-gem-tier-cut: var(--ds-purple-500); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-gem-tier-polished: var(--ds-purple-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-gem-tier-flawless: var(--ds-purple-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-freshness-live: var(--ds-green-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-freshness-recent: var(--ds-blue-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-freshness-stale: var(--ds-amber-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-freshness-failed: var(--ds-red-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-freshness-unknown: var(--ds-gray-600); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-chart-1: var(--ds-gray-1000); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-chart-2: var(--ds-blue-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-chart-3: var(--ds-teal-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-chart-4: var(--ds-pink-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-chart-5: var(--ds-gray-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-chart-6: var(--ds-gray-500); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-chart-muted: var(--ds-gray-600); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-chart-grid: var(--ds-gray-300); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-chart-axis: var(--ds-gray-500); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-chart-threshold: var(--ds-gray-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-chart-magnitude: var(--ds-gray-300); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-badge-gray: var(--ds-gray-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-badge-blue: var(--ds-blue-800); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-badge-purple: var(--ds-purple-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-badge-amber: var(--ds-amber-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-badge-red: var(--ds-red-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-badge-pink: var(--ds-pink-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-badge-green: var(--ds-green-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-badge-teal: var(--ds-teal-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-control-thumb: var(--ds-background-100); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-control-thumb-ring: var(--ds-gray-alpha-400); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-control-on: var(--fc-brand-solid);
+  --fc-control-on-fg: var(--ds-background-100); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-action-destructive: var(--ds-red-800); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-action-destructive-hover: var(--ds-red-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-brand-fg: var(--ds-purple-900); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-brand-solid: var(--ds-purple-700); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-brand-bg: var(--ds-purple-200); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-brand-border: var(--ds-purple-400); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-badge-gray: var(--ds-gray-500); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-badge-purple: var(--ds-purple-500); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-badge-red: var(--ds-red-800); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-badge-pink: var(--ds-pink-600); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-badge-green: var(--ds-green-600); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-badge-teal: var(--ds-teal-600); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-control-thumb: var(--ds-gray-1000); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-control-thumb-ring: var(--ds-gray-alpha-600); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-control-on-fg: var(--ds-gray-1000); /* facet-allow-color: theme remap, mirrors tokens.css */
+  --fc-brand-solid: var(--ds-purple-800); /* facet-allow-color: theme remap, mirrors tokens.css */
+}
+
+/* ------------------------------------------------------------------ Board roots */
+.hg-board { min-height: 100vh; background: var(--fc-surface-canvas); color: var(--fc-text-primary); font-family: var(--fc-font-sans); }
+.hg-board.fc-shell { min-height: 100vh; }
+.hg-board .fc-sidenav { height: 100vh; }
+.hg-board[data-tall] .fc-sidenav { height: auto; min-height: 100vh; }
+
+/* ------------------------------------------------------------------ Gem rating mark
+   One 0 to 100 rating. The number always shows; the gem's purple deepens and its glow grows with
+   the rating (--r). Fool's Gold renders hollow and gray. */
+.hg-gem { --r: 0; display: inline-flex; align-items: center; gap: var(--fc-space-2); color: var(--fc-text-primary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.hg-gem > svg { width: 1.25em; height: 1.25em; flex: none; overflow: visible;
+  color: color-mix(in oklab, var(--fc-gem-solid) calc(var(--r) * 1%), var(--ds-gray-600));
+  filter: drop-shadow(0 0 calc(max(var(--r) - 60, 0) * 0.012em) color-mix(in oklab, var(--fc-gem-solid) 80%, transparent)); }
+.hg-gem > svg .hg-gem-fill { fill: currentColor; }
+.hg-gem > svg .hg-gem-cut { stroke: var(--fc-surface-canvas); stroke-opacity: 0.45; fill: none; }
+.hg-gem[data-size="lg"] { font-size: 1.5em; gap: var(--fc-space-3); }
+.hg-gem[data-size="xl"] { font-size: 2.25em; gap: var(--fc-space-3); }
+.hg-gem[data-fools] > svg { color: var(--ds-gray-700); filter: none; }
+.hg-gem[data-fools] > svg .hg-gem-fill { fill: none; stroke: currentColor; stroke-dasharray: 2 2; }
+.hg-gem[data-fools] { color: var(--fc-text-secondary); }
+.hg-fools { white-space: nowrap; display: inline-flex; align-items: center; height: 20px; padding: 0 var(--fc-space-2); border-radius: var(--fc-radius-xs);
+  border: 1px dashed var(--fc-border-hover); color: var(--fc-text-secondary); }
+@media (prefers-reduced-motion: no-preference) {
+  .hg-gem[data-live] > svg { animation: hg-gem-glint 5.6s var(--fc-ease-standard) infinite; animation-delay: var(--hg-delay, 0s); }
+}
+@keyframes hg-gem-glint { 0%, 82%, 100% { transform: none; } 88% { transform: translateY(-1px) scale(1.12); } }
+
+/* ------------------------------------------------------------------ New gems row */
+.hg-strip { display: flex; gap: var(--fc-space-4); overflow-x: auto; scroll-snap-type: x mandatory; padding: var(--fc-space-1) var(--fc-space-1) var(--fc-space-3); margin: calc(var(--fc-space-1) * -1); scrollbar-width: thin; }
+.hg-strip-wrap { position: relative; }
+.hg-strip-wrap::after { content: ""; position: absolute; inset: 0 0 var(--fc-space-3) auto; width: var(--fc-space-16); pointer-events: none;
+  background: linear-gradient(to right, transparent, var(--fc-surface-canvas)); }
+.hg-newcard { flex: none; width: min(26rem, 80%); scroll-snap-align: start; display: flex; flex-direction: column; gap: var(--fc-space-4); padding: var(--fc-space-5); border-radius: var(--fc-radius-lg); }
+.hg-newcard[data-size="sm"] { width: 18.5rem; padding: var(--fc-space-4); gap: var(--fc-space-3); }
+.hg-newcard-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: var(--fc-space-3); align-items: center; }
+.hg-why { display: flex; flex-direction: column; gap: var(--fc-space-2); margin: 0; padding: 0; list-style: none; }
+.hg-why > li { display: grid; grid-template-columns: var(--fc-space-3) minmax(0, 1fr); gap: var(--fc-space-2); align-items: baseline; }
+.hg-why > li::before { content: ""; width: var(--fc-space-2); height: var(--fc-space-2); transform: rotate(45deg) translateY(-1px); background: var(--fc-gem-solid); border-radius: 1px; }
+.hg-newcard-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--fc-space-3); padding-top: var(--fc-space-3); border-top: 1px solid var(--fc-border-default); margin-top: auto; }
+
+/* ------------------------------------------------------------------ Price chip and pick cells */
+.hg-price { display: inline-flex; align-items: center; justify-content: center; min-width: 3.25rem; height: var(--fc-control-tiny); padding: 0 var(--fc-space-2); border-radius: var(--fc-radius-xs); background: var(--fc-surface-fill); font-variant-numeric: tabular-nums; }
+.hg-pick-detail { display: block; color: var(--fc-text-secondary); }
+.hg-section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--fc-space-4); flex-wrap: wrap; }
+.hg-head-text { display: flex; flex-direction: column; gap: var(--fc-space-1); }
+.hg-secondary { color: var(--fc-text-secondary); }
+.hg-muted-row > * { opacity: 0.64; }
+.hg-dim { position: relative; }
+.hg-num { font-variant-numeric: tabular-nums; }
+.hg-right { text-align: right; }
+
+/* ------------------------------------------------------------------ Slip panel in the rail */
+.hg-railslip { margin: var(--fc-space-3); padding: var(--fc-space-3); display: flex; flex-direction: column; gap: var(--fc-space-2); border-radius: var(--fc-radius-md); }
+.hg-railslip-row { display: flex; align-items: center; justify-content: space-between; gap: var(--fc-space-2); min-width: 0; }
+.hg-railslip-row > span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hg-railslip hr { margin: var(--fc-space-1) 0; }
+.hg-rail-jeweler { margin: 0 var(--fc-space-3) var(--fc-space-3); }
+.hg-rail-spacer { flex: 1 1 auto; }
+
+/* ------------------------------------------------------------------ Certificate (slip) */
+.hg-cert { display: flex; flex-direction: column; gap: var(--fc-space-5); padding: var(--fc-space-6); border-radius: var(--fc-radius-lg); }
+.hg-cert-head { display: flex; flex-direction: column; gap: var(--fc-space-1); padding-bottom: var(--fc-space-4); border-bottom: 1px solid var(--fc-border-default); }
+.hg-leg { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: var(--fc-space-4); align-items: center; }
+.hg-loseit { display: flex; align-items: baseline; justify-content: space-between; gap: var(--fc-space-4); padding: var(--fc-space-4); border-radius: var(--fc-radius-md); background: var(--fc-surface-subtle); box-shadow: var(--ds-shadow-border); }
+
+/* ------------------------------------------------------------------ Gem sheet sections */
+.hg-sheet-tall { bottom: auto; height: calc(100% - 2 * var(--fc-space-3)); }
+.hg-sheet-section { display: flex; flex-direction: column; gap: var(--fc-space-4); padding-bottom: var(--fc-space-8); scroll-margin-top: var(--fc-space-4); }
+.hg-sheet-section + .hg-sheet-section { padding-top: var(--fc-space-8); border-top: 1px solid var(--fc-border-default); }
+.hg-sticky { position: sticky; top: 0; z-index: 1; background: var(--fc-surface-canvas); }
+.hg-sheet .fc-sheet-header { padding-bottom: 0; }
+.hg-sheet .fc-sheet-tabs { margin-top: 0; border-bottom: 1px solid var(--fc-border-default); }
+
+/* Game log: one cell per game, hit filled, miss hollow, opponent below. */
+.hg-log { display: grid; grid-template-columns: repeat(var(--n, 8), minmax(0, 1fr)); gap: var(--fc-space-2); }
+.hg-log > span { display: flex; flex-direction: column; align-items: center; gap: var(--fc-space-1); color: var(--fc-text-secondary); }
+.hg-log > span::before { content: ""; width: var(--fc-space-4); height: var(--fc-space-4); border-radius: var(--fc-radius-xs); box-shadow: inset 0 0 0 1.5px var(--ds-gray-700); }
+.hg-log > span[data-hit]::before { background: var(--fc-text-primary); box-shadow: none; }
+.hg-log > span[data-bye]::before { box-shadow: none; border: 1px dashed var(--fc-border-hover); background: transparent; }
+.hg-log > span[data-bye] { opacity: 0.7; }
+
+/* Small line chart for the appraisal over time, drawn with chart tokens. */
+.hg-chart { width: 100%; height: auto; display: block; color: var(--fc-chart-1); }
+.hg-chart .grid { stroke: var(--fc-chart-grid); }
+.hg-chart .line { stroke: var(--fc-chart-1); fill: none; stroke-width: 1.5; }
+.hg-chart .fair { stroke: var(--fc-chart-threshold); stroke-dasharray: 4 3; }
+.hg-chart text { fill: var(--fc-text-secondary); font: 400 11px/1 var(--fc-font-sans); }
+.hg-chart .dot { fill: var(--fc-chart-1); }
+
+/* ------------------------------------------------------------------ Modal over a page */
+.hg-modal-layer { position: fixed; inset: 0; z-index: var(--fc-z-modal); display: grid; place-items: center; padding: var(--fc-space-6); }
+.hg-modal { position: relative; z-index: calc(var(--fc-z-drawer) + 1); width: min(30rem, 100%); display: flex; flex-direction: column; }
+.hg-modal-body { display: flex; flex-direction: column; gap: var(--fc-space-3); padding: var(--fc-space-6); }
+.hg-modal-foot { display: flex; justify-content: flex-end; gap: var(--fc-space-2); padding: var(--fc-space-4) var(--fc-space-6); border-top: 1px solid var(--fc-border-default); background: var(--fc-surface-subtle); border-radius: 0 0 var(--fc-radius-lg) var(--fc-radius-lg); }
+.hg-modal ul { margin: 0; padding-left: var(--fc-space-5); display: flex; flex-direction: column; gap: var(--fc-space-2); }
+
+/* ------------------------------------------------------------------ Chat */
+.hg-chat { display: flex; flex-direction: column; gap: var(--fc-space-4); }
+.hg-msg { max-width: 88%; display: flex; flex-direction: column; gap: var(--fc-space-2); }
+.hg-msg[data-from="you"] { align-self: flex-end; padding: var(--fc-space-3) var(--fc-space-4); border-radius: var(--fc-radius-lg); background: var(--fc-surface-fill); }
+.hg-msg[data-from="jeweler"] { align-self: flex-start; }
+.hg-msg-by { display: flex; align-items: center; gap: var(--fc-space-2); color: var(--fc-text-secondary); }
+.hg-composer { display: flex; gap: var(--fc-space-2); align-items: center; width: 100%; }
+.hg-composer > .fc-input { flex: 1 1 auto; }
+.hg-suggest { display: flex; flex-wrap: wrap; gap: var(--fc-space-2); }
+
+/* ------------------------------------------------------------------ Steps (handoff) */
+.hg-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; counter-reset: hg-step; }
+.hg-steps > li { counter-increment: hg-step; display: grid; grid-template-columns: var(--fc-control-small) minmax(0, 1fr); gap: var(--fc-space-4); padding: var(--fc-space-5) 0; border-top: 1px solid var(--fc-border-default); }
+.hg-steps > li:first-child { border-top: 0; padding-top: 0; }
+.hg-steps > li::before { content: counter(hg-step); display: grid; place-items: center; width: var(--fc-control-small); height: var(--fc-control-small); border-radius: var(--fc-radius-full); box-shadow: inset 0 0 0 1px var(--fc-border-default); font: 500 14px/1 var(--fc-font-sans); color: var(--fc-text-primary); }
+.hg-steps > li > div { display: flex; flex-direction: column; gap: var(--fc-space-2); align-items: flex-start; }
+
+/* ------------------------------------------------------------------ Results */
+.hg-money[data-sign="pos"] { color: var(--fc-edge-positive); }
+.hg-money[data-sign="neg"] { color: var(--fc-edge-negative); }
+.hg-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(18rem, 22rem); gap: var(--fc-space-8); align-items: start; }
+.hg-max { width: 100%; max-width: 72rem; }
+
+/* ------------------------------------------------------------------ Phone */
+.hg-phone { height: 100vh; display: flex; flex-direction: column; background: var(--fc-surface-canvas); color: var(--fc-text-primary); font-family: var(--fc-font-sans); overflow: hidden; }
+.hg-phone[data-tall] { height: auto; min-height: 100vh; overflow: visible; }
+.hg-phone-bar { flex: none; display: flex; align-items: center; justify-content: space-between; gap: var(--fc-space-2); height: var(--fc-shell-topbar-height, 48px); padding: 0 var(--fc-space-4); box-shadow: inset 0 -1px 0 var(--fc-border-default); background: var(--fc-surface-canvas); }
+.hg-phone-bar[data-sticky] { position: sticky; top: 0; z-index: 2; }
+.hg-phone-body { flex: 1 1 auto; min-height: 0; overflow: hidden; padding: var(--fc-space-4); display: flex; flex-direction: column; gap: var(--fc-space-5); }
+.hg-phone[data-tall] .hg-phone-body { overflow: visible; }
+.hg-tabbar { flex: none; display: grid; grid-template-columns: repeat(3, 1fr); box-shadow: inset 0 1px 0 var(--fc-border-default); background: var(--fc-surface-canvas); padding-bottom: var(--fc-space-4); }
+.hg-tabbar a { display: flex; flex-direction: column; align-items: center; gap: var(--fc-space-1); padding: var(--fc-space-2) 0; min-height: 44px; color: var(--fc-text-secondary); text-decoration: none; position: relative; }
+.hg-tabbar a[aria-current="page"] { color: var(--fc-text-primary); }
+.hg-tabbar svg { width: 20px; height: 20px; }
+.hg-tabbar .fc-badge { position: absolute; top: var(--fc-space-1); left: calc(50% + var(--fc-space-2)); }
+.hg-chips { display: flex; gap: var(--fc-space-2); overflow-x: auto; margin: 0 calc(var(--fc-space-4) * -1); padding: 0 var(--fc-space-4); scrollbar-width: none; }
+.hg-chips > * { flex: none; }
+.hg-gemrow { display: grid; grid-template-columns: 3.25rem minmax(0, 1fr) auto; gap: var(--fc-space-3); align-items: center; padding: var(--fc-space-3) 0; border-top: 1px solid var(--fc-border-default); text-decoration: none; color: inherit; }
+.hg-gemrow-end { display: flex; flex-direction: column; align-items: flex-end; gap: var(--fc-space-1); }
+.hg-drawer-layer { position: absolute; inset: 0; z-index: var(--fc-z-drawer); display: flex; flex-direction: column; justify-content: flex-end; }
+.hg-drawer { position: relative; display: flex; flex-direction: column; gap: var(--fc-space-4); padding: var(--fc-space-3) var(--fc-space-4) var(--fc-space-6); border-radius: var(--fc-radius-xl) var(--fc-radius-xl) 0 0; max-height: 86%; overflow: hidden; }
+.hg-drawer-grip { align-self: center; width: var(--fc-space-10); height: var(--fc-space-1); border-radius: var(--fc-radius-full); background: var(--fc-border-hover); }
+.hg-phone .fc-tabs { overflow-x: auto; }
+.hg-phone .fc-stat-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+a.fc-player-name { color: var(--fc-text-primary); text-decoration: none; }
+a.fc-player-name:hover { text-decoration: underline; text-underline-offset: 3px; }
+.hg-notes .fc-entity-title { white-space: normal; overflow: visible; text-overflow: clip; }
+.hg-nowrap { white-space: nowrap; }
+.hg-phone-body > * { flex-shrink: 0; }
+.hg-head-text { flex: 1 1 12rem; min-width: 0; }
+.hg-minis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--fc-space-3); }
+.hg-minis > div { display: flex; flex-direction: column; gap: var(--fc-space-1); }
+.hg-newcard[data-size="sm"] .hg-newcard-head { grid-template-columns: auto minmax(0, 1fr); }
+.hg-notes .fc-entity-meta { display: inline-flex !important; }

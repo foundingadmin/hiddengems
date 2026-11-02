@@ -194,3 +194,6 @@ legend.fc-fieldset-title + * { clear: both; }
 main:has(#glance) { gap: 64px; }
 main:has(#glance) > section + section { padding-top: 64px; border-top: 1px solid var(--fc-border-default); }
 main:has(#glance) > section#glance { padding-top: 0; border-top: 0; }
+/* Sample tabs inside lesson examples: the standard underline tabs, sized down, so they read as tabs at a glance. */
+.sp-mini-tabs { width: auto !important; margin-bottom: 4px; }
+.sp-mini-tabs .fc-tab { height: 32px; font-size: 13px; }

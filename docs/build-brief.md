@@ -23,8 +23,8 @@ The boards are wireframes built from real Facet classes, so the markup can be li
    - Vercel Cron runs those pulls. The code may run often and let each job decide, as long as no Odds API call happens outside those times.
 3. **Hosting is Vercel (decided Nov 2 2026, PRD section 12, Option B).**
    - The app is `apps/web` on Vercel, with the PR #3 stack: Postgres, the ingest jobs and Vercel Cron.
-   - Hidden Gems runs on Josh's personal accounts, never Founding Creative's: Vercel Hobby and a personal free Supabase project (us-east-1, reached through the transaction pooler on port 6543, so the Drizzle client sets `prepare: false`).
-   - Vercel Hobby allows each cron at most once a day, fired anywhere within its hour. So no every 5 minute cron: one cron entry per snapshot and freeze time (times are UTC: `47 2 * * 0` is Sat 7:47 PM MT), each at least an hour before the kickoff it serves.
+   - Vercel: the Founding Creative Projects team (Pro) hosts it as R&D. Keep its usage tiny so it never eats into the agency's shared monthly credit: no paid add-ons (the app's own `APP_PASSWORD` gate, not Vercel Password Protection), and odds pulls only on the snapshot schedule.
+   - Database: Josh's personal free Supabase project (us-east-1), never the agency's Supabase org, reached through the transaction pooler on port 6543, so the Drizzle client sets `prepare: false`.
    - Drop `apps/artifact`.
    - Keys are Vercel env Secrets, never in the repo: `ODDS_API_KEY`, `ANTHROPIC_API_KEY` for the Jeweler, `CRON_SECRET`, `APP_PASSWORD`.
    - The old pipeline (the Hidden Gem Scorecard dashboard store and its scheduled tasks) keeps running as a shadow until the app's own pulls match it for two Sundays. Then it retires.

@@ -211,7 +211,7 @@
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-.fc-metric-value small { font-size: 13px; font-weight: 400; letter-spacing: 0; color: var(--fc-text-secondary); }
+/* Values are bare numbers; only symbols that are part of the number stay ($, %, sign). Word units go in the label: "Average gap (pts)". */
 .fc-metric-change { text-align: right; white-space: nowrap; }
 .fc-metric-row .fc-sparkline { --fc-sparkline-height: 24px; }
 

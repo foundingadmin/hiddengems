@@ -100,6 +100,7 @@ Owner decisions on where a rank 1 source and an earlier Facet rule disagreed (20
 | Brand accent | One accent per product through `--fc-brand-*`; Hidden Gems maps it to purple, its gem color. Focus, text selection, native `accent-color`, and checked or on controls (toggle, checkbox, choicebox, menu checks) all read it, so rebranding is four tokens. Primary buttons, tabs, nav and links stay neutral |
 | Header help | Data-rich tables put a tip on every derived or jargon column header so headers stay short (`components/table.md`) |
 | Failures | Say whose problem it is. Yours to fix: red "Failed", "Couldn't ..." and the action that starts the fix. Out of your hands: amber "Provider down", who owns it, what happens next and how old the data is, never a fix button. Empty or failed charts show a blurred gray ghost of their shape (`patterns/failures.md`) |
+| Metric columns | One shape per column: bare numbers, word units in the label, changes as percent with the exact change in a helper (`components/metric-row.md`) |
 | Dotted underline | Always means a helper sits behind the text, opening on hover, keyboard focus or tap (`.fc-has-tip`, `js/tips.mjs`). Used instead of info icons, and never for anything else |
 | Change values | Color says whether a change is good, the arrow says which way it moved (`.fc-delta[data-polarity]`). Edge keeps direction coloring, because a positive edge is always good |
 

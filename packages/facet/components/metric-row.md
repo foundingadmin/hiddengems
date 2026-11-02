@@ -18,7 +18,7 @@ A short stack of peer metrics, each with its value, its change and its recent tr
 ```
 - `.fc-metric-rows` owns one four-lane grid: label, value, change, sparkline. Each `.fc-metric-row` is a subgrid, so every lane starts and ends on the same lines.
 - Label: 14/20, secondary.
-- Value: 16/24, 500, primary, tabular, right-aligned. A unit sits beside it in `<small>` (13px, secondary).
+- Value: 16/24, 500, primary, tabular, right-aligned. A bare number: only symbols that are part of the number stay (`$`, `%`, sign).
 - Change: `.fc-delta` with `data-variant="pill"`, right-aligned.
 - Sparkline: `.fc-sparkline`, 24px tall, fills the remaining width (at least 48px).
 - Rows are at least 48px with a hairline between them.
@@ -28,7 +28,7 @@ A short stack of peer metrics, each with its value, its change and its recent tr
 - **Change color follows goodness** (owner decision D4): `data-direction` sets the arrow, `data-polarity="good|bad|neutral"` sets the color. Keep the sign in the text, so sign, arrow and color all agree and color is never alone.
 - **State the comparison once**, in the card meta (`Week 8, change vs week 7`), never per row.
 - **Sparklines** are gray (`--fc-chart-5`) and have no axes. Each row may use its own scale because the units differ; all rows share the same time window. Dash the last segment when its bucket is still filling.
-- Units stay beside values; peer values share precision.
+- **One shape per column** (owner decision, 2026-11-02). Values in a column of mixed metrics never carry word units; the unit moves to the label in parentheses: "Average gap (pts)", "Average pull time (sec)". Changes are always percent change against the period in the card meta, and the exact change sits in the pill's helper (`data-tip="+0.6 pts, from +3.5"`), so every row reads the same way.
 - Use for 2 to 5 metrics. For a single headline number use `.fc-stat`; for a ranked set of one measure use `.fc-rank-list`.
 
 ## Accessibility

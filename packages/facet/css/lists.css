@@ -75,7 +75,7 @@
 }
 
 .fc-list-row-lead { flex: 0 0 auto; display: inline-flex; align-items: center; }
-.fc-list-row-main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; }
+.fc-list-row-main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: var(--fc-space-1); }
 .fc-list-row-title {
   margin: 0;
   overflow: hidden;
@@ -148,12 +148,14 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font: 400 12px/16px var(--fc-font-mono);
+  margin-top: var(--fc-space-0_5);
+  font: 400 12px/18px var(--fc-font-mono);
   color: var(--fc-text-secondary);
 }
 .fc-schedule-runs {
   display: flex;
   flex-direction: column;
+  gap: var(--fc-space-0_5);
   min-width: 0;
   font: 400 13px/20px var(--fc-font-sans);
   color: var(--fc-text-secondary);

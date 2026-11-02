@@ -272,5 +272,5 @@
 }
 .fc-schedule-advanced > summary::-webkit-details-marker { display: none; }
 .fc-schedule-advanced > summary svg { width: 16px; height: 16px; transition: transform var(--fc-duration-fast) ease; }
-.fc-schedule-advanced[open] > summary svg { transform: rotate(90deg); }
+.fc-schedule-advanced[open] > summary svg { transform: rotate(180deg); }
 .fc-schedule-advanced > summary + * { margin-top: var(--fc-space-2); }

@@ -18,14 +18,13 @@ A standalone text link that ends in an arrow. The arrow says "link", so there is
 
 **Chevrons stay, arrows go** (owner framing). A chevron advances you within the space you are already in: expand a row, open a select, drill into the next menu level. Nothing is left behind. An arrow takes you out of the current space, to another place in the app (→) or out of it (↗). So a chevron is never used for navigation, and an arrow never for disclosure.
 
-Chevron directions (disclosure only):
+Chevron direction (owner rule): **a chevron points where the new content will appear, and flips when it is open.**
 
-| Placement | Closed | Open | Examples |
+| What opens | Closed | Open | Examples |
 |---|---|---|---|
-| Leading, before a short label | Right › | Down (rotate 90°) | "Advanced" in the schedule editor, tree rows |
-| Trailing, at the end of a full-width header | Down | Up (rotate 180°) | Collapse, filter groups in the pull log |
-| Select and menu triggers | Down | Down (the menu opens below) | Selects, range select, scope switcher |
-| Drill into a menu level | Right › | (the level slides in; a back button returns) | Sidenav "Data" |
+| Content below, in place | Down | Up (rotate 180°) | "Advanced" in the schedule editor, collapse, filter groups in the pull log |
+| A menu below | Down | Down (the menu covers it) | Selects, range select, scope switcher |
+| A menu level that slides in from the right | Right › | (a back button ‹ returns) | Sidenav "Data" |
 
 - **Hover:** a soft tint of the link's own color (12%) appears behind the text, reaching 4px past it on every side. It is drawn with a box-shadow spread, so nothing moves and the baseline stays put.
 - **Hover and keyboard focus:** the arrow slides out through its own 12px box and back in from the opposite side, one quick pass (360ms, swift easing). Right for internal links, up-right for external. Reduced motion keeps it still.

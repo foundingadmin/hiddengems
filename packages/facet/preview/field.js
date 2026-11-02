@@ -20,10 +20,18 @@ function rng(seed) {
   return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296);
 }
 
+// Resolve any CSS color (hex, rgb, oklch, display-p3) to sRGB bytes by painting one pixel. Parsing the computed
+// string breaks on wide-gamut displays, where tokens resolve to oklch() and the numbers mean something else.
+const px = (() => { const c = document.createElement('canvas'); c.width = c.height = 1; return c.getContext('2d', { willReadFrequently: true }); })();
 function parseColor(str, probe) {
   probe.style.color = str;
-  const m = getComputedStyle(probe).color.match(/[\d.]+/g) || [0, 0, 0, 1];
-  return { r: +m[0], g: +m[1], b: +m[2], a: m[3] === undefined ? 1 : +m[3] };
+  const resolved = getComputedStyle(probe).color;
+  px.clearRect(0, 0, 1, 1);
+  px.fillStyle = '#000';
+  px.fillStyle = resolved;
+  px.fillRect(0, 0, 1, 1);
+  const [r, g, b, a] = px.getImageData(0, 0, 1, 1).data;
+  return { r, g, b, a: a / 255 };
 }
 const mix = (a, b, t) => ({ r: a.r + (b.r - a.r) * t, g: a.g + (b.g - a.g) * t, b: a.b + (b.b - a.b) * t, a: 1 });
 const rgba = (c, a = 1) => `rgba(${c.r | 0}, ${c.g | 0}, ${c.b | 0}, ${a})`;

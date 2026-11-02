@@ -244,12 +244,14 @@ export function token(name, mode = 'light') {
 write('js/tokens.mjs', js);
 
 // ---------- preview/semantic-map.js (lets the specimen draw which semantic token uses which step) ----------
-const aliasMap = { light: {}, dark: {} };
+const aliasMap = { light: {}, dark: {}, desc: {}, groups: {} };
 (function walk(node, path) {
+  if (path.length && node.$description) aliasMap.groups[path.join('-')] = node.$description;
   for (const [k, v] of Object.entries(node)) {
     if (k.startsWith('$')) continue;
     const p = [...path, k];
     if (isTok(v)) {
+      if (v.$description) aliasMap.desc[p.join('-')] = v.$description;
       const ref = (x) => { const m = String(x).match(/\{color\.([a-z-]+)\.(\d+)\}/); return m ? `${m[1]}-${m[2]}` : null; };
       aliasMap.light[p.join('-')] = ref(v.$value);
       aliasMap.dark[p.join('-')] = ref(ext(v).dark || v.$value);

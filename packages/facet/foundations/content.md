@@ -1,0 +1,51 @@
+# Content
+
+Lessons for every heading, label and sentence in a Facet product. Each one removes a review step, because the page gets it right the first time. The living version is the Content section of `preview/index.html`.
+
+## Say it once
+
+A tab, heading, label, column header, icon or control has already told the reader something. Everything after it builds on that instead of saying it again.
+
+**One question before every line:** what does the reader already know from what sits above and around this? If the new text only restates it, cut it, or rewrite it until it adds something. This applies to headings, labels, notes, captions, tooltips, placeholders and empty states.
+
+### Where repeats hide
+
+| Pattern | Don't | Do |
+|---|---|---|
+| A tab, then a heading that says the tab again | Tab "Signals", then a panel heading "Signals" | Tab "Signals", then the panel starts with its content |
+| A note label the sentence repeats | "Charts. A chart that plots verdicts uses the signal colors." | "A chart that plots verdicts uses the signal colors." |
+| A placeholder that echoes its label | Label "Stake", placeholder "Stake" | Label "Stake", value or example "$7.00", helper "From $1 to $50" |
+| A value every row repeats | A Market column reading "Anytime TD" on every row | One group row "Anytime TD" above the picks |
+| An empty state that says nothing twice | "No picks yet" / "There are no picks to show yet." | "No picks yet" / "Odds open Tuesday. The slate fills in as lines post." |
+| A tooltip that reads the button back | "Refresh odds" with tooltip "Refresh odds" | "Refresh odds" with tooltip "Last pulled 2 min ago", or no tooltip |
+| A badge next to text that says the same | Job "Gems, and only gems" beside a "Gems only" badge | Keep one |
+| A caption that repeats its heading | Heading "Semantic tokens", caption "All semantic color tokens" | Visually hidden caption for screen readers only |
+
+### When repeating is right
+
+- **Confirmations.** The button repeats the dialog's verb, so the action is unmistakable ("Remove this pick?" then "Remove pick").
+- **Screen readers.** An accessible name may restate what sighted readers get from layout (a signal strip reads "5 go, 1 wait").
+- **The record.** An audit table may hold values shown earlier, at lower prominence, for exact lookup.
+
+## Headlines that last
+
+Name the purpose in simple, objective words, and let the content carry the specifics.
+
+- A headline built from today's data goes stale the moment the data changes. Don't: "Gesicki carries the widest gap on a seven pick, $50 slate". Do: "Picks, ranked and explained".
+- A headline that lists what is inside needs rewriting every time the section grows. Don't: "Gray by default, and every hue has one job". Do: "Every hue earns its place".
+- A colon splits one idea into two weaker ones. Don't: "Color: ten step scales, verbatim". Do: "Ten steps for every hue".
+
+Data-driven statements ("Gesicki carries the widest gap") belong in the content itself, generated from the data, where they update with it.
+
+## House style
+
+| Topic | Rule |
+|---|---|
+| Case | Sentence case for headings, labels and buttons |
+| Titles | No colons in titles, headings or nav labels |
+| Dashes | No em dashes, anywhere |
+| Hedges | Cut "FYI", "Heads up" and "Note" |
+| Notes | One sentence, active voice, naming the impact. An optional 1 to 2 word label names the topic and is never repeated by the sentence |
+| Numbers | Units stay beside the value they qualify; peer values share precision |
+| Errors | Say what went wrong and how to fix it; "Couldn't" for user state, "Failed to" for system faults |
+| Plain words | Plain words on the fast path, exact terms in the audit path; define a term at first use |

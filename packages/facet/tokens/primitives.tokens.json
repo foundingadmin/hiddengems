@@ -1,5 +1,5 @@
 {
-  "$description": "Facet design tokens. Primitive layer is captured verbatim from the live Geist system on vercel.com (computed in Chromium, 2026-11-02). Do not hand-edit primitives; re-run scripts/sync-primitives.mjs to re-sync. Semantic layer is Facet-owned.",
+  "$description": "Facet design tokens. Primitive layer is captured verbatim from the live vercel.com reference (computed in Chromium, 2026-11-02). Do not hand-edit primitives; re-run scripts/sync-primitives.mjs to re-sync. Semantic layer is Facet-owned.",
   "color": {
     "gray": {
       "100": {
@@ -1286,7 +1286,7 @@
       "tiny": {
         "$type": "dimension",
         "$value": "24px",
-        "$description": "Icon-only tiny button (measured on vercel.com/geist/button)."
+        "$description": "Icon-only tiny button (measured on the vercel.com reference button)."
       },
       "small": {
         "$type": "dimension",
@@ -1326,7 +1326,7 @@
       "compact": {
         "$type": "dimension",
         "$value": "32px",
-        "$description": "Facet addition for dense ledgers. Not a Geist value."
+        "$description": "Facet addition for dense ledgers. Not a reference value."
       }
     }
   },

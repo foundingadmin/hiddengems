@@ -26,7 +26,7 @@ packages/facet/
     components.css            .fc-* components (measured from the vercel.com reference) and Hidden Gems pieces
   js/tokens.mjs             GENERATED: resolved hex values per theme for canvas/SVG charts
   fonts/                    Sans + Mono variable WOFF2 (SIL OFL 1.1, license included)
-  foundations/              Color, typography, layout/materials/motion/icons
+  foundations/              Color, typography, content, layout/materials/motion/icons
   components/               56 component specs synthesized from vercel.com reference docs, with Hidden Gems usage
   patterns/                 Hidden Gems composition patterns (slate, verdicts, tiers, freshness, states)
   guidelines/               Vercel Web Interface Guidelines digest (rule IDs for reviews)

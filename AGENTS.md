@@ -23,7 +23,10 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 ## Writing style (house rules)
 
 - Never use em dashes in any output: code comments, docs, UI copy, commit messages.
-- Sentence case for headings and UI labels; headings state a finding or question.
+- Say it once: never repeat on a page what a tab, heading, label, column header, icon or control already said.
+  Lessons and exceptions in `packages/facet/foundations/content.md`.
+- Headlines are simple and objective, naming the purpose; specifics live in the content so headlines never go stale.
+- Sentence case for headings and UI labels.
 - No colons in titles, headings or nav labels.
 - The design system is called Facet. Never call it Geist in UI copy, docs or comments; the upstream
   name appears only in provenance (`packages/facet/SOURCES.md`, `reference/`) and real package names.

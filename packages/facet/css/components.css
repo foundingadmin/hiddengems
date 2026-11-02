@@ -564,3 +564,12 @@
 .fc-description dt { font: 400 14px/16px var(--fc-font-sans); color: var(--ds-gray-900); }
 .fc-description dd { margin: 0; font: 500 14px/20px var(--fc-font-sans); color: var(--ds-gray-1000); }
 .fc-description dd small { display: block; margin-top: 4px; font: 400 13px/18px var(--fc-font-sans); color: var(--ds-gray-900); }
+
+/* Note anatomy [G]: optional label (1 to 2 words naming the topic, never restating the sentence),
+   one sentence of content, inline links in the strong text color, one optional action at the end. */
+.fc-note-label { font-weight: 500; color: var(--ds-gray-1000); margin-right: 4px; }
+.fc-note[data-type] .fc-note-label { color: inherit; }
+.fc-note a { color: var(--ds-gray-1000); font-weight: 500; text-decoration: none; }
+.fc-note a:hover { text-decoration: underline; }
+.fc-note-action { margin-left: auto; flex: 0 0 auto; }
+.fc-note[data-disabled] { --_fg: var(--ds-gray-700); --_bd: var(--ds-gray-400); }

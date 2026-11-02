@@ -99,9 +99,13 @@ Each is a conscious Facet call, recorded so nobody "fixes" it back by accident.
 | Table has one density | Adds `data-density="compact"` (32px rows) for long ledgers | Sunday slates can run 100+ props |
 | Icons from `@vercel/geistcn-assets` | Lucide at 16px / 1.5 stroke | The reference icon package is not public |
 
-## Writing
+## Content
 
-Sentence case everywhere. No colons in titles, headings or nav labels. Headings state the finding or the question ("Gesicki carries the widest gap"), not the genre ("Overview"). Plain words on the fast path, exact terms in the audit path, define a term at first use. No all-caps eyebrows, no em dashes, no hype.
+Full lessons in [`foundations/content.md`](foundations/content.md). The short version:
+
+- **Say it once.** A tab, heading, label, column header, icon or control has already told the reader something; never restate it. Before every line, ask what the reader already knows from what sits above and around it.
+- **Headlines that last.** Simple, objective, purpose-naming headlines. Specifics live in the content, so a headline never goes stale when the data changes.
+- **House style.** Sentence case. No colons in titles. No em dashes. No hedges. Notes are one sentence in active voice.
 
 ## Reject on sight
 

@@ -184,7 +184,8 @@
 /* The takeaway leads with its value at headline size, so it never reads as a second meta line. */
 .fc-chart-card-takeaway { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--fc-space-2); row-gap: var(--fc-space-1); margin: var(--fc-space-3) 0 0; font: 400 13px/20px var(--fc-font-sans); color: var(--fc-text-secondary); }
 .fc-chart-card-takeaway strong { font: 600 20px/28px var(--fc-font-sans); letter-spacing: -0.4px; color: var(--fc-text-primary); font-variant-numeric: tabular-nums; }
-.fc-chart-card-takeaway > .fc-delta, .fc-chart-card-takeaway > .fc-link-action { align-self: center; }
+/* Pills and links sit on the text baseline with the value and label, never centered by box. */
+.fc-chart-card-takeaway > :is(.fc-delta, .fc-link-action) { align-self: baseline; }
 
 /* Table alternative revealed from the card footer. */
 .fc-chart-data[hidden] { display: none; }

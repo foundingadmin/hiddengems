@@ -130,18 +130,32 @@
 /* ------------------------------------------------------------------ Schedule row [F]
    Odds pull schedules. Fixed lanes so equal peers align across rows:
    main (name, plain-language schedule, mono cron) | status | runs (next over last) | actions. */
-.fc-schedule-row {
+.fc-schedule-row,
+.fc-schedule-head {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) var(--fc-schedule-status-w, 112px) var(--fc-schedule-runs-w, 184px) auto;
-  grid-template-areas: "main status runs actions";
+  grid-template-columns: minmax(0, 1fr) var(--fc-schedule-status-w, 112px) var(--fc-schedule-run-w, 136px) var(--fc-schedule-run-w, 136px) var(--fc-schedule-actions-w, 136px);
+  grid-template-areas: "main status next last actions";
   align-items: center;
   column-gap: var(--fc-space-4);
   row-gap: var(--fc-space-2);
 }
+/* Column headers, once per list (owner feedback 2026-11-02): Next run and Last run are their own columns,
+   so rows carry values only. Rows repeat the names for screen readers and for the stacked narrow layout. */
+.fc-schedule-head {
+  padding: var(--fc-space-2) var(--fc-space-4);
+  border-bottom: 1px solid var(--fc-border-default);
+  font: 400 12px/16px var(--fc-font-sans);
+  color: var(--fc-text-secondary);
+}
+.fc-schedule-head > :nth-child(1) { grid-area: main; }
+.fc-schedule-head > :nth-child(2) { grid-area: status; }
+.fc-schedule-head > :nth-child(3) { grid-area: next; }
+.fc-schedule-head > :nth-child(4) { grid-area: last; }
 .fc-schedule-row > .fc-list-row-main { grid-area: main; }
 .fc-schedule-row > .fc-schedule-status { grid-area: status; }
-.fc-schedule-row > .fc-schedule-runs { grid-area: runs; }
-.fc-schedule-row > .fc-list-row-actions { grid-area: actions; }
+.fc-schedule-row > .fc-schedule-next { grid-area: next; }
+.fc-schedule-row > .fc-schedule-last { grid-area: last; }
+.fc-schedule-row > .fc-list-row-actions { grid-area: actions; justify-self: end; }
 .fc-schedule-row > .fc-list-row-note { grid-column: 1 / -1; }
 .fc-schedule-cron {
   display: block;
@@ -152,26 +166,32 @@
   font: 400 12px/18px var(--fc-font-mono);
   color: var(--fc-text-secondary);
 }
-.fc-schedule-runs {
+.fc-schedule-next,
+.fc-schedule-last {
   display: flex;
   flex-direction: column;
   gap: var(--fc-space-0_5);
   min-width: 0;
+  margin: 0;
   font: 400 13px/20px var(--fc-font-sans);
-  color: var(--fc-text-secondary);
-  font-variant-numeric: tabular-nums;
+  color: var(--fc-text-primary);
 }
-.fc-schedule-runs > * { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.fc-schedule-runs b { font-weight: 400; color: var(--fc-text-primary); }
-.fc-schedule-runs .fc-value-empty { color: var(--fc-text-secondary); }
+.fc-schedule-next > *, .fc-schedule-last > * { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fc-schedule-detail { color: var(--fc-text-secondary); }
+.fc-schedule-next .fc-value-empty { color: var(--fc-text-secondary); }
+/* The header names the columns, so the per-cell name is for screen readers only. */
+.fc-schedule-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .fc-schedule-row[data-state="running"] .fc-list-row-actions .fc-button[data-run] { pointer-events: none; }
 
 @container fc-list (max-width: 640px) {
+  .fc-schedule-head { display: none; }
   .fc-schedule-row {
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas: "main actions" "status status" "runs runs";
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "main main" "status status" "next last" "actions actions";
+    align-items: start;
   }
-  .fc-schedule-runs { flex-direction: row; flex-wrap: wrap; column-gap: var(--fc-space-3); }
+  .fc-schedule-row > .fc-list-row-actions { justify-self: start; }
+  .fc-schedule-label { position: static; width: auto; height: auto; overflow: visible; clip-path: none; font-size: 12px; line-height: 16px; color: var(--fc-text-secondary); }
 }
 
 /* ------------------------------------------------------------------ Activity feed [F]

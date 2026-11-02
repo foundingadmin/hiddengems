@@ -6,6 +6,7 @@ Show and edit when odds and injury pulls run, whether the last run worked, and w
 
 ## Schedule row
 ```html
+<li class="fc-schedule-head" aria-hidden="true"><span>Schedule</span><span>Status</span><span>Next run</span><span>Last run</span></li>
 <li class="fc-list-row fc-schedule-row" data-state="succeeded">
   <div class="fc-list-row-main">
     <p class="fc-list-row-title">Odds, all books</p>
@@ -13,20 +14,18 @@ Show and edit when odds and injury pulls run, whether the last run worked, and w
     <code class="fc-schedule-cron">*/5 9-22 * * 0,1,4</code>
   </div>
   <span class="fc-schedule-status fc-status"><span class="fc-status-dot" data-state="live"></span>Succeeded</span>
-  <p class="fc-schedule-runs">
-    <span>Next <b><time class="fc-timestamp" datetime="..." title="...">Today 6:05 PM</time></b></span>
-    <span>Last <time class="fc-timestamp" datetime="..." title="...">6:00 PM</time>, 4.1 s</span>
-  </p>
+  <p class="fc-schedule-next"><span class="fc-schedule-label">Next run</span><time class="fc-timestamp" datetime="..." title="...">Today 6:05 PM</time></p>
+  <p class="fc-schedule-last" data-last><span class="fc-schedule-label">Last run</span><time class="fc-timestamp" datetime="..." title="...">6:00 PM</time><span class="fc-schedule-detail">4.1 s</span></p>
   <div class="fc-list-row-actions">
     <button class="fc-button" data-variant="secondary" data-size="small" type="button" aria-label="Run Odds, all books now">Run now</button>
     <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="More actions for Odds, all books" aria-haspopup="menu">...</button>
   </div>
 </li>
 ```
-- Lanes: main (fluid) | status (`--fc-schedule-status-w`, 112px) | runs (`--fc-schedule-runs-w`, 184px) | actions. Fixed lanes keep equal peers aligned down the list.
+- Lanes: main (fluid) | status (`--fc-schedule-status-w`, 112px) | next run | last run (`--fc-schedule-run-w`, 136px each) | actions. Fixed lanes keep equal peers aligned down the list. One `.fc-schedule-head` names the columns (owner feedback, 2026-11-02), so rows carry values only; each cell repeats its name in `.fc-schedule-label` for screen readers and the stacked narrow layout.
 - Main: the plain-language schedule is the fast path; the cron is the audit path, in mono, secondary, 12px.
 - Status words and dots: Succeeded (`live`, green), Failed (`failed`, red), Running (`recent`, blue), Paused (no freshness state, gray). The word always shows.
-- Runs: "Next" value in primary, "Last" in secondary with duration or failure reason. A paused row reads Next "None" (`.fc-value-empty`).
+- Next run: the time in primary. Last run: the time in primary, then duration or failure reason in secondary (`.fc-schedule-detail`). A paused row reads Next "None" (`.fc-value-empty`).
 - Failed: a `.fc-list-row-note` error note under the row says what failed and what is stale.
 - Menu: Edit, View runs, Pause (or Resume).
 - Under 640px the row stacks: name and actions, then status, then runs on one line.

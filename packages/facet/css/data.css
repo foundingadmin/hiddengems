@@ -184,6 +184,7 @@ th.fc-numeric > .fc-th-sort { flex-direction: row-reverse; }
 /* Time cell [F] (owner feedback 2026-11-02): a time column shows the clock time with its day word (mono),
    and the relative time under it (sans, secondary), the same pairing as schedule runs. */
 .fc-time-cell > time { display: block; white-space: nowrap; }
+.fc-time-cell > time:first-child { color: var(--fc-text-primary); }
 .fc-time-cell-rel { font-size: 13px; line-height: 18px; color: var(--fc-text-secondary); }
 
 /* Floating layer. Tooltips, time cards and menus open as popovers (top layer, never clipped by

@@ -387,7 +387,8 @@ Source: project doc claude/grading-v3-nflverse.md.
 **Chosen Mon Nov 2 2026: Option B, a Vercel app from the hiddengems repo.** This replaces the artifact plan from earlier that day, so the build follows a normal repo, pull request and deploy workflow.
 
 - **Who builds.** Claude Code builds all UI and app code in the repo. This project leads product decisions and the PRD, and hands work over as briefs (docs/build-brief.md).
-- **Stack.** Next.js in `apps/web`, Postgres, ingest jobs and Vercel Cron, as scaffolded in pull request 3. Vercel Pro is confirmed. The app is password protected because it is private.
+- **Stack.** Next.js in `apps/web`, Postgres, ingest jobs and Vercel Cron, as scaffolded in pull request 3. The app is password protected because it is private.
+- **Accounts (set Nov 2 2026).** Hidden Gems is Josh's R&D. It runs on the agency's Vercel Pro team (Founding Creative Projects) with usage kept tiny and no paid add-ons, and on a personal free Supabase project so it never takes one of the agency's free Supabase slots. Paid keys (Anthropic, any Odds API upgrade) go on Josh's own card.
 - **Data.** nflverse for stats, The Odds API free plan for prices, pulled by Vercel Cron on the snapshot schedule (section 10).
 - **The Jeweler.** Runs through the Anthropic API with its own key, billed separately from the Claude plan.
 - **Keys.** All keys are Vercel Secrets, never committed to the repo, which is public.

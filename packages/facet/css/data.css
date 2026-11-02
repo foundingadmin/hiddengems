@@ -190,6 +190,10 @@ th.fc-numeric > .fc-th-sort { flex-direction: row-reverse; }
   --_dot: currentColor;
   background: radial-gradient(circle at 1px 1px, currentColor 0.85px, transparent 1.15px) 0 0 / 4px 2px repeat-x;
 }
+/* Count in the main column header [F] (owner feedback 2026-11-02): sits next to the select-all box, so it reads
+   "5 of 31" when nothing is checked and "2 selected" when rows are. Replaces a "Showing 5 of 31" caption. */
+.fc-th-count { margin-left: var(--fc-space-2); font: 400 12px/16px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
 /* A sortable header can carry help too: the underline stays, the cursor says it still sorts. */
 .fc-th-sort.fc-has-tip { cursor: pointer; }
 

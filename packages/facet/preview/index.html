@@ -353,11 +353,11 @@
 
     <div class="fc-table-wrap" id="data-wrap">
       <table class="fc-table" id="data-table" data-interactive data-striped data-sticky-column>
-        <caption>Showing 5 of 31 picks. <span id="data-sort-desc">Sorted by gap, largest first.</span></caption>
+        <caption class="fc-visually-hidden">Picks, <span id="data-sort-desc">Sorted by gap, largest first.</span></caption>
         <thead>
           <tr>
             <th scope="col" class="fc-cell-select"><label><input type="checkbox" class="fc-check" id="data-all" aria-label="Select all picks"></label></th>
-            <th scope="col" data-sort="pick" data-type="text" data-grow><button type="button" class="fc-th-sort">Pick</button></th>
+            <th scope="col" data-sort="pick" data-type="text" data-grow><button type="button" class="fc-th-sort">Pick</button><span class="fc-th-count" id="data-count" aria-live="polite">5 of 31</span></th>
             <th scope="col" data-sort="kickoff" data-type="time"><button type="button" class="fc-th-sort">Kickoff</button></th>
             <th scope="col" data-align="numeric" data-sort="odds"><button type="button" class="fc-th-sort fc-has-tip" aria-describedby="data-tip-odds">Odds</button></th>
             <th scope="col" data-align="numeric"><span class="fc-has-tip" tabindex="0" aria-describedby="data-tip-priced">Priced</span></th>
@@ -610,6 +610,8 @@
       const n = rowBoxes().filter(c => c.checked).length;
       all.checked = n === rowBoxes().length;
       all.indeterminate = n > 0 && !all.checked;
+      // The count lives beside the select-all box: what is shown, or what is selected.
+      $('#data-count').textContent = n ? `${n} selected` : '5 of 31';
     };
     all.addEventListener('change', () => { rowBoxes().forEach(c => { c.checked = all.checked; }); syncAll(); });
     body.addEventListener('change', e => { if (e.target.matches('.fc-check')) syncAll(); });

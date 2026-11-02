@@ -1114,7 +1114,7 @@
           </button>
         </div>
         <figure class="fc-chart" data-size="timeline" id="ch-timeline" role="img"></figure>
-        <p class="fc-dataops-status" id="ch-live-status" role="status" hidden></p>
+        <div class="fc-note" data-size="small" id="ch-live-status" role="status" hidden><span></span><a class="fc-note-link fc-link-action" href="#ch-live" data-resume>Resume</a></div>
         <div class="fc-table-wrap">
           <table class="fc-table" data-density="compact">
             <caption>Newest first, 8 of 189 pulls</caption>
@@ -1281,7 +1281,7 @@
         bands[i].setAttribute('data-active', '');
         f.svg.querySelectorAll(`.fc-chart-bar[data-i="${i}"]`).forEach(e => e.setAttribute('data-active', ''));
         const total = s.reduce((t, ser) => t + ser.values[i], 0);
-        tip.innerHTML = `<p class="fc-chart-tip-head">${o.labels[i]}</p><ul class="fc-chart-tip-rows" role="list">${s.map(ser => `<li data-series="${ser.slot || 1}"><span class="fc-legend-key" aria-hidden="true"></span><span>${ser.name}</span><span>${fmt(ser.values[i])}</span></li>`).join('')}<li class="fc-chart-tip-rule" role="presentation"></li><li class="fc-chart-tip-total"><span></span><span>Total</span><span>${fmt(total)}</span></li></ul>`;
+        tip.innerHTML = `<p class="fc-chart-tip-head">${o.labels[i]}</p><ul class="fc-chart-tip-rows" role="list">${s.map(ser => `<li data-series="${ser.slot || 1}"><span class="fc-legend-key" aria-hidden="true"></span><span>${ser.name}</span><span>${fmt(ser.values[i])}</span></li>`).join('')}${s.length > 1 ? `<li class="fc-chart-tip-rule" role="presentation"></li><li class="fc-chart-tip-total"><span></span><span>Total</span><span>${fmt(total)}</span></li>` : ''}</ul>`;
         try { if (!tip.matches(':popover-open')) tip.showPopover(); } catch {}
         const r = hits[i].getBoundingClientRect(), t = tip.getBoundingClientRect();
         const top = Math.max(8, f.svg.getBoundingClientRect().top + f.y(total) - t.height - 8);
@@ -1291,7 +1291,7 @@
       const hide = () => { f.svg.querySelectorAll('[data-active]').forEach(e => e.removeAttribute('data-active')); try { tip.hidePopover(); } catch {} };
       for (let i = 0; i < n; i++) {
         const total = s.reduce((t, ser) => t + ser.values[i], 0);
-        const hit = mk('rect', { class: 'fc-chart-hit', x: (f.p.x0 + i * bw).toFixed(1), y: f.p.y0, width: bw.toFixed(1), height: f.p.y1 - f.p.y0, tabindex: i === 0 ? 0 : -1, role: 'img', 'aria-label': `${o.labels[i]}: ${s.map(ser => `${ser.values[i]} ${ser.name.toLowerCase()}`).join(', ')}, ${total} total` }, f.svg);
+        const hit = mk('rect', { class: 'fc-chart-hit', x: (f.p.x0 + i * bw).toFixed(1), y: f.p.y0, width: bw.toFixed(1), height: f.p.y1 - f.p.y0, tabindex: i === 0 ? 0 : -1, role: 'img', 'aria-label': `${o.labels[i].replace(/<[^>]+>/g, '')}: ${s.map(ser => `${ser.values[i]} ${ser.name.toLowerCase()}`).join(', ')}${s.length > 1 ? `, ${total} total` : ''}` }, f.svg);
         hits.push(hit);
         hit.addEventListener('pointerenter', () => show(i));
         hit.addEventListener('pointerdown', () => show(i));
@@ -1477,10 +1477,11 @@
       p.dataset.level = v >= 100 ? 'error' : v >= 75 ? 'warning' : '';
     });
 
-    // Timeline: pulls per 5 minutes over the last 2 hours, clock ticks in Sans with tabular figures.
+    // Timeline: pulls per 5 minutes over the last 2 hours. Clock ticks are mono; each bar has a hover breakdown.
     const tl = [8,7,8,8,9,8,7,8,10,9,8,8,7,8,9,8,12,11,9,8,8,9,8,4];
     C.bars(document.getElementById('ch-timeline'), {
       series: [{ name: 'Pulls', values: tl, slot: 5 }], yTicks: [0, 12], hideY: true, incomplete: true,
+      labels: tl.map((_, i) => { const m = 16 * 60 + 5 + i * 5, t = x => `${(Math.floor(x / 60) + 11) % 12 + 1}:${String(x % 60).padStart(2, '0')} ${Math.floor(x / 60) < 12 ? 'AM' : 'PM'}`; return i === tl.length - 1 ? `<time>${t(m)}</time> to now` : `<time>${t(m)}</time> to <time>${t(m + 5)}</time>`; }),
       xLabels: [{ at: 0, text: '4:05 PM' }, { at: 12, text: '5:05 PM' }, { at: 23, text: '6:00 PM' }],
       summary: 'Pulls every 5 minutes from 4:05 PM to now, steady at 7 to 12, with the current 5 minutes still filling.',
     });
@@ -1489,9 +1490,10 @@
     const live = document.getElementById('ch-live'), status = document.getElementById('ch-live-status');
     const showStatus = () => {
       const on = live.getAttribute('aria-pressed') === 'true';
-      status.textContent = on ? '' : 'Paused at 6:05:12 PM. New pulls wait until you resume.';
+      status.querySelector('span').innerHTML = on ? '' : 'Paused at <time>6:05:12 PM</time>. New pulls are held until you resume.';
       status.hidden = on;
     };
+    status.querySelector('[data-resume]').addEventListener('click', (e) => { e.preventDefault(); live.setAttribute('aria-pressed', 'true'); showStatus(); live.focus(); });
     live.addEventListener('click', () => { live.setAttribute('aria-pressed', String(live.getAttribute('aria-pressed') !== 'true')); showStatus(); });
     showStatus();
   })();

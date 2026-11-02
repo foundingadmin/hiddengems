@@ -59,3 +59,5 @@ A 56px bar histogram of events per bucket on the same time window as the table, 
 
 ## Hidden Gems usage
 Data, then Odds pulls: Level, Source (sportsbook) and Market facets; scheduled pulls every 5 minutes on game days; an Error row links to its request and to a retry.
+
+**Paused state (owner feedback, 2026-11-02).** When the live view is paused, the state is a small gray note above the table with a "Resume" link, not a line of caption-weight text. The table caption ("Newest first, 8 of 189 pulls") stays quiet metadata, so the two never compete: a state you should notice sits in a note, facts about the list sit in the caption.

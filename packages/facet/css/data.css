@@ -47,7 +47,7 @@
           mask: var(--_ind) center / contain no-repeat;
   transition: opacity var(--fc-duration-fast) ease, transform var(--fc-duration-fast) ease;
 }
-.fc-th-sort:hover { color: var(--fc-text-primary); background: var(--ds-gray-alpha-100); }
+.fc-th-sort:hover { color: var(--fc-text-primary); background-color: var(--ds-gray-alpha-100); }
 .fc-th-sort:focus-visible { box-shadow: var(--ds-focus-ring); }
 .fc-th-sort:hover::after,
 .fc-th-sort:focus-visible::after { opacity: .5; }
@@ -161,22 +161,32 @@ th.fc-numeric > .fc-th-sort { flex-direction: row-reverse; }
    opening on hover, keyboard focus or tap (js/tips.mjs). Never use it for anything else, and use it
    instead of info icons. */
 .fc-has-tip {
-  text-decoration: underline dotted var(--ds-gray-600) 1px;
-  text-underline-offset: 3px;
+  /* Round dots, drawn rather than a dotted text-decoration, which renders as short hash marks. */
+  --_dot: var(--ds-gray-600);
+  --_dots: radial-gradient(circle at 1px 1px, var(--_dot) 0.85px, transparent 1.15px);
+  text-decoration: none;
+  background-image: var(--_dots);
+  background-size: 4px 2px;
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  background-origin: content-box;
   cursor: help;
 }
-.fc-has-tip:hover { text-decoration-color: var(--fc-text-secondary); }
+.fc-has-tip:hover { --_dot: var(--fc-text-secondary); }
 .fc-has-tip:focus-visible { border-radius: var(--fc-radius-xs); }
 /* Contained values (pills, badges, chips) never underline their text: the dotted line runs under the
    container instead, 3px below its edge, so it reads as a helper rather than a rendering glitch. */
-.fc-has-tip:is(.fc-delta[data-variant="pill"], .fc-badge, .fc-filter-chip) { position: relative; text-decoration: none; }
+.fc-has-tip:is(.fc-delta[data-variant="pill"], .fc-badge, .fc-filter-chip) { position: relative; background-image: none; }
+/* ...in the container's own color, so the helper reads as belonging to that badge (owner feedback). */
 .fc-has-tip:is(.fc-delta[data-variant="pill"], .fc-badge, .fc-filter-chip)::after {
   content: "";
   position: absolute;
   left: 6px;
   right: 6px;
-  bottom: -4px;
-  border-bottom: 1px dotted var(--ds-gray-600);
+  bottom: -5px;
+  height: 2px;
+  --_dot: currentColor;
+  background: radial-gradient(circle at 1px 1px, currentColor 0.85px, transparent 1.15px) 0 0 / 4px 2px repeat-x;
 }
 /* A sortable header can carry help too: the underline stays, the cursor says it still sorts. */
 .fc-th-sort.fc-has-tip { cursor: pointer; }

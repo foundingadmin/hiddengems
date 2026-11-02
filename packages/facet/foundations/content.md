@@ -85,6 +85,21 @@ Three words that all seem to mean "go back". Each has one job.
 - A form that stays on screen never says Cancel: there is no flow to leave, only edits to take back.
 - Undo never appears without something to undo; Reset never appears where Undo would do.
 
+### When to ask for confirmation
+
+Prefer undo to confirm. A confirmation interrupts every time; an undo costs nothing unless it is needed. Confirm only when an action cannot be taken back, or its effects reach beyond this screen.
+
+| Level | When | How | Examples |
+|---|---|---|---|
+| **None** | The opposite action reverses it | Act at once | Toggle, filter, sort, Pause and Resume, Run now, Save (edit again to change), Track bet |
+| **Undo toast** | One item removed that can be restored | Act at once, then a toast "Pick removed. Undo" that stays until the next action or 8 seconds | Remove a pick from the watchlist, dismiss an alert, untrack a bet |
+| **Confirm dialog** | It cannot be undone, or it changes something outside Hidden Gems | A dialog naming the consequence; Cancel is focused, the button repeats verb and object | Disconnect FanDuel (pulls stop), Rotate key (the old key stops working), Reset to defaults |
+| **Typed confirmation** | It permanently deletes data, or many items at once | The dialog asks you to type the name before the button enables | Delete bet history, Delete all tracked bets |
+
+- The dialog says what will happen, not "Are you sure?": "FanDuel odds stop updating until you reconnect."
+- The confirm button repeats the verb and object ("Disconnect FanDuel"), never "OK" or "Yes".
+- Never confirm and offer undo for the same action; pick the level that fits.
+
 ## Marking right and wrong
 
 Use the guide marker (`.fc-guide`, see `components/guide-marker.md`) for every Do and Don't. It is neutral by default: a gray check or cross plus the word. Add color (`data-critical`) only where misuse breaks the system, such as the hue allocation. If it appears everywhere, nobody sees it.

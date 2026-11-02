@@ -1,0 +1,203 @@
+/* Facet lists [F]. Settings and audit lists built from the rank 1 dashboard captures
+   (reference/inbox-review-2026-11-02/02-dashboard-settings.md): bordered divided lists,
+   connection rows, odds pull schedule rows, the activity feed and the time display.
+   Depends on tokens.css and components.css (.fc-button, .fc-status, .fc-note, .fc-icon-tile).
+   Font shorthands follow the role table in typography.css, as components.css does. */
+
+/* ------------------------------------------------------------------ Timestamp
+   Every human-readable time (kickoff, "2 min ago", "Today 6:05 PM", feed times) goes through
+   this one class, so the time treatment is a one-line change. Owner decision D2: sans with
+   tabular figures. Machine values (cron, IDs, keys, hashes) stay mono and never use it.
+   Wrap in <time datetime="..."> and put the exact timestamp in title (DESIGN.md rule 11). */
+.fc-timestamp {
+  font-family: var(--fc-font-sans);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ Meta line
+   Secondary metadata joined by one middle dot: two items at most, same order on every row.
+   The dot is generated content with empty alt text, so screen readers do not read "dot". */
+.fc-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: 400 13px/20px var(--fc-font-sans);
+  color: var(--fc-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.fc-meta > * { min-width: 0; }
+.fc-meta > * + *::before {
+  content: "\00B7";
+  content: "\00B7" / "";
+  display: inline-block;
+  margin-inline: var(--fc-space-1_5);
+  color: var(--fc-text-secondary);
+}
+
+/* ------------------------------------------------------------------ List
+   <ul class="fc-list" role="list" aria-labelledby="..."> of <li class="fc-list-row">.
+   One ring, rows divided by one rule each. The list is an inline-size container, so rows
+   reflow by the width they actually get (inside a fieldset, a sheet or a page). */
+.fc-list {
+  container: fc-list / inline-size;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-radius: var(--fc-radius-sm);
+  background: var(--fc-surface-canvas);
+  box-shadow: 0 0 0 1px var(--fc-border-default);
+}
+.fc-list-row {
+  --_lead: var(--fc-control-large);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--fc-space-3);
+  row-gap: var(--fc-space-2);
+  min-height: var(--fc-row-list, 64px);
+  padding: var(--fc-space-3) var(--fc-space-4);
+  font: 400 14px/20px var(--fc-font-sans);
+  color: var(--fc-text-secondary);
+}
+.fc-list-row + .fc-list-row { border-top: 1px solid var(--fc-border-default); }
+.fc-list-row:first-child { border-radius: var(--fc-radius-sm) var(--fc-radius-sm) 0 0; }
+.fc-list-row:last-child  { border-radius: 0 0 var(--fc-radius-sm) var(--fc-radius-sm); }
+.fc-list-row:only-child  { border-radius: var(--fc-radius-sm); }
+
+/* One-line rows: 48px. Use a small (32px) icon tile in the lead. */
+.fc-list[data-lines="1"] > .fc-list-row,
+.fc-list-row[data-lines="1"] {
+  --_lead: var(--fc-control-small);
+  min-height: var(--fc-row-list-single, 48px);
+  padding-block: var(--fc-space-2);
+}
+
+.fc-list-row-lead { flex: 0 0 auto; display: inline-flex; align-items: center; }
+.fc-list-row-main { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; }
+.fc-list-row-title {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: 500 14px/20px var(--fc-font-sans);
+  color: var(--fc-text-primary);
+}
+.fc-list-row-aside {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fc-space-2);
+  font-variant-numeric: tabular-nums;
+}
+.fc-list-row-actions {
+  position: relative; /* anchors the overflow .fc-dropdown (shell.css) */
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--fc-space-2);
+}
+.fc-list-row-actions .fc-timestamp { font: 400 13px/20px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }
+
+/* A note that belongs to the row (failed connection). Starts under the title, full width. */
+.fc-list-row-note { flex: 1 0 100%; min-width: 0; }
+.fc-list-row:has(> .fc-list-row-lead) > .fc-list-row-note { padding-left: calc(var(--_lead) + var(--fc-space-3)); }
+
+/* Interactive rows (whole row opens a detail): hover fill only, never a second border. */
+.fc-list[data-interactive] > .fc-list-row:hover { background: var(--fc-surface-fill); }
+
+/* Narrow lists: the aside drops under the title; lead, title and actions keep line 1. */
+@container fc-list (max-width: 520px) {
+  .fc-list-row { padding-inline: var(--fc-space-3); }
+  .fc-list-row > .fc-list-row-aside { order: 3; flex-basis: 100%; }
+  .fc-list-row > .fc-list-row-note { order: 4; }
+  .fc-list-row:has(> .fc-list-row-lead) > .fc-list-row-aside { padding-left: calc(var(--_lead) + var(--fc-space-3)); }
+  .fc-list-row:has(> .fc-list-row-lead) > .fc-list-row-note { padding-left: 0; }
+}
+
+/* ------------------------------------------------------------------ Connection row
+   A list row whose action follows state (data-state on the row):
+     available  -> "Connect" button (primary only when it is the next recommended step)
+     connected  -> "Manage" when the object has its own settings page, otherwise
+                   "Last used ..." (.fc-timestamp) plus the overflow menu
+     failed     -> status dot + "Failed" in the aside, an error note under the row with one action
+   Status is always a dot plus a word (.fc-status), never the dot alone. */
+.fc-list-row[data-state="failed"] .fc-list-row-title { color: var(--fc-text-primary); }
+.fc-list-row .fc-status { font: 400 13px/20px var(--fc-font-sans); color: var(--fc-text-primary); white-space: nowrap; }
+
+/* ------------------------------------------------------------------ Schedule row [F]
+   Odds pull schedules. Fixed lanes so equal peers align across rows:
+   main (name, plain-language schedule, mono cron) | status | runs (next over last) | actions. */
+.fc-schedule-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--fc-schedule-status-w, 112px) var(--fc-schedule-runs-w, 184px) auto;
+  grid-template-areas: "main status runs actions";
+  align-items: center;
+  column-gap: var(--fc-space-4);
+  row-gap: var(--fc-space-2);
+}
+.fc-schedule-row > .fc-list-row-main { grid-area: main; }
+.fc-schedule-row > .fc-schedule-status { grid-area: status; }
+.fc-schedule-row > .fc-schedule-runs { grid-area: runs; }
+.fc-schedule-row > .fc-list-row-actions { grid-area: actions; }
+.fc-schedule-row > .fc-list-row-note { grid-column: 1 / -1; }
+.fc-schedule-cron {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font: 400 12px/16px var(--fc-font-mono);
+  color: var(--fc-text-secondary);
+}
+.fc-schedule-runs {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font: 400 13px/20px var(--fc-font-sans);
+  color: var(--fc-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.fc-schedule-runs > * { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fc-schedule-runs b { font-weight: 400; color: var(--fc-text-primary); }
+.fc-schedule-row[data-state="running"] .fc-list-row-actions .fc-button[data-run] { pointer-events: none; }
+
+@container fc-list (max-width: 640px) {
+  .fc-schedule-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "main actions" "status status" "runs runs";
+  }
+  .fc-schedule-runs { flex-direction: row; flex-wrap: wrap; column-gap: var(--fc-space-3); }
+}
+
+/* ------------------------------------------------------------------ Activity feed [F]
+   Rows read as sentences: entities in <strong> (primary, 500), verbs and prepositions plain
+   (secondary), so meaning survives without color. Lead icon by actor (16px, secondary),
+   time right-aligned on the first line, grouped by day, Load more at the end. No row rules. */
+.fc-feed { display: flex; flex-direction: column; gap: var(--fc-space-6); }
+.fc-feed-group { display: flex; flex-direction: column; }
+.fc-feed-heading {
+  margin: 0 0 var(--fc-space-1);
+  font: 500 14px/20px var(--fc-font-sans);
+  color: var(--fc-text-primary);
+}
+.fc-feed-list { margin: 0; padding: 0; list-style: none; }
+.fc-feed-row {
+  display: grid;
+  grid-template-columns: var(--fc-space-5) minmax(0, 1fr) auto;
+  column-gap: var(--fc-space-3);
+  align-items: start;
+  padding-block: var(--fc-space-2);
+  font: 400 14px/20px var(--fc-font-sans);
+  color: var(--fc-text-secondary);
+}
+.fc-feed-icon { display: inline-flex; align-items: center; justify-content: center; height: 20px; color: var(--fc-text-secondary); }
+.fc-feed-icon svg { width: 16px; height: 16px; }
+.fc-feed-text { min-width: 0; overflow-wrap: anywhere; }
+.fc-feed-text strong { font-weight: 500; color: var(--fc-text-primary); }
+.fc-feed-time { font: 400 13px/20px var(--fc-font-sans); color: var(--fc-text-secondary); text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fc-feed-more { width: 100%; }

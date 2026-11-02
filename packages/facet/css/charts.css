@@ -1,0 +1,475 @@
+/* Facet charts and monitoring [F]. Built only from Facet tokens; load after facet.css.
+   Specs: components/chart-card.md, legend.md, metric-row.md, rank-list.md, meter.md,
+   severity.md, freshness.md, progress.md ("Facet additions"), patterns/data-ops.md.
+   Measurements marked [G] come from the vercel.com app captures (2026-11-01, see
+   reference/inbox-review-2026-11-02/01-dashboard-monitoring.md); the rest are Facet decisions.
+
+   Color jobs, restated only where a selector needs them:
+   - Series use --fc-chart-1..6 in fixed order: gray first, then blue, teal, pink. Never verdict hues or purple.
+   - Thresholds and reference lines are gray. A limit may take the warning or error tone, because that is their job.
+   - Levels, severity and quota states reach color through --fc-status-*, always beside a word or a count. */
+
+/* ================================================================== Series slots
+   Any chart mark reads its color from --_s. Set data-series="1".."6" on the mark or a parent. */
+.fc-chart, .fc-legend { --_s: var(--fc-chart-1); }
+.fc-sparkline { --_s: var(--fc-chart-5); } /* trend at a glance: one gray step below series 1 */
+[data-series="1"] { --_s: var(--fc-chart-1); }
+[data-series="2"] { --_s: var(--fc-chart-2); }
+[data-series="3"] { --_s: var(--fc-chart-3); }
+[data-series="4"] { --_s: var(--fc-chart-4); }
+[data-series="5"] { --_s: var(--fc-chart-5); }
+[data-series="6"] { --_s: var(--fc-chart-6); }
+[data-series="muted"] { --_s: var(--fc-chart-muted); }
+
+/* ================================================================== Chart card
+   Title row (title, optional meta, optional drill link), optional legend, chart area, optional footer.
+   One surface per chart; never nest a card inside it. */
+.fc-chart-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-radius: var(--fc-radius-lg);
+  background: var(--fc-surface-canvas);
+  box-shadow: var(--ds-shadow-border);
+  overflow: hidden;
+}
+.fc-chart-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fc-space-3);
+  padding: var(--fc-space-4) var(--fc-space-4) 0;
+}
+.fc-chart-card-titlerow { display: flex; align-items: flex-start; gap: var(--fc-space-2); min-width: 0; }
+.fc-chart-card-heading { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1 1 auto; }
+.fc-chart-card-title { margin: 0; font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
+.fc-chart-card-meta { font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); }
+/* Drill link: the title's destination. A 24px square icon link with an accessible name. */
+.fc-chart-card-drill {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: var(--fc-control-tiny);
+  height: var(--fc-control-tiny);
+  border-radius: var(--fc-radius-xs);
+  color: var(--fc-text-secondary);
+  transition: background-color var(--fc-duration-fast) ease, color var(--fc-duration-fast) ease;
+}
+.fc-chart-card-drill:hover { background: var(--ds-gray-alpha-200); color: var(--fc-text-primary); }
+.fc-chart-card-drill:focus-visible { box-shadow: var(--ds-focus-ring); }
+.fc-chart-card-drill svg { width: 16px; height: 16px; }
+.fc-chart-card-body { display: flex; flex-direction: column; gap: var(--fc-space-3); padding: var(--fc-space-4); min-width: 0; flex: 1 1 auto; }
+.fc-chart-card-body[data-flush] { padding-inline: var(--fc-space-2); }
+.fc-chart-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fc-space-2);
+  padding: var(--fc-space-3) var(--fc-space-4);
+  border-top: 1px solid var(--fc-border-default);
+  background: var(--fc-surface-subtle);
+}
+.fc-chart-card-footer > .fc-freshness { margin-right: auto; padding: 0; }
+.fc-chart-card-footer > [data-push] { margin-left: auto; }
+
+/* ================================================================== Chart (SVG)
+   <figure class="fc-chart" role="img" aria-label="summary"> holds an <svg aria-hidden="true"> drawn
+   at its real pixel width (no viewBox scaling, so text stays 12px). Horizontal gridlines only. */
+.fc-chart { position: relative; margin: 0; min-width: 0; height: var(--fc-chart-height, 160px); }
+.fc-chart > svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.fc-chart[data-size="small"] { --fc-chart-height: 120px; }
+.fc-chart[data-size="timeline"] { --fc-chart-height: 56px; }
+
+.fc-chart-grid { stroke: var(--fc-chart-grid); stroke-width: 1; shape-rendering: crispEdges; }
+.fc-chart-baseline { stroke: var(--fc-chart-axis); stroke-width: 1; shape-rendering: crispEdges; }
+.fc-chart-tick,
+.fc-chart-label {
+  fill: var(--fc-text-secondary);
+  font: 400 12px/16px var(--fc-font-sans); /* text-label-12 */
+  font-variant-numeric: tabular-nums;
+}
+.fc-chart-label[data-strong] { fill: var(--fc-text-primary); font-weight: 500; }
+/* Knock-out behind any label drawn over marks, so lines never cross text. */
+.fc-chart-knockout { fill: var(--fc-surface-canvas); }
+
+.fc-chart-line { fill: none; stroke: var(--_s); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+.fc-chart-area { fill: var(--_s); fill-opacity: 0.06; stroke: none; }
+.fc-chart-bar { fill: var(--_s); shape-rendering: crispEdges; }
+.fc-chart-point { fill: var(--_s); stroke: var(--fc-surface-canvas); stroke-width: 2; }
+
+/* Incomplete bucket: the last bucket is still filling. Dashed stroke, faint fill, no label needed. */
+.fc-chart-line[data-incomplete] { stroke-dasharray: 2 3; }
+.fc-chart-bar[data-incomplete] {
+  fill: var(--_s);
+  fill-opacity: 0.14;
+  stroke: var(--_s);
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+  shape-rendering: auto;
+}
+
+/* Threshold: a dashed reference line with its value in the axis lane and its name in the plot. */
+.fc-chart-threshold { --_t: var(--fc-text-secondary); }
+.fc-chart-threshold[data-tone="warning"] { --_t: var(--fc-status-warning-solid); }
+.fc-chart-threshold[data-tone="error"]   { --_t: var(--fc-status-error-solid); }
+.fc-chart-threshold line { stroke: var(--_t); stroke-width: 1; stroke-dasharray: 4 3; shape-rendering: crispEdges; }
+.fc-chart-threshold .fc-chart-glyph { stroke: var(--_t); stroke-width: 1.5; stroke-dasharray: 3 2; }
+.fc-chart-threshold text { fill: var(--fc-text-primary); font: 500 12px/16px var(--fc-font-sans); font-variant-numeric: tabular-nums; }
+
+/* Empty chart: axes and gridlines stay, a centered message sits on a knock-out. */
+.fc-chart-empty {
+  position: absolute;
+  inset: 0 0 20px var(--fc-chart-gutter, 40px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.fc-chart-empty > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--fc-space-2);
+  max-width: 32ch;
+  padding: var(--fc-space-2) var(--fc-space-3);
+  background: var(--fc-surface-canvas);
+  text-align: center;
+  font: 400 13px/18px var(--fc-font-sans);
+  color: var(--fc-text-secondary);
+}
+
+/* Table alternative revealed from the card footer. */
+.fc-chart-data[hidden] { display: none; }
+
+/* ================================================================== Legend
+   Default for multi-series charts (owner decision D3): key, name, and the series total for the range.
+   Single-series charts use direct labels instead. */
+.fc-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fc-space-1) var(--fc-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: 400 13px/16px var(--fc-font-sans);
+}
+.fc-legend-item { display: inline-flex; align-items: center; gap: var(--fc-space-1_5); white-space: nowrap; }
+.fc-legend-key { flex: 0 0 auto; width: 8px; height: 8px; border-radius: var(--fc-radius-full); background: var(--_s); }
+.fc-legend[data-key="line"] .fc-legend-key { width: 12px; height: 2px; border-radius: 1px; }
+.fc-legend-name { color: var(--fc-text-primary); font-weight: 500; }
+.fc-legend-value { color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }
+
+/* ================================================================== Sparkline
+   Inline SVG trend with no axes. Lives in a lane whose width is set by the parent grid. */
+.fc-sparkline { display: block; width: 100%; height: var(--fc-sparkline-height, 24px); min-width: 0; }
+.fc-sparkline > svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.fc-sparkline .fc-chart-line { stroke-width: 1.25; }
+
+/* ================================================================== Metric row
+   <dl class="fc-metric-rows"> of <div class="fc-metric-row">. The list owns one grid; each row is a
+   subgrid, so label, value, change and sparkline lanes line up across peers. */
+.fc-metric-rows {
+  display: grid;
+  grid-template-columns: minmax(6rem, max-content) max-content max-content minmax(48px, 1fr);
+  column-gap: var(--fc-space-4);
+  margin: 0;
+}
+.fc-metric-row {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: center;
+  min-height: 48px;
+  padding-block: var(--fc-space-2);
+}
+.fc-metric-row + .fc-metric-row { border-top: 1px solid var(--fc-border-default); }
+.fc-metric-row > dt { font: 400 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); min-width: 0; }
+.fc-metric-row > dd { margin: 0; min-width: 0; }
+.fc-metric-value {
+  text-align: right;
+  font: 500 16px/24px var(--fc-font-sans);
+  letter-spacing: -0.32px;
+  color: var(--fc-text-primary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.fc-metric-value small { font-size: 13px; font-weight: 400; letter-spacing: 0; color: var(--fc-text-secondary); }
+.fc-metric-change { text-align: right; white-space: nowrap; }
+.fc-metric-row .fc-sparkline { --fc-sparkline-height: 24px; }
+
+/* ================================================================== Rank list
+   <ol class="fc-rank-list">: label, magnitude chip (gray fill sized to share, value inside),
+   sparkline, overflow menu. One grid; rows are subgrids so every lane aligns. */
+.fc-rank-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--fc-rank-chip, 72px) var(--fc-rank-spark, 56px) var(--fc-control-tiny);
+  column-gap: var(--fc-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: 400 14px/20px var(--fc-font-sans);
+}
+.fc-rank-row {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: center;
+  min-height: var(--fc-row-body);
+  padding-inline: var(--fc-space-2);
+  border-radius: var(--fc-radius-sm);
+}
+.fc-rank-list[data-striped] .fc-rank-row:nth-child(odd) { background: var(--fc-surface-fill); }
+.fc-rank-label { display: flex; align-items: center; gap: var(--fc-space-2); min-width: 0; color: var(--fc-text-primary); }
+.fc-rank-label > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fc-rank-chip {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: var(--fc-control-tiny);
+  padding: 0 var(--fc-space-2);
+  border-radius: var(--fc-radius-xs);
+  box-shadow: inset 0 0 0 1px var(--fc-border-alpha);
+  overflow: hidden;
+  color: var(--fc-text-primary);
+  font: 500 13px/16px var(--fc-font-sans);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.fc-rank-chip::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--share, 0) * 1%);
+  background: var(--fc-surface-fill-active);
+}
+.fc-rank-list[data-striped] .fc-rank-row:nth-child(odd) .fc-rank-chip { background: var(--fc-surface-canvas); }
+.fc-rank-chip > span { position: relative; }
+.fc-rank-row .fc-sparkline { --fc-sparkline-height: 20px; }
+.fc-rank-row .fc-button[data-size="tiny"] { color: var(--fc-text-secondary); }
+.fc-rank-row .fc-button[data-size="tiny"]:hover { color: var(--fc-text-primary); }
+
+/* ================================================================== Meter (quota)
+   Used against a limit. Gray below the warning threshold, amber from it, red at or over the limit.
+   The numbers are always printed as text; the state word appears once color does. */
+.fc-meter { --_c: var(--fc-surface-contrast); display: flex; flex-direction: column; gap: var(--fc-space-2); min-width: 0; }
+.fc-meter[data-level="warning"] { --_c: var(--fc-status-warning-solid); }
+.fc-meter[data-level="error"]   { --_c: var(--fc-status-error-solid); }
+.fc-meter-head, .fc-meter-foot { display: flex; align-items: baseline; justify-content: space-between; gap: var(--fc-space-3); flex-wrap: wrap; }
+.fc-meter-label { font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
+.fc-meter-value { font: 400 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fc-meter-value > strong { font-weight: 500; color: var(--fc-text-primary); }
+.fc-meter-foot { font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }
+.fc-meter-state { font-weight: 500; }
+.fc-meter[data-level="warning"] .fc-meter-state { color: var(--fc-status-warning-fg); }
+.fc-meter[data-level="error"]   .fc-meter-state { color: var(--fc-status-error-fg); }
+.fc-meter-track {
+  position: relative;
+  height: var(--fc-meter-height, 8px);
+  border-radius: var(--fc-radius-sm);
+  background: var(--fc-surface-fill-hover);
+  overflow: hidden;
+}
+.fc-meter-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(min(var(--value, 0), 100) * 1%);
+  border-radius: inherit;
+  background: var(--_c);
+  transition: width var(--fc-duration-instant) ease-in, background-color var(--fc-duration-instant) ease-in;
+}
+.fc-meter-stop,
+.fc-progress-stop {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--at, 0) * 1%);
+  width: 1px;
+  margin-left: -0.5px;
+  background: var(--fc-surface-canvas);
+}
+
+/* ================================================================== Progress additions (C11)
+   Types follow the hue allocation: success is green (the reference renders it blue). Works on the
+   native <progress> and on the div form, which also takes stops:
+   <div class="fc-progress" role="progressbar" ...><span class="fc-progress-fill" style="--value:62"></span>
+   <span class="fc-progress-stop" style="--at:25"></span></div> */
+.fc-progress { --_c: var(--fc-surface-contrast); position: relative; }
+.fc-progress[data-type="success"],   .fc-progress[data-level="ok"]      { --_c: var(--fc-status-success-solid); }
+.fc-progress[data-type="warning"],   .fc-progress[data-level="warning"] { --_c: var(--fc-status-warning-solid); }
+.fc-progress[data-type="error"],     .fc-progress[data-level="error"]   { --_c: var(--fc-status-error-solid); }
+.fc-progress[data-type="secondary"]  { --_c: var(--fc-chart-5); }
+.fc-progress[data-type]::-webkit-progress-value,
+.fc-progress[data-level]::-webkit-progress-value { background: var(--_c); }
+.fc-progress[data-type]::-moz-progress-bar,
+.fc-progress[data-level]::-moz-progress-bar { background: var(--_c); }
+.fc-progress > .fc-progress-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(min(var(--value, 0), 100) * 1%);
+  border-radius: inherit;
+  background: var(--_c);
+  transition: width var(--fc-duration-instant) ease-in, background-color var(--fc-duration-instant) ease-in;
+}
+.fc-progress[data-height="4"] { height: 4px; }
+.fc-progress-row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--fc-space-3); font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }
+.fc-progress-row > strong { font-weight: 500; color: var(--fc-text-primary); }
+
+/* ================================================================== Severity
+   1 to 4 rising bars plus a word. Gray for low and medium, amber for high, red only for critical. */
+.fc-severity {
+  --_c: var(--fc-chart-5);
+  --_fg: var(--fc-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fc-space-1_5);
+  font: 500 13px/16px var(--fc-font-sans);
+  color: var(--_fg);
+  white-space: nowrap;
+}
+.fc-severity-bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 12px; }
+.fc-severity-bars > i { width: 3px; border-radius: 1px; background: var(--fc-surface-fill-active); }
+.fc-severity-bars > i:nth-child(1) { height: 4px; }
+.fc-severity-bars > i:nth-child(2) { height: 7px; }
+.fc-severity-bars > i:nth-child(3) { height: 10px; }
+.fc-severity-bars > i:nth-child(4) { height: 12px; }
+.fc-severity[data-level="1"] .fc-severity-bars > i:nth-child(-n+1),
+.fc-severity[data-level="2"] .fc-severity-bars > i:nth-child(-n+2),
+.fc-severity[data-level="3"] .fc-severity-bars > i:nth-child(-n+3),
+.fc-severity[data-level="4"] .fc-severity-bars > i:nth-child(-n+4) { background: var(--_c); }
+.fc-severity[data-level="3"] { --_c: var(--fc-status-warning-solid); --_fg: var(--fc-status-warning-fg); }
+.fc-severity[data-level="4"] { --_c: var(--fc-status-error-solid);   --_fg: var(--fc-status-error-fg); }
+
+/* ================================================================== Freshness line
+   One caption under aggregated data: status dot, relative time (exact time on hover), how old it can be. */
+.fc-freshness {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--fc-space-1) var(--fc-space-2);
+  margin: 0;
+  font: 400 13px/18px var(--fc-font-sans);
+  color: var(--fc-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.fc-freshness > .fc-status-dot { width: 8px; height: 8px; }
+.fc-freshness time { color: var(--fc-text-primary); }
+.fc-freshness time[title] { text-decoration: underline dotted var(--fc-border-active); text-underline-offset: 3px; }
+
+/* ================================================================== Level (logs)
+   Dot plus word for log levels and pull status. Info stays gray; color only when it means something. */
+.fc-level {
+  --_c: var(--fc-status-neutral-solid);
+  --_fg: var(--fc-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fc-space-1_5);
+  color: var(--_fg);
+  white-space: nowrap;
+}
+.fc-level::before { content: ""; flex: 0 0 auto; width: 8px; height: 8px; border-radius: var(--fc-radius-full); background: var(--_c); }
+.fc-level[data-level="success"] { --_c: var(--fc-status-success-solid); --_fg: var(--fc-status-success-fg); }
+.fc-level[data-level="warning"] { --_c: var(--fc-status-warning-solid); --_fg: var(--fc-status-warning-fg); }
+.fc-level[data-level="error"]   { --_c: var(--fc-status-error-solid);   --_fg: var(--fc-status-error-fg); }
+
+/* ================================================================== Data operations view
+   Filter rail plus main column (toolbar, timeline, log table). The rail moves above the main column
+   when they no longer fit side by side. */
+.fc-dataops {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--fc-space-6);
+  min-width: 0;
+}
+/* Sidebar layout: the rail keeps 240px beside the main column and takes the full width once they wrap. */
+.fc-dataops-rail { flex: 1 1 240px; max-width: 100%; display: flex; flex-direction: column; gap: var(--fc-space-3); min-width: 0; }
+.fc-dataops-main { flex: 999 1 480px; display: flex; flex-direction: column; gap: var(--fc-space-3); min-width: 0; }
+.fc-dataops-toolbar { display: flex; align-items: center; gap: var(--fc-space-2); min-width: 0; }
+.fc-dataops-toolbar > .fc-input { flex: 1 1 auto; min-width: 0; }
+.fc-dataops-status { font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }
+
+/* Facet group: collapsible filter group. Checkbox, optional dot, label, count. */
+.fc-facet-group { border-radius: var(--fc-radius-sm); box-shadow: inset 0 0 0 1px var(--fc-border-default); }
+.fc-facet-group > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fc-space-2);
+  height: var(--fc-control-small);
+  padding: 0 var(--fc-space-3);
+  border-radius: var(--fc-radius-sm);
+  list-style: none;
+  cursor: pointer;
+  font: 500 13px/16px var(--fc-font-sans);
+  color: var(--fc-text-primary);
+}
+.fc-facet-group > summary::-webkit-details-marker { display: none; }
+.fc-facet-group > summary:hover { background: var(--fc-surface-fill); }
+.fc-facet-group > summary:focus-visible { box-shadow: var(--ds-focus-ring); }
+.fc-facet-group > summary svg { width: 16px; height: 16px; color: var(--fc-text-secondary); transition: transform var(--fc-duration-fast) ease; }
+.fc-facet-group[open] > summary svg { transform: rotate(180deg); }
+.fc-facet-group[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; box-shadow: inset 0 -1px 0 var(--fc-border-default); }
+.fc-facet-list { margin: 0; padding: var(--fc-space-1); list-style: none; }
+.fc-facet {
+  display: grid;
+  grid-template-columns: 16px auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--fc-space-2);
+  min-height: var(--fc-control-small);
+  padding: 0 var(--fc-space-2);
+  border-radius: var(--fc-radius-xs);
+  cursor: pointer;
+  font: 400 13px/16px var(--fc-font-sans);
+  color: var(--fc-text-primary);
+}
+.fc-facet:hover { background: var(--fc-surface-fill); }
+.fc-facet > input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.fc-facet-check {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--fc-radius-xs);
+  background: var(--fc-surface-canvas);
+  box-shadow: inset 0 0 0 1px var(--ds-gray-alpha-500);
+  color: transparent;
+}
+.fc-facet-check svg { width: 12px; height: 12px; }
+.fc-facet > input:checked + .fc-facet-check { background: var(--fc-surface-contrast); box-shadow: none; color: var(--fc-text-inverse); }
+.fc-facet > input:focus-visible + .fc-facet-check { box-shadow: var(--ds-focus-ring); }
+.fc-facet > .fc-level { gap: var(--fc-space-2); color: var(--fc-text-primary); }
+.fc-facet-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fc-facet-count {
+  min-width: 24px;
+  padding: 0 var(--fc-space-1_5);
+  border-radius: var(--fc-radius-full);
+  background: var(--ds-gray-alpha-200);
+  text-align: right;
+  font: 400 12px/18px var(--fc-font-sans);
+  color: var(--fc-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+/* A facet with no dot spans the dot lane with its label. */
+.fc-facet > .fc-facet-check + .fc-facet-label { grid-column: 2 / 4; }
+
+/* Live toggle: a plain bordered button with aria-pressed. A static dot shows state; it never pulses. */
+.fc-live { gap: var(--fc-space-2); }
+.fc-live::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--fc-radius-full);
+  box-shadow: inset 0 0 0 1.5px var(--fc-freshness-unknown);
+}
+.fc-live[aria-pressed="true"] { --_bg: var(--fc-surface-fill); }
+.fc-live[aria-pressed="true"]::before { background: var(--fc-freshness-live); box-shadow: none; }
+
+/* Log table cells. Human-read times are Sans with tabular figures; Mono is for machine values only. */
+.fc-log-time { white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--fc-text-secondary); }
+.fc-log-message { min-width: 16rem; color: var(--fc-text-primary); }
+.fc-log-id { font-family: var(--fc-font-mono); font-size: 12px; color: var(--fc-text-secondary); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fc-meter-fill, .fc-progress > .fc-progress-fill, .fc-facet-group > summary svg, .fc-chart-card-drill { transition: none; }
+}

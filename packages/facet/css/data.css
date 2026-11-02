@@ -1,0 +1,510 @@
+/* Facet data display additions [F]. Loads after components.css:
+     <link rel="stylesheet" href="facet.css"><link rel="stylesheet" href="data.css">
+   Covers: table anatomy (sort, frozen column, selection, row actions, tip affordance),
+   filter bar, pie gauge, middle truncate, relative time card, entity, sheet, stat with basis.
+   Specs: components/table.md ("Facet additions"), filter-params.md, pie-gauge.md,
+   middle-truncate.md, relative-time-card.md, entity.md, sheet.md, stat.md.
+   Measurements marked [G] come from the vercel.com reference captures
+   (reference/inbox-review-2026-11-02/03-components-audit.md); everything else is a Facet call. */
+
+/* ================================================================== Table additions [F] */
+
+/* Sortable header. The <th> carries aria-sort; the label is a <button class="fc-th-sort">.
+   The indicator (chevron in a soft circle) shows only on the sorted column, and as a
+   preview on hover or keyboard focus. Numeric headers put it on the inner (left) side
+   so the label still lines up with the right-aligned values. */
+.fc-th-sort {
+  --_ind: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill-opacity='.16'/%3E%3Cpath d='M5 6.75l3 3 3-3' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fc-space-1);
+  margin: -4px -6px;
+  padding: 4px 6px;
+  border: 0;
+  border-radius: var(--fc-radius-xs);
+  background: none;
+  color: inherit;
+  font: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--fc-duration-fast) ease, background-color var(--fc-duration-fast) ease;
+}
+.fc-th-sort::after {
+  content: "";
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  background: currentColor;
+  opacity: 0;
+  -webkit-mask: var(--_ind) center / contain no-repeat;
+          mask: var(--_ind) center / contain no-repeat;
+  transition: opacity var(--fc-duration-fast) ease, transform var(--fc-duration-fast) ease;
+}
+.fc-th-sort:hover { color: var(--fc-text-primary); background: var(--ds-gray-alpha-100); }
+.fc-th-sort:focus-visible { box-shadow: var(--ds-focus-ring); }
+.fc-th-sort:hover::after,
+.fc-th-sort:focus-visible::after { opacity: .5; }
+th[aria-sort="ascending"] > .fc-th-sort,
+th[aria-sort="descending"] > .fc-th-sort { color: var(--fc-text-primary); }
+th[aria-sort="ascending"] > .fc-th-sort::after,
+th[aria-sort="descending"] > .fc-th-sort::after { opacity: 1; }
+th[aria-sort="ascending"] > .fc-th-sort::after { transform: rotate(180deg); }
+th[data-align="numeric"] > .fc-th-sort,
+th.fc-numeric > .fc-th-sort { flex-direction: row-reverse; }
+
+/* Selection column. <td class="fc-cell-select"><input type="checkbox" class="fc-check" aria-label="Select Mike Gesicki"></td>
+   The cell is the hit target (INT-04): it centers a 16px box in a 40px column. */
+.fc-table .fc-cell-select {
+  width: var(--fc-control-large);
+  min-width: var(--fc-control-large);
+  max-width: var(--fc-control-large);
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+}
+.fc-table .fc-cell-select > label { display: grid; place-items: center; min-height: var(--fc-control-small); cursor: pointer; }
+.fc-check {
+  --_check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.25l2.75 2.75L12 5.5' fill='none' stroke='black' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --_dash: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8h7' fill='none' stroke='black' stroke-width='1.75' stroke-linecap='round'/%3E%3C/svg%3E");
+  appearance: none;
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  border-radius: var(--fc-radius-xs);
+  background: var(--fc-surface-canvas);
+  box-shadow: inset 0 0 0 1px var(--fc-border-hover);
+  vertical-align: middle;
+  cursor: pointer;
+  transition: background-color var(--fc-duration-fast) ease, box-shadow var(--fc-duration-fast) ease;
+}
+.fc-check::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background: var(--fc-text-inverse);
+  -webkit-mask: var(--_check) center / contain no-repeat;
+          mask: var(--_check) center / contain no-repeat;
+  opacity: 0;
+}
+.fc-check:hover { box-shadow: inset 0 0 0 1px var(--fc-border-active); }
+.fc-check:checked,
+.fc-check:indeterminate { background: var(--fc-surface-contrast); box-shadow: none; }
+.fc-check:checked::before { opacity: 1; }
+.fc-check:indeterminate::before { opacity: 1; -webkit-mask-image: var(--_dash); mask-image: var(--_dash); }
+.fc-check:focus-visible { box-shadow: inset 0 0 0 1px var(--fc-border-hover), var(--ds-focus-ring); }
+.fc-check:checked:focus-visible,
+.fc-check:indeterminate:focus-visible { box-shadow: var(--ds-focus-ring); }
+.fc-check:disabled { background: var(--fc-surface-fill); box-shadow: inset 0 0 0 1px var(--fc-border-default); }
+
+/* Checked rows take the fill step; the open (inspected) row keeps aria-selected="true"
+   and gray-200 from components.css. The check mark is the second cue. */
+.fc-table tbody tr:has(> .fc-cell-select :checked),
+.fc-table tbody tr[data-checked] { background: var(--fc-surface-fill); }
+
+/* Row actions. <td class="fc-cell-actions"><button class="fc-button" data-variant="tertiary"
+   data-shape="square" data-size="small" aria-label="More actions for Mike Gesicki">...</button></td>
+   Always visible on touch. With a fine pointer the buttons appear on row hover, and always
+   while any control in the row has focus or a menu is open (aria-expanded). */
+.fc-table .fc-cell-actions {
+  width: 1%;
+  padding-block: 0;
+  text-align: right;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.fc-row-actions { display: inline-flex; align-items: center; justify-content: flex-end; gap: var(--fc-space-1); }
+@media (hover: hover) and (pointer: fine) {
+  .fc-table .fc-row-actions { opacity: 0; transition: opacity var(--fc-duration-instant) ease; }
+  .fc-table tr:hover .fc-row-actions,
+  .fc-table tr:focus-within .fc-row-actions,
+  .fc-table .fc-row-actions:has([aria-expanded="true"]) { opacity: 1; }
+}
+
+/* Frozen first column. Freezes the row-header column (plus the selection column when
+   present) while the rest scrolls inside .fc-table-wrap; a hairline marks the edge.
+   Row fills live on the frozen cells too, so stripes, hover and selection never show a gap. */
+.fc-table[data-sticky-column] { --_select-w: var(--fc-control-large); }
+.fc-table[data-sticky-column] tr { --_cell-bg: var(--fc-surface-canvas); }
+.fc-table[data-sticky-column][data-striped] tbody tr:nth-child(odd) { --_cell-bg: var(--fc-surface-subtle); }
+.fc-table[data-sticky-column] tbody tr:has(> .fc-cell-select :checked),
+.fc-table[data-sticky-column] tbody tr[data-checked] { --_cell-bg: var(--fc-surface-fill); }
+.fc-table[data-sticky-column][data-interactive] tbody tr:hover { --_cell-bg: var(--fc-surface-fill); }
+.fc-table[data-sticky-column] tbody tr[aria-selected="true"] { --_cell-bg: var(--fc-surface-fill-hover); }
+.fc-table[data-sticky-column] tr > :first-child,
+.fc-table[data-sticky-column] tr > .fc-cell-select + * {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--_cell-bg);
+  transition: background-color var(--fc-duration-instant) ease;
+}
+.fc-table[data-sticky-column] tr > .fc-cell-select + * { left: var(--_select-w); }
+.fc-table[data-sticky-column] tr > :first-child:not(.fc-cell-select),
+.fc-table[data-sticky-column] tr > .fc-cell-select + * { box-shadow: inset -1px 0 0 var(--fc-border-default); }
+.fc-table[data-sticky-column] thead tr > :first-child,
+.fc-table[data-sticky-column] thead tr > .fc-cell-select + * { z-index: 3; }
+/* Keyboard focus never lands under the frozen column (INT-02). Set --fc-frozen-width to its rendered width. */
+.fc-table-wrap:has(> .fc-table[data-sticky-column]) { scroll-padding-inline-start: var(--fc-frozen-width, 0px); }
+
+/* Tip affordance. A dotted underline says "this value has an explanation".
+   The trigger is focusable (tabindex="0") and points at its tooltip with aria-describedby. */
+.fc-has-tip {
+  text-decoration: underline dotted var(--ds-gray-600) 1px;
+  text-underline-offset: 3px;
+  cursor: help;
+}
+.fc-has-tip:hover { text-decoration-color: var(--fc-text-secondary); }
+.fc-has-tip:focus-visible { border-radius: var(--fc-radius-xs); }
+
+/* Floating layer. Tooltips, time cards and menus open as popovers (top layer, never clipped by
+   a scrolling table) and are placed by script next to their trigger. This resets the UA popover box. */
+.fc-float[popover] {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  border: 0;
+  overflow: visible;
+  color: var(--fc-text-primary);
+}
+.fc-float[popover]:not(:popover-open) { display: none; }
+
+/* ================================================================== Filter bar [F]
+   Order: search, Add filter, context (readonly), applied chips, suggestions, sort at the end.
+   Add filter reuses .fc-button data-variant="secondary" data-size="small" data-shape="rounded". */
+.fc-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fc-space-2);
+  min-width: 0;
+}
+.fc-filter-search { position: relative; flex: 1 1 100%; min-width: 0; }
+.fc-filter-search > svg {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  color: var(--fc-text-secondary);
+  pointer-events: none;
+}
+.fc-filter-search > .fc-input { padding-left: var(--fc-space-8); }
+@media (min-width: 640px) { .fc-filter-search { flex: 0 1 240px; } }
+
+/* Chip: an applied filter (key + one or more values + remove), a suggestion (dashed, not
+   applied), or readonly context (no remove, optional info). 32px pill [G]. */
+.fc-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  height: var(--fc-control-small);
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--fc-radius-full);
+  background: var(--fc-surface-canvas);
+  box-shadow: 0 0 0 1px var(--fc-border-default);
+  color: var(--fc-text-primary);
+  font: 400 14px/20px var(--fc-font-sans);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.fc-filter-chip svg { flex: 0 0 auto; width: 16px; height: 16px; color: var(--fc-text-secondary); }
+.fc-filter-key { color: var(--fc-text-secondary); }
+.fc-filter-value { color: var(--fc-text-primary); font-weight: 500; overflow: hidden; text-overflow: ellipsis; }
+.fc-filter-value + .fc-filter-value { padding-left: 6px; box-shadow: inset 1px 0 0 var(--fc-border-default); }
+
+/* Applied chip: the chip is a group holding an edit button and a remove button. */
+.fc-filter-chip:has(> .fc-filter-edit) { gap: 0; padding: 0; }
+.fc-filter-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  height: 100%;
+  padding: 0 6px 0 12px;
+  border: 0;
+  border-radius: var(--fc-radius-full) 0 0 var(--fc-radius-full);
+  background: none;
+  color: inherit;
+  font: inherit;
+  white-space: nowrap;
+  transition: background-color var(--fc-duration-fast) ease;
+}
+.fc-filter-edit:hover { background: var(--fc-surface-fill); }
+.fc-filter-edit:focus-visible { box-shadow: var(--ds-focus-ring); border-radius: var(--fc-radius-full); }
+.fc-filter-remove,
+.fc-filter-info {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: var(--fc-control-tiny);
+  height: var(--fc-control-tiny);
+  margin-right: var(--fc-space-1);
+  padding: 0;
+  border: 0;
+  border-radius: var(--fc-radius-full);
+  background: none;
+  color: var(--fc-text-secondary);
+  transition: background-color var(--fc-duration-fast) ease, color var(--fc-duration-fast) ease;
+}
+.fc-filter-remove:hover,
+.fc-filter-info:hover { background: var(--ds-gray-alpha-200); color: var(--fc-text-primary); }
+.fc-filter-remove:focus-visible,
+.fc-filter-info:focus-visible { box-shadow: var(--ds-focus-ring); }
+.fc-filter-chip .fc-filter-remove svg,
+.fc-filter-chip .fc-filter-info svg { width: 14px; height: 14px; color: currentColor; }
+.fc-filter-info { margin-right: -6px; }
+
+/* Suggestion: the whole chip is a button that applies the value. Dashed edge, muted value [G]. */
+button.fc-filter-chip { cursor: pointer; transition: background-color var(--fc-duration-fast) ease; }
+button.fc-filter-chip:hover { background: var(--fc-surface-fill); }
+button.fc-filter-chip:focus-visible { box-shadow: var(--ds-focus-ring); }
+.fc-filter-chip[data-state="suggested"] {
+  box-shadow: none;
+  outline: 1px dashed var(--fc-border-hover);
+  outline-offset: -1px;
+  padding-left: 10px;
+}
+.fc-filter-chip[data-state="suggested"] .fc-filter-value { color: var(--fc-text-secondary); }
+.fc-filter-chip[data-state="suggested"]:focus-visible { outline: 0; }
+.fc-filter-chip[data-state="readonly"] { padding-right: 6px; }
+.fc-filter-chip[data-state="readonly"]:not(:has(.fc-filter-info)) { padding-right: 12px; }
+
+/* Sort control, pushed to the end of the bar. */
+.fc-filter-sort { position: relative; margin-left: auto; flex: 0 0 auto; }
+.fc-filter-sort > svg {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  color: var(--fc-text-secondary);
+  pointer-events: none;
+}
+.fc-filter-sort > .fc-select { width: auto; padding-left: var(--fc-space-8); }
+
+/* ================================================================== Pie gauge [G geometry]
+   <span class="fc-pie" style="--value:67" aria-hidden="true"></span> 4 of 6
+   Ring at 10% of the box, wedge 50% of the box, filling clockwise from 12 o'clock.
+   Inherits currentColor; data-signal maps to a verdict color only when the bands are defined. */
+.fc-pie {
+  --_s: 16px;
+  --_v: clamp(0, var(--value, 0), 100);
+  position: relative;
+  display: inline-block;
+  flex: 0 0 auto;
+  width: var(--_s);
+  height: var(--_s);
+  border-radius: var(--fc-radius-full);
+  box-shadow: inset 0 0 0 calc(var(--_s) * .1) currentColor;
+  vertical-align: -0.2em;
+}
+.fc-pie::after {
+  content: "";
+  position: absolute;
+  inset: 25%;
+  border-radius: var(--fc-radius-full);
+  background: conic-gradient(currentColor calc(var(--_v) * 1%), transparent 0);
+}
+.fc-pie[data-size="13"] { --_s: 13px; }
+.fc-pie[data-size="24"] { --_s: 24px; }
+.fc-pie[data-size="32"] { --_s: 32px; }
+.fc-pie[data-signal="go"]   { color: var(--fc-signal-go-fg); }
+.fc-pie[data-signal="wait"] { color: var(--fc-signal-wait-fg); }
+.fc-pie[data-signal="stop"] { color: var(--fc-signal-stop-fg); }
+/* Pie plus its number as one unit, 8px apart [G]. */
+.fc-pie-value { display: inline-flex; align-items: center; gap: var(--fc-space-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* ================================================================== Middle truncate [F]
+   Two spans split in markup: the start ellipsizes, the end always shows.
+   <span class="fc-truncate" title="full string"><span class="fc-truncate-start">Anytime TD scorer,</span><span class="fc-truncate-end"> 2nd half (incl. OT)</span></span>
+   white-space: pre keeps the space at the split. Cap the width with --fc-truncate-max or a <colgroup>. */
+.fc-truncate {
+  display: inline-flex;
+  min-width: 0;
+  max-width: var(--fc-truncate-max, 100%);
+  white-space: pre;
+  vertical-align: bottom;
+}
+.fc-truncate-start { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.fc-truncate-end { flex: 0 0 auto; }
+.fc-truncate[data-mono] { font-family: var(--fc-font-mono); font-feature-settings: "liga" 0, "calt" 0; }
+
+/* ================================================================== Relative time card [G layout]
+   Trigger: <time class="fc-time fc-has-tip" datetime="..." tabindex="0" aria-describedby="id">2 min ago</time>
+   Card: a .fc-float popover listing the exact time in the viewer's zone, then UTC.
+   Human times are Facet Sans with tabular figures (owner decision D2). */
+.fc-time { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fc-time-card {
+  min-width: 248px;
+  max-width: calc(100vw - 2 * var(--fc-space-4));
+  padding: var(--fc-space-2) var(--fc-space-3);
+  border-radius: var(--fc-radius-sm);
+  background: var(--fc-surface-canvas);
+  box-shadow: var(--ds-shadow-tooltip);
+  font: 400 13px/20px var(--fc-font-sans);
+  font-variant-numeric: tabular-nums;
+}
+.fc-time-card-head { margin: 0 0 var(--fc-space-1); color: var(--fc-text-secondary); }
+.fc-time-rows {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr) max-content;
+  align-items: center;
+  gap: var(--fc-space-1) var(--fc-space-2);
+  margin: 0;
+}
+.fc-time-row { display: contents; }
+.fc-time-row > dd { margin: 0; }
+.fc-time-zone {
+  justify-self: start;
+  padding: 0 var(--fc-space-1);
+  border-radius: var(--fc-radius-xs);
+  background: var(--fc-surface-fill);
+  color: var(--fc-text-secondary);
+  font: 400 12px/18px var(--fc-font-sans);
+}
+.fc-time-date { color: var(--fc-text-primary); white-space: nowrap; }
+.fc-time-clock { color: var(--fc-text-secondary); text-align: right; white-space: nowrap; }
+
+/* ================================================================== Entity [G]
+   A descriptive row: leading visual (.fc-icon-tile, avatar or checkbox), title, description,
+   then one or two actions. Rows share hairlines inside .fc-entity-list. */
+.fc-entity-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-radius: var(--fc-radius-md);
+  box-shadow: 0 0 0 1px var(--fc-border-default);
+  overflow: hidden;
+}
+.fc-entity {
+  display: flex;
+  align-items: center;
+  gap: var(--fc-space-4);
+  min-height: 72px;
+  padding: var(--fc-space-4);
+  background: var(--fc-surface-canvas);
+  min-width: 0;
+}
+.fc-entity-list > .fc-entity + .fc-entity { box-shadow: inset 0 1px 0 var(--fc-border-default); }
+button.fc-entity { width: 100%; border: 0; text-align: left; font: inherit; color: inherit; cursor: pointer; transition: background-color var(--fc-duration-fast) ease; }
+button.fc-entity:hover { background: var(--fc-surface-fill); }
+.fc-entity-content { display: flex; flex: 1 1 auto; flex-direction: column; min-width: 0; }
+.fc-entity-title,
+.fc-entity-desc { margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fc-entity-title { font: 600 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
+.fc-entity-desc { display: flex; align-items: center; gap: 6px; font: 400 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }
+.fc-entity-desc .fc-status-dot { width: 8px; height: 8px; }
+.fc-entity-meta { flex: 0 0 auto; font: 400 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fc-entity-actions { display: flex; flex: 0 0 auto; align-items: center; gap: var(--fc-space-2); margin-left: auto; }
+@media (max-width: 480px) {
+  .fc-entity { gap: var(--fc-space-3); padding: var(--fc-space-3); }
+  .fc-entity-meta { display: none; }
+}
+
+/* ================================================================== Sheet [G anatomy, F behavior]
+   <dialog class="fc-sheet" aria-labelledby="title-id"> opened with showModal(): the page behind
+   is inert, Escape closes, focus returns to the trigger. Inset floating panel, 12px from the
+   edges, 16px radius, 512px wide, 24px padding [G]; modal material shadow. */
+.fc-sheet {
+  position: fixed;
+  z-index: var(--fc-z-drawer);
+  inset: var(--fc-space-3) var(--fc-space-3) var(--fc-space-3) auto;
+  display: flex;
+  flex-direction: column;
+  width: min(512px, calc(100% - 2 * var(--fc-space-3)));
+  height: auto;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--fc-radius-xl);
+  background: var(--fc-surface-canvas);
+  box-shadow: var(--ds-shadow-modal);
+  color: var(--fc-text-primary);
+  overflow: hidden;
+}
+dialog.fc-sheet:not([open]) { display: none; }
+.fc-sheet[data-side="left"] { inset: var(--fc-space-3) auto var(--fc-space-3) var(--fc-space-3); }
+.fc-sheet::backdrop {
+  background: var(--ds-overlay-backdrop-color);
+  opacity: var(--ds-overlay-backdrop-opacity);
+}
+.fc-sheet-backdrop { position: fixed; inset: 0; z-index: var(--fc-z-drawer); background: var(--ds-overlay-backdrop-color); opacity: var(--ds-overlay-backdrop-opacity); }
+:root:has(dialog.fc-sheet:modal) { overflow: hidden; }
+
+.fc-sheet-header { display: flex; flex-direction: column; gap: var(--fc-space-3); padding: var(--fc-space-6) var(--fc-space-6) 0; }
+.fc-sheet-titlebar { display: flex; align-items: flex-start; gap: var(--fc-space-4); }
+.fc-sheet-titles { display: flex; flex: 1 1 auto; flex-direction: column; gap: var(--fc-space-1); min-width: 0; }
+.fc-sheet-title { margin: 0; overflow-wrap: anywhere; }
+.fc-sheet-subtitle { margin: 0; color: var(--fc-text-secondary); }
+.fc-sheet-close { flex: 0 0 auto; margin: -4px -8px 0 0; }
+.fc-sheet-badges { display: flex; flex-wrap: wrap; align-items: center; gap: var(--fc-space-2); }
+.fc-sheet-tabs { flex: 0 0 auto; margin-top: var(--fc-space-2); padding-inline: var(--fc-space-6); }
+.fc-sheet-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: var(--fc-space-6);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.fc-sheet-body:focus-visible { box-shadow: inset 0 0 0 2px var(--fc-focus-color); border-radius: 0; }
+.fc-sheet-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--fc-space-2);
+  margin-top: auto;
+  padding: var(--fc-space-4) var(--fc-space-6) var(--fc-space-6);
+  box-shadow: inset 0 1px 0 var(--fc-border-default);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .fc-sheet[open] { animation: fc-sheet-in var(--fc-duration-overlay) var(--fc-ease-standard); }
+  .fc-sheet[data-side="left"][open] { animation-name: fc-sheet-in-left; }
+  .fc-sheet[open]::backdrop { animation: fc-backdrop-in var(--fc-duration-overlay) var(--fc-ease-standard); }
+}
+@keyframes fc-sheet-in { from { transform: translateX(var(--fc-space-4)); opacity: 0; } }
+@keyframes fc-sheet-in-left { from { transform: translateX(calc(-1 * var(--fc-space-4))); opacity: 0; } }
+@keyframes fc-backdrop-in { from { opacity: 0; } }
+
+/* ================================================================== Stat with basis [F]
+   One reading unit: label, figure (value plus qualifier), basis (sample, window, source).
+   <div class="fc-stat"><p class="fc-stat-label">Hit rate</p>
+     <p class="fc-stat-figure"><span class="fc-stat-value">55%</span><span class="fc-stat-qualifier">23 of 42</span></p>
+     <p class="fc-stat-basis">Settled picks, Weeks 1 to 8</p></div>
+   Existing .fc-stat-value and .fc-stat-detail keep working. */
+.fc-stat { justify-content: flex-start; }
+.fc-stat > * { margin: 0; }
+.fc-stat-figure { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 6px; min-width: 0; }
+.fc-stat-qualifier { font: 400 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }
+.fc-stat-basis { font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; text-wrap: pretty; }
+
+/* Shared hairline cells: every edge drawn once, the strip wraps into rows without a card per metric.
+   Each cell paints a 1px spread into the 1px gap; the strip clips the outside and draws one rounded ring. */
+.fc-stat-strip[data-variant="cells"] {
+  position: relative;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: 1px;
+  border-radius: var(--fc-radius-sm);
+  overflow: hidden;
+}
+.fc-stat-strip[data-variant="cells"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--fc-border-default);
+  pointer-events: none;
+}
+.fc-stat-strip[data-variant="cells"] > .fc-stat {
+  padding: var(--fc-space-4) var(--fc-space-5);
+  box-shadow: 0 0 0 1px var(--fc-border-default);
+}

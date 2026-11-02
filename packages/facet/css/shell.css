@@ -1,0 +1,406 @@
+/* Facet app shell [F, measured on rank 1 dashboard captures]
+   Source: reference/inbox-review-2026-11-02/01-dashboard-monitoring.md, sections 1 and 2.
+   Depends on tokens.css, base.css and components.css (.fc-button, .fc-select, .fc-status).
+
+   B1  .fc-shell        sidenav (232) + main column; .fc-topbar (48) holds scope, breadcrumb, global actions
+       .fc-sidenav      drill-in navigation with groups, labels and one active item
+       .fc-scope        scope switcher (name + up/down chevrons) opening a .fc-dropdown
+       .fc-breadcrumbs  slash breadcrumb, centered in the top bar
+       .fc-dropdown     menu panel shared by the scope switcher and header overflow buttons
+   B2  .fc-page-header  title form (title + description + link) or controls form (scope left, actions right)
+   B3  .fc-range-select one compound control with a leading icon cell (week, window, time range)
+
+   Layout sizes read proposed tokens with their measured values as fallbacks:
+   --fc-shell-sidenav-width (232px), --fc-shell-topbar-height (48px).
+   Narrow layout is a container query on the shell itself, so an embedded shell (docs, previews)
+   collapses by its own width, exactly as a full-window shell collapses by the viewport. */
+
+/* ================================================================== B1 App shell */
+.fc-shell {
+  --_nav-w: var(--fc-shell-sidenav-width, 232px);
+  --_bar-h: var(--fc-shell-topbar-height, 48px);
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  min-height: 100dvh;
+  background: var(--fc-surface-canvas);
+  color: var(--fc-text-primary);
+  container: fc-shell / inline-size;
+}
+.fc-shell-main { grid-column: 2; grid-row: 1; display: flex; flex-direction: column; min-width: 0; }
+.fc-shell-content {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: var(--fc-space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--fc-space-6);
+}
+.fc-shell-content > * { min-width: 0; }
+
+/* Embedded: a shell drawn inside a page (specimen, docs, screenshots). Same anatomy, framed. */
+.fc-shell[data-embedded] {
+  min-height: 0;
+  border-radius: var(--fc-radius-lg);
+  box-shadow: var(--ds-shadow-border);
+  overflow: clip;
+  isolation: isolate;
+}
+
+/* ------------------------------------------------------------------ Side navigation */
+.fc-sidenav {
+  grid-column: 1;
+  grid-row: 1;
+  width: var(--_nav-w);
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--fc-surface-canvas);
+  box-shadow: inset -1px 0 0 var(--fc-border-default);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.fc-shell[data-embedded] .fc-sidenav { position: relative; height: auto; }
+
+.fc-sidenav-head {
+  display: flex;
+  align-items: center;
+  gap: var(--fc-space-2);
+  height: var(--_bar-h);
+  padding: 0 var(--fc-space-4);
+  flex: 0 0 auto;
+  font: 500 14px/20px var(--fc-font-sans);
+  color: var(--fc-text-primary);
+}
+.fc-sidenav-head svg { flex: 0 0 auto; width: 16px; height: 16px; }
+
+/* One level of navigation. A drill-in swaps levels; only one is visible at a time. */
+.fc-sidenav-level { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; padding: var(--fc-space-2); }
+.fc-sidenav-level[hidden] { display: none; }
+.fc-sidenav-list { display: flex; flex-direction: column; gap: 2px; margin: 0; padding: 0; list-style: none; }
+
+.fc-sidenav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--fc-space-2);
+  width: 100%;
+  height: var(--fc-control-small);
+  padding: 0 var(--fc-space-2);
+  border: 0;
+  border-radius: var(--fc-radius-sm);
+  background: transparent;
+  color: var(--fc-text-secondary);
+  font: 400 14px/20px var(--fc-font-sans);
+  text-align: left;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--fc-duration-fast) ease, color var(--fc-duration-fast) ease;
+}
+.fc-sidenav-item > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.fc-sidenav-item svg { flex: 0 0 auto; width: 16px; height: 16px; }
+.fc-sidenav-item:hover { background: var(--fc-surface-fill); color: var(--fc-text-primary); }
+.fc-sidenav-item[aria-current="page"] { background: var(--fc-surface-fill-hover); color: var(--fc-text-primary); }
+.fc-sidenav-item:focus-visible { box-shadow: var(--ds-focus-ring); }
+/* Trailing chevron on items that drill into a section. */
+.fc-sidenav-item-end { margin-left: auto; color: var(--fc-text-secondary); }
+
+/* Groups: a full-bleed hairline between groups at the top level, a sentence-case label inside a section. */
+.fc-sidenav-rule { height: 1px; margin: var(--fc-space-2) calc(-1 * var(--fc-space-2)); border: 0; background: var(--fc-border-default); }
+.fc-sidenav-label {
+  margin: 0;
+  padding: var(--fc-space-4) var(--fc-space-2) var(--fc-space-1_5);
+  font: 400 12px/16px var(--fc-font-sans);
+  color: var(--fc-text-secondary);
+}
+.fc-sidenav-label:first-child { padding-top: var(--fc-space-2); }
+
+/* Drill-in header: back button, centered section title, balancing spacer. */
+.fc-sidenav-back {
+  display: grid;
+  grid-template-columns: var(--fc-control-small) minmax(0, 1fr) var(--fc-control-small);
+  align-items: center;
+  margin-bottom: var(--fc-space-2);
+}
+.fc-sidenav-back > :nth-child(2) {
+  margin: 0;
+  text-align: center;
+  font: 500 14px/20px var(--fc-font-sans);
+  color: var(--fc-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Pinned to the bottom of the rail: freshness, the signed-in user. */
+.fc-sidenav-foot {
+  margin-top: auto;
+  padding: var(--fc-space-3) var(--fc-space-4);
+  box-shadow: inset 0 1px 0 var(--fc-border-default);
+}
+.fc-sidenav-foot .fc-status { font-size: 13px; line-height: 18px; color: var(--fc-text-secondary); }
+
+/* ------------------------------------------------------------------ Top bar */
+.fc-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, auto) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--fc-space-3);
+  height: var(--_bar-h);
+  padding: 0 var(--fc-space-3);
+  background: var(--fc-surface-canvas);
+  box-shadow: inset 0 -1px 0 var(--fc-border-default);
+}
+.fc-shell[data-embedded] .fc-topbar { position: relative; }
+.fc-topbar-start, .fc-topbar-actions { display: flex; align-items: center; gap: var(--fc-space-1); min-width: 0; }
+.fc-topbar-actions { justify-self: end; }
+.fc-topbar > .fc-breadcrumbs { justify-self: center; }
+
+/* Menu button that opens the navigation on narrow screens. Hidden while the rail is visible. */
+.fc-shell-toggle { display: none; }
+.fc-shell-toggle[aria-expanded="true"] .fc-shell-toggle-open,
+.fc-shell-toggle:not([aria-expanded="true"]) .fc-shell-toggle-close { display: none; }
+
+/* ------------------------------------------------------------------ Scope switcher */
+.fc-scope { position: relative; display: inline-flex; min-width: 0; }
+.fc-scope-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fc-space-1_5);
+  min-width: 0;
+  height: var(--fc-control-small);
+  padding: 0 var(--fc-space-1_5) 0 var(--fc-space-2);
+  border: 0;
+  border-radius: var(--fc-radius-sm);
+  background: transparent;
+  color: var(--fc-text-primary);
+  font: 500 14px/20px var(--fc-font-sans);
+  white-space: nowrap;
+  transition: background-color var(--fc-duration-fast) ease;
+}
+.fc-scope-trigger:hover, .fc-scope-trigger[aria-expanded="true"] { background: var(--fc-surface-fill); }
+.fc-scope-trigger:focus-visible { box-shadow: var(--ds-focus-ring); }
+.fc-scope-trigger > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; }
+.fc-scope-trigger svg { flex: 0 0 auto; width: 16px; height: 16px; color: var(--fc-text-secondary); }
+
+/* ------------------------------------------------------------------ Breadcrumbs
+   Parent links secondary, current page primary, slash separators that screen readers skip. */
+.fc-breadcrumbs { min-width: 0; font: 400 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); }
+.fc-breadcrumbs ol { display: flex; align-items: center; gap: var(--fc-space-2); min-width: 0; margin: 0; padding: 0; list-style: none; }
+.fc-breadcrumbs li { display: flex; align-items: center; gap: var(--fc-space-2); min-width: 0; white-space: nowrap; }
+.fc-breadcrumbs li + li::before { content: "/" / ""; color: var(--ds-gray-500); }
+.fc-breadcrumbs li:last-child { overflow: hidden; }
+.fc-breadcrumbs a { color: inherit; text-decoration: none; border-radius: var(--fc-radius-xs); }
+.fc-breadcrumbs a:hover { color: var(--fc-text-primary); }
+.fc-breadcrumbs [aria-current="page"] { color: var(--fc-text-primary); overflow: hidden; text-overflow: ellipsis; }
+
+/* ------------------------------------------------------------------ Dropdown menu
+   material-menu surface, 6px inset, 36px rows (popover row tokens), opens in 200ms on the swift curve.
+   <div class="fc-dropdown" role="menu" hidden> with .fc-dropdown-item rows (menuitem / menuitemradio). */
+.fc-dropdown {
+  position: absolute;
+  top: calc(100% + var(--fc-space-1));
+  left: 0;
+  z-index: var(--fc-z-menu);
+  display: flex;
+  flex-direction: column;
+  min-width: 220px;
+  max-width: min(320px, calc(100vw - 2 * var(--fc-space-4)));
+  padding: var(--fc-space-1_5);
+  border-radius: var(--fc-radius-lg);
+  background: var(--fc-surface-canvas);
+  box-shadow: var(--ds-shadow-menu);
+  transform-origin: top left;
+  animation: fc-dropdown-in var(--fc-duration-popover) var(--fc-ease-swift);
+}
+.fc-dropdown[hidden] { display: none; }
+.fc-dropdown[data-align="end"] { left: auto; right: 0; transform-origin: top right; }
+@keyframes fc-dropdown-in { from { opacity: 0; transform: translateY(-4px) scale(0.98); } }
+
+.fc-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--fc-space-2);
+  width: 100%;
+  min-height: 36px;
+  padding: 0 var(--fc-space-2);
+  border: 0;
+  border-radius: var(--fc-radius-sm);
+  background: transparent;
+  color: var(--fc-text-primary);
+  font: 400 14px/20px var(--fc-font-sans);
+  text-align: left;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.fc-dropdown-item:hover, .fc-dropdown-item:focus-visible { background: var(--fc-surface-fill); box-shadow: none; }
+.fc-dropdown-item svg { flex: 0 0 auto; width: 16px; height: 16px; color: var(--fc-text-secondary); }
+.fc-dropdown-item-detail { margin-left: auto; padding-left: var(--fc-space-4); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }
+/* The selected option carries a check; it is also announced through aria-checked. */
+.fc-dropdown-item[role="menuitemradio"]::after { content: ""; flex: 0 0 16px; width: 16px; height: 16px; }
+.fc-dropdown-item[aria-checked="true"]::after {
+  background: var(--fc-text-primary);
+  -webkit-mask: var(--_check) center / 16px no-repeat;
+  mask: var(--_check) center / 16px no-repeat;
+}
+.fc-dropdown { --_check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E"); }
+.fc-dropdown-item[data-variant="danger"] { color: var(--fc-status-error-fg); }
+.fc-dropdown-item[data-variant="danger"] svg { color: currentColor; }
+.fc-dropdown-item:disabled, .fc-dropdown-item[aria-disabled="true"] { color: var(--fc-text-disabled); background: transparent; }
+.fc-dropdown-label { padding: var(--fc-space-2) var(--fc-space-2) var(--fc-space-1); font: 400 12px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
+.fc-dropdown-rule { height: 1px; margin: var(--fc-space-1_5) calc(-1 * var(--fc-space-1_5)); border: 0; background: var(--fc-border-default); }
+
+/* ================================================================== B2 Page header
+   Title form: heading + description (+ link), optional actions aligned to the heading.
+   Controls form (data-variant="controls"): no heading; scope controls left, actions right,
+   the overflow button last. Use it when the top bar already names the page. */
+.fc-page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--fc-space-4) var(--fc-space-6);
+  min-width: 0;
+}
+.fc-page-header-text { display: flex; flex-direction: column; gap: var(--fc-space-2); flex: 1 1 min(100%, 480px); min-width: 0; }
+.fc-page-header-text > h1, .fc-page-header-text > h2 { margin: 0; overflow-wrap: anywhere; }
+.fc-page-header-description { margin: 0; max-width: 68ch; color: var(--fc-text-secondary); }
+.fc-page-header-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--fc-text-link);
+  text-decoration: none;
+  white-space: nowrap;
+  border-radius: var(--fc-radius-xs);
+}
+.fc-page-header-link:hover { text-decoration: underline; }
+.fc-page-header-link svg { width: 14px; height: 14px; }
+.fc-page-header-scope, .fc-page-header-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--fc-space-2); min-width: 0; }
+.fc-page-header-actions { margin-left: auto; }
+/* In the title form the actions sit level with a 40px heading line (text-heading-32). */
+.fc-page-header:not([data-variant="controls"]) > .fc-page-header-actions { margin-top: var(--fc-space-1); }
+.fc-page-header[data-variant="controls"] { align-items: center; gap: var(--fc-space-2) var(--fc-space-4); }
+/* Selects size to their content inside a controls row instead of filling it. */
+.fc-page-header .fc-select { width: auto; max-width: 100%; }
+.fc-page-header-overflow { position: relative; display: inline-flex; }
+
+/* ================================================================== B3 Range select
+   <div class="fc-range-select"> icon cell | native select (or a button for a custom picker) | chevron.
+   One ring around the whole control, the icon cell draws its own right rule. 32 / 36 / 40. */
+.fc-range-select {
+  --_h: var(--fc-control-medium);
+  --_r: var(--fc-radius-sm);
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  max-width: 100%;
+  min-width: 0;
+  height: var(--_h);
+  border-radius: var(--_r);
+  background: var(--fc-surface-canvas);
+  box-shadow: 0 0 0 1px var(--fc-border-alpha);
+  color: var(--fc-text-primary);
+  transition: box-shadow var(--fc-duration-fast) ease;
+}
+.fc-range-select:hover { box-shadow: 0 0 0 1px var(--ds-gray-alpha-500); }
+.fc-range-select:focus-within { box-shadow: var(--ds-focus-border); }
+.fc-range-select[data-size="small"] { --_h: var(--fc-control-small); }
+.fc-range-select[data-size="large"] { --_h: var(--fc-control-large); --_r: var(--fc-radius-md); }
+
+.fc-range-select-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: var(--_h);
+  color: var(--fc-text-secondary);
+  box-shadow: inset -1px 0 0 var(--fc-border-alpha);
+  pointer-events: none;
+}
+.fc-range-select-icon svg { width: 16px; height: 16px; }
+
+.fc-range-select-control {
+  appearance: none;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0 calc(var(--fc-space-8)) 0 var(--fc-space-3);
+  border: 0;
+  border-radius: 0 var(--_r) var(--_r) 0;
+  background: transparent;
+  color: inherit;
+  font: 400 14px/20px var(--fc-font-sans);
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+.fc-range-select-control:focus-visible { box-shadow: none; }
+.fc-range-select-control option { background: var(--fc-surface-canvas); color: var(--fc-text-primary); }
+.fc-range-select[data-size="large"] .fc-range-select-control { font-size: 16px; line-height: 24px; }
+.fc-range-select-chevron {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  color: var(--fc-text-secondary);
+  pointer-events: none;
+}
+.fc-range-select:has(:disabled) { background: var(--fc-surface-fill); color: var(--fc-text-disabled); }
+.fc-range-select:has(:disabled) .fc-range-select-control { cursor: not-allowed; }
+
+/* ================================================================== Narrow shell
+   Under 768px of shell width the rail leaves the grid and opens as a top sheet from the menu button. */
+@container fc-shell (max-width: 767px) {
+  /* The sheet shares the main column's grid cell and sticks under the top bar, so it opens
+     where the reader is even after scrolling. (The shell is a size container, which would trap
+     position: fixed, so the sheet stays in flow.) */
+  .fc-shell-main { grid-column: 1 / -1; }
+  .fc-sidenav {
+    display: none;
+    grid-column: 1 / -1;
+    align-self: start;
+    position: sticky;
+    top: var(--_bar-h);
+    margin-top: var(--_bar-h);
+    z-index: var(--fc-z-drawer);
+    width: auto;
+    height: auto;
+    max-height: calc(100dvh - var(--_bar-h));
+    border-radius: 0 0 var(--fc-radius-lg) var(--fc-radius-lg);
+    box-shadow: var(--ds-shadow-menu);
+    animation: fc-sheet-in var(--fc-duration-overlay) var(--fc-ease-swift);
+  }
+  .fc-shell[data-nav="open"] .fc-sidenav { display: flex; }
+  .fc-sidenav-head { display: none; }
+  .fc-shell-toggle { display: inline-flex; }
+
+  .fc-topbar { grid-template-columns: auto minmax(0, 1fr) auto; gap: var(--fc-space-2); padding: 0 var(--fc-space-2); }
+  .fc-topbar > .fc-breadcrumbs { justify-self: start; }
+  .fc-topbar-label {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+  .fc-topbar-actions .fc-button:has(.fc-topbar-label) { width: var(--fc-control-small); padding: 0; }
+  .fc-shell-content { padding: var(--fc-space-4); }
+}
+@container fc-shell (max-width: 479px) {
+  /* Keep only the current page; the parent is one tap away in the rail. */
+  .fc-topbar .fc-breadcrumbs li:not(:last-child) { display: none; }
+}
+@keyframes fc-sheet-in { from { opacity: 0; transform: translateY(-8px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .fc-dropdown, .fc-sidenav { animation: none; }
+  .fc-sidenav-item, .fc-scope-trigger, .fc-range-select { transition: none; }
+}

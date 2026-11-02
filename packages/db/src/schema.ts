@@ -29,8 +29,6 @@ export const books = pgTable('books', {
 export const markets = pgTable('markets', {
   id: text().primaryKey(),
   label: text().notNull(),
-  kind: text().notNull(),
-  scope: text().notNull(),
 });
 
 // ---------------------------------------------------------------- Entities
@@ -61,8 +59,6 @@ export const games = pgTable('games', {
   status: text().notNull().default('scheduled'),
   awayScore: smallint(),
   homeScore: smallint(),
-  /** When this game's odds were last pulled; each game keeps its own cadence (core oddsIntervalMinutes). */
-  oddsPulledAt: tstz(),
   updatedAt: createdAt(),
 }, (t) => [index().on(t.kickoffAt), index().on(t.season, t.week)]);
 
@@ -85,7 +81,7 @@ const selection = {
   playerId: text().references(() => players.id),
   /** The name exactly as the provider sent it, kept when no player matched. */
   playerName: text(),
-  /** yes, over, under */
+  /** yes (anytime TD is one-sided) */
   side: text().notNull(),
   line: doublePrecision(),
 };
@@ -115,7 +111,17 @@ export const oddsLatest = pgTable('odds_latest', {
   pulledAt: tstz().notNull(),
   /** False once a book stops offering the selection (suspended or pulled). */
   available: boolean().notNull().default(true),
+  /** The book's slip link that adds this pick, when the provider sends one. Never places anything. */
+  link: text(),
 }, (t) => [primaryKey({ columns: [t.selectionKey, t.bookId] }), index().on(t.gameId)]);
+
+/** Odds pulls taken on the snapshot schedule ("sat:2026-11-07", "freeze:<gameId>"), so none repeats. */
+export const oddsSlots = pgTable('odds_slots', {
+  slot: text().primaryKey(),
+  runId: text().notNull(),
+  games: integer().notNull(),
+  pulledAt: tstz().notNull(),
+});
 
 // ---------------------------------------------------------------- Model output
 
@@ -130,7 +136,7 @@ export const estimates = pgTable('estimates', {
   computedAt: tstz().notNull(),
 }, (t) => [index().on(t.selectionKey, t.computedAt)]);
 
-/** The current slate: one row per selection, rebuilt after each odds pull. */
+/** The current board: one row per selection, rebuilt after each odds pull (core appraise()). */
 export const picks = pgTable('picks', {
   selectionKey: text().primaryKey(),
   gameId: text().notNull().references(() => games.id),
@@ -139,21 +145,32 @@ export const picks = pgTable('picks', {
   playerName: text(),
   side: text().notNull(),
   line: doublePrecision(),
-  bestBookId: text().notNull().references(() => books.id),
-  bestPrice: doublePrecision().notNull(),
-  /** Priced chance at the best price, vig included. */
+  /** The posted price at the purchase book (DraftKings). */
+  bookId: text().notNull().references(() => books.id),
+  price: doublePrecision().notNull(),
+  /** Implied chance of the posted price, cut included. */
   priced: doublePrecision().notNull(),
-  estimate: doublePrecision().notNull(),
+  /** Market fair chance behind the posted price. */
+  fair: doublePrecision().notNull(),
+  /** Our hit chance. */
+  hitChance: doublePrecision().notNull(),
+  /** Confidence in the read, 0 to 100. */
+  clarity: integer().notNull(),
+  /** Our chance minus the fair chance, in points. */
+  carat: doublePrecision().notNull(),
+  /** Our chance minus the posted price's chance, in points. Above zero clears the cut. */
+  gapToPosted: doublePrecision().notNull(),
+  /** gem, fools-gold, none, unrated */
+  kind: text().notNull(),
+  /** 0 to 100 for a gem, otherwise null. */
+  rating: integer(),
+  /** Hit chance times clarity, the Recommended sort. Null outside gems. */
+  recommended: doublePrecision(),
   model: text().notNull(),
-  gapPts: integer().notNull(),
-  /** rough, cut, polished, flawless, or null when the gap is under 1 point */
-  tier: text(),
-  signals: jsonb().$type<Record<string, string>>().notNull(),
-  /** go, wait, stop, none */
-  verdict: text().notNull(),
+  link: text(),
   runId: text().notNull(),
   updatedAt: tstz().notNull(),
-}, (t) => [index().on(t.gapPts), index().on(t.gameId)]);
+}, (t) => [index().on(t.gameId), index().on(t.kind)]);
 
 // ---------------------------------------------------------------- Results and bets
 

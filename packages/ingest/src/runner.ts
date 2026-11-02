@@ -126,7 +126,7 @@ export async function runJob(name: string, opts: RunOptions): Promise<RunResult>
     const outcome = await job.run(ctx);
     const requestCount = https.reduce((n, h) => n + h.requestCount, 0);
     if ('skipped' in outcome) {
-      // Skips are not pull-log entries: a cadence check every 5 minutes would bury the real runs.
+      // Skips are not pull-log entries: a schedule check every 5 minutes would bury the real runs.
       await db.delete(runs).where(eq(runs.id, runId!));
       if (opts.echo) console.log(JSON.stringify({ job: name, status: 'skipped', reason: outcome.skipped }));
       return { job: name, runId: null, status: 'skipped', message: outcome.skipped, durationMs: Date.now() - started };

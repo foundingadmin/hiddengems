@@ -7,8 +7,8 @@ favors clarity and cheap operation over scale.
 ## Workspace
 
 ```
-apps/web/          Next.js app: slate, data health, cron routes (Vercel, Root Directory apps/web)
-packages/core/     Domain rules, no I/O: odds math, markets, gap, tiers, verdicts, pull cadence, game ids
+apps/web/          Next.js app: Gems, Slips, Ask the Jeweler, data health, cron routes (Vercel, Root Directory apps/web)
+packages/core/     Domain rules, no I/O: odds math, gem rating, Fool's Gold, Recommended order, snapshot schedule, game ids
 packages/db/       Postgres schema (Drizzle), migrations, client, reference seed
 packages/ingest/   Provider adapters, jobs, the job runner and the run log, CLI
 packages/facet/    Design system, plus the NFL team kit (colors, logos, name resolver)
@@ -30,17 +30,42 @@ providers ──> jobs (ingest) ──> Postgres ──> pages (web)
 
 | Job | Source | Writes | Cron (UTC) |
 |---|---|---|---|
-| `pull-schedule` | SportsDataIO | `games`, `provider_refs` | Daily 09:17 |
-| `pull-rosters` | SportsDataIO | `players` (team, position, jersey number), `provider_refs` | Daily 09:23 |
-| `pull-odds` | The Odds API | `odds_snapshots` (history), `odds_latest` (current), `games.odds_pulled_at` | Every 5 minutes |
-| `build-picks` | after every odds pull | `estimates` (history), `picks` (current slate) | Follows `pull-odds` |
-| `pull-results` | SportsDataIO | `player_game_stats`; settles `bets`, records closing prices | Hourly at :41 |
+| `pull-schedule` | nflverse | `games`, `provider_refs` | Daily 09:17 |
+| `pull-rosters` | nflverse | `players` (team, position, jersey number), `provider_refs` | Daily 09:23 |
+| `pull-odds` | The Odds API | `odds_snapshots` (history), `odds_latest` (current, with slip links), `odds_slots` | Every 5 minutes, pulls only on the snapshot schedule |
+| `build-picks` | after every odds pull | `estimates` (history), `picks` (the board: gem rating, Fool's Gold, Recommended order) | Follows `pull-odds` |
+| `pull-results` | nflverse | `player_game_stats` (backfills the season on first run); settles `bets`, records closing prices | Daily 10:41 |
 
-Cron runs every job often and lets the job decide. `pull-odds` fires every 5 minutes, but each game
-is pulled on its own cadence (`core/src/cadence.ts`): every 5 minutes within 6 hours of kickoff
-and during games, hourly within 3 days, every 6 hours otherwise. Daylight saving, Thursday and
-Saturday games and international kickoffs need no cron changes, and quiet games spend no quota. A
-run with nothing due is skipped and leaves no pull-log row.
+Cron runs every job often and lets the job decide. Odds come from The Odds API free plan: 500 credits a
+month, about 1 credit per game per pull, anytime TD only. So `pull-odds` fires every 5 minutes but calls
+the provider only on the snapshot schedule (`core/src/snapshots.ts`, Denver time):
+
+| Snapshot | When | Games |
+|---|---|---|
+| Opening line | Tue 10:07 AM | Next 7 days |
+| Saturday night | Sat 7:47 PM | Next 4 days |
+| Sunday morning | Sun 8:43 AM | Next 4 days |
+| Freeze | Within 20 minutes before each kickoff | That game |
+
+A snapshot reached more than 90 minutes late is skipped, never pulled late. Each slot is recorded in
+`odds_slots`, so none repeats. Before any pull the job checks the month's remaining credits and refuses a
+pull it cannot finish (a red "Failed", ours to fix). A full week is about 60 credits, about 250 a month.
+Manual pulls bypass the schedule only for the sample provider, which costs nothing. A run with nothing
+due is skipped and leaves no pull-log row.
+
+## Gem rating
+
+`packages/core/src/gems.ts` holds the rules from `docs/prd.md` section 8:
+
+- **Posted price**: DraftKings, the purchase book. Other books inform the estimate.
+- **Fair chance**: the posted price's implied chance with the assumed cut taken out (5% plus 1% per
+  point of decimal odds, at most 35%; section 11.4).
+- **Gem**: our hit chance beats the posted price's implied chance (clears the cut). Rating =
+  `round(100 * clamp(carat / 10, 0, 1) * clarity / 100)`, where carat is our chance minus the fair
+  chance in points.
+- **Fool's Gold**: beats the fair price but not the posted price, so the cut eats it. No rating.
+- **Unrated**: no 2026 stats, so no read and the market stands.
+- **Recommended order**: gems by hit chance times clarity, then unrated, then Fool's Gold last.
 
 ## Identity
 
@@ -85,8 +110,8 @@ network and 5xx errors, request counting, quota headers into `provider_usage`, k
 
 | Provider | Used for | Key |
 |---|---|---|
-| The Odds API v4 | Player prop prices from DraftKings, FanDuel, BetMGM, Caesars | `ODDS_API_KEY` |
-| SportsDataIO NFL v3 | Schedule, rosters with jersey numbers, player game stats | `SPORTSDATAIO_KEY` |
+| The Odds API v4, free plan | Anytime TD prices from DraftKings, FanDuel, BetMGM, Caesars, Fanatics, with DraftKings slip links | `ODDS_API_KEY` |
+| nflverse | Schedule (`schedules/games.csv`), 2026 rosters with jersey numbers, weekly player stats | none |
 | Sample | Everything, deterministic, built around today's date | none |
 
 `DATA_MODE=sample` (the default when `ODDS_API_KEY` is unset) runs the whole pipeline on sample data:
@@ -101,31 +126,13 @@ in `providers/index.ts`.
 
 ## Model
 
-`build-picks` uses `consensus-v0` (`ingest/src/model/consensus.ts`) until the real model exists. It
-estimates each selection from the other books: their average fair chance where both sides of an
-over/under are listed, otherwise their average priced chance. A positive gap means the best book is
-longer than the market. That is line shopping, not a forecast, so only two signals are filled (price
-gap, market depth) and every verdict reads Unchecked until the setup signal exists. The real model
-replaces `estimate()` and fills the other four signals; the tables and pages do not change.
-
-## Hosting v1: a claude.ai artifact
-
-The first iteration is hosted as a private artifact in the owner's claude.ai account
-(https://claude.ai/artifact/H4A8Nv5Pup51dW2DiGpdmh). An artifact page runs no server and cannot call
-other hosts, so the split is:
-
-- **The page** (`apps/artifact`): one self-contained HTML file with Facet, the fonts and the team
-  logos inlined. `pnpm artifact:build` writes `apps/artifact/dist/hidden-gems.html`; publish that file
-  to the same artifact URL to update it. It reads two documents from the artifact's database and
-  re-renders live when they change: `hg/slate` (the ranked picks) and `hg/health` (sources and the
-  pull log).
-- **The pipeline** (unchanged): `pnpm job all` pulls and ranks, then `pnpm job snapshot <dir>` writes
-  `slate.json` and `health.json`.
-- **The hand-off**: Claude writes both files into the artifact database (`ArtifactData` batch, set
-  `hg/slate` and `hg/health`). Access rules make `hg` readable by anyone the artifact is shared with
-  and writable only by the owner.
-
-`apps/web` stays the path to a full deployment (Vercel, cron, Postgres) when the artifact outgrows it.
+`build-picks` uses `consensus-v0` (`ingest/src/model/consensus.ts`) until the Hidden Gems v3.0 model
+(PRD section 11, `hgs.py` in the old pipeline) is ported. Its hit chance is the average fair chance behind
+the other books' prices, so a gem here means DraftKings is longer than the market: line shopping, not a
+forecast. Clarity is `clarity-v0` (`ingest/src/jobs/picks.ts`), section 11.7's four parts from what the
+app has: games played (sample), how steady the TD rate is (consistency), the spread of the books' fair
+chances (books agree) and roster status (setup). Porting the model replaces `estimate()` and `clarityV0()`;
+the tables, the rating and the pages do not change.
 
 ## Database
 
@@ -150,14 +157,13 @@ password and require `Authorization: Bearer $CRON_SECRET` instead.
 |---|---|
 | `pnpm install` | Installs the workspace (pnpm 10, Node 22+) |
 | `pnpm dev` | Runs the app on PGlite with sample data |
-| `pnpm job all` | Pulls schedule, rosters, odds (and picks) and results, in order |
+| `pnpm job all` | Pulls schedule, rosters, results, then odds (and ratings), in order |
 | `pnpm job <name> [--force]` | Runs one job; `--force` ignores cadence |
 | `pnpm db:generate` / `pnpm db:migrate` | Writes / applies migrations |
 | `pnpm check` | Typecheck, tests, color lint |
 
 ## Next
 
-- The model: real estimates and the four unfilled signals (setup, track record, sample, matchup).
-- Bets: an entry form and the track record view (the table, settlement and closing prices exist).
-- Alerts on line moves past fair price, and Vercel Queues if per-game pulls outgrow one function run.
-- Line history charts from `odds_snapshots`.
+- The screens build (`docs/build-brief.md`): new gems row, gem sheet, slips, the Jeweler, history.
+- Port the Hidden Gems v3.0 model and clarity from `hgs.py` into `packages/core`.
+- Retire the old pipeline once the app's own pulls match it for two Sundays.

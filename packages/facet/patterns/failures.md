@@ -10,7 +10,7 @@ Every failed or broken state answers two questions: whose problem is it, and wha
 |---|---|---|
 | When | Your key, setting, connection or input caused it | A provider, book or Hidden Gems itself is down |
 | Status | Red dot + "Failed" | Amber dot + "Provider down" (or "Delayed") |
-| Headline | "Couldn't" + what failed: "Couldn't pull FanDuel odds" | Who owns it: "SportsDataIO is down" |
+| Headline | "Couldn't" + what failed: "Couldn't pull FanDuel odds" | Who owns it: "The Odds API is down" |
 | Detail | The cause, in one sentence | "Nothing to fix on your side", what Hidden Gems is doing (retrying, on what schedule) and how old the data on screen is |
 | Action | Required: the button that starts the fix ("Rotate key", "Reconnect", "Edit schedule"), primary style | Optional: a tertiary link to follow it ("Provider status", "Notify me"). Never a fix button |
 

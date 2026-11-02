@@ -14,8 +14,7 @@
     "lint:color": "node packages/facet/scripts/lint-color.mjs apps",
     "db:generate": "pnpm --filter @hiddengems/db generate",
     "db:migrate": "pnpm --filter @hiddengems/db migrate",
-    "job": "pnpm --filter @hiddengems/ingest job",
-    "artifact:build": "node apps/artifact/build.mjs"
+    "job": "pnpm --filter @hiddengems/ingest job"
   },
   "devDependencies": {
     "turbo": "^2.11.10",

@@ -1,8 +1,8 @@
 // The sample provider: a deterministic week of games, players, prices and results built around the
 // current date, so every job runs end to end with no API keys (local dev, CI, previews).
 // Prices drift in 15-minute steps, so repeated pulls build real-looking line history.
-import { type BookId, type MarketId, type Side, seasonOf } from '@hiddengems/core';
-import { easternToUtc } from './sportsdataio';
+import { type BookId, seasonOf } from '@hiddengems/core';
+import { easternKickoff } from './nflverse';
 import type { OddsEvent, OddsQuote, Providers, RosterPlayer, ScheduleGame, StatLine } from './types';
 
 const DAY = 86_400_000;
@@ -34,7 +34,7 @@ export const SAMPLE_PLAYERS = [
 const THIS_WEEK = [['MIA', 'BUF', '13:00'], ['CIN', 'BAL', '13:00'], ['ARI', 'NO', '16:05'], ['NE', 'SEA', '16:25'], ['KC', 'LV', '20:20']] as const;
 const LAST_WEEK = [['BUF', 'CIN', '13:00', 24, 27], ['SEA', 'ARI', '16:05', 20, 17], ['BAL', 'NE', '20:20', 31, 21]] as const;
 
-const BOOK_MARGINS: Record<BookId, number> = { draftkings: 0.08, fanduel: 0.07, betmgm: 0.09, caesars: 0.1 };
+const BOOK_MARGINS: Partial<Record<BookId, number>> = { draftkings: 0.08, fanduel: 0.07, betmgm: 0.09, caesars: 0.1 };
 
 /** The coming Sunday (today, if it is Sunday), as an Eastern calendar date. */
 function sundays(now: Date): { thisWeek: string; lastWeek: string; week: number; season: number } {
@@ -54,7 +54,7 @@ export function sampleProviders(): Providers {
   const scheduleFor = (now: Date): ScheduleGame[] => {
     const { thisWeek, lastWeek, week, season } = sundays(now);
     const game = (date: string, away: string, home: string, time: string, wk: number, final: boolean, a: number | null, h: number | null): ScheduleGame => {
-      const kickoff = easternToUtc(`${date}T${time}:00`);
+      const kickoff = easternKickoff(date, time);
       const live = !final && now.getTime() >= kickoff.getTime();
       return {
         externalId: `sample-${date}-${away}-${home}`, season, seasonType: 'reg', week: wk, kickoff, awayTeam: away, homeTeam: home, neutralSite: false,
@@ -96,13 +96,7 @@ export function sampleProviders(): Providers {
             const stale = noise(`${bookId}:${p.id}:stale:${Math.floor(bucket / 8)}`) < 0.1 ? -0.3 : 0;
             if (markets.includes('anytime_td')) {
               const price = round2(1 / Math.min(0.95, p.td * (1 + margin) * (1 + drift + stale)));
-              quotes.push({ bookId, marketId: 'anytime_td', playerName: p.name, side: 'yes', line: null, priceDecimal: price, observedAt });
-            }
-            if (p.rec != null && markets.includes('receptions')) {
-              const over = 0.5 + (noise(`${p.id}:rec:${bucket}`) - 0.5) * 0.08;
-              for (const [side, q] of [['over', over], ['under', 1 - over]] as [Side, number][]) {
-                quotes.push({ bookId, marketId: 'receptions' as MarketId, playerName: p.name, side, line: p.rec, priceDecimal: round2(1 / (q * (1 + margin) * (1 + drift / 4))), observedAt });
-              }
+              quotes.push({ bookId, marketId: 'anytime_td', playerName: p.name, side: 'yes', line: null, priceDecimal: price, observedAt, link: null });
             }
           }
         }

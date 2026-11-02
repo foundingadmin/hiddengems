@@ -1,0 +1,102 @@
+// The gem rating, Fool's Gold and the Recommended order (docs/prd.md section 8, approved Nov 2 2026,
+// to revisit after Week 9 grades). Market math from section 11.4, clarity from section 11.7.
+import { impliedFromDecimal } from './odds';
+
+/** The book's cut assumed on a one-sided price: 5% plus 1% per point of decimal odds, at most 35%. */
+export function houseCut(decimal: number): number {
+  return Math.min(0.35, 0.05 + 0.01 * decimal);
+}
+
+/** The market's fair chance behind a posted price, with the assumed cut taken out. */
+export function fairChance(decimal: number): number {
+  return impliedFromDecimal(decimal) / (1 + houseCut(decimal));
+}
+
+export interface GemInput {
+  /** Our hit chance (the model's appraisal), 0 to 1. */
+  hitChance: number;
+  /** The posted price at the purchase book, decimal odds. */
+  price: number;
+  /** Confidence in the read, 0 to 100. */
+  clarity: number;
+  /** Whether the player has 2026 stats. Without them there is no read and the market stands. */
+  hasStats: boolean;
+}
+
+/**
+ * gem         clears the cut: our chance beats the posted price
+ * fools-gold  looks good against the fair price, but the book's cut eats it
+ * none        beats neither price
+ * unrated     no 2026 stats, so no read
+ */
+export type GemKind = 'gem' | 'fools-gold' | 'none' | 'unrated';
+
+export interface GemRead {
+  kind: GemKind;
+  /** 0 to 100 for a gem, otherwise null. */
+  rating: number | null;
+  /** Carat: our chance minus the market's fair chance, in points. */
+  carat: number;
+  /** Our chance minus the posted price's implied chance, in points. Above zero clears the cut. */
+  gapToPosted: number;
+  /** Fair chance behind the posted price. */
+  fair: number;
+  /** Implied chance of the posted price, cut included. */
+  priced: number;
+}
+
+const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n));
+
+/** rating = round(100 * clamp(carat / 10, 0, 1) * clarity / 100), only for props that clear the cut. */
+export function gemRating(carat: number, clarity: number): number {
+  return Math.round(100 * clamp(carat / 10, 0, 1) * clamp(clarity, 0, 100) / 100);
+}
+
+export function appraise({ hitChance, price, clarity, hasStats }: GemInput): GemRead {
+  const priced = impliedFromDecimal(price);
+  const fair = fairChance(price);
+  const carat = (hitChance - fair) * 100;
+  const gapToPosted = (hitChance - priced) * 100;
+  const base = { carat, gapToPosted, fair, priced };
+  if (!hasStats) return { kind: 'unrated', rating: null, ...base };
+  if (gapToPosted > 0) return { kind: 'gem', rating: gemRating(carat, clarity), ...base };
+  return { kind: carat > 0 ? 'fools-gold' : 'none', rating: null, ...base };
+}
+
+export interface Rankable {
+  kind: GemKind;
+  hitChance: number;
+  clarity: number;
+  rating: number | null;
+}
+
+/** The Recommended score: hit chance times clarity, likeliest real gem first. Null outside gems. */
+export function recommendedScore(g: Pick<Rankable, 'kind' | 'hitChance' | 'clarity'>): number | null {
+  return g.kind === 'gem' ? g.hitChance * clamp(g.clarity, 0, 100) / 100 : null;
+}
+
+const GROUP: Record<GemKind, number> = { gem: 0, unrated: 1, 'fools-gold': 2, none: 3 };
+
+/** Recommended order: gems by hit chance times clarity, then unrated props, then Fool's Gold last. */
+export function compareRecommended(a: Rankable, b: Rankable): number {
+  if (GROUP[a.kind] !== GROUP[b.kind]) return GROUP[a.kind] - GROUP[b.kind];
+  const sa = recommendedScore(a) ?? a.hitChance, sb = recommendedScore(b) ?? b.hitChance;
+  if (sb !== sa) return sb - sa;
+  return (b.rating ?? -1) - (a.rating ?? -1);
+}
+
+export interface ClarityParts {
+  /** Sample size, worth up to 40. */
+  sample: number;
+  /** Consistency, worth up to 30. */
+  consistency: number;
+  /** Books agree, worth up to 15. */
+  booksAgree: number;
+  /** Setup (injury report, snap share trend), worth up to 15. */
+  setup: number;
+}
+
+/** Clarity out of 100: sample 40, consistency 30, books agree 15, setup 15 (section 11.7). */
+export function clarityScore(p: ClarityParts): number {
+  return Math.round(clamp(p.sample, 0, 40) + clamp(p.consistency, 0, 30) + clamp(p.booksAgree, 0, 15) + clamp(p.setup, 0, 15));
+}

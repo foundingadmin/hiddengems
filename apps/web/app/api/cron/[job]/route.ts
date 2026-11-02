@@ -1,5 +1,6 @@
 // Vercel cron calls GET /api/cron/<job> with "Authorization: Bearer $CRON_SECRET" (apps/web/vercel.json).
-// Jobs decide for themselves whether work is due, so a cron firing every 5 minutes is cheap.
+// Jobs decide for themselves whether work is due: pull-odds fires every 5 minutes but calls the odds
+// provider only on the snapshot schedule (core snapshots.ts).
 import { jobs, providersFor, runJob } from '@hiddengems/ingest';
 import { type NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';

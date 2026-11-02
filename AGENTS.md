@@ -51,7 +51,6 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 
 - `packages/facet/` design system (self-contained, reusable in other projects). Published to claude.ai as the Facet Design System (https://claude.ai/artifact/JJQM3DGhGyeSxKegEFp7Ph) for design sessions; `node packages/facet/scripts/design-system.mjs` regenerates its files after Facet changes.
 - `packages/core/` domain rules, `packages/db/` schema and client, `packages/ingest/` providers and jobs
-- `apps/artifact/` the app as hosted today (claude.ai artifact; `pnpm artifact:build`, data in its db as `hg/slate` and `hg/health`)
-- `apps/web/` Hidden Gems app for a full deployment (Next.js, deploys on Vercel with Root Directory `apps/web`)
+- `apps/web/` Hidden Gems app (Next.js, deploys on Vercel with Root Directory `apps/web`)
 - `docs/` project documentation
 - `ops/directives/` scheduled task directives; the Claude app tasks are stubs that read these from `main`

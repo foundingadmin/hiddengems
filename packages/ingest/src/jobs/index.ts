@@ -10,9 +10,10 @@ export const jobs: Record<string, Job> = Object.fromEntries(
   [pullSchedule, pullRosters, pullOdds, buildPicks, pullResults].map((j) => [j.name, j]),
 );
 
-/** The order to run everything in from an empty database. */
-export const BOOTSTRAP = ['pull-schedule', 'pull-rosters', 'pull-odds', 'pull-results'] as const;
+/** The order to run everything in from an empty database: stats before odds, so props can be rated. */
+export const BOOTSTRAP = ['pull-schedule', 'pull-rosters', 'pull-results', 'pull-odds'] as const;
 
 export { pullOdds, buildPicks, pullResults, pullRosters, pullSchedule };
-export { marketsFromEnv, DEFAULT_MARKETS } from './odds';
+export { MARKETS } from './odds';
+export { clarityV0 } from './picks';
 export { grade } from './results';

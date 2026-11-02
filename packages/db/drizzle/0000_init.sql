@@ -52,7 +52,6 @@ CREATE TABLE "games" (
 	"status" text DEFAULT 'scheduled' NOT NULL,
 	"away_score" smallint,
 	"home_score" smallint,
-	"odds_pulled_at" timestamp with time zone,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
@@ -64,9 +63,7 @@ CREATE TABLE "job_locks" (
 --> statement-breakpoint
 CREATE TABLE "markets" (
 	"id" text PRIMARY KEY NOT NULL,
-	"label" text NOT NULL,
-	"kind" text NOT NULL,
-	"scope" text NOT NULL
+	"label" text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "odds_latest" (
@@ -82,7 +79,15 @@ CREATE TABLE "odds_latest" (
 	"observed_at" timestamp with time zone NOT NULL,
 	"pulled_at" timestamp with time zone NOT NULL,
 	"available" boolean DEFAULT true NOT NULL,
+	"link" text,
 	CONSTRAINT "odds_latest_selection_key_book_id_pk" PRIMARY KEY("selection_key","book_id")
+);
+--> statement-breakpoint
+CREATE TABLE "odds_slots" (
+	"slot" text PRIMARY KEY NOT NULL,
+	"run_id" text NOT NULL,
+	"games" integer NOT NULL,
+	"pulled_at" timestamp with time zone NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "odds_snapshots" (
@@ -109,15 +114,19 @@ CREATE TABLE "picks" (
 	"player_name" text,
 	"side" text NOT NULL,
 	"line" double precision,
-	"best_book_id" text NOT NULL,
-	"best_price" double precision NOT NULL,
+	"book_id" text NOT NULL,
+	"price" double precision NOT NULL,
 	"priced" double precision NOT NULL,
-	"estimate" double precision NOT NULL,
+	"fair" double precision NOT NULL,
+	"hit_chance" double precision NOT NULL,
+	"clarity" integer NOT NULL,
+	"carat" double precision NOT NULL,
+	"gap_to_posted" double precision NOT NULL,
+	"kind" text NOT NULL,
+	"rating" integer,
+	"recommended" double precision,
 	"model" text NOT NULL,
-	"gap_pts" integer NOT NULL,
-	"tier" text,
-	"signals" jsonb NOT NULL,
-	"verdict" text NOT NULL,
+	"link" text,
 	"run_id" text NOT NULL,
 	"updated_at" timestamp with time zone NOT NULL
 );
@@ -218,7 +227,7 @@ ALTER TABLE "odds_snapshots" ADD CONSTRAINT "odds_snapshots_book_id_books_id_fk"
 ALTER TABLE "picks" ADD CONSTRAINT "picks_game_id_games_id_fk" FOREIGN KEY ("game_id") REFERENCES "public"."games"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "picks" ADD CONSTRAINT "picks_market_id_markets_id_fk" FOREIGN KEY ("market_id") REFERENCES "public"."markets"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "picks" ADD CONSTRAINT "picks_player_id_players_id_fk" FOREIGN KEY ("player_id") REFERENCES "public"."players"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "picks" ADD CONSTRAINT "picks_best_book_id_books_id_fk" FOREIGN KEY ("best_book_id") REFERENCES "public"."books"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "picks" ADD CONSTRAINT "picks_book_id_books_id_fk" FOREIGN KEY ("book_id") REFERENCES "public"."books"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "player_game_stats" ADD CONSTRAINT "player_game_stats_game_id_games_id_fk" FOREIGN KEY ("game_id") REFERENCES "public"."games"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "player_game_stats" ADD CONSTRAINT "player_game_stats_player_id_players_id_fk" FOREIGN KEY ("player_id") REFERENCES "public"."players"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "players" ADD CONSTRAINT "players_team_id_teams_id_fk" FOREIGN KEY ("team_id") REFERENCES "public"."teams"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
@@ -232,8 +241,8 @@ CREATE INDEX "odds_latest_game_id_index" ON "odds_latest" USING btree ("game_id"
 CREATE UNIQUE INDEX "odds_snapshots_selection_key_book_id_observed_at_index" ON "odds_snapshots" USING btree ("selection_key","book_id","observed_at");--> statement-breakpoint
 CREATE INDEX "odds_snapshots_selection_key_observed_at_index" ON "odds_snapshots" USING btree ("selection_key","observed_at");--> statement-breakpoint
 CREATE INDEX "odds_snapshots_game_id_index" ON "odds_snapshots" USING btree ("game_id");--> statement-breakpoint
-CREATE INDEX "picks_gap_pts_index" ON "picks" USING btree ("gap_pts");--> statement-breakpoint
 CREATE INDEX "picks_game_id_index" ON "picks" USING btree ("game_id");--> statement-breakpoint
+CREATE INDEX "picks_kind_index" ON "picks" USING btree ("kind");--> statement-breakpoint
 CREATE INDEX "players_name_key_index" ON "players" USING btree ("name_key");--> statement-breakpoint
 CREATE INDEX "players_team_id_index" ON "players" USING btree ("team_id");--> statement-breakpoint
 CREATE INDEX "provider_refs_entity_internal_id_index" ON "provider_refs" USING btree ("entity","internal_id");--> statement-breakpoint

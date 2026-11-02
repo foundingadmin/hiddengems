@@ -1,24 +1,17 @@
-// pull-results: stat lines for recently finished games, then settles open bets and records the
-// closing price (the last price before kickoff) for beating-the-close tracking.
+// pull-results: nflverse stat lines for recently finished games, then settles open anytime TD bets and
+// records the closing price (the last price before kickoff) for closing line value.
+import { seasonOf } from '@hiddengems/core';
 import { bets, games, oddsSnapshots, playerGameStats } from '@hiddengems/db';
-import { and, desc, eq, gt, inArray, isNull, lte, sql } from 'drizzle-orm';
+import { and, desc, eq, inArray, isNull, lte, sql } from 'drizzle-orm';
 import type { Job } from '../runner';
 import { chunks, plural, refMap } from './shared';
 
 type StatRow = typeof playerGameStats.$inferSelect;
-const STAT_FOR_MARKET: Record<string, keyof StatRow> = {
-  receptions: 'receptions', receiving_yards: 'receivingYards', rushing_yards: 'rushingYards', passing_yards: 'passingYards', passing_tds: 'passingTds',
-};
 
-/** won, lost or push for a settled stat line, or null when this market cannot be settled from totals. */
-export function grade(bet: { marketId: string; side: string; line: number | null }, stat: StatRow): 'won' | 'lost' | 'push' | null {
-  if (bet.marketId === 'anytime_td') return stat.touchdowns > 0 ? 'won' : 'lost';
-  const field = STAT_FOR_MARKET[bet.marketId];
-  if (!field || bet.line == null) return null; // first and last TD need play-by-play
-  const value = stat[field] as number | null;
-  if (value == null) return null;
-  if (value === bet.line) return 'push';
-  return (value > bet.line) === (bet.side === 'over') ? 'won' : 'lost';
+/** won or lost for an anytime TD bet from the player's stat line; null for any other market. */
+export function grade(bet: { marketId: string }, stat: Pick<StatRow, 'touchdowns'>): 'won' | 'lost' | null {
+  if (bet.marketId !== 'anytime_td') return null;
+  return stat.touchdowns > 0 ? 'won' : 'lost';
 }
 
 export const pullResults: Job = {
@@ -26,9 +19,13 @@ export const pullResults: Job = {
   provider: 'results',
   async run(ctx) {
     const { db, now } = ctx;
+    // Every final game this season with no stat lines yet (the first run backfills the season), plus the
+    // last 10 days again, since stat corrections land after the fact.
     const since = new Date(now.getTime() - 10 * 86_400_000);
-    const finals = await db.select().from(games).where(and(eq(games.status, 'final'), gt(games.kickoffAt, since)));
-    if (!finals.length) return { skipped: 'No games finished in the last 10 days' };
+    const withStats = new Set((await db.selectDistinct({ id: playerGameStats.gameId }).from(playerGameStats)).map((r) => r.id));
+    const finals = (await db.select().from(games).where(and(eq(games.status, 'final'), eq(games.season, seasonOf(now)))))
+      .filter((g) => !withStats.has(g.id) || g.kickoffAt > since);
+    if (!finals.length) return { skipped: 'Every final game already has its stats' };
 
     const provider = ctx.providers.results;
     const pctx = ctx.using(provider);
@@ -40,9 +37,10 @@ export const pullResults: Job = {
     const finalIds = new Set(finals.map((g) => g.id));
     const rows: (typeof playerGameStats.$inferInsert)[] = [];
     let unknown = 0;
+    const unknownIds = new Set<string>();
     for (const l of lines) {
       const gameId = gameRefs.get(l.gameExternalId), playerId = playerRefs.get(l.playerExternalId);
-      if (!gameId || !playerId || !finalIds.has(gameId)) { unknown++; continue; }
+      if (!gameId || !playerId || !finalIds.has(gameId)) { unknown++; unknownIds.add(l.playerExternalId); continue; }
       rows.push({
         gameId, playerId, touchdowns: l.touchdowns, receptions: l.receptions, receivingYards: l.receivingYards, rushingYards: l.rushingYards,
         passingYards: l.passingYards, passingTds: l.passingTds, extra: l.extra ?? null, runId: ctx.runId, updatedAt: now,
@@ -58,7 +56,7 @@ export const pullResults: Job = {
         },
       });
     }
-    if (unknown) ctx.log('warn', `${plural(unknown, 'stat line')} did not match a final game or a known player`);
+    if (unknown) ctx.log('warn', `${plural(unknown, 'stat line')} did not match a final game or a rostered player`, { playerIds: [...unknownIds].slice(0, 25) });
 
     // Closing prices for bets whose game has kicked off.
     const started = await db.select({ bet: bets, kickoff: games.kickoffAt }).from(bets).innerJoin(games, eq(games.id, bets.gameId))
@@ -80,7 +78,7 @@ export const pullResults: Job = {
       const result = grade(bet, stat);
       if (!result) continue;
       const stake = Number(bet.stake);
-      const payout = result === 'won' ? stake * bet.priceDecimal : result === 'push' ? stake : 0;
+      const payout = result === 'won' ? stake * bet.priceDecimal : 0;
       await db.update(bets).set({ status: result, payout: payout.toFixed(2), settledAt: now }).where(eq(bets.id, bet.id));
       settled++;
     }

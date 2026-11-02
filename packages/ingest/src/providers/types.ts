@@ -48,6 +48,8 @@ export interface OddsQuote {
   line: number | null;
   priceDecimal: number;
   observedAt: Date;
+  /** The book's slip link for this pick, when sent. It only adds the pick; it never places a bet. */
+  link: string | null;
 }
 
 export interface StatLine {

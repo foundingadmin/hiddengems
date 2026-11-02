@@ -73,7 +73,7 @@
           <dl class="fc-description">
             <div><dt>Verdict</dt><dd><span class="fc-signal" data-signal="go">Go</span><small>Dot plus word</small></dd></div>
             <div><dt>Edge</dt><dd><span class="fc-delta" data-direction="positive">9 pts</span> <span class="fc-delta" data-direction="negative">3 pts</span><small>Sign plus arrow plus color</small></dd></div>
-            <div><dt>Gem tier</dt><dd><span id="gem-rule"></span><small>Facet count plus purple intensity</small></dd></div>
+            <div><dt>Gem rating</dt><dd><span id="gem-rule"></span><small>Number plus purple intensity</small></dd></div>
             <div><dt>Freshness</dt><dd><span class="fc-status"><span class="fc-status-dot" data-state="stale"></span>3h ago</span><small>Dot plus relative time</small></dd></div>
           </dl>
         </div>
@@ -163,11 +163,11 @@
         <div class="sp-wrap"><span class="fc-badge" data-size="sm">sm 20</span><span class="fc-badge">md 24</span><span class="fc-badge" data-size="lg">lg 32</span></div>
       </figure>
       <figure>
-        <figcaption>Verdict, gem tier, signals, delta</figcaption>
+        <figcaption>Verdict, gem rating, signals, delta</figcaption>
         <div class="sp-wrap"><span class="fc-signal" data-signal="go">Go</span><span class="fc-signal" data-signal="wait">Wait</span><span class="fc-signal" data-signal="stop">Stop</span><span class="fc-signal">Unchecked</span></div>
         <div class="sp-wrap"><span class="fc-signal" data-variant="pill" data-signal="go">Go</span><span class="fc-signal" data-variant="pill" data-signal="wait">Wait</span><span class="fc-signal" data-variant="pill" data-signal="stop">Stop</span></div>
         <div class="sp-wrap" id="gems"></div>
-        <div class="sp-gemfocal"><span id="gem-focal"></span><button class="fc-button" data-variant="tertiary" data-size="small" type="button" id="gem-replay">Replay build-in</button></div>
+        <div class="sp-gemfocal"><span id="gem-focal"></span></div>
         <div class="sp-wrap"><span class="fc-signal-strip" aria-label="5 go, 1 wait"><i data-signal="go"></i><i data-signal="go"></i><i data-signal="wait"></i><i data-signal="go"></i><i data-signal="go"></i><i data-signal="go"></i></span>
           <span class="fc-delta" data-direction="positive">9.0</span><span class="fc-delta" data-direction="negative">2.5</span><span class="fc-delta">0.0</span></div>
         <div class="sp-wrap"><span class="text-label-13" style="color:var(--fc-text-secondary)">Pull time</span><span class="fc-delta" data-variant="pill" data-direction="positive" data-polarity="bad">67%</span><span class="text-label-13" style="color:var(--fc-text-secondary)">Hit rate</span><span class="fc-delta" data-variant="pill" data-direction="positive" data-polarity="good">4 pts</span></div>
@@ -372,7 +372,7 @@
             <th scope="col" data-align="numeric" data-sort="gap" aria-sort="descending"><button type="button" class="fc-th-sort fc-has-tip" aria-describedby="data-tip-gap"><span class="fc-tip-label">Gap</span></button></th>
             <th scope="col" data-align="numeric" data-sort="record"><button type="button" class="fc-th-sort fc-has-tip" aria-describedby="data-tip-record"><span class="fc-tip-label">Hit rate</span></button></th>
             <th scope="col"><span class="fc-has-tip" tabindex="0" aria-describedby="data-tip-verdict">Verdict</span></th>
-            <th scope="col"><span class="fc-has-tip" tabindex="0" aria-describedby="data-tip-tier">Gem tier</span></th>
+            <th scope="col"><span class="fc-has-tip" tabindex="0" aria-describedby="data-tip-tier">Gem rating</span></th>
             <th scope="col"><span class="fc-visually-hidden">Actions</span></th>
           </tr>
         </thead>
@@ -387,7 +387,7 @@
             <td data-align="numeric"><span class="fc-delta" data-direction="positive">+13 pts</span></td>
             <td data-align="numeric"><span class="fc-pie-value"><span class="fc-pie" style="--value:67" aria-hidden="true"></span>4 of 6</span></td>
             <td><span class="fc-signal" data-signal="wait">Wait</span></td>
-            <td><span class="fc-gem" data-tier="flawless" data-motion="once"><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Flawless</span></td>
+            <td><span class="fc-gem" style="--rating: 92" data-live aria-label="Gem rating 92"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>92</span></span></td>
             <td class="fc-cell-actions"><span class="fc-row-actions"><button type="button" class="fc-button" data-variant="tertiary" data-shape="square" data-size="small" aria-haspopup="menu" aria-expanded="false" aria-controls="data-menu" aria-label="More actions for Mike Gesicki"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="3.5" cy="8" r="1.25"/><circle cx="8" cy="8" r="1.25"/><circle cx="12.5" cy="8" r="1.25"/></svg></button></span></td>
           </tr>
           <tr data-key="diggs" data-pick="Stefon Diggs" data-kickoff="1100" data-odds="3.00" data-est="42" data-gap="9" data-record="71" data-market="WR · Anytime TD scorer">
@@ -400,7 +400,7 @@
             <td data-align="numeric"><span class="fc-delta" data-direction="positive">+9 pts</span></td>
             <td data-align="numeric"><span class="fc-pie-value"><span class="fc-pie" style="--value:71" aria-hidden="true"></span>5 of 7</span></td>
             <td><span class="fc-signal" data-signal="go">Go</span></td>
-            <td><span class="fc-gem" data-tier="polished" data-motion="once"><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Polished</span></td>
+            <td><span class="fc-gem" style="--rating: 81" data-live aria-label="Gem rating 81"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>81</span></span></td>
             <td class="fc-cell-actions"><span class="fc-row-actions"><button type="button" class="fc-button" data-variant="tertiary" data-shape="square" data-size="small" aria-haspopup="menu" aria-expanded="false" aria-controls="data-menu" aria-label="More actions for Stefon Diggs"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="3.5" cy="8" r="1.25"/><circle cx="8" cy="8" r="1.25"/><circle cx="12.5" cy="8" r="1.25"/></svg></button></span></td>
           </tr>
           <tr data-key="cook-2h" data-pick="James Cook" data-kickoff="660" data-odds="2.65" data-est="44" data-gap="6" data-record="50" data-market="RB · Anytime TD scorer, 2nd half (incl. OT)">
@@ -413,7 +413,7 @@
             <td data-align="numeric"><span class="fc-delta" data-direction="positive">+6 pts</span></td>
             <td data-align="numeric"><span class="fc-pie-value"><span class="fc-pie" style="--value:50" aria-hidden="true"></span>3 of 6</span></td>
             <td><span class="fc-signal" data-signal="wait">Wait</span></td>
-            <td><span class="fc-gem" data-tier="cut" data-motion="once"><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Cut</span></td>
+            <td><span class="fc-gem" style="--rating: 64" data-live aria-label="Gem rating 64"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>64</span></span></td>
             <td class="fc-cell-actions"><span class="fc-row-actions"><button type="button" class="fc-button" data-variant="tertiary" data-shape="square" data-size="small" aria-haspopup="menu" aria-expanded="false" aria-controls="data-menu" aria-label="More actions for James Cook, 2nd half"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="3.5" cy="8" r="1.25"/><circle cx="8" cy="8" r="1.25"/><circle cx="12.5" cy="8" r="1.25"/></svg></button></span></td>
           </tr>
           <tr data-key="gordon" data-pick="Ollie Gordon II" data-kickoff="865" data-odds="7.50" data-est="18" data-gap="5" data-record="33" data-market="RB · First TD scorer">
@@ -426,7 +426,7 @@
             <td data-align="numeric"><span class="fc-delta" data-direction="positive">+5 pts</span></td>
             <td data-align="numeric"><span class="fc-pie-value"><span class="fc-pie" style="--value:33" aria-hidden="true"></span>2 of 6</span></td>
             <td><span class="fc-signal" data-signal="wait">Wait</span></td>
-            <td><span class="fc-gem" data-tier="rough" data-motion="once"><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Rough</span></td>
+            <td><span class="fc-gem" style="--rating: 38" data-live aria-label="Gem rating 38"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>38</span></span></td>
             <td class="fc-cell-actions"><span class="fc-row-actions"><button type="button" class="fc-button" data-variant="tertiary" data-shape="square" data-size="small" aria-haspopup="menu" aria-expanded="false" aria-controls="data-menu" aria-label="More actions for Ollie Gordon II"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="3.5" cy="8" r="1.25"/><circle cx="8" cy="8" r="1.25"/><circle cx="12.5" cy="8" r="1.25"/></svg></button></span></td>
           </tr>
           <tr data-key="cook" data-pick="James Cook" data-kickoff="660" data-odds="1.69" data-est="63" data-gap="4" data-record="67" data-market="RB · Anytime TD scorer">
@@ -439,7 +439,7 @@
             <td data-align="numeric"><span class="fc-delta" data-direction="positive">+4 pts</span></td>
             <td data-align="numeric"><span class="fc-pie-value"><span class="fc-pie" style="--value:67" aria-hidden="true"></span>4 of 6</span></td>
             <td><span class="fc-signal" data-signal="wait">Wait</span></td>
-            <td><span class="fc-gem" data-tier="rough" data-motion="once"><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Rough</span></td>
+            <td><span class="fc-gem" style="--rating: 38" data-live aria-label="Gem rating 38"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>38</span></span></td>
             <td class="fc-cell-actions"><span class="fc-row-actions"><button type="button" class="fc-button" data-variant="tertiary" data-shape="square" data-size="small" aria-haspopup="menu" aria-expanded="false" aria-controls="data-menu" aria-label="More actions for James Cook"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="3.5" cy="8" r="1.25"/><circle cx="8" cy="8" r="1.25"/><circle cx="12.5" cy="8" r="1.25"/></svg></button></span></td>
           </tr>
         </tbody>
@@ -495,7 +495,7 @@
   <div class="fc-tooltip fc-float" popover="manual" role="tooltip" id="data-tip-gap">Our estimate minus the priced chance</div>
   <div class="fc-tooltip fc-float" popover="manual" role="tooltip" id="data-tip-record">Recent games where this bet would have won</div>
   <div class="fc-tooltip fc-float" popover="manual" role="tooltip" id="data-tip-verdict">Whether to bet now, after the setup check</div>
-  <div class="fc-tooltip fc-float" popover="manual" role="tooltip" id="data-tip-tier">How rare the value is, from rough to flawless</div>
+  <div class="fc-tooltip fc-float" popover="manual" role="tooltip" id="data-tip-tier">Edge times clarity, 0 to 100. Only props that clear the posted price get one</div>
   <div class="fc-tooltip fc-float" popover="manual" role="tooltip" id="data-tip-sample">From 6 games, so treat the gap as directional</div>
   <div class="fc-tooltip fc-float" popover="manual" role="tooltip" id="data-tip-week">Set by the page you opened. Change the week from the week picker.</div>
   <div class="fc-time-card fc-float" popover="manual" role="tooltip" id="data-time-card">
@@ -2343,12 +2343,11 @@
 <script src="forms.js"></script>
 <script src="specimen.js"></script>
 <script>
-const drawGems = () => { document.getElementById('gems').innerHTML = ['rough', 'cut', 'polished', 'flawless'].map(t => gem(t)).join(''); };
+const drawGems = () => { document.getElementById('gems').innerHTML = [38, 64, 81, 92].map((r) => gem(r)).join('') + gem(null); };
 drawGems();
-document.getElementById('gem-focal').outerHTML = `<span id="gem-focal-wrap">${gem('flawless', ' data-size="lg"')}</span>`;
-document.getElementById('gem-replay').addEventListener('click', () => { drawGems(); document.getElementById('gem-focal-wrap').innerHTML = gem('flawless', ' data-size="lg"'); });
-document.getElementById('gem-do').outerHTML = gem('polished');
-document.getElementById('gem-rule').outerHTML = gem('flawless');
+document.getElementById('gem-focal').outerHTML = gem(92, { size: 'lg' });
+document.getElementById('gem-do').outerHTML = gem(81);
+document.getElementById('gem-rule').outerHTML = gem(92);
 
   // ---- foundations ----
 // ---- color bands: job + ten step scale + the semantic tokens on each step ----
@@ -2360,7 +2359,7 @@ const rowId = k => 'tok-' + (familyOf(k) || k);
 const HUES = [
   { key: 'background', name: 'Background', job: 'The canvas', use: 'Background 2 only for subtle separation', never: 'Cards on cards', steps: [100, 200] },
   { key: 'gray', name: 'Gray', job: 'Everything by default', use: 'Text, surfaces, borders, primary buttons, chart series 1', never: 'Carrying meaning by itself' },
-  { key: 'purple', name: 'Purple', job: 'Gems, and the brand accent', use: 'Gem designation and tier ladder; focus, selection and checked controls through the brand slot', never: 'Links, buttons, highlights, chart series, status, decoration', gem: true },
+  { key: 'purple', name: 'Purple', job: 'Gems, and the brand accent', use: 'Gem designation and rating intensity; focus, selection and checked controls through the brand slot', never: 'Links, buttons, highlights, chart series, status, decoration', gem: true },
   { key: 'green', name: 'Green', job: 'Go, good for the bettor', use: 'Positive edge, success, live data', never: 'Money or wins because they look nice' },
   { key: 'amber', name: 'Amber', job: 'Wait, and caution', use: 'Warnings, stale data', never: 'Highlighting, emphasis, chart series' },
   { key: 'red', name: 'Red', job: 'Stop, bad for the bettor', use: 'Negative edge, errors, failed data, destructive actions', never: 'Decoration, hot picks, urgency' },

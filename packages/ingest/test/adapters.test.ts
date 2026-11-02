@@ -1,7 +1,11 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { createHttp, redact } from '../src/http';
+import { parseCsv } from '../src/csv';
 import { JobError } from '../src/errors';
-import { easternToUtc, normalizeEventOdds, normalizeSchedule, normalizeStats } from '../src/providers';
+import { createHttp, redact } from '../src/http';
+import { easternKickoff, normalizeEventOdds, normalizeGames, normalizeRoster, normalizeStats } from '../src/providers';
+
+const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
 
 describe('The Odds API adapter', () => {
   const payload = {
@@ -9,51 +13,62 @@ describe('The Odds API adapter', () => {
     bookmakers: [
       { key: 'draftkings', title: 'DraftKings', last_update: '2026-11-08T15:00:00Z', markets: [
         { key: 'player_anytime_td', last_update: '2026-11-08T15:01:00Z', outcomes: [
-          { name: 'Yes', description: 'James Cook', price: 1.8 },
+          { name: 'Yes', description: 'James Cook', price: 1.8, link: 'https://sportsbook.draftkings.com/event/1?outcomes=0QA1' },
           { name: 'No', description: 'James Cook', price: 1.95 },
         ] },
-        { key: 'player_receptions', outcomes: [
-          { name: 'Over', description: "De'Von Achane", price: 1.87, point: 4.5 },
-          { name: 'Under', description: "De'Von Achane", price: 1.93, point: 4.5 },
-        ] },
-        { key: 'player_unknown_market', outcomes: [{ name: 'Yes', description: 'X', price: 2 }] },
+        { key: 'player_receptions', outcomes: [{ name: 'Over', description: "De'Von Achane", price: 1.87, point: 4.5 }] },
       ] },
       { key: 'williamhill_us', markets: [{ key: 'player_anytime_td', outcomes: [{ name: 'Yes', description: 'James Cook', price: 1.83 }] }] },
       { key: 'bovada', markets: [{ key: 'player_anytime_td', outcomes: [{ name: 'Yes', description: 'James Cook', price: 1.9 }] }] },
     ],
   };
-  it('normalizes player props from known books and markets', () => {
+  it('keeps anytime TD "Yes" prices from known books, with slip links', () => {
     const q = normalizeEventOdds(payload);
-    expect(q).toHaveLength(4);
+    expect(q).toHaveLength(2);
     expect(q[0]).toMatchObject({ bookId: 'draftkings', marketId: 'anytime_td', playerName: 'James Cook', side: 'yes', line: null, priceDecimal: 1.8 });
+    expect(q[0]!.link).toMatch(/draftkings/);
     expect(q[0]!.observedAt.toISOString()).toBe('2026-11-08T15:01:00.000Z');
-    expect(q[1]).toMatchObject({ marketId: 'receptions', side: 'over', line: 4.5 });
-    expect(q[3]).toMatchObject({ bookId: 'caesars', priceDecimal: 1.83 });
+    expect(q[1]).toMatchObject({ bookId: 'caesars', priceDecimal: 1.83, link: null });
   });
   it('calls a changed payload ours to fix', () => {
-    expect(() => normalizeEventOdds({ id: 1 })).toThrowError(JobError);
-    try { normalizeEventOdds({ id: 1 }); } catch (e) { expect((e as JobError).owner).toBe('ours'); expect((e as JobError).code).toBe('payload'); }
+    try { normalizeEventOdds({ id: 1 }); throw new Error('expected a failure'); } catch (e) {
+      expect(e).toBeInstanceOf(JobError);
+      expect((e as JobError).owner).toBe('ours');
+      expect((e as JobError).code).toBe('payload');
+    }
   });
 });
 
-describe('SportsDataIO adapter', () => {
-  it('converts Eastern wall time across daylight saving', () => {
-    expect(easternToUtc('2026-11-08T13:00:00').toISOString()).toBe('2026-11-08T18:00:00.000Z');
-    expect(easternToUtc('2026-09-13T13:00:00').toISOString()).toBe('2026-09-13T17:00:00.000Z');
+describe('nflverse adapter', () => {
+  it('reads quoted CSV fields with commas and quotes', () => {
+    expect(parseCsv('a,b,c\n1,"x, y","say ""hi"""\n')).toEqual([{ a: '1', b: 'x, y', c: 'say "hi"' }]);
   });
-  it('normalizes the schedule and drops byes', () => {
-    const games = normalizeSchedule([
-      { GameKey: '202621001', Season: 2026, SeasonType: 1, Week: 10, DateTime: '2026-11-08T13:00:00', AwayTeam: 'MIA', HomeTeam: 'BUF', Status: 'Scheduled', AwayScore: null, HomeScore: null },
-      { GameKey: '202621002', Season: 2026, SeasonType: 1, Week: 10, DateTimeUTC: '2026-11-09T01:20:00', AwayTeam: 'KC', HomeTeam: 'LV', Status: 'F/OT', AwayScore: 27, HomeScore: 24 },
-      { GameKey: '202621099', Season: 2026, SeasonType: 1, Week: 10, DateTime: null, AwayTeam: 'BYE', HomeTeam: 'NYJ' },
+
+  it('reads the schedule with Eastern kickoffs, finals and neutral sites', () => {
+    const games = normalizeGames(fixture('nflverse-games.csv'), 2026, new Date('2026-11-06T00:00:00Z'));
+    const byId = Object.fromEntries(games.map((g) => [g.externalId, g]));
+    expect(byId['2026_01_NE_SEA']).toMatchObject({ status: 'final', awayScore: 10, homeScore: 13, week: 1, neutralSite: false });
+    expect(byId['2026_01_SF_LA']).toMatchObject({ homeTeam: 'LA', neutralSite: true });
+    expect(byId['2026_09_CIN_ATL']).toMatchObject({ status: 'scheduled', awayScore: null });
+    expect(byId['2026_09_CIN_ATL']!.kickoff.toISOString()).toBe('2026-11-08T14:30:00.000Z'); // 9:30 AM ET, international
+    expect(easternKickoff('2026-09-13', '13:00').toISOString()).toBe('2026-09-13T17:00:00.000Z');
+  });
+
+  it('reads 2026 rosters with jersey numbers', () => {
+    const chase = normalizeRoster(fixture('nflverse-roster.csv')).find((p) => p.name === "Ja'Marr Chase");
+    expect(chase).toMatchObject({ externalId: '00-0036900', team: 'CIN', position: 'WR', jerseyNumber: 1, status: 'ACT' });
+  });
+
+  it('counts scoring touchdowns per week, never thrown ones', () => {
+    const week1 = normalizeStats(fixture('nflverse-stats.csv'), 1);
+    expect(week1.map((s) => [s.playerExternalId, s.gameExternalId, s.touchdowns])).toEqual([
+      ['00-0034829', '2026_01_TB_CIN', 1], ['00-0036900', '2026_01_TB_CIN', 0],
     ]);
-    expect(games).toHaveLength(2);
-    expect(games[0]!.kickoff.toISOString()).toBe('2026-11-08T18:00:00.000Z');
-    expect(games[1]).toMatchObject({ status: 'final', awayScore: 27 });
+    expect(normalizeStats(fixture('nflverse-stats.csv'), 2)[0]).toMatchObject({ touchdowns: 2 });
   });
-  it('counts scoring touchdowns, never thrown ones', () => {
-    const [s] = normalizeStats([{ PlayerID: 1, GameKey: 'g', ReceivingTouchdowns: 1, RushingTouchdowns: 1, PassingTouchdowns: 3, Receptions: 5 }]);
-    expect(s).toMatchObject({ touchdowns: 2, passingTds: 3, receptions: 5 });
+
+  it('calls a changed file ours to fix', () => {
+    expect(() => normalizeRoster('gsis_id,full_name\n1,A')).toThrowError(/no longer has/);
   });
 });
 

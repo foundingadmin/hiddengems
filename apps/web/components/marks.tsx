@@ -1,6 +1,7 @@
-// Facet encodings as React: player tile and number, signal strip, verdict, gem tier, edge, level.
+// Facet encodings as React: player tile and number, gem rating, edge, run status.
 // Markup mirrors packages/facet (css/teams.css, css/components.css); see packages/facet/patterns/hidden-gems.md.
-import { SIGNALS, type Signals, findTeam, signalSummary } from '@hiddengems/core';
+import { findTeam } from '@hiddengems/core';
+import type { CSSProperties } from 'react';
 import { points } from '@/lib/format';
 
 export function Player({ name, teamId, number, detail }: { name: string; teamId: string | null; number: number | null; detail: string }) {
@@ -23,25 +24,29 @@ export function Player({ name, teamId, number, detail }: { name: string; teamId:
   );
 }
 
-export function SignalStrip({ signals }: { signals: Signals }) {
-  return (
-    <span className="fc-signal-strip" role="img" aria-label={signalSummary(signals)}>
-      {SIGNALS.map((s) => <i key={s} data-signal={signals[s]} />)}
-    </span>
-  );
-}
+const GEM_PATHS = (
+  <svg viewBox="0 0 24 22" aria-hidden="true">
+    <path className="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z" />
+    <path className="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7" />
+  </svg>
+);
 
-const VERDICT = { go: 'Go', wait: 'Wait', stop: 'Stop', none: 'Unchecked' } as const;
-export function Verdict({ verdict }: { verdict: keyof typeof VERDICT }) {
-  return <span className="fc-signal" data-signal={verdict}>{VERDICT[verdict]}</span>;
-}
-
-export function Gem({ tier }: { tier: string | null }) {
-  if (!tier) return <span aria-label="No tier">{'–'}</span>;
+/** The gem rating mark (packages/facet, .fc-gem): one 0 to 100 number, purple deepening with it.
+ * Fool's Gold is the hollow dashed gem with its label, never purple. */
+export function GemMark({ kind, rating, delay }: { kind: string; rating: number | null; delay?: number }) {
+  if (kind === 'fools-gold') {
+    return (
+      <span className="hg-gem-cell">
+        <span className="fc-gem" data-fools aria-hidden="true">{GEM_PATHS}</span>
+        <span className="fc-gem-fools text-label-12">Fool&apos;s Gold</span>
+      </span>
+    );
+  }
+  if (rating == null) return <span aria-label="No rating">{'\u2013'}</span>;
+  const style = { '--rating': rating, ...(delay != null ? { '--fc-gem-delay': `${delay}ms` } : {}) } as CSSProperties;
   return (
-    <span className="fc-gem" data-tier={tier} data-motion="once">
-      <span className="fc-gem-facets" aria-hidden="true"><i /><i /><i /><i /></span>
-      {tier[0]!.toUpperCase() + tier.slice(1)}
+    <span className="fc-gem" data-live style={style} aria-label={`Gem rating ${rating}`}>
+      {GEM_PATHS}<span>{rating}</span>
     </span>
   );
 }

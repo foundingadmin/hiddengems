@@ -1,6 +1,7 @@
-// The Odds API, v4 (https://the-odds-api.com/liveapi/guides/v4/). Prices player props from US books.
-// Event lists are free; each event odds call costs (markets x regions) credits, read from the
-// x-requests-used and x-requests-remaining headers into provider_usage.
+// The Odds API, v4 (https://the-odds-api.com/liveapi/guides/v4/), free plan: 500 credits a month.
+// Event lists are free; each event odds call costs markets x regions credits, so one per game for anytime
+// TD in the US region. Quota comes back in x-requests-used and x-requests-remaining (provider_usage).
+// includeLinks returns the sportsbook slip link per pick (the DraftKings handoff).
 import type { BookId, MarketId, Side } from '@hiddengems/core';
 import { z } from 'zod';
 import { ours } from '../errors';
@@ -8,23 +9,14 @@ import type { OddsEvent, OddsProvider, OddsQuote, ProviderContext } from './type
 
 const BASE = 'https://api.the-odds-api.com/v4/sports/americanfootball_nfl';
 
-const MARKET_KEYS: Record<MarketId, string> = {
-  anytime_td: 'player_anytime_td',
-  first_td: 'player_1st_td',
-  last_td: 'player_last_td',
-  receptions: 'player_receptions',
-  receiving_yards: 'player_reception_yds',
-  rushing_yards: 'player_rush_yds',
-  passing_yards: 'player_pass_yds',
-  passing_tds: 'player_pass_tds',
-};
+const MARKET_KEYS: Record<MarketId, string> = { anytime_td: 'player_anytime_td' };
 const MARKET_IDS = Object.fromEntries(Object.entries(MARKET_KEYS).map(([id, key]) => [key, id as MarketId]));
 
-const BOOK_KEYS: Record<BookId, string> = { draftkings: 'draftkings', fanduel: 'fanduel', betmgm: 'betmgm', caesars: 'williamhill_us' };
+const BOOK_KEYS: Record<BookId, string> = { draftkings: 'draftkings', fanduel: 'fanduel', betmgm: 'betmgm', caesars: 'williamhill_us', fanatics: 'fanatics' };
 const BOOK_IDS = Object.fromEntries(Object.entries(BOOK_KEYS).map(([id, key]) => [key, id as BookId]));
 
 const Event = z.object({ id: z.string(), commence_time: z.string(), home_team: z.string(), away_team: z.string() });
-const Outcome = z.object({ name: z.string(), description: z.string().optional(), price: z.number(), point: z.number().optional() });
+const Outcome = z.object({ name: z.string(), description: z.string().optional(), price: z.number(), point: z.number().optional(), link: z.string().nullish() });
 const EventOdds = z.object({
   id: z.string(),
   bookmakers: z.array(z.object({
@@ -40,7 +32,7 @@ function parse<T>(schema: z.ZodType<T>, data: unknown, what: string): T {
   return r.data;
 }
 
-const SIDES: Record<string, Side | undefined> = { yes: 'yes', over: 'over', under: 'under' };
+const SIDES: Record<string, Side | undefined> = { yes: 'yes' };
 
 export function normalizeEventOdds(payload: unknown): OddsQuote[] {
   const data = parse(EventOdds, payload, 'event odds');
@@ -55,7 +47,7 @@ export function normalizeEventOdds(payload: unknown): OddsQuote[] {
       for (const o of market.outcomes) {
         const side = SIDES[o.name.toLowerCase()];
         if (!side || !(o.price > 1)) continue; // "No" sides and junk prices are skipped
-        quotes.push({ bookId, marketId, playerName: o.description ?? null, side, line: o.point ?? null, priceDecimal: o.price, observedAt });
+        quotes.push({ bookId, marketId, playerName: o.description ?? null, side, line: o.point ?? null, priceDecimal: o.price, observedAt, link: o.link ?? null });
       }
     }
   }
@@ -72,7 +64,7 @@ export function oddsApi(apiKey: string): OddsProvider {
     },
     async eventOdds(ctx, event, markets) {
       const params = new URLSearchParams({
-        regions: 'us', oddsFormat: 'decimal', dateFormat: 'iso',
+        regions: 'us', oddsFormat: 'decimal', dateFormat: 'iso', includeLinks: 'true',
         markets: markets.map((m) => MARKET_KEYS[m]).join(','),
         bookmakers: Object.values(BOOK_KEYS).join(','),
       });

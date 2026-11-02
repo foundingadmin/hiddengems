@@ -1,14 +1,13 @@
 # Hidden Gems
 
 A research tool for NFL betting: it pulls market data, correlates quantitative signals with
-qualitative reporting, and ranks available sportsbook bets as custom "gem" tiers.
+qualitative reporting, and grades every anytime TD prop with one 0 to 100 gem rating.
 
 ## Repository
 
 ```
-apps/artifact/     The app as hosted today: a claude.ai artifact page
-apps/web/          The app for a full deployment: Next.js on Vercel with cron
-packages/core/     Domain rules: odds math, gaps, tiers, verdicts, cadence
+apps/web/          The app: Gems, Slips, Ask the Jeweler (Next.js on Vercel with cron)
+packages/core/     Domain rules: odds math, gem rating, Recommended order, snapshot schedule
 packages/db/       Postgres schema, migrations, client
 packages/ingest/   Providers, jobs, the run log
 packages/facet/    Facet, the design system (start with packages/facet/DESIGN.md)

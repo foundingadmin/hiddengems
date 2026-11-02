@@ -1,6 +1,7 @@
 import { providerUsage, runs } from '@hiddengems/db';
 import { desc, eq } from 'drizzle-orm';
 import type { Metadata } from 'next';
+import { dataMode } from '@hiddengems/ingest';
 import { RunStatus } from '@/components/marks';
 import { db } from '@/lib/db';
 import { ago, clock, duration } from '@/lib/format';
@@ -10,19 +11,21 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = { title: 'Data' };
 
 const SOURCES = [
-  { job: 'pull-odds', label: 'Odds', cadence: 'Every 5 minutes near kickoff, hourly within 3 days' },
+  { job: 'pull-odds', label: 'Odds', cadence: 'Tue 10:07 AM, Sat 7:47 PM, Sun 8:43 AM and before each kickoff (Denver)' },
   { job: 'pull-schedule', label: 'Schedule', cadence: 'Daily' },
   { job: 'pull-rosters', label: 'Rosters', cadence: 'Daily' },
-  { job: 'pull-results', label: 'Results', cadence: 'Hourly' },
-  { job: 'build-picks', label: 'Picks', cadence: 'After every odds pull' },
+  { job: 'pull-results', label: 'Results', cadence: 'Daily' },
+  { job: 'build-picks', label: 'Ratings', cadence: 'After every odds pull' },
 ] as const;
 
 const LABELS: Record<string, string> = Object.fromEntries(SOURCES.map((s) => [s.job, s.label]));
-const PROVIDERS: Record<string, string> = { 'odds-api': 'The Odds API', sportsdataio: 'SportsDataIO', sample: 'Sample' };
+const PROVIDERS: Record<string, string> = { 'odds-api': 'The Odds API', nflverse: 'nflverse', sample: 'Sample' };
 
 export default async function DataPage() {
   const { db: d } = await db();
   const now = new Date();
+  // Odds pull only on the snapshot schedule with a paid key; the sample provider costs nothing.
+  const sample = dataMode() === 'sample';
   const log = await d.select().from(runs).orderBy(desc(runs.startedAt)).limit(50);
   const usage = await d.select().from(providerUsage);
   const latest = await Promise.all(SOURCES.map(async (s) => {
@@ -76,10 +79,12 @@ export default async function DataPage() {
                   </td>
                   <td>{cadence}</td>
                   <td className="fc-cell-actions">
-                    <form action={pullNow} className="hg-inline-form">
-                      <input type="hidden" name="job" value={job} />
-                      <button className="fc-button" data-variant="tertiary" data-size="small" type="submit">Pull now</button>
-                    </form>
+                    {(job !== 'pull-odds' || sample) && (
+                      <form action={pullNow} className="hg-inline-form">
+                        <input type="hidden" name="job" value={job} />
+                        <button className="fc-button" data-variant="tertiary" data-size="small" type="submit">Pull now</button>
+                      </form>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -88,7 +93,7 @@ export default async function DataPage() {
         </div>
         {usage.map((u) => (
           <p key={u.provider} className="text-copy-14">
-            {PROVIDERS[u.provider] ?? u.provider} quota: {u.remaining?.toLocaleString('en-US') ?? '–'} requests left, {u.used?.toLocaleString('en-US') ?? '–'} used
+            {PROVIDERS[u.provider] ?? u.provider} credits this month: {u.remaining?.toLocaleString('en-US') ?? '–'} left, {u.used?.toLocaleString('en-US') ?? '–'} used
           </p>
         ))}
       </section>

@@ -14,5 +14,5 @@ export async function seedReference(db: Db): Promise<void> {
   await db.insert(books).values(BOOKS.map((b) => ({ ...b })))
     .onConflictDoUpdate({ target: books.id, set: { name: sql`excluded.name` } });
   await db.insert(markets).values(MARKETS.map((m) => ({ ...m })))
-    .onConflictDoUpdate({ target: markets.id, set: { label: sql`excluded.label`, kind: sql`excluded.kind`, scope: sql`excluded.scope` } });
+    .onConflictDoUpdate({ target: markets.id, set: { label: sql`excluded.label` } });
 }

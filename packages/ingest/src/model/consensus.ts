@@ -1,22 +1,19 @@
-// consensus-v0: the placeholder model, so the pipeline runs end to end before the real one exists.
-// It estimates a selection from the other books' prices: the average fair chance where both sides of
-// an over/under are listed (vig removed), otherwise their average priced chance (vig included).
-// A positive gap therefore means "this book is longer than the market", which is line shopping, not
-// a forecast. The real model (Phase 3) replaces estimate() and fills the other signals.
-import { removeVig, impliedFromDecimal } from '@hiddengems/core';
+// consensus-v0: the placeholder hit chance until the Hidden Gems v3.0 model (docs/prd.md section 11,
+// hgs.py in the old pipeline) is ported. It averages the fair chance behind the other books' prices
+// (section 11.4's assumed cut taken out), so a gem here means DraftKings is longer than the market:
+// line shopping, not a forecast.
+import { fairChance } from '@hiddengems/core';
 
 export const MODEL = 'consensus-v0';
 
-export interface BookPrice {
-  bookId: string;
-  price: number;
-  /** The same book's price on the other side of an over/under, when listed. */
-  opposite?: number;
+export function estimate(otherPrices: readonly number[]): number | null {
+  if (!otherPrices.length) return null;
+  return otherPrices.reduce((sum, p) => sum + fairChance(p), 0) / otherPrices.length;
 }
 
-export function estimate(others: readonly BookPrice[]): { probability: number; devigged: boolean } | null {
-  if (!others.length) return null;
-  const devig = others.every((b) => b.opposite != null);
-  const probs = others.map((b) => (devig ? removeVig([b.price, b.opposite!])[0]! : impliedFromDecimal(b.price)));
-  return { probability: probs.reduce((a, b) => a + b, 0) / probs.length, devigged: devig };
+/** Population standard deviation, for how much the books agree. */
+export function spread(values: readonly number[]): number {
+  if (values.length < 2) return 0;
+  const mean = values.reduce((a, b) => a + b, 0) / values.length;
+  return Math.sqrt(values.reduce((a, b) => a + (b - mean) ** 2, 0) / values.length);
 }

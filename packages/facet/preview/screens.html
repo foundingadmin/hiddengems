@@ -66,7 +66,6 @@
       <div class="fc-segmented" data-size="small" role="radiogroup" aria-label="Gem motion" id="gem-motion">
         <button type="button" role="radio" aria-checked="true" data-mode="cascade">Cascade</button>
         <button type="button" role="radio" aria-checked="false" data-mode="sync">Sync</button>
-        <button type="button" role="radio" aria-checked="false" data-mode="once">Once</button>
         <button type="button" role="radio" aria-checked="false" data-mode="still">Still</button>
       </div>
     </div>
@@ -83,7 +82,7 @@
             <th scope="col" data-align="numeric">Gap</th>
             <th scope="col">Signals</th>
             <th scope="col">Verdict</th>
-            <th scope="col">Gem tier</th>
+            <th scope="col">Gem rating</th>
           </tr>
         </thead>
         <tbody id="slate-body"></tbody>
@@ -242,11 +241,11 @@
           <div class="fc-table-wrap">
             <table class="fc-table">
               <caption>Early window picks, sorted by edge</caption>
-              <thead><tr><th scope="col">Pick</th><th scope="col">Book</th><th scope="col" data-align="numeric">Odds</th><th scope="col" data-align="numeric">Edge</th><th scope="col">Verdict</th><th scope="col">Tier</th></tr></thead>
+              <thead><tr><th scope="col">Pick</th><th scope="col">Book</th><th scope="col" data-align="numeric">Odds</th><th scope="col" data-align="numeric">Edge</th><th scope="col">Verdict</th><th scope="col">Rating</th></tr></thead>
               <tbody>
-                <tr><th scope="row">Mike Gesicki receiving yards over 38.5</th><td>DraftKings</td><td data-align="numeric"><span class="fc-signed"><span class="fc-sign">-</span>110</span></td><td data-align="numeric"><span class="fc-delta" data-direction="positive">+9.0 pts</span></td><td><span class="fc-signal" data-signal="go">Go</span></td><td><span class="fc-gem" data-tier="polished" data-motion="none"><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Polished</span></td></tr>
-                <tr><th scope="row">Zay Flowers receptions over 4.5</th><td>FanDuel</td><td data-align="numeric"><span class="fc-signed"><span class="fc-sign">+</span>105</span></td><td data-align="numeric"><span class="fc-delta" data-direction="positive">+5.5 pts</span></td><td><span class="fc-signal" data-signal="go">Go</span></td><td><span class="fc-gem" data-tier="cut" data-motion="none"><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Cut</span></td></tr>
-                <tr><th scope="row">Tony Pollard rushing yards under 62.5</th><td>BetMGM</td><td data-align="numeric"><span class="fc-signed"><span class="fc-sign">-</span>115</span></td><td data-align="numeric"><span class="fc-delta" data-direction="positive">+2.5 pts</span></td><td><span class="fc-signal" data-signal="wait">Wait</span></td><td><span class="fc-gem" data-tier="rough" data-motion="none"><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Rough</span></td></tr>
+                <tr><th scope="row">Mike Gesicki receiving yards over 38.5</th><td>DraftKings</td><td data-align="numeric"><span class="fc-signed"><span class="fc-sign">-</span>110</span></td><td data-align="numeric"><span class="fc-delta" data-direction="positive">+9.0 pts</span></td><td><span class="fc-signal" data-signal="go">Go</span></td><td><span class="fc-gem" style="--rating: 81" aria-label="Gem rating 81"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>81</span></span></td></tr>
+                <tr><th scope="row">Zay Flowers receptions over 4.5</th><td>FanDuel</td><td data-align="numeric"><span class="fc-signed"><span class="fc-sign">+</span>105</span></td><td data-align="numeric"><span class="fc-delta" data-direction="positive">+5.5 pts</span></td><td><span class="fc-signal" data-signal="go">Go</span></td><td><span class="fc-gem" style="--rating: 64" aria-label="Gem rating 64"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>64</span></span></td></tr>
+                <tr><th scope="row">Tony Pollard rushing yards under 62.5</th><td>BetMGM</td><td data-align="numeric"><span class="fc-signed"><span class="fc-sign">-</span>115</span></td><td data-align="numeric"><span class="fc-delta" data-direction="positive">+2.5 pts</span></td><td><span class="fc-signal" data-signal="wait">Wait</span></td><td><span class="fc-gem" style="--rating: 38" aria-label="Gem rating 38"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>38</span></span></td></tr>
               </tbody>
             </table>
           </div>
@@ -753,7 +752,7 @@ const picks = [
 ];
 const label = { go: 'Go', wait: 'Wait', stop: 'Stop', none: 'Unchecked' };
 const body = document.getElementById('slate-body');
-const MOTION = { sync: () => '', cascade: i => ` style="--fc-gem-delay:${(picks.length - 1 - i) * 160}ms"`, once: () => ' data-motion="once"', still: () => ' data-motion="none"' };
+const MOTION = { sync: () => ({}), cascade: (i) => ({ delay: (picks.length - 1 - i) * 160 }), still: () => ({ still: true }) };
 const renderSlate = (mode = 'cascade') => { body.innerHTML = picks.map((r, i) => {
   const gap = r.est - r.ip;
   const counts = r.sig.reduce((a, s) => (a[s] = (a[s] || 0) + 1, a), {});
@@ -767,7 +766,7 @@ const renderSlate = (mode = 'cascade') => { body.innerHTML = picks.map((r, i) =>
     <td data-align="numeric"><span class="fc-delta" data-direction="positive">${gap}</span></td>
     <td><span class="fc-signal-strip" role="img" aria-label="${aria}">${r.sig.map(s => `<i data-signal="${s}"></i>`).join('')}</span></td>
     <td><span class="fc-signal" data-signal="${r.v}">${label[r.v]}</span></td>
-    <td>${gem(tierOf(gap), MOTION[mode](i))}</td>
+    <td>${gem(ratingOf(gap), MOTION[mode](i))}</td>
   </tr>`;
 }).join(''); };
 renderSlate();

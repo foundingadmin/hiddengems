@@ -568,108 +568,52 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
 .fc-signal-strip > i[data-signal="stop"] { background: var(--fc-signal-stop-solid); }
 .fc-signal-strip > i[data-signal="none"] { background: transparent; box-shadow: inset 0 0 0 1.5px var(--fc-signal-none-solid); }
 
-/* Gem tier [F]: ordinal ladder encoded three ways, so it never relies on color alone:
-   1 to 4 filled facets, a purple ramp (gray, 500, 700, 900), and the tier word.
-   Glow grows with tier: none for rough, then faint, stronger and fullest.
-   Motion is part of the encoding (owner decision). Each 5.6s cycle:
-     1. facets light left to right, one every 160ms, up to the tier's count
-     2. a quick flash burst fires the moment the last facet lands
-     3. the gem holds, fully lit, for most of the cycle
-     4. it dims briefly, then the cycle repeats
-   So the row's start delay (--fc-gem-delay, used to cascade up a ranked table so the top rank lands last) sets when
-   motion begins, and the facet count sets when each sequence ends. Rough never moves.
-     data-motion="once"  one sequence and burst, then rests lit
-     data-motion="none"  still
-   Reduced motion turns all of it off. This is Facet's single sanctioned glow and loop. */
+/* Gem rating [F]: one 0 to 100 rating per gem, no tiers (owner decision, 2026-11-02; docs/prd.md section 8).
+   Encoded twice, so it never relies on color alone: the number, always beside the gem, and purple that
+   deepens with the rating (--rating). Glow starts above 60 and grows with it. Fool's Gold (does not clear
+   the posted price) is a hollow dashed gem in gray with its .fc-gem-fools label, never purple, never moving.
+     <span class="fc-gem" style="--rating: 92" data-live aria-label="Gem rating 92">
+       <svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/>
+       <path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>92</span></span>
+   data-live adds the glint: a short lift every 5.6s, delayed by --fc-gem-delay so a ranked table cascades
+   bottom to top and the top gem lands last. Reduced motion stops it. Facet's single sanctioned glow and loop. */
 .fc-gem {
-  --_c: var(--fc-gem-tier-rough);
-  --_glow: 0px;
-  --_glow-max: 0px;
-  --_cycle: 5.6s;
+  --rating: 0;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font: 500 13px/16px var(--fc-font-sans);
-  color: var(--fc-gem-fg); /* label text stays at a readable step; facets carry the ramp */
+  gap: var(--fc-space-2);
+  color: var(--fc-text-primary);
+  font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-.fc-gem-facets {
+.fc-gem > svg {
+  flex: none;
+  width: 1.25em;
+  height: 1.25em;
+  overflow: visible;
+  color: color-mix(in oklab, var(--fc-gem-solid) calc(var(--rating) * 1%), var(--ds-gray-600));
+  filter: drop-shadow(0 0 calc(max(var(--rating) - 60, 0) * 0.012em) color-mix(in oklab, var(--fc-gem-solid) 80%, transparent));
+}
+.fc-gem .fc-gem-fill { fill: currentColor; }
+.fc-gem .fc-gem-cut { fill: none; stroke: var(--fc-surface-canvas); stroke-opacity: 0.45; }
+.fc-gem[data-size="lg"] { font-size: 1.5em; gap: var(--fc-space-3); }
+.fc-gem[data-size="xl"] { font-size: 2.25em; gap: var(--fc-space-3); }
+.fc-gem[data-fools] { color: var(--fc-text-secondary); }
+.fc-gem[data-fools] > svg { color: var(--ds-gray-700); filter: none; }
+.fc-gem[data-fools] .fc-gem-fill { fill: none; stroke: currentColor; stroke-dasharray: 2 2; }
+.fc-gem-fools {
   display: inline-flex;
-  gap: 2px;
-  filter: drop-shadow(0 0 var(--_glow) color-mix(in srgb, var(--_c) 75%, transparent));
+  align-items: center;
+  height: var(--fc-space-5);
+  padding: 0 var(--fc-space-2);
+  border: 1px dashed var(--fc-border-hover);
+  border-radius: var(--fc-radius-xs);
+  color: var(--fc-text-secondary);
+  white-space: nowrap;
 }
-.fc-gem-facets > i { width: 6px; height: 10px; clip-path: polygon(50% 0, 100% 35%, 50% 100%, 0 35%); background: var(--ds-gray-300); }
-.fc-gem[data-tier="rough"]    { --_c: var(--fc-gem-tier-rough); color: var(--fc-text-secondary); }
-.fc-gem[data-tier="cut"]      { --_c: var(--fc-gem-tier-cut); --_glow: 0px; --_glow-max: 1.5px; }
-.fc-gem[data-tier="polished"] { --_c: var(--fc-gem-tier-polished); --_glow: 1.5px; --_glow-max: 3.5px; }
-.fc-gem[data-tier="flawless"] { --_c: var(--fc-gem-tier-flawless); --_glow: 2.5px; --_glow-max: 6px; }
-.fc-gem[data-tier="rough"]    .fc-gem-facets > i:nth-child(-n+1),
-.fc-gem[data-tier="cut"]      .fc-gem-facets > i:nth-child(-n+2),
-.fc-gem[data-tier="polished"] .fc-gem-facets > i:nth-child(-n+3),
-.fc-gem[data-tier="flawless"] .fc-gem-facets > i:nth-child(-n+4) { background: var(--_c); }
-
-.fc-gem[data-tier="cut"]      { --_n: 2; }
-.fc-gem[data-tier="polished"] { --_n: 3; }
-.fc-gem[data-tier="flawless"] { --_n: 4; }
-.fc-gem { --_step: 160ms; }
-.fc-gem .fc-gem-facets > i:nth-child(1) { --_i: 0; }
-.fc-gem .fc-gem-facets > i:nth-child(2) { --_i: 1; }
-.fc-gem .fc-gem-facets > i:nth-child(3) { --_i: 2; }
-.fc-gem .fc-gem-facets > i:nth-child(4) { --_i: 3; }
-
-/* 1 + 4: each filled facet switches on at its turn, stays lit, then dims before the next cycle. */
-@keyframes fc-gem-light {
-  0%       { background: var(--ds-gray-300); }
-  3%, 90%  { background: var(--_c); }
-  96%,100% { background: var(--ds-gray-300); }
-}
-/* 2: the burst. Facets pop and the glow flares, then settle into the held glow. */
-@keyframes fc-gem-pop {
-  0%, 6%, 100% { transform: none; filter: brightness(1); }
-  2.5%         { transform: translateY(-1px) scale(1.22); filter: brightness(1.15); }
-}
-@keyframes fc-gem-flare {
-  0%        { filter: drop-shadow(0 0 0 color-mix(in srgb, var(--_c) 0%, transparent)); }
-  3%        { filter: drop-shadow(0 0 var(--_glow-max) color-mix(in srgb, var(--_c) 95%, transparent)); }
-  10%, 84%  { filter: drop-shadow(0 0 var(--_glow) color-mix(in srgb, var(--_c) 75%, transparent)); }
-  90%, 100% { filter: drop-shadow(0 0 0 color-mix(in srgb, var(--_c) 0%, transparent)); }
-}
-.fc-gem[data-tier="cut"]      .fc-gem-facets > i:nth-child(-n+2),
-.fc-gem[data-tier="polished"] .fc-gem-facets > i:nth-child(-n+3),
-.fc-gem[data-tier="flawless"] .fc-gem-facets > i:nth-child(-n+4) {
-  animation:
-    fc-gem-light var(--_cycle) linear calc(var(--fc-gem-delay, 0s) + var(--_i) * var(--_step)) infinite both,
-    fc-gem-pop   var(--_cycle) ease-out calc(var(--fc-gem-delay, 0s) + var(--_n) * var(--_step)) infinite both;
-}
-.fc-gem:not([data-tier="rough"]) .fc-gem-facets {
-  animation: fc-gem-flare var(--_cycle) ease-out calc(var(--fc-gem-delay, 0s) + var(--_n) * var(--_step)) infinite both;
-}
-
-/* Once: one sequence and burst, then rest lit with the held glow. */
-@keyframes fc-gem-light-once { from { background: var(--ds-gray-300); } to { background: var(--_c); } }
-@keyframes fc-gem-pop-once { 0%, 100% { transform: none; filter: brightness(1); } 40% { transform: translateY(-1px) scale(1.22); filter: brightness(1.15); } }
-@keyframes fc-gem-flare-once {
-  0%   { filter: drop-shadow(0 0 0 color-mix(in srgb, var(--_c) 0%, transparent)); }
-  30%  { filter: drop-shadow(0 0 var(--_glow-max) color-mix(in srgb, var(--_c) 95%, transparent)); }
-  100% { filter: drop-shadow(0 0 var(--_glow) color-mix(in srgb, var(--_c) 75%, transparent)); }
-}
-.fc-gem[data-motion="once"][data-tier="cut"]      .fc-gem-facets > i:nth-child(-n+2),
-.fc-gem[data-motion="once"][data-tier="polished"] .fc-gem-facets > i:nth-child(-n+3),
-.fc-gem[data-motion="once"][data-tier="flawless"] .fc-gem-facets > i:nth-child(-n+4) {
-  animation:
-    fc-gem-light-once 170ms linear calc(var(--fc-gem-delay, 0s) + var(--_i) * var(--_step)) both,
-    fc-gem-pop-once   340ms ease-out calc(var(--fc-gem-delay, 0s) + var(--_n) * var(--_step)) both;
-}
-.fc-gem[data-motion="once"]:not([data-tier="rough"]) .fc-gem-facets {
-  animation: fc-gem-flare-once 560ms ease-out calc(var(--fc-gem-delay, 0s) + var(--_n) * var(--_step)) both;
-}
-.fc-gem[data-motion="none"] .fc-gem-facets,
-.fc-gem[data-motion="none"][data-tier] .fc-gem-facets > i:nth-child(n) { animation: none; }
-.fc-gem[data-size="lg"] { gap: 8px; font: 500 16px/24px var(--fc-font-sans); }
-.fc-gem[data-size="lg"] .fc-gem-facets { gap: 3px; }
-.fc-gem[data-size="lg"] .fc-gem-facets > i { width: 11px; height: 18px; }
-@media (prefers-reduced-motion: reduce) {
-  .fc-gem .fc-gem-facets, .fc-gem .fc-gem-facets > i { animation: none !important; }
+@keyframes fc-gem-glint { 0%, 82%, 100% { transform: none; } 88% { transform: translateY(-1px) scale(1.12); } }
+@media (prefers-reduced-motion: no-preference) {
+  .fc-gem[data-live]:not([data-fools]) > svg { animation: fc-gem-glint 5.6s var(--fc-ease-standard) infinite; animation-delay: var(--fc-gem-delay, 0s); }
 }
 
 /* Range marker: where today's number sits between a low and a high (line, projection). */

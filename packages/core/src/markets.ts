@@ -1,26 +1,14 @@
 // The market catalog. Ids are ours; providers map their own keys onto them in their adapters.
+// This season covers anytime TD only (docs/build-brief.md): the free odds plan prices TD props only.
 
-export type MarketKind = 'binary' | 'over_under';
-export type Side = 'yes' | 'over' | 'under';
+export type Side = 'yes';
 
 export interface Market {
   id: string;
   label: string;
-  kind: MarketKind;
-  /** A player market (anytime TD) or a game market (spread, total). */
-  scope: 'player' | 'game';
 }
 
-export const MARKETS = [
-  { id: 'anytime_td', label: 'Anytime TD scorer', kind: 'binary', scope: 'player' },
-  { id: 'first_td', label: 'First TD scorer', kind: 'binary', scope: 'player' },
-  { id: 'last_td', label: 'Last TD scorer', kind: 'binary', scope: 'player' },
-  { id: 'receptions', label: 'Receptions', kind: 'over_under', scope: 'player' },
-  { id: 'receiving_yards', label: 'Receiving yards', kind: 'over_under', scope: 'player' },
-  { id: 'rushing_yards', label: 'Rushing yards', kind: 'over_under', scope: 'player' },
-  { id: 'passing_yards', label: 'Passing yards', kind: 'over_under', scope: 'player' },
-  { id: 'passing_tds', label: 'Passing TDs', kind: 'over_under', scope: 'player' },
-] as const satisfies readonly Market[];
+export const MARKETS = [{ id: 'anytime_td', label: 'Anytime TD scorer' }] as const satisfies readonly Market[];
 
 export type MarketId = (typeof MARKETS)[number]['id'];
 
@@ -35,5 +23,9 @@ export const BOOKS = [
   { id: 'fanduel', name: 'FanDuel' },
   { id: 'betmgm', name: 'BetMGM' },
   { id: 'caesars', name: 'Caesars' },
+  { id: 'fanatics', name: 'Fanatics' },
 ] as const;
 export type BookId = (typeof BOOKS)[number]['id'];
+
+/** Where Josh buys. Its price is the posted price a gem must beat; other books inform the appraisal. */
+export const PURCHASE_BOOK: BookId = 'draftkings';

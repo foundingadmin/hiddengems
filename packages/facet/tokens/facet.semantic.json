@@ -322,7 +322,7 @@
       "$description": "Gem badge or panel border."
     },
     "tier": {
-      "$description": "Ordinal ladder (rough < cut < polished < flawless). One hue, rising intensity, so rank reads as magnitude. Pair with filled-facet glyph count (1 to 4).",
+      "$description": "Ordinal ladder (rough < cut < polished < flawless). Gray, then purple 500, 700 and 900, so rank reads as rising intensity in both themes. Always paired with the filled facet count and the tier word; flawless and polished also carry the gem glow.",
       "rough": {
         "$type": "color",
         "$value": "{color.gray.700}",
@@ -330,18 +330,18 @@
       },
       "cut": {
         "$type": "color",
-        "$value": "{color.purple.600}",
-        "$description": "Tier 2 of 4 facets."
+        "$value": "{color.purple.500}",
+        "$description": "Tier 2 of 4 facets, the first purple."
       },
       "polished": {
         "$type": "color",
         "$value": "{color.purple.700}",
-        "$description": "Tier 3 of 4 facets."
+        "$description": "Tier 3 of 4 facets, with a faint glow."
       },
       "flawless": {
         "$type": "color",
         "$value": "{color.purple.900}",
-        "$description": "Tier 4 of 4 facets, the strongest purple."
+        "$description": "Tier 4 of 4 facets, the strongest purple and the fullest glow."
       }
     }
   },

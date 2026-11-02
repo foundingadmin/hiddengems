@@ -480,26 +480,59 @@
 .fc-signal-strip > i[data-signal="stop"] { background: var(--fc-signal-stop-solid); }
 .fc-signal-strip > i[data-signal="none"] { background: transparent; box-shadow: inset 0 0 0 1.5px var(--fc-signal-none-solid); }
 
-/* Gem tier: ordinal ladder encoded twice, by filled facet count (1-4) and by intensity. */
+/* Gem tier [F]: ordinal ladder encoded three ways, so it never relies on color alone:
+   1 to 4 filled facets, a purple ramp (gray, 500, 700, 900), and the tier word.
+   Glow grows with tier: none for rough and cut, faint for polished, fullest for flawless.
+   Motion: a glint runs across the filled facets once when a tier appears (state change).
+   data-motion="loop" repeats it slowly with a breathing glow, for ONE focal gem per view
+   (a pick's detail header), never in tables. Reduced motion turns all of it off.
+   This is Facet's single sanctioned glow and loop; nothing else in the system glows. */
 .fc-gem {
   --_c: var(--fc-gem-tier-rough);
+  --_glow: 0px;
+  --_glow-max: 0px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   font: 500 13px/16px var(--fc-font-sans);
-  color: var(--fc-gem-fg); /* label text stays at a readable step; facets carry the intensity */
+  color: var(--fc-gem-fg); /* label text stays at a readable step; facets carry the ramp */
   white-space: nowrap;
 }
-.fc-gem-facets { display: inline-flex; gap: 2px; }
+.fc-gem-facets {
+  display: inline-flex;
+  gap: 2px;
+  filter: drop-shadow(0 0 var(--_glow) color-mix(in srgb, var(--_c) 75%, transparent));
+}
 .fc-gem-facets > i { width: 6px; height: 10px; clip-path: polygon(50% 0, 100% 35%, 50% 100%, 0 35%); background: var(--ds-gray-300); }
 .fc-gem[data-tier="rough"]    { --_c: var(--fc-gem-tier-rough); color: var(--fc-text-secondary); }
 .fc-gem[data-tier="cut"]      { --_c: var(--fc-gem-tier-cut); }
-.fc-gem[data-tier="polished"] { --_c: var(--fc-gem-tier-polished); }
-.fc-gem[data-tier="flawless"] { --_c: var(--fc-gem-tier-flawless); }
+.fc-gem[data-tier="polished"] { --_c: var(--fc-gem-tier-polished); --_glow: 1.5px; --_glow-max: 3px; }
+.fc-gem[data-tier="flawless"] { --_c: var(--fc-gem-tier-flawless); --_glow: 2.5px; --_glow-max: 6px; }
 .fc-gem[data-tier="rough"]    .fc-gem-facets > i:nth-child(-n+1),
 .fc-gem[data-tier="cut"]      .fc-gem-facets > i:nth-child(-n+2),
 .fc-gem[data-tier="polished"] .fc-gem-facets > i:nth-child(-n+3),
 .fc-gem[data-tier="flawless"] .fc-gem-facets > i:nth-child(-n+4) { background: var(--_c); }
+
+/* Glint: each filled facet catches the light in turn, left to right. */
+@keyframes fc-gem-glint { 0%, 100% { filter: brightness(1); } 40% { filter: brightness(1.32); } }
+@keyframes fc-gem-breathe {
+  0%, 100% { filter: drop-shadow(0 0 var(--_glow) color-mix(in srgb, var(--_c) 75%, transparent)); }
+  50%      { filter: drop-shadow(0 0 var(--_glow-max) color-mix(in srgb, var(--_c) 90%, transparent)); }
+}
+.fc-gem:not([data-tier="rough"]) .fc-gem-facets > i { animation: fc-gem-glint 700ms var(--fc-ease-standard) 1 both; }
+.fc-gem .fc-gem-facets > i:nth-child(2) { animation-delay: 90ms; }
+.fc-gem .fc-gem-facets > i:nth-child(3) { animation-delay: 180ms; }
+.fc-gem .fc-gem-facets > i:nth-child(4) { animation-delay: 270ms; }
+.fc-gem[data-motion="loop"]:not([data-tier="rough"]) .fc-gem-facets > i { animation-duration: 3.2s; animation-iteration-count: infinite; }
+.fc-gem[data-motion="loop"][data-tier="polished"] .fc-gem-facets,
+.fc-gem[data-motion="loop"][data-tier="flawless"] .fc-gem-facets { animation: fc-gem-breathe 3.2s ease-in-out infinite; }
+.fc-gem[data-motion="none"] .fc-gem-facets > i { animation: none; }
+.fc-gem[data-size="lg"] { gap: 8px; font: 500 16px/24px var(--fc-font-sans); }
+.fc-gem[data-size="lg"] .fc-gem-facets { gap: 3px; }
+.fc-gem[data-size="lg"] .fc-gem-facets > i { width: 11px; height: 18px; }
+@media (prefers-reduced-motion: reduce) {
+  .fc-gem .fc-gem-facets, .fc-gem .fc-gem-facets > i { animation: none !important; }
+}
 
 /* Range marker: where today's number sits between a low and a high (line, projection). */
 .fc-range { position: relative; display: block; height: 12px; min-width: 64px; }

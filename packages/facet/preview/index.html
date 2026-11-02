@@ -92,6 +92,7 @@
   .sp-nhead strong, .sp-ntype strong { font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
   .sp-ntype { display: flex; flex-direction: column; gap: 2px; font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); }
   .sp-ncell { min-width: 0; }
+  .sp-gemfocal { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .sp-two-up { grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 360px)); }
   .sp-ncell-label { display: none; }
   .sp-ncell .fc-note-action { pointer-events: none; }
@@ -444,6 +445,7 @@
         <div class="sp-wrap"><span class="fc-signal" data-signal="go">Go</span><span class="fc-signal" data-signal="wait">Wait</span><span class="fc-signal" data-signal="stop">Stop</span><span class="fc-signal">Unchecked</span></div>
         <div class="sp-wrap"><span class="fc-signal" data-variant="pill" data-signal="go">Go</span><span class="fc-signal" data-variant="pill" data-signal="wait">Wait</span><span class="fc-signal" data-variant="pill" data-signal="stop">Stop</span></div>
         <div class="sp-wrap" id="gems"></div>
+        <div class="sp-gemfocal"><span id="gem-focal"></span><span class="sp-caption">One focal gem per view may loop</span><button class="fc-button" data-variant="tertiary" data-size="small" type="button" id="gem-replay">Replay glint</button></div>
         <div class="sp-wrap"><span class="fc-signal-strip" aria-label="5 go, 1 wait"><i data-signal="go"></i><i data-signal="go"></i><i data-signal="wait"></i><i data-signal="go"></i><i data-signal="go"></i><i data-signal="go"></i></span>
           <span class="fc-delta" data-direction="positive">9.0</span><span class="fc-delta" data-direction="negative">2.5</span><span class="fc-delta">0.0</span></div>
       </figure>
@@ -562,7 +564,7 @@
   const tierOf = gap => gap >= 12 ? 'flawless' : gap >= 9 ? 'polished' : gap >= 6 ? 'cut' : 'rough';
   const label = { go: 'Go', wait: 'Wait', stop: 'Stop', none: 'Unchecked' };
   const cap = s => s[0].toUpperCase() + s.slice(1);
-  const gem = t => `<span class="fc-gem" data-tier="${t}"><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>${cap(t)}</span>`;
+  const gem = (t, attrs = '') => `<span class="fc-gem" data-tier="${t}"${attrs}><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>${cap(t)}</span>`;
   const body = document.getElementById('slate-body');
   body.innerHTML = picks.map(r => {
     const gap = r.est - r.ip;
@@ -584,7 +586,10 @@
     const gap = r.est - r.ip;
     return `<div class="fc-bar" role="listitem"><span class="fc-bar-label">${r.p}${r.m.includes('2nd') ? ' (2H)' : ''}</span><span class="fc-bar-track"><span class="fc-bar-fill" style="--value:${gap / 15 * 100}"></span></span><span class="fc-bar-value">+${gap} pts</span></div>`;
   }).join('');
-  document.getElementById('gems').innerHTML = ['rough', 'cut', 'polished', 'flawless'].map(gem).join('');
+  const drawGems = () => { document.getElementById('gems').innerHTML = ['rough', 'cut', 'polished', 'flawless'].map(t => gem(t)).join(''); };
+  drawGems();
+  document.getElementById('gem-focal').outerHTML = gem('flawless', ' data-size="lg" data-motion="loop"');
+  document.getElementById('gem-replay').addEventListener('click', drawGems);
   document.getElementById('gem-do').outerHTML = gem('polished');
   document.getElementById('gem-rule').outerHTML = gem('flawless');
 

@@ -27,7 +27,7 @@ Input tokens (see input.md). Popover rows use `--ds-popover-row-height` 36px, ro
 - Empty-state copy: `No {items} match "{query}"`, never a bare `No results`.
 - Inside a Modal, do not add a second portal. Trap focus in the popover.
 - Arrow keys move through options. Do not make Enter submit the outer form while the list is open.
-- Label is a short Title Case noun. Placeholder is a scoped hint (`Search regions`), never bare `Search…`.
+- Label is a short sentence case noun. Placeholder is a scoped hint (`Search regions`), never bare `Search…`.
 - There is no `label` prop. Pair a `<Label htmlFor>` with the root `id`, or set `aria-label`. There is no `aria-labelledby` prop.
 - When nested in a Modal, the list should not pop open on modal open (see modal.md "Combobox focus").
 

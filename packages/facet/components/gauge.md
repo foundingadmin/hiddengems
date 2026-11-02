@@ -39,4 +39,4 @@ Determinate, indeterminate, full (100). No hover, focus or disabled states.
 - The reference's default scale (red low → amber → green high) matches "higher score = better". Still define Hidden Gems score bands once (e.g. <40 weak, 40–69 moderate, ≥70 strong) and pass them through `colors`, so Gauge, Badge tier and filters share one source of truth.
 - **Quant vs qualitative split**: `arcPriority="equal"` with two `--ds-*` colors (e.g. blue-700 = quantitative weight, purple-700 = qualitative weight) works as a two-part ratio dial.
 - Use `indeterminate` while a score is recomputing after a line move, with `Recalculating…` text next to it.
-- Label pattern: `Gem Score` above, Tooltip with `Weighted blend of model edge, line value and news signals.`
+- Label pattern: `Gem score` above, Tooltip with `Weighted blend of model edge, line value and news signals.`

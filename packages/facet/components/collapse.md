@@ -23,10 +23,10 @@ Not specified. Demo content is `text-copy-16`.
 - Closed by default unless first-time visitors must read it.
 - One open at a time for mutually exclusive items. Allow multiple for independent ones.
 - Animate the open and close. No nesting deeper than one level.
-- Heading is a Title Case topic (`Advanced Settings`, not `Show …`). No destructive actions inside a closed panel.
+- Heading is a sentence case topic (`Advanced settings`, not `Show …`). No destructive actions inside a closed panel.
 - Trigger is a `<button>` with `aria-expanded` and `aria-controls`. Enter/Space toggles. Keep content in the DOM when closed.
 
 ## Hidden Gems usage
-- **Methodology** in the Sheet: `How This Score Is Calculated`, `Raw Model Inputs` (with JsonView inside).
-- **Advanced filter settings** on a settings page (`Model Weights`).
+- **Methodology** in the Sheet: `How this score is calculated`, `Raw model inputs` (with JsonView inside).
+- **Advanced filter settings** on a settings page (`Model weights`).
 - Use `size="small"` in dense side panels.

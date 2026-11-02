@@ -22,14 +22,14 @@ Not specified by the reference. `text-label-12` is noted for "capitals in Calend
 
 ## Rules
 - Use for analytics ranges where weekday and month context matter. Use a free-form Input for pasted ISO dates or `7d` shorthand.
-- Provide presets for common ranges (`Last 7 Days`, `Month to Date`).
+- Provide presets for common ranges (`Last 7 Days`, `Month to date`).
 - Use horizontal layout next to live results. Use stacked in narrow sidebars.
 - Bound `min` / `max` to the data retention window.
 - Default to the user's locale and timezone. Never silently render UTC.
 - The trigger shows the committed range (`Apr 1 – Apr 28, 2026`). Keep the range when reopening.
-- Trap focus. Arrows move by day, Shift+arrow by week, PageUp/PageDown by month. Announce range changes politely. Presets are real buttons with Title Case labels.
+- Trap focus. Arrows move by day, Shift+arrow by week, PageUp/PageDown by month. Announce range changes politely. Presets are real buttons with sentence case labels.
 
 ## Hidden Gems usage
-- **Historical results / backtest range** with presets `This Week`, `Last 4 Weeks`, `Season to Date`, bounded to seasons in the database.
+- **Historical results / backtest range** with presets `This week`, `Last 4 Weeks`, `Season to date`, bounded to seasons in the database.
 - Kickoff windows in the live slate are better as FilterParams `date-range` presets.
 - Pin timezone only if the product standardizes on ET for NFL kickoffs. Otherwise follow the user's timezone (the reference default).

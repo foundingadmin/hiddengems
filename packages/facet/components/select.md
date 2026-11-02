@@ -25,7 +25,7 @@ A native dropdown for picking one value from a short, fixed list.
 ## Rules
 - Use for fewer than about 10 fixed items. Use `Combobox` when typing to filter helps, `MultiSelect` for multiple values, and `Switch` for 2–3 segments.
 - Past about 10 items, group with native `<optgroup>`. There is no Group sub-component.
-- Options are Title Case with canonical branding. Label is a short Title Case noun.
+- Options are sentence case with canonical branding. Label is a short sentence case noun.
 - Placeholder is action-oriented (`Select a framework`). Never `Choose one…`.
 - Validate on blur. Error strings name the field and end with a period (`Select a framework.`).
 - Do not wrap a labelled Select in a Tooltip. Put help on a sibling icon button.

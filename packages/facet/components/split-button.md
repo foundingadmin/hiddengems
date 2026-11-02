@@ -25,11 +25,11 @@ Inherits Button and Menu tokens (`--ds-shadow-menu`, 12px menu radius from mater
 - Use when there is one clear default plus 1–4 close variants. Use `Menu` for unrelated actions.
 - The first dropdown item must repeat the primary action with exactly the same label.
 - No destructive primary. If destructive items exist, put them at the bottom after a divider.
-- Items are Title Case `Verb + Noun`.
+- Items are sentence case `Verb + noun`.
 - `menuButtonLabel` is a screen-reader sentence naming the action set (`More deploy options`). It becomes the trigger's `aria-label`.
 - Use `bottom-end` only when the button sits flush against a right edge.
 
 ## Hidden Gems usage
-- **Export**: `Export CSV` primary with `Export CSV`, `Copy as Text`, `Copy Bet Slip` in the menu.
-- **Track Bet**: primary `Track Bet` with `Track at Current Line`, `Track with Custom Line…`.
+- **Export**: `Export CSV` primary with `Export CSV`, `Copy as text`, `Copy bet slip` in the menu.
+- **Track Bet**: primary `Track bet` with `Track at current line`, `Track with custom line…`.
 - Keep to `secondary` `small` in toolbars, so it does not compete with the slate.

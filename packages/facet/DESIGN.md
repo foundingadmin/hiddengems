@@ -28,7 +28,7 @@ Vercel handles dense data well because of a few disciplines applied without exce
 | Color steps | 100 to 300 fills (default, hover, active), 400 to 600 borders, 700 to 800 solid fills, 900 secondary text, 1000 primary text | `--ds-<scale>-<step>` |
 | Backgrounds | Background 1 almost everywhere; Background 2 sparingly for subtle separation | `--fc-surface-canvas`, `--fc-surface-subtle` |
 | Borders | Solid gray-400 by default; gray-alpha only when the edge must blend. Draw each border once | `--fc-border-*` |
-| Type | Use a Facet role class, never a loose font-size. Sans for everything incl. numbers; Mono only for code, IDs, timestamps | `.text-heading-*`, `.text-label-*`, `.text-copy-*`, `.text-button-*` |
+| Type | Use a Facet role class, never a loose font-size. Sans for everything people read, including numbers and times (tabular figures); Mono only for machine values such as IDs, keys and cron expressions | `.text-heading-*`, `.text-label-*`, `.text-copy-*`, `.text-button-*` |
 | Numbers | Tabular figures anywhere values are compared | `.tabular`, `.fc-num` |
 | Controls | Heights 32 (small), 36 (default), 40 (large), 24 (tiny icon) | `--fc-control-*` |
 | Table rows | Header 36, body 40, compact 32 `[F]` | `--fc-row-*` |
@@ -87,6 +87,19 @@ The interface is gray. Each hue has exactly one job, and appears only to do that
 
 Why purple for gems: green, amber and red already mean go, wait and stop, and blue already means links, focus and info. Purple is the only hue in the palette left with no job, and an amethyst reads as "gem" without decoration. Why a single hue for tiers: tiers are a ranking, and a ranking should read as more or less of one thing, not as four unrelated categories.
 
+## Settled decisions
+
+Owner decisions on where a rank 1 source and an earlier Facet rule disagreed (2026-11-02).
+
+| Topic | Rule |
+|---|---|
+| Icon tiles | Allowed wherever one speeds recognition: empty states, list and connection rows, entity leads, integrations. Neutral only (`.fc-icon-tile`), one per item, never decorative or colored |
+| Times | Times people read are sans with tabular figures (kickoff, "2 min ago", next run). Mono is for machine values only (IDs, keys, cron) |
+| Legends | Multi-series charts default to a legend that carries each series' total (`.fc-legend`). Single-series charts use a direct label |
+| Marketing moments | Onboarding, week openings, explainers and recaps may use `data-surface="marketing"`: display type, roomier spacing, pill buttons and one animated field per view (`patterns/surfaces.md`). Hue decoration and gradient text stay banned |
+| Brand accent | One accent per product through `--fc-brand-*`; Hidden Gems maps it to purple, its gem color |
+| Change values | Color says whether a change is good, the arrow says which way it moved (`.fc-delta[data-polarity]`). Edge keeps direction coloring, because a positive edge is always good |
+
 ## Deliberate deviations from the vercel.com reference
 
 Each is a conscious Facet call, recorded so nobody "fixes" it back by accident.
@@ -112,7 +125,7 @@ Full lessons in [`foundations/content.md`](foundations/content.md). The short ve
 
 ## Reject on sight
 
-Decorative gradients, glows, glass, textures or grid backgrounds. Gradient text. Cards inside cards. Icon tiles. Tiny gray prose used to fit density. Legends where direct labels fit. Color without meaning. A badge for ordinary metadata. Charts that restate a table at equal weight. Pulsing "live" indicators. Arbitrary font sizes or weights.
+Decorative gradients, glows, glass, textures or grid backgrounds. Gradient text. Cards inside cards. Decorative or colored icon tiles. Tiny gray prose used to fit density. Legends that only repeat series names. Color without meaning. A badge for ordinary metadata. Charts that restate a table at equal weight. Pulsing "live" indicators. Arbitrary font sizes or weights.
 
 ## How to use it
 

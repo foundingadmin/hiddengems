@@ -26,10 +26,10 @@ Default, hover (text darkens), selected, disabled (whole set or per tab; per-tab
 - Switching is instant: no network confirmation and no toast.
 - Reflect the active tab in the URL.
 - Only disable a tab for permission or empty-state reasons, and add a `tooltip` that names the constraint (sentence case).
-- Titles are Title Case 1–2 word nouns. No verbs (`View Logs` is wrong). Never put a count in the title (`Logs (12)`). Use a badge slot and hide it at zero.
+- Titles are sentence case 1–2 word nouns. No verbs (`View logs` is wrong). Never put a count in the title (`Logs (12)`). Use a badge slot and hide it at zero.
 - Left/Right moves between tabs, Enter/Space activates. Add `aria-label` on the tablist when no heading labels it. Never suppress the focus ring.
 
 ## Hidden Gems usage
-- **Bet detail Sheet**: primary tabs `Overview` / `Signals` / `Line History` / `News`.
+- **Bet detail Sheet**: primary tabs `Overview` / `Signals` / `Line history` / `News`.
 - **Slate scope** above the table: secondary tabs `All` / `Props` / `Spreads` / `Totals`, synced to a URL query param. The reference's guidance means market-type *filtering* with multiple values belongs in `FilterParams`. Tabs only fit if these are truly separate views.
 - Show per-tab counts (e.g. new gems) in a small badge slot, never in the title. Drop the badge at zero.

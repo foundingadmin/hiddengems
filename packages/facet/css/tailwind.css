@@ -192,7 +192,13 @@
   --color-fc-chart-axis: var(--fc-chart-axis);
 }
 
-@custom-variant dark (&:where(.dark-theme, .dark-theme *, [data-theme="dark"], [data-theme="dark"] *));
+/* dark: fires for a forced dark theme and for the OS preference, matching tokens.css. */
+@custom-variant dark {
+  &:where(.dark-theme, .dark-theme *, [data-theme="dark"], [data-theme="dark"] *) { @slot; }
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not(.light-theme):not([data-theme="light"]), :root:not(.light-theme):not([data-theme="light"]) *) { @slot; }
+  }
+}
 
 @utility text-heading-72 {
   font-family: var(--fc-font-sans);
@@ -340,6 +346,13 @@
   line-height: 16px;
   font-weight: 400;
   letter-spacing: 0px;
+}
+@utility text-label-11 {
+  font-family: var(--fc-font-sans);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 400;
+  letter-spacing: 0.2px;
 }
 @utility text-label-12-mono {
   font-family: var(--fc-font-mono);

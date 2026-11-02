@@ -34,7 +34,7 @@ Hidden, shown (hover or focus), closed with Escape (focus returns to trigger).
 - Icon-only triggers still need an `aria-label`. Escape closes.
 
 ## Hidden Gems usage
-- **Disabled reasons**: `Market suspended at Caesars.`
+- **Disabled reasons**: `Market suspended at caesars.`
 - **Metric definitions** on column headers: `Edge: model probability minus implied probability.`
 - **Badge explanations**: `High confidence: 4 of 5 signals agree.`
 - **Full values** for MiddleTruncated prop names, unless you use copy-on-click instead.

@@ -18,7 +18,7 @@ Not specified by the reference.
 
 ## Rules
 - Use for sequential sibling pages (articles, onboarding steps). Use `ShowMore` or a numbered pager for more rows of the same dataset. The reference does not document a numbered pager.
-- Titles are destination names in Title Case, short, with the distinctive word first, because long titles get truncated.
+- Titles are destination names in sentence case, short, with the distinctive word first, because long titles get truncated.
 - Do not put ordinals (`Page 3 of 10`) in the titles.
 
 ## Hidden Gems usage

@@ -254,6 +254,14 @@
   --fc-badge-pink: var(--ds-pink-900);
   --fc-badge-green: var(--ds-green-900);
   --fc-badge-teal: var(--ds-teal-900);
+  --fc-control-thumb: var(--ds-background-100);
+  --fc-control-thumb-ring: var(--ds-gray-alpha-400);
+  --fc-action-destructive: var(--ds-red-800);
+  --fc-action-destructive-hover: var(--ds-red-900);
+  --fc-brand-fg: var(--ds-purple-900);
+  --fc-brand-solid: var(--ds-purple-700);
+  --fc-brand-bg: var(--ds-purple-200);
+  --fc-brand-border: var(--ds-purple-400);
 }
 
 .dark-theme, [data-theme="dark"] {
@@ -353,6 +361,14 @@
   --fc-badge-pink: var(--ds-pink-600);
   --fc-badge-green: var(--ds-green-600);
   --fc-badge-teal: var(--ds-teal-600);
+  --fc-control-thumb: var(--ds-gray-1000);
+  --fc-control-thumb-ring: var(--ds-gray-alpha-600);
+  --fc-action-destructive: var(--ds-red-800);
+  --fc-action-destructive-hover: var(--ds-red-900);
+  --fc-brand-fg: var(--ds-purple-900);
+  --fc-brand-solid: var(--ds-purple-700);
+  --fc-brand-bg: var(--ds-purple-200);
+  --fc-brand-border: var(--ds-purple-400);
   --ds-gray-100: #1a1a1a;
   --ds-gray-200: #1f1f1f;
   --ds-gray-300: #292929;
@@ -552,6 +568,14 @@
     --fc-badge-pink: var(--ds-pink-600);
     --fc-badge-green: var(--ds-green-600);
     --fc-badge-teal: var(--ds-teal-600);
+    --fc-control-thumb: var(--ds-gray-1000);
+    --fc-control-thumb-ring: var(--ds-gray-alpha-600);
+    --fc-action-destructive: var(--ds-red-800);
+    --fc-action-destructive-hover: var(--ds-red-900);
+    --fc-brand-fg: var(--ds-purple-900);
+    --fc-brand-solid: var(--ds-purple-700);
+    --fc-brand-bg: var(--ds-purple-200);
+    --fc-brand-border: var(--ds-purple-400);
     --ds-gray-100: #1a1a1a;
     --ds-gray-200: #1f1f1f;
     --ds-gray-300: #292929;

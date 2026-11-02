@@ -19,7 +19,7 @@ Inferred: `--ds-gray-400` rule, `text-label-12` (typography page: label-12 is us
 ## Rules
 - Use to progressively reveal one long list or block. Use Pagination for sibling pages and Collapse for optional sections.
 - Show enough rows (5–10) before cutting off. Cutting at 2 feels pointless.
-- Put the hidden count in the label (`Show 12 More`), then `Show Less`, both Title Case.
+- Put the hidden count in the label (`Show 12 more`), then `Show less`, both sentence case.
 - Do not collapse again mid-flow once expanded.
 - Render small hidden sets in the DOM so find-in-page works. Lazy-load only large ones.
 - Trigger is a `<button>` with `aria-expanded` and `aria-controls`. After expanding, move focus to the first new row.

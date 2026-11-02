@@ -127,6 +127,8 @@ if (Object.keys(typo).length >= 20) {
   const cur = JSON.parse(readFileSync(typePath, 'utf8'));
   const order = (k) => [['heading', 'button', 'label', 'copy'].indexOf(k.split('-')[0]), -parseInt(k.split('-')[1]), k];
   const cmp = (a, b) => { const x = order(a), y = order(b); return x[0] - y[0] || x[1] - y[1] || x[2].localeCompare(y[2]); };
+  // Keep Facet additions (roles the stylesheet does not ship but a rank 1 source documents).
+  for (const [k, v] of Object.entries(cur.typography)) if (v.$extensions?.facet?.addition && !typo[k]) typo[k] = v;
   cur.typography = Object.fromEntries(Object.keys(typo).sort(cmp).map((k) => [k, typo[k]]));
   writeFileSync(typePath, JSON.stringify(cur, null, 2));
 } else {

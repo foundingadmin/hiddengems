@@ -181,6 +181,17 @@
   font-weight: 500;
   color: var(--ds-gray-1000);
 }
+.text-label-11 {
+  font-family: var(--fc-font-sans);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+}
+.text-label-11 > strong {
+  font-weight: 500;
+  color: var(--ds-gray-1000);
+}
 .text-label-12-mono {
   font-family: var(--fc-font-mono);
   font-size: 12px;

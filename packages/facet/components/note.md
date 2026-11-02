@@ -31,7 +31,7 @@ Default, filled, disabled. A Note has no dismissed state by design.
 - Persistent: it stays until the underlying state changes. Do not add a dismiss control.
 - One Note per concept. Several Notes stacked on one card means the layout needs rethinking.
 - `NoteAction` holds one CTA, never two.
-- `NoteLabel` is a 1–2 word Title Case topic (`Rate Limit`). No `Heads Up` or `FYI`. Content is one active-voice sentence that states the impact.
+- `NoteLabel` is a 1 to 2 word sentence case topic (`Rate limit`). No `Heads up` or `FYI`. Content is one active-voice sentence that states the impact.
 
 ## Choosing a note in Facet
 

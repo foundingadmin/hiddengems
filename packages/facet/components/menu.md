@@ -25,11 +25,11 @@ Closed, open. Item hover/highlight, disabled, locked, destructive (`type="error"
 - About 10 items max. Group with `MenuSection` beyond that.
 - Open on click, never hover. Close on activation, Escape and outside click, but not on hover-out.
 - Use `MenuItemLocked` for permission-gated actions, ideally wrapped in a Tooltip naming why.
-- Items are Title Case `Verb + Noun`. Add `…` only when the item opens a follow-up dialog. Destructive items go last after a divider and are never a bare `Delete`.
-- Section titles are Title Case, 1–2 words.
+- Items are sentence case `Verb + noun`. Add `…` only when the item opens a follow-up dialog. Destructive items go last after a divider and are never a bare `Delete`.
+- Section titles are sentence case, 1–2 words.
 - Up/Down, Home/End, Enter/Space, typeahead on the first letter of the visible label. Return focus to the trigger on close.
 
 ## Hidden Gems usage
-- **Row overflow (dots) menu** on each slate row: `Track Bet`, `Copy Bet Details`, `Open in Sportsbook`, `View Line History`, divider, `Hide Market`.
+- **Row overflow (dots) menu** on each slate row: `Track bet`, `Copy bet details`, `Open in sportsbook`, `View line history`, divider, `Hide market`.
 - **Column visibility** menu in the table toolbar (`MenuButton showChevron variant="secondary" size="small"` labelled `Columns`).
 - Use `MenuItemLocked` for features gated by plan, if any.

@@ -55,8 +55,8 @@
   --_fg: var(--ds-gray-1000);
   --_bg-hover: var(--ds-gray-alpha-200);
 }
-.fc-button[data-variant="error"] { --_bg: var(--ds-red-800); --_fg: #fff; --_bg-hover: var(--ds-red-900); }
-.fc-button[data-variant="warning"] { --_bg: var(--ds-amber-800); --_fg: #0a0a0a; --_bg-hover: var(--ds-amber-900); }
+.fc-button[data-variant="error"] { --_bg: var(--fc-action-destructive); --_fg: var(--ds-white); --_bg-hover: var(--fc-action-destructive-hover); }
+.fc-button[data-variant="warning"] { --_bg: var(--ds-amber-800); --_fg: var(--ds-black); --_bg-hover: var(--ds-amber-900); }
 
 .fc-button:disabled,
 .fc-button[aria-disabled="true"],
@@ -72,12 +72,12 @@
    data-contrast="low" is the subtle 200-bg / 900-text treatment. Pill shaped. */
 .fc-badge {
   --_bg: var(--fc-badge-gray);
-  --_fg: #fff;
+  --_fg: var(--ds-white);
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   height: 24px;
-  padding: 0 10px;
+  padding: 0 12px;
   border-radius: var(--fc-radius-full);
   background: var(--_bg);
   color: var(--_fg);
@@ -85,27 +85,29 @@
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
-.fc-badge svg { width: 12px; height: 12px; }
-.fc-badge[data-size="sm"] { height: 20px; padding: 0 6px; font-size: 11px; }
-.fc-badge[data-size="sm"] svg { width: 11px; height: 11px; }
-.fc-badge[data-size="lg"] { height: 32px; padding: 0 12px; font-size: 14px; line-height: 20px; }
-.fc-badge[data-size="lg"] svg { width: 14px; height: 14px; }
+.fc-badge svg { width: 14px; height: 14px; }
+.fc-badge[data-size="sm"] { height: 20px; gap: 4px; padding: 0 8px; font-size: 11px; line-height: 16px; letter-spacing: 0.2px; } /* text-label-11, strong */
+.fc-badge[data-size="sm"] svg { width: 12px; height: 12px; }
+.fc-badge[data-size="lg"] { height: 32px; gap: 6px; padding: 0 12px; font-size: 14px; line-height: 20px; }
+.fc-badge[data-size="lg"] svg { width: 16px; height: 16px; }
 .fc-badge[data-variant="blue"]   { --_bg: var(--fc-badge-blue); }
 .fc-badge[data-variant="purple"] { --_bg: var(--fc-badge-purple); }
-.fc-badge[data-variant="amber"]  { --_bg: var(--fc-badge-amber); --_fg: #000; }
+.fc-badge[data-variant="amber"]  { --_bg: var(--fc-badge-amber); --_fg: var(--ds-black); }
 .fc-badge[data-variant="red"]    { --_bg: var(--fc-badge-red); }
-.fc-badge[data-variant="pink"]   { --_bg: var(--fc-badge-pink); }
 .fc-badge[data-variant="green"]  { --_bg: var(--fc-badge-green); }
-.fc-badge[data-variant="teal"]   { --_bg: var(--fc-badge-teal); }
 .fc-badge[data-variant="inverted"] { --_bg: var(--ds-gray-1000); --_fg: var(--ds-gray-100); }
+/* Pill: a badge that is a link or a removable chip [G]. Canvas fill with a hairline ring. */
+.fc-badge[data-variant="pill"] { --_bg: var(--ds-background-100); --_fg: var(--ds-gray-1000); box-shadow: 0 0 0 1px var(--ds-gray-alpha-400); text-decoration: none; }
+a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hover { --_bg: var(--ds-gray-100); }
+.fc-badge[data-variant="pill"]:focus-visible { box-shadow: var(--ds-focus-ring); }
+/* Hue rule: badges come in gray, blue, green, amber, red, inverted and pill. Purple means a gem.
+   Teal and pink are chart-only hues, so no badge variants exist for them. */
 .fc-badge[data-contrast="low"]                          { --_bg: var(--ds-gray-200);   --_fg: var(--ds-gray-1000); }
 .fc-badge[data-contrast="low"][data-variant="blue"]     { --_bg: var(--ds-blue-200);   --_fg: var(--ds-blue-900); }
 .fc-badge[data-contrast="low"][data-variant="purple"]   { --_bg: var(--ds-purple-200); --_fg: var(--ds-purple-900); }
 .fc-badge[data-contrast="low"][data-variant="amber"]    { --_bg: var(--ds-amber-200);  --_fg: var(--ds-amber-900); }
 .fc-badge[data-contrast="low"][data-variant="red"]      { --_bg: var(--ds-red-200);    --_fg: var(--ds-red-900); }
-.fc-badge[data-contrast="low"][data-variant="pink"]     { --_bg: var(--ds-pink-200);   --_fg: var(--ds-pink-900); }
 .fc-badge[data-contrast="low"][data-variant="green"]    { --_bg: var(--ds-green-200);  --_fg: var(--ds-green-900); }
-.fc-badge[data-contrast="low"][data-variant="teal"]     { --_bg: var(--ds-teal-200);   --_fg: var(--ds-teal-900); }
 
 /* ------------------------------------------------------------------ Status dot [G]
    10px circle. Reference demo states: queued, building, error, ready, canceled.
@@ -270,6 +272,7 @@
   margin: 0;
   border-radius: var(--fc-radius-full);
   background: var(--ds-gray-400);
+  box-shadow: inset 0 0 0 1px var(--ds-gray-alpha-400);
   transition: background-color 150ms ease;
 }
 .fc-toggle::after {
@@ -279,16 +282,21 @@
   left: calc((var(--_h) - var(--_t)) / 2);
   width: var(--_t); height: var(--_t);
   border-radius: 50%;
-  background: var(--ds-background-100);
-  box-shadow: var(--ds-shadow-small), 0 0 0 0.5px var(--ds-gray-alpha-400);
+  background: var(--fc-control-thumb);
+  box-shadow: var(--ds-shadow-small), 0 0 0 1px var(--fc-control-thumb-ring);
   transition: transform 150ms ease;
 }
 .fc-toggle:checked { background: var(--ds-blue-700); }
 .fc-toggle:checked::after { transform: translateX(calc(var(--_w) - var(--_h))); }
-.fc-toggle[data-size="medium"] { --_w: 36px; --_h: 20px; --_t: 16px; }
-.fc-toggle[data-size="large"]  { --_w: 40px; --_h: 24px; --_t: 20px; }
+.fc-toggle[data-size="medium"] { --_w: 36px; --_h: 20px; --_t: 17px; }
+.fc-toggle[data-size="large"]  { --_w: 40px; --_h: 24px; --_t: 21px; }
 .fc-toggle:focus-visible { box-shadow: var(--ds-focus-ring); }
-.fc-toggle:disabled { opacity: .5; }
+/* Disabled drops the blue entirely [G]: gray track, gray thumb, no shadow. */
+.fc-toggle:disabled { background: var(--ds-gray-200); cursor: not-allowed; }
+.fc-toggle:disabled:checked { background: var(--ds-gray-500); }
+.fc-toggle:disabled::after { box-shadow: none; background: var(--ds-gray-600); }
+.fc-toggle:disabled:checked::after { background: var(--ds-gray-800); }
+.fc-toggle-field { display: inline-flex; align-items: center; gap: 8px; font: 500 12px/18px var(--fc-font-sans); color: var(--ds-gray-900); }
 
 /* ------------------------------------------------------------------ Keyboard input [G] */
 .fc-kbd {
@@ -341,7 +349,9 @@
 .fc-table tbody tr { transition: background-color 100ms ease; }
 .fc-table tbody tr > :first-child { border-radius: 6px 0 0 6px; }
 .fc-table tbody tr > :last-child { border-radius: 0 6px 6px 0; }
-.fc-table[data-striped] tbody tr:nth-child(even) { background: var(--ds-background-200); }
+.fc-table[data-striped] tbody tr:nth-child(odd) { background: var(--ds-background-200); }
+/* 12px between the header rule and the first row [G]. */
+.fc-table thead + tbody tr:first-child > * { border-top: 12px solid transparent; background-clip: padding-box; }
 .fc-table[data-interactive] tbody tr:hover { background: var(--ds-gray-100); }
 .fc-table tbody tr[aria-selected="true"] { background: var(--ds-gray-200); }
 .fc-table th[scope="row"], .fc-table .fc-cell-primary { color: var(--ds-gray-1000); font-weight: 500; }
@@ -353,7 +363,18 @@
 /* [F] dense ledger mode and sticky header for long slates */
 .fc-table[data-density="compact"] td,
 .fc-table[data-density="compact"] tbody th { height: var(--fc-row-compact); padding-block: 6px; }
-.fc-table[data-sticky] thead th { position: sticky; top: 0; z-index: 1; background: var(--fc-surface-canvas); }
+.fc-table[data-sticky] thead th { position: sticky; top: var(--fc-sticky-top, 0px); z-index: 2; background: var(--fc-surface-canvas); }
+/* A scrolling wrapper would trap the sticky header (it sticks to the wrapper, not the page).
+   Wide screens: the wrapper stops scrolling so the header sticks to the page, below any app
+   top bar (set --fc-sticky-top). Narrow screens: the wrapper scrolls both ways inside a
+   bounded height, so the header sticks within it. */
+@media (min-width: 961px) {
+  .fc-table-wrap:has(> .fc-table[data-sticky]) { overflow: visible; }
+}
+@media (max-width: 960px) {
+  .fc-table-wrap:has(> .fc-table[data-sticky]) { max-height: var(--fc-table-max-height, 70vh); overflow: auto; }
+  .fc-table-wrap:has(> .fc-table[data-sticky]) .fc-table[data-sticky] thead th { top: 0; }
+}
 .fc-table .fc-group-row th {
   height: auto;
   padding: 16px 8px 6px;
@@ -404,19 +425,67 @@
 .fc-card[data-elevation="medium"] { box-shadow: var(--ds-shadow-border-medium); border-radius: var(--fc-radius-lg); }
 .fc-separator { height: 1px; border: 0; margin: 0; background: var(--ds-gray-400); }
 
-/* ------------------------------------------------------------------ Gauge [G-inferred]
-   SVG ring: <svg class="fc-gauge" viewBox="0 0 36 36"><circle class="fc-gauge-track" .../>
-   <circle class="fc-gauge-value" pathLength="100" stroke-dasharray="72 100" .../></svg>
-   Reference gauges color the arc by threshold; Facet ties that to signal tokens. */
-.fc-gauge { --_c: var(--ds-gray-1000); width: var(--fc-gauge-size, 32px); height: var(--fc-gauge-size, 32px); transform: rotate(-90deg); }
-.fc-gauge circle { fill: none; stroke-width: 3.5; }
-.fc-gauge-track { stroke: var(--ds-gray-200); }
-.fc-gauge-value { stroke: var(--_c); stroke-linecap: round; transition: stroke-dasharray 300ms var(--fc-ease-swift); }
-.fc-gauge[data-signal="go"]   { --_c: var(--fc-signal-go-solid); }
-.fc-gauge[data-signal="wait"] { --_c: var(--fc-signal-wait-solid); }
-.fc-gauge[data-signal="stop"] { --_c: var(--fc-signal-stop-solid); }
-.fc-gauge-wrap { position: relative; display: inline-grid; place-items: center; }
-.fc-gauge-wrap > .fc-gauge-label { position: absolute; font: 500 12px/1 var(--fc-font-sans); font-variant-numeric: tabular-nums; color: var(--ds-gray-1000); }
+/* ------------------------------------------------------------------ Gauge [G]
+   Measured: the value arc starts at 12 o'clock and runs clockwise; the track is only the
+   remaining arc, with a gap at each end, in gray-alpha-400; round caps; four sizes.
+   <span class="fc-gauge-wrap" data-size="small" style="--value:72" role="img" aria-label="Score 72 of 100">
+     <svg class="fc-gauge" viewBox="0 0 100 100" aria-hidden="true">
+       <circle class="fc-gauge-track" cx="50" cy="50" r="42" pathLength="100"/>
+       <circle class="fc-gauge-value" cx="50" cy="50" r="42" pathLength="100"/>
+     </svg><span class="fc-gauge-label">72</span></span>
+   Sizes: tiny 20 (label hidden), small 32, medium 64, large 128. Color by threshold via data-signal. */
+.fc-gauge-wrap { --_s: 32px; --_gap: 6; --_c: var(--ds-gray-1000); position: relative; display: inline-grid; place-items: center; width: var(--_s); height: var(--_s); flex: 0 0 auto; }
+.fc-gauge-wrap[data-size="tiny"]   { --_s: 20px; }
+.fc-gauge-wrap[data-size="medium"] { --_s: 64px; }
+.fc-gauge-wrap[data-size="large"]  { --_s: 128px; }
+.fc-gauge { width: 100%; height: 100%; transform: rotate(-90deg); overflow: visible; }
+.fc-gauge circle { fill: none; stroke-width: 12; stroke-linecap: round; }
+.fc-gauge-wrap[data-size="tiny"] .fc-gauge circle { stroke-width: 16; }
+.fc-gauge-wrap[data-size="large"] .fc-gauge circle { stroke-width: 9; }
+.fc-gauge-track {
+  stroke: var(--ds-gray-alpha-400);
+  stroke-dasharray: max(0, calc(100 - var(--value, 0) - 2 * var(--_gap))) 100;
+  stroke-dashoffset: calc(-1 * (var(--value, 0) + var(--_gap)));
+}
+.fc-gauge-value { stroke: var(--_c); stroke-dasharray: var(--value, 0) 100; transition: stroke-dasharray 300ms var(--fc-ease-swift); }
+.fc-gauge-wrap[data-empty] .fc-gauge-value { display: none; }
+.fc-gauge-wrap[data-empty] .fc-gauge-track { stroke-dasharray: none; stroke-dashoffset: 0; }
+.fc-gauge-wrap[data-full] .fc-gauge-track { display: none; }
+.fc-gauge-wrap[data-signal="go"]   { --_c: var(--fc-signal-go-solid); }
+.fc-gauge-wrap[data-signal="wait"] { --_c: var(--fc-signal-wait-solid); }
+.fc-gauge-wrap[data-signal="stop"] { --_c: var(--fc-signal-stop-solid); }
+.fc-gauge-label { position: absolute; color: var(--ds-gray-1000); font: 500 11px/1 var(--fc-font-sans); font-variant-numeric: tabular-nums; }
+.fc-gauge-wrap[data-size="tiny"] .fc-gauge-label { display: none; }
+.fc-gauge-wrap[data-size="medium"] .fc-gauge-label { font-size: 20px; }
+.fc-gauge-wrap[data-size="large"] .fc-gauge-label { font-size: 32px; letter-spacing: -0.64px; }
+.fc-gauge-wrap[data-state="loading"] .fc-gauge-value { display: none; }
+.fc-gauge-wrap[data-state="loading"] .fc-gauge-track { stroke-dasharray: 25 100; stroke-dashoffset: 0; transform-origin: 50% 50%; transform-box: fill-box; animation: fc-spin 1s linear infinite; }
+@keyframes fc-spin { to { transform: rotate(360deg); } }
+
+/* ------------------------------------------------------------------ Icon tile [F, owner decision D1]
+   A neutral tile that holds one icon, wherever it speeds recognition: empty states, list and
+   connection row leads, entity leads, integration rows. Never decorative, never colored, one per item. */
+.fc-icon-tile {
+  --_s: 40px;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: var(--_s);
+  height: var(--_s);
+  border-radius: var(--fc-radius-md);
+  background: var(--ds-gray-100);
+  box-shadow: inset 0 0 0 1px var(--ds-gray-alpha-400);
+  color: var(--ds-gray-900);
+}
+.fc-icon-tile svg { width: 50%; height: 50%; }
+.fc-icon-tile[data-size="sm"] { --_s: 32px; border-radius: var(--fc-radius-sm); }
+.fc-icon-tile[data-size="lg"] { --_s: 48px; border-radius: var(--fc-radius-lg); }
+
+/* ------------------------------------------------------------------ Run-in [F, from vercel.com prose]
+   A strong lead clause that runs into secondary text: dense prose that still scans.
+   <p class="fc-runin"><strong>Odds refresh every 5 minutes.</strong> On game days the window shortens to 1 minute.</p> */
+.fc-runin { color: var(--fc-text-secondary); }
+.fc-runin > strong:first-child { color: var(--fc-text-primary); font-weight: 500; }
 
 /* ================================================================== Data display [F]
    Patterns from Vercel's design.md: one shared label lane, plot lane and value lane per set. */
@@ -451,6 +520,17 @@
 .fc-delta[data-direction="negative"] { color: var(--fc-edge-negative); }
 .fc-delta[data-direction="positive"]::before { content: "\2191"; }
 .fc-delta[data-direction="negative"]::before { content: "\2193"; }
+/* Polarity (owner decision D4): for change values, color says whether the change is good,
+   the arrow says which way it moved. A slower pull time going up is bad, so it is red with an
+   up arrow. Edge values keep plain direction coloring, because a positive edge is always good. */
+.fc-delta[data-polarity="good"]    { color: var(--fc-edge-positive); }
+.fc-delta[data-polarity="bad"]     { color: var(--fc-edge-negative); }
+.fc-delta[data-polarity="neutral"] { color: var(--fc-edge-neutral); }
+.fc-delta[data-variant="pill"] { align-items: center; height: 20px; padding: 0 6px; border-radius: var(--fc-radius-full); font: 500 12px/16px var(--fc-font-sans); background: var(--ds-gray-200); }
+.fc-delta[data-variant="pill"][data-polarity="good"],
+.fc-delta[data-variant="pill"]:not([data-polarity])[data-direction="positive"] { background: var(--fc-status-success-bg); }
+.fc-delta[data-variant="pill"][data-polarity="bad"],
+.fc-delta[data-variant="pill"]:not([data-polarity])[data-direction="negative"] { background: var(--fc-status-error-bg); }
 
 /* Signal: the Hidden Gems verdict. Dot + word. */
 .fc-signal {

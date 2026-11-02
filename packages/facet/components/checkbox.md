@@ -21,9 +21,9 @@ Inferred: `--ds-gray-1000` checked fill, `--ds-gray-alpha-400`/`500` border, `--
 - Indeterminate is a visual state driven by the parent's partial selection, not a third value.
 - Required acknowledgements validate on submit, not on blur.
 - Disabled checkboxes get a Tooltip explaining why.
-- Group label (above the `<fieldset>`) is a Title Case noun with no colon. Acknowledgement labels are full sentences with a period. Show the partial count next to an indeterminate group (`3 of 5 selected`).
+- Group label (above the `<fieldset>`) is a sentence case noun with no colon. Acknowledgement labels are full sentences with a period. Show the partial count next to an indeterminate group (`3 of 5 selected`).
 - Wrap groups in `<fieldset>` / `<legend>`. Row-select checkboxes use `aria-label="Select {row}"`. Keep the label/htmlFor click area.
 
 ## Hidden Gems usage
-- **Bulk select slate rows** (`Track Selected`, `Compare`): header checkbox indeterminate with `3 of 42 selected`.
+- **Bulk select slate rows** (`Track selected`, `Compare`): header checkbox indeterminate with `3 of 42 selected`.
 - Acknowledgement: `I understand these are research signals, not guarantees.`

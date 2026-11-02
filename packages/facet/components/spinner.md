@@ -26,4 +26,4 @@ Spinning.
 
 ## Hidden Gems usage
 - Row-level `Retry` when one book's price fetch fails. Inline spinner in the price cell at `sm`.
-- `Load More` in long lists (use LoadMoreButton's `loading`).
+- `Load more` in long lists (use LoadMoreButton's `loading`).

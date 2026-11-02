@@ -21,8 +21,8 @@ Inferred: same as Checkbox.
 - Preselect the safest default unless the choice should be deliberate.
 - `required` goes on the group.
 - Arrows move within the group and skip disabled items. Tab leaves the group.
-- Group label is a Title Case noun in `<legend>` or `aria-labelledby`. Options are parallel.
+- Group label is a sentence case noun in `<legend>` or `aria-labelledby`. Options are parallel.
 - Disabled options get a Tooltip. Standalone radios need `aria-label`. Never remove the focus ring.
 
 ## Hidden Gems usage
-- Settings: `Odds Format` (American / Decimal / Fractional), `Stake Sizing` (Flat / Kelly / Half Kelly).
+- Settings: `Odds format` (American / Decimal / Fractional), `Stake sizing` (Flat / Kelly / Half Kelly).

@@ -23,7 +23,7 @@ Not specified by the reference.
 - Stays collapsed until clicked. Never auto-open.
 - Metadata must be non-PII context (route, build ID, plan, viewport).
 - Submit closes the panel and returns focus. No extra toast.
-- `label` is short Title Case with no `?`. `copy` is sentence case, without "please" or "sorry".
+- `label` is short sentence case with no `?`. `copy` is sentence case, without "please" or "sorry".
 
 ## Hidden Gems usage
 - P2. `type="inline"` at the bottom of the bet detail Sheet: `Was this pick useful?` with metadata `{ marketId, modelVersion, week }` to tune signal weights. Desktop popover variant in the app footer.

@@ -20,7 +20,7 @@
   @media (max-width: 960px) { .sp-two { grid-template-columns: 1fr; } }
   .sp-pick { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
   .sp-pick small { color: var(--fc-text-secondary); font-size: 13px; line-height: 16px; }
-  .sp-mono { font-family: var(--fc-font-mono); font-size: 13px; white-space: nowrap; }
+  .sp-mono { font-variant-numeric: tabular-nums; white-space: nowrap; }
   .sp-caption { font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); }
 
   .sp-type { display: flex; flex-direction: column; }
@@ -153,9 +153,17 @@
 
   <!-- ============================================================ Applied -->
   <section id="slate" aria-labelledby="slate-h">
-    <div class="sp-intro">
-      <h1 id="slate-h" class="text-heading-32">Picks, ranked and explained</h1>
-      <p class="text-copy-16">Shown with sample data from the Week 8 prototype.</p>
+    <div class="fc-hero" data-surface="marketing">
+      <canvas class="fc-hero-field" data-fc-field aria-hidden="true"></canvas>
+      <div class="fc-hero-body">
+        <span class="fc-hero-context"><span class="fc-status-dot" data-state="live" aria-hidden="true"></span>Week 8, odds live</span>
+        <h1 id="slate-h" class="fc-hero-title">Picks, ranked and explained</h1>
+        <p class="fc-hero-lede">Every available bet, weighed against the market. Shown with sample data from the Week 8 prototype.</p>
+        <div class="fc-hero-actions">
+          <a class="fc-button" data-shape="rounded" data-size="large" href="#slate-table">Open the slate</a>
+          <a class="fc-button" data-variant="secondary" data-shape="rounded" data-size="large" href="#content">How ranking works</a>
+        </div>
+      </div>
     </div>
 
     <div class="fc-stat-strip fc-card" role="group" aria-label="Slate summary">
@@ -174,7 +182,7 @@
         <button type="button" role="radio" aria-checked="false" data-mode="still">Still</button>
       </div>
     </div>
-    <div class="fc-table-wrap">
+    <div class="fc-table-wrap" id="slate-table">
       <table class="fc-table" data-interactive data-sticky>
         <caption>Sorted by gap, largest first. Signals read left to right: setup, track record, sample, price gap, matchup, market.</caption>
         <thead>
@@ -510,6 +518,7 @@
         <div class="sp-gemfocal"><span id="gem-focal"></span><button class="fc-button" data-variant="tertiary" data-size="small" type="button" id="gem-replay">Replay build-in</button></div>
         <div class="sp-wrap"><span class="fc-signal-strip" aria-label="5 go, 1 wait"><i data-signal="go"></i><i data-signal="go"></i><i data-signal="wait"></i><i data-signal="go"></i><i data-signal="go"></i><i data-signal="go"></i></span>
           <span class="fc-delta" data-direction="positive">9.0</span><span class="fc-delta" data-direction="negative">2.5</span><span class="fc-delta">0.0</span></div>
+        <div class="sp-wrap"><span class="text-label-13" style="color:var(--fc-text-secondary)">Pull time</span><span class="fc-delta" data-variant="pill" data-direction="positive" data-polarity="bad">67%</span><span class="text-label-13" style="color:var(--fc-text-secondary)">Hit rate</span><span class="fc-delta" data-variant="pill" data-direction="positive" data-polarity="good">4 pts</span></div>
       </figure>
       <figure>
         <figcaption>Status dot</figcaption>
@@ -532,14 +541,14 @@
           <select class="fc-select" style="width:auto" aria-label="Sportsbook"><option>DraftKings</option><option>FanDuel</option><option>BetMGM</option></select>
           <div class="fc-segmented" role="radiogroup" aria-label="Window"><button type="button" role="radio" aria-checked="true">Early</button><button type="button" role="radio" aria-checked="false">Afternoon</button><button type="button" role="radio" aria-checked="false">Night</button></div>
         </div>
-        <label class="fc-row"><input type="checkbox" class="fc-toggle" checked> <span class="text-label-14">Only show go verdicts</span></label>
+        <div class="sp-wrap" style="gap:16px"><label class="fc-row"><input type="checkbox" class="fc-toggle" checked> <span class="text-label-14">Only show go verdicts</span></label><label class="fc-row"><input type="checkbox" class="fc-toggle" checked disabled> <span class="text-label-14" style="color:var(--fc-text-disabled)">Auto-lock picks</span></label></div>
       </figure>
       <figure>
         <figcaption>Gauge, range, progress, skeleton, kbd</figcaption>
         <div class="sp-wrap" style="gap:16px">
-          <span class="fc-gauge-wrap" style="--fc-gauge-size:48px"><svg class="fc-gauge" data-signal="go" viewBox="0 0 36 36" aria-hidden="true"><circle class="fc-gauge-track" cx="18" cy="18" r="15"/><circle class="fc-gauge-value" cx="18" cy="18" r="15" pathLength="100" stroke-dasharray="82 100"/></svg><span class="fc-gauge-label">82</span></span>
-          <span class="fc-gauge-wrap" style="--fc-gauge-size:48px"><svg class="fc-gauge" data-signal="wait" viewBox="0 0 36 36" aria-hidden="true"><circle class="fc-gauge-track" cx="18" cy="18" r="15"/><circle class="fc-gauge-value" cx="18" cy="18" r="15" pathLength="100" stroke-dasharray="58 100"/></svg><span class="fc-gauge-label">58</span></span>
-          <span class="fc-gauge-wrap" style="--fc-gauge-size:48px"><svg class="fc-gauge" data-signal="stop" viewBox="0 0 36 36" aria-hidden="true"><circle class="fc-gauge-track" cx="18" cy="18" r="15"/><circle class="fc-gauge-value" cx="18" cy="18" r="15" pathLength="100" stroke-dasharray="24 100"/></svg><span class="fc-gauge-label">24</span></span>
+          <span class="fc-gauge-wrap" data-size="medium" data-signal="go" style="--value:82" role="img" aria-label="Score 82 of 100"><svg class="fc-gauge" viewBox="0 0 100 100" aria-hidden="true"><circle class="fc-gauge-track" cx="50" cy="50" r="42" pathLength="100"/><circle class="fc-gauge-value" cx="50" cy="50" r="42" pathLength="100"/></svg><span class="fc-gauge-label">82</span></span>
+          <span class="fc-gauge-wrap" data-size="medium" data-signal="wait" style="--value:58" role="img" aria-label="Score 58 of 100"><svg class="fc-gauge" viewBox="0 0 100 100" aria-hidden="true"><circle class="fc-gauge-track" cx="50" cy="50" r="42" pathLength="100"/><circle class="fc-gauge-value" cx="50" cy="50" r="42" pathLength="100"/></svg><span class="fc-gauge-label">58</span></span>
+          <span class="fc-gauge-wrap" data-size="medium" data-signal="stop" style="--value:24" role="img" aria-label="Score 24 of 100"><svg class="fc-gauge" viewBox="0 0 100 100" aria-hidden="true"><circle class="fc-gauge-track" cx="50" cy="50" r="42" pathLength="100"/><circle class="fc-gauge-value" cx="50" cy="50" r="42" pathLength="100"/></svg><span class="fc-gauge-label">24</span></span>
           <div class="fc-stack" style="--fc-gap:4px;flex:1;min-width:120px"><span class="sp-caption">Line now vs open and close</span><span class="fc-range"><span class="fc-range-mark" data-ref style="--at:20"></span><span class="fc-range-mark" style="--at:64"></span></span></div>
         </div>
         <progress class="fc-progress" value="62" max="100" aria-label="Odds pull progress">62%</progress>
@@ -552,7 +561,7 @@
       </figure>
       <figure>
         <figcaption>Empty state</figcaption>
-        <div class="fc-empty"><strong>No gems yet for Week 9</strong><span class="text-copy-14">Odds open Tuesday. The slate fills in as lines post.</span><button class="fc-button" data-variant="secondary" data-size="small">Notify me</button></div>
+        <div class="fc-empty"><span class="fc-icon-tile" data-size="lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20"/></svg></span><strong>No gems yet for Week 9</strong><span class="text-copy-14">Odds open Tuesday. The slate fills in as lines post.</span><button class="fc-button" data-variant="secondary" data-size="small">Notify me</button></div>
       </figure>
     </div>
   
@@ -598,6 +607,7 @@
 </main>
 
 <script src="semantic-map.js"></script>
+<script src="field.js"></script>
 <script>
   // ---- theme control (specimen only) ----
   const root = document.documentElement;
@@ -730,9 +740,10 @@
   }).join('');
   const roles = ['heading-48','heading-40','heading-32','heading-24','heading-20','heading-16','heading-14','label-16','label-14','label-13','label-12','label-13-mono','copy-18','copy-16','copy-14','copy-13','copy-13-mono','button-14'];
   document.getElementById('type-roles').innerHTML = roles.map(r => `<div><code>text-${r}</code><span class="text-${r}">${r.startsWith('label') ? 'Stefon Diggs, anytime TD 3.00' : r.startsWith('copy') ? 'Both of his empty weeks came with a backup QB, so the setup check comes first.' : 'Gesicki carries the widest gap'}</span></div>`).join('');
-  const badgeVariants = ['gray','blue','purple','amber','red','pink','green','teal','inverted'];
+  const badgeVariants = ['gray','blue','green','amber','red','purple','inverted'];
   document.getElementById('badges-solid').innerHTML = badgeVariants.map(v => `<span class="fc-badge" data-variant="${v}">${v}</span>`).join('');
-  document.getElementById('badges-low').innerHTML = badgeVariants.slice(0, 8).map(v => `<span class="fc-badge" data-contrast="low" data-variant="${v}">${v}</span>`).join('');
+  document.getElementById('badges-solid').insertAdjacentHTML('beforeend', '<a class="fc-badge" data-variant="pill" href="#slate">DraftKings</a>');
+  document.getElementById('badges-low').innerHTML = badgeVariants.slice(0, 6).map(v => `<span class="fc-badge" data-contrast="low" data-variant="${v}">${v}</span>`).join('');
 
   // ---- section tabs follow the scroll position ----
   const tabs = [...document.querySelectorAll('nav.fc-tabs .fc-tab')];
@@ -742,6 +753,9 @@
     const io = new IntersectionObserver(es => { es.filter(e => e.isIntersecting).forEach(e => mark(e.target.id)); }, { rootMargin: '-140px 0px -60% 0px' });
     secs.forEach(sec => io.observe(sec));
   }
+
+  // ---- hero field ----
+  if (window.FacetField) window.FacetField.autoMount();
 </script>
 </body>
 </html>

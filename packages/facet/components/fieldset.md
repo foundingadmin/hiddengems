@@ -19,7 +19,7 @@ Default, disabled (content), error, warning, gated.
 Not specified. Inferred: `material-base` (6px radius) or medium (12px), `--ds-gray-400` border, `--ds-background-200` footer, `text-heading-20` title, `text-copy-14` subtitle.
 
 ## Rules
-- No best-practices section. The demos imply: footer actions are `Verb + Noun` (`Save Changes`, `Update Payment Method`). The disabled state always explains why in the highlighted footer. Footer status shows context (`Last updated…`).
+- No best-practices section. The demos imply: footer actions are `Verb + noun` (`Save changes`, `Update payment method`). The disabled state always explains why in the highlighted footer. Footer status shows context (`Last updated…`).
 
 ## Hidden Gems usage
-- **Settings page** cards: `Default Stake` (Input + Save), `Sportsbooks I Use` (MultiSelect + Save), `Model Weights` (Sliders + Apply Changes). Use `type="warning"` for `Changing weights re-scores the whole slate.`
+- **Settings page** cards: `Default stake` (Input + Save), `Sportsbooks I use` (MultiSelect + Save), `Model weights` (Sliders + Apply changes). Use `type="warning"` for `Changing weights re-scores the whole slate.`

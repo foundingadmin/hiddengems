@@ -71,5 +71,8 @@ Use the guide marker (`.fc-guide`, see `components/guide-marker.md`) for every D
 | Hedges | Cut "FYI", "Heads up" and "Note" |
 | Notes | One sentence, active voice, naming the impact. An optional 1 to 2 word label names the topic and is never repeated by the sentence |
 | Numbers | Units stay beside the value they qualify; peer values share precision |
+| Verbs | One verb per action everywhere: if the button says Remove, the menu item, toast and confirmation say Remove too |
+| Separators | At most one middle dot per metadata line; use columns in tables |
+| Times | Relative under 7 days ("2 min ago"), a date after that, the exact time on hover |
 | Errors | Say what went wrong and how to fix it; "Couldn't" for user state, "Failed to" for system faults |
 | Plain words | Plain words on the fast path, exact terms in the audit path; define a term at first use |

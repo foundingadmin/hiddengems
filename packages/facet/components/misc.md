@@ -9,7 +9,7 @@ Smaller or less relevant the reference components, grouped here. Each entry foll
 - **Purpose:** multi-line text input.
 - **Variants & sizes:** `size` `small` | `medium` | `large` (heights not specified; demos set `minHeight: 100`). Also `rows`, `readOnly`, `disabled`, `error` (string), `placeholder`, `aria-label`.
 - **States:** default, disabled, read-only, error. Tokens inferred to match Input (gray-alpha rings, red error ring).
-- **Rules:** use for wrapping content. Set a generous `rows` value, but never push primary actions below the fold. Validate on blur, and the error replaces helper text. Trim on submit. Title Case labels, example-value placeholders. Errors name field and constraint, end with a period, no "please". Helper text goes in a sibling `<p>` linked by `aria-describedby`.
+- **Rules:** use for wrapping content. Set a generous `rows` value, but never push primary actions below the fold. Validate on blur, and the error replaces helper text. Trim on submit. sentence case labels, example-value placeholders. Errors name field and constraint, end with a period, no "please". Helper text goes in a sibling `<p>` linked by `aria-describedby`.
 - **Hidden Gems:** notes field on a tracked bet (P2).
 
 ## Clearable Input (`/geist/clearable-input`)
@@ -20,8 +20,8 @@ Smaller or less relevant the reference components, grouped here. Each entry foll
 ## Destructive Action Modal (`/geist/destructive-action-modal`)
 - **Purpose:** confirmation Modal for destructive actions, gated by typing a phrase, with an optional red striped band naming what cannot be undone.
 - **Props:** `open`, `title`, `description`, `confirmLabel`, `cancelLabel` (default `Cancel`), `verificationPhrase`, `verificationLabel`, `irreversibleDescription` (omit for reversible actions; the gate remains), `loading` (disables both buttons, spinner on primary), `error` (string or Error; modal stays open), `onConfirm`, `onCancel`.
-- **Rules:** use for delete, rotate, revoke, disconnect, downgrade, disabling security. Not for routine confirmations. The input is focused on open, and submit stays disabled until the text matches exactly. Enter only submits when the gate is open. The caller owns `open` and must not close it from inside `onConfirm`. Title and confirm label are the same `Verb + Noun`. For entity deletes the phrase is the resource name. The irreversible line names the action and resource and ends with `cannot be undone.`. Prompt and input use `translate="no"` so browser translation cannot break the match.
-- **Hidden Gems:** `Delete Saved Filter` / `Delete Account` (P2).
+- **Rules:** use for delete, rotate, revoke, disconnect, downgrade, disabling security. Not for routine confirmations. The input is focused on open, and submit stays disabled until the text matches exactly. Enter only submits when the gate is open. The caller owns `open` and must not close it from inside `onConfirm`. Title and confirm label are the same `Verb + noun`. For entity deletes the phrase is the resource name. The irreversible line names the action and resource and ends with `cannot be undone.`. Prompt and input use `translate="no"` so browser translation cannot break the match.
+- **Hidden Gems:** `Delete saved filter` / `Delete account` (P2).
 
 ## Destructive Confirmation Input (`/geist/destructive-confirmation-input`)
 - **Purpose:** the type-to-confirm field on its own, for custom destructive layouts. Renders `To confirm, type …` and keeps the phrase exactly as written (no title casing, no translation).
@@ -46,7 +46,7 @@ Smaller or less relevant the reference components, grouped here. Each entry foll
 ## Project Banner (`/geist/project-banner`)
 - **Purpose:** temporary, project-wide notice that needs resolving. Variants: default, `success`, `warning`, `error`.
 - **Rules:** cannot be dismissed by design (if it can be dismissed, it should be a Note). One at a time. Always has a `callToAction` that resolves it. `label` is one sentence-case sentence naming the impact.
-- **Hidden Gems:** `Odds feed degraded: 3 sportsbooks are delayed.` with `View Status` (P1).
+- **Hidden Gems:** `Odds feed degraded: 3 sportsbooks are delayed.` with `View status` (P1).
 
 ## Error Card (`/geist/error-card`)
 - **Purpose:** card communicating an error with `title` and `message`. No other docs.

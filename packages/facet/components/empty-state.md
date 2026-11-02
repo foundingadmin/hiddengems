@@ -23,14 +23,14 @@ Not specified by the reference. Inferred: `text-heading-*` or `text-label-16` ti
 - Show permission and tier denials full-page. Use Note when only one tile inside a page is gated.
 - No persistent warnings here, since the empty state disappears when data arrives.
 - CTA is a real Button or Link. One primary CTA, at most one secondary. Three is too many.
-- `aria-live="polite"` after async filter changes. Never auto-start a tour. Pair `Start Tour` with `Skip`.
-- Title is Title Case (`No Logs Match Your Filter`). The description adds new information.
+- `aria-live="polite"` after async filter changes. Never auto-start a tour. Pair `Start tour` with `Skip`.
+- Title is sentence case (`No logs match your filter`). The description adds new information.
 - Quote a single query with curly quotes. For multi-facet filters use `No {Items} Match Your Filters` and suggest widening.
-- Error variant: body plus a copyable request ID and `Try Again`.
-- CTAs are `Verb + Noun`. Never `Get Started`, `Continue` or `OK`.
+- Error variant: body plus a copyable request ID and `Try again`.
+- CTAs are `Verb + noun`. Never `Get started`, `Continue` or `OK`.
 
 ## Hidden Gems usage
-- **Filtered slate, zero rows**: title `No Bets Match Your Filters`, description `Try lowering Min Edge or adding more sportsbooks.`, CTA `Clear Filters`. Render it outside the Table.
-- **Off-season / no games scheduled**: blank slate `No Games This Week`, description naming when the next slate opens.
+- **Filtered slate, zero rows**: title `No bets match your filters`, description `Try lowering Min Edge or adding more sportsbooks.`, CTA `Clear filters`. Render it outside the Table.
+- **Off-season / no games scheduled**: blank slate `No games this week`, description naming when the next slate opens.
 - **No tracked bets yet**: informational with CTA `Browse Today’s Gems`.
-- **Feed outage**: error variant with request ID and `Try Again` (or the Error component).
+- **Feed outage**: error variant with request ID and `Try again` (or the Error component).

@@ -21,12 +21,12 @@ Not specified on this page. The Input's inline error (measured) uses a red octag
 ## Rules
 - Use as a block when a panel, card or route failed to load. Use `toasts.error()` for transient action failures and the Input `error` prop for field validation.
 - System errors always include a stable ID (request ID, trace ID) on a monospace line, collapsed under `<details>`. User-state errors (validation, permission) do not need one.
-- The recovery action must be concrete (`Try Again` if safe to retry, otherwise a named verb such as `Reconnect GitHub`). No silent background auto-retry.
-- Full-page route errors move focus to `Try Again`.
-- Say what happened, then what to do. No `Oops` or `Unfortunately`. Use `Couldn’t` / `Can’t` for user-state errors and `Failed to` for system errors. Never title an error `Something Went Wrong`. Name the resource (`Couldn’t Load Deployments`). Never joke.
+- The recovery action must be concrete (`Try again` if safe to retry, otherwise a named verb such as `Reconnect GitHub`). No silent background auto-retry.
+- Full-page route errors move focus to `Try again`.
+- Say what happened, then what to do. No `Oops` or `Unfortunately`. Use `Couldn’t` / `Can’t` for user-state errors and `Failed to` for system errors. Never title an error `Something went wrong`. Name the resource (`Couldn’t Load Deployments`). Never joke.
 - Async errors go in an `aria-live="polite"` region. Use `assertive` only for blocking errors.
 
 ## Hidden Gems usage
-- **Odds feed failure in a panel**: `Couldn’t load odds from BetMGM.` with `Try Again` and a collapsed request ID.
+- **Odds feed failure in a panel**: `Couldn’t load odds from BetMGM.` with `Try again` and a collapsed request ID.
 - **Model run failure**: `Failed to score Week 9 slate. Model timed out.` with run ID.
 - One failing book should not block the slate. Show `–` in its cells plus a small Error or Note above the table naming the book.

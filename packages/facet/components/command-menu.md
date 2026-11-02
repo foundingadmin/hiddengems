@@ -22,11 +22,11 @@ Overlay material is inferred as `material-modal` / `--ds-shadow-modal`, radius 1
 - Open at the root page and keep the query when navigating back from a sub-page.
 - Trap focus while open and return focus on close. Show recent or default items when the input is empty.
 - Split into pages past about 30 items or several resource types.
-- Items are Title Case verb phrases that act (`Deploy Project`), not navigation phrasing (`Go to…`).
-- Page labels are Title Case. Page placeholders are sentence case, scoped, and end with `…` (`Search projects…`). Group headings are 1–2 words.
+- Items are sentence case verb phrases that act (`Deploy project`), not navigation phrasing (`Go to…`).
+- Page labels are sentence case. Page placeholders are sentence case, scoped, and end with `…` (`Search projects…`). Group headings are 1–2 words.
 - `aria-live="polite"` on the result count. Up/Down, Enter, Escape. Backspace on empty input pops a page. Show keybinds with `Kbd`.
 
 ## Hidden Gems usage
-- P1. ⌘K palette: `Find Player…`, `Jump to Game…`, `Track Bet…`, `Toggle Auto-Refresh`, `Switch Odds Format`.
-- Pages: `Players`, `Games`, `Saved Filters`. Placeholder `Search players…`.
+- P1. ⌘K palette: `Find player…`, `Jump to game…`, `Track bet…`, `Toggle auto-Refresh`, `Switch odds format`.
+- Pages: `Players`, `Games`, `Saved filters`. Placeholder `Search players…`.
 - Empty state shows recently viewed players and markets.

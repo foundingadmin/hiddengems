@@ -274,6 +274,26 @@
         }
       }
     },
+    "label-11": {
+      "$type": "typography",
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "11px",
+        "lineHeight": "16px",
+        "fontWeight": 400,
+        "letterSpacing": "0.2px"
+      },
+      "$extensions": {
+        "facet": {
+          "addition": true,
+          "source": "vercel.com/font type poster (\"Label 11 strong\") and the measured small badge",
+          "strong": {
+            "fontWeight": 500,
+            "color": "var(--ds-gray-1000)"
+          }
+        }
+      }
+    },
     "label-12-mono": {
       "$type": "typography",
       "$value": {

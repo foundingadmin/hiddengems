@@ -44,13 +44,13 @@ Runs an action (submit, open a dialog, mutate state). `ButtonLink` has the same 
 - Set `typeName="submit"` for forms. `type` / `variant` controls appearance, not the HTML type.
 - Use `loading`, not a hand-swapped spinner.
 - Only disable when the action is currently impossible, and pair it with a Tooltip explaining why.
-- Labels are Title Case and say what happens (`Deploy Project`). No bare `Submit` / `OK` / `Confirm`. Destructive buttons use `Verb + Noun` and match their toast (`Delete Project` → `Project deleted`). Mode switches end with `Instead`.
+- Labels are sentence case and say what happens (`Deploy project`). No bare `Submit` / `OK` / `Confirm`. Destructive buttons use `Verb + Noun` and match their toast (`Delete project` → `Project deleted`). Mode switches end with `Instead`.
 - Icon-only buttons need `svgOnly` and an `aria-label` that names action and target (`Copy deployment URL`). The reference's validator throws without them.
 - Never add `aria-label` to a button that already has visible text.
 
 ## Hidden Gems usage
-- Use `small` (32px) for toolbar and in-table actions (`Track Bet`, `Open in Book`). Use `medium` for sheet footers.
+- Use `small` (32px) for toolbar and in-table actions (`Track bet`, `Open in book`). Use `medium` for sheet footers.
 - Use `tertiary` `svgOnly` square `small` for row icon actions (star or track, copy bet string), with Tooltips.
-- Use `secondary` for `Refresh Odds`. Use `loading` while refetching rather than disabling.
-- Disable `Track Bet` when the market is suspended, with a Tooltip `Market suspended at FanDuel.`
-- Hidden Gems has almost no destructive actions. Reserve `error` for things like `Delete Saved Filter`.
+- Use `secondary` for `Refresh odds`. Use `loading` while refetching rather than disabling.
+- Disable `Track bet` when the market is suspended, with a Tooltip `Market suspended at FanDuel.`
+- Hidden Gems has almost no destructive actions. Reserve `error` for things like `Delete saved filter`.

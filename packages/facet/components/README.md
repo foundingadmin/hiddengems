@@ -12,6 +12,10 @@ Synthesized component specs for **Facet**, the design system behind **Hidden Gem
 - **Motion:** popovers .2s, overlays .3s with scale .96, curve `--ds-motion-timing-swift`. Control transitions 150ms.
 - **"success" means blue in the reference** (Note `success`, Progress `success`, Toggle on-state). Decide explicitly whether Facet follows this.
 
+## Casing
+
+The reference writes UI labels in Title Case. Facet uses sentence case everywhere (see `foundations/content.md`), and these specs follow Facet.
+
 ## Index
 | Component | Purpose | Tier | Spec |
 |---|---|---|---|
@@ -24,7 +28,7 @@ Synthesized component specs for **Facet**, the design system behind **Hidden Gem
 | Note | Inline persistent contextual message (data caveats) | P0 | [note.md](note.md) |
 | Button | Primary action control | P0 | [button.md](button.md) |
 | Tabs | Sibling views within a page (Sheet sections) | P0 | [tabs.md](tabs.md) |
-| Toggle | Immediate boolean setting (Auto-Refresh) | P0 | [toggle.md](toggle.md) |
+| Toggle | Immediate boolean setting (auto-refresh) | P0 | [toggle.md](toggle.md) |
 | Switch | 2–3 option segmented control (odds format) | P0 | [switch.md](switch.md) |
 | Select | Native dropdown for short fixed lists (sort, week) | P0 | [select.md](select.md) |
 | Combobox | Type-to-filter single choice (player lookup) | P0 | [combobox.md](combobox.md) |

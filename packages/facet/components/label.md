@@ -21,4 +21,4 @@ Not specified. Combobox demo uses `text-label-14 text-gray-900` for a hand-rolle
 - No best-practices section. Related rules: Label title-cases its text, so **never** use it for type-to-confirm prompts (see misc.md, Destructive Confirmation Input). Pair with the control through `id` and `aria-labelledby` / `htmlFor`.
 
 ## Hidden Gems usage
-- Labels for settings fields (`Default Stake`, `Min Edge`). Use `bypassCasing` for labels containing book or brand names with fixed casing (`FanDuel`, `bet365`).
+- Labels for settings fields (`Default stake`, `Min edge`). Use `bypassCasing` for labels containing book or brand names with fixed casing (`FanDuel`, `bet365`).

@@ -28,10 +28,10 @@ Closed, open, submitting (use action `disabled` / loading), error inside (focus 
 - Escape and outside click dismiss non-destructive modals. Block dismissal when a destructive modal has unsaved input.
 - Trap focus and return it to the trigger. Restore body scroll on unmount.
 - Toasts render above the modal and stay interactive. The focus trap does not block them.
-- The title is a Title Case statement, never a question. Body is 1–3 sentences, consequence first. Primary action is `Verb + Noun` matching the title. Cancel stays `Cancel`. Acknowledgement-only modals use `Done`.
+- The title is a sentence case statement, never a question. Body is 1 to 3 sentences, consequence first. Primary action is `Verb + Noun` matching the title. Cancel stays `Cancel`. Acknowledgement-only modals use `Done`.
 - Irreversible flows end with `This cannot be undone.`. Partial-cascade flows end with `Some effects cannot be undone.`.
 - `aria-labelledby` points to the title.
 
 ## Hidden Gems usage
-- Rare in a research dashboard. Use for `Save Filter Preset` (name input with `initialFocusRef`), `Delete Saved Filter` (destructive, Cancel focused), and first-run responsible-gambling acknowledgement (`Done`).
+- Rare in a research dashboard. Use for `Save filter preset` (name input with `initialFocusRef`), `Delete saved filter` (destructive, Cancel focused), and first-run responsible-gambling acknowledgement (`Done`).
 - Never use Modal for bet details. Those go in `Sheet` so the slate stays visible.

@@ -22,7 +22,7 @@ Hidden, shown, dismissing (tap outside, swipe down, Escape, system back).
 - Good for one form, a filter sheet, or one CTA plus `Cancel`.
 - Keep tap-outside and swipe-down dismissal unless the form has unsaved input.
 - Scroll inside the drawer (`verticalScroll`). Only cap height when the primary action would be clipped. Actions stay above the fold.
-- Title is a Title Case statement naming the entity, not the page heading repeated.
+- Title is a sentence case statement naming the entity, not the page heading repeated.
 - Trap focus, return it on close, handle Escape and the system back gesture, and lock body scroll.
 
 ## Hidden Gems usage

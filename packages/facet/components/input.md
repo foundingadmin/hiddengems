@@ -32,7 +32,7 @@ A single-line text field.
 - Validate on blur and pass a string to `error`. Trim whitespace before submit.
 - Keep the field focusable while saving.
 - Do not wrap a labelled Input in a Tooltip. Put help on a sibling icon button.
-- Labels are short Title Case nouns. Placeholders show an example value, not instructions. Helper text is one sentence with a period, linked by `aria-describedby`.
+- Labels are short sentence case nouns. Placeholders show an example value, not instructions. Helper text is one sentence with a period, linked by `aria-describedby`.
 - Errors name the field and constraint, end with a period, and never say "please" (`Code must be 6 digits.`).
 - A string `label` requires an `id`. Icon-only buttons inside input rows use `Button svgOnly aria-label`.
 

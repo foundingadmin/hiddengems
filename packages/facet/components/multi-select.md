@@ -28,7 +28,7 @@ Not specified by the reference. Inferred: popover material (`--ds-shadow-menu`, 
 - Each row's checkbox needs an `aria-label` (`Select us-east-1`). Trap focus while open and return focus to the trigger on close.
 
 ## Hidden Gems usage
-- **Sportsbooks**: `5 books selected`. `Select Only` is ideal for "show me only DraftKings".
+- **Sportsbooks**: `5 books selected`. `Select only` is ideal for "show me only DraftKings".
 - **Markets**: Passing Yards, Receptions, Anytime TD…
 - **Teams / games** on the slate.
 - When used as filters, prefer FilterParams `type: 'multi-select'` so state is URL-backed. Use standalone MultiSelect for settings such as "books I have accounts at".

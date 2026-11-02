@@ -27,6 +27,10 @@
 - Everything aligns to a shared edge, baseline or grid line. Grid and flex children get `min-width: 0` so they can shrink instead of overflowing.
 - A visible guide-line grid is a marketing device; Vercel's own report rules reject grid backgrounds as decoration. Do not use guide grids in the product.
 
+## Breakpoints
+
+From vercel.com production CSS: **600** and **960** are the main product breakpoints (`max-width: 600px` / `min-width: 601px`, `max-width: 960px` / `min-width: 961px`), with **400** and **1200** as secondary. Design at 390, 768 and 1440 to check each side.
+
 ## Controls and density
 
 Measured on the vercel.com reference demos:
@@ -76,4 +80,4 @@ Restraint: do not wrap every metric in a card, and never nest cards. A surface m
 
 ## Icons
 
-The reference icon set is not published to public npm. Facet's decision `[F]`: use **Lucide** (the set Vercel's own templates and shadcn use) at 16px with a 1.5 stroke, `currentColor`, sized to the text role it sits beside (16 in 14px labels, 14 in 13px, 12 in badges). Rules: icons are for faster recognition of an established action, never decoration; no icon tiles; one icon style per product; always pair an unfamiliar icon with a visible label or tooltip.
+The reference icon set is not published to public npm. Facet's decision `[F]`: use **Lucide** (the set Vercel's own templates and shadcn use) at 16px with a 1.5 stroke, `currentColor`, sized to the text role it sits beside (16 in 14px labels, 14 in 13px, 12 in badges). Rules: icons are for faster recognition, never decoration; a neutral `.fc-icon-tile` may hold one where it speeds recognition (empty states, list and connection rows, entity leads); one icon style per product; always pair an unfamiliar icon with a visible label or tooltip.

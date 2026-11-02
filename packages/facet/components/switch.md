@@ -25,7 +25,7 @@ Default, hover, selected, disabled (text `--ds-gray-800`), focus-visible (`--ds-
 - Past 3 options or longer labels, use `Tabs` or `Select`.
 - Always pass `name`, and make exactly one control checked initially.
 - Size segments so the widest label fits without the selected pill changing size.
-- Labels are Title Case, 1–2 words, and parallel.
+- Labels are sentence case, 1–2 words, and parallel.
 - Every control needs a `label`, even icon-only ones. Add a Tooltip per control for icon-only switches.
 
 ## Hidden Gems usage

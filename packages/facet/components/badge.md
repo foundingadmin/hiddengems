@@ -36,16 +36,16 @@ Static only. No hover, active or disabled states, by design.
 - One badge per row. If you need two side by side, the row probably needs another column.
 - Static only. Never put `onClick` on a Badge. If the value is actionable, use a Button or a link. Use the `pill` variant for clickable filter chips.
 - Content is text, or `icon` + text. Never two icons, and never a nested badge.
-- Title Case, one word ideally, two max (`Active`, `Pending`, `Enterprise Trial`). Use canonical terms (`Canceled`, with one L).
+- sentence case, one word ideally, two max (`Active`, `Pending`, `Enterprise trial`). Use canonical terms (`Canceled`, with one L).
 - Color carries the meaning. Do not add check or X icons. `green` = healthy, `red` = error, `amber` = warning, `blue` = informational, `gray` = neutral. Prefer the subtle form on dense surfaces.
-- Do not put sentences in a badge (`Currently Active`).
+- Do not put sentences in a badge (`Currently active`).
 - Lifecycle badges (`Alpha`, `Beta`) get a Tooltip that names the limit.
 - Set `title` on icon-only or ambiguous badges. The text must be understandable without its color.
 - Use `StatusDot` for a dot without text.
 
 ## Hidden Gems usage
 - **Confidence tier** in the slate: `contrast="low"`, `size="sm"`. Map `green` = High, `amber` = Medium, `gray` = Low. Keep the label (`High`) so color is never the only signal.
-- **Market type / book tags** (e.g. `Player Prop`, `Spread`): `gray` subtle. Never more than one badge per cell.
+- **Market type / book tags** (e.g. `Player prop`, `Spread`): `gray` subtle. Never more than one badge per cell.
 - **Signal freshness** for non-deployment states: The reference sends these to Badge, not StatusDot (`Stale` amber-subtle, `Live` green-subtle).
 - **Injury / news flags** from the qualitative pipeline: `red` or `amber` subtle with a Tooltip carrying the source headline.
 - Do not use solid fills in table cells. Keep solid badges for page-level emphasis (e.g. a `Beta` model badge in the header).

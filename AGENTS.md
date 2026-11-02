@@ -33,6 +33,11 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 - The design system is called Facet. Never call it Geist in UI copy, docs or comments; the upstream
   name appears only in provenance (`packages/facet/SOURCES.md`, `reference/`) and real package names.
 
+## Working agreements
+
+- Integrate approved scalability decisions as soon as they come up (tokens, slots, generators), rather than deferring them.
+- A product's accent goes through `--fc-brand-*` (`packages/facet/tokens/facet.semantic.json`); reusing Facet for another product means changing those four tokens, not hunting for hues.
+
 ## Repo layout
 
 - `packages/facet/` design system (self-contained, reusable in other projects)

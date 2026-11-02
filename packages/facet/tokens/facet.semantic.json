@@ -494,5 +494,64 @@
         }
       }
     }
+  },
+  "control": {
+    "$description": "Parts of controls that must stay legible in both themes.",
+    "thumb": {
+      "$type": "color",
+      "$value": "{color.background.100}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.gray.1000}"
+        }
+      },
+      "$description": "Toggle and slider thumbs. Light in both themes."
+    },
+    "thumb-ring": {
+      "$type": "color",
+      "$value": "{color.gray-alpha.400}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.gray-alpha.600}"
+        }
+      },
+      "$description": "Hairline around a thumb."
+    }
+  },
+  "action": {
+    "$description": "Action fills with a fixed meaning.",
+    "destructive": {
+      "$type": "color",
+      "$value": "{color.red.800}",
+      "$description": "Destructive buttons, such as delete."
+    },
+    "destructive-hover": {
+      "$type": "color",
+      "$value": "{color.red.900}",
+      "$description": "Destructive button hover."
+    }
+  },
+  "brand": {
+    "$description": "The product's one accent, swapped per product so Facet can be reused (owner decision D6). Hidden Gems maps it to purple, which is also its gem color, so the hue still has one job here. Used by marketing surfaces (hero field sparkles, brand marks); product UI keeps using the semantic tokens for its jobs.",
+    "fg": {
+      "$type": "color",
+      "$value": "{color.purple.900}",
+      "$description": "Brand text and marks."
+    },
+    "solid": {
+      "$type": "color",
+      "$value": "{color.purple.700}",
+      "$description": "Brand fills and the hero field sparkle."
+    },
+    "bg": {
+      "$type": "color",
+      "$value": "{color.purple.200}",
+      "$description": "Brand tints."
+    },
+    "border": {
+      "$type": "color",
+      "$value": "{color.purple.400}",
+      "$description": "Brand edges."
+    }
   }
 }

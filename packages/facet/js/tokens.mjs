@@ -274,7 +274,15 @@ export const semantic = {
     "badge-red": "#cb2a2f",
     "badge-pink": "#bd2864",
     "badge-green": "#297a3a",
-    "badge-teal": "#067a6e"
+    "badge-teal": "#067a6e",
+    "control-thumb": "#ffffff",
+    "control-thumb-ring": "#00000014",
+    "action-destructive": "#da2f35",
+    "action-destructive-hover": "#cb2a2f",
+    "brand-fg": "#7820bc",
+    "brand-solid": "#8e4ec6",
+    "brand-bg": "#f9f1fe",
+    "brand-border": "#eddcf9"
   },
   "dark": {
     "text-primary": "#ededed",
@@ -358,7 +366,15 @@ export const semantic = {
     "badge-red": "#d93036",
     "badge-pink": "#b31a57",
     "badge-green": "#1a9338",
-    "badge-teal": "#0c9784"
+    "badge-teal": "#0c9784",
+    "control-thumb": "#ededed",
+    "control-thumb-ring": "#ffffff82",
+    "action-destructive": "#d93036",
+    "action-destructive-hover": "#ff6166",
+    "brand-fg": "#bf7af0",
+    "brand-solid": "#8e4ec6",
+    "brand-bg": "#2e1938",
+    "brand-border": "#4f2768"
   }
 };
 export const typography = {
@@ -508,6 +524,13 @@ export const typography = {
     "lineHeight": "16px",
     "fontWeight": 400,
     "letterSpacing": "0px"
+  },
+  "label-11": {
+    "fontFamily": "{font.family.sans}",
+    "fontSize": "11px",
+    "lineHeight": "16px",
+    "fontWeight": 400,
+    "letterSpacing": "0.2px"
   },
   "label-12-mono": {
     "fontFamily": "{font.family.mono}",

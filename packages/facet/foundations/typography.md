@@ -5,7 +5,7 @@
 ## Typefaces
 
 - **Facet Sans** for everything a person reads: prose, headings, labels, controls, tables, KPIs, dates, counts, percentages, odds and money.
-- **Facet Mono** only for code, commands, raw IDs and timestamps. Set only the identifier in Mono, never the whole sentence or table.
+- **Facet Mono** only for machine values: code, commands, IDs, keys and cron expressions. Set only the value in Mono, never the whole sentence or table. Times people read (kickoff, "2 min ago") are Sans with tabular figures.
 - Fonts are vendored in `fonts/`. Facet Sans and Facet Mono are the open-source `geist` typeface (variable, 100 to 900, SIL OFL 1.1, byte-identical to `geist@1.9.0`). Self-hosting keeps OpenType features that the Google Fonts build strips (stylistic sets, `case`, the plain-zero Mono option).
 - In Next.js, load with the `geist` package (`geist/font/sans`, `geist/font/mono`). It sets `--font-geist-sans` and `--font-geist-mono`, which Facet's family tokens already read. The package export is upright only; add italics deliberately if ever needed.
 
@@ -35,6 +35,7 @@ Every role fixes size, line height, weight and tracking together. Use the class;
 | `text-label-14-mono` | 14 / 20 | 400 | 0 | Mono paired with larger text |
 | `text-label-13` | 13 / 16 | 400 | 0 | Secondary line beside a label, numbers (tabular) |
 | `text-label-13-mono` | 13 / 20 | 400 | 0 | Mono paired with label-14 |
+| `text-label-11` | 11 / 16 | 400 | 0.2 | The smallest role: small badges and dense tags, with `<strong>` (500). From the font page |
 | `text-label-12` | 12 / 16 | 400 | 0 | Tertiary text in busy views |
 | `text-label-12-mono` | 12 / 16 | 400 | 0 | |
 | `text-copy-24` | 24 / 36 | 400 | 0 | Marketing hero copy |
@@ -60,4 +61,5 @@ Every role fixes size, line height, weight and tracking together. Use the class;
 
 - Prose 60 to 68 characters per line. Rewrite before shrinking.
 - Heading to its first paragraph: close (8px). Paragraph to paragraph: one rhythm (16px). Group to group: 24 to 32px. Section turns: 48 to 64px.
+- Headings wrap into balanced lines (`text-wrap: balance`, set in base.css), so no word is left stranded.
 - Hierarchy through type before surfaces or color. Never use tiny gray copy to make density fit.

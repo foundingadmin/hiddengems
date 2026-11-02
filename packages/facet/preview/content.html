@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Facet content</title>
-<meta name="description" content="How to write for a Facet product: say it once, earn every line, headlines that last, house style.">
+<meta name="description" content="How to write for a Facet product: say it once, earn every line, headlines that last, one word family, house style.">
 <link rel="stylesheet" href="../css/facet.css">
 <link rel="stylesheet" href="specimen.css">
 </head>
@@ -33,6 +33,7 @@
       <a class="fc-tab" href="#say" aria-selected="true">Say it once</a>
       <a class="fc-tab" href="#earn">Earn every line</a>
       <a class="fc-tab" href="#headlines">Headlines</a>
+      <a class="fc-tab" href="#family">Word families</a>
       <a class="fc-tab" href="#style">House style</a>
     </nav>
   </div>
@@ -63,7 +64,7 @@
               <tr><td>Diggs</td><td><mark class="sp-dup">Anytime TD</mark></td></tr><tr><td>Gordon</td><td><mark class="sp-dup">Anytime TD</mark></td></tr><tr><td>Gesicki</td><td><mark class="sp-dup">Anytime TD</mark></td></tr></tbody></table></div><div class="sp-cmp-cell"><span class="fc-guide" data-guide="do">Do</span><table class="fc-table sp-tiny"><tbody><tr class="fc-group-row"><th scope="colgroup">Anytime TD</th></tr>
               <tr><td>Diggs</td></tr><tr><td>Gordon</td></tr><tr><td>Gesicki</td></tr></tbody></table></div></li>
       <li><h3>An empty state that says nothing twice</h3><div class="sp-cmp-cell"><span class="fc-guide" data-guide="dont">Don't</span><p class="text-heading-14">No picks yet</p><p class="text-copy-13">There are <mark class="sp-dup">no picks</mark> to show <mark class="sp-dup">yet</mark>.</p></div><div class="sp-cmp-cell"><span class="fc-guide" data-guide="do">Do</span><p class="text-heading-14">No picks yet</p><p class="text-copy-13">Odds open Tuesday. The slate fills in as lines post.</p></div></li>
-      <li><h3>A tooltip that reads the button back</h3><div class="sp-cmp-cell"><span class="fc-guide" data-guide="dont">Don't</span><span class="fc-button" data-variant="secondary" data-size="small" inert>Refresh odds</span><span class="sp-tip"><mark class="sp-dup">Refresh odds</mark></span></div><div class="sp-cmp-cell"><span class="fc-guide" data-guide="do">Do</span><span class="fc-button" data-variant="secondary" data-size="small" inert>Refresh odds</span><span class="sp-tip">Last pulled 2m ago</span></div></li>
+      <li><h3>A tooltip that reads the button back</h3><div class="sp-cmp-cell"><span class="fc-guide" data-guide="dont">Don't</span><span class="fc-button" data-variant="secondary" data-size="small" inert>Pull odds</span><span class="sp-tip"><mark class="sp-dup">Pull odds</mark></span></div><div class="sp-cmp-cell"><span class="fc-guide" data-guide="do">Do</span><span class="fc-button" data-variant="secondary" data-size="small" inert>Pull odds</span><span class="sp-tip">Last pulled 2m ago</span></div></li>
       <li><h3>A badge next to text that says the same</h3><div class="sp-cmp-cell"><span class="fc-guide" data-guide="dont">Don't</span><p class="text-copy-13">Gems, and only gems <mark class="sp-dup"><span class="fc-badge" data-variant="gray" data-size="sm">Gems only</span></mark></p></div><div class="sp-cmp-cell"><span class="fc-guide" data-guide="do">Do</span><p class="text-copy-13">Gems, and only gems</p></div></li>
       <li><h3>A caption that repeats its heading</h3><div class="sp-cmp-cell"><span class="fc-guide" data-guide="dont">Don't</span><p class="text-heading-14">Semantic tokens</p><p class="text-copy-13"><mark class="sp-dup">All semantic color tokens</mark></p></div><div class="sp-cmp-cell"><span class="fc-guide" data-guide="do">Do</span><p class="text-heading-14">Semantic tokens</p></div></li>
     </ol>
@@ -105,6 +106,21 @@
     <div class="fc-note"><span>Data-driven statements ("Gesicki carries the widest gap") belong in the content, generated from the data, where they update with it.</span></div>
   </section>
 
+  <section id="family" aria-labelledby="family-h">
+    <div class="sp-lessonhead">
+      <div><h2 id="family-h" class="text-heading-32">One word family</h2><p class="text-copy-16">Labels that sit together and describe the same thing share one root word, so the reader links them without thinking.</p></div>
+      <p class="sp-test"><span>Ask before every label</span><strong>Does a word nearby already name this idea?</strong></p>
+    </div>
+    <ol class="sp-cmp">
+      <li class="sp-cmp-head" aria-hidden="true"><span></span><span class="fc-guide" data-guide="dont">Don't</span><span class="fc-guide" data-guide="do">Do</span></li>
+      <li><h3>A run, its column and its result</h3><div class="sp-cmp-cell"><span class="fc-guide" data-guide="dont">Don't</span><table class="fc-table sp-tiny" style="width:auto"><tbody><tr><th scope="row">Button</th><td>Run now</td></tr><tr><th scope="row">Column</th><td>Last run</td></tr><tr><th scope="row">Detail</th><td><mark class="sp-dup">Took 4.1s</mark></td></tr></tbody></table></div><div class="sp-cmp-cell"><span class="fc-guide" data-guide="do">Do</span><table class="fc-table sp-tiny" style="width:auto"><tbody><tr><th scope="row">Button</th><td>Run now</td></tr><tr><th scope="row">Column</th><td>Last run</td></tr><tr><th scope="row">Detail</th><td>Ran 4.1s</td></tr></tbody></table></div></li>
+      <li><h3>A connection and its states</h3><div class="sp-cmp-cell"><span class="fc-guide" data-guide="dont">Don't</span><p class="text-copy-13">Connect, then <mark class="sp-dup">Linked</mark>, then <mark class="sp-dup">Unlink</mark></p></div><div class="sp-cmp-cell"><span class="fc-guide" data-guide="do">Do</span><p class="text-copy-13">Connect, then Connected, then Disconnect</p></div></li>
+      <li><h3>A data action and its record</h3><div class="sp-cmp-cell"><span class="fc-guide" data-guide="dont">Don't</span><p class="text-copy-13"><mark class="sp-dup">Refresh</mark> odds, last <mark class="sp-dup">fetched</mark> 2m ago, <mark class="sp-dup">sync</mark> failed</p></div><div class="sp-cmp-cell"><span class="fc-guide" data-guide="do">Do</span><p class="text-copy-13">Pull odds, last pulled 2m ago, pull failed</p></div></li>
+      <li><h3>A bet from button to toast</h3><div class="sp-cmp-cell"><span class="fc-guide" data-guide="dont">Don't</span><p class="text-copy-13">Track bet, then <mark class="sp-dup">Wager saved</mark> in <mark class="sp-dup">Logged picks</mark></p></div><div class="sp-cmp-cell"><span class="fc-guide" data-guide="do">Do</span><p class="text-copy-13">Track bet, then Bet tracked in Tracked bets</p></div></li>
+    </ol>
+    <div class="fc-note"><span>Dense screens are read in glances. Every new word is a small question ("is a wager a bet?"), and a screen full of small questions is tiring. One root per idea answers them before they are asked.</span></div>
+  </section>
+
   <section id="style" aria-labelledby="style-h">
     <div class="sp-lessonhead">
       <div><h2 id="style-h" class="text-heading-32">House style</h2><p class="text-copy-16">Rules that hold on every screen, in every product.</p></div>
@@ -119,7 +135,7 @@
           <tr><th scope="row">Titles</th><td>No colons in titles, headings or nav labels</td><td>Ten steps for every hue</td></tr>
           <tr><th scope="row">Dashes</th><td>No em dashes, anywhere. Use a comma, colon, period or parentheses</td><td>Odds open Tuesday, so the slate is empty</td></tr>
           <tr><th scope="row">Hedges</th><td>Cut "FYI", "Heads up" and "Note"</td><td>Inactives post 9:30 AM MT</td></tr>
-          <tr><th scope="row">Verbs</th><td>One verb per action: the button, menu item, toast and confirmation all use it</td><td>Remove pick, then Pick removed</td></tr>
+          <tr><th scope="row">Verbs</th><td>One root per idea: the button, column, detail, menu item, toast and confirmation all use it</td><td>Run now, Last run, Ran 4.1s</td></tr>
           <tr><th scope="row">Plain words</th><td>Plain words on the fast path, exact terms in the audit path; define a term at first use</td><td>Gap, then "our estimate minus the priced chance"</td></tr>
           <tr class="fc-group-row"><th colspan="3" scope="colgroup">Numbers and time</th></tr>
           <tr><th scope="row">Numbers</th><td>Peer values share precision. A lone value keeps its unit beside it; in a column of mixed metrics the word unit moves to the label and changes are percent</td><td>Average gap (pts) +4.1, +17%</td></tr>

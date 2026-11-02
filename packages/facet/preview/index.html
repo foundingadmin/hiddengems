@@ -78,7 +78,7 @@
       </div>
       <hr class="fc-separator">
       <div class="sp-dodont">
-        <figure><figcaption><span class="fc-guide" data-guide="do" data-critical>Do</span></figcaption><div class="sp-wrap"><span id="gem-do"></span> <span class="fc-badge" data-variant="purple" data-contrast="low">Hidden Gem</span> <input type="checkbox" class="fc-toggle" checked aria-label="Auto refresh"> <input type="checkbox" class="fc-check" checked aria-label="Selected pick"></div></figure>
+        <figure><figcaption><span class="fc-guide" data-guide="do" data-critical>Do</span></figcaption><div class="sp-wrap"><span id="gem-do"></span> <span class="fc-badge" data-variant="purple" data-contrast="low">Hidden Gem</span> <input type="checkbox" class="fc-toggle" checked aria-label="Auto pull"> <input type="checkbox" class="fc-check" checked aria-label="Selected pick"></div></figure>
         <figure><figcaption><span class="fc-guide" data-guide="dont" data-critical>Don't</span></figcaption><div class="sp-wrap" inert aria-label="Example of misuse"><button class="fc-button sp-misuse" type="button">Lock pick</button><a class="sp-misuse-link">View sources</a></div><p class="sp-caption">A purple button or link reads as a gem. Actions stay neutral; purple marks gems and your choices.</p></figure>
         <figure><figcaption><span class="fc-guide" data-guide="do" data-critical>Do</span></figcaption><div class="sp-wrap"><span class="fc-delta" data-direction="positive">9 pts</span><span class="fc-signal" data-signal="wait">Wait</span></div></figure>
         <figure><figcaption><span class="fc-guide" data-guide="dont" data-critical>Don't</span></figcaption><div class="sp-wrap"><span class="sp-misuse-amber">$50 slate</span><span class="sp-misuse-green">+$212.40</span></div><p class="sp-caption">Amber for emphasis or green for money reads as a verdict that was never made.</p></figure>
@@ -171,7 +171,7 @@
           <span class="fc-status"><span class="fc-status-dot" data-state="live"></span>Live, pulled 2m ago</span>
           <span class="fc-status"><span class="fc-status-dot" data-state="recent"></span>Recent, 25m ago</span>
           <span class="fc-status"><span class="fc-status-dot" data-state="stale"></span>Stale, 3h ago</span>
-          <span class="fc-status"><span class="fc-status-dot" data-state="failed"></span>Failed to refresh</span>
+          <span class="fc-status"><span class="fc-status-dot" data-state="failed"></span>Failed to pull</span>
           <span class="fc-status"><span class="fc-status-dot" data-state="queued"></span>Queued</span>
         </div>
       </figure>
@@ -224,12 +224,12 @@
         </div>
         <div class="sp-nrow" role="row">
           <div class="sp-ntype" role="rowheader"><strong>Info</strong><span>How something works, or what happens next.</span></div>
-          <div class="sp-ncell" role="cell"><span class="sp-ncell-label">Hollow</span><div class="fc-note" data-type="info"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span>Odds refresh every 5 minutes on game days.</span></div></div>
+          <div class="sp-ncell" role="cell"><span class="sp-ncell-label">Hollow</span><div class="fc-note" data-type="info"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span>Odds are pulled every 5 minutes on game days.</span></div></div>
           <div class="sp-ncell" role="cell"><span class="sp-ncell-label">Filled</span><div class="fc-note" data-type="info" data-fill><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span>Inactives post at 9:30 AM MT, and verdicts update on their own.</span></div></div>
         </div>
         <div class="sp-nrow" role="row">
           <div class="sp-ntype" role="rowheader"><strong>Success</strong><span>A check the reader started has passed.</span></div>
-          <div class="sp-ncell" role="cell"><span class="sp-ncell-label">Hollow</span><div class="fc-note" data-type="success"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M6.9 10.6 4.4 8.1l1-1 1.5 1.5 3.7-3.7 1 1z"/></svg><span>All 3 books refreshed.</span></div></div>
+          <div class="sp-ncell" role="cell"><span class="sp-ncell-label">Hollow</span><div class="fc-note" data-type="success"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M6.9 10.6 4.4 8.1l1-1 1.5 1.5 3.7-3.7 1 1z"/></svg><span>All 3 books pulled.</span></div></div>
           <div class="sp-ncell" role="cell"><span class="sp-ncell-label">Filled</span><div class="fc-note" data-type="success" data-fill><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M6.9 10.6 4.4 8.1l1-1 1.5 1.5 3.7-3.7 1 1z"/></svg><span>Slate locked with 7 picks and $50 staked.</span></div></div>
         </div>
         <div class="sp-nrow" role="row">
@@ -240,7 +240,7 @@
         <div class="sp-nrow" role="row">
           <div class="sp-ntype" role="rowheader"><strong>Error</strong><span>A problem to fix, or data that failed.</span></div>
           <div class="sp-ncell" role="cell"><span class="sp-ncell-label">Hollow</span><div class="fc-note" data-type="error"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 4h1.5v5h-1.5zM7.25 10.5h1.5V12h-1.5z"/></svg><span>Couldn't load Burke's snap counts.</span></div></div>
-          <div class="sp-ncell" role="cell"><span class="sp-ncell-label">Filled</span><div class="fc-note" data-type="error" data-fill data-action><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 4h1.5v5h-1.5zM7.25 10.5h1.5V12h-1.5z"/></svg><span>FanDuel failed to refresh, so its prices are 3 hours old.</span><button class="fc-button fc-note-action" data-variant="secondary" data-size="small" type="button" tabindex="-1">Retry</button></div></div>
+          <div class="sp-ncell" role="cell"><span class="sp-ncell-label">Filled</span><div class="fc-note" data-type="error" data-fill data-action><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 4h1.5v5h-1.5zM7.25 10.5h1.5V12h-1.5z"/></svg><span>The FanDuel pull failed, so its prices are 3 hours old.</span><button class="fc-button fc-note-action" data-variant="secondary" data-size="small" type="button" tabindex="-1">Retry</button></div></div>
         </div>
       </div>
       <dl class="fc-description sp-two-up">
@@ -474,7 +474,7 @@
         </div>
         <span class="fc-entity-meta">24 markets</span>
         <div class="fc-entity-actions">
-          <button type="button" class="fc-button" data-variant="secondary" data-size="small">Refresh</button>
+          <button type="button" class="fc-button" data-variant="secondary" data-size="small">Pull now</button>
           <button type="button" class="fc-button" data-variant="tertiary" data-shape="square" data-size="small" aria-label="More actions for BetMGM"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="3.5" cy="8" r="1.25"/><circle cx="8" cy="8" r="1.25"/><circle cx="12.5" cy="8" r="1.25"/></svg></button>
         </div>
       </li>
@@ -1003,7 +1003,7 @@
           </div>
         </div>
         <div class="fc-stack" style="--fc-gap:8px">
-          <div class="fc-progress-row"><strong id="ch-p3">Books refreshed</strong><span>3 of 3</span></div>
+          <div class="fc-progress-row"><strong id="ch-p3">Books pulled</strong><span>3 of 3</span></div>
           <progress class="fc-progress" data-type="success" value="3" max="3" aria-labelledby="ch-p3">3 of 3</progress>
         </div>
       </div>
@@ -1107,7 +1107,7 @@
         <div class="fc-dataops-toolbar">
           <input class="fc-input" data-size="small" type="search" aria-label="Search pulls" placeholder="Source, market or message">
           <button class="fc-button fc-live" data-variant="secondary" data-size="small" type="button" aria-pressed="true" id="ch-live">Live</button>
-          <button class="fc-button" data-variant="secondary" data-size="small" data-shape="square" type="button" aria-label="Refresh">
+          <button class="fc-button" data-variant="secondary" data-size="small" data-shape="square" type="button" aria-label="Reload log">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M8 16H3v5"/></svg>
           </button>
         </div>
@@ -1570,7 +1570,7 @@
           </label>
         </div>
         <div class="fc-fieldset-footer">
-          <span>Manual refresh still works.</span>
+          <span>Manual pulls still work.</span>
           <div class="fc-row">
             <button class="fc-button" data-variant="secondary" data-size="small" type="reset" hidden data-cancel>Cancel</button>
             <button class="fc-button" data-size="small" type="submit" disabled data-save>Save</button>

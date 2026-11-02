@@ -57,6 +57,21 @@ Name the purpose in simple, objective words, and let the content carry the speci
 
 Data-driven statements ("Gesicki carries the widest gap") belong in the content itself, generated from the data, where they update with it.
 
+## One word family
+
+Labels that sit together and describe the same thing share one root word, so the reader links them without thinking. Dense screens are read in glances; every new word is a small question ("is a wager a bet?"), and one root per idea answers it before it is asked.
+
+**Ask before every label:** does a word nearby already name this idea?
+
+| Pattern | Don't | Do |
+|---|---|---|
+| A run, its column and its result | Run now, Last run, "Took 4.1s" | Run now, Last run, "Ran 4.1s" |
+| A connection and its states | Connect, Linked, Unlink | Connect, Connected, Disconnect |
+| A data action and its record | Refresh odds, last fetched 2m ago, sync failed | Pull odds, last pulled 2m ago, pull failed |
+| A bet from button to toast | Track bet, "Wager saved" in Logged picks | Track bet, "Bet tracked" in Tracked bets |
+
+Hidden Gems roots: **pull** (odds data in), **run** (a scheduled job), **track** (a bet you placed), **connect** (a book or provider). Reloading a view is not a pull; it is "Reload".
+
 ## Marking right and wrong
 
 Use the guide marker (`.fc-guide`, see `components/guide-marker.md`) for every Do and Don't. It is neutral by default: a gray check or cross plus the word. Add color (`data-critical`) only where misuse breaks the system, such as the hue allocation. If it appears everywhere, nobody sees it.
@@ -71,7 +86,7 @@ Use the guide marker (`.fc-guide`, see `components/guide-marker.md`) for every D
 | Hedges | Cut "FYI", "Heads up" and "Note" |
 | Notes | One sentence, active voice, naming the impact. An optional 1 to 2 word label names the topic and is never repeated by the sentence |
 | Numbers | Peer values share precision. A lone value keeps its unit beside it ("+4.0 pts"). In a column of mixed metrics the word unit moves to the label ("Average gap (pts)"), symbols that are part of the number stay ($, %), and changes are percent with the exact change in a helper |
-| Verbs | One verb per action everywhere: if the button says Remove, the menu item, toast and confirmation say Remove too |
+| Verbs | One root per idea everywhere: if the button says Remove, the menu item, toast and confirmation say Remove too. Neighboring labels share it (Run now, Last run, Ran 4.1s) |
 | Durations | Compact units in values, no space: "4.1s", "in 5m", "3h ago", "in 1d 6h" (`js/time.mjs`). Words in sentences: "every 5 minutes". A bare duration gets its context word: "Ran 4.1s" |
 | Separators | At most one middle dot per metadata line; use columns in tables |
 | Times | Clock and calendar times in mono, relative times in sans (`data-relative`). Relative under 7 days ("2m ago"), a date after that, the exact time on hover. Clock times in a column all carry their day word ("Today 6:00 PM", "Tue 12:00 AM") |

@@ -94,7 +94,7 @@ Owner decisions on where a rank 1 source and an earlier Facet rule disagreed (20
 | Topic | Rule |
 |---|---|
 | Icon tiles | Allowed wherever one speeds recognition: empty states, list and connection rows, entity leads, integrations. Neutral only (`.fc-icon-tile`), one per item, never decorative or colored |
-| Times | Clock and calendar times are mono ("11:00 AM", "Today 6:05 PM", "Oct 31", log times, clock-time axes). Relative times are words and stay sans ("4m ago", "in 5m", "12h ago"), marked `data-relative`. Set in base.css |
+| Times | Clock and calendar times are mono ("11:00 AM", "Today 6:05 PM", "Oct 31", log times, clock-time axes). Relative times are words and stay sans ("4m ago", "in 5m", "12h ago"), marked `data-relative`. Set in base.css. Paired, the clock time leads in primary and the relative time or detail sits under it in secondary (schedule runs, table time cells) |
 | Legends | Multi-series charts default to a legend that carries each series' total (`.fc-legend`). Single-series charts use a direct label |
 | Marketing moments | Onboarding, week openings, explainers and recaps may use `data-surface="marketing"`: display type, roomier spacing, pill buttons and one animated field per view (`patterns/surfaces.md`). Hue decoration and gradient text stay banned |
 | Brand accent | One accent per product through `--fc-brand-*`; Hidden Gems maps it to purple, its gem color. Focus, text selection, native `accent-color`, and checked or on controls (toggle, checkbox, choicebox, menu checks) all read it, so rebranding is four tokens. Primary buttons, tabs, nav and links stay neutral |

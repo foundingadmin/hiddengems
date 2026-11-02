@@ -1,0 +1,7 @@
+/* Facet: everything in one import (plain HTML, prototypes, Claude artifacts).
+   Apps on Tailwind v4 import tailwind.css instead, then base.css and components.css. */
+@import "./tokens.css";
+@import "./base.css";
+@import "./typography.css";
+@import "./materials.css";
+@import "./components.css";

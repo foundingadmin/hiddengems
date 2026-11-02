@@ -1,0 +1,98 @@
+/* Facet base layer: fonts, document defaults, focus, selection, motion.
+   Hand-written. Depends on tokens.css. */
+
+/* Geist Sans + Geist Mono, variable (100 to 900). SIL OFL 1.1, see fonts/OFL-LICENSE.txt.
+   In Next.js prefer the `geist` package (next/font) and skip these @font-face rules;
+   both paths expose the same family names. */
+@font-face {
+  font-family: "Geist";
+  src: url("../fonts/Geist-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: url("../fonts/GeistMono-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+/* Family tokens (--fc-font-sans / --fc-font-mono) honor next/font variables when present. */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  font-family: var(--fc-font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  color: var(--fc-text-primary);
+  background: var(--fc-surface-canvas);
+}
+
+h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd { margin: 0; }
+ul[role="list"], ol[role="list"] { list-style: none; margin: 0; padding: 0; }
+img, svg, video, canvas { display: block; max-width: 100%; }
+input, button, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:disabled, [aria-disabled="true"] { cursor: not-allowed; }
+table { border-collapse: collapse; border-spacing: 0; }
+code, kbd, samp, pre { font-family: var(--fc-font-mono); }
+a { color: inherit; text-underline-offset: 3px; }
+
+/* Grid and flex children must be allowed to shrink (Vercel: give them min-width: 0). */
+.fc-stack > *, .fc-row > *, .fc-grid > * { min-width: 0; }
+
+::selection {
+  background: var(--ds-gray-1000);
+  color: var(--ds-gray-100);
+}
+
+/* Geist focus: a 2px canvas gap then a 2px focus-color ring, only for keyboard focus. */
+:focus { outline: none; }
+:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-focus-ring);
+  border-radius: inherit;
+}
+
+/* Layout primitives (spacing owned by the parent, never by children). */
+.fc-stack { display: flex; flex-direction: column; gap: var(--fc-gap, var(--fc-space-4)); }
+.fc-row { display: flex; align-items: center; gap: var(--fc-gap, var(--fc-space-2)); }
+.fc-grid { display: grid; gap: var(--fc-gap, var(--fc-space-6)); }
+.fc-page {
+  width: 100%;
+  max-width: calc(var(--fc-page-width) + 2 * var(--fc-page-margin));
+  margin-inline: auto;
+  padding-inline: var(--fc-page-margin);
+}
+@media (max-width: 600px) {
+  .fc-page { padding-inline: var(--fc-space-4); }
+}
+
+.fc-visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* Default to stillness. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

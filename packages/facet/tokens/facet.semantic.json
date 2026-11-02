@@ -1,0 +1,431 @@
+{
+  "$description": "Facet semantic layer. Every value is an alias to a Geist primitive ({color.<scale>.<step>}). Light/dark switching happens in the primitive layer, so aliases never need a dark override unless the step itself changes per theme ($extensions.facet.dark). Rule: product code uses these names first, primitives second, raw values never.",
+  "text": {
+    "primary": {
+      "$type": "color",
+      "$value": "{color.gray.1000}",
+      "$description": "Primary text and icons (Geist step 10)."
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": "{color.gray.900}",
+      "$description": "Secondary text and icons (Geist step 9). The lowest-contrast step allowed for readable text."
+    },
+    "disabled": {
+      "$type": "color",
+      "$value": "{color.gray.700}",
+      "$description": "Disabled text only. Never for meaningful copy."
+    },
+    "inverse": {
+      "$type": "color",
+      "$value": "{color.background.100}",
+      "$description": "Text on a gray-1000 fill (primary buttons, selected tabs)."
+    },
+    "link": {
+      "$type": "color",
+      "$value": "{color.blue.900}"
+    }
+  },
+  "surface": {
+    "canvas": {
+      "$type": "color",
+      "$value": "{color.background.100}",
+      "$description": "Default page and component background (Geist Background 1). Use in most instances."
+    },
+    "subtle": {
+      "$type": "color",
+      "$value": "{color.background.200}",
+      "$description": "Sparing secondary background (Geist Background 2): sidebars, wells, table header band."
+    },
+    "fill": {
+      "$type": "color",
+      "$value": "{color.gray.100}",
+      "$description": "Component default fill (step 1)."
+    },
+    "fill-hover": {
+      "$type": "color",
+      "$value": "{color.gray.200}",
+      "$description": "Hover fill (step 2). On a canvas-colored component, hover is gray-100."
+    },
+    "fill-active": {
+      "$type": "color",
+      "$value": "{color.gray.300}",
+      "$description": "Active / pressed / selected fill (step 3)."
+    },
+    "contrast": {
+      "$type": "color",
+      "$value": "{color.gray.1000}",
+      "$description": "Inverted high-contrast fill: primary buttons, selected segmented control."
+    },
+    "contrast-hover": {
+      "$type": "color",
+      "$value": "{color.gray.900}"
+    }
+  },
+  "border": {
+    "default": {
+      "$type": "color",
+      "$value": "{color.gray.400}",
+      "$description": "Default border (step 4). Solid gray by default."
+    },
+    "hover": {
+      "$type": "color",
+      "$value": "{color.gray.500}",
+      "$description": "Hover border (step 5)."
+    },
+    "active": {
+      "$type": "color",
+      "$value": "{color.gray.600}",
+      "$description": "Active border (step 6)."
+    },
+    "alpha": {
+      "$type": "color",
+      "$value": "{color.gray-alpha.400}",
+      "$description": "Only when the edge must blend with a non-canvas surface. Draw each border once; overlapping alpha borders darken at intersections."
+    }
+  },
+  "focus": {
+    "color": {
+      "$type": "color",
+      "$value": "{color.blue.700}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.blue.900}"
+        }
+      },
+      "$description": "Matches Geist --ds-focus-color (blue-700 light, blue-900 dark)."
+    }
+  },
+  "status": {
+    "info": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.blue.900}"
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.blue.700}"
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.blue.200}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.blue.400}"
+      }
+    },
+    "success": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.green.900}"
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.green.700}"
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.green.200}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.green.400}"
+      }
+    },
+    "warning": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.amber.900}"
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.amber.700}"
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.amber.200}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.amber.400}"
+      }
+    },
+    "error": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.red.900}"
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.red.700}"
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.red.200}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.red.400}"
+      }
+    },
+    "neutral": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.gray.900}"
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.gray.700}"
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.gray.200}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.gray.400}"
+      }
+    }
+  },
+  "signal": {
+    "$description": "Hidden Gems verdict language (the prototype's go / wait / stop / none). Always paired with a non-color cue: a word, a glyph, or a position. Color alone never carries the verdict.",
+    "go": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.green.900}"
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.green.700}"
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.green.200}"
+      }
+    },
+    "wait": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.amber.900}"
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.amber.700}"
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.amber.200}"
+      }
+    },
+    "stop": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.red.900}"
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.red.700}"
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.red.200}"
+      }
+    },
+    "none": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.gray.900}"
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.gray.600}"
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.gray.200}"
+      }
+    }
+  },
+  "edge": {
+    "$description": "Value relative to the market (our price vs the book). Positive and negative are about the bettor's value, never about the number going up or down.",
+    "positive": {
+      "$type": "color",
+      "$value": "{color.green.900}"
+    },
+    "negative": {
+      "$type": "color",
+      "$value": "{color.red.900}"
+    },
+    "neutral": {
+      "$type": "color",
+      "$value": "{color.gray.900}"
+    }
+  },
+  "gem": {
+    "$description": "The single brand accent. Purple (amethyst) is reserved for 'this is a Hidden Gem' designation and the ordinal gem tier ladder. It deliberately avoids green/amber/red (verdicts) and blue (links, focus, info).",
+    "fg": {
+      "$type": "color",
+      "$value": "{color.purple.900}"
+    },
+    "solid": {
+      "$type": "color",
+      "$value": "{color.purple.700}"
+    },
+    "bg": {
+      "$type": "color",
+      "$value": "{color.purple.200}"
+    },
+    "border": {
+      "$type": "color",
+      "$value": "{color.purple.400}"
+    },
+    "tier": {
+      "$description": "Ordinal ladder (rough < cut < polished < flawless). One hue, rising intensity, so rank reads as magnitude. Pair with filled-facet glyph count (1 to 4).",
+      "rough": {
+        "$type": "color",
+        "$value": "{color.gray.700}"
+      },
+      "cut": {
+        "$type": "color",
+        "$value": "{color.purple.600}"
+      },
+      "polished": {
+        "$type": "color",
+        "$value": "{color.purple.700}"
+      },
+      "flawless": {
+        "$type": "color",
+        "$value": "{color.purple.900}"
+      }
+    }
+  },
+  "freshness": {
+    "$description": "How recent a data point is (odds pull, injury report). Mirrors Geist StatusDot semantics.",
+    "live": {
+      "$type": "color",
+      "$value": "{color.green.700}"
+    },
+    "recent": {
+      "$type": "color",
+      "$value": "{color.blue.700}"
+    },
+    "stale": {
+      "$type": "color",
+      "$value": "{color.amber.700}"
+    },
+    "failed": {
+      "$type": "color",
+      "$value": "{color.red.700}"
+    },
+    "unknown": {
+      "$type": "color",
+      "$value": "{color.gray.600}"
+    }
+  },
+  "chart": {
+    "$description": "Monochrome first (Vercel's own report foundation maps chart-1..6 to grays). Reach for the categorical hues only when series must be told apart and direct labels are not enough. Order is fixed so a series keeps its color across views.",
+    "1": {
+      "$type": "color",
+      "$value": "{color.gray.1000}"
+    },
+    "2": {
+      "$type": "color",
+      "$value": "{color.blue.700}"
+    },
+    "3": {
+      "$type": "color",
+      "$value": "{color.amber.700}"
+    },
+    "4": {
+      "$type": "color",
+      "$value": "{color.teal.700}"
+    },
+    "5": {
+      "$type": "color",
+      "$value": "{color.pink.700}"
+    },
+    "6": {
+      "$type": "color",
+      "$value": "{color.purple.700}"
+    },
+    "muted": {
+      "$type": "color",
+      "$value": "{color.gray.600}",
+      "$description": "De-emphasized series, comparison baseline, market line."
+    },
+    "grid": {
+      "$type": "color",
+      "$value": "{color.gray.300}"
+    },
+    "axis": {
+      "$type": "color",
+      "$value": "{color.gray.500}"
+    }
+  },
+  "badge": {
+    "$description": "Solid badge fills, measured per theme on vercel.com/geist/badge (Geist uses different steps in light and dark). Text is white except amber (black).",
+    "gray": {
+      "$type": "color",
+      "$value": "{color.gray.900}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.gray.500}"
+        }
+      }
+    },
+    "blue": {
+      "$type": "color",
+      "$value": "{color.blue.800}"
+    },
+    "purple": {
+      "$type": "color",
+      "$value": "{color.purple.900}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.purple.500}"
+        }
+      }
+    },
+    "amber": {
+      "$type": "color",
+      "$value": "{color.amber.700}"
+    },
+    "red": {
+      "$type": "color",
+      "$value": "{color.red.900}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.red.800}"
+        }
+      }
+    },
+    "pink": {
+      "$type": "color",
+      "$value": "{color.pink.900}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.pink.600}"
+        }
+      }
+    },
+    "green": {
+      "$type": "color",
+      "$value": "{color.green.900}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.green.600}"
+        }
+      }
+    },
+    "teal": {
+      "$type": "color",
+      "$value": "{color.teal.900}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.teal.600}"
+        }
+      }
+    }
+  }
+}

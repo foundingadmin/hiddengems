@@ -1,0 +1,24 @@
+{
+  "name": "@foundingcreative/facet",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Facet: a Geist-derived design system for dense, decision-grade data. Tokens, CSS components, Tailwind v4 bridge.",
+  "type": "module",
+  "license": "UNLICENSED",
+  "sideEffects": ["*.css"],
+  "exports": {
+    "./css/*": "./css/*",
+    "./js/tokens.mjs": "./js/tokens.mjs",
+    "./tokens/*": "./tokens/*",
+    "./fonts/*": "./fonts/*"
+  },
+  "files": ["css", "js", "tokens", "fonts", "DESIGN.md", "README.md"],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "capture": "node scripts/capture-geist.mjs",
+    "check": "node scripts/build.mjs && git diff --exit-code -- css js"
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  }
+}

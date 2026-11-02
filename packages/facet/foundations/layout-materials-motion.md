@@ -1,0 +1,78 @@
+# Layout, spacing, materials, motion, icons
+
+> Sources: vercel.com/geist/grid, /geist/materials, vercel.com production CSS variables (`--geist-space-*`, `--ds-shadow-*`, `--ds-motion-*`, `--ds-z-*`), and the report foundation referenced by vercel.com/design.md. Captured 2026-11-02.
+
+## Spacing
+
+4px base. Geist exposes `--geist-space` (4) and multiples; the report foundation uses the same ladder.
+
+| Token | px | Typical owner |
+|---|---|---|
+| `--fc-space-1` | 4 | Icon to label, dot to word |
+| `--fc-space-2` | 8 | Inside a control group, label to field |
+| `--fc-space-3` | 12 | Within a group |
+| `--fc-space-4` | 16 | Paragraph rhythm, card padding (compact) |
+| `--fc-space-6` | 24 | Between groups, page margin, Geist "gap" |
+| `--fc-space-8` | 32 | Section gap, Geist "gap-section" |
+| `--fc-space-10` | 40 | Geist "gap-double" |
+| `--fc-space-12` | 48 | Major section turns |
+| `--fc-space-16` | 64 | True chapter break only |
+
+**One owner per gap.** Use `.fc-stack` / `.fc-row` / `.fc-grid` with `--fc-gap`, and never add margins to children of a spacing owner.
+
+## Grid and page
+
+- 12 columns on desktop, 6 on tablet, 4 on mobile. Prose spans 6 to 7 desktop columns; tables, charts and comparisons may span all 12.
+- Page width: dashboard `--ds-page-width` 1400px (Geist product), docs and marketing 1200px, with a 24px page margin (16px on phones). `.fc-page` applies this.
+- Everything aligns to a shared edge, baseline or grid line. Grid and flex children get `min-width: 0` so they can shrink instead of overflowing.
+- Geist's Grid component (visible guide lines) is a marketing device; Vercel's own report rules reject grid backgrounds as decoration. Do not use guide grids in the product.
+
+## Controls and density
+
+Measured on vercel.com/geist demos:
+
+| Size | Height | Text | Radius | Inline padding |
+|---|---|---|---|---|
+| tiny (icon only) | 24 | 14 | 4 | 0 |
+| small | 32 | 14 / 500 | 6 | 6 (button), 12 (input) |
+| default | 36 | 14 / 500 | 6 | 10 (button), 12 (input) |
+| large | 40 | 16 / 500 | 8 | 14 (button), 12 (input) |
+
+Table: header 36, body rows 40 (10px block, 8px inline padding). Facet adds a 32px compact density for long ledgers. Keep interactive targets at least 24px even in compact rows.
+
+## Materials (elevation)
+
+Elevation is chosen from presets, never composed ad hoc. Shadows already include a hairline ring, so materials need no border.
+
+| Class | Radius | Shadow | Use |
+|---|---|---|---|
+| `material-base` | 6 | `--ds-shadow-border` | Everyday surface |
+| `material-small` | 6 | `--ds-shadow-border-small` | Slightly raised |
+| `material-medium` | 12 | `--ds-shadow-border-medium` | Further raised panels |
+| `material-large` | 12 | `--ds-shadow-border-large` | Featured panel |
+| `material-tooltip` | 6 | `--ds-shadow-tooltip` | Tooltips (the only floating element with a stem) |
+| `material-menu` | 12 | `--ds-shadow-menu` | Menus, popovers, comboboxes |
+| `material-modal` | 12 | `--ds-shadow-modal` | Modals |
+| `material-fullscreen` | 16 | `--ds-shadow-fullscreen` | Fullscreen sheets |
+
+Restraint: do not wrap every metric in a card, and never nest cards. A surface must communicate selection, interaction, warning or a real grouping spacing cannot show.
+
+## Layering
+
+`--fc-z-drawer` 200, `--fc-z-modal` 300, `--fc-z-menu` 2001, `--fc-z-toast` 5000, `--fc-z-tooltip` 99999 (Geist values).
+
+## Motion
+
+- Easing: Geist "swift" `cubic-bezier(.175, .885, .32, 1.1)` for popovers (200ms) and overlays (300ms, scaling from 0.96). Simple hover color changes: 150ms ease.
+- Animate only `opacity` and `transform`, and list properties explicitly (never `transition: all`).
+- Motion explains a state change, preserves continuity, or confirms an action. Nothing else: no decorative pulses, marquees, scroll reveals or bounce.
+- Honor `prefers-reduced-motion` (base.css collapses durations).
+- Live data: a changed odds value may briefly tint its cell (opacity fade, under 600ms). Never animate every tick, and never reorder rows under the cursor.
+
+## Focus
+
+`:focus-visible` only. Geist ring: `0 0 0 2px var(--ds-background-100), 0 0 0 4px var(--ds-focus-color)`; focus color is blue-700 in light and blue-900 in dark. Inputs use a softer gray ring on focus (measured). Sticky headers must never cover the focused cell; set `scroll-padding-top` to the header height.
+
+## Icons
+
+Geist's icon set ships in `@vercel/geistcn-assets`, which is not published to public npm. Facet's decision `[F]`: use **Lucide** (the set Vercel's own templates and shadcn use) at 16px with a 1.5 stroke, `currentColor`, sized to the text role it sits beside (16 in 14px labels, 14 in 13px, 12 in badges). Rules: icons are for faster recognition of an established action, never decoration; no icon tiles; one icon style per product; always pair an unfamiliar icon with a visible label or tooltip.

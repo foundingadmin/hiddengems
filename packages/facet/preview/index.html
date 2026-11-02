@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Facet Specimen</title>
+<meta name="description" content="Facet design system specimen: Geist foundations applied to the Hidden Gems research slate.">
+<link rel="stylesheet" href="../css/facet.css">
+<style>
+  /* Page-owned layout only. Everything visual comes from Facet. */
+  .sp-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 64px; }
+  .sp-mark { display: inline-flex; align-items: center; gap: 10px; }
+  .sp-mark svg { width: 18px; height: 18px; color: var(--fc-gem-solid); }
+  .sp-nav { position: sticky; top: 0; z-index: 10; background: var(--fc-surface-canvas); }
+  main { padding-block: 32px 96px; display: flex; flex-direction: column; gap: 64px; }
+  section { display: flex; flex-direction: column; gap: 24px; scroll-margin-top: 64px; }
+  .sp-intro { display: flex; flex-direction: column; gap: 8px; max-width: 68ch; }
+  .sp-intro p { color: var(--fc-text-secondary); }
+  .sp-two { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px; align-items: start; }
+  @media (max-width: 960px) { .sp-two { grid-template-columns: 1fr; } }
+  .sp-pick { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .sp-pick small { color: var(--fc-text-secondary); font-size: 13px; line-height: 16px; }
+  .sp-mono { font-family: var(--fc-font-mono); font-size: 13px; white-space: nowrap; }
+  .sp-caption { font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); }
+
+  .sp-scales { display: grid; grid-template-columns: 96px repeat(10, minmax(0, 1fr)); gap: 4px; align-items: center; }
+  .sp-scales .sw { height: 36px; border-radius: 4px; box-shadow: inset 0 0 0 1px var(--ds-gray-alpha-200); }
+  .sp-scales .lab { font: 400 12px/16px var(--fc-font-mono); color: var(--fc-text-secondary); }
+  .sp-scales .step { font: 400 12px/16px var(--fc-font-mono); color: var(--fc-text-secondary); text-align: center; }
+  .sp-sem { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px 24px; }
+  .sp-sem div { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .sp-sem i { flex: 0 0 auto; width: 24px; height: 24px; border-radius: 6px; box-shadow: inset 0 0 0 1px var(--ds-gray-alpha-300); }
+  .sp-sem code { font: 400 12px/16px var(--fc-font-mono); color: var(--fc-text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sp-type { display: flex; flex-direction: column; }
+  .sp-type > div { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 16px; align-items: baseline; padding: 12px 0; border-top: 1px solid var(--ds-gray-400); }
+  .sp-type code { font: 400 12px/16px var(--fc-font-mono); color: var(--fc-text-secondary); }
+  .sp-type span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sp-mats { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 24px; padding: 24px; background: var(--fc-surface-subtle); border-radius: 12px; }
+  .sp-mats div { height: 96px; display: flex; align-items: flex-end; padding: 12px; font: 400 12px/16px var(--fc-font-mono); color: var(--fc-text-secondary); }
+  .sp-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
+  .sp-gallery > figure { margin: 0; display: flex; flex-direction: column; gap: 16px; padding: 20px; box-shadow: var(--ds-shadow-border); border-radius: 12px; min-width: 0; }
+  .sp-gallery figcaption { font: 500 14px/20px var(--fc-font-sans); }
+  .sp-wrap { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  @media (max-width: 720px) {
+    .sp-scales { grid-template-columns: 64px repeat(10, minmax(0, 1fr)); }
+    .sp-scales .step { display: none; }
+    .sp-type > div { grid-template-columns: 1fr; gap: 4px; }
+  }
+</style>
+</head>
+<body>
+<a class="fc-visually-hidden" href="#main">Skip to content</a>
+
+<div class="sp-nav">
+  <div class="fc-page sp-header">
+    <span class="sp-mark">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 3h12l4 6-10 12L2 9z" opacity=".35"/><path d="M12 21 7.5 9h9z"/></svg>
+      <strong class="text-label-16"><strong>Facet</strong></strong>
+      <span class="text-label-13" style="color:var(--fc-text-secondary)">Design system specimen</span>
+    </span>
+    <div class="fc-segmented" data-size="small" role="radiogroup" aria-label="Theme" id="theme">
+      <button type="button" role="radio" aria-checked="true" data-theme-choice="system">System</button>
+      <button type="button" role="radio" aria-checked="false" data-theme-choice="light">Light</button>
+      <button type="button" role="radio" aria-checked="false" data-theme-choice="dark">Dark</button>
+    </div>
+  </div>
+  <div class="fc-page">
+    <nav class="fc-tabs" aria-label="Sections">
+      <a class="fc-tab" href="#slate" aria-selected="true" style="text-decoration:none">Applied: Week 8 slate</a>
+      <a class="fc-tab" href="#color" style="text-decoration:none">Color</a>
+      <a class="fc-tab" href="#type" style="text-decoration:none">Typography</a>
+      <a class="fc-tab" href="#materials" style="text-decoration:none">Materials</a>
+      <a class="fc-tab" href="#components" style="text-decoration:none">Components</a>
+    </nav>
+  </div>
+</div>
+
+<main id="main" class="fc-page">
+
+  <!-- ============================================================ Applied -->
+  <section id="slate" aria-labelledby="slate-h">
+    <div class="sp-intro">
+      <h1 id="slate-h" class="text-heading-32">Gesicki carries the widest gap on a seven pick, $50 slate</h1>
+      <p class="text-copy-16">Our estimate beats the sportsbook's priced chance on every pick, but only two of seven earn a go verdict once all six signals are read. Sample data from the Week 8 prototype, shown here to prove the system on real density.</p>
+    </div>
+
+    <div class="fc-stat-strip fc-card" role="group" aria-label="Slate summary">
+      <div class="fc-stat"><p class="fc-stat-label">Picks</p><p class="fc-stat-value">7</p><p class="fc-stat-detail">4 markets, 5 games</p></div>
+      <div class="fc-stat"><p class="fc-stat-label">Average gap</p><p class="fc-stat-value">+8.0 pts</p><p class="fc-stat-detail">Our estimate minus priced chance</p></div>
+      <div class="fc-stat"><p class="fc-stat-label">Go verdicts</p><p class="fc-stat-value">2 of 7</p><p class="fc-stat-detail">Diggs, Flowers</p></div>
+      <div class="fc-stat"><p class="fc-stat-label">Odds updated</p><p class="fc-stat-value fc-row" style="--fc-gap:10px"><span class="fc-status-dot" data-state="live" aria-hidden="true"></span>2 min ago</p><p class="fc-stat-detail">DraftKings, FanDuel, BetMGM</p></div>
+    </div>
+
+    <div class="fc-table-wrap">
+      <table class="fc-table" data-interactive data-sticky>
+        <caption>Sorted by gap, largest first. Showing all 7 picks. Signals read left to right: setup, track record, sample, price gap, matchup, market.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Pick</th>
+            <th scope="col">Kickoff</th>
+            <th scope="col" data-align="numeric">Odds</th>
+            <th scope="col" data-align="numeric">Priced</th>
+            <th scope="col" data-align="numeric">Our est.</th>
+            <th scope="col" data-align="numeric">Gap</th>
+            <th scope="col">Signals</th>
+            <th scope="col">Verdict</th>
+            <th scope="col">Gem tier</th>
+          </tr>
+        </thead>
+        <tbody id="slate-body"></tbody>
+      </table>
+    </div>
+
+    <div class="sp-two">
+      <figure class="fc-stack" style="--fc-gap:12px;margin:0">
+        <h2 class="text-heading-20">Gap by pick, on one shared scale</h2>
+        <div class="fc-bar-list" id="gap-bars" role="list"></div>
+        <figcaption class="sp-caption">Bar length is our estimate minus the priced chance, in percentage points, 0 to 15. The gap is not a guarantee: samples are 3 to 7 games.</figcaption>
+      </figure>
+      <div class="fc-stack" style="--fc-gap:12px">
+        <h2 class="text-heading-20">What to watch before kickoff</h2>
+        <div class="fc-note" data-type="warning"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1 15 14H1z" opacity=".25"/><path d="M7.25 6h1.5v4h-1.5zM7.25 11h1.5v1.5h-1.5z"/></svg><span>Gesicki depends on Chase and Higgins playing. Inactives post 9:30 AM MT.</span></div>
+        <div class="fc-note" data-type="error" data-fill><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 4h1.5v5h-1.5zM7.25 10.5h1.5V12h-1.5z"/></svg><span>Burke's setup is unchecked. Snap share and role are unknown.</span></div>
+        <div class="fc-note"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span>Diggs dropped from 3.00 to 2.95 after the bet. The better price is locked.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ Color -->
+  <section id="color" aria-labelledby="color-h">
+    <div class="sp-intro">
+      <h2 id="color-h" class="text-heading-24">Color: Geist's ten step scales, verbatim</h2>
+      <p class="text-copy-14">Captured from vercel.com's computed styles, light and dark, with Display P3 upgrades on capable screens. Steps 100 to 300 are fills, 400 to 600 borders, 700 and 800 solid fills, 900 secondary text, 1000 primary text.</p>
+    </div>
+    <div class="sp-scales" id="scales"></div>
+    <h3 class="text-heading-16">Facet semantics</h3>
+    <div class="sp-sem" id="semantics"></div>
+  </section>
+
+  <!-- ============================================================ Type -->
+  <section id="type" aria-labelledby="type-h">
+    <div class="sp-intro">
+      <h2 id="type-h" class="text-heading-24">Typography: Geist roles, never loose sizes</h2>
+      <p class="text-copy-14">Each role fixes size, line height, weight and tracking together. Numbers that get compared use tabular figures.</p>
+    </div>
+    <div class="sp-type" id="type-roles"></div>
+  </section>
+
+  <!-- ============================================================ Materials -->
+  <section id="materials" aria-labelledby="mat-h">
+    <div class="sp-intro">
+      <h2 id="mat-h" class="text-heading-24">Materials: elevation as presets</h2>
+      <p class="text-copy-14">Surfaces sit on the page; floating materials sit above it. Shadows include a hairline ring, so no border is needed.</p>
+    </div>
+    <div class="sp-mats">
+      <div class="material-base">material-base</div>
+      <div class="material-small">material-small</div>
+      <div class="material-medium">material-medium</div>
+      <div class="material-large">material-large</div>
+      <div class="material-tooltip">material-tooltip</div>
+      <div class="material-menu">material-menu</div>
+      <div class="material-modal">material-modal</div>
+      <div class="material-fullscreen">material-fullscreen</div>
+    </div>
+  </section>
+
+  <!-- ============================================================ Components -->
+  <section id="components" aria-labelledby="comp-h">
+    <div class="sp-intro">
+      <h2 id="comp-h" class="text-heading-24">Components</h2>
+      <p class="text-copy-14">Measured from the live Geist demos (heights 32, 36, 40), plus Hidden Gems pieces built only from Geist tokens.</p>
+    </div>
+    <div class="sp-gallery">
+      <figure>
+        <figcaption>Button</figcaption>
+        <div class="sp-wrap">
+          <button class="fc-button">Lock pick</button>
+          <button class="fc-button" data-variant="secondary">Compare</button>
+          <button class="fc-button" data-variant="tertiary">Skip</button>
+          <button class="fc-button" data-variant="error">Remove</button>
+          <button class="fc-button" data-variant="warning">Re-check</button>
+        </div>
+        <div class="sp-wrap">
+          <button class="fc-button" data-size="small" data-variant="secondary">Small 32</button>
+          <button class="fc-button" data-variant="secondary">Default 36</button>
+          <button class="fc-button" data-size="large" data-variant="secondary">Large 40</button>
+          <button class="fc-button" disabled>Disabled</button>
+          <button class="fc-button" data-shape="rounded" data-variant="secondary">Rounded</button>
+        </div>
+      </figure>
+      <figure>
+        <figcaption>Badge</figcaption>
+        <div class="sp-wrap" id="badges-solid"></div>
+        <div class="sp-wrap" id="badges-low"></div>
+        <div class="sp-wrap"><span class="fc-badge" data-size="sm">sm 20</span><span class="fc-badge">md 24</span><span class="fc-badge" data-size="lg">lg 32</span></div>
+      </figure>
+      <figure>
+        <figcaption>Verdict, gem tier, signals, delta</figcaption>
+        <div class="sp-wrap"><span class="fc-signal" data-signal="go">Go</span><span class="fc-signal" data-signal="wait">Wait</span><span class="fc-signal" data-signal="stop">Stop</span><span class="fc-signal">Unchecked</span></div>
+        <div class="sp-wrap"><span class="fc-signal" data-variant="pill" data-signal="go">Go</span><span class="fc-signal" data-variant="pill" data-signal="wait">Wait</span><span class="fc-signal" data-variant="pill" data-signal="stop">Stop</span></div>
+        <div class="sp-wrap" id="gems"></div>
+        <div class="sp-wrap"><span class="fc-signal-strip" aria-label="5 go, 1 wait"><i data-signal="go"></i><i data-signal="go"></i><i data-signal="wait"></i><i data-signal="go"></i><i data-signal="go"></i><i data-signal="go"></i></span>
+          <span class="fc-delta" data-direction="positive">9.0</span><span class="fc-delta" data-direction="negative">2.5</span><span class="fc-delta">0.0</span></div>
+      </figure>
+      <figure>
+        <figcaption>Status dot (data freshness)</figcaption>
+        <div class="fc-stack" style="--fc-gap:8px">
+          <span class="fc-status"><span class="fc-status-dot" data-state="live"></span>Live, pulled 2 min ago</span>
+          <span class="fc-status"><span class="fc-status-dot" data-state="recent"></span>Recent, 25 min ago</span>
+          <span class="fc-status"><span class="fc-status-dot" data-state="stale"></span>Stale, 3 hours ago</span>
+          <span class="fc-status"><span class="fc-status-dot" data-state="failed"></span>Failed to refresh</span>
+          <span class="fc-status"><span class="fc-status-dot" data-state="queued"></span>Queued</span>
+        </div>
+      </figure>
+      <figure>
+        <figcaption>Input, select, segmented, toggle</figcaption>
+        <div>
+          <label class="fc-label" for="stake">Stake</label>
+          <input class="fc-input fc-num" id="stake" inputmode="decimal" value="7.00">
+          <p class="fc-helper">From $1 to $50.</p>
+        </div>
+        <div class="sp-wrap">
+          <select class="fc-select" style="width:auto" aria-label="Sportsbook"><option>DraftKings</option><option>FanDuel</option><option>BetMGM</option></select>
+          <div class="fc-segmented" role="radiogroup" aria-label="Window"><button type="button" role="radio" aria-checked="true">Early</button><button type="button" role="radio" aria-checked="false">Afternoon</button><button type="button" role="radio" aria-checked="false">Night</button></div>
+        </div>
+        <label class="fc-row"><input type="checkbox" class="fc-toggle" checked> <span class="text-label-14">Only show go verdicts</span></label>
+      </figure>
+      <figure>
+        <figcaption>Gauge, range, progress, skeleton, kbd</figcaption>
+        <div class="sp-wrap" style="gap:16px">
+          <span class="fc-gauge-wrap" style="--fc-gauge-size:48px"><svg class="fc-gauge" data-signal="go" viewBox="0 0 36 36" aria-hidden="true"><circle class="fc-gauge-track" cx="18" cy="18" r="15"/><circle class="fc-gauge-value" cx="18" cy="18" r="15" pathLength="100" stroke-dasharray="82 100"/></svg><span class="fc-gauge-label">82</span></span>
+          <span class="fc-gauge-wrap" style="--fc-gauge-size:48px"><svg class="fc-gauge" data-signal="wait" viewBox="0 0 36 36" aria-hidden="true"><circle class="fc-gauge-track" cx="18" cy="18" r="15"/><circle class="fc-gauge-value" cx="18" cy="18" r="15" pathLength="100" stroke-dasharray="58 100"/></svg><span class="fc-gauge-label">58</span></span>
+          <span class="fc-gauge-wrap" style="--fc-gauge-size:48px"><svg class="fc-gauge" data-signal="stop" viewBox="0 0 36 36" aria-hidden="true"><circle class="fc-gauge-track" cx="18" cy="18" r="15"/><circle class="fc-gauge-value" cx="18" cy="18" r="15" pathLength="100" stroke-dasharray="24 100"/></svg><span class="fc-gauge-label">24</span></span>
+          <div class="fc-stack" style="--fc-gap:4px;flex:1;min-width:120px"><span class="sp-caption">Line now vs open and close</span><span class="fc-range"><span class="fc-range-mark" data-ref style="--at:20"></span><span class="fc-range-mark" style="--at:64"></span></span></div>
+        </div>
+        <progress class="fc-progress" value="62" max="100" aria-label="Odds pull progress">62%</progress>
+        <div class="fc-stack" style="--fc-gap:8px"><span class="fc-skeleton" style="height:20px;width:60%"></span><span class="fc-skeleton" style="height:20px;width:85%"></span></div>
+        <div class="sp-wrap"><span class="text-label-13" style="color:var(--fc-text-secondary)">Command menu</span><kbd class="fc-kbd">⌘</kbd><kbd class="fc-kbd">K</kbd></div>
+      </figure>
+      <figure>
+        <figcaption>Tabs (secondary) and notes</figcaption>
+        <div class="fc-tabs" data-variant="secondary" role="tablist"><button class="fc-tab" role="tab" aria-selected="true">Today</button><button class="fc-tab" role="tab" aria-selected="false">Signals</button><button class="fc-tab" role="tab" aria-selected="false">Evidence</button></div>
+        <div class="fc-note" data-type="info" data-size="small"><span>Small info note, 13px.</span></div>
+        <div class="fc-note" data-type="success" data-fill><span>Odds refreshed for all books.</span></div>
+      </figure>
+      <figure>
+        <figcaption>Empty state</figcaption>
+        <div class="fc-empty"><strong>No gems yet for Week 9</strong><span class="text-copy-14">Odds open Tuesday. The slate fills in as lines post.</span><button class="fc-button" data-variant="secondary" data-size="small">Notify me</button></div>
+      </figure>
+    </div>
+  </section>
+</main>
+
+<script>
+  // ---- theme control (specimen only) ----
+  const root = document.documentElement;
+  const saved = (() => { try { return localStorage.getItem('facet-theme'); } catch { return null; } })();
+  function applyTheme(v) {
+    root.removeAttribute('data-theme');
+    if (v === 'light' || v === 'dark') root.setAttribute('data-theme', v);
+    document.querySelectorAll('[data-theme-choice]').forEach(b => b.setAttribute('aria-checked', String(b.dataset.themeChoice === v)));
+    try { localStorage.setItem('facet-theme', v); } catch {}
+  }
+  applyTheme(saved || 'system');
+  document.getElementById('theme').addEventListener('click', e => { const b = e.target.closest('[data-theme-choice]'); if (b) applyTheme(b.dataset.themeChoice); });
+  document.querySelectorAll('.fc-segmented:not(#theme)').forEach(g => g.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; g.querySelectorAll('button').forEach(x => x.setAttribute('aria-checked', String(x === b))); }));
+
+  // ---- Week 8 sample data (from the prototype) ----
+  const G = 'go', W = 'wait', R = 'stop', N = 'none';
+  const picks = [
+    { p: 'Mike Gesicki',  pos: 'TE', m: 'Anytime TD scorer',            t: '11:00 AM', o: 3.20, ip: 31, est: 44, sig: [W,G,W,G,W,W], v: W },
+    { p: 'Ollie Gordon II', pos: 'RB', m: 'Anytime TD scorer',          t: '2:25 PM',  o: 2.55, ip: 39, est: 49, sig: [G,G,W,G,R,W], v: W },
+    { p: 'Stefon Diggs',  pos: 'WR', m: 'Anytime TD scorer',            t: '6:20 PM',  o: 3.00, ip: 33, est: 42, sig: [G,G,W,G,G,G], v: G },
+    { p: 'Denzel Burke',  pos: 'CB', m: 'Assists, under 0.5',           t: '11:00 AM', o: 2.73, ip: 37, est: 45, sig: [N,G,W,G,W,G], v: N },
+    { p: 'Zay Flowers',   pos: 'WR', m: 'First team reception',         t: '11:00 AM', o: 2.65, ip: 38, est: 44, sig: [G,G,W,W,G,G], v: G },
+    { p: 'James Cook',    pos: 'RB', m: 'Anytime TD scorer, 2nd half',  t: '11:00 AM', o: 2.65, ip: 38, est: 44, sig: [G,G,W,W,W,W], v: W },
+    { p: 'James Cook',    pos: 'RB', m: 'Anytime TD scorer',            t: '11:00 AM', o: 1.69, ip: 59, est: 63, sig: [G,G,W,W,W,W], v: W },
+  ];
+  const tierOf = gap => gap >= 12 ? 'flawless' : gap >= 9 ? 'polished' : gap >= 6 ? 'cut' : 'rough';
+  const label = { go: 'Go', wait: 'Wait', stop: 'Stop', none: 'Unchecked' };
+  const cap = s => s[0].toUpperCase() + s.slice(1);
+  const gem = t => `<span class="fc-gem" data-tier="${t}"><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>${cap(t)}</span>`;
+  const body = document.getElementById('slate-body');
+  body.innerHTML = picks.map(r => {
+    const gap = r.est - r.ip;
+    const counts = r.sig.reduce((a, s) => (a[s] = (a[s] || 0) + 1, a), {});
+    const aria = Object.entries(counts).map(([k, n]) => `${n} ${label[k].toLowerCase()}`).join(', ');
+    return `<tr>
+      <th scope="row"><span class="sp-pick">${r.p} <small>${r.pos} · ${r.m}</small></span></th>
+      <td><span class="sp-mono">${r.t}</span></td>
+      <td data-align="numeric">${r.o.toFixed(2)}</td>
+      <td data-align="numeric">${r.ip}%</td>
+      <td data-align="numeric" style="color:var(--fc-text-primary)">${r.est}%</td>
+      <td data-align="numeric"><span class="fc-delta" data-direction="positive">${gap}</span></td>
+      <td><span class="fc-signal-strip" role="img" aria-label="${aria}">${r.sig.map(s => `<i data-signal="${s}"></i>`).join('')}</span></td>
+      <td><span class="fc-signal" data-signal="${r.v}">${label[r.v]}</span></td>
+      <td>${gem(tierOf(gap))}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('gap-bars').innerHTML = picks.map(r => {
+    const gap = r.est - r.ip;
+    return `<div class="fc-bar" role="listitem"><span class="fc-bar-label">${r.p}${r.m.includes('2nd') ? ' (2H)' : ''}</span><span class="fc-bar-track"><span class="fc-bar-fill" style="--value:${gap / 15 * 100}"></span></span><span class="fc-bar-value">+${gap} pts</span></div>`;
+  }).join('');
+  document.getElementById('gems').innerHTML = ['rough', 'cut', 'polished', 'flawless'].map(gem).join('');
+
+  // ---- foundations ----
+  const scales = ['gray', 'blue', 'red', 'amber', 'green', 'teal', 'purple', 'pink'];
+  const steps = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
+  document.getElementById('scales').innerHTML =
+    '<span></span>' + steps.map(s => `<span class="step">${s}</span>`).join('') +
+    ['background'].concat(scales, ['gray-alpha']).map(sc => {
+      const st = sc === 'background' ? [100, 200] : steps;
+      return `<span class="lab">${sc}</span>` + st.map(s => `<span class="sw" title="--ds-${sc}-${s}" style="background:var(--ds-${sc}-${s})"></span>`).join('') + (sc === 'background' ? '<span></span>'.repeat(8) : '');
+    }).join('');
+  const sem = ['text-primary','text-secondary','text-disabled','surface-canvas','surface-subtle','surface-fill','border-default','border-hover','focus-color',
+    'signal-go-solid','signal-wait-solid','signal-stop-solid','signal-none-solid','edge-positive','edge-negative','gem-solid','gem-bg',
+    'gem-tier-rough','gem-tier-cut','gem-tier-polished','gem-tier-flawless','freshness-live','freshness-stale','chart-1','chart-2','chart-3','chart-4','chart-5','chart-6'];
+  document.getElementById('semantics').innerHTML = sem.map(n => `<div><i style="background:var(--fc-${n})"></i><code>--fc-${n}</code></div>`).join('');
+  const roles = ['heading-48','heading-40','heading-32','heading-24','heading-20','heading-16','heading-14','label-16','label-14','label-13','label-12','label-13-mono','copy-18','copy-16','copy-14','copy-13','copy-13-mono','button-14'];
+  document.getElementById('type-roles').innerHTML = roles.map(r => `<div><code>text-${r}</code><span class="text-${r}">${r.startsWith('label') ? 'Stefon Diggs, anytime TD 3.00' : r.startsWith('copy') ? 'Both of his empty weeks came with a backup QB, so the setup check comes first.' : 'Gesicki carries the widest gap'}</span></div>`).join('');
+  const badgeVariants = ['gray','blue','purple','amber','red','pink','green','teal','inverted'];
+  document.getElementById('badges-solid').innerHTML = badgeVariants.map(v => `<span class="fc-badge" data-variant="${v}">${v}</span>`).join('');
+  document.getElementById('badges-low').innerHTML = badgeVariants.slice(0, 8).map(v => `<span class="fc-badge" data-contrast="low" data-variant="${v}">${v}</span>`).join('');
+</script>
+</body>
+</html>

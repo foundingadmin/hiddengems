@@ -1,0 +1,519 @@
+/* Facet components. Framework-agnostic CSS classes (work in plain HTML, React, Svelte...).
+   Every measurement marked [G] was measured on the live vercel.com/geist component demos
+   (see reference/geist-component-measurements-*.json). [F] marks Facet additions for the
+   Hidden Gems domain, built only from Geist tokens.
+   Naming: .fc-<component>, modifiers as data attributes (data-variant, data-size, data-state)
+   so a React wrapper can map props 1:1. */
+
+/* ------------------------------------------------------------------ Button [G] */
+.fc-button {
+  --_h: var(--fc-control-medium);
+  --_px: 10px;
+  --_r: var(--fc-radius-sm);
+  --_bg: var(--ds-gray-1000);
+  --_fg: var(--ds-background-100);
+  --_bg-hover: color-mix(in srgb, var(--ds-gray-1000) 85%, var(--ds-background-100));
+  --_ring: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: var(--_h);
+  padding: 0 var(--_px);
+  border: 0;
+  border-radius: var(--_r);
+  background: var(--_bg);
+  color: var(--_fg);
+  box-shadow: var(--_ring);
+  font: 500 14px/20px var(--fc-font-sans);
+  white-space: nowrap;
+  text-decoration: none;
+  user-select: none;
+  transition: background-color 150ms ease, box-shadow 150ms ease, color 150ms ease;
+}
+.fc-button:hover { background: var(--_bg-hover); }
+.fc-button:focus-visible { box-shadow: var(--ds-focus-ring); }
+.fc-button svg { flex: 0 0 auto; width: 16px; height: 16px; }
+
+.fc-button[data-size="small"] { --_h: var(--fc-control-small); --_px: 6px; }
+.fc-button[data-size="large"] { --_h: var(--fc-control-large); --_px: 14px; --_r: var(--fc-radius-md); font-size: 16px; line-height: 24px; }
+.fc-button[data-shape="square"],
+.fc-button[data-shape="circle"] { width: var(--_h); padding: 0; }
+.fc-button[data-shape="circle"],
+.fc-button[data-shape="rounded"] { --_r: var(--fc-radius-full); }
+.fc-button[data-shape="rounded"] { --_px: 12px; }
+.fc-button[data-size="tiny"] { --_h: var(--fc-control-tiny); --_r: var(--fc-radius-xs); }
+
+.fc-button[data-variant="secondary"] {
+  --_bg: var(--ds-background-100);
+  --_fg: var(--ds-gray-1000);
+  --_bg-hover: var(--ds-gray-100);
+  --_ring: 0 0 0 1px var(--ds-gray-400);
+}
+.fc-button[data-variant="tertiary"] {
+  --_bg: transparent;
+  --_fg: var(--ds-gray-1000);
+  --_bg-hover: var(--ds-gray-alpha-200);
+}
+.fc-button[data-variant="error"] { --_bg: var(--ds-red-800); --_fg: #fff; --_bg-hover: var(--ds-red-900); }
+.fc-button[data-variant="warning"] { --_bg: var(--ds-amber-800); --_fg: #0a0a0a; --_bg-hover: var(--ds-amber-900); }
+
+.fc-button:disabled,
+.fc-button[aria-disabled="true"],
+.fc-button[aria-busy="true"] {
+  --_bg: var(--ds-gray-100);
+  --_fg: var(--ds-gray-700);
+  --_bg-hover: var(--ds-gray-100);
+  --_ring: 0 0 0 1px var(--ds-gray-400);
+}
+
+/* ------------------------------------------------------------------ Badge [G]
+   Solid fills come from --fc-badge-* (measured per theme: light mostly 900, dark mostly 500/600).
+   data-contrast="low" is the subtle 200-bg / 900-text treatment. Pill shaped. */
+.fc-badge {
+  --_bg: var(--fc-badge-gray);
+  --_fg: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: var(--fc-radius-full);
+  background: var(--_bg);
+  color: var(--_fg);
+  font: 500 12px/16px var(--fc-font-sans);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.fc-badge svg { width: 12px; height: 12px; }
+.fc-badge[data-size="sm"] { height: 20px; padding: 0 6px; font-size: 11px; }
+.fc-badge[data-size="sm"] svg { width: 11px; height: 11px; }
+.fc-badge[data-size="lg"] { height: 32px; padding: 0 12px; font-size: 14px; line-height: 20px; }
+.fc-badge[data-size="lg"] svg { width: 14px; height: 14px; }
+.fc-badge[data-variant="blue"]   { --_bg: var(--fc-badge-blue); }
+.fc-badge[data-variant="purple"] { --_bg: var(--fc-badge-purple); }
+.fc-badge[data-variant="amber"]  { --_bg: var(--fc-badge-amber); --_fg: #000; }
+.fc-badge[data-variant="red"]    { --_bg: var(--fc-badge-red); }
+.fc-badge[data-variant="pink"]   { --_bg: var(--fc-badge-pink); }
+.fc-badge[data-variant="green"]  { --_bg: var(--fc-badge-green); }
+.fc-badge[data-variant="teal"]   { --_bg: var(--fc-badge-teal); }
+.fc-badge[data-variant="inverted"] { --_bg: var(--ds-gray-1000); --_fg: var(--ds-gray-100); }
+.fc-badge[data-contrast="low"]                          { --_bg: var(--ds-gray-200);   --_fg: var(--ds-gray-1000); }
+.fc-badge[data-contrast="low"][data-variant="blue"]     { --_bg: var(--ds-blue-200);   --_fg: var(--ds-blue-900); }
+.fc-badge[data-contrast="low"][data-variant="purple"]   { --_bg: var(--ds-purple-200); --_fg: var(--ds-purple-900); }
+.fc-badge[data-contrast="low"][data-variant="amber"]    { --_bg: var(--ds-amber-200);  --_fg: var(--ds-amber-900); }
+.fc-badge[data-contrast="low"][data-variant="red"]      { --_bg: var(--ds-red-200);    --_fg: var(--ds-red-900); }
+.fc-badge[data-contrast="low"][data-variant="pink"]     { --_bg: var(--ds-pink-200);   --_fg: var(--ds-pink-900); }
+.fc-badge[data-contrast="low"][data-variant="green"]    { --_bg: var(--ds-green-200);  --_fg: var(--ds-green-900); }
+.fc-badge[data-contrast="low"][data-variant="teal"]     { --_bg: var(--ds-teal-200);   --_fg: var(--ds-teal-900); }
+
+/* ------------------------------------------------------------------ Status dot [G]
+   10px circle. Geist demo states: queued, building, error, ready, canceled.
+   Facet maps them to data freshness. Always render the label next to the dot. */
+.fc-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 400 14px/20px var(--fc-font-sans);
+  color: var(--fc-text-primary);
+}
+.fc-status-dot {
+  --_c: var(--fc-freshness-unknown);
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  border-radius: var(--fc-radius-full);
+  background: var(--_c);
+}
+.fc-status-dot[data-state="live"],   .fc-status-dot[data-state="ready"]    { --_c: var(--fc-freshness-live); }
+.fc-status-dot[data-state="recent"]                                         { --_c: var(--fc-freshness-recent); }
+.fc-status-dot[data-state="stale"],  .fc-status-dot[data-state="building"] { --_c: var(--fc-freshness-stale); }
+.fc-status-dot[data-state="failed"], .fc-status-dot[data-state="error"]    { --_c: var(--fc-freshness-failed); }
+.fc-status-dot[data-state="queued"], .fc-status-dot[data-state="canceled"] { --_c: var(--ds-gray-400); }
+
+/* ------------------------------------------------------------------ Note [G] */
+.fc-note {
+  --_fg: var(--ds-gray-900);
+  --_bd: var(--ds-gray-400);
+  --_bg: transparent;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-height: 36px;
+  padding: 7px 12px;
+  border: 1px solid var(--_bd);
+  border-radius: var(--fc-radius-sm);
+  background: var(--_bg);
+  color: var(--_fg);
+  font: 400 14px/20px var(--fc-font-sans);
+}
+.fc-note > svg { flex: 0 0 auto; width: 16px; height: 16px; margin-top: 2px; }
+.fc-note[data-size="small"] { min-height: 32px; padding: 6px 8px; font-size: 13px; line-height: 18px; }
+.fc-note[data-action] { border-radius: 10px; align-items: center; }
+.fc-note[data-fill] { --_bd: transparent; --_bg: var(--ds-gray-alpha-200); }
+.fc-note[data-type="info"]    { --_fg: var(--fc-status-info-fg);    --_bd: var(--fc-status-info-border); }
+.fc-note[data-type="success"] { --_fg: var(--fc-status-success-fg); --_bd: var(--fc-status-success-border); }
+.fc-note[data-type="warning"] { --_fg: var(--fc-status-warning-fg); --_bd: var(--fc-status-warning-border); }
+.fc-note[data-type="error"]   { --_fg: var(--fc-status-error-fg);   --_bd: var(--fc-status-error-border); }
+.fc-note[data-type][data-fill] { --_bd: transparent; }
+.fc-note[data-type="info"][data-fill]    { --_bg: var(--fc-status-info-bg); }
+.fc-note[data-type="success"][data-fill] { --_bg: var(--fc-status-success-bg); }
+.fc-note[data-type="warning"][data-fill] { --_bg: var(--fc-status-warning-bg); }
+.fc-note[data-type="error"][data-fill]   { --_bg: var(--fc-status-error-bg); }
+
+/* ------------------------------------------------------------------ Input / Select [G]
+   Ring is a 1px gray-alpha-400 box-shadow (not a border), measured. */
+.fc-input,
+.fc-select {
+  --_h: var(--fc-control-medium);
+  height: var(--_h);
+  width: 100%;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--fc-radius-sm);
+  background: var(--ds-background-100);
+  color: var(--ds-gray-1000);
+  box-shadow: 0 0 0 1px var(--ds-gray-alpha-400);
+  font: 400 14px/20px var(--fc-font-sans);
+  transition: box-shadow 150ms ease;
+}
+.fc-input::placeholder { color: var(--ds-gray-700); }
+.fc-input:hover, .fc-select:hover { box-shadow: 0 0 0 1px var(--ds-gray-alpha-500); }
+.fc-input:focus-visible, .fc-select:focus-visible { box-shadow: var(--ds-focus-border); }
+.fc-input[data-size="small"], .fc-select[data-size="small"] { --_h: var(--fc-control-small); }
+.fc-input[data-size="large"], .fc-select[data-size="large"] { --_h: var(--fc-control-large); border-radius: var(--fc-radius-md); font-size: 16px; line-height: 24px; }
+.fc-input:disabled, .fc-select:disabled { background: var(--ds-gray-100); color: var(--ds-gray-700); }
+.fc-input[aria-invalid="true"] { box-shadow: 0 0 0 1px var(--ds-red-900), 0 0 0 4px var(--ds-red-300); }
+.fc-input.fc-num { text-align: right; }
+.fc-select {
+  appearance: none;
+  padding-right: 32px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%238f8f8f' stroke-width='1.5'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+.fc-label { display: block; margin-bottom: 8px; font: 400 13px/16px var(--fc-font-sans); color: var(--ds-gray-900); }
+.fc-helper { margin-top: 8px; font: 400 13px/18px var(--fc-font-sans); color: var(--ds-gray-900); }
+.fc-helper[data-type="error"] { color: var(--fc-status-error-fg); }
+
+/* ------------------------------------------------------------------ Tabs [G]
+   Underline tabs: 14px gray-900, selected gray-1000 with a 2px gray-1000 underline,
+   tablist has a 1px inset bottom rule. Secondary (pill) tabs: 32px, 13px, selected gray-200. */
+.fc-tabs {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  box-shadow: inset 0 -1px 0 var(--ds-gray-400);
+}
+.fc-tab {
+  position: relative;
+  padding: 14px 2px;
+  border: 0;
+  background: none;
+  color: var(--ds-gray-900);
+  font: 400 14px/20px var(--fc-font-sans);
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+.fc-tab:hover { color: var(--ds-gray-1000); }
+.fc-tab[aria-selected="true"] { color: var(--ds-gray-1000); border-bottom-color: var(--ds-gray-1000); }
+.fc-tabs[data-variant="secondary"] { gap: 4px; box-shadow: none; }
+.fc-tabs[data-variant="secondary"] .fc-tab { height: 32px; padding: 0 12px; border: 0; border-radius: var(--fc-radius-sm); font-size: 13px; line-height: 16px; }
+.fc-tabs[data-variant="secondary"] .fc-tab:hover { background: var(--ds-gray-100); }
+.fc-tabs[data-variant="secondary"] .fc-tab[aria-selected="true"] { background: var(--ds-gray-200); color: var(--ds-gray-1000); }
+
+/* ------------------------------------------------------------------ Segmented control [G]
+   (Geist "Switch": a radio group of options.) Items 28px (sm 24, lg 32), radius 4px,
+   selected gray-100 fill + gray-1000 text, 14px/500. */
+.fc-segmented {
+  display: inline-flex;
+  gap: 0;
+  padding: 3px;
+  border-radius: var(--fc-radius-sm);
+  box-shadow: 0 0 0 1px var(--ds-gray-400);
+  background: var(--ds-background-100);
+}
+.fc-segmented > button,
+.fc-segmented > label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--fc-radius-xs);
+  background: transparent;
+  color: var(--ds-gray-900);
+  font: 500 14px/20px var(--fc-font-sans);
+  white-space: nowrap;
+}
+.fc-segmented > :hover { color: var(--ds-gray-1000); }
+.fc-segmented > [aria-pressed="true"],
+.fc-segmented > [aria-checked="true"],
+.fc-segmented > label:has(input:checked) { background: var(--ds-gray-100); color: var(--ds-gray-1000); }
+.fc-segmented > label input { position: absolute; opacity: 0; pointer-events: none; }
+.fc-segmented[data-size="small"] > * { height: 24px; }
+.fc-segmented[data-size="large"] > * { height: 32px; padding: 0 16px; font-size: 16px; line-height: 24px; border-radius: var(--fc-radius-sm); }
+
+/* ------------------------------------------------------------------ Toggle (on/off switch) [G]
+   Measured: default track 28x14 (thumb 11), medium 36x20, large 40x24. Off track gray-400,
+   on track Geist's blue (legacy --geist-success). Thumb background-100 with a small shadow. */
+.fc-toggle {
+  --_w: 28px; --_h: 14px; --_t: 11px;
+  appearance: none;
+  position: relative;
+  flex: 0 0 auto;
+  width: var(--_w);
+  height: var(--_h);
+  margin: 0;
+  border-radius: var(--fc-radius-full);
+  background: var(--ds-gray-400);
+  transition: background-color 150ms ease;
+}
+.fc-toggle::after {
+  content: "";
+  position: absolute;
+  top: calc((var(--_h) - var(--_t)) / 2);
+  left: calc((var(--_h) - var(--_t)) / 2);
+  width: var(--_t); height: var(--_t);
+  border-radius: 50%;
+  background: var(--ds-background-100);
+  box-shadow: var(--ds-shadow-small), 0 0 0 0.5px var(--ds-gray-alpha-400);
+  transition: transform 150ms ease;
+}
+.fc-toggle:checked { background: var(--ds-blue-700); }
+.fc-toggle:checked::after { transform: translateX(calc(var(--_w) - var(--_h))); }
+.fc-toggle[data-size="medium"] { --_w: 36px; --_h: 20px; --_t: 16px; }
+.fc-toggle[data-size="large"]  { --_w: 40px; --_h: 24px; --_t: 20px; }
+.fc-toggle:focus-visible { box-shadow: var(--ds-focus-ring); }
+.fc-toggle:disabled { opacity: .5; }
+
+/* ------------------------------------------------------------------ Keyboard input [G] */
+.fc-kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: var(--fc-radius-xs);
+  background: var(--ds-background-100);
+  box-shadow: 0 0 0 1px var(--ds-gray-alpha-400);
+  color: var(--ds-gray-1000);
+  font: 400 14px/1 var(--fc-font-sans);
+}
+.fc-kbd[data-size="small"] { min-width: 20px; height: 20px; padding: 0 4px; font-size: 12px; }
+
+/* ------------------------------------------------------------------ Table [G]
+   Header row 36px, th 14px/500 gray-900, 1px gray-400 rule under the header.
+   Body rows 40px, td padding 10px 8px, 14px gray-900, primary cell gray-1000.
+   Striped rows use background-200 with 6px rounded row ends. */
+.fc-table-wrap { width: 100%; overflow-x: auto; container-type: inline-size; }
+.fc-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font: 400 14px/20px var(--fc-font-sans);
+  color: var(--ds-gray-900);
+  font-variant-numeric: tabular-nums;
+}
+.fc-table caption { position: sticky; left: 0; max-width: 100cqi; text-align: left; padding-bottom: 12px; color: var(--ds-gray-900); font-size: 13px; line-height: 18px; caption-side: top; }
+.fc-table thead th {
+  height: var(--fc-row-header);
+  padding: 0 8px;
+  text-align: left;
+  vertical-align: bottom;
+  font-weight: 500;
+  color: var(--ds-gray-900);
+  white-space: nowrap;
+  border-bottom: 1px solid var(--ds-gray-400);
+  padding-bottom: 8px;
+}
+.fc-table tbody th { text-align: left; font-weight: inherit; }
+.fc-table td,
+.fc-table tbody th {
+  height: var(--fc-row-body);
+  padding: 10px 8px;
+  vertical-align: baseline;
+}
+.fc-table tbody tr { transition: background-color 100ms ease; }
+.fc-table tbody tr > :first-child { border-radius: 6px 0 0 6px; }
+.fc-table tbody tr > :last-child { border-radius: 0 6px 6px 0; }
+.fc-table[data-striped] tbody tr:nth-child(even) { background: var(--ds-background-200); }
+.fc-table[data-interactive] tbody tr:hover { background: var(--ds-gray-100); }
+.fc-table tbody tr[aria-selected="true"] { background: var(--ds-gray-200); }
+.fc-table th[scope="row"], .fc-table .fc-cell-primary { color: var(--ds-gray-1000); font-weight: 500; }
+/* Numeric columns: right-align header AND cells (Vercel design.md). */
+.fc-table [data-align="numeric"], .fc-table .fc-numeric { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* Short row labels never wrap; the table scrolls inside .fc-table-wrap instead (Vercel design.md). */
+.fc-table tbody th[scope="row"] { white-space: nowrap; }
+.fc-table tfoot td { font-weight: 500; color: var(--ds-gray-1000); border-top: 1px solid var(--ds-gray-400); }
+/* [F] dense ledger mode and sticky header for long slates */
+.fc-table[data-density="compact"] td,
+.fc-table[data-density="compact"] tbody th { height: var(--fc-row-compact); padding-block: 6px; }
+.fc-table[data-sticky] thead th { position: sticky; top: 0; z-index: 1; background: var(--fc-surface-canvas); }
+.fc-table .fc-group-row th {
+  height: auto;
+  padding: 16px 8px 6px;
+  border-bottom: 0;
+  font: 500 13px/16px var(--fc-font-sans);
+  color: var(--ds-gray-1000);
+}
+
+/* ------------------------------------------------------------------ Skeleton / progress [G] */
+.fc-skeleton {
+  display: block;
+  border-radius: 5px;
+  background: linear-gradient(270deg, var(--ds-gray-100), var(--ds-gray-200), var(--ds-gray-200), var(--ds-gray-100));
+  background-size: 400% 100%;
+  animation: fc-skeleton 8s ease-in-out infinite;
+  color: transparent;
+}
+@keyframes fc-skeleton { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+.fc-progress {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 10px;
+  border: 0;
+  border-radius: var(--fc-radius-sm);
+  background: var(--ds-gray-200);
+  overflow: hidden;
+}
+.fc-progress::-webkit-progress-bar { background: var(--ds-gray-200); }
+.fc-progress::-webkit-progress-value { background: var(--ds-gray-1000); border-radius: var(--fc-radius-sm); }
+.fc-progress::-moz-progress-bar { background: var(--ds-gray-1000); border-radius: var(--fc-radius-sm); }
+
+/* ------------------------------------------------------------------ Tooltip [G materials] */
+.fc-tooltip {
+  position: absolute;
+  z-index: var(--fc-z-tooltip);
+  max-width: 280px;
+  padding: 6px 10px;
+  border-radius: var(--fc-radius-sm);
+  background: var(--ds-background-100);
+  box-shadow: var(--ds-shadow-tooltip);
+  color: var(--ds-gray-1000);
+  font: 400 13px/18px var(--fc-font-sans);
+}
+
+/* ------------------------------------------------------------------ Surfaces */
+.fc-card { background: var(--ds-background-100); box-shadow: var(--ds-shadow-border); border-radius: var(--fc-radius-sm); }
+.fc-card[data-elevation="medium"] { box-shadow: var(--ds-shadow-border-medium); border-radius: var(--fc-radius-lg); }
+.fc-separator { height: 1px; border: 0; margin: 0; background: var(--ds-gray-400); }
+
+/* ------------------------------------------------------------------ Gauge [G-inferred]
+   SVG ring: <svg class="fc-gauge" viewBox="0 0 36 36"><circle class="fc-gauge-track" .../>
+   <circle class="fc-gauge-value" pathLength="100" stroke-dasharray="72 100" .../></svg>
+   Geist gauges color the arc by threshold; Facet ties that to signal tokens. */
+.fc-gauge { --_c: var(--ds-gray-1000); width: var(--fc-gauge-size, 32px); height: var(--fc-gauge-size, 32px); transform: rotate(-90deg); }
+.fc-gauge circle { fill: none; stroke-width: 3.5; }
+.fc-gauge-track { stroke: var(--ds-gray-200); }
+.fc-gauge-value { stroke: var(--_c); stroke-linecap: round; transition: stroke-dasharray 300ms var(--fc-ease-swift); }
+.fc-gauge[data-signal="go"]   { --_c: var(--fc-signal-go-solid); }
+.fc-gauge[data-signal="wait"] { --_c: var(--fc-signal-wait-solid); }
+.fc-gauge[data-signal="stop"] { --_c: var(--fc-signal-stop-solid); }
+.fc-gauge-wrap { position: relative; display: inline-grid; place-items: center; }
+.fc-gauge-wrap > .fc-gauge-label { position: absolute; font: 500 12px/1 var(--fc-font-sans); font-variant-numeric: tabular-nums; color: var(--ds-gray-1000); }
+
+/* ================================================================== Data display [F]
+   Patterns from Vercel's design.md: one shared label lane, plot lane and value lane per set. */
+
+/* Stat strip: peer KPIs share role, size and numeric treatment. */
+.fc-stat-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0; }
+.fc-stat { display: flex; flex-direction: column; gap: 4px; padding: 12px 16px; min-width: 0; }
+.fc-stat + .fc-stat { box-shadow: inset 1px 0 0 var(--ds-gray-400); }
+.fc-stat-label { font: 400 13px/16px var(--fc-font-sans); color: var(--ds-gray-900); }
+.fc-stat-value { font: 600 24px/32px var(--fc-font-sans); letter-spacing: -0.96px; color: var(--ds-gray-1000); font-variant-numeric: tabular-nums; }
+.fc-stat-detail { font: 400 13px/18px var(--fc-font-sans); color: var(--ds-gray-900); }
+
+/* Bar list: rows share one grid so every track starts and ends on the same lines. */
+.fc-bar-list {
+  display: grid;
+  grid-template-columns: minmax(8rem, max-content) minmax(0, 1fr) max-content;
+  column-gap: 12px;
+  row-gap: 8px;
+  align-items: center;
+  font: 400 13px/16px var(--fc-font-sans);
+}
+.fc-bar-list > .fc-bar { display: contents; }
+.fc-bar-label { color: var(--ds-gray-1000); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fc-bar-track { position: relative; height: 8px; border-radius: 2px; background: var(--ds-gray-100); }
+.fc-bar-fill { position: absolute; inset: 0 auto 0 0; width: calc(var(--value, 0) * 1%); border-radius: inherit; background: var(--_c, var(--ds-gray-1000)); }
+.fc-bar-value { text-align: right; color: var(--ds-gray-1000); font-variant-numeric: tabular-nums; }
+.fc-bar[data-muted] .fc-bar-fill { --_c: var(--fc-chart-muted); }
+
+/* Delta / edge: sign + color + arrow glyph, never color alone. */
+.fc-delta { display: inline-flex; align-items: baseline; gap: 2px; font-variant-numeric: tabular-nums; color: var(--fc-edge-neutral); }
+.fc-delta[data-direction="positive"] { color: var(--fc-edge-positive); }
+.fc-delta[data-direction="negative"] { color: var(--fc-edge-negative); }
+.fc-delta[data-direction="positive"]::before { content: "\2191"; }
+.fc-delta[data-direction="negative"]::before { content: "\2193"; }
+
+/* Signal: the Hidden Gems verdict. Dot + word. */
+.fc-signal {
+  --_c: var(--fc-signal-none-solid);
+  --_fg: var(--fc-signal-none-fg);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 500 13px/16px var(--fc-font-sans);
+  color: var(--_fg);
+  white-space: nowrap;
+}
+.fc-signal::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--_c); flex: 0 0 auto; }
+.fc-signal[data-signal="go"]   { --_c: var(--fc-signal-go-solid);   --_fg: var(--fc-signal-go-fg); }
+.fc-signal[data-signal="wait"] { --_c: var(--fc-signal-wait-solid); --_fg: var(--fc-signal-wait-fg); }
+.fc-signal[data-signal="stop"] { --_c: var(--fc-signal-stop-solid); --_fg: var(--fc-signal-stop-fg); }
+.fc-signal[data-variant="pill"] { height: 24px; padding: 0 10px 0 8px; border-radius: var(--fc-radius-full); background: var(--ds-gray-100); }
+.fc-signal[data-variant="pill"][data-signal="go"]   { background: var(--fc-signal-go-bg); }
+.fc-signal[data-variant="pill"][data-signal="wait"] { background: var(--fc-signal-wait-bg); }
+.fc-signal[data-variant="pill"][data-signal="stop"] { background: var(--fc-signal-stop-bg); }
+
+/* Signal strip: N signal dots in a fixed lane (the prototype's six signals). */
+.fc-signal-strip { display: inline-flex; gap: 3px; }
+.fc-signal-strip > i { width: 8px; height: 8px; border-radius: 50%; background: var(--fc-signal-none-solid); }
+.fc-signal-strip > i[data-signal="go"]   { background: var(--fc-signal-go-solid); }
+.fc-signal-strip > i[data-signal="wait"] { background: var(--fc-signal-wait-solid); }
+.fc-signal-strip > i[data-signal="stop"] { background: var(--fc-signal-stop-solid); }
+.fc-signal-strip > i[data-signal="none"] { background: transparent; box-shadow: inset 0 0 0 1.5px var(--fc-signal-none-solid); }
+
+/* Gem tier: ordinal ladder encoded twice, by filled facet count (1-4) and by intensity. */
+.fc-gem {
+  --_c: var(--fc-gem-tier-rough);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 500 13px/16px var(--fc-font-sans);
+  color: var(--fc-gem-fg); /* label text stays at a readable step; facets carry the intensity */
+  white-space: nowrap;
+}
+.fc-gem-facets { display: inline-flex; gap: 2px; }
+.fc-gem-facets > i { width: 6px; height: 10px; clip-path: polygon(50% 0, 100% 35%, 50% 100%, 0 35%); background: var(--ds-gray-300); }
+.fc-gem[data-tier="rough"]    { --_c: var(--fc-gem-tier-rough); color: var(--fc-text-secondary); }
+.fc-gem[data-tier="cut"]      { --_c: var(--fc-gem-tier-cut); }
+.fc-gem[data-tier="polished"] { --_c: var(--fc-gem-tier-polished); }
+.fc-gem[data-tier="flawless"] { --_c: var(--fc-gem-tier-flawless); }
+.fc-gem[data-tier="rough"]    .fc-gem-facets > i:nth-child(-n+1),
+.fc-gem[data-tier="cut"]      .fc-gem-facets > i:nth-child(-n+2),
+.fc-gem[data-tier="polished"] .fc-gem-facets > i:nth-child(-n+3),
+.fc-gem[data-tier="flawless"] .fc-gem-facets > i:nth-child(-n+4) { background: var(--_c); }
+
+/* Range marker: where today's number sits between a low and a high (line, projection). */
+.fc-range { position: relative; display: block; height: 12px; min-width: 64px; }
+.fc-range::before { content: ""; position: absolute; left: 0; right: 0; top: 5.5px; height: 1px; background: var(--ds-gray-500); }
+.fc-range > .fc-range-mark { position: absolute; top: 2px; left: calc(var(--at, 50) * 1%); width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: var(--ds-gray-1000); }
+.fc-range > .fc-range-mark[data-ref] { background: var(--ds-background-100); box-shadow: inset 0 0 0 1.5px var(--ds-gray-700); }
+
+/* Empty state */
+.fc-empty { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 48px 24px; text-align: center; color: var(--ds-gray-900); }
+.fc-empty > strong { font: 600 16px/24px var(--fc-font-sans); letter-spacing: -0.32px; color: var(--ds-gray-1000); }
+
+/* Signed numbers (American odds, deltas) [F]. In Geist Sans, tabular figures equalize digits
+   (600 units) but "+" (558), "-" (419) and "−" (520) keep their own widths, so +150 and -110
+   drift apart in a column. Wrap the sign in .fc-sign to give it a fixed digit-width slot:
+   <span class="fc-signed"><span class="fc-sign">+</span>150</span>  */
+.fc-signed { display: inline-flex; align-items: baseline; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fc-sign { display: inline-block; width: 0.6em; text-align: center; }

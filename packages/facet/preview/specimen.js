@@ -34,4 +34,4 @@ if ('IntersectionObserver' in window) {
 if (window.FacetField) window.FacetField.autoMount();
 if (window.FacetTips) window.FacetTips.mountTips();
 // Countdowns print once at load. The sample data is frozen at 6:00 PM ET on Nov 2, so the specimen counts from there.
-if (window.FacetTime) window.FacetTime.stampUntil(document, Date.parse('2026-11-02T18:00:00-05:00'));
+if (window.FacetTime) window.FacetTime.stampTimes(document, Date.parse('2026-11-02T18:00:00-05:00'));

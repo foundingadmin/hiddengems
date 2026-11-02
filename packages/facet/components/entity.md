@@ -41,7 +41,7 @@ Implemented in `css/data.css`.
     <span class="fc-icon-tile" data-size="md"><svg …/></span>
     <div class="fc-entity-content">
       <p class="fc-entity-title">BetMGM</p>
-      <p class="fc-entity-desc"><span class="fc-status-dot" data-state="stale" aria-hidden="true"></span>Stale, updated 19 min ago</p>
+      <p class="fc-entity-desc"><span class="fc-status-dot" data-state="stale" aria-hidden="true"></span>Stale, updated 19m ago</p>
     </div>
     <span class="fc-entity-meta">24 markets</span>
     <div class="fc-entity-actions"><button class="fc-button" data-variant="secondary" data-size="small">Refresh</button> …overflow button…</div>

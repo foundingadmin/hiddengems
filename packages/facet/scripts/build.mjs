@@ -330,5 +330,5 @@ write('css/shadcn.css', shadcn);
 }
 {
   const src = readFileSync(join(root, 'js/time.mjs'), 'utf8').replace(/^export /gm, '');
-  write('preview/time.js', `// GENERATED from js/time.mjs by scripts/build.mjs. Do not edit by hand.\n(function () {\n${src}\nwindow.FacetTime = { formatUntil, stampUntil };\n})();\n`);
+  write('preview/time.js', `// GENERATED from js/time.mjs by scripts/build.mjs. Do not edit by hand.\n(function () {\n${src}\nwindow.FacetTime = { formatDuration, formatAgo, formatUntil, formatRelative, stampTimes };\n})();\n`);
 }

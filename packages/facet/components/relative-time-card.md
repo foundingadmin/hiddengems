@@ -36,7 +36,7 @@ Implemented in `css/data.css` as `.fc-time` (trigger) and `.fc-time-card` (popov
 
 ```html
 <p class="fc-status"><span class="fc-status-dot" data-state="live" aria-hidden="true"></span>
-  <span>Odds updated <time class="fc-time fc-has-tip" datetime="2026-11-02T18:31:25Z" tabindex="0" aria-describedby="odds-time">2 min ago</time></span></p>
+  <span>Odds updated <time class="fc-time fc-has-tip" datetime="2026-11-02T18:31:25Z" tabindex="0" aria-describedby="odds-time">2m ago</time></span></p>
 <div class="fc-time-card fc-float" popover="manual" role="tooltip" id="odds-time">
   <dl class="fc-time-rows">
     <div class="fc-time-row"><dt class="fc-time-zone">MST</dt><dd class="fc-time-date">Nov 2, 2026</dd><dd class="fc-time-clock">11:31:25 AM</dd></div>
@@ -44,7 +44,7 @@ Implemented in `css/data.css` as `.fc-time` (trigger) and `.fc-time-card` (popov
   </dl>
 </div>
 ```
-- The relative trigger ("2 min ago") is Sans (`data-relative`); the exact times in the card are Mono (owner decision, 2026-11-02).
+- The relative trigger ("2m ago") is Sans (`data-relative`); the exact times in the card are Mono (owner decision, 2026-11-02).
 - The trigger is a focusable `<time>` with the dotted tip underline. Freshness pairs it with a status dot; the card itself carries no staleness color.
 - The card lists the viewer's zone first, then UTC (deviation: the reference lists UTC first; Hidden Gems kickoffs are local). When the viewer is on UTC, show one row.
 - `.fc-time-card-head` is optional. Leave it out when it would only repeat the trigger text.

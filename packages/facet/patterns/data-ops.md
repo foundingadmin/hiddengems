@@ -50,7 +50,7 @@ A 56px bar histogram of events per bucket on the same time window as the table, 
 
 ## Log table
 - `.fc-table[data-density="compact"]`, caption states sort and scope (`Newest first, 8 of 189 pulls`).
-- Columns: Time, Level, Source, Message, then numbers (right-aligned with units, `1.2 s`), then machine IDs.
+- Columns: Time, Level, Source, Message, then numbers (right-aligned with units, `1.2s`), then machine IDs.
 - **Time** is Mono (`6:05:12 PM`) in a `<time datetime>`. Relative time belongs in summaries and freshness lines, not log rows.
 - **Level** is dot plus word (`.fc-level`): Info gray, Warning amber, Error red; `success` green exists for pull status. Never color alone (CON-09).
 - **Request IDs, cron expressions and hashes** are Mono (`.fc-log-id`), secondary.

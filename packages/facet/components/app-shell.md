@@ -85,7 +85,7 @@ The scope is the thing every page on the screen is filtered by. In Hidden Gems i
 
 ## Hidden Gems usage
 - Rail top level: Slate, Watchlist, History | Alerts, Data | Settings. Data drills in to Ingestion (Odds pulls, Injury reports, Sources) and Health (Schedules, Activity).
-- Rail foot: freshness, "Odds pulled 2 min ago" (status dot + relative time, exact timestamp in `title`).
+- Rail foot: freshness, "Odds pulled 2m ago" (status dot + relative time, exact timestamp in `title`).
 - Scope switcher: the week, with Week 9 ("Opens Tue"), the current week, then a Settled group.
 - Breadcrumb: "Slate", or "Data / Odds pulls", or "Slate / Mike Gesicki receiving yards" on a pick.
 - Global actions: "Track bet" and Search.

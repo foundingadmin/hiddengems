@@ -13,7 +13,7 @@ An audit log for one user: what changed, what ran, what failed. Each row reads a
       <li class="fc-feed-row">
         <span class="fc-feed-icon" title="Scheduler"><svg aria-hidden="true">...</svg></span>
         <span class="fc-feed-text"><strong>Odds pull</strong> completed for <strong>Week 8</strong>, <strong>31 markets</strong></span>
-        <time class="fc-feed-time fc-timestamp" datetime="2026-11-02T17:58-05:00" title="Monday, Nov 2, 2026, 5:58 PM ET">4 min ago</time>
+        <time class="fc-feed-time fc-timestamp" datetime="2026-11-02T17:58-05:00" title="Monday, Nov 2, 2026, 5:58 PM ET">4m ago</time>
       </li>
     </ul>
   </section>
@@ -27,7 +27,7 @@ An audit log for one user: what changed, what ran, what failed. Each row reads a
 - No rules between rows; 8px padding per row is the separator (about 36px per line).
 
 ## Time rule
-- Today: relative ("4 min ago", "2 hr ago").
+- Today: relative ("4m ago", "2h ago").
 - Earlier days: clock time only ("7:31 PM"), because the day heading already says the date.
 - Always `.fc-timestamp` inside `<time datetime>`, exact time in `title`.
 

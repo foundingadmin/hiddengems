@@ -17,7 +17,7 @@ A tab, heading, label, column header, icon or control has already told the reade
 | A placeholder that echoes its label | Label "Stake", placeholder "Stake" | Label "Stake", value or example "$7.00", helper "From $1 to $50" |
 | A value every row repeats | A Market column reading "Anytime TD" on every row | One group row "Anytime TD" above the picks |
 | An empty state that says nothing twice | "No picks yet" / "There are no picks to show yet." | "No picks yet" / "Odds open Tuesday. The slate fills in as lines post." |
-| A tooltip that reads the button back | "Refresh odds" with tooltip "Refresh odds" | "Refresh odds" with tooltip "Last pulled 2 min ago", or no tooltip |
+| A tooltip that reads the button back | "Refresh odds" with tooltip "Refresh odds" | "Refresh odds" with tooltip "Last pulled 2m ago", or no tooltip |
 | A badge next to text that says the same | Job "Gems, and only gems" beside a "Gems only" badge | Keep one |
 | A caption that repeats its heading | Heading "Semantic tokens", caption "All semantic color tokens" | Visually hidden caption for screen readers only |
 
@@ -72,8 +72,9 @@ Use the guide marker (`.fc-guide`, see `components/guide-marker.md`) for every D
 | Notes | One sentence, active voice, naming the impact. An optional 1 to 2 word label names the topic and is never repeated by the sentence |
 | Numbers | Peer values share precision. A lone value keeps its unit beside it ("+4.0 pts"). In a column of mixed metrics the word unit moves to the label ("Average gap (pts)"), symbols that are part of the number stay ($, %), and changes are percent with the exact change in a helper |
 | Verbs | One verb per action everywhere: if the button says Remove, the menu item, toast and confirmation say Remove too |
+| Durations | Compact units in values, no space: "4.1s", "in 5m", "3h ago", "in 1d 6h" (`js/time.mjs`). Words in sentences: "every 5 minutes". A bare duration gets its context word: "Took 4.1s" |
 | Separators | At most one middle dot per metadata line; use columns in tables |
-| Times | Clock and calendar times in mono, relative times in sans (`data-relative`). Relative under 7 days ("2 min ago"), a date after that, the exact time on hover. Clock times in a column all carry their day word ("Today 6:00 PM", "Tue 12:00 AM") |
+| Times | Clock and calendar times in mono, relative times in sans (`data-relative`). Relative under 7 days ("2m ago"), a date after that, the exact time on hover. Clock times in a column all carry their day word ("Today 6:00 PM", "Tue 12:00 AM") |
 | Errors | Say whose problem it is. Yours to fix: what failed plus the action that fixes it. Out of your hands: who owns it, what happens next and how old the data is. "Couldn't" for user state, "Failed to" for system faults (`patterns/failures.md`) |
 | Helpers | A dotted underline means a helper opens on hover, focus or tap; use it instead of info icons, and never for anything else |
 | Plain words | Plain words on the fast path, exact terms in the audit path; define a term at first use |

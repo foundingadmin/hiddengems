@@ -26,7 +26,7 @@ Masked (every view after creation):
     </div>
     <button class="fc-button" data-variant="secondary" data-size="small" type="button">Rotate key</button>
   </div>
-  <p class="fc-meta"><span>Added Oct 2</span><span>Last used 4 min ago</span></p>
+  <p class="fc-meta"><span>Added Oct 2</span><span>Last used 4m ago</span></p>
 </div>
 ```
 

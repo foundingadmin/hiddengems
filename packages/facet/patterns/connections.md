@@ -8,7 +8,7 @@ Sportsbooks and data providers are connections: the user links them, Hidden Gems
 |---|---|---|---|
 | `available` | Nothing | "Connect": primary when it is the next recommended step, secondary otherwise | What connecting adds ("Adds 296 markets") |
 | `connected`, with its own settings page | Dot + "Connected" | "Manage" (secondary) | Key ending and quota ("Key ending 3f9a · 1,412 of 20,000 requests") |
-| `connected` | Dot + "Connected" | "Last used 2 min ago" (`.fc-timestamp`) + overflow menu (Test, Rotate key, Disconnect) | Coverage ("412 markets · Tracking bets") |
+| `connected` | Dot + "Connected" | "Last used 2m ago" (`.fc-timestamp`) + overflow menu (Test, Rotate key, Disconnect) | Coverage ("412 markets · Tracking bets") |
 | `failed` | Red dot + "Failed" | Last used + overflow menu | Same as connected |
 
 A failed row adds one `.fc-list-row-note` with an error note: what failed and what it costs the user, plus one action that fixes it. "FanDuel rejected the key, so its odds are 3 hours old." with "Rotate key".
@@ -23,7 +23,7 @@ A failed row adds one `.fc-list-row-note` with an error note: what failed and wh
   </div>
   <div class="fc-list-row-aside"><span class="fc-status"><span class="fc-status-dot" data-state="failed"></span>Failed</span></div>
   <div class="fc-list-row-actions">
-    <time class="fc-timestamp" datetime="2026-11-02T15:04-05:00" title="Monday, Nov 2, 2026, 3:04 PM ET">Last used 3 hr ago</time>
+    <time class="fc-timestamp" datetime="2026-11-02T15:04-05:00" title="Monday, Nov 2, 2026, 3:04 PM ET">Last used 3h ago</time>
     <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button"
             aria-label="More actions for FanDuel" aria-haspopup="menu" aria-expanded="false">...</button>
   </div>

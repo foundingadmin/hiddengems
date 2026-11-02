@@ -9,7 +9,7 @@ One caption under aggregated data that says how fresh it is and how old it can b
 ```html
 <p class="fc-freshness">
   <span class="fc-status-dot" data-state="live" aria-hidden="true"></span>
-  <span>Updated <time datetime="2026-11-02T18:05:12-07:00" title="Nov 2, 2026, 6:05:12 PM MST">1 min ago</time>. Odds can be up to 2 min old.</span>
+  <span>Updated <time datetime="2026-11-02T18:05:12-07:00" title="Nov 2, 2026, 6:05:12 PM MST">1m ago</time>. Odds can be up to 2 min old.</span>
 </p>
 ```
 - An 8px status dot (`.fc-status-dot` with `data-state`: live, recent, stale, failed).
@@ -25,4 +25,4 @@ One caption under aggregated data that says how fresh it is and how old it can b
 - Human-read times are Sans; never Mono.
 
 ## Hidden Gems usage
-Under best price share, line movement, and any odds aggregate. "Odds can be up to 2 min old."
+Under best price share, line movement, and any odds aggregate. "Odds can be up to 2 minutes old."

@@ -5,7 +5,7 @@
 ## Typefaces
 
 - **Facet Sans** for everything a person reads: prose, headings, labels, controls, tables, KPIs, counts, percentages, odds and money.
-- **Facet Mono** for clock and calendar times (kickoff "11:00 AM", "Today 6:05 PM", "Oct 31", log times) and for machine values: code, commands, IDs, keys and cron expressions. Relative times ("4 min ago", "in 5 min") are words, so they stay Sans: mark them `<time data-relative>`. Set only the value in Mono, never the whole sentence or table.
+- **Facet Mono** for clock and calendar times (kickoff "11:00 AM", "Today 6:05 PM", "Oct 31", log times) and for machine values: code, commands, IDs, keys and cron expressions. Relative times ("4m ago", "in 5m") are words, so they stay Sans: mark them `<time data-relative>`. Set only the value in Mono, never the whole sentence or table.
 - Fonts are vendored in `fonts/`. Facet Sans and Facet Mono are the open-source `geist` typeface (variable, 100 to 900, SIL OFL 1.1, byte-identical to `geist@1.9.0`). Self-hosting keeps OpenType features that the Google Fonts build strips (stylistic sets, `case`, the plain-zero Mono option).
 - In Next.js, load with the `geist` package (`geist/font/sans`, `geist/font/mono`). It sets `--font-geist-sans` and `--font-geist-mono`, which Facet's family tokens already read. The package export is upright only; add italics deliberately if ever needed.
 

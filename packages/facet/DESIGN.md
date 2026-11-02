@@ -94,12 +94,13 @@ Owner decisions on where a rank 1 source and an earlier Facet rule disagreed (20
 | Topic | Rule |
 |---|---|
 | Icon tiles | Allowed wherever one speeds recognition: empty states, list and connection rows, entity leads, integrations. Neutral only (`.fc-icon-tile`), one per item, never decorative or colored |
-| Times | Clock and calendar times are mono ("11:00 AM", "Today 6:05 PM", "Oct 31", log times, clock-time axes). Relative times are words and stay sans ("4 min ago", "in 5 min", "12h ago"), marked `data-relative`. Set in base.css |
+| Times | Clock and calendar times are mono ("11:00 AM", "Today 6:05 PM", "Oct 31", log times, clock-time axes). Relative times are words and stay sans ("4m ago", "in 5m", "12h ago"), marked `data-relative`. Set in base.css |
 | Legends | Multi-series charts default to a legend that carries each series' total (`.fc-legend`). Single-series charts use a direct label |
 | Marketing moments | Onboarding, week openings, explainers and recaps may use `data-surface="marketing"`: display type, roomier spacing, pill buttons and one animated field per view (`patterns/surfaces.md`). Hue decoration and gradient text stay banned |
 | Brand accent | One accent per product through `--fc-brand-*`; Hidden Gems maps it to purple, its gem color. Focus, text selection, native `accent-color`, and checked or on controls (toggle, checkbox, choicebox, menu checks) all read it, so rebranding is four tokens. Primary buttons, tabs, nav and links stay neutral |
 | Header help | Data-rich tables put a tip on every derived or jargon column header so headers stay short (`components/table.md`) |
 | Failures | Say whose problem it is. Yours to fix: red "Failed", "Couldn't ..." and the action that starts the fix. Out of your hands: amber "Provider down", who owns it, what happens next and how old the data is, never a fix button. Empty or failed charts show a blurred gray ghost of their shape (`patterns/failures.md`) |
+| Durations and relative times | One source, `js/time.mjs`. Values use compact units, no space, at most two units: "4.1s", "in 5m", "3h ago", "in 1d 6h". Sentences spell units out: "every 5 minutes", "after 30 seconds". A bare duration always gets its context word ("Took 4.1s") |
 | Metric columns | One shape per column: bare numbers, word units in the label, changes as percent with the exact change in a helper (`components/metric-row.md`) |
 | Dotted underline | Always means a helper sits behind the text, opening on hover, keyboard focus or tap (`.fc-has-tip`, `js/tips.mjs`). Used instead of info icons, and never for anything else |
 | Change values | Color says whether a change is good, the arrow says which way it moved (`.fc-delta[data-polarity]`). Edge keeps direction coloring, because a positive edge is always good |

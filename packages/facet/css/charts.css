@@ -334,7 +334,7 @@
 .fc-meter-track {
   position: relative;
   height: var(--fc-meter-height, 8px);
-  border-radius: var(--fc-radius-sm);
+  border-radius: var(--fc-radius-full);
   background: var(--fc-surface-fill-hover);
   overflow: hidden;
 }
@@ -370,7 +370,7 @@
   --_c: var(--fc-surface-contrast);
   display: flex;
   gap: var(--fc-space-1);
-  height: 10px;
+  height: var(--fc-meter-height);
 }
 .fc-segments[data-type="success"] { --_c: var(--fc-status-success-solid); }
 .fc-segments[data-type="warning"] { --_c: var(--fc-status-warning-solid); }

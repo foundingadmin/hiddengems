@@ -401,15 +401,15 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
   appearance: none;
   display: block;
   width: 100%;
-  height: 10px;
+  height: var(--fc-meter-height); /* one bar height for progress, meters and segments (owner feedback) */
   border: 0;
-  border-radius: var(--fc-radius-sm);
+  border-radius: var(--fc-radius-full);
   background: var(--ds-gray-200);
   overflow: hidden;
 }
 .fc-progress::-webkit-progress-bar { background: var(--ds-gray-200); }
-.fc-progress::-webkit-progress-value { background: var(--ds-gray-1000); border-radius: var(--fc-radius-sm); }
-.fc-progress::-moz-progress-bar { background: var(--ds-gray-1000); border-radius: var(--fc-radius-sm); }
+.fc-progress::-webkit-progress-value { background: var(--ds-gray-1000); border-radius: var(--fc-radius-full); }
+.fc-progress::-moz-progress-bar { background: var(--ds-gray-1000); border-radius: var(--fc-radius-full); }
 
 /* ------------------------------------------------------------------ Tooltip [G materials] */
 .fc-tooltip {
@@ -513,7 +513,7 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
 }
 .fc-bar-list > .fc-bar { display: contents; }
 .fc-bar-label { color: var(--ds-gray-1000); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.fc-bar-track { position: relative; height: 8px; border-radius: 2px; background: var(--ds-gray-100); }
+.fc-bar-track { position: relative; height: var(--fc-meter-height); border-radius: 2px; background: var(--ds-gray-100); }
 .fc-bar-fill { position: absolute; inset: 0 auto 0 0; width: calc(var(--value, 0) * 1%); border-radius: inherit; background: var(--_c, var(--ds-gray-1000)); }
 .fc-bar-value { text-align: right; color: var(--ds-gray-1000); font-variant-numeric: tabular-nums; }
 .fc-bar[data-muted] .fc-bar-fill { --_c: var(--fc-chart-muted); }

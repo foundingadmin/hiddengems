@@ -63,3 +63,5 @@ CSS in `css/charts.css`. All of these work on the native `<progress>` and on the
 - **Row.** `.fc-progress-row` puts the work (500, primary) and the count or stage (secondary, tabular) on one line above the bar.
 - `data-height="4"` gives the thin dense-header bar.
 - Quota against a limit is not progress: use `meter.md`.
+
+**One bar height.** Progress, meters, segments and bar lists share `--fc-meter-height` (8px) and fully rounded ends, so bars side by side always match. The thin dense-header variant (`data-height="4"`) is the only exception.

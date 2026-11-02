@@ -49,7 +49,7 @@ Rules:
 ## Gem tier
 
 - Ordinal: rough < cut < polished < flawless. Encoded three ways: 1 to 4 filled facets, a ramp from gray to purple 500, 700 and 900, and the word, which is always present. Polished and flawless add a glow that grows with tier.
-- Motion: purple tiers build in, then loop a glint with a long hold (5.6s cycle), in tables too. Sync and cascade (a top-down wave in rank order) are both supported; the slate default is under owner review.
+- Motion: in the slate, gems cascade top to bottom in rank order (160ms per row). Each gem lights its facets left to right, bursts after the last one, then holds; higher tiers climb further, so rank is seen as well as read.
 - Thresholds are a modeling decision, not a design one. Keep them in data, not in CSS, and document them where the model lives.
 - "Hidden Gem" designation is the only place the purple accent appears as text color or fill.
 

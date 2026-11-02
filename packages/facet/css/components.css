@@ -517,3 +517,50 @@
    <span class="fc-signed"><span class="fc-sign">+</span>150</span>  */
 .fc-signed { display: inline-flex; align-items: baseline; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .fc-sign { display: inline-block; width: 0.6em; text-align: center; }
+
+/* ------------------------------------------------------------------ Fieldset [G]
+   Measured: 6px panel with the border shadow, 20px content padding, heading-20 title,
+   copy-14 gray-900 subtitle (8px above, 20px below), footer band on background-200 with
+   a gray-400 top rule, 12/12/12/20 padding, 14px gray-900 text. Error and warning tint the
+   ring and footer with the 400 / 100 / 900 steps of their scale. */
+.fc-fieldset {
+  --_ring: var(--ds-gray-alpha-400);
+  --_foot-bg: var(--ds-background-200);
+  --_foot-bd: var(--ds-gray-400);
+  --_foot-fg: var(--ds-gray-900);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+  border-radius: var(--fc-radius-sm);
+  background: var(--ds-background-100);
+  box-shadow: 0 0 0 1px var(--_ring);
+  overflow: hidden;
+}
+.fc-fieldset-content { padding: 20px; display: flex; flex-direction: column; gap: 0; }
+.fc-fieldset-title { font: 600 20px/26px var(--fc-font-sans); letter-spacing: -0.4px; color: var(--ds-gray-1000); margin: 0; }
+.fc-fieldset-subtitle { font: 400 14px/20px var(--fc-font-sans); color: var(--ds-gray-900); margin: 8px 0 20px; max-width: 68ch; }
+.fc-fieldset-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  min-height: 56px;
+  padding: 12px 12px 12px 20px;
+  background: var(--_foot-bg);
+  border-top: 1px solid var(--_foot-bd);
+  font: 400 14px/20px var(--fc-font-sans);
+  color: var(--_foot-fg);
+}
+.fc-fieldset[data-type="error"]   { --_ring: var(--ds-red-400);   --_foot-bg: var(--ds-red-100);   --_foot-bd: var(--ds-red-400);   --_foot-fg: var(--ds-red-900); }
+.fc-fieldset[data-type="warning"] { --_ring: var(--ds-amber-400); --_foot-bg: var(--ds-amber-100); --_foot-bd: var(--ds-amber-400); --_foot-fg: var(--ds-amber-900); }
+
+/* ------------------------------------------------------------------ Description [G]
+   A <dl> of term/value pairs. Measured: term 14px gray-900, value 14px/16px weight 500 gray-1000.
+   Facet lays pairs out on a shared grid so equal peers align. */
+.fc-description { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 20px 24px; margin: 0; }
+.fc-description > div { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.fc-description dt { font: 400 14px/16px var(--fc-font-sans); color: var(--ds-gray-900); }
+.fc-description dd { margin: 0; font: 500 14px/20px var(--fc-font-sans); color: var(--ds-gray-1000); }
+.fc-description dd small { display: block; margin-top: 4px; font: 400 13px/18px var(--fc-font-sans); color: var(--ds-gray-900); }

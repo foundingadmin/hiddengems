@@ -50,6 +50,10 @@
   .sp-rules { display: flex; flex-direction: column; gap: 8px; max-width: 80ch; padding-left: 0; }
   .sp-rules li { font: 400 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); }
   .sp-rules strong { color: var(--fc-text-primary); font-weight: 500; }
+  .sp-notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 12px; }
+  .sp-notes strong { font-weight: 500; }
+  legend.fc-fieldset-title { float: left; width: 100%; padding: 0; }
+  legend.fc-fieldset-title + * { clear: both; }
   .sp-dodont { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
   .sp-dodont figure { margin: 0; display: flex; flex-direction: column; gap: 12px; padding: 16px; border-radius: 12px; box-shadow: var(--ds-shadow-border); }
   /* Deliberate misuse samples, drawn with primitives on purpose to show what not to do. */
@@ -172,11 +176,24 @@
           </tbody>
         </table>
       </div>
-      <ul class="sp-rules" role="list">
-        <li><strong>Color is never the only cue.</strong> Verdict: dot plus word. Edge: sign plus arrow plus color. Gem tier: facet count plus purple intensity. Freshness: dot plus relative time.</li>
-        <li><strong>Exception for charts:</strong> a chart that encodes verdicts or gems uses the signal or gem tokens, because that is their job.</li>
-        <li><strong>Geist badges come in every hue.</strong> A badge's hue must still follow this table; a purple badge means a gem.</li>
-      </ul>
+      <fieldset class="fc-fieldset">
+        <div class="fc-fieldset-content">
+          <legend class="fc-fieldset-title">Color always travels with a second cue</legend>
+          <p class="fc-fieldset-subtitle">A hue only confirms what the shape or the word already says, so the screen still reads for color-blind users, in grayscale and in print.</p>
+          <dl class="fc-description">
+            <div><dt>Verdict</dt><dd><span class="fc-signal" data-signal="go">Go</span><small>Dot plus word</small></dd></div>
+            <div><dt>Edge</dt><dd><span class="fc-delta" data-direction="positive">9 pts</span> <span class="fc-delta" data-direction="negative">3 pts</span><small>Sign plus arrow plus color</small></dd></div>
+            <div><dt>Gem tier</dt><dd><span id="gem-rule"></span><small>Facet count plus purple intensity</small></dd></div>
+            <div><dt>Freshness</dt><dd><span class="fc-status"><span class="fc-status-dot" data-state="stale"></span>3 hours ago</span><small>Dot plus relative time</small></dd></div>
+          </dl>
+        </div>
+        <footer class="fc-fieldset-footer"><span>Enforced in code by <code class="sp-code">lint-color.mjs</code></span><span class="fc-badge" data-size="sm" data-contrast="low">Hard rule</span></footer>
+      </fieldset>
+      <div class="sp-notes">
+        <div class="fc-note" data-type="info"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span><strong>Charts.</strong> A chart that shows verdicts or gems uses the signal or gem colors, because that is their job.</span></div>
+        <div class="fc-note"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span><strong>Badges.</strong> Geist badges come in every hue, but a badge still follows this table. A purple badge means a gem.</span></div>
+      </div>
+      <hr class="fc-separator">
       <div class="sp-dodont">
         <figure><figcaption><span class="fc-signal" data-signal="go">Do</span></figcaption><div class="sp-wrap"><span id="gem-do"></span> <span class="fc-badge" data-variant="purple" data-contrast="low">Hidden Gem</span></div><p class="sp-caption">Purple marks a gem and its tier.</p></figure>
         <figure><figcaption><span class="fc-signal" data-signal="stop">Don't</span></figcaption><div class="sp-wrap" inert aria-label="Example of misuse"><button class="fc-button sp-misuse" type="button">Lock pick</button><a class="sp-misuse-link">View sources</a></div><p class="sp-caption">A purple button or link spends the gem color on something that is not a gem.</p></figure>
@@ -357,6 +374,7 @@
   }).join('');
   document.getElementById('gems').innerHTML = ['rough', 'cut', 'polished', 'flawless'].map(gem).join('');
   document.getElementById('gem-do').outerHTML = gem('polished');
+  document.getElementById('gem-rule').outerHTML = gem('flawless');
 
   // ---- foundations ----
   const scales = ['gray', 'blue', 'red', 'amber', 'green', 'teal', 'purple', 'pink'];

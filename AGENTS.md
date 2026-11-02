@@ -24,6 +24,7 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 
 - Never use em dashes in any output: code comments, docs, UI copy, commit messages.
 - Sentence case for headings and UI labels; headings state a finding or question.
+- No colons in titles, headings or nav labels.
 
 ## Repo layout
 

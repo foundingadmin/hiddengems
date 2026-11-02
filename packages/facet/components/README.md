@@ -1,4 +1,4 @@
-# Facet Components: Spec Index
+# Facet component specs
 
 Synthesized component specs for **Facet**, the Geist-derived design system behind **Hidden Gems** (NFL bet-research dashboard). Source: Vercel Geist docs, captured 2026-11-02 (Markdown pages plus rendered-page measurements where the prose is silent). Values marked *(measured)* were read from the rendered vercel.com/geist pages. *(inferred)* marks conservative guesses. "Not specified by Geist" means no value was found.
 

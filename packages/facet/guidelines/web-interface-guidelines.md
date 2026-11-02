@@ -1,4 +1,4 @@
-# Vercel Web Interface Guidelines: Facet digest
+# Vercel Web Interface Guidelines, Facet digest
 
 A faithful, tightened paraphrase of Vercel's Web Interface Guidelines, kept rule for rule and grouped by the source's own sections. Rule IDs (for example `INT-11`) are Facet additions so components, reviews and lint findings can cite a rule precisely. They are not part of the source.
 

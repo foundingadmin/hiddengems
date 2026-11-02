@@ -75,7 +75,7 @@ Env var list above is illustrative; keep it to variables that actually affect bu
 
 ## 3. Features for later, mapped to Hidden Gems
 
-### Cron Jobs: scheduled odds pulls
+### Cron jobs for scheduled odds pulls
 
 Sources: https://vercel.com/docs/cron-jobs.md (2026-09-16), https://vercel.com/docs/cron-jobs/manage-cron-jobs.md (2026-08-11), https://vercel.com/docs/cron-jobs/usage-and-pricing.md (2026-07-15), https://vercel.com/docs/functions/limitations.md (2026-08-24).
 
@@ -111,7 +111,7 @@ Sources: https://vercel.com/docs/postgres.md, https://vercel.com/docs/storage.md
 - **Suggested split:** Postgres (Neon or Supabase) for games, lines history, models and users; Upstash Redis for cron locks, rate limits and hot caches; Vercel Blob (`@vercel/blob`, public or private stores, signed URLs) for raw odds payload snapshots and CSV exports.
 - Put the database region next to the function region (default `iad1`, US East, which suits a US NFL audience).
 
-### Observability: Web Analytics and Speed Insights
+### Observability with Web Analytics and Speed Insights
 
 Sources: https://vercel.com/docs/analytics.md (2026-08-11), https://vercel.com/docs/analytics/quickstart.md, https://vercel.com/docs/speed-insights/quickstart.md (2026-09-01).
 

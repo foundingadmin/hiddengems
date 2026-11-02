@@ -101,7 +101,7 @@ Each is a conscious Facet call, recorded so nobody "fixes" it back by accident.
 
 ## Writing
 
-Sentence case everywhere. Headings state the finding or the question ("Gesicki carries the widest gap"), not the genre ("Overview"). Plain words on the fast path, exact terms in the audit path, define a term at first use. No all-caps eyebrows, no em dashes, no hype.
+Sentence case everywhere. No colons in titles, headings or nav labels. Headings state the finding or the question ("Gesicki carries the widest gap"), not the genre ("Overview"). Plain words on the fast path, exact terms in the audit path, define a term at first use. No all-caps eyebrows, no em dashes, no hype.
 
 ## Reject on sight
 

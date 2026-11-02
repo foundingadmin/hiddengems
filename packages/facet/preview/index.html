@@ -966,17 +966,17 @@
         <div class="fc-meter" data-meter="41280/50000">
           <div class="fc-meter-head"><span class="fc-meter-label" id="ch-m1">Odds requests</span><span class="fc-meter-value"></span></div>
           <div class="fc-meter-track" role="meter" aria-labelledby="ch-m1"><span class="fc-meter-fill"></span><span class="fc-meter-stop" style="--at:80" aria-hidden="true"></span></div>
-          <div class="fc-meter-foot"><span class="fc-meter-pct"></span><span>Warning at 80%</span></div>
+          <div class="fc-meter-foot"><span class="fc-meter-pct"></span><a class="fc-link-action fc-meter-action" href="#lf-editor">Lower usage</a></div>
         </div>
         <div class="fc-meter" data-meter="3120/10000">
           <div class="fc-meter-head"><span class="fc-meter-label" id="ch-m2">Injury feed requests</span><span class="fc-meter-value"></span></div>
           <div class="fc-meter-track" role="meter" aria-labelledby="ch-m2"><span class="fc-meter-fill"></span><span class="fc-meter-stop" style="--at:80" aria-hidden="true"></span></div>
           <div class="fc-meter-foot"><span class="fc-meter-pct"></span></div>
         </div>
-        <div class="fc-meter" data-meter="5000/5000">
+        <div class="fc-meter" data-meter="5000/5000" data-meter-note="paused until Dec 1">
           <div class="fc-meter-head"><span class="fc-meter-label" id="ch-m3">Weather requests</span><span class="fc-meter-value"></span></div>
           <div class="fc-meter-track" role="meter" aria-labelledby="ch-m3"><span class="fc-meter-fill"></span><span class="fc-meter-stop" style="--at:80" aria-hidden="true"></span></div>
-          <div class="fc-meter-foot"><span class="fc-meter-pct"></span><span>Paused until Dec 1</span></div>
+          <div class="fc-meter-foot"><span class="fc-meter-pct"></span><a class="fc-link-action fc-meter-action" data-external href="https://openweathermap.org/price" target="_blank" rel="noopener noreferrer">Raise limit</a></div>
         </div>
       </div>
     </article>
@@ -1465,7 +1465,7 @@
       const word = { ok: '', warning: 'near limit', error: 'limit reached' }[level];
       m.dataset.level = level;
       m.querySelector('.fc-meter-value').innerHTML = `<strong>${n.format(used)}</strong> of ${n.format(limit)}`;
-      m.querySelector('.fc-meter-pct').innerHTML = `${pct}% used${word ? `, <span class="fc-meter-state">${word}</span>` : ''}`;
+      m.querySelector('.fc-meter-pct').innerHTML = `${pct}% used${word ? `, <span class="fc-meter-state">${word}</span>` : ''}${m.dataset.meterNote ? `, ${m.dataset.meterNote}` : ''}`;
       m.querySelector('.fc-meter-fill').style.setProperty('--value', used / limit * 100);
       const t = m.querySelector('[role="meter"]');
       Object.entries({ 'aria-valuemin': 0, 'aria-valuemax': limit, 'aria-valuenow': used, 'aria-valuetext': `${n.format(used)} of ${n.format(limit)}, ${pct}%${word ? ', ' + word : ''}` }).forEach(([k, v]) => t.setAttribute(k, v));

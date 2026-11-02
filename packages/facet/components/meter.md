@@ -43,3 +43,11 @@ Shows how much of a fixed limit is used, with the numbers as text, and changes s
 
 ## Hidden Gems usage
 Odds API requests per month, injury feed and weather requests, a self-set weekly stake limit.
+
+## Fix action `[F]`
+
+Owner feedback, 2026-11-02. A meter near or at its limit carries one action link in its footer, the fastest fix, in its severity color (the same rule as note links):
+
+- **Near the limit** (amber): slow usage down, inside the app: "Lower usage" (→ the schedule editor).
+- **At the limit** (red): lift it, usually at the provider: "Raise limit" (↗ the provider's plan page). What the limit already caused stays in the status line ("100% used, limit reached, paused until Dec 1").
+- **Below the warning line:** no action; the meter is information.

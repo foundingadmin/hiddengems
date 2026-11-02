@@ -314,6 +314,13 @@
 .fc-meter-state { font-weight: 500; }
 .fc-meter[data-level="warning"] .fc-meter-state { color: var(--fc-status-warning-fg); }
 .fc-meter[data-level="error"]   .fc-meter-state { color: var(--fc-status-error-fg); }
+/* Fix action [F] (owner feedback 2026-11-02): a meter near or at its limit carries one action link, the
+   fastest fix, in its severity color. Near the limit: slow the usage down, in the app (→ "Lower usage").
+   At the limit: lift it, usually at the provider (↗ "Raise limit"). Below the warning line: no action. */
+.fc-meter-action { margin-left: auto; }
+.fc-meter[data-level="ok"] .fc-meter-action { display: none; }
+.fc-meter[data-level="warning"] .fc-meter-action { color: var(--fc-status-warning-fg); }
+.fc-meter[data-level="error"] .fc-meter-action { color: var(--fc-status-error-fg); }
 .fc-meter-track {
   position: relative;
   height: var(--fc-meter-height, 8px);

@@ -108,3 +108,5 @@ Implemented in `css/data.css` (load after `components.css`). Specimen: `preview/
 **Column widths (owner feedback, 2026-11-02).** Numeric columns hug their content (`width: 1%`). Mark the main text column's header `data-grow` (pick, message) and every other column hugs its content too, so the slack lands in one place and values never sit far from their header with a wide empty gap.
 
 **Row count (owner feedback, 2026-11-02).** In a selectable table, the count sits in the main column header next to the select-all box (`.fc-th-count`): "5 of 31" when nothing is checked, "2 selected" when rows are. No "Showing 5 of 31" caption line; the visible sort arrow states the sort, and the caption keeps it for screen readers only.
+
+**Divider clearance (owner rule, 2026-11-02).** Cell content never sits closer than 16px to a vertical divider, on either side: the frozen column's divider, and any column marked `data-divider`.

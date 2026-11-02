@@ -152,8 +152,12 @@ th.fc-numeric > .fc-th-sort { flex-direction: row-reverse; }
 .fc-table[data-sticky-column] tr > .fc-cell-select + * { left: var(--_select-w); }
 .fc-table[data-sticky-column] tr > :first-child:not(.fc-cell-select),
 .fc-table[data-sticky-column] tr > .fc-cell-select + * { box-shadow: inset -1px 0 0 var(--fc-border-default); }
-/* The first cell past the frozen column's divider gets 16px, so text never sits against the line (owner feedback). */
-.fc-table[data-sticky-column] tr > .fc-cell-select + * + * { padding-left: var(--fc-space-4); }
+/* Divider clearance (owner rule, 2026-11-02): content never sits closer than 16px to a vertical divider, on
+   either side. Covers the frozen column's divider and any column marked data-divider. */
+.fc-table[data-sticky-column] tr > :is(:first-child:not(.fc-cell-select), .fc-cell-select + *) { padding-right: var(--fc-space-4); }
+.fc-table[data-sticky-column] tr > :is(:first-child:not(.fc-cell-select), .fc-cell-select + *) + * { padding-left: var(--fc-space-4); }
+.fc-table :is(th, td)[data-divider] { box-shadow: inset 1px 0 0 var(--fc-border-default); padding-left: var(--fc-space-4); }
+.fc-table :is(th, td):has(+ [data-divider]) { padding-right: var(--fc-space-4); }
 .fc-table[data-sticky-column] thead tr > :first-child,
 .fc-table[data-sticky-column] thead tr > .fc-cell-select + * { z-index: 3; }
 /* Keyboard focus never lands under the frozen column (INT-02). Set --fc-frozen-width to its rendered width. */

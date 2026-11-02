@@ -99,3 +99,6 @@ a { color: inherit; text-underline-offset: 3px; }
 
 /* Headings break into balanced lines instead of leaving one stranded word. */
 h1, h2, h3, h4, [class*="text-heading-"] { text-wrap: balance; }
+
+/* The hidden attribute always wins, even over components that set display. */
+[hidden] { display: none !important; }

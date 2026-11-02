@@ -1,11 +1,11 @@
 # Deploying Hidden Gems on Vercel
 
-Practical plan for deploying this pnpm + Turborepo monorepo (`apps/web` Next.js app, `packages/*` including `packages/facet`) on Vercel, plus the platform features we will likely want later. Based on Vercel docs fetched as Markdown on 2026-11-02; each section cites the page and its `last_updated` date. Items marked **Unverified** need a check before we rely on them.
+Practical plan for deploying this pnpm + Turborepo monorepo (built out in Phase 2; see `docs/architecture.md` for how it works) (`apps/web` Next.js app, `packages/*` including `packages/facet`) on Vercel, plus the platform features we will likely want later. Based on Vercel docs fetched as Markdown on 2026-11-02; each section cites the page and its `last_updated` date. Items marked **Unverified** need a check before we rely on them.
 
 ## TL;DR
 
 1. One Vercel project for `apps/web`, Root Directory `apps/web`, framework Next.js. Leave build/install on auto-detect; turbo is available globally and scopes itself to the Root Directory.
-2. Root `package.json` declares `packageManager` and `pnpm-workspace.yaml` lists `apps/*` and `packages/*`. `apps/web` depends on `@hiddengems/facet` with `workspace:*` so Vercel can tell which commits affect the app.
+2. Root `package.json` declares `packageManager` and `pnpm-workspace.yaml` lists `apps/*` and `packages/*`. `apps/web` depends on `@foundingcreative/facet` with `workspace:*` so Vercel can tell which commits affect the app.
 3. Turn on "Skip deployment" for unaffected projects (GitHub only). Link the Turborepo Remote Cache.
 4. Declare build-affecting env vars per task in `turbo.json` so caches never cross environments.
 5. **Confirmed (2026-11-02): the account is on Pro**, so sub-daily cron with per-minute precision is available. Hidden Gems is a private, single-user tool: protect production too, not just previews (see section on access).
@@ -140,14 +140,14 @@ Source: https://vercel.com/docs/ai-sdk.md (2026-10-05).
 
 ## 5. Checklist
 
-- [ ] Root: `package.json` with `packageManager`, `engines.node`, scripts calling `turbo run`; `pnpm-workspace.yaml` with `apps/*`, `packages/*`; `turbo.json` as above; one `pnpm-lock.yaml` at root.
-- [ ] Unique package names (`web`, `@hiddengems/facet`, ...) and explicit `workspace:*` deps.
+- [x] Root: `package.json` with `packageManager`, `engines.node`, scripts calling `turbo run`; `pnpm-workspace.yaml` with `apps/*`, `packages/*`; `turbo.json`; one `pnpm-lock.yaml` at root.
+- [x] Unique package names (`web`, `@foundingcreative/facet`, `@hiddengems/core`, `@hiddengems/db`, `@hiddengems/ingest`) and explicit `workspace:*` deps.
 - [ ] Vercel project: Root Directory `apps/web`, include outside files on, Skip deployment on, Node 26.x.
 - [ ] `turbo login` + `turbo link` for Remote Cache.
 - [ ] Env vars created as Secret/Config per environment; `vercel env pull` for local; build-affecting vars listed under `web#build.env`.
 - [x] Pro plan (confirmed 2026-11-02).
-- [ ] Production access gated (Vercel Authentication on all deployments, or app-level auth).
-- [ ] `apps/web/vercel.json` (or `vercel.ts`) with `crons`; `CRON_SECRET`; idempotent, locked cron handlers.
-- [ ] Marketplace Postgres + Upstash; `@vercel/global-config` (not `@vercel/edge-config`) for runtime config.
+- [x] Production access gated in the app: `apps/web/proxy.ts` (HTTP Basic, `APP_PASSWORD`; closed until set). Set `APP_PASSWORD` in Production and Preview.
+- [x] `apps/web/vercel.json` with `crons`; idempotent, locked cron handlers (`job_locks`). Set `CRON_SECRET`.
+- [ ] Marketplace Postgres (Neon or Supabase), then `DATABASE_URL=... pnpm db:migrate`. Upstash is not needed for locks (they live in Postgres, `job_locks`). `@vercel/global-config` for runtime config when needed.
 - [ ] `<Analytics />` and `<SpeedInsights />` in the root layout.
 - [ ] Verify first build log: pnpm version, turbo cache status, Root Directory scoping.

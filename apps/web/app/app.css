@@ -1,0 +1,12 @@
+/* Page-owned layout only. Everything visual comes from Facet (tokens and .fc-* classes). */
+body { margin: 0; background: var(--fc-surface-canvas); color: var(--fc-text-primary); }
+.hg-top { position: sticky; top: 0; z-index: 1; background: var(--fc-surface-canvas); border-bottom: 1px solid var(--fc-border-default); }
+.hg-top-inner { display: flex; align-items: center; gap: var(--fc-space-8); min-height: var(--fc-space-16); }
+.hg-top .fc-tabs { align-self: stretch; border-bottom: 0; }
+.hg-brand { display: inline-flex; align-items: center; gap: var(--fc-space-2); color: var(--fc-text-primary); text-decoration: none; }
+.hg-brand svg { width: var(--fc-space-5); height: var(--fc-space-5); color: var(--fc-brand-solid); }
+.hg-main { display: flex; flex-direction: column; gap: var(--fc-space-8); padding-block: var(--fc-space-8) var(--fc-space-16); }
+.hg-section { display: flex; flex-direction: column; gap: var(--fc-space-4); min-width: 0; }
+.hg-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--fc-space-2) var(--fc-space-4); }
+.hg-head h2, .hg-head h1 { margin: 0; }
+.hg-inline-form { display: inline; }

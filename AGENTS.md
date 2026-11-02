@@ -38,8 +38,18 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 - Integrate approved scalability decisions as soon as they come up (tokens, slots, generators), rather than deferring them.
 - A product's accent goes through `--fc-brand-*` (`packages/facet/tokens/facet.semantic.json`); reusing Facet for another product means changing those four tokens, not hunting for hues.
 
+## Data and jobs
+
+- Read `docs/architecture.md` before changing data, jobs or providers.
+- Domain rules live in `packages/core` and stay free of I/O. Pages and jobs import them; never re-derive odds math, tiers or verdicts elsewhere.
+- History tables (`odds_snapshots`, `estimates`) are append-only. Never update or delete their rows.
+- Every provider call goes through a job and `runJob`, so it lands in the pull log with whose move a failure is. No provider calls from pages.
+- Schema changes: edit `packages/db/src/schema.ts`, run `pnpm db:generate`, commit the migration.
+- Tests run on PGlite with the sample provider: `pnpm check` needs no secrets.
+
 ## Repo layout
 
 - `packages/facet/` design system (self-contained, reusable in other projects)
+- `packages/core/` domain rules, `packages/db/` schema and client, `packages/ingest/` providers and jobs
 - `apps/web/` Hidden Gems app (Next.js, deploys on Vercel with Root Directory `apps/web`)
 - `docs/` project documentation

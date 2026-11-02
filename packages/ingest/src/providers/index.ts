@@ -1,0 +1,27 @@
+// Picks providers from the environment. DATA_MODE=sample (the default without keys) uses the sample
+// provider everywhere; DATA_MODE=live needs ODDS_API_KEY and SPORTSDATAIO_KEY.
+import { ours } from '../errors';
+import { oddsApi } from './odds-api';
+import { sampleProviders } from './sample';
+import { sportsDataIo } from './sportsdataio';
+import type { Providers } from './types';
+
+export type DataMode = 'sample' | 'live';
+
+export function dataMode(env: Record<string, string | undefined> = process.env): DataMode {
+  if (env.DATA_MODE === 'live' || env.DATA_MODE === 'sample') return env.DATA_MODE;
+  return env.ODDS_API_KEY ? 'live' : 'sample';
+}
+
+export function providersFor(env: Record<string, string | undefined> = process.env): Providers {
+  if (dataMode(env) === 'sample') return sampleProviders();
+  if (!env.ODDS_API_KEY) throw ours('config', 'Add ODDS_API_KEY to pull live odds, or set DATA_MODE=sample');
+  if (!env.SPORTSDATAIO_KEY) throw ours('config', 'Add SPORTSDATAIO_KEY to pull schedules, rosters and results, or set DATA_MODE=sample');
+  const stats = sportsDataIo(env.SPORTSDATAIO_KEY);
+  return { schedule: stats, rosters: stats, odds: oddsApi(env.ODDS_API_KEY), results: stats };
+}
+
+export * from './types';
+export { oddsApi, normalizeEventOdds } from './odds-api';
+export { sportsDataIo, normalizeSchedule, normalizeStats, easternToUtc } from './sportsdataio';
+export { sampleProviders, SAMPLE_PLAYERS } from './sample';

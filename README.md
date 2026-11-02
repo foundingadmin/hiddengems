@@ -6,15 +6,24 @@ qualitative reporting, and ranks available sportsbook bets as custom "gem" tiers
 ## Repository
 
 ```
-packages/facet/   Facet, the design system (start with packages/facet/DESIGN.md)
-apps/web/         The Hidden Gems app (placeholder until the UI migrates in)
-docs/             Project docs (deployment plan, and soon architecture and data)
+apps/web/          The app: slate, data health, cron routes (Next.js on Vercel)
+packages/core/     Domain rules: odds math, gaps, tiers, verdicts, cadence
+packages/db/       Postgres schema, migrations, client
+packages/ingest/   Providers, jobs, the run log
+packages/facet/    Facet, the design system (start with packages/facet/DESIGN.md)
+docs/              Architecture and deployment
 ```
 
-Status: Phase 1 (design system) in review. Phase 2 (repo scaffold for data, ingestion,
-history, logs and API integrations) follows design system approval.
+## Start
 
-## Quick look
+```bash
+pnpm install
+pnpm dev
+```
 
-Open `packages/facet/preview/index.html` in a browser for the living specimen, or rebuild
-tokens with `node packages/facet/scripts/build.mjs`.
+Open http://localhost:3000 and choose Pull everything. With no keys it runs on sample data and a
+local Postgres (PGlite), so nothing else is needed. For live data, copy `.env.example` to
+`apps/web/.env.local` and fill in the keys.
+
+How data moves, where history lives and how failures are reported: `docs/architecture.md`.
+Deploying: `docs/vercel-deployment.md`.

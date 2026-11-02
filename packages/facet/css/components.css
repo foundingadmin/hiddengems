@@ -215,6 +215,7 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
   padding: 14px 2px;
   border: 0;
   background: none;
+  text-decoration: none;
   color: var(--ds-gray-900);
   font: 400 14px/20px var(--fc-font-sans);
   white-space: nowrap;
@@ -222,7 +223,8 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
   transition: color 150ms ease, border-color 150ms ease;
 }
 .fc-tab:hover { color: var(--ds-gray-1000); }
-.fc-tab[aria-selected="true"] { color: var(--ds-gray-1000); border-bottom-color: var(--ds-gray-1000); }
+/* Links in a nav mark the current page with aria-current; tabs in a tablist use aria-selected. */
+.fc-tab[aria-selected="true"], .fc-tab[aria-current="page"] { color: var(--ds-gray-1000); border-bottom-color: var(--ds-gray-1000); }
 .fc-tabs[data-variant="secondary"] { gap: 4px; box-shadow: none; }
 .fc-tabs[data-variant="secondary"] .fc-tab { height: 32px; padding: 0 12px; border: 0; border-radius: var(--fc-radius-sm); font-size: 13px; line-height: 16px; }
 .fc-tabs[data-variant="secondary"] .fc-tab:hover { background: var(--ds-gray-100); }

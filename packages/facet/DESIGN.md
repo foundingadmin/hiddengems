@@ -46,7 +46,7 @@ Vercel handles dense data well because of a few disciplines applied without exce
 3. **Pick geometry before components.** Rank or magnitude: position or length on a shared scale. Change over time: horizontal order. Threshold: distance from a boundary. Qualitative alternatives: aligned rows. Use tables for precise lookup and charts only when the relationship becomes faster to see.
 4. **Tables are evidence.** Semantic `<table>` with a caption that states sort and filter. Left-align text, right-align numbers and their headers. Baseline-align cells. Never truncate a header to save room; reorder or drop columns first. Show current and total row counts when filtered, and default filters must be neutral (never cherry-pick favorable rows).
 5. **Shared lanes.** Repeated bars share one label lane, one plot lane and one value lane, and one documented scale. A bar track is never decoration.
-6. **Color is a second channel, never the only one.** Verdicts get a word plus a dot. Edges get a sign plus an arrow plus color. Tiers get a filled facet count plus intensity.
+6. **Color is a second channel, never the only one.** Verdicts get a word plus a dot. Edges get a sign plus an arrow plus color. The gem rating gets its number plus purple intensity.
 7. **Equal peers look equal.** Same role, size, weight and numeric treatment for every value in a set; never enlarge one because it is bigger or longer.
 8. **Fewer surfaces.** Do not wrap every metric in a card or nest cards. Earn a boundary only for selection, interaction, warning, or a real grouping that spacing cannot express.
 9. **Honest precision.** Keep units and qualifiers next to the number. No fake decimals. Say when a sample is small. Distinguish observed, derived and projected values.
@@ -61,7 +61,7 @@ The interface is gray. Each hue has exactly one job, and appears only to do that
 | Hue | Its job | Use it for | Never for | Reach it through |
 |---|---|---|---|---|
 | Gray | Everything by default | Text, surfaces, borders, primary buttons, chart series 1 | Carrying meaning by itself | `--fc-text-*`, `--fc-surface-*`, `--fc-border-*` |
-| **Purple** | **Gems, and the brand accent** | "This is a Hidden Gem" designation, the gem tier ladder; through the brand slot, focus rings, text selection, checked and on controls, marketing fields | Links, buttons, highlights, chart series, status, decoration | `--fc-gem-*`, `.fc-gem`; `--fc-brand-*`, `--fc-focus-color`, `--fc-control-on` |
+| **Purple** | **Gems, and the brand accent** | "This is a Hidden Gem" designation, the gem rating's intensity ramp; through the brand slot, focus rings, text selection, checked and on controls, marketing fields | Links, buttons, highlights, chart series, status, decoration | `--fc-gem-*`, `.fc-gem`; `--fc-brand-*`, `--fc-focus-color`, `--fc-control-on` |
 | Green | Go, and good for the bettor | Go verdict, positive edge, success, live data | Money or wins because they look nice, "important" values | `--fc-signal-go-*`, `--fc-edge-positive`, `--fc-status-success-*` |
 | Amber | Wait, and caution | Wait verdict, warnings, stale data | Highlighting, emphasis, a chart series | `--fc-signal-wait-*`, `--fc-status-warning-*` |
 | Red | Stop, and bad for the bettor | Stop verdict, negative edge, errors, failed data, destructive actions | Decoration, "hot" picks, urgency | `--fc-signal-stop-*`, `--fc-edge-negative`, `--fc-status-error-*` |
@@ -69,7 +69,7 @@ The interface is gray. Each hue has exactly one job, and appears only to do that
 | Teal, pink | Chart series only | Series 3 and 4 when direct labels and grays are not enough | Any UI element | `--fc-chart-3`, `--fc-chart-4` |
 | Team colors and logos | Team identity | Inside identity marks only (`.fc-team-mark`, `.fc-player-avatar`), from a sport kit | Rows, cells, text, borders, chart series, status, any meaning | `kits/<league>/teams.css` |
 
-- **Color is never the only cue.** Verdict: dot plus word. Edge: sign plus arrow plus color. Gem tier: facet count plus purple intensity. Freshness: dot plus relative time.
+- **Color is never the only cue.** Verdict: dot plus word. Edge: sign plus arrow plus color. Gem rating: number plus purple intensity. Freshness: dot plus relative time.
 - **Charts:** monochrome first. A chart that encodes verdicts or gems uses the signal or gem tokens, because that is their job.
 - **Badges:** badges come in every hue; a badge's hue still follows this table. A purple badge means a gem.
 - **Exceptions** need a reviewed reason on the same line: `facet-allow-color: <reason>`.
@@ -81,14 +81,14 @@ The interface is gray. Each hue has exactly one job, and appears only to do that
 | Verdict: go / wait / stop / unchecked | Dot + word (`.fc-signal`) | `--fc-signal-{go,wait,stop,none}-{fg,solid,bg}` |
 | Six-signal read | Fixed-order dot strip; hollow ring for unknown (`.fc-signal-strip`) | same |
 | Edge vs market (our estimate minus priced chance) | Sign + arrow + green/red, tabular (`.fc-delta`) | `--fc-edge-*` |
-| Gem tier: rough < cut < polished < flawless | 1 to 4 filled facets + rising purple intensity (`.fc-gem`) | `--fc-gem-tier-*` |
+| Gem rating: one 0 to 100 number, no tiers | The number + purple intensity rising with it (`.fc-gem`) | `--fc-gem-tier-*` (now the intensity ramp; rename pending) |
 | "This is a Hidden Gem" | The single brand accent: purple | `--fc-gem-*` |
 | Data freshness | Status dot + relative time (`.fc-status`) | `--fc-freshness-*` |
 | Team | Logo plus name or abbreviation (`.fc-team`); matchups read away @ home | `kits/nfl/teams.css`, `js/teams.mjs` |
 | Player | Team logo tile, then the name with the jersey number trailing it (#88), then detail (`.fc-player`) | same |
 | Charts | Monochrome first; blue, teal, pink only when series must be told apart (never verdict hues or purple) | `--fc-chart-1..6`, `--fc-chart-muted` |
 
-Why purple for gems: green, amber and red already mean go, wait and stop, and blue already means links and info. Purple was the only hue left with no job, and an amethyst reads as "gem" without decoration. Why the brand accent shares it: purple marks what the app finds (gems) and what you do (focus, selection, your choices), so every interaction carries the brand. Gems stay distinct because they always carry facets and a tier word. Why a single hue for tiers: tiers are a ranking, and a ranking should read as more or less of one thing, not as four unrelated categories.
+Why purple for gems: green, amber and red already mean go, wait and stop, and blue already means links and info. Purple was the only hue left with no job, and an amethyst reads as "gem" without decoration. Why the brand accent shares it: purple marks what the app finds (gems) and what you do (focus, selection, your choices), so every interaction carries the brand. Gems stay distinct because they always carry the gem shape and their rating. Why a single hue: the rating is a ranking, and a ranking should read as more or less of one thing, not as unrelated categories.
 
 ## Settled decisions
 
@@ -126,7 +126,7 @@ Each is a conscious Facet call, recorded so nobody "fixes" it back by accident.
 | Unknown values render as an em dash | En dash `–` with `aria-label="Unknown"` in numeric cells, the word "Unknown" where it fits | House rule: no em dashes in any output |
 | Table has one density | Adds `data-density="compact"` (32px rows) for long ledgers | Sunday slates can run 100+ props |
 | Icons from `@vercel/geistcn-assets` | Lucide at 16px / 1.5 stroke | The reference icon package is not public |
-| Rejects glows and decorative looping motion | One exception: the gem tier. Each 5.6s cycle lights the facets left to right up to the tier count, fires a quick flash burst after the last one, holds lit, then dims and repeats; a row delay cascades it up ranked tables, so the top rank lands last; rough never moves; reduced motion stops it all | Motion is part of the rank encoding (owner decision): the cascade says where a pick sits, the facet count says how far it climbs |
+| Rejects glows and decorative looping motion | One exception: the gem rating. Glow strength follows the rating; a row delay cascades it up ranked tables, so the top rated gem lands last; Fool's Gold never moves; reduced motion stops it all | Motion is part of the rank encoding (owner decision): the cascade says where a pick sits. Tiers were replaced by one rating (owner decision, 2026-11-02) |
 
 ## Content
 

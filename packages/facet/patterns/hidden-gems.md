@@ -32,7 +32,7 @@ Columns in lookup order, each right-aligned if numeric:
 3. **Odds**, **Priced**, **Our est.**, **Gap**: the comparison block. Same precision for every row.
 4. **Signals**: `.fc-signal-strip`, six dots in fixed order (setup, track record, sample, price gap, matchup, market). Hollow ring for unchecked. Give the strip an `aria-label` summary ("5 go, 1 wait").
 5. **Verdict**: `.fc-signal` dot + word.
-6. **Gem tier**: `.fc-gem` facets + word.
+6. **Gem rating**: `.fc-gem` with the 0 to 100 number beside it.
 
 Rules:
 - Caption states the sort and filter, and the count ("Showing 7 of 31 picks, filtered to Sunday early window").
@@ -46,11 +46,12 @@ Rules:
 - Unknown is its own state (hollow ring, "Unchecked"), never silently counted as a pass or a fail.
 - Signal notes are plain sentences in `text-copy-13`, written as findings ("Daniels starts, Diggs has no injury tag"), with the exact number in tabular Sans.
 
-## Gem tier
+## Gem rating
 
-- Ordinal: rough < cut < polished < flawless. Encoded three ways: 1 to 4 filled facets, a ramp from gray to purple 500, 700 and 900, and the word, which is always present. Polished and flawless add a glow that grows with tier.
-- Motion: in the slate, gems cascade bottom to top (160ms per row), so the wave climbs and the highest-ranked picks light last, as the climax. Each gem lights its facets left to right, bursts after the last one, then holds; higher tiers climb further, so rank is seen as well as read.
-- Thresholds are a modeling decision, not a design one. Keep them in data, not in CSS, and document them where the model lives.
+- One rating system (owner decision, 2026-11-02): every gem is the same purple gem with one 0 to 100 rating. No tiers, species or tier words to memorize. Definition and formula live in the PRD (project doc `claude/hidden-gems-prd.md`, section 8): the prop must beat the posted price, and the rating is edge times clarity.
+- Encoded two ways: the number, always present, and purple intensity that rises with it along the existing gray to purple ramp. Fool's Gold (does not beat the posted price) renders hollow with a dashed gray label, never purple.
+- Motion: in the slate, gems cascade bottom to top (160ms per row), so the highest rated picks light last, as the climax. Glow strength follows the rating, so rank is seen as well as read.
+- The rating comes from the model. Keep its math in data, not in CSS.
 - "Hidden Gem" designation is the only place the purple accent appears as text color or fill.
 
 ## Pick detail (evidence)
@@ -69,7 +70,7 @@ Order: today's setup versus the condition the record depends on, then the six si
 
 ## Filters and state
 
-Week, window (early, afternoon, night), market, sportsbook, verdict, tier, sort and the open pick all live in the URL (`?week=8&window=early&book=dk&sort=gap&pick=gesicki`). Use segmented controls for 2 to 4 exclusive options, a select or combobox beyond that, and Geist's filter-params pattern for stacked filters.
+Week, window (early, afternoon, night), market, sportsbook, verdict, minimum rating, sort and the open pick all live in the URL (`?week=8&window=early&book=dk&sort=gap&pick=gesicki`). Use segmented controls for 2 to 4 exclusive options, a select or combobox beyond that, and Geist's filter-params pattern for stacked filters.
 
 ## States
 

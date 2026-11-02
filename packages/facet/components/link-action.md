@@ -16,7 +16,7 @@ A standalone text link that ends in an arrow. The arrow says "link", so there is
 | → in | Somewhere inside the app | Same tab |
 | ↗ out | Somewhere outside the app | New tab (`target="_blank" rel="noopener noreferrer"`); screen readers hear "opens in a new tab" |
 
-A chevron is never used for navigation; chevrons belong to disclosure (expand, select, drill-in menus).
+**Chevrons stay, arrows go** (owner framing). A chevron advances you within the space you are already in: expand a row, open a select, drill into the next menu level. Nothing is left behind. An arrow takes you out of the current space, to another place in the app (→) or out of it (↗). So a chevron is never used for navigation, and an arrow never for disclosure.
 
 - **Hover:** a soft tint of the link's own color (12%) appears behind the text, reaching 4px past it on every side. It is drawn with a box-shadow spread, so nothing moves and the baseline stays put.
 - **Hover and keyboard focus:** the arrow slides out through its own 12px box and back in from the opposite side, one quick pass (360ms, swift easing). Right for internal links, up-right for external. Reduced motion keeps it still.

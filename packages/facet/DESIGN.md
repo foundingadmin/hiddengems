@@ -103,7 +103,7 @@ Owner decisions on where a rank 1 source and an earlier Facet rule disagreed (20
 | Durations and relative times | One source, `js/time.mjs`. Values use compact units, no space, at most two units: "4.1s", "in 5m", "3h ago", "in 1d 6h". Sentences spell units out: "every 5 minutes", "after 30 seconds". A bare duration always gets its context word ("Ran 4.1s") |
 | Activity lines | Color the outcome, not the line: one token per line (money or the failure verb) in edge green, red or amber, always with its sign or word. Routine actions stay gray (`components/feed.md`) |
 | Deep links | Feed and log lines link their subject to the exact record elsewhere; the whole row is the target, the in-app arrow marks it, and the record glows in the brand tint on arrival (`components/feed.md`) |
-| Link arrows | Two only: → goes somewhere inside the app (same tab), ↗ leaves the app (new tab). Chevrons are for disclosure, never navigation (`components/link-action.md`) |
+| Link arrows | Chevrons advance you within the space you are in (expand, select, drill a menu level). Arrows take you out of it: → to another place in the app (same tab), ↗ out of the app (new tab) (`components/link-action.md`) |
 | Metric columns | One shape per column: bare numbers, word units in the label, changes as percent with the exact change in a helper (`components/metric-row.md`) |
 | Dotted underline | Always means a helper sits behind the text, opening on hover, keyboard focus or tap (`.fc-has-tip`, `js/tips.mjs`). Used instead of info icons, and never for anything else |
 | Change values | Color says whether a change is good, the arrow says which way it moved (`.fc-delta[data-polarity]`). Edge keeps direction coloring, because a positive edge is always good |

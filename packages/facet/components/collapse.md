@@ -30,3 +30,6 @@ Not specified. Demo content is `text-copy-16`.
 - **Methodology** in the Sheet: `How this score is calculated`, `Raw model inputs` (with JsonView inside).
 - **Advanced filter settings** on a settings page (`Model weights`).
 - Use `size="small"` in dense side panels.
+
+
+Chevron: trailing, down when collapsed, rotating 180° to up when expanded (see the chevron table in `link-action.md`).

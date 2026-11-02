@@ -162,6 +162,10 @@
 .fc-choicebox:has(input:disabled) .fc-choicebox-title,
 .fc-choicebox:has(input:disabled) .fc-choicebox-detail { color: var(--fc-text-disabled); }
 
+/* Option helpers (js/forms.mjs): the line stays reserved while empty, so a dense form never shifts. */
+.fc-helper[data-option-helper] { min-height: 1lh; }
+.fc-helper[data-option-helper][data-empty] { visibility: hidden; }
+
 /* ------------------------------------------------------------------ Key/value rows
    .fc-description[data-layout="rows"]: a bordered <dl>, one pair per row, label column
    about 35%. Unset values read "None" in secondary (.fc-value-empty); set values are primary. */

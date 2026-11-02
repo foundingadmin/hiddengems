@@ -1,7 +1,8 @@
 // Facet form helpers.
 //
 // Option helpers (owner decision, 2026-11-02): a helper that explains one option shows only while that
-// option is chosen, so helper text never outlives its context. Put the explanation on the option; the
+// option is chosen, so helper text never outlives its context. The helper keeps one line reserved while
+// empty, so choosing an option never shifts the form; option helpers stay one line long. Put the explanation on the option; the
 // select's aria-describedby points at the helper element, which is filled and shown or hidden to match.
 //
 //   <select class="fc-select" aria-describedby="days-h">
@@ -20,10 +21,11 @@ export function bindOptionHelpers(root = document) {
       .map((id) => document.getElementById(id)).find((el) => el && el.classList.contains('fc-helper'));
     if (!helper) return;
     select.dataset.fcHelpersBound = '1';
+    helper.dataset.optionHelper = '';
     const sync = () => {
       const text = select.selectedOptions[0]?.dataset.helper || '';
       helper.textContent = text;
-      helper.hidden = !text;
+      helper.toggleAttribute('data-empty', !text); // keeps its line, so the form never shifts
     };
     select.addEventListener('change', sync);
     select.form?.addEventListener('reset', () => setTimeout(sync));

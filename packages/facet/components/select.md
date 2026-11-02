@@ -37,4 +37,4 @@ A native dropdown for picking one value from a short, fixed list.
 
 ## Option helpers `[F]`
 
-Owner decision, 2026-11-02. Helper text must never outlive its context. A helper that explains one option shows only while that option is chosen: put the text on the option (`data-helper`) and point the select's `aria-describedby` at an `.fc-helper`; `bindOptionHelpers()` in `js/forms.mjs` fills it and hides it to match. Options that explain themselves ("Every day") carry no helper. Helpers that apply to every option stay static.
+Owner decision, 2026-11-02. Helper text must never outlive its context. A helper that explains one option shows only while that option is chosen: put the text on the option (`data-helper`) and point the select's `aria-describedby` at an `.fc-helper`; `bindOptionHelpers()` in `js/forms.mjs` fills it and empties it to match. The helper keeps its one line reserved while empty, so choosing an option never shifts the form (owner feedback); option helpers are one line, at most. Options that explain themselves ("Every day") carry no helper. Helpers that apply to every option stay static.

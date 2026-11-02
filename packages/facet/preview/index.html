@@ -303,7 +303,7 @@
       <h3 class="text-heading-20">Slate</h3>
       <p class="fc-status">
         <span class="fc-status-dot" data-state="live" aria-hidden="true"></span>
-        <span>Odds updated <time class="fc-time fc-has-tip" id="data-time" tabindex="0" aria-describedby="data-time-card">2 min ago</time></span>
+        <span>Odds updated <time class="fc-time fc-has-tip" id="data-time" tabindex="0" aria-describedby="data-time-card" data-relative>2 min ago</time></span>
       </p>
     </div>
 
@@ -810,7 +810,7 @@
         <figure class="fc-chart" id="ch-line" role="img"></figure>
       </div>
       <footer class="fc-chart-card-footer">
-        <p class="fc-freshness"><span class="fc-status-dot" data-state="live" aria-hidden="true"></span><span>Updated <time class="fc-has-tip" datetime="2026-11-02T18:05:12-07:00" title="Nov 2, 2026, 6:05:12 PM MST">1 min ago</time></span></p>
+        <p class="fc-freshness"><span class="fc-status-dot" data-state="live" aria-hidden="true"></span><span>Updated <time class="fc-has-tip" datetime="2026-11-02T18:05:12-07:00" title="Nov 2, 2026, 6:05:12 PM MST" data-relative>1 min ago</time></span></p>
         <button class="fc-button" data-variant="secondary" data-size="small" type="button">Create alert</button>
       </footer>
     </article>
@@ -888,7 +888,7 @@
         <ol class="fc-rank-list" data-striped id="ch-books" aria-labelledby="ch-books-h"></ol>
       </div>
       <footer class="fc-chart-card-footer">
-        <p class="fc-freshness"><span class="fc-status-dot" data-state="live" aria-hidden="true"></span><span>Updated <time class="fc-has-tip" datetime="2026-11-02T18:05:12-07:00" title="Nov 2, 2026, 6:05:12 PM MST">1 min ago</time>. Odds can be up to 2 min old.</span></p>
+        <p class="fc-freshness"><span class="fc-status-dot" data-state="live" aria-hidden="true"></span><span>Updated <time class="fc-has-tip" datetime="2026-11-02T18:05:12-07:00" title="Nov 2, 2026, 6:05:12 PM MST" data-relative>1 min ago</time>. Odds can be up to 2 min old.</span></p>
       </footer>
     </article>
 
@@ -1193,8 +1193,8 @@
       if (o.xLabels) {
         const ly = h - 4;
         if (o.xLabels.length === 2 && typeof o.xLabels[0] === 'string') {
-          text(svg, p.x0, ly, o.xLabels[0], { class: 'fc-chart-tick', 'data-time': '', 'text-anchor': 'start' });
-          text(svg, p.x1, ly, o.xLabels[1], { class: 'fc-chart-tick', 'data-time': '', 'text-anchor': 'end' });
+          text(svg, p.x0, ly, o.xLabels[0], { class: 'fc-chart-tick', 'text-anchor': 'start' });
+          text(svg, p.x1, ly, o.xLabels[1], { class: 'fc-chart-tick', 'text-anchor': 'end' });
         } else {
           // Labels at either end align to the plot edge so they never overhang it.
           for (const l of o.xLabels) {
@@ -1448,7 +1448,7 @@
             </div>
             <div class="fc-list-row-aside"><span class="fc-status"><span class="fc-status-dot" data-state="live"></span>Connected</span></div>
             <div class="fc-list-row-actions">
-              <time class="fc-timestamp" datetime="2026-11-02T18:00-05:00" title="Monday, Nov 2, 2026, 6:00 PM ET">Last used 2 min ago</time>
+              <time class="fc-timestamp" datetime="2026-11-02T18:00-05:00" title="Monday, Nov 2, 2026, 6:00 PM ET" data-relative>Last used 2 min ago</time>
               <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="More actions for DraftKings" data-menu="Test|Rotate key|Disconnect!"><svg aria-hidden="true"><use href="#lf-more"/></svg></button>
             </div>
           </li>
@@ -1460,7 +1460,7 @@
             </div>
             <div class="fc-list-row-aside"><span class="fc-status"><span class="fc-status-dot" data-state="failed"></span>Failed</span></div>
             <div class="fc-list-row-actions">
-              <time class="fc-timestamp" datetime="2026-11-02T15:04-05:00" title="Monday, Nov 2, 2026, 3:04 PM ET">Last used 3 hr ago</time>
+              <time class="fc-timestamp" datetime="2026-11-02T15:04-05:00" title="Monday, Nov 2, 2026, 3:04 PM ET" data-relative>Last used 3 hr ago</time>
               <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="More actions for FanDuel" data-menu="Test|Rotate key|Disconnect!"><svg aria-hidden="true"><use href="#lf-more"/></svg></button>
             </div>
             <div class="fc-list-row-note">
@@ -1501,7 +1501,7 @@
             </div>
             <div class="fc-list-row-aside"><span class="fc-status"><span class="fc-status-dot" data-state="live"></span>Connected</span></div>
             <div class="fc-list-row-actions">
-              <time class="fc-timestamp" datetime="2026-11-02T17:58-05:00" title="Monday, Nov 2, 2026, 5:58 PM ET">Last used 4 min ago</time>
+              <time class="fc-timestamp" datetime="2026-11-02T17:58-05:00" title="Monday, Nov 2, 2026, 5:58 PM ET" data-relative>Last used 4 min ago</time>
               <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="More actions for SportsDataIO" data-menu="Test|Rotate key|Disconnect!"><svg aria-hidden="true"><use href="#lf-more"/></svg></button>
             </div>
           </li>
@@ -1551,7 +1551,7 @@
             </div>
             <button class="fc-button" data-variant="secondary" data-size="small" type="button">Rotate key</button>
           </div>
-          <p class="fc-meta"><span>Added <time class="fc-timestamp" datetime="2026-10-02" title="Friday, Oct 2, 2026">Oct 2</time></span><span>Last used <time class="fc-timestamp" datetime="2026-11-02T17:58-05:00" title="Monday, Nov 2, 2026, 5:58 PM ET">4 min ago</time></span></p>
+          <p class="fc-meta"><span>Added <time class="fc-timestamp" datetime="2026-10-02" title="Friday, Oct 2, 2026">Oct 2</time></span><span>Last used <time class="fc-timestamp" datetime="2026-11-02T17:58-05:00" title="Monday, Nov 2, 2026, 5:58 PM ET" data-relative>4 min ago</time></span></p>
         </div>
       </div>
     </div>
@@ -1711,10 +1711,10 @@
         <section class="fc-feed-group" aria-labelledby="lf-day-0">
           <h4 class="fc-feed-heading" id="lf-day-0">Today</h4>
           <ul class="fc-feed-list" role="list">
-            <li class="fc-feed-row"><span class="fc-feed-icon" title="Scheduler"><svg aria-hidden="true"><use href="#lf-clock"/></svg></span><span class="fc-feed-text"><strong>Odds pull</strong> completed for <strong>Week 8</strong>, <strong>31 markets</strong></span><time class="fc-feed-time fc-timestamp" datetime="2026-11-02T17:58-05:00" title="Monday, Nov 2, 2026, 5:58 PM ET">4 min ago</time></li>
-            <li class="fc-feed-row"><span class="fc-feed-icon" title="You"><svg aria-hidden="true"><use href="#lf-user"/></svg></span><span class="fc-feed-text"><strong>You</strong> created an <strong>export key</strong></span><time class="fc-feed-time fc-timestamp" datetime="2026-11-02T17:44-05:00" title="Monday, Nov 2, 2026, 5:44 PM ET">18 min ago</time></li>
-            <li class="fc-feed-row"><span class="fc-feed-icon" title="You"><svg aria-hidden="true"><use href="#lf-user"/></svg></span><span class="fc-feed-text"><strong>You</strong> changed <strong>max stake</strong> from <strong>$75</strong> to <strong>$50</strong></span><time class="fc-feed-time fc-timestamp" datetime="2026-11-02T16:02-05:00" title="Monday, Nov 2, 2026, 4:02 PM ET">2 hr ago</time></li>
-            <li class="fc-feed-row"><span class="fc-feed-icon" title="Sportsbook"><svg aria-hidden="true"><use href="#lf-ticket"/></svg></span><span class="fc-feed-text"><strong>FanDuel</strong> rejected the <strong>data key</strong></span><time class="fc-feed-time fc-timestamp" datetime="2026-11-02T15:04-05:00" title="Monday, Nov 2, 2026, 3:04 PM ET">3 hr ago</time></li>
+            <li class="fc-feed-row"><span class="fc-feed-icon" title="Scheduler"><svg aria-hidden="true"><use href="#lf-clock"/></svg></span><span class="fc-feed-text"><strong>Odds pull</strong> completed for <strong>Week 8</strong>, <strong>31 markets</strong></span><time class="fc-feed-time fc-timestamp" datetime="2026-11-02T17:58-05:00" title="Monday, Nov 2, 2026, 5:58 PM ET" data-relative>4 min ago</time></li>
+            <li class="fc-feed-row"><span class="fc-feed-icon" title="You"><svg aria-hidden="true"><use href="#lf-user"/></svg></span><span class="fc-feed-text"><strong>You</strong> created an <strong>export key</strong></span><time class="fc-feed-time fc-timestamp" datetime="2026-11-02T17:44-05:00" title="Monday, Nov 2, 2026, 5:44 PM ET" data-relative>18 min ago</time></li>
+            <li class="fc-feed-row"><span class="fc-feed-icon" title="You"><svg aria-hidden="true"><use href="#lf-user"/></svg></span><span class="fc-feed-text"><strong>You</strong> changed <strong>max stake</strong> from <strong>$75</strong> to <strong>$50</strong></span><time class="fc-feed-time fc-timestamp" datetime="2026-11-02T16:02-05:00" title="Monday, Nov 2, 2026, 4:02 PM ET" data-relative>2 hr ago</time></li>
+            <li class="fc-feed-row"><span class="fc-feed-icon" title="Sportsbook"><svg aria-hidden="true"><use href="#lf-ticket"/></svg></span><span class="fc-feed-text"><strong>FanDuel</strong> rejected the <strong>data key</strong></span><time class="fc-feed-time fc-timestamp" datetime="2026-11-02T15:04-05:00" title="Monday, Nov 2, 2026, 3:04 PM ET" data-relative>3 hr ago</time></li>
           </ul>
         </section>
         <section class="fc-feed-group" aria-labelledby="lf-day-1">
@@ -1942,7 +1942,7 @@
       schedLive.textContent = name + ' is running.';
       setTimeout(() => {
         setStatus(row, before.state === 'paused' ? 'paused' : 'succeeded', before.state === 'paused' ? 'Paused' : 'Succeeded');
-        $('[data-last]', row).innerHTML = '<span class="fc-schedule-label">Last run</span><time class="fc-timestamp">Just now</time><span class="fc-schedule-detail">3.8 s</span>';
+        $('[data-last]', row).innerHTML = '<span class="fc-schedule-label">Last run</span><time class="fc-timestamp" data-relative>Just now</time><span class="fc-schedule-detail">3.8 s</span>';
         $('.fc-list-row-note', row)?.remove();
         btn.removeAttribute('aria-disabled');
         schedLive.textContent = name + ' finished in 3.8 seconds.';

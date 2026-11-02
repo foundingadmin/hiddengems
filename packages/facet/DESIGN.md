@@ -28,7 +28,7 @@ Vercel handles dense data well because of a few disciplines applied without exce
 | Color steps | 100 to 300 fills (default, hover, active), 400 to 600 borders, 700 to 800 solid fills, 900 secondary text, 1000 primary text | `--ds-<scale>-<step>` |
 | Backgrounds | Background 1 almost everywhere; Background 2 sparingly for subtle separation | `--fc-surface-canvas`, `--fc-surface-subtle` |
 | Borders | Solid gray-400 by default; gray-alpha only when the edge must blend. Draw each border once | `--fc-border-*` |
-| Type | Use a Facet role class, never a loose font-size. Sans for everything people read, including numbers (tabular figures); Mono for every time and for machine values such as IDs, keys and cron expressions | `.text-heading-*`, `.text-label-*`, `.text-copy-*`, `.text-button-*` |
+| Type | Use a Facet role class, never a loose font-size. Sans for everything people read, including numbers (tabular figures) and relative times; Mono for clock and calendar times and for machine values such as IDs, keys and cron expressions | `.text-heading-*`, `.text-label-*`, `.text-copy-*`, `.text-button-*` |
 | Numbers | Tabular figures anywhere values are compared | `.tabular`, `.fc-num` |
 | Controls | Heights 32 (small), 36 (default), 40 (large), 24 (tiny icon) | `--fc-control-*` |
 | Table rows | Header 36, body 40, compact 32 `[F]` | `--fc-row-*` |
@@ -94,7 +94,7 @@ Owner decisions on where a rank 1 source and an earlier Facet rule disagreed (20
 | Topic | Rule |
 |---|---|
 | Icon tiles | Allowed wherever one speeds recognition: empty states, list and connection rows, entity leads, integrations. Neutral only (`.fc-icon-tile`), one per item, never decorative or colored |
-| Times | Always mono: kickoff, "2 min ago", next run, log and feed times, time axes. `time`, `.fc-time` and `.fc-timestamp` set it (base.css). Revised 2026-11-02, replacing sans times |
+| Times | Clock and calendar times are mono ("11:00 AM", "Today 6:05 PM", "Oct 31", log times, clock-time axes). Relative times are words and stay sans ("4 min ago", "in 5 min", "12h ago"), marked `data-relative`. Set in base.css |
 | Legends | Multi-series charts default to a legend that carries each series' total (`.fc-legend`). Single-series charts use a direct label |
 | Marketing moments | Onboarding, week openings, explainers and recaps may use `data-surface="marketing"`: display type, roomier spacing, pill buttons and one animated field per view (`patterns/surfaces.md`). Hue decoration and gradient text stay banned |
 | Brand accent | One accent per product through `--fc-brand-*`; Hidden Gems maps it to purple, its gem color. Focus, text selection, native `accent-color`, and checked or on controls (toggle, checkbox, choicebox, menu checks) all read it, so rebranding is four tokens. Primary buttons, tabs, nav and links stay neutral |

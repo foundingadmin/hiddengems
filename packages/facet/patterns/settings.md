@@ -78,7 +78,7 @@ A card with nothing useful to say keeps the footer for its button alone. A read-
 - Subtitles say what the setting does in one sentence. The consequence line says what changes. Neither restates the title.
 - Buttons: a bare verb when the card names the object ("Save", "Rotate key" names a different object). Verb + noun for destructive, paid or toolbar actions.
 - Status words are fixed per object: Connected, Not connected, Failed, Paused, Running.
-- Times are mono (`.fc-timestamp`, "2 min ago", "Oct 2"), with the exact timestamp in `title`. Machine values are mono: cron (`*/5 9-22 * * 0,1,4`), masked keys (`•••• 3f9a`), IDs.
+- Clock and calendar times are mono (`.fc-timestamp`, "Oct 2", "6:00 PM"); relative times ("2 min ago") add `data-relative` and stay sans. The exact timestamp goes in `title`. Machine values are mono: cron (`*/5 9-22 * * 0,1,4`), masked keys (`•••• 3f9a`), IDs.
 - Keys are never shown again after saving: masked, last four visible, with "Added Oct 2, last used 2 min ago".
 
 ## Hidden Gems pages

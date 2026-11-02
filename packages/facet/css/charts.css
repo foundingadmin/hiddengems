@@ -353,6 +353,14 @@
    <div class="fc-progress" role="progressbar" ...><span class="fc-progress-fill" style="--value:62"></span>
    <span class="fc-progress-stop" style="--at:25"></span></div> */
 .fc-progress { --_c: var(--fc-surface-contrast); position: relative; }
+/* Segments [F] (owner question, 2026-11-02): a count of a few parallel items (2 to 5) that finish
+   independently, such as books pulled. Equal blocks with 4px gaps, one per item, no order implied.
+   Stops are different: thin lines on a continuous bar for ordered stages you wait through. */
+.fc-progress[data-segments] {
+  --_seg: calc((100% + 4px) / var(--n, 3));
+  -webkit-mask: repeating-linear-gradient(90deg, black 0 calc(var(--_seg) - 4px), transparent 0 var(--_seg));
+          mask: repeating-linear-gradient(90deg, black 0 calc(var(--_seg) - 4px), transparent 0 var(--_seg));
+}
 .fc-progress[data-type="success"],   .fc-progress[data-level="ok"]      { --_c: var(--fc-status-success-solid); }
 .fc-progress[data-type="warning"],   .fc-progress[data-level="warning"] { --_c: var(--fc-status-warning-solid); }
 .fc-progress[data-type="error"],     .fc-progress[data-level="error"]   { --_c: var(--fc-status-error-solid); }

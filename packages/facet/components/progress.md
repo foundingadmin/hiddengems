@@ -36,6 +36,7 @@ Stops (the thin step lines) mean one thing: this job runs in ordered stages you 
 - **Use them** for one job with 2 to 5 ordered stages, such as a scoring run: pull odds, match markets, score, publish. More than 5 stages is a checklist, not a bar.
 - **Never** on a single-stage job (uploads, a pull), a quota against a limit (Meter), or a countdown.
 - **The fill measures the whole job.** Each stop sits where its stage starts, at that stage's usual share of the work; equal spacing only when shares are unknown. In the specimen, stages 1 and 2 are done (50%) and scoring is 182 of 412 through stage 3, so the fill sits at 61%.
+- **Stops versus segments.** Stops mark ordered stages of one job. A count of a few parallel items that finish independently (books pulled, 3 of 3) uses segments instead (`data-segments`, `--n`): equal blocks with 4px gaps (stops are 1px lines), one per item, no order implied. Above 5 items, use a plain bar with the count.
 - **The text names the current stage and its own count** ("Scoring 182 of 412 markets", "Step 3 of 4"), and the step label carries a helper listing every stage in order.
 - Always show text naming the work and units (`Uploading 12 of 30 files`). On completion, switch to a completion state (toast or row). Do not write `complete`.
 - Give it an accessible name (`aria-label` or `aria-labelledby`). Throttle `aria-valuenow` updates to about once per second. Give each stop an `ariaLabel`.

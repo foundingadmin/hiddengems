@@ -33,9 +33,20 @@ Default, filled, disabled. A Note has no dismissed state by design.
 - `NoteAction` holds one CTA, never two.
 - `NoteLabel` is a 1–2 word Title Case topic (`Rate Limit`). No `Heads Up` or `FYI`. Content is one active-voice sentence that states the impact.
 
-## Hidden Gems usage
-- **Data-quality caveats** next to a bet's signal breakdown: `variant="warning" size="small"` with `<NoteLabel>Stale Odds</NoteLabel>` and `Last price from this book is over 30 minutes old.`
-- **Model limitations** above a market section (e.g. `Low Sample`: `Fewer than 5 games of usage data for this player.`): default or `secondary`.
-- **Responsible-gambling / jurisdiction notices**: `secondary`, persistent, one per page.
-- Watch out for `variant="success"` rendering blue. For "positive edge confirmed", decide whether Facet keeps the reference's blue or adds a green-success option (a deviation).
-- Use small size in table-adjacent panels. Keep medium for detail sheets.
+## Choosing a note in Facet
+
+Color comes from what the note means, and fill comes from how urgent it is. Start gray and hollow. The live matrix is in the Components section of `preview/index.html`.
+
+| Type | When | Hollow (in context) | Filled (act now, one per view) |
+|---|---|---|---|
+| Default (gray) | Context with no state: method, source or scope | Estimates use the last 3 to 7 games, so treat small gaps as directional. | Sample data. These picks are not this week's slate. |
+| Info (blue) | How something works, or what happens next | Odds refresh every 5 minutes on game days. | Inactives post at 9:30 AM MT, and verdicts update on their own. |
+| Success (green) | A check the reader started has passed | All 3 books refreshed. | Slate locked with 7 picks and $50 staked. |
+| Warning (amber) | A consequence to weigh before acting | Gesicki depends on Chase and Higgins playing. | The line moved past our fair price. [Re-check] |
+| Error (red) | A problem to fix, or data that failed | Couldn't load Burke's snap counts. | FanDuel failed to refresh, so its prices are 3 hours old. [Retry] |
+
+- **Hollow** is the default: it sits beside the thing it describes and is read when relevant.
+- **Filled** is for a note that must win attention because it blocks the next decision or can't be missed. One filled note per view; a second one means the page needs restructuring.
+- **Color** follows the hue allocation in `DESIGN.md`. Success is green in Facet (the reference renders it blue).
+- Freshness on a value uses a status dot, not a note. A note appears only when stale or failed data changes what the reader should do.
+- No title. One sentence in active voice naming the impact; an optional 1 to 2 word label never repeated by the sentence. Small size in table-adjacent panels, default size in detail views.

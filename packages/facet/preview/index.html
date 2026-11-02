@@ -85,6 +85,21 @@
   .sp-lesson p { max-width: 72ch; }
   .sp-lesson:not(:first-of-type) { border-top: 1px solid var(--ds-gray-400); padding-top: 32px; }
   .sp-onecol { grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+  .sp-ngrid { display: flex; flex-direction: column; }
+  .sp-nrow { display: grid; grid-template-columns: minmax(180px, 220px) minmax(0, 1fr) minmax(0, 1fr); gap: 16px; padding: 16px 0; border-top: 1px solid var(--ds-gray-400); align-items: start; }
+  .sp-nhead { border-top: 0; padding-top: 0; }
+  .sp-nhead span { display: flex; flex-direction: column; gap: 2px; font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); }
+  .sp-nhead strong, .sp-ntype strong { font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
+  .sp-ntype { display: flex; flex-direction: column; gap: 2px; font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); }
+  .sp-ncell { min-width: 0; }
+  .sp-two-up { grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 360px)); }
+  .sp-ncell-label { display: none; }
+  .sp-ncell .fc-note-action { pointer-events: none; }
+  @media (max-width: 760px) {
+    .sp-nrow { grid-template-columns: 1fr; gap: 10px; }
+    .sp-nhead { display: none; }
+    .sp-ncell-label { display: block; margin-bottom: 6px; font: 400 12px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
+  }
   .sp-notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 12px; }
   .sp-notes strong { font-weight: 500; }
   legend.fc-fieldset-title { float: left; width: 100%; padding: 0; }
@@ -468,15 +483,52 @@
         <div class="sp-wrap"><span class="text-label-13" style="color:var(--fc-text-secondary)">Command menu</span><kbd class="fc-kbd">⌘</kbd><kbd class="fc-kbd">K</kbd></div>
       </figure>
       <figure>
-        <figcaption>Tabs (secondary) and notes</figcaption>
+        <figcaption>Secondary tabs</figcaption>
         <div class="fc-tabs" data-variant="secondary" role="tablist"><button class="fc-tab" role="tab" aria-selected="true">Today</button><button class="fc-tab" role="tab" aria-selected="false">Signals</button><button class="fc-tab" role="tab" aria-selected="false">Evidence</button></div>
-        <div class="fc-note" data-type="info" data-size="small"><span>Small info note, 13px.</span></div>
-        <div class="fc-note" data-type="success" data-fill><span>Odds refreshed for all books.</span></div>
       </figure>
       <figure>
         <figcaption>Empty state</figcaption>
         <div class="fc-empty"><strong>No gems yet for Week 9</strong><span class="text-copy-14">Odds open Tuesday. The slate fills in as lines post.</span><button class="fc-button" data-variant="secondary" data-size="small">Notify me</button></div>
       </figure>
+    </div>
+  
+    <div class="fc-stack" id="notes-guide" style="--fc-gap:16px">
+      <div class="sp-lesson">
+        <h3 class="text-heading-20">Choosing a note</h3>
+        <p class="text-copy-14">Color comes from what the note means, and fill comes from how urgent it is.</p>
+      </div>
+      <div class="sp-ngrid" role="table" aria-label="Note types by treatment">
+        <div class="sp-nrow sp-nhead" role="row"><span role="columnheader"></span><span role="columnheader"><strong>Hollow</strong>In context, read when relevant</span><span role="columnheader"><strong>Filled</strong>Must win attention now</span></div>
+        <div class="sp-nrow" role="row">
+          <div class="sp-ntype" role="rowheader"><strong>Default</strong><span>Context with no state: method, source or scope.</span></div>
+          <div class="sp-ncell" role="cell"><span class="sp-ncell-label">Hollow</span><div class="fc-note"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span>Estimates use the last 3 to 7 games, so treat small gaps as directional.</span></div></div>
+          <div class="sp-ncell" role="cell"><span class="sp-ncell-label">Filled</span><div class="fc-note" data-fill><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span>Sample data. These picks are not this week's slate.</span></div></div>
+        </div>
+        <div class="sp-nrow" role="row">
+          <div class="sp-ntype" role="rowheader"><strong>Info</strong><span>How something works, or what happens next.</span></div>
+          <div class="sp-ncell" role="cell"><span class="sp-ncell-label">Hollow</span><div class="fc-note" data-type="info"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span>Odds refresh every 5 minutes on game days.</span></div></div>
+          <div class="sp-ncell" role="cell"><span class="sp-ncell-label">Filled</span><div class="fc-note" data-type="info" data-fill><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span>Inactives post at 9:30 AM MT, and verdicts update on their own.</span></div></div>
+        </div>
+        <div class="sp-nrow" role="row">
+          <div class="sp-ntype" role="rowheader"><strong>Success</strong><span>A check the reader started has passed.</span></div>
+          <div class="sp-ncell" role="cell"><span class="sp-ncell-label">Hollow</span><div class="fc-note" data-type="success"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M6.9 10.6 4.4 8.1l1-1 1.5 1.5 3.7-3.7 1 1z"/></svg><span>All 3 books refreshed.</span></div></div>
+          <div class="sp-ncell" role="cell"><span class="sp-ncell-label">Filled</span><div class="fc-note" data-type="success" data-fill><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M6.9 10.6 4.4 8.1l1-1 1.5 1.5 3.7-3.7 1 1z"/></svg><span>Slate locked with 7 picks and $50 staked.</span></div></div>
+        </div>
+        <div class="sp-nrow" role="row">
+          <div class="sp-ntype" role="rowheader"><strong>Warning</strong><span>A consequence to weigh before acting.</span></div>
+          <div class="sp-ncell" role="cell"><span class="sp-ncell-label">Hollow</span><div class="fc-note" data-type="warning"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1 15 14H1z" opacity=".25"/><path d="M7.25 6h1.5v4h-1.5zM7.25 11h1.5v1.5h-1.5z"/></svg><span>Gesicki depends on Chase and Higgins playing.</span></div></div>
+          <div class="sp-ncell" role="cell"><span class="sp-ncell-label">Filled</span><div class="fc-note" data-type="warning" data-fill data-action><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1 15 14H1z" opacity=".25"/><path d="M7.25 6h1.5v4h-1.5zM7.25 11h1.5v1.5h-1.5z"/></svg><span>The line moved past our fair price.</span><button class="fc-button fc-note-action" data-variant="secondary" data-size="small" type="button" tabindex="-1">Re-check</button></div></div>
+        </div>
+        <div class="sp-nrow" role="row">
+          <div class="sp-ntype" role="rowheader"><strong>Error</strong><span>A problem to fix, or data that failed.</span></div>
+          <div class="sp-ncell" role="cell"><span class="sp-ncell-label">Hollow</span><div class="fc-note" data-type="error"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 4h1.5v5h-1.5zM7.25 10.5h1.5V12h-1.5z"/></svg><span>Couldn't load Burke's snap counts.</span></div></div>
+          <div class="sp-ncell" role="cell"><span class="sp-ncell-label">Filled</span><div class="fc-note" data-type="error" data-fill data-action><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 4h1.5v5h-1.5zM7.25 10.5h1.5V12h-1.5z"/></svg><span>FanDuel failed to refresh, so its prices are 3 hours old.</span><button class="fc-button fc-note-action" data-variant="secondary" data-size="small" type="button" tabindex="-1">Retry</button></div></div>
+        </div>
+      </div>
+      <dl class="fc-description sp-two-up">
+        <div><dt>Start here</dt><dd>Gray and hollow<small>Most notes are context, not alarms</small></dd></div>
+        <div><dt>Limit</dt><dd>One filled note per view<small>A second one means the page needs restructuring</small></dd></div>
+      </dl>
     </div>
   </section>
 </main>

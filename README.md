@@ -1,20 +1,29 @@
 # Hidden Gems
 
 A research tool for NFL betting: it pulls market data, correlates quantitative signals with
-qualitative reporting, and ranks available sportsbook bets as custom "gem" tiers.
+qualitative reporting, and grades every anytime TD prop with one 0 to 100 gem rating.
 
 ## Repository
 
 ```
-packages/facet/   Facet, the design system (start with packages/facet/DESIGN.md)
-apps/web/         The Hidden Gems app (placeholder until the UI migrates in)
-docs/             Project docs (deployment plan, and soon architecture and data)
+apps/web/          The app: Gems, Slips, Ask the Jeweler (Next.js on Vercel with cron)
+packages/core/     Domain rules: odds math, gem rating, Recommended order, snapshot schedule
+packages/db/       Postgres schema, migrations, client
+packages/ingest/   Providers, jobs, the run log
+packages/facet/    Facet, the design system (start with packages/facet/DESIGN.md)
+docs/              Architecture and deployment
 ```
 
-Status: Phase 1 (design system) in review. Phase 2 (repo scaffold for data, ingestion,
-history, logs and API integrations) follows design system approval.
+## Start
 
-## Quick look
+```bash
+pnpm install
+pnpm dev
+```
 
-Open `packages/facet/preview/index.html` in a browser for the living specimen, or rebuild
-tokens with `node packages/facet/scripts/build.mjs`.
+Open http://localhost:3000 and choose Pull everything. With no keys it runs on sample data and a
+local Postgres (PGlite), so nothing else is needed. For live data, copy `.env.example` to
+`apps/web/.env.local` and fill in the keys.
+
+How data moves, where history lives and how failures are reported: `docs/architecture.md`.
+Deploying: `docs/vercel-deployment.md`.

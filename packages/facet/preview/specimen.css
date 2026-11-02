@@ -1,4 +1,5 @@
 /* Facet specimen layout, shared by the Design, Screens and Content pages. Page-owned, not part of Facet. */
+:root { --fc-scroll-offset: 136px; }
 /* Page-owned layout only. Everything visual comes from Facet. */
 .sp-header { display: flex; align-items: center; gap: 24px; height: 64px; }
 .sp-header > .fc-segmented { margin-left: auto; }

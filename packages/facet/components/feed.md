@@ -51,3 +51,12 @@ Owner question, 2026-11-02. Color the outcome, not the line. It is a rule for ev
 - Icons, actors and the rest of the sentence stay gray. Routine actions (you changed a setting, created a key, disconnected a book) never take color.
 - At most one colored token per line. A feed where every line is colored has stopped meaning anything.
 - A feed is history, so it never carries the fix. The action lives on the thing's current state (the connection row's "Rotate key").
+
+## Jump to the source `[F]`
+
+Owner question, 2026-11-02. A line whose subject lives elsewhere in the app links to it.
+
+- The subject becomes the line's one link (`a.fc-feed-subject`) and points at the exact record (the FanDuel connection row, the injuries schedule, the alert, the settled bet in History), never the top of a page.
+- The link covers the whole row. At rest a gray chevron at the row's end says it opens. On hover the row fills and the chevron darkens and slides through, like the action link arrow.
+- Lines with nowhere to go have no chevron, so the chevron always means something.
+- Arriving, the record glows in the brand tint for 1.8 seconds and settles (`:target`, `fc-arrive`); reduced motion shows a focus outline instead. Deep links land clear of sticky headers through `--fc-scroll-offset`.

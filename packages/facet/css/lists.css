@@ -207,8 +207,9 @@
 }
 .fc-feed-list { margin: 0; padding: 0; list-style: none; }
 .fc-feed-row {
+  position: relative;
   display: grid;
-  grid-template-columns: var(--fc-space-5) minmax(0, 1fr) auto;
+  grid-template-columns: var(--fc-space-5) minmax(0, 1fr) auto 12px;
   column-gap: var(--fc-space-3);
   align-items: start;
   padding-block: var(--fc-space-2);
@@ -219,6 +220,36 @@
 .fc-feed-icon svg { width: 16px; height: 16px; }
 .fc-feed-text { min-width: 0; overflow-wrap: anywhere; }
 .fc-feed-text strong { font-weight: 500; color: var(--fc-text-primary); }
+/* Jump to the source (owner question, 2026-11-02). A line whose subject lives somewhere else in the app makes
+   that subject its one link (.fc-feed-subject), pointing at the exact record, not the top of a page. The link
+   covers the whole row; a gray chevron at the row's end says "this opens", and on hover the row fills and the
+   chevron darkens and passes through. Lines with nowhere to go have no chevron. */
+.fc-feed-subject { font-weight: 500; color: var(--fc-text-primary); text-decoration: none; border-radius: var(--fc-radius-xs); }
+.fc-feed-subject::before { content: ""; position: absolute; z-index: 1; inset: 0; border-radius: var(--fc-radius-sm); }
+.fc-feed-row:has(.fc-feed-subject) { margin-inline: calc(-1 * var(--fc-space-2)); padding-inline: var(--fc-space-2); border-radius: var(--fc-radius-sm); transition: background-color var(--fc-duration-fast) ease; }
+.fc-feed-subject:focus-visible { box-shadow: none; }
+.fc-feed-subject:focus-visible::before { box-shadow: var(--ds-focus-ring); }
+.fc-feed-row:has(.fc-feed-subject)::after {
+  content: "";
+  grid-column: 4;
+  grid-row: 1;
+  align-self: center;
+  width: 12px;
+  height: 12px;
+  background: var(--fc-text-secondary);
+  opacity: 0.6;
+  -webkit-mask: var(--_chev) 0 0 / 12px 12px no-repeat;
+          mask: var(--_chev) 0 0 / 12px 12px no-repeat;
+  --_chev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E");
+  --_dx: 12px; --_dy: 0px;
+}
+.fc-feed-row:has(.fc-feed-subject):hover { background: var(--fc-surface-fill); }
+.fc-feed-row:has(.fc-feed-subject):hover::after { opacity: 1; background: var(--fc-text-primary); animation: fc-arrow-pass 360ms var(--fc-ease-swift); }
+@media (prefers-reduced-motion: reduce) { .fc-feed-row:hover::after { animation: none; } }
+/* Arriving from a link: the record glows in the brand tint, then settles (focus is a brand moment). */
+:is(.fc-list-row, .fc-table tr, .fc-chart-card, .fc-fieldset):target { animation: fc-arrive 1.8s ease-out; }
+@keyframes fc-arrive { from { background-color: color-mix(in srgb, var(--fc-focus-color) 14%, transparent); } }
+@media (prefers-reduced-motion: reduce) { :is(.fc-list-row, .fc-table tr, .fc-chart-card, .fc-fieldset):target { animation: none; outline: 2px solid var(--fc-focus-color); outline-offset: -2px; } }
 /* Outcome (owner question, 2026-11-02): color the outcome, not the line. Only the one token that is the
    result takes color, and it always carries its own word or sign. Icons, actors and routine actions stay gray.
    good: a win or gain (edge green). bad: a loss, or a failure yours to fix (red). warn: a failure out of

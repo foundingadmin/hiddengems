@@ -64,6 +64,9 @@ time, .fc-time, .fc-timestamp {
 }
 time[data-relative], .fc-time[data-relative], .fc-timestamp[data-relative] { font-family: var(--fc-font-sans); font-feature-settings: normal; }
 
+/* Deep links land clear of sticky headers: a shell with a sticky top bar sets --fc-scroll-offset. */
+:target { scroll-margin-top: var(--fc-scroll-offset, var(--fc-space-4)); }
+
 /* Brand moments: selection, focus and native controls all read the brand accent (--fc-brand-*). */
 :root { accent-color: var(--fc-control-on); }
 ::selection {

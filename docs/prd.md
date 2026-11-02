@@ -3,7 +3,7 @@
 Version 1.1 · updated Mon Nov 2 2026, 4 AM MT, with Josh's answers and comments · owner Josh Titus · grading model Hidden Gems v3.0 plus implied team points
 Rating lab, five rating formulas on the Week 9 board: https://claude.ai/artifact/1BocBGt7apEYLd9NscUpit
 Companion lookbook with competitor research, wireframes and the color wheel: https://claude.ai/artifact/AkiGCJdL8UFkCEo55nrJKo
-Feature wireframes, 10 phone screens: https://claude.ai/artifact/98F927ZbiXyWJsb978uKva
+Feature wireframes, 8 desktop and 8 phone screens on Facet, in the repo at docs/wireframes: https://claude.ai/artifact/98F927ZbiXyWJsb978uKva
 
 ---
 
@@ -15,14 +15,14 @@ Nothing open. Next review: the rating formula after Week 9 grades on Tue Nov 10 
 
 ## Settled Mon Nov 2 2026
 
-1. **Hosting.** claude.ai artifact this season, launched from a home screen and dock icon so it opens like its own app (section 12).
+1. **Hosting.** Vercel, from the hiddengems repo (changed Mon Nov 2 2026 afternoon from the artifact plan). Claude Code builds all UI and app code from here on; this project leads product decisions and the PRD (section 12).
 2. **Scope by Sat Nov 7 2026.** Phases 0 and 1 as written. Week 9, Sun Nov 8, is the first measured Sunday.
 3. **Palette.** Violet brand, pushed forward and tweaked as we go. Gold is removed everywhere. The repo session's color system is integrated as the source of truth.
 4. **Notes name.** The Jeweler's notes, for now.
 5. **Price snapshots.** Done. Two scheduled tasks added, Saturday 7:47 PM and Sunday 8:43 AM, plus a snapshot command in the pipeline that logs each price point without touching the frozen read or the opening price.
 6. **DraftKings link.** Decoded from the link Josh sent (section 9, F3.6).
 7. **Backtest gates.** Implied team points passed and is live in the pipeline. Market consensus waits for multi book history to accumulate (F2.6).
-8. **Odds feed route.** This app has no cloud network setting, so the free odds feed runs through the built in browser on Josh's computer, same as the Outlier captures. Tested live Nov 2 2026: 1 credit per game, 497 of 500 left this month. Added to the Saturday and Sunday snapshot tasks as a shadow feed. The key is never committed to the repo, which is public.
+8. **Odds feed route.** On Vercel the app calls the free odds feed itself, from Vercel Cron on the snapshot schedule. Until then the shadow feed runs through the built in browser on Josh's computer, same as the Outlier captures. Tested live Nov 2 2026: 1 credit per game, 497 of 500 left this month. Added to the Saturday and Sunday snapshot tasks as a shadow feed. The key is never committed to the repo, which is public.
 9. **Rating formula (approved Nov 2 2026, revisit after Week 9 grades Tue Nov 10).** A gem must beat the posted price. Its number is edge × clarity, so a big edge with a murky read can't score high. The board sorts gems by hit chance × clarity. When nothing at your usual odds has an edge, the board says so and lists the real long shot gems below. Section 8.
 10. **One rating system.** The repo's Facet design system drops its four gem tiers (rough, cut, polished, flawless) for the single 0 to 100 rating, with purple intensity rising with the number. Docs updated in [pull request 4](https://github.com/foundingadmin/hiddengems/pull/4).
 
@@ -274,7 +274,7 @@ Realistic timeline math uses Claude Code plus your review.
 
 **F3.3 The Jeweler chat**
 - What: a drawer on every screen and an Ask the Jeweler button on each gem. Answers come in the brand voice, grounded in the card.
-- How: on claude.ai, the artifact's ask Claude capability on Josh's account. Each ask carries the card's data, since there's no memory between asks.
+- How: the Anthropic API from the Vercel app, with its own key. Each ask carries the card's data and the slip.
 - Acceptance: the answer cites the card's numbers. No placing or betting actions exist in the chat.
 - Estimates: human build 5 · Claude Code 2 · your review 1
 
@@ -384,26 +384,15 @@ Source: project doc claude/grading-v3-nflverse.md.
 
 # 12. Architecture and hosting
 
-**Chosen: Option A this season.**
+**Chosen Mon Nov 2 2026: Option B, a Vercel app from the hiddengems repo.** This replaces the artifact plan from earlier that day, so the build follows a normal repo, pull request and deploy workflow.
 
-**Launching it like its own app**
-- iPhone: open the app's link in Safari, tap Share, then Add to Home Screen. Name it Hidden Gems and keep Open as Web App on, so it opens full screen without Safari's bars. The home screen icon may show Claude's logo. For the violet gem icon, make a one step Shortcut (Open URLs with the app's link), add it to the home screen and pick the gem image as its icon. That route may open in Safari or the Claude app instead, so try both and keep the one that feels right.
-- Desktop (Comet): open the app's link, then menu, Save and share, Install page as app (or Create shortcut with Open as window). It gets its own window and dock icon.
-- Limitation: the page lives on claude.ai, so some Claude framing may still show. The only fully Claude free shell is Option B, which needs an Anthropic API key for the Jeweler.
-
-**Option A · claude.ai artifact**
-- The Jeweler runs through the artifact's ask Claude capability on Josh's account.
-- Slips, logs and snapshots live in the artifact's database.
-- The pipeline already runs from an artifact store.
-- Works on desktop and in the Claude app.
-- The design system tokens from the repo apply as CSS.
-
-**Option B · Vercel app from the hiddengems repo**
-- Full control, a custom domain, and the Geist based design system natively.
-- Needs an Anthropic API key, billed separately, for the Jeweler, plus more ops.
-- The right move if Hidden Gems goes public.
-
-Recommendation: A now. The repo stays the source of truth for the design system and the PRD, and the build ships as an artifact.
+- **Who builds.** Claude Code builds all UI and app code in the repo. This project leads product decisions and the PRD, and hands work over as briefs (docs/build-brief.md).
+- **Stack.** Next.js in `apps/web`, Postgres, ingest jobs and Vercel Cron, as scaffolded in pull request 3. Vercel Pro is confirmed. The app is password protected because it is private.
+- **Data.** nflverse for stats, The Odds API free plan for prices, pulled by Vercel Cron on the snapshot schedule (section 10).
+- **The Jeweler.** Runs through the Anthropic API with its own key, billed separately from the Claude plan.
+- **Keys.** All keys are Vercel Secrets, never committed to the repo, which is public.
+- **Moving off the old pipeline.** The dashboard store pipeline and its scheduled tasks keep running as a shadow until the app's own pulls match them for two Sundays. Then they retire, along with Outlier.
+- **Launching it like its own app.** Add the deployed URL to the iPhone home screen (Share, then Add to Home Screen) and install it as an app in Comet on desktop. With a real domain, no Claude framing shows.
 
 # 13. Control and safety rules
 
@@ -498,7 +487,7 @@ Geist and Geist Mono, following the Vercel Geist research in the hiddengems repo
 # 16. References
 
 - Lookbook with competitor research, feature cards, color wheel, palettes and the Jeweler's bench: https://claude.ai/artifact/AkiGCJdL8UFkCEo55nrJKo
-- Feature wireframes, 10 phone screens in Amethyst Night: https://claude.ai/artifact/98F927ZbiXyWJsb978uKva
+- Feature wireframes, 8 desktop and 8 phone screens on Facet: https://claude.ai/artifact/98F927ZbiXyWJsb978uKva
 - Rating lab: https://claude.ai/artifact/1BocBGt7apEYLd9NscUpit
 - Grading model doc: project doc claude/grading-v3-nflverse.md
 - Competitors reviewed: Outlier, Props.Cash, OddsJam, Action Network, Linemate, Rithmm, Unabated, Pikkit, RotoWire Break the Plane, FTA Prop Edge Tool, PropSignal, OddsShopper

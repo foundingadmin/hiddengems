@@ -1,6 +1,6 @@
 # Build brief · Hidden Gems screens v1
 
-Approved wireframes, Mon Nov 2 2026. Build these screens in the app. This brief says what to build and where the wireframes and the PRD overrule the Phase 2 scaffold (PR #3).
+Approved wireframes, Mon Nov 2 2026. Build these screens in the Vercel app (`apps/web`). This brief says what to build and where the wireframes and the PRD overrule the Phase 2 scaffold (PR #3).
 
 **Sources, in order**
 1. `docs/prd.md`, the product spec. It wins on product decisions: what a gem is, the rating, data sources, safety rules.
@@ -20,11 +20,13 @@ The boards are wireframes built from real Facet classes, so the markup can be li
    - Stats come from nflverse (PRD section 10), not SportsDataIO.
    - Prices come from The Odds API free plan: 500 credits a month, about 1 credit per game per event odds call.
    - A pull every 5 minutes would burn the month in hours. Use the snapshot cadence in the PRD instead: open, Sat 7:47 PM, Sun 8:43 AM, then freeze at kickoff. That's about 30 credits a week.
-   - Keep the Postgres and ingest stack as the Option B path. Do not spend credits on it yet.
-3. **Hosting this season is the artifact (PRD section 12, Option A).** Gems data comes from the existing pipeline: the Hidden Gem Scorecard dashboard store, https://claude.ai/artifact/4hAD8AoDqByyDPCnrvZ1Pr.
-   - The picks live in `datasets/picks`, whose `source.url` points to a JSON blob.
-   - The fields come from the `pipeline/build` script (`hgs.py`). Read that script for the schema before building cells.
-   - The Jeweler uses the artifact's ask Claude capability.
+   - Vercel Cron runs those pulls. The code may run often and let each job decide, as long as no Odds API call happens outside those times.
+3. **Hosting is Vercel (decided Nov 2 2026, PRD section 12, Option B).**
+   - The app is `apps/web` on Vercel, with the PR #3 stack: Postgres, the ingest jobs and Vercel Cron.
+   - Drop `apps/artifact`.
+   - Keys are Vercel env Secrets, never in the repo: `ODDS_API_KEY`, `ANTHROPIC_API_KEY` for the Jeweler, `CRON_SECRET`, `APP_PASSWORD`.
+   - The old pipeline (the Hidden Gem Scorecard dashboard store and its scheduled tasks) keeps running as a shadow until the app's own pulls match it for two Sundays. Then it retires.
+   - Its `pipeline/build` script (`hgs.py`) holds the working model math to port into `packages/core`.
 4. **Navigation.**
    - The rail is Gems, Slips, then "Ask the Jeweler" pinned at the bottom.
    - There is no Tray, Watchlist or Alerts in the primary nav. The scaffold's data health pages can stay as a quiet drill-in.

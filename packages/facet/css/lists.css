@@ -111,6 +111,8 @@
   gap: 0;
 }
 .fc-list[data-lanes] > .fc-list-row > .fc-list-row-aside > .fc-timestamp { font-size: 13px; line-height: 18px; color: var(--fc-text-secondary); }
+/* A detail under a dot + word aligns with the word, not the dot (owner feedback). */
+.fc-list[data-lanes] > .fc-list-row > .fc-list-row-aside > .fc-status + .fc-timestamp { padding-left: calc(10px + var(--fc-space-2)); }
 .fc-list[data-lanes] > .fc-list-row > .fc-list-row-actions { flex: 0 0 var(--fc-list-actions-w, 112px); }
 
 /* A note that belongs to the row (failed connection). Starts under the title, full width. */

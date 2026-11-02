@@ -20,14 +20,25 @@ const cap = s => s[0].toUpperCase() + s.slice(1);
 const gem = (t, attrs = '') => `<span class="fc-gem" data-tier="${t}"${attrs}><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>${cap(t)}</span>`;
 
 // ---- section tabs follow the scroll position ----
+// The active tab is the last section whose top has passed the sticky nav. One rule, so a short section can
+// never hand the highlight to the next one, and a clicked tab is selected at once.
 {
 const tabs = [...document.querySelectorAll('nav.fc-tabs .fc-tab')];
 const secs = tabs.map(t => document.querySelector(t.getAttribute('href'))).filter(Boolean);
 const mark = id => tabs.forEach(t => t.setAttribute('aria-selected', String(t.getAttribute('href') === '#' + id)));
-if ('IntersectionObserver' in window) {
-  const io = new IntersectionObserver(es => { es.filter(e => e.isIntersecting).forEach(e => mark(e.target.id)); }, { rootMargin: '-140px 0px -60% 0px' });
-  secs.forEach(sec => io.observe(sec));
-}
+const line = () => (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--fc-scroll-offset')) || 136) + 24;
+let lock = 0, raf = 0;
+const update = () => {
+  raf = 0;
+  if (Date.now() < lock || !secs.length) return;
+  const atEnd = innerHeight + scrollY >= document.documentElement.scrollHeight - 4;
+  let cur = secs[0];
+  for (const sec of secs) if (sec.getBoundingClientRect().top <= line()) cur = sec;
+  mark((atEnd ? secs[secs.length - 1] : cur).id);
+};
+addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
+tabs.forEach(t => t.addEventListener('click', () => { mark(t.getAttribute('href').slice(1)); lock = Date.now() + 900; }));
+update();
 }
 
 // ---- hero fields and tips ----

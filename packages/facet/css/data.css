@@ -167,6 +167,17 @@ th.fc-numeric > .fc-th-sort { flex-direction: row-reverse; }
 }
 .fc-has-tip:hover { text-decoration-color: var(--fc-text-secondary); }
 .fc-has-tip:focus-visible { border-radius: var(--fc-radius-xs); }
+/* Contained values (pills, badges, chips) never underline their text: the dotted line runs under the
+   container instead, 3px below its edge, so it reads as a helper rather than a rendering glitch. */
+.fc-has-tip:is(.fc-delta[data-variant="pill"], .fc-badge, .fc-filter-chip) { position: relative; text-decoration: none; }
+.fc-has-tip:is(.fc-delta[data-variant="pill"], .fc-badge, .fc-filter-chip)::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  bottom: -4px;
+  border-bottom: 1px dotted var(--ds-gray-600);
+}
 /* A sortable header can carry help too: the underline stays, the cursor says it still sorts. */
 .fc-th-sort.fc-has-tip { cursor: pointer; }
 

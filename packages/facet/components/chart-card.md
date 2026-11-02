@@ -67,3 +67,10 @@ Marks read `--_s` from `data-series="1"` to `"6"` (`--fc-chart-1` to `-6`: gray-
 - Line movement on pick detail: one series (the book's price), open and now labelled, our fair price as the threshold.
 - Odds pulls per hour on Data: scheduled and on demand stacked, legend totals, dashed current hour.
 - Alert preview: the gap series over 7 days with the alert level as a threshold.
+
+## Takeaway `[F]`
+
+Owner feedback, 2026-11-02: "I don't know if this movement is positive or negative for me." A chart whose movement can be good or bad for the reader states the reading in one line under the title (`.fc-chart-card-takeaway`): the measure that matters, its value, and a change pill colored by polarity, with the explanation in its helper.
+
+- The chart itself stays neutral; only the pill carries color (color the outcome, not the line).
+- Judge movement from the reader's position. Line movement on an untracked pick reads as **Gap left** (value shrinking is bad). Once the bet is tracked, the same chart reads as **Beat the close** (the line moving your way is good).

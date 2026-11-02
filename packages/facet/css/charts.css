@@ -94,7 +94,27 @@
 
 .fc-chart-line { fill: none; stroke: var(--_s); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
 .fc-chart-area { fill: var(--_s); fill-opacity: 0.06; stroke: none; }
-.fc-chart-bar { fill: var(--_s); shape-rendering: crispEdges; }
+.fc-chart-bar { fill: color-mix(in srgb, var(--_s) 55%, var(--fc-surface-canvas)); shape-rendering: crispEdges; transition: fill var(--fc-duration-fast) ease; }
+/* Filled marks are softened (owner feedback 2026-11-02): a full-strength fill reads as a loud block, so bars
+   mix 55% of the series color into the canvas. The bucket being read returns to full strength over a faint band. */
+.fc-chart-bar[data-active] { fill: var(--_s); }
+.fc-chart-band { fill: transparent; }
+.fc-chart-band[data-active] { fill: var(--fc-surface-fill); }
+.fc-chart-hit { fill: transparent; cursor: default; outline: none; }
+.fc-chart-hit:focus-visible { stroke: var(--fc-focus-color); stroke-width: 2; }
+.fc-legend[data-key="bar"] .fc-legend-key { border-radius: 2px; background: color-mix(in srgb, var(--_s) 55%, var(--fc-surface-canvas)); }
+/* Bar breakdown tooltip: one row per series (swatch, name, value), then the total. */
+.fc-chart-tip { min-width: 168px; padding: var(--fc-space-2) var(--fc-space-3); }
+.fc-chart-tip-head { margin: 0 0 var(--fc-space-1_5); color: var(--fc-text-secondary); font: 400 12px/16px var(--fc-font-sans); }
+.fc-chart-tip-rows { display: grid; grid-template-columns: 8px minmax(0, 1fr) auto; align-items: center; gap: var(--fc-space-1) var(--fc-space-2); margin: 0; padding: 0; list-style: none; font: 400 13px/18px var(--fc-font-sans); }
+.fc-chart-tip-rows > li { display: contents; }
+.fc-chart-tip-rows > li > :last-child { justify-self: end; font-variant-numeric: tabular-nums; color: var(--fc-text-primary); font-weight: 500; }
+.fc-chart-tip-rows [data-series] { --_s: var(--fc-chart-1); }
+.fc-chart-tip-rows [data-series="2"] { --_s: var(--fc-chart-2); }
+.fc-chart-tip-rows [data-series="3"] { --_s: var(--fc-chart-3); }
+.fc-chart-tip-rows [data-series="4"] { --_s: var(--fc-chart-4); }
+.fc-chart-tip-rows .fc-legend-key { border-radius: 2px; }
+.fc-chart-tip-rows > li.fc-chart-tip-rule { display: block; grid-column: 1 / -1; height: 0; margin: var(--fc-space-0_5) 0; border-top: 1px solid var(--fc-border-default); }
 .fc-chart-point { fill: var(--_s); stroke: var(--fc-surface-canvas); stroke-width: 2; }
 
 /* Incomplete bucket: the last bucket is still filling. Dashed stroke, faint fill, no label needed. */
@@ -155,6 +175,12 @@
 .fc-chart-empty-title { font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
 .fc-chart-empty > div > :is(a, button) { margin-top: var(--fc-space-2); pointer-events: auto; }
 .fc-chart[data-size="message"] { --fc-chart-height: 200px; }
+
+/* Takeaway [F] (owner feedback 2026-11-02): a chart whose movement can be good or bad for you states the
+   reading in one line under the title: the measure that matters, its value, and a change pill whose color
+   says good or bad. The chart stays neutral; only the pill is colored. */
+.fc-chart-card-takeaway { display: flex; flex-wrap: wrap; align-items: center; gap: var(--fc-space-2); margin: var(--fc-space-2) 0 0; font: 400 13px/20px var(--fc-font-sans); color: var(--fc-text-secondary); }
+.fc-chart-card-takeaway strong { font-weight: 500; color: var(--fc-text-primary); font-variant-numeric: tabular-nums; }
 
 /* Table alternative revealed from the card footer. */
 .fc-chart-data[hidden] { display: none; }
@@ -239,6 +265,9 @@
 .fc-rank-list[data-striped] .fc-rank-row:nth-child(odd) { background: var(--fc-surface-fill); }
 .fc-rank-label { display: flex; align-items: center; gap: var(--fc-space-2); min-width: 0; color: var(--fc-text-primary); }
 .fc-rank-label > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Books you cannot bet at read secondary, with the reason; they stay ranked so the opportunity is visible. */
+.fc-rank-label[data-muted] { color: var(--fc-text-secondary); }
+.fc-rank-label > small { flex: 0 0 auto; font: 400 12px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
 .fc-rank-chip {
   position: relative;
   display: flex;

@@ -805,6 +805,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
           </a>
         </div>
+        <p class="fc-chart-card-takeaway">Gap left <strong>+2.2 pts</strong> <span class="fc-delta fc-has-tip" data-variant="pill" data-direction="negative" data-polarity="bad" data-tip="Down from +7.1 at open. The market moved toward our fair price, so less value is left.">&minus;4.9 pts</span></p>
       </header>
       <div class="fc-chart-card-body">
         <figure class="fc-chart" id="ch-line" role="img"></figure>
@@ -826,7 +827,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
           </a>
         </div>
-        <ul class="fc-legend" role="list" aria-label="Totals for the last 12 hours">
+        <ul class="fc-legend" data-key="bar" role="list" aria-label="Totals for the last 12 hours">
           <li class="fc-legend-item" data-series="1"><span class="fc-legend-key" aria-hidden="true"></span><span class="fc-legend-name">Scheduled</span><span class="fc-legend-value" data-total="scheduled">138</span></li>
           <li class="fc-legend-item" data-series="2"><span class="fc-legend-key" aria-hidden="true"></span><span class="fc-legend-name">On demand</span><span class="fc-legend-value" data-total="ondemand">51</span></li>
         </ul>
@@ -883,6 +884,7 @@
             <span class="fc-chart-card-meta">Share of Week 8 markets where each book had the best price</span>
           </div>
         </div>
+        <p class="fc-chart-card-takeaway">At your books <strong>65%</strong> <a class="fc-link-action" data-tone="quiet" href="#lf-conn-betmgm">Connect BetMGM for 83%</a></p>
       </header>
       <div class="fc-chart-card-body" data-flush>
         <ol class="fc-rank-list" data-striped id="ch-books" aria-labelledby="ch-books-h"></ol>
@@ -1251,6 +1253,8 @@
       const f = frame(host, o, n, true);
       const bw = (f.p.x1 - f.p.x0) / n, gap = bw > 8 ? 2 : 1;
       const stack = new Array(n).fill(0);
+      // Hover band under the bars: lights the bucket being read.
+      const bands = o.labels ? Array.from({ length: n }, (_, i) => mk('rect', { class: 'fc-chart-band', x: (f.p.x0 + i * bw).toFixed(1), y: f.p.y0, width: bw.toFixed(1), height: f.p.y1 - f.p.y0 }, f.svg)) : [];
       s.forEach(ser => {
         const g = mk('g', { 'data-series': ser.slot || 1 }, f.svg);
         ser.values.forEach((v, i) => {
@@ -1258,10 +1262,51 @@
           const yTop = f.y(stack[i] + v), yBot = f.y(stack[i]);
           stack[i] += v;
           const inc = o.incomplete && i === n - 1;
-          mk('rect', { class: 'fc-chart-bar', 'data-incomplete': inc, x: (f.p.x0 + i * bw + gap / 2 + (inc ? 0.5 : 0)).toFixed(1), y: (yTop + (inc ? 0.5 : 0)).toFixed(1), width: Math.max(1, bw - gap - (inc ? 1 : 0)).toFixed(1), height: Math.max(0, yBot - yTop - (inc ? 1 : 0) - (s.indexOf(ser) ? 1 : 0)).toFixed(1) }, g);
+          mk('rect', { class: 'fc-chart-bar', 'data-i': i, 'data-incomplete': inc, x: (f.p.x0 + i * bw + gap / 2 + (inc ? 0.5 : 0)).toFixed(1), y: (yTop + (inc ? 0.5 : 0)).toFixed(1), width: Math.max(1, bw - gap - (inc ? 1 : 0)).toFixed(1), height: Math.max(0, yBot - yTop - (inc ? 1 : 0) - (s.indexOf(ser) ? 1 : 0)).toFixed(1) }, g);
         });
       });
       if (o.threshold) threshold(f, o.threshold, o.yFormat || compact);
+      if (o.labels) barTips(host, f, o, s, n, bw, bands);
+    }
+
+    // Bar breakdown on hover, tap and keyboard (owner feedback 2026-11-02): one tooltip per chart lists each
+    // series with its swatch and value, then the total. Arrow keys move between buckets.
+    function barTips(host, f, o, s, n, bw, bands) {
+      let tip = host._tip;
+      if (!tip) { tip = host._tip = document.createElement('div'); tip.className = 'fc-tooltip fc-float fc-chart-tip'; tip.setAttribute('popover', 'manual'); tip.setAttribute('role', 'tooltip'); tip.id = host.id + '-tip'; document.body.appendChild(tip); }
+      const fmt = o.yFormat || compact;
+      const hits = [];
+      const show = (i) => {
+        f.svg.querySelectorAll('[data-active]').forEach(e => e.removeAttribute('data-active'));
+        bands[i].setAttribute('data-active', '');
+        f.svg.querySelectorAll(`.fc-chart-bar[data-i="${i}"]`).forEach(e => e.setAttribute('data-active', ''));
+        const total = s.reduce((t, ser) => t + ser.values[i], 0);
+        tip.innerHTML = `<p class="fc-chart-tip-head">${o.labels[i]}</p><ul class="fc-chart-tip-rows" role="list">${s.map(ser => `<li data-series="${ser.slot || 1}"><span class="fc-legend-key" aria-hidden="true"></span><span>${ser.name}</span><span>${fmt(ser.values[i])}</span></li>`).join('')}<li class="fc-chart-tip-rule" role="presentation"></li><li class="fc-chart-tip-total"><span></span><span>Total</span><span>${fmt(total)}</span></li></ul>`;
+        try { if (!tip.matches(':popover-open')) tip.showPopover(); } catch {}
+        const r = hits[i].getBoundingClientRect(), t = tip.getBoundingClientRect();
+        const top = Math.max(8, f.svg.getBoundingClientRect().top + f.y(total) - t.height - 8);
+        tip.style.top = `${Math.round(top)}px`;
+        tip.style.left = `${Math.round(Math.max(8, Math.min(r.left + r.width / 2 - t.width / 2, innerWidth - t.width - 8)))}px`;
+      };
+      const hide = () => { f.svg.querySelectorAll('[data-active]').forEach(e => e.removeAttribute('data-active')); try { tip.hidePopover(); } catch {} };
+      for (let i = 0; i < n; i++) {
+        const total = s.reduce((t, ser) => t + ser.values[i], 0);
+        const hit = mk('rect', { class: 'fc-chart-hit', x: (f.p.x0 + i * bw).toFixed(1), y: f.p.y0, width: bw.toFixed(1), height: f.p.y1 - f.p.y0, tabindex: i === 0 ? 0 : -1, role: 'img', 'aria-label': `${o.labels[i]}: ${s.map(ser => `${ser.values[i]} ${ser.name.toLowerCase()}`).join(', ')}, ${total} total` }, f.svg);
+        hits.push(hit);
+        hit.addEventListener('pointerenter', () => show(i));
+        hit.addEventListener('pointerdown', () => show(i));
+        hit.addEventListener('focus', () => show(i));
+        hit.addEventListener('keydown', (e) => {
+          const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+          if (e.key === 'Escape') hide();
+          if (!d) return;
+          e.preventDefault();
+          const j = Math.max(0, Math.min(n - 1, i + d));
+          hits[i].setAttribute('tabindex', -1); hits[j].setAttribute('tabindex', 0); hits[j].focus();
+        });
+      }
+      f.svg.addEventListener('pointerleave', hide);
+      f.svg.addEventListener('focusout', (e) => { if (!f.svg.contains(e.relatedTarget)) hide(); });
     }
 
     // Sparkline: no axes, scales its path (stroke stays 1.25px), optional shared domain and incomplete tail.
@@ -1320,6 +1365,7 @@
     C.bars(document.getElementById('ch-pulls'), {
       series: [{ name: 'Scheduled', values: scheduled, slot: 1 }, { name: 'On demand', values: ondemand, slot: 2 }],
       yTicks: C.ticks(0, peak, 3), xLabels: ['12h ago', 'now'], incomplete: true,
+      labels: scheduled.map((_, i) => { const h = 18 - (11 - i), t = x => `${(x + 11) % 12 + 1} ${x % 24 < 12 ? 'AM' : 'PM'}`; return i === 11 ? `<time>${t(h)}</time> to now` : `<time>${t(h)}</time> to <time>${t(h + 1)}</time>`; }),
       summary: `Odds pulls per hour for the last 12 hours: ${sum(scheduled)} scheduled and ${sum(ondemand)} on demand, peaking at ${peak} in hour 7. The current hour is still filling.`,
     });
     const tbl = document.getElementById('ch-pulls-table');
@@ -1346,8 +1392,8 @@
     // Rank list: best price share by book. Chip fill is the share of all markets (0 to 100%).
     // Sparklines share one domain, because they plot the same measure.
     const books = [
-      { name: 'DraftKings', share: 38, daily: [34,36,35,39,40,37,38] },
-      { name: 'FanDuel',    share: 27, daily: [29,28,27,26,27,26,27] },
+      { name: 'DraftKings', share: 38, daily: [34,36,35,39,40,37,38], yours: true },
+      { name: 'FanDuel',    share: 27, daily: [29,28,27,26,27,26,27], yours: true },
       { name: 'BetMGM',     share: 18, daily: [15,16,18,19,18,19,18] },
       { name: 'Caesars',    share: 11, daily: [13,12,12,10,9,11,11] },
       { name: 'ESPN Bet',   share: 6,  daily: [9,8,8,6,6,7,6] },
@@ -1355,7 +1401,7 @@
     const domain = C.sharedDomain(books.map(b => b.daily));
     const list = document.getElementById('ch-books');
     list.innerHTML = books.map(b => `<li class="fc-rank-row">
-        <span class="fc-rank-label"><span>${b.name}</span></span>
+        <span class="fc-rank-label"${b.yours ? '' : ' data-muted'}><span>${b.name}</span>${b.yours ? '' : '<small>Not connected</small>'}</span>
         <span class="fc-rank-chip" style="--share:${b.share}"><span>${b.share}%</span></span>
         <span class="fc-sparkline" data-daily="${b.daily}" aria-hidden="true"></span>
         <button class="fc-button" data-variant="tertiary" data-size="tiny" data-shape="square" type="button" aria-label="More actions for ${b.name}" aria-haspopup="menu"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg></button>

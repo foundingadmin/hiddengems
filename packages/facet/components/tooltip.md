@@ -49,3 +49,4 @@ Owner decision, 2026-11-02. A dotted underline (`.fc-has-tip`) always means a he
 - Point `aria-describedby` at a `.fc-tooltip.fc-float` popover, or give the trigger `data-tip="..."` and the tooltip is created.
 - Escape, a tap elsewhere or scrolling closes it. A rich helper (the relative time card) uses the same trigger.
 - The helper adds information and never restates the text it sits behind.
+- On a contained value (pill, badge, chip) the dotted line runs under the container, 3px below its edge, never through the text inside it.

@@ -67,7 +67,7 @@ Restraint: do not wrap every metric in a card, and never nest cards. A surface m
 - Animate only `opacity` and `transform`, and list properties explicitly (never `transition: all`).
 - Motion explains a state change, preserves continuity, or confirms an action. Nothing else: no decorative pulses, marquees, scroll reveals or bounce.
 - Honor `prefers-reduced-motion` (base.css collapses durations).
-- The one sanctioned glow and loop: the gem tier (`.fc-gem`). A glint runs across the filled facets once when a tier appears; `data-motion="loop"` repeats it with a breathing glow for one focal gem per view, never in tables. Everything else stays still.
+- The one sanctioned glow and loop: the gem tier (`.fc-gem`). Purple tiers build in once (facets fill one by one), then loop a glint and glow swell every 5.6s, holding still for most of the cycle. `--fc-gem-delay` can cascade the loop down a ranked table; `data-motion="once"` or `"none"` opts out. Rough never moves. Everything else stays still.
 - Live data: a changed odds value may briefly tint its cell (opacity fade, under 600ms). Never animate every tick, and never reorder rows under the cursor.
 
 ## Focus

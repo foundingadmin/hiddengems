@@ -49,7 +49,7 @@ Rules:
 ## Gem tier
 
 - Ordinal: rough < cut < polished < flawless. Encoded three ways: 1 to 4 filled facets, a ramp from gray to purple 500, 700 and 900, and the word, which is always present. Polished and flawless add a glow that grows with tier.
-- Motion: the glint plays once when a pick reaches a tier (a real state change). Only the focal gem in a pick's detail header may loop; tables never do.
+- Motion: purple tiers build in, then loop a glint with a long hold (5.6s cycle), in tables too. Sync and cascade (a top-down wave in rank order) are both supported; the slate default is under owner review.
 - Thresholds are a modeling decision, not a design one. Keep them in data, not in CSS, and document them where the model lives.
 - "Hidden Gem" designation is the only place the purple accent appears as text color or fill.
 

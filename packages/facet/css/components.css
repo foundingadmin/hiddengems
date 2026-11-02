@@ -482,15 +482,19 @@
 
 /* Gem tier [F]: ordinal ladder encoded three ways, so it never relies on color alone:
    1 to 4 filled facets, a purple ramp (gray, 500, 700, 900), and the tier word.
-   Glow grows with tier: none for rough and cut, faint for polished, fullest for flawless.
-   Motion: a glint runs across the filled facets once when a tier appears (state change).
-   data-motion="loop" repeats it slowly with a breathing glow, for ONE focal gem per view
-   (a pick's detail header), never in tables. Reduced motion turns all of it off.
-   This is Facet's single sanctioned glow and loop; nothing else in the system glows. */
+   Glow grows with tier: none for rough, then faint, stronger and fullest.
+   Motion is part of the encoding (owner decision): purple tiers build in once, then loop a
+   glint and glow swell on a long cycle with a healthy hold. Rough never moves.
+     data-motion="once"  build-in and a single glint, no loop
+     data-motion="none"  still
+     --fc-gem-delay      offset the loop, for example to cascade down a ranked table
+   Reduced motion turns all of it off. This is Facet's single sanctioned glow and loop. */
 .fc-gem {
   --_c: var(--fc-gem-tier-rough);
   --_glow: 0px;
   --_glow-max: 0px;
+  --_cycle: 5.6s;
+  --_lead: 900ms;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -505,27 +509,38 @@
 }
 .fc-gem-facets > i { width: 6px; height: 10px; clip-path: polygon(50% 0, 100% 35%, 50% 100%, 0 35%); background: var(--ds-gray-300); }
 .fc-gem[data-tier="rough"]    { --_c: var(--fc-gem-tier-rough); color: var(--fc-text-secondary); }
-.fc-gem[data-tier="cut"]      { --_c: var(--fc-gem-tier-cut); }
-.fc-gem[data-tier="polished"] { --_c: var(--fc-gem-tier-polished); --_glow: 1.5px; --_glow-max: 3px; }
+.fc-gem[data-tier="cut"]      { --_c: var(--fc-gem-tier-cut); --_glow: 0px; --_glow-max: 1.5px; }
+.fc-gem[data-tier="polished"] { --_c: var(--fc-gem-tier-polished); --_glow: 1.5px; --_glow-max: 3.5px; }
 .fc-gem[data-tier="flawless"] { --_c: var(--fc-gem-tier-flawless); --_glow: 2.5px; --_glow-max: 6px; }
 .fc-gem[data-tier="rough"]    .fc-gem-facets > i:nth-child(-n+1),
 .fc-gem[data-tier="cut"]      .fc-gem-facets > i:nth-child(-n+2),
 .fc-gem[data-tier="polished"] .fc-gem-facets > i:nth-child(-n+3),
 .fc-gem[data-tier="flawless"] .fc-gem-facets > i:nth-child(-n+4) { background: var(--_c); }
 
-/* Glint: each filled facet catches the light in turn, left to right. */
-@keyframes fc-gem-glint { 0%, 100% { filter: brightness(1); } 40% { filter: brightness(1.32); } }
-@keyframes fc-gem-breathe {
-  0%, 100% { filter: drop-shadow(0 0 var(--_glow) color-mix(in srgb, var(--_c) 75%, transparent)); }
-  50%      { filter: drop-shadow(0 0 var(--_glow-max) color-mix(in srgb, var(--_c) 90%, transparent)); }
+/* Build-in: filled facets light up one after another. Glint: a brightness pass, then a hold. */
+@keyframes fc-gem-build { from { background: var(--ds-gray-300); } to { background: var(--_c); } }
+@keyframes fc-gem-glint { 0%, 13%, 100% { transform: none; filter: brightness(1); } 6% { transform: translateY(-1px) scale(1.18); filter: brightness(1.12); } }
+@keyframes fc-gem-swell {
+  0%, 22%, 100% { filter: drop-shadow(0 0 var(--_glow) color-mix(in srgb, var(--_c) 75%, transparent)); }
+  9%            { filter: drop-shadow(0 0 var(--_glow-max) color-mix(in srgb, var(--_c) 90%, transparent)); }
 }
-.fc-gem:not([data-tier="rough"]) .fc-gem-facets > i { animation: fc-gem-glint 700ms var(--fc-ease-standard) 1 both; }
-.fc-gem .fc-gem-facets > i:nth-child(2) { animation-delay: 90ms; }
-.fc-gem .fc-gem-facets > i:nth-child(3) { animation-delay: 180ms; }
-.fc-gem .fc-gem-facets > i:nth-child(4) { animation-delay: 270ms; }
-.fc-gem[data-motion="loop"]:not([data-tier="rough"]) .fc-gem-facets > i { animation-duration: 3.2s; animation-iteration-count: infinite; }
-.fc-gem[data-motion="loop"][data-tier="polished"] .fc-gem-facets,
-.fc-gem[data-motion="loop"][data-tier="flawless"] .fc-gem-facets { animation: fc-gem-breathe 3.2s ease-in-out infinite; }
+.fc-gem[data-tier="cut"]      .fc-gem-facets > i:nth-child(-n+2),
+.fc-gem[data-tier="polished"] .fc-gem-facets > i:nth-child(-n+3),
+.fc-gem[data-tier="flawless"] .fc-gem-facets > i:nth-child(-n+4) {
+  --_i: 0;
+  animation:
+    fc-gem-build 320ms var(--fc-ease-standard) calc(var(--_i) * 90ms) both,
+    fc-gem-glint var(--_cycle) ease-in-out calc(var(--_lead) + var(--fc-gem-delay, 0s) + var(--_i) * 90ms) infinite;
+}
+.fc-gem .fc-gem-facets > i:nth-child(2) { --_i: 1; }
+.fc-gem .fc-gem-facets > i:nth-child(3) { --_i: 2; }
+.fc-gem .fc-gem-facets > i:nth-child(4) { --_i: 3; }
+.fc-gem:not([data-tier="rough"]) .fc-gem-facets {
+  animation: fc-gem-swell var(--_cycle) ease-in-out calc(var(--_lead) + var(--fc-gem-delay, 0s)) infinite;
+}
+.fc-gem[data-motion="once"] .fc-gem-facets > i { animation-iteration-count: 1, 1; }
+.fc-gem[data-motion="once"] .fc-gem-facets { animation-iteration-count: 1; }
+.fc-gem[data-motion="none"] .fc-gem-facets,
 .fc-gem[data-motion="none"] .fc-gem-facets > i { animation: none; }
 .fc-gem[data-size="lg"] { gap: 8px; font: 500 16px/24px var(--fc-font-sans); }
 .fc-gem[data-size="lg"] .fc-gem-facets { gap: 3px; }

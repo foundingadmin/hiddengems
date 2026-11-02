@@ -98,7 +98,7 @@ Each is a conscious Facet call, recorded so nobody "fixes" it back by accident.
 | Unknown values render as an em dash | En dash `–` with `aria-label="Unknown"` in numeric cells, the word "Unknown" where it fits | House rule: no em dashes in any output |
 | Table has one density | Adds `data-density="compact"` (32px rows) for long ledgers | Sunday slates can run 100+ props |
 | Icons from `@vercel/geistcn-assets` | Lucide at 16px / 1.5 stroke | The reference icon package is not public |
-| Rejects glows and decorative looping motion | One exception: the gem glow and glint. Glow grows with tier (none, faint, fullest); the glint plays once when a tier appears; only one focal gem per view may loop; reduced motion turns it off | The glow encodes rank, so it is data rather than decoration, and it belongs to the one hue reserved for gems |
+| Rejects glows and decorative looping motion | One exception: the gem tier. Purple tiers build in, then loop a glint and glow swell on a 5.6s cycle with a long hold; glow grows with tier; rough never moves; reduced motion stops it all | Motion is part of the rank encoding (owner decision), so it is data rather than decoration, and it lives only on the gem hue |
 
 ## Content
 

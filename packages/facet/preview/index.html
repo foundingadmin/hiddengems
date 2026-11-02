@@ -92,6 +92,7 @@
   .sp-nhead strong, .sp-ntype strong { font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
   .sp-ntype { display: flex; flex-direction: column; gap: 2px; font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); }
   .sp-ncell { min-width: 0; }
+  .sp-motionbar { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
   .sp-gemfocal { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .sp-two-up { grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 360px)); }
   .sp-ncell-label { display: none; }
@@ -164,6 +165,15 @@
       <div class="fc-stat"><p class="fc-stat-label">Odds updated</p><p class="fc-stat-value fc-row" style="--fc-gap:10px"><span class="fc-status-dot" data-state="live" aria-hidden="true"></span>2 min ago</p><p class="fc-stat-detail">DraftKings, FanDuel, BetMGM</p></div>
     </div>
 
+    <div class="sp-motionbar">
+      <span class="sp-caption">Gem motion</span>
+      <div class="fc-segmented" data-size="small" role="radiogroup" aria-label="Gem motion" id="gem-motion">
+        <button type="button" role="radio" aria-checked="true" data-mode="sync">Sync</button>
+        <button type="button" role="radio" aria-checked="false" data-mode="cascade">Cascade</button>
+        <button type="button" role="radio" aria-checked="false" data-mode="once">Once</button>
+        <button type="button" role="radio" aria-checked="false" data-mode="still">Still</button>
+      </div>
+    </div>
     <div class="fc-table-wrap">
       <table class="fc-table" data-interactive data-sticky>
         <caption>Sorted by gap, largest first. Signals read left to right: setup, track record, sample, price gap, matchup, market.</caption>
@@ -497,7 +507,7 @@
         <div class="sp-wrap"><span class="fc-signal" data-signal="go">Go</span><span class="fc-signal" data-signal="wait">Wait</span><span class="fc-signal" data-signal="stop">Stop</span><span class="fc-signal">Unchecked</span></div>
         <div class="sp-wrap"><span class="fc-signal" data-variant="pill" data-signal="go">Go</span><span class="fc-signal" data-variant="pill" data-signal="wait">Wait</span><span class="fc-signal" data-variant="pill" data-signal="stop">Stop</span></div>
         <div class="sp-wrap" id="gems"></div>
-        <div class="sp-gemfocal"><span id="gem-focal"></span><span class="sp-caption">One focal gem per view may loop</span><button class="fc-button" data-variant="tertiary" data-size="small" type="button" id="gem-replay">Replay glint</button></div>
+        <div class="sp-gemfocal"><span id="gem-focal"></span><button class="fc-button" data-variant="tertiary" data-size="small" type="button" id="gem-replay">Replay build-in</button></div>
         <div class="sp-wrap"><span class="fc-signal-strip" aria-label="5 go, 1 wait"><i data-signal="go"></i><i data-signal="go"></i><i data-signal="wait"></i><i data-signal="go"></i><i data-signal="go"></i><i data-signal="go"></i></span>
           <span class="fc-delta" data-direction="positive">9.0</span><span class="fc-delta" data-direction="negative">2.5</span><span class="fc-delta">0.0</span></div>
       </figure>
@@ -618,7 +628,8 @@
   const cap = s => s[0].toUpperCase() + s.slice(1);
   const gem = (t, attrs = '') => `<span class="fc-gem" data-tier="${t}"${attrs}><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>${cap(t)}</span>`;
   const body = document.getElementById('slate-body');
-  body.innerHTML = picks.map(r => {
+  const MOTION = { sync: () => '', cascade: i => ` style="--fc-gem-delay:${i * 160}ms"`, once: () => ' data-motion="once"', still: () => ' data-motion="none"' };
+  const renderSlate = (mode = 'sync') => { body.innerHTML = picks.map((r, i) => {
     const gap = r.est - r.ip;
     const counts = r.sig.reduce((a, s) => (a[s] = (a[s] || 0) + 1, a), {});
     const aria = Object.entries(counts).map(([k, n]) => `${n} ${label[k].toLowerCase()}`).join(', ');
@@ -631,17 +642,19 @@
       <td data-align="numeric"><span class="fc-delta" data-direction="positive">${gap}</span></td>
       <td><span class="fc-signal-strip" role="img" aria-label="${aria}">${r.sig.map(s => `<i data-signal="${s}"></i>`).join('')}</span></td>
       <td><span class="fc-signal" data-signal="${r.v}">${label[r.v]}</span></td>
-      <td>${gem(tierOf(gap))}</td>
+      <td>${gem(tierOf(gap), MOTION[mode](i))}</td>
     </tr>`;
-  }).join('');
+  }).join(''); };
+  renderSlate();
+  document.getElementById('gem-motion').addEventListener('click', e => { const b = e.target.closest('[data-mode]'); if (b) renderSlate(b.dataset.mode); });
   document.getElementById('gap-bars').innerHTML = picks.map(r => {
     const gap = r.est - r.ip;
     return `<div class="fc-bar" role="listitem"><span class="fc-bar-label">${r.p}${r.m.includes('2nd') ? ' (2H)' : ''}</span><span class="fc-bar-track"><span class="fc-bar-fill" style="--value:${gap / 15 * 100}"></span></span><span class="fc-bar-value">+${gap} pts</span></div>`;
   }).join('');
   const drawGems = () => { document.getElementById('gems').innerHTML = ['rough', 'cut', 'polished', 'flawless'].map(t => gem(t)).join(''); };
   drawGems();
-  document.getElementById('gem-focal').outerHTML = gem('flawless', ' data-size="lg" data-motion="loop"');
-  document.getElementById('gem-replay').addEventListener('click', drawGems);
+  document.getElementById('gem-focal').outerHTML = `<span id="gem-focal-wrap">${gem('flawless', ' data-size="lg"')}</span>`;
+  document.getElementById('gem-replay').addEventListener('click', () => { drawGems(); document.getElementById('gem-focal-wrap').innerHTML = gem('flawless', ' data-size="lg"'); });
   document.getElementById('gem-do').outerHTML = gem('polished');
   document.getElementById('gem-rule').outerHTML = gem('flawless');
 

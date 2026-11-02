@@ -43,6 +43,15 @@ update();
 
 // ---- hero fields and tips ----
 if (window.FacetField) window.FacetField.autoMount();
+if (window.FacetTeams) {
+  const T = window.FacetTeams, league = document.getElementById('tm-league');
+  if (league) league.innerHTML = T.conferences.flatMap((c) => T.divisions.map((d) => {
+    const id = `tm-${c}-${d}`.toLowerCase();
+    const rows = T.teams.filter((t) => t.conference === c && t.division === d).map((t) => `<li>${T.teamHTML(t, { name: 'full' })}</li>`).join('');
+    return `<div class="tm-div"><h4 class="text-label-14 tm-label" id="${id}">${c} ${d}</h4><ul role="list" aria-labelledby="${id}">${rows}</ul></div>`;
+  })).join('');
+  T.mountTeams(document, T.findTeam);
+}
 if (window.FacetTips) window.FacetTips.mountTips();
 if (window.FacetForms) window.FacetForms.bindOptionHelpers();
 // Countdowns print once at load. The sample data is frozen at 6:00 PM ET on Nov 2, so the specimen counts from there.

@@ -9,14 +9,16 @@
   "exports": {
     "./css/*": "./css/*",
     "./js/tokens.mjs": "./js/tokens.mjs",
+    "./js/*": "./js/*",
+    "./kits/*": "./kits/*",
     "./tokens/*": "./tokens/*",
     "./fonts/*": "./fonts/*"
   },
-  "files": ["css", "js", "tokens", "fonts", "DESIGN.md", "README.md"],
+  "files": ["css", "js", "kits", "tokens", "fonts", "DESIGN.md", "README.md"],
   "scripts": {
     "build": "node scripts/build.mjs",
     "capture": "node scripts/sync-primitives.mjs",
-    "check": "node scripts/build.mjs && git diff --exit-code -- css js",
+    "check": "node scripts/build.mjs && git diff --exit-code -- css js kits preview",
     "lint:color": "node scripts/lint-color.mjs ../../apps"
   },
   "devDependencies": {

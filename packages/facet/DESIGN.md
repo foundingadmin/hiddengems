@@ -67,6 +67,7 @@ The interface is gray. Each hue has exactly one job, and appears only to do that
 | Red | Stop, and bad for the bettor | Stop verdict, negative edge, errors, failed data, destructive actions | Decoration, "hot" picks, urgency | `--fc-signal-stop-*`, `--fc-edge-negative`, `--fc-status-error-*` |
 | Blue | Information | Links, info notes, recent data, chart series 2 | Verdicts, gems, success, focus, selected controls | `--fc-text-link`, `--fc-status-info-*` |
 | Teal, pink | Chart series only | Series 3 and 4 when direct labels and grays are not enough | Any UI element | `--fc-chart-3`, `--fc-chart-4` |
+| Team colors | Team identity | Inside a team mark only (`.fc-team-mark`), from a sport kit | Rows, cells, text, borders, chart series, status, any meaning | `kits/<league>/teams.css` |
 
 - **Color is never the only cue.** Verdict: dot plus word. Edge: sign plus arrow plus color. Gem tier: facet count plus purple intensity. Freshness: dot plus relative time.
 - **Charts:** monochrome first. A chart that encodes verdicts or gems uses the signal or gem tokens, because that is their job.
@@ -83,6 +84,7 @@ The interface is gray. Each hue has exactly one job, and appears only to do that
 | Gem tier: rough < cut < polished < flawless | 1 to 4 filled facets + rising purple intensity (`.fc-gem`) | `--fc-gem-tier-*` |
 | "This is a Hidden Gem" | The single brand accent: purple | `--fc-gem-*` |
 | Data freshness | Status dot + relative time (`.fc-status`) | `--fc-freshness-*` |
+| Team | Abbreviation on the team fill with a secondary band (`.fc-team`); matchups read away @ home | `kits/nfl/teams.css`, `js/teams.mjs` |
 | Charts | Monochrome first; blue, teal, pink only when series must be told apart (never verdict hues or purple) | `--fc-chart-1..6`, `--fc-chart-muted` |
 
 Why purple for gems: green, amber and red already mean go, wait and stop, and blue already means links and info. Purple was the only hue left with no job, and an amethyst reads as "gem" without decoration. Why the brand accent shares it: purple marks what the app finds (gems) and what you do (focus, selection, your choices), so every interaction carries the brand. Gems stay distinct because they always carry facets and a tier word. Why a single hue for tiers: tiers are a ranking, and a ranking should read as more or less of one thing, not as four unrelated categories.
@@ -93,6 +95,7 @@ Owner decisions on where a rank 1 source and an earlier Facet rule disagreed (20
 
 | Topic | Rule |
 |---|---|
+| Team colors | Imported from the NFL Colors community kit as a sport kit (`kits/nfl`). They appear only inside team marks, so the hue table stays intact. Abbreviations instead of logos, which are trademarks |
 | Icon tiles | Allowed wherever one speeds recognition: empty states, list and connection rows, entity leads, integrations. Neutral only (`.fc-icon-tile`), one per item, never decorative or colored |
 | Times | Clock and calendar times are mono ("11:00 AM", "Today 6:05 PM", "Oct 31", log times, clock-time axes). Relative times are words and stay sans ("4m ago", "in 5m", "12h ago"), marked `data-relative`. Set in base.css. Paired, the clock time leads in primary and the relative time or detail sits under it in secondary (schedule runs, table time cells) |
 | Legends | Multi-series charts default to a legend that carries each series' total (`.fc-legend`). Single-series charts use a direct label |

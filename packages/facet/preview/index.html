@@ -4,8 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Facet design</title>
-<meta name="description" content="Facet design system: color, type, materials, components, data, charts and forms.">
+<meta name="description" content="Facet design system: color, type, materials, components, data, charts, forms and teams.">
 <link rel="stylesheet" href="../css/facet.css">
+<link rel="stylesheet" href="../kits/nfl/teams.css">
 <link rel="stylesheet" href="specimen.css">
 </head>
 <body>
@@ -37,6 +38,7 @@
       <a class="fc-tab" href="#data">Data</a>
       <a class="fc-tab" href="#charts">Charts</a>
       <a class="fc-tab" href="#lists">Forms</a>
+      <a class="fc-tab" href="#teams">Teams</a>
     </nav>
   </div>
 </div>
@@ -262,7 +264,7 @@
     #data .data-block { display: flex; flex-direction: column; gap: var(--fc-space-4); min-width: 0; }
     #data .data-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--fc-space-2) var(--fc-space-4); }
     #data .data-pick { display: flex; flex-direction: column; gap: 2px; min-width: 0; --fc-truncate-max: 180px; }
-    #data .data-pick small { font: 400 13px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
+    #data .data-pick small { display: flex; align-items: center; gap: 6px; font: 400 13px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
     #data .data-pick-btn { align-self: flex-start; padding: 0; border: 0; border-radius: var(--fc-radius-xs); background: none; font: inherit; font-weight: 500; color: var(--fc-text-primary); text-align: left; cursor: pointer; }
     #data .data-pick-btn:hover { text-decoration: underline; text-underline-offset: 3px; }
     #data .data-menu { min-width: 176px; padding: var(--fc-space-1); }
@@ -377,7 +379,7 @@
         <tbody id="data-body">
           <tr data-key="gesicki" data-pick="Mike Gesicki" data-kickoff="660" data-odds="3.20" data-est="44" data-gap="13" data-record="67" data-market="TE · Anytime TD scorer">
             <td class="fc-cell-select"><label><input type="checkbox" class="fc-check" aria-label="Select Mike Gesicki"></label></td>
-            <th scope="row"><span class="data-pick"><button type="button" class="data-pick-btn" aria-haspopup="dialog">Mike Gesicki</button><small>TE · Anytime TD scorer</small></span></th>
+            <th scope="row"><span class="data-pick"><button type="button" class="data-pick-btn" aria-haspopup="dialog">Mike Gesicki</button><small><span class="fc-team" data-team="cin" data-size="sm" data-name="none"></span>TE · Anytime TD scorer</small></span></th>
             <td><time class="fc-time">11:00 AM</time></td>
             <td data-align="numeric">3.20</td>
             <td data-align="numeric">31%</td>
@@ -390,7 +392,7 @@
           </tr>
           <tr data-key="diggs" data-pick="Stefon Diggs" data-kickoff="1100" data-odds="3.00" data-est="42" data-gap="9" data-record="71" data-market="WR · Anytime TD scorer">
             <td class="fc-cell-select"><label><input type="checkbox" class="fc-check" aria-label="Select Stefon Diggs"></label></td>
-            <th scope="row"><span class="data-pick"><button type="button" class="data-pick-btn" aria-haspopup="dialog">Stefon Diggs</button><small>WR · Anytime TD scorer</small></span></th>
+            <th scope="row"><span class="data-pick"><button type="button" class="data-pick-btn" aria-haspopup="dialog">Stefon Diggs</button><small><span class="fc-team" data-team="ne" data-size="sm" data-name="none"></span>WR · Anytime TD scorer</small></span></th>
             <td><time class="fc-time">6:20 PM</time></td>
             <td data-align="numeric">3.00</td>
             <td data-align="numeric">33%</td>
@@ -403,7 +405,7 @@
           </tr>
           <tr data-key="cook-2h" data-pick="James Cook" data-kickoff="660" data-odds="2.65" data-est="44" data-gap="6" data-record="50" data-market="RB · Anytime TD scorer, 2nd half (incl. OT)">
             <td class="fc-cell-select"><label><input type="checkbox" class="fc-check" aria-label="Select James Cook, 2nd half"></label></td>
-            <th scope="row"><span class="data-pick"><button type="button" class="data-pick-btn" aria-haspopup="dialog">James Cook</button><small><span class="fc-truncate" title="RB · Anytime TD scorer, 2nd half (incl. OT)"><span class="fc-truncate-start">RB · Anytime TD scorer, </span><span class="fc-truncate-end">2nd half (incl. OT)</span></span></small></span></th>
+            <th scope="row"><span class="data-pick"><button type="button" class="data-pick-btn" aria-haspopup="dialog">James Cook</button><small><span class="fc-team" data-team="buf" data-size="sm" data-name="none"></span><span class="fc-truncate" title="RB · Anytime TD scorer, 2nd half (incl. OT)"><span class="fc-truncate-start">RB · Anytime TD scorer, </span><span class="fc-truncate-end">2nd half (incl. OT)</span></span></small></span></th>
             <td><time class="fc-time">11:00 AM</time></td>
             <td data-align="numeric">2.65</td>
             <td data-align="numeric">38%</td>
@@ -416,7 +418,7 @@
           </tr>
           <tr data-key="gordon" data-pick="Ollie Gordon II" data-kickoff="865" data-odds="7.50" data-est="18" data-gap="5" data-record="33" data-market="RB · First TD scorer">
             <td class="fc-cell-select"><label><input type="checkbox" class="fc-check" aria-label="Select Ollie Gordon II"></label></td>
-            <th scope="row"><span class="data-pick"><button type="button" class="data-pick-btn" aria-haspopup="dialog">Ollie Gordon II</button><small>RB · First TD scorer</small></span></th>
+            <th scope="row"><span class="data-pick"><button type="button" class="data-pick-btn" aria-haspopup="dialog">Ollie Gordon II</button><small><span class="fc-team" data-team="mia" data-size="sm" data-name="none"></span>RB · First TD scorer</small></span></th>
             <td><time class="fc-time">2:25 PM</time></td>
             <td data-align="numeric">7.50</td>
             <td data-align="numeric">13%</td>
@@ -429,7 +431,7 @@
           </tr>
           <tr data-key="cook" data-pick="James Cook" data-kickoff="660" data-odds="1.69" data-est="63" data-gap="4" data-record="67" data-market="RB · Anytime TD scorer">
             <td class="fc-cell-select"><label><input type="checkbox" class="fc-check" aria-label="Select James Cook"></label></td>
-            <th scope="row"><span class="data-pick"><button type="button" class="data-pick-btn" aria-haspopup="dialog">James Cook</button><small>RB · Anytime TD scorer</small></span></th>
+            <th scope="row"><span class="data-pick"><button type="button" class="data-pick-btn" aria-haspopup="dialog">James Cook</button><small><span class="fc-team" data-team="buf" data-size="sm" data-name="none"></span>RB · Anytime TD scorer</small></span></th>
             <td><time class="fc-time">11:00 AM</time></td>
             <td data-align="numeric">1.69</td>
             <td data-align="numeric">59%</td>
@@ -2247,10 +2249,75 @@
   </script>
 </section>
 
+  <!-- ============================================================ Teams -->
+<!-- Team marks and matchups. Needs css/teams.css and a kit (kits/nfl/teams.css); preview/teams.js renders the league. -->
+<section id="teams" aria-labelledby="teams-h">
+  <style>
+    /* Page-owned layout only. */
+    #teams .tm-league { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--fc-space-8) var(--fc-space-6); }
+    @media (max-width: 960px) { #teams .tm-league { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 480px) { #teams .tm-league { grid-template-columns: minmax(0, 1fr); } }
+    #teams .tm-div { display: flex; flex-direction: column; gap: var(--fc-space-3); min-width: 0; }
+    #teams .tm-div ul { display: flex; flex-direction: column; gap: var(--fc-space-2); margin: 0; padding: 0; list-style: none; }
+    #teams .tm-label { color: var(--fc-text-secondary); }
+    #teams .tm-row { display: flex; flex-wrap: wrap; align-items: stretch; gap: var(--fc-space-6) var(--fc-space-10); }
+    #teams .tm-cell { display: grid; grid-template-rows: auto 1fr; align-items: center; justify-items: start; gap: var(--fc-space-3); min-width: 0; }
+    #teams .tm-board { width: min(100%, 320px); }
+    #teams .tm-header { width: min(100%, 640px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--fc-space-3) var(--fc-space-6); }
+  </style>
+
+  <div class="sp-intro">
+    <h2 id="teams-h" class="text-heading-32">Teams and matchups</h2>
+  </div>
+
+  <div class="fc-stack" style="--fc-gap:16px">
+    <h3 class="text-heading-20">League</h3>
+    <div class="tm-league" id="tm-league"></div>
+  </div>
+
+  <div class="fc-stack" style="--fc-gap:16px">
+    <h3 class="text-heading-20">Sizes</h3>
+    <div class="tm-row">
+      <div class="tm-cell"><span class="text-label-12 tm-label">Small, in table cells</span><span class="fc-team" data-team="kc" data-size="sm"></span></div>
+      <div class="tm-cell"><span class="text-label-12 tm-label">Default, in lists</span><span class="fc-team" data-team="kc"></span></div>
+      <div class="tm-cell"><span class="text-label-12 tm-label">Large, in game headers</span><span class="fc-team" data-team="kc" data-size="lg" data-name="stack"></span></div>
+    </div>
+  </div>
+
+  <div class="fc-stack" style="--fc-gap:16px">
+    <h3 class="text-heading-20">Matchups</h3>
+    <div class="tm-row">
+      <div class="tm-cell"><span class="text-label-12 tm-label">Inline</span><span class="fc-matchup" data-away="buf" data-home="kc" data-size="sm"></span></div>
+      <div class="tm-cell"><span class="text-label-12 tm-label">Named</span><span class="fc-matchup" data-away="buf" data-home="kc" data-name="name"></span></div>
+      <div class="tm-cell"><span class="text-label-12 tm-label">Neutral site</span><span class="fc-matchup" data-away="min" data-home="pit" data-name="name" data-neutral></span></div>
+    </div>
+    <div class="tm-row">
+      <div class="tm-cell tm-board" style="grid-template-rows:auto">
+        <span class="text-label-12 tm-label">Scoreboard</span>
+        <div class="fc-matchup" data-layout="stack" style="--fc-matchup-values:2" role="table" aria-label="Bills at Chiefs prices">
+          <div class="fc-matchup-row" role="row"><span role="columnheader"><span class="fc-visually-hidden">Team</span></span><span class="text-label-12 tm-label" role="columnheader">Spread</span><span class="text-label-12 tm-label" role="columnheader">Odds</span></div>
+          <div class="fc-matchup-row" role="row"><span class="fc-team" data-team="buf" role="rowheader"></span><span class="fc-matchup-value" role="cell">+2.5</span><span class="fc-matchup-value" role="cell">2.10</span></div>
+          <div class="fc-matchup-row" role="row"><span class="fc-team" data-team="kc" role="rowheader"></span><span class="fc-matchup-value" role="cell">&minus;2.5</span><span class="fc-matchup-value" role="cell" data-strong>1.78</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="tm-cell">
+      <span class="text-label-12 tm-label">Game header</span>
+      <div class="tm-header">
+        <span class="fc-matchup" data-away="buf" data-home="kc" data-size="lg" data-name="stack"></span>
+        <time class="fc-time" datetime="2026-11-08T18:20-07:00">Sun, Nov 8, 6:20 PM</time>
+      </div>
+    </div>
+  </div>
+
+  <div class="fc-note"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span>Team colors stay inside the mark. Rows, text, charts and status keep Facet colors, so a red team never reads as a loss.</span></div>
+</section>
+
 </main>
 
 <script src="semantic-map.js"></script>
 <script src="field.js"></script>
+<script src="teams.js"></script>
 <script src="tips.js"></script>
 <script src="time.js"></script>
 <script src="forms.js"></script>

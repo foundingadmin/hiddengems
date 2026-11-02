@@ -732,7 +732,7 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
    one sentence of content, inline links in the strong text color, one optional action at the end. */
 .fc-note-label { font-weight: 500; color: var(--ds-gray-1000); margin-right: 4px; }
 .fc-note[data-type] .fc-note-label { color: inherit; }
-.fc-note a { color: var(--ds-gray-1000); font-weight: 500; text-decoration: none; }
+.fc-note a { color: inherit; font-weight: 500; text-decoration: none; }
 .fc-note a:hover { text-decoration: underline; }
 .fc-note-action { margin-left: auto; flex: 0 0 auto; }
 /* Link action [F] (owner feedback 2026-11-02): a short underlined CTA hugging the note's right edge, outside
@@ -746,9 +746,9 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
   gap: 2px;
   padding-left: var(--fc-space-3);
   font-weight: 500;
-  color: var(--fc-text-primary);
+  color: inherit; /* adopts the note's severity color (owner decision, 2026-11-02) */
   text-decoration: underline;
-  text-decoration-color: var(--fc-border-active);
+  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
   text-underline-offset: 3px;
   white-space: nowrap;
 }

@@ -10,7 +10,7 @@ An inline, persistent message placed next to the field, card or section it is ab
 - `NoteContent`: the message text.
 - `NoteLabel`: optional bold 1–2 word prefix inside the content.
 - `NoteAction`: optional single action, usually a `Button size="small"`.
-- Links inside are medium weight with underline on hover, and get the focus ring on focus-visible.
+- Links inside take the note's color, are medium weight with underline on hover, and get the focus ring on focus-visible.
 
 ## Variants & sizes
 - `variant`: default (info icon, gray), `success`, `error`, `warning`, `secondary`, `violet`, `cyan`. **No `info` variant exists.**
@@ -58,3 +58,5 @@ Owner feedback, 2026-11-02. A note that needs a next step always offers one; the
 - **Button** (`data-action` + `.fc-note-action`): the fix is yours and the note stands alone ("Rotate key", "Retry").
 - **Link** (`a.fc-note-link`): a short underlined CTA hugging the note's right edge, outside the message. Use it inside dense rows where a button would compete with the row's own buttons, and for problems out of your hands, where the step is to follow, not fix ("Provider status", with an arrow when it leaves the app). See `patterns/failures.md`.
 - One action per note, button or link, never both. The CTA never repeats the message.
+- **Links adopt the note's color** (owner decision, 2026-11-02), so the CTA reads at the same severity as the message: amber in a warning, red in an error, blue in info, gray in a default note. Weight 500, the underline and the right-edge position separate it from the message, so color is never the only cue. Buttons (`.fc-note-action`) stay neutral, like every button.
+- **Never put a destructive action in a note link.** Red already means error and destructive; a red "Delete" link would read as both. Destructive actions are buttons that confirm.

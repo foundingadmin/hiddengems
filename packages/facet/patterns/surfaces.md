@@ -17,7 +17,7 @@ At most one animated field per view. Never inside tables, settings, logs or anyt
 ## What the surface allows
 
 - Display type (`text-heading-40` to `72`, or `.fc-hero-title`), a larger lede, roomier spacing (`--fc-space-section-sm|md|lg`: 64, 96, 128).
-- The animated field (`js/field.mjs`): a gemstone-cut lattice over yard-line rules, a slow beam of light, and a few hidden facets that flash in the brand accent as the light finds them. Lightness only, plus the brand accent.
+- The animated field (`js/field.mjs`): a gemstone-cut lattice, a slow beam of light, and a few hidden facets that flash in the brand accent as the light finds them. Lightness only, plus the brand accent.
 - Pill buttons (`data-shape="rounded"`).
 
 ## What stays banned

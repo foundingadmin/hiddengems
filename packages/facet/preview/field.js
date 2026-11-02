@@ -1,7 +1,7 @@
 // GENERATED from js/field.mjs by scripts/build.mjs. Do not edit by hand.
 (function () {
 // Facet field: the animated hero background for marketing surfaces inside a product.
-// A low-poly lattice cut like a gemstone, laid over yard-line rules. A slow beam of light
+// A low-poly lattice cut like a gemstone. A slow beam of light
 // sweeps across it; a few hidden facets flash in the brand accent (--fc-brand-solid; purple in
 // Hidden Gems, where it means a gem) as the light finds them. Everything else changes lightness only.
 //
@@ -9,7 +9,7 @@
 //   mountField(document.querySelector('.fc-hero-field'));      // or add data-fc-field and call autoMount()
 //
 // Options: { seed, density (cell px, default 56), gems (share of facets, default 0.024),
-//            cycle (ms per sweep, default 9000), yardLines (default true) }
+//            cycle (ms per sweep, default 9000) }
 // Respects prefers-reduced-motion (draws one still frame), pauses off screen and in hidden tabs,
 // and re-reads colors when the theme changes. Returns { destroy() }.
 
@@ -37,7 +37,7 @@ const mix = (a, b, t) => ({ r: a.r + (b.r - a.r) * t, g: a.g + (b.g - a.g) * t, 
 const rgba = (c, a = 1) => `rgba(${c.r | 0}, ${c.g | 0}, ${c.b | 0}, ${a})`;
 
 function mountField(canvas, opts = {}) {
-  const o = { seed: 7, density: 56, gems: 0.024, cycle: 9000, yardLines: true, ...opts };
+  const o = { seed: 7, density: 56, gems: 0.024, cycle: 9000, ...opts };
   const ctx = canvas.getContext('2d');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
   const probe = document.createElement('span');
@@ -58,7 +58,6 @@ function mountField(canvas, opts = {}) {
       lit: parseColor(cssVar(host, light ? '--ds-background-100' : '--ds-gray-600'), probe),
       tint: parseColor(cssVar(host, '--fc-brand-bg') || cssVar(host, '--fc-gem-bg'), probe),
       edge: parseColor(cssVar(host, '--ds-gray-alpha-200'), probe),
-      rule: parseColor(cssVar(host, '--ds-gray-alpha-300'), probe),
       gem: parseColor(cssVar(host, '--fc-brand-solid') || cssVar(host, '--fc-gem-solid'), probe),
     };
   }
@@ -125,14 +124,6 @@ function mountField(canvas, opts = {}) {
           ctx.fill();
           ctx.restore();
         }
-      }
-    }
-    if (o.yardLines) {
-      ctx.strokeStyle = rgba(C.rule, C.rule.a);
-      ctx.lineWidth = 1;
-      for (let k = 1; k < 10; k++) {
-        const x = Math.round((W * k) / 10) + 0.5;
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
       }
     }
     if (!reduce.matches && visible && !document.hidden) raf = requestAnimationFrame(frame);

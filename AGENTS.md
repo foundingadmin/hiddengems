@@ -25,6 +25,8 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 - Never use em dashes in any output: code comments, docs, UI copy, commit messages.
 - Say it once: never repeat on a page what a tab, heading, label, column header, icon or control already said.
   Lessons and exceptions in `packages/facet/foundations/content.md`.
+- Earn every line: cut any text whose removal would not reduce understanding (ledes that describe the layout,
+  reasons nobody asked for, selling lines, restated sentences, captions on examples, numbers already shown).
 - Headlines are simple and objective, naming the purpose; specifics live in the content so headlines never go stale.
 - Sentence case for headings and UI labels.
 - No colons in titles, headings or nav labels.

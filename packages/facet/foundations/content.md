@@ -27,6 +27,26 @@ A tab, heading, label, column header, icon or control has already told the reade
 - **Screen readers.** An accessible name may restate what sighted readers get from layout (a signal strip reads "5 go, 1 wait").
 - **The record.** An audit table may hold values shown earlier, at lower prominence, for exact lookup.
 
+## Earn every line
+
+If a line disappeared, would the reader understand less? If not, cut it. "Say it once" stops repeats; this stops filler. Each example below was cut from the specimen itself.
+
+| Pattern | Don't | Do |
+|---|---|---|
+| A lede that describes the layout below it | "Each band is a hue's whole contract: its job, its scale and its tokens." | Cut; keep only the rule the layout can't show |
+| A reason nobody asked for | "...borrows the signal colors, since that is their job." | "...borrows the signal colors." |
+| A line that sells instead of informs | "Each one removes a review step, because the page gets it right the first time." | Cut |
+| A second sentence that restates the first | "Burke's setup is unchecked. Snap share and role are unknown." | "Burke's snap share and role are unchecked." |
+| A caption that narrates an example | A Do example captioned "Purple marks a gem and its tier." | The example alone |
+| A number already printed beside it | "Controls come in three heights, 32, 36 and 40." above buttons labelled 32 and 36 | The labelled buttons alone |
+
+### What always stays
+
+- **Disclosures**, such as "Sample data from the Week 8 prototype".
+- **Caveats that change a reading**, such as "Samples are 3 to 7 games, so gaps are directional".
+- **Definitions shown nowhere else**, such as what "gap" means the first time it appears.
+- **The why on a Don't.** A Do speaks for itself; a Don't needs its reason.
+
 ## Headlines that last
 
 Name the purpose in simple, objective words, and let the content carry the specifics.

@@ -95,7 +95,7 @@
           "dark": "{color.blue.900}"
         }
       },
-      "$description": "Matches --ds-focus-color (blue-700 light, blue-900 dark)."
+      "$description": "Keyboard focus rings."
     }
   },
   "status": {
@@ -119,7 +119,8 @@
         "$type": "color",
         "$value": "{color.blue.400}",
         "$description": "Info note border."
-      }
+      },
+      "$description": "Info notes and messages."
     },
     "success": {
       "fg": {
@@ -141,7 +142,8 @@
         "$type": "color",
         "$value": "{color.green.400}",
         "$description": "Success note border."
-      }
+      },
+      "$description": "Success notes and passed checks."
     },
     "warning": {
       "fg": {
@@ -163,7 +165,8 @@
         "$type": "color",
         "$value": "{color.amber.400}",
         "$description": "Warning note border."
-      }
+      },
+      "$description": "Warning notes and caution states."
     },
     "error": {
       "fg": {
@@ -185,7 +188,8 @@
         "$type": "color",
         "$value": "{color.red.400}",
         "$description": "Error note border and invalid input ring."
-      }
+      },
+      "$description": "Errors, failed data and invalid input."
     },
     "neutral": {
       "fg": {
@@ -207,7 +211,8 @@
         "$type": "color",
         "$value": "{color.gray.400}",
         "$description": "Neutral status border."
-      }
+      },
+      "$description": "Status with no meaning attached."
     }
   },
   "signal": {
@@ -227,7 +232,8 @@
         "$type": "color",
         "$value": "{color.green.200}",
         "$description": "Go pill fill."
-      }
+      },
+      "$description": "Go verdict: word, dot and pill."
     },
     "wait": {
       "fg": {
@@ -244,7 +250,8 @@
         "$type": "color",
         "$value": "{color.amber.200}",
         "$description": "Wait pill fill."
-      }
+      },
+      "$description": "Wait verdict: word, dot and pill."
     },
     "stop": {
       "fg": {
@@ -261,7 +268,8 @@
         "$type": "color",
         "$value": "{color.red.200}",
         "$description": "Stop pill fill."
-      }
+      },
+      "$description": "Stop verdict: word, dot and pill."
     },
     "none": {
       "fg": {
@@ -278,7 +286,8 @@
         "$type": "color",
         "$value": "{color.gray.200}",
         "$description": "Unchecked pill fill."
-      }
+      },
+      "$description": "Unchecked verdict: word, dot or hollow ring, and pill."
     }
   },
   "edge": {
@@ -300,7 +309,7 @@
     }
   },
   "gem": {
-    "$description": "HARD RULE: purple belongs to gems and nothing else. It marks 'this is a Hidden Gem' and the ordinal gem tier ladder. Never for links, buttons, focus, selection, highlights, chart series, decoration or any other meaning. It deliberately avoids green/amber/red (verdicts) and blue (links, focus, info).",
+    "$description": "Purple, for gems only: the Hidden Gem designation and the tier ladder. Never for links, buttons, focus, selection, highlights, chart series or decoration.",
     "fg": {
       "$type": "color",
       "$value": "{color.purple.900}",
@@ -374,7 +383,7 @@
     }
   },
   "chart": {
-    "$description": "Monochrome first (Vercel's own report foundation maps chart-1..6 to grays). Series hues come only from hues with no other job (teal, pink) plus blue, so a chart can never be mistaken for a verdict (green/amber/red) or a gem (purple). Exception: a chart that encodes verdicts or gems uses the --fc-signal-* or --fc-gem-* tokens. Order is fixed so a series keeps its color across views.",
+    "$description": "Series colors in a fixed order, monochrome first. Verdict hues and purple are never series colors.",
     "1": {
       "$type": "color",
       "$value": "{color.gray.1000}",

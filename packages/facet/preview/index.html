@@ -61,12 +61,12 @@
   .sp-band.is-gem .sp-count { color: var(--fc-gem-fg); }
   .sp-ledger td:last-child { white-space: normal; min-width: 240px; color: var(--fc-text-primary); }
   .sp-tok { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; }
+  .sp-sws { display: inline-flex; gap: 3px; }
   .sp-tok i { flex: 0 0 14px; width: 14px; height: 14px; border-radius: 4px; box-shadow: inset 0 0 0 1px var(--ds-gray-alpha-300); }
   .sp-tok code { font: 400 13px/20px var(--fc-font-mono); color: var(--fc-text-primary); }
   .sp-step { white-space: nowrap; font: 400 13px/20px var(--fc-font-mono); color: var(--fc-text-secondary); }
   .sp-step small { display: block; font-size: 12px; line-height: 16px; }
   .sp-ledger .fc-group-row th { padding-top: 24px; }
-  .sp-gdesc { display: block; margin-top: 4px; font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); max-width: 90ch; white-space: normal; }
   .sp-ledger tr:target { background: var(--fc-surface-fill); }
   #semantic-tokens, .sp-ledger tr { scroll-margin-top: 170px; }
   .sp-dupes { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 16px; }
@@ -129,7 +129,6 @@
     <span class="sp-mark">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 3h12l4 6-10 12L2 9z" opacity=".35"/><path d="M12 21 7.5 9h9z"/></svg>
       <strong class="text-label-16"><strong>Facet</strong></strong>
-      <span class="text-label-13" style="color:var(--fc-text-secondary)">Design system specimen</span>
     </span>
     <div class="fc-segmented" data-size="small" role="radiogroup" aria-label="Theme" id="theme">
       <button type="button" role="radio" aria-checked="true" data-theme-choice="system">System</button>
@@ -155,19 +154,19 @@
   <section id="slate" aria-labelledby="slate-h">
     <div class="sp-intro">
       <h1 id="slate-h" class="text-heading-32">Picks, ranked and explained</h1>
-      <p class="text-copy-16">Each one is weighed against the market and backed by six signals, with the evidence one step away. Shown with sample data from the Week 8 prototype.</p>
+      <p class="text-copy-16">Shown with sample data from the Week 8 prototype.</p>
     </div>
 
     <div class="fc-stat-strip fc-card" role="group" aria-label="Slate summary">
       <div class="fc-stat"><p class="fc-stat-label">Picks</p><p class="fc-stat-value">7</p><p class="fc-stat-detail">4 markets, 5 games</p></div>
-      <div class="fc-stat"><p class="fc-stat-label">Average gap</p><p class="fc-stat-value">+8.0 pts</p><p class="fc-stat-detail">Our estimate minus priced chance</p></div>
+      <div class="fc-stat"><p class="fc-stat-label">Average gap</p><p class="fc-stat-value">+8.0 pts</p></div>
       <div class="fc-stat"><p class="fc-stat-label">Go verdicts</p><p class="fc-stat-value">2 of 7</p><p class="fc-stat-detail">Diggs, Flowers</p></div>
       <div class="fc-stat"><p class="fc-stat-label">Odds updated</p><p class="fc-stat-value fc-row" style="--fc-gap:10px"><span class="fc-status-dot" data-state="live" aria-hidden="true"></span>2 min ago</p><p class="fc-stat-detail">DraftKings, FanDuel, BetMGM</p></div>
     </div>
 
     <div class="fc-table-wrap">
       <table class="fc-table" data-interactive data-sticky>
-        <caption>Sorted by gap, largest first. Showing all 7 picks. Signals read left to right: setup, track record, sample, price gap, matchup, market.</caption>
+        <caption>Sorted by gap, largest first. Signals read left to right: setup, track record, sample, price gap, matchup, market.</caption>
         <thead>
           <tr>
             <th scope="col">Pick</th>
@@ -189,12 +188,12 @@
       <figure class="fc-stack" style="--fc-gap:12px;margin:0">
         <h2 class="text-heading-20">Where the value sits</h2>
         <div class="fc-bar-list" id="gap-bars" role="list"></div>
-        <figcaption class="sp-caption">Bar length is our estimate minus the priced chance, in percentage points, 0 to 15. The gap is not a guarantee: samples are 3 to 7 games.</figcaption>
+        <figcaption class="sp-caption">Scale 0 to 15 pts. Samples are 3 to 7 games, so gaps are directional.</figcaption>
       </figure>
       <div class="fc-stack" style="--fc-gap:12px">
         <h2 class="text-heading-20">Before kickoff</h2>
         <div class="fc-note" data-type="warning"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1 15 14H1z" opacity=".25"/><path d="M7.25 6h1.5v4h-1.5zM7.25 11h1.5v1.5h-1.5z"/></svg><span>Gesicki depends on Chase and Higgins playing. Inactives post 9:30 AM MT.</span></div>
-        <div class="fc-note" data-type="error" data-fill><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 4h1.5v5h-1.5zM7.25 10.5h1.5V12h-1.5z"/></svg><span>Burke's setup is unchecked. Snap share and role are unknown.</span></div>
+        <div class="fc-note" data-type="error" data-fill><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 4h1.5v5h-1.5zM7.25 10.5h1.5V12h-1.5z"/></svg><span>Burke's snap share and role are unchecked.</span></div>
         <div class="fc-note"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span>Diggs dropped from 3.00 to 2.95 after the bet. The better price is locked.</span></div>
       </div>
     </div>
@@ -204,14 +203,14 @@
   <section id="color" aria-labelledby="color-h">
     <div class="sp-intro">
       <h2 id="color-h" class="text-heading-24">Every hue earns its place</h2>
-      <p class="text-copy-14">Each band is a hue's whole contract: its job, its ten step scale, and the semantic tokens that draw from each step. Product code uses the semantic token, never the step itself. Every step is redefined for dark mode and wide-gamut screens, so a token stays correct in both themes.</p>
+      <p class="text-copy-14">Product code uses the semantic token, never the step itself.</p>
     </div>
     <div class="fc-stack" id="hue-allocation" style="--fc-gap:24px">
       <div class="sp-bands" id="bands" role="list" aria-label="Color scales and their jobs"></div>
       <fieldset class="fc-fieldset">
         <div class="fc-fieldset-content">
           <legend class="fc-fieldset-title">A second cue, every time</legend>
-          <p class="fc-fieldset-subtitle">A hue only confirms what the shape or the word already says, so the screen still reads for color-blind users, in grayscale and in print.</p>
+          <p class="fc-fieldset-subtitle">So it still reads for color-blind users and in grayscale.</p>
           <dl class="fc-description">
             <div><dt>Verdict</dt><dd><span class="fc-signal" data-signal="go">Go</span><small>Dot plus word</small></dd></div>
             <div><dt>Edge</dt><dd><span class="fc-delta" data-direction="positive">9 pts</span> <span class="fc-delta" data-direction="negative">3 pts</span><small>Sign plus arrow plus color</small></dd></div>
@@ -219,27 +218,24 @@
             <div><dt>Freshness</dt><dd><span class="fc-status"><span class="fc-status-dot" data-state="stale"></span>3 hours ago</span><small>Dot plus relative time</small></dd></div>
           </dl>
         </div>
-        <footer class="fc-fieldset-footer"><span>Enforced in code by <code class="sp-code">lint-color.mjs</code></span><span class="fc-badge" data-size="sm" data-contrast="low">Hard rule</span></footer>
+        <footer class="fc-fieldset-footer"><span>Enforced in code by <code class="sp-code">lint-color.mjs</code></span></footer>
       </fieldset>
       <div class="sp-notes">
-        <div class="fc-note" data-type="info"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span>A chart that plots verdicts or gems borrows the signal and gem colors, since that is their job.</span></div>
+        <div class="fc-note" data-type="info"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span>A chart that plots verdicts or gems borrows the signal and gem colors.</span></div>
         <div class="fc-note"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span>Badges come in every hue, but a purple one always means a gem.</span></div>
       </div>
       <hr class="fc-separator">
       <div class="sp-dodont">
-        <figure><figcaption><span class="fc-signal" data-signal="go">Do</span></figcaption><div class="sp-wrap"><span id="gem-do"></span> <span class="fc-badge" data-variant="purple" data-contrast="low">Hidden Gem</span></div><p class="sp-caption">Purple marks a gem and its tier.</p></figure>
+        <figure><figcaption><span class="fc-signal" data-signal="go">Do</span></figcaption><div class="sp-wrap"><span id="gem-do"></span> <span class="fc-badge" data-variant="purple" data-contrast="low">Hidden Gem</span></div></figure>
         <figure><figcaption><span class="fc-signal" data-signal="stop">Don't</span></figcaption><div class="sp-wrap" inert aria-label="Example of misuse"><button class="fc-button sp-misuse" type="button">Lock pick</button><a class="sp-misuse-link">View sources</a></div><p class="sp-caption">A purple button or link spends the gem color on something that is not a gem.</p></figure>
-        <figure><figcaption><span class="fc-signal" data-signal="go">Do</span></figcaption><div class="sp-wrap"><span class="fc-delta" data-direction="positive">9 pts</span><span class="fc-signal" data-signal="wait">Wait</span></div><p class="sp-caption">Green and amber carry a verdict, always with a sign or a word.</p></figure>
+        <figure><figcaption><span class="fc-signal" data-signal="go">Do</span></figcaption><div class="sp-wrap"><span class="fc-delta" data-direction="positive">9 pts</span><span class="fc-signal" data-signal="wait">Wait</span></div></figure>
         <figure><figcaption><span class="fc-signal" data-signal="stop">Don't</span></figcaption><div class="sp-wrap"><span class="sp-misuse-amber">$50 slate</span><span class="sp-misuse-green">+$212.40</span></div><p class="sp-caption">Amber for emphasis or green for money reads as a verdict that was never made.</p></figure>
       </div>
     </div>
 
 
       <div class="fc-stack" id="semantic-tokens" style="--fc-gap:16px">
-      <div class="sp-intro">
-        <h3 class="text-heading-20">Semantic tokens</h3>
-        <p class="text-copy-14">Product code uses these names. Each points at one step on the scales above and switches with the theme on its own.</p>
-      </div>
+      <h3 class="text-heading-20">Semantic tokens</h3>
       <div class="fc-table-wrap">
         <table class="fc-table sp-ledger">
           <caption class="fc-visually-hidden">Semantic color tokens</caption>
@@ -254,7 +250,7 @@
   <section id="type" aria-labelledby="type-h">
     <div class="sp-intro">
       <h2 id="type-h" class="text-heading-24">Words set the hierarchy</h2>
-      <p class="text-copy-14">Each role fixes size, line height, weight and tracking together. Numbers that get compared use tabular figures.</p>
+      <p class="text-copy-14">Each role fixes size, line height, weight and tracking together.</p>
     </div>
     <div class="sp-type" id="type-roles"></div>
   </section>
@@ -264,7 +260,7 @@
   <section id="content" aria-labelledby="content-h">
     <div class="sp-intro">
       <h2 id="content-h" class="text-heading-24">Words that earn their space</h2>
-      <p class="text-copy-16">Lessons for every heading, label and sentence in the product. Each one removes a review step, because the page gets it right the first time.</p>
+      <p class="text-copy-16">Lessons for every heading, label and sentence in the product.</p>
     </div>
 
     <div class="sp-lesson">
@@ -277,7 +273,6 @@
         <legend class="fc-fieldset-title">One question before every line</legend>
         <p class="fc-fieldset-subtitle">What does the reader already know from what sits above and around this? If the new text only restates it, cut it, or rewrite it until it adds something.</p>
       </div>
-      <footer class="fc-fieldset-footer"><span>Applies to headings, labels, notes, captions, tooltips, placeholders and empty states</span><span class="fc-badge" data-size="sm" data-contrast="low">Hard rule</span></footer>
     </fieldset>
 
     <h4 class="text-heading-16">Where repeats hide</h4>
@@ -352,8 +347,66 @@
     </div>
 
     <div class="sp-lesson">
+      <h3 class="text-heading-20">Earn every line</h3>
+      <p class="text-copy-14">If a line disappeared, would the reader understand less? If not, cut it.</p>
+    </div>
+    <div class="sp-dupes">
+      <figure class="sp-dupe">
+        <figcaption>A lede that describes the layout below it</figcaption>
+        <div class="sp-pair">
+          <div class="sp-mini"><span class="fc-signal" data-signal="stop">Don't</span><p class="text-copy-13"><mark class="sp-dup">Each band is a hue's whole contract: its job, its scale and its tokens.</mark> Product code uses the semantic token, never the step.</p></div>
+          <div class="sp-mini"><span class="fc-signal" data-signal="go">Do</span><p class="text-copy-13">Product code uses the semantic token, never the step.</p></div>
+        </div>
+      </figure>
+      <figure class="sp-dupe">
+        <figcaption>A reason nobody asked for</figcaption>
+        <div class="sp-pair">
+          <div class="sp-mini"><span class="fc-signal" data-signal="stop">Don't</span><div class="fc-note" data-size="small"><span>A chart that plots verdicts borrows the signal colors<mark class="sp-dup">, since that is their job</mark>.</span></div></div>
+          <div class="sp-mini"><span class="fc-signal" data-signal="go">Do</span><div class="fc-note" data-size="small"><span>A chart that plots verdicts borrows the signal colors.</span></div></div>
+        </div>
+      </figure>
+      <figure class="sp-dupe">
+        <figcaption>A line that sells instead of informs</figcaption>
+        <div class="sp-pair">
+          <div class="sp-mini"><span class="fc-signal" data-signal="stop">Don't</span><p class="text-copy-13">Lessons for every heading, label and sentence. <mark class="sp-dup">Each one removes a review step, because the page gets it right the first time.</mark></p></div>
+          <div class="sp-mini"><span class="fc-signal" data-signal="go">Do</span><p class="text-copy-13">Lessons for every heading, label and sentence.</p></div>
+        </div>
+      </figure>
+      <figure class="sp-dupe">
+        <figcaption>A second sentence that restates the first</figcaption>
+        <div class="sp-pair">
+          <div class="sp-mini"><span class="fc-signal" data-signal="stop">Don't</span><div class="fc-note" data-size="small" data-type="error"><span>Burke's setup is unchecked. <mark class="sp-dup">Snap share and role are unknown.</mark></span></div></div>
+          <div class="sp-mini"><span class="fc-signal" data-signal="go">Do</span><div class="fc-note" data-size="small" data-type="error"><span>Burke's snap share and role are unchecked.</span></div></div>
+        </div>
+      </figure>
+      <figure class="sp-dupe">
+        <figcaption>A caption that narrates an example</figcaption>
+        <div class="sp-pair">
+          <div class="sp-mini"><span class="fc-signal" data-signal="stop">Don't</span><span class="fc-gem" data-tier="polished" data-motion="none"><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Polished</span><p class="text-copy-13"><mark class="sp-dup">Purple marks a gem and its tier.</mark></p></div>
+          <div class="sp-mini"><span class="fc-signal" data-signal="go">Do</span><span class="fc-gem" data-tier="polished" data-motion="none"><span class="fc-gem-facets" aria-hidden="true"><i></i><i></i><i></i><i></i></span>Polished</span></div>
+        </div>
+      </figure>
+      <figure class="sp-dupe">
+        <figcaption>A number already printed beside it</figcaption>
+        <div class="sp-pair">
+          <div class="sp-mini"><span class="fc-signal" data-signal="stop">Don't</span><p class="text-copy-13"><mark class="sp-dup">Controls come in three heights, 32, 36 and 40.</mark></p><div class="sp-wrap" inert><span class="fc-button" data-variant="secondary" data-size="small">Small 32</span><span class="fc-button" data-variant="secondary">Default 36</span></div></div>
+          <div class="sp-mini"><span class="fc-signal" data-signal="go">Do</span><div class="sp-wrap" inert><span class="fc-button" data-variant="secondary" data-size="small">Small 32</span><span class="fc-button" data-variant="secondary">Default 36</span></div></div>
+        </div>
+      </figure>
+    </div>
+    <div class="fc-stack" style="--fc-gap:12px">
+      <h4 class="text-heading-16">What always stays</h4>
+      <dl class="fc-description">
+        <div><dt>Disclosures</dt><dd>Sample data from the Week 8 prototype</dd></div>
+        <div><dt>Caveats that change a reading</dt><dd>Samples are 3 to 7 games, so gaps are directional</dd></div>
+        <div><dt>Definitions shown nowhere else</dt><dd>What "gap" means, the first time it appears</dd></div>
+        <div><dt>The why on a Don't</dt><dd>A Do speaks for itself; a Don't needs its reason</dd></div>
+      </dl>
+    </div>
+
+    <div class="sp-lesson">
       <h3 class="text-heading-20">Headlines that last</h3>
-      <p class="text-copy-14">Name the purpose in simple, objective words, and let the content carry the specifics. A headline built from today's data goes stale the moment the data changes, a headline that lists what is inside needs rewriting every time the section grows, and a colon splits one idea into two weaker ones.</p>
+      <p class="text-copy-14">Name the purpose in simple, objective words, and let the content carry the specifics.</p>
     </div>
     <div class="sp-dupes">
       <figure class="sp-dupe">
@@ -396,7 +449,7 @@
   <section id="materials" aria-labelledby="mat-h">
     <div class="sp-intro">
       <h2 id="mat-h" class="text-heading-24">Depth without decoration</h2>
-      <p class="text-copy-14">Surfaces sit on the page; floating materials sit above it. Shadows include a hairline ring, so no border is needed.</p>
+      <p class="text-copy-14">Shadows include a hairline ring, so no border is needed.</p>
     </div>
     <div class="sp-mats">
       <div class="material-base">material-base</div>
@@ -414,7 +467,6 @@
   <section id="components" aria-labelledby="comp-h">
     <div class="sp-intro">
       <h2 id="comp-h" class="text-heading-24">Built once, used everywhere</h2>
-      <p class="text-copy-14">Controls come in three heights, 32, 36 and 40. Hidden Gems pieces use Facet tokens only.</p>
     </div>
     <div class="sp-gallery">
       <figure>
@@ -450,7 +502,7 @@
           <span class="fc-delta" data-direction="positive">9.0</span><span class="fc-delta" data-direction="negative">2.5</span><span class="fc-delta">0.0</span></div>
       </figure>
       <figure>
-        <figcaption>Status dot (data freshness)</figcaption>
+        <figcaption>Status dot</figcaption>
         <div class="fc-stack" style="--fc-gap:8px">
           <span class="fc-status"><span class="fc-status-dot" data-state="live"></span>Live, pulled 2 min ago</span>
           <span class="fc-status"><span class="fc-status-dot" data-state="recent"></span>Recent, 25 min ago</span>
@@ -597,16 +649,19 @@
   // ---- color bands: job + ten step scale + the semantic tokens on each step ----
   const A = (window.FACET_ALIASES || { light: {}, dark: {} });
   const steps = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
+  // A family is a set of tokens that only differ by role (fg, solid, bg, border) or series number.
+  const familyOf = k => { const m = k.match(/^((?:status|signal)-[a-z]+|gem)-(fg|solid|bg|border)$/); if (m) return m[1]; return /^chart-\d$/.test(k) ? 'chart' : null; };
+  const rowId = k => 'tok-' + (familyOf(k) || k);
   const HUES = [
-    { key: 'background', name: 'Background', job: 'The canvas', use: 'Page and component backgrounds. Background 2 sparingly, for subtle separation', never: 'Cards on cards', steps: [100, 200] },
+    { key: 'background', name: 'Background', job: 'The canvas', use: 'Background 2 only for subtle separation', never: 'Cards on cards', steps: [100, 200] },
     { key: 'gray', name: 'Gray', job: 'Everything by default', use: 'Text, surfaces, borders, primary buttons, chart series 1', never: 'Carrying meaning by itself' },
-    { key: 'purple', name: 'Purple', job: 'Gems, and only gems', use: 'The Hidden Gem designation and the gem tier ladder', never: 'Links, buttons, focus, selection, highlights, chart series, decoration', gem: true },
-    { key: 'green', name: 'Green', job: 'Go, good for the bettor', use: 'Go verdict, positive edge, success, live data', never: 'Money or wins because they look nice' },
-    { key: 'amber', name: 'Amber', job: 'Wait, and caution', use: 'Wait verdict, warnings, stale data', never: 'Highlighting, emphasis, chart series' },
-    { key: 'red', name: 'Red', job: 'Stop, bad for the bettor', use: 'Stop verdict, negative edge, errors, failed data, destructive actions', never: 'Decoration, hot picks, urgency' },
+    { key: 'purple', name: 'Purple', job: 'Gems, and only gems', use: 'Designation and tier ladder', never: 'Links, buttons, focus, selection, highlights, chart series, decoration', gem: true },
+    { key: 'green', name: 'Green', job: 'Go, good for the bettor', use: 'Positive edge, success, live data', never: 'Money or wins because they look nice' },
+    { key: 'amber', name: 'Amber', job: 'Wait, and caution', use: 'Warnings, stale data', never: 'Highlighting, emphasis, chart series' },
+    { key: 'red', name: 'Red', job: 'Stop, bad for the bettor', use: 'Negative edge, errors, failed data, destructive actions', never: 'Decoration, hot picks, urgency' },
     { key: 'blue', name: 'Blue', job: 'Interaction and information', use: 'Links, focus ring, toggles on, info notes, recent data, chart series 2', never: 'Verdicts, gems, success' },
-    { key: 'teal', name: 'Teal', job: 'Chart series only', use: 'Series 3, when direct labels and grays are not enough', never: 'Any interface element' },
-    { key: 'pink', name: 'Pink', job: 'Chart series only', use: 'Series 4, when direct labels and grays are not enough', never: 'Any interface element' },
+    { key: 'teal', name: 'Teal', job: 'Chart series only', use: 'Series 3, when direct labels and grays are not enough' },
+    { key: 'pink', name: 'Pink', job: 'Chart series only', use: 'Series 4, when direct labels and grays are not enough' },
     { key: 'gray-alpha', name: 'Gray alpha', job: 'Edges that blend', use: 'Overlays, shadows, an edge on a tinted surface', never: 'Default borders, which stay solid gray' },
   ];
   const byStep = {};
@@ -621,19 +676,19 @@
     const cells = st.map(n => {
       const ref = `${h.key}-${n}`;
       const toks = byStep[ref] || [];
-      return `<div class="sp-cell"><i class="sp-sw" style="background:var(--ds-${ref})" title="--ds-${ref}"></i><span class="sp-cellstep">${n}</span>${toks.length ? `<a class="sp-count" href="#tok-${toks[0].tok}">${toks.length} ${toks.length === 1 ? 'token' : 'tokens'}</a>` : ''}</div>`;
+      return `<div class="sp-cell"><i class="sp-sw" style="background:var(--ds-${ref})" title="--ds-${ref}"></i><span class="sp-cellstep">${n}</span>${toks.length ? `<a class="sp-count" href="#${rowId(toks[0].tok)}">${toks.length} ${toks.length === 1 ? 'token' : 'tokens'}</a>` : ''}</div>`;
     }).join('') + (h.steps ? `<div class="sp-cell-fill" style="grid-column:span ${10 - st.length}"></div>` : '');
     return `<article class="sp-band${h.gem ? ' is-gem' : ''}" role="listitem" aria-label="${h.name}">
       <header class="sp-band-head">
         <h3 class="text-heading-16">${h.name}</h3>
         <p class="sp-band-job">${h.job}</p>
-        <dl class="sp-band-dl"><div><dt>Use for</dt><dd>${h.use}</dd></div><div><dt>Never for</dt><dd>${h.never}</dd></div></dl>
+        <dl class="sp-band-dl"><div><dt>Use for</dt><dd>${h.use}</dd></div>${h.never ? `<div><dt>Never for</dt><dd>${h.never}</dd></div>` : ''}</dl>
       </header>
       ${cells}
     </article>`;
   }).join('');
 
-  // ---- semantic token ledger ----
+  // ---- semantic token ledger: families collapse into one row ----
   const GROUPS = [
     ['text', 'Text'], ['surface', 'Surface'], ['border', 'Border'], ['focus', 'Focus'], ['status', 'Status'],
     ['signal', 'Verdict signals'], ['edge', 'Edge'], ['gem', 'Gem'], ['freshness', 'Freshness'], ['chart', 'Chart'],
@@ -642,11 +697,23 @@
   document.getElementById('ledger').innerHTML = GROUPS.map(([g, label]) => {
     const toks = Object.keys(A.light).filter(k => k === g || k.startsWith(g + '-'));
     if (!toks.length) return '';
-    const gd = A.groups[g] ? `<span class="sp-gdesc">${A.groups[g].replace(/^HARD RULE: /, '')}</span>` : '';
-    return `<tr class="fc-group-row"><th colspan="3" scope="colgroup">${label}${gd}</th></tr>` + toks.map(k => {
+    const done = new Set();
+    const rows = toks.map(k => {
+      const fam = familyOf(k);
+      if (fam) {
+        if (done.has(fam)) return '';
+        done.add(fam);
+        const members = toks.filter(m => familyOf(m) === fam);
+        const sw = members.map(m => `<i style="background:var(--fc-${m})" title="--fc-${m}"></i>`).join('');
+        const name = /^chart$/.test(fam) ? '--fc-chart-1 to 6' : `--fc-${fam}-*`;
+        const steps = members.map(m => `${m.slice(fam.length + 1)} ${stepLabel(A.light[m]).replace(/^[a-z-]+ /, h => /^chart$/.test(fam) ? h : '')}`).join(', ');
+        const hue = /^chart$/.test(fam) ? '' : stepLabel(A.light[members[0]]).replace(/ \d+$/, '') + ' ';
+        return `<tr id="tok-${fam}"><th scope="row"><span class="sp-tok"><span class="sp-sws">${sw}</span><code>${name}</code></span></th><td class="sp-step">${hue}${steps}</td><td>${A.groups[fam] || ''}</td></tr>`;
+      }
       const dark = A.dark[k] !== A.light[k] ? `<small>dark ${stepLabel(A.dark[k])}</small>` : '';
       return `<tr id="tok-${k}"><th scope="row"><span class="sp-tok"><i style="background:var(--fc-${k})"></i><code>--fc-${k}</code></span></th><td class="sp-step">${stepLabel(A.light[k])}${dark}</td><td>${A.desc[k] || ''}</td></tr>`;
     }).join('');
+    return `<tr class="fc-group-row"><th colspan="3" scope="colgroup">${label}</th></tr>` + rows;
   }).join('');
   const roles = ['heading-48','heading-40','heading-32','heading-24','heading-20','heading-16','heading-14','label-16','label-14','label-13','label-12','label-13-mono','copy-18','copy-16','copy-14','copy-13','copy-13-mono','button-14'];
   document.getElementById('type-roles').innerHTML = roles.map(r => `<div><code>text-${r}</code><span class="text-${r}">${r.startsWith('label') ? 'Stefon Diggs, anytime TD 3.00' : r.startsWith('copy') ? 'Both of his empty weeks came with a backup QB, so the setup check comes first.' : 'Gesicki carries the widest gap'}</span></div>`).join('');

@@ -25,6 +25,7 @@ Show and edit when odds and injury pulls run, whether the last run worked, and w
 - Lanes: main (fluid) | status (`--fc-schedule-status-w`, 112px) | next run | last run (`--fc-schedule-run-w`, 136px each) | actions. Fixed lanes keep equal peers aligned down the list. One `.fc-schedule-head` names the columns (owner feedback, 2026-11-02), so rows carry values only; each cell repeats its name in `.fc-schedule-label` for screen readers and the stacked narrow layout.
 - Main: the plain-language schedule is the fast path; the cron is the audit path, in mono, secondary, 12px.
 - Status words and dots: Succeeded (`live`, green), Failed (`failed`, red), Running (`recent`, blue), Paused (no freshness state, gray). The word always shows.
+- Every run time carries its day word ("Today 6:00 PM", "Tue 12:00 AM", "Oct 31 11:00 PM"), so peers in a column read the same way (owner feedback, 2026-11-02).
 - Next run: the time in primary. Last run: the time in primary, then duration or failure reason in secondary (`.fc-schedule-detail`). A paused row reads Next "None" (`.fc-value-empty`).
 - Failed: a `.fc-list-row-note` error note under the row says what failed and what is stale.
 - Menu: Edit, View runs, Pause (or Resume).

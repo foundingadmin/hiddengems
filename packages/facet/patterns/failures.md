@@ -16,6 +16,10 @@ Every failed or broken state answers two questions: whose problem is it, and wha
 
 If a failure has no action the user can take and no owner to name, it is not ready to ship: find one or the other.
 
+## In rows and banners
+
+A failure note always carries its next step. Yours to fix: a button (`.fc-note-action`), or a link (`.fc-note-link`) when the row already has buttons. Out of your hands: an amber warning note with a follow link, such as "Provider status". Never leave the fix hidden in an overflow menu.
+
 ## Ghost
 
 An empty or failed chart draws a blurred, gray sample of its shape under the message (`data-ghost` on `.fc-chart`), so the reader sees what the chart shows when it works while the message keeps focus. The sample is blurred past reading, never colored and never labelled. Reduced transparency drops the blur for a faint flat sample.

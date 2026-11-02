@@ -50,3 +50,11 @@ Color comes from what the note means, and fill comes from how urgent it is. Star
 - **Color** follows the hue allocation in `DESIGN.md`. Success is green in Facet (the reference renders it blue).
 - Freshness on a value uses a status dot, not a note. A note appears only when stale or failed data changes what the reader should do.
 - No title. One sentence in active voice naming the impact; an optional 1 to 2 word label never repeated by the sentence. Small size in table-adjacent panels, default size in detail views.
+
+## Link action `[F]`
+
+Owner feedback, 2026-11-02. A note that needs a next step always offers one; the reader should never have to guess that the fix lives in a row's overflow menu.
+
+- **Button** (`data-action` + `.fc-note-action`): the fix is yours and the note stands alone ("Rotate key", "Retry").
+- **Link** (`a.fc-note-link`): a short underlined CTA hugging the note's right edge, outside the message. Use it inside dense rows where a button would compete with the row's own buttons, and for problems out of your hands, where the step is to follow, not fix ("Provider status", with an arrow when it leaves the app). See `patterns/failures.md`.
+- One action per note, button or link, never both. The CTA never repeats the message.

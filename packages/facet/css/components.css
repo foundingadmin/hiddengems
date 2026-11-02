@@ -735,6 +735,27 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
 .fc-note a { color: var(--ds-gray-1000); font-weight: 500; text-decoration: none; }
 .fc-note a:hover { text-decoration: underline; }
 .fc-note-action { margin-left: auto; flex: 0 0 auto; }
+/* Link action [F] (owner feedback 2026-11-02): a short underlined CTA hugging the note's right edge, outside
+   the message. For notes inside dense rows, where a button would compete with the row's own buttons.
+   One per note. An arrow marks a link that leaves Hidden Gems (a provider status page). */
+.fc-note a.fc-note-link {
+  margin-left: auto;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding-left: var(--fc-space-3);
+  font-weight: 500;
+  color: var(--fc-text-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--fc-border-active);
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+.fc-note a.fc-note-link:hover { text-decoration-color: currentColor; }
+.fc-note a.fc-note-link > svg { width: 12px; height: 12px; }
+.fc-note:has(> .fc-note-link) { flex-wrap: wrap; align-items: center; }
+.fc-note:has(> .fc-note-link) > span { flex: 1 1 200px; min-width: 0; }
 .fc-note[data-disabled] { --_fg: var(--ds-gray-700); --_bd: var(--ds-gray-400); }
 
 /* ------------------------------------------------------------------ Guide marker [F]

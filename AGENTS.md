@@ -51,5 +51,6 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 
 - `packages/facet/` design system (self-contained, reusable in other projects)
 - `packages/core/` domain rules, `packages/db/` schema and client, `packages/ingest/` providers and jobs
-- `apps/web/` Hidden Gems app (Next.js, deploys on Vercel with Root Directory `apps/web`)
+- `apps/artifact/` the app as hosted today (claude.ai artifact; `pnpm artifact:build`, data in its db as `hg/slate` and `hg/health`)
+- `apps/web/` Hidden Gems app for a full deployment (Next.js, deploys on Vercel with Root Directory `apps/web`)
 - `docs/` project documentation

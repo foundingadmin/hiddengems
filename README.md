@@ -6,7 +6,8 @@ qualitative reporting, and ranks available sportsbook bets as custom "gem" tiers
 ## Repository
 
 ```
-apps/web/          The app: slate, data health, cron routes (Next.js on Vercel)
+apps/artifact/     The app as hosted today: a claude.ai artifact page
+apps/web/          The app for a full deployment: Next.js on Vercel with cron
 packages/core/     Domain rules: odds math, gaps, tiers, verdicts, cadence
 packages/db/       Postgres schema, migrations, client
 packages/ingest/   Providers, jobs, the run log

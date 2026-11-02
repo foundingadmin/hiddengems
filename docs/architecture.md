@@ -108,6 +108,25 @@ longer than the market. That is line shopping, not a forecast, so only two signa
 gap, market depth) and every verdict reads Unchecked until the setup signal exists. The real model
 replaces `estimate()` and fills the other four signals; the tables and pages do not change.
 
+## Hosting v1: a claude.ai artifact
+
+The first iteration is hosted as a private artifact in the owner's claude.ai account
+(https://claude.ai/artifact/H4A8Nv5Pup51dW2DiGpdmh). An artifact page runs no server and cannot call
+other hosts, so the split is:
+
+- **The page** (`apps/artifact`): one self-contained HTML file with Facet, the fonts and the team
+  logos inlined. `pnpm artifact:build` writes `apps/artifact/dist/hidden-gems.html`; publish that file
+  to the same artifact URL to update it. It reads two documents from the artifact's database and
+  re-renders live when they change: `hg/slate` (the ranked picks) and `hg/health` (sources and the
+  pull log).
+- **The pipeline** (unchanged): `pnpm job all` pulls and ranks, then `pnpm job snapshot <dir>` writes
+  `slate.json` and `health.json`.
+- **The hand-off**: Claude writes both files into the artifact database (`ArtifactData` batch, set
+  `hg/slate` and `hg/health`). Access rules make `hg` readable by anyone the artifact is shared with
+  and writable only by the owner.
+
+`apps/web` stays the path to a full deployment (Vercel, cron, Postgres) when the artifact outgrows it.
+
 ## Database
 
 - **Production**: Postgres from the Vercel Marketplace (Neon or Supabase). `DATABASE_URL` uses

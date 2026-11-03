@@ -33,13 +33,15 @@
 .fc-cert-head > * { margin: 0; }
 .fc-cert-kicker, .fc-cert-meta { color: var(--fc-text-secondary); }
 
-/* Legs share one grid, so every rating mark and price sits in the same lane. */
+/* Legs share one grid, so every rating mark and price sits in the same lane. Each leg holds half the space
+   between legs above and below it, and the list takes the outer halves back, so a leg that closes takes its
+   space with it and nothing else jumps (patterns/moments.md, "Remove a leg"). */
 .fc-legs {
+  --_leg-space: var(--fc-space-4);
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto;
   column-gap: var(--fc-space-4);
-  row-gap: var(--fc-space-4);
-  margin: 0;
+  margin: calc(var(--_leg-space) / -2) 0;
   padding: 0;
   list-style: none;
 }
@@ -49,6 +51,7 @@
   grid-template-columns: subgrid;
   align-items: center;
   min-width: 0;
+  padding-block: calc(var(--_leg-space) / 2);
 }
 .fc-leg > .fc-player { grid-column: 1; min-width: 0; }
 .fc-leg > .fc-gem { grid-column: 2; justify-self: end; }
@@ -56,6 +59,49 @@
 /* An editable slip (your own play) adds a fourth lane for each leg's remove button. */
 .fc-legs[data-editable] { grid-template-columns: minmax(0, 1fr) auto auto auto; column-gap: var(--fc-space-3); }
 .fc-leg > .fc-leg-action { grid-column: 4; justify-self: end; }
+/* Remove is destructive, so it answers in the stop tokens: under the pointer, and while its leg leaves
+   (data-leaving, set for the remove moment). The dots that sweep the leg away stay brand (moments rule 2). */
+.fc-button.fc-leg-action:hover,
+.fc-leg[data-leaving] > .fc-leg-action { --_fg: var(--fc-signal-stop-fg); --_bg: var(--fc-signal-stop-bg); --_bg-hover: var(--fc-signal-stop-bg); }
+
+/* Swipe to remove, on touch. A pull slides the leg's parts left over its Remove action, which grows into the
+   space. The app sets --fc-swipe (the pull, a length) and data-swipe on the leg: "drag" while the finger moves,
+   "open" while it rests open, "settle" while it slides shut. Vertical scrolling and zoom keep working.
+   <li class="fc-leg" data-swipe="open" style="--fc-swipe: 88px">… <button class="fc-leg-swipe">x Remove</button></li> */
+.fc-legs[data-editable] > .fc-leg { position: relative; touch-action: pan-y pinch-zoom; }
+.fc-leg[data-swipe] { overflow-x: clip; }
+.fc-leg[data-swipe] > :not(.fc-leg-swipe) {
+  transform: translateX(calc(-1 * var(--fc-swipe, 0px)));
+  transition: transform var(--fc-duration-overlay) var(--fc-ease-standard);
+}
+.fc-leg-swipe {
+  position: absolute;
+  inset-block: calc(var(--_leg-space) / 2);
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fc-space-1);
+  width: var(--fc-swipe, 0px);
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--fc-radius-md);
+  background: var(--fc-signal-stop-bg);
+  color: var(--fc-signal-stop-fg);
+  white-space: nowrap;
+  visibility: hidden;
+  transition: width var(--fc-duration-overlay) var(--fc-ease-standard), visibility 0s linear var(--fc-duration-overlay);
+}
+.fc-leg-swipe > svg { flex: none; width: var(--fc-space-4); height: var(--fc-space-4); }
+.fc-leg-swipe:focus-visible { box-shadow: var(--ds-focus-ring); }
+.fc-leg:is([data-swipe="drag"], [data-swipe="open"]) > .fc-leg-swipe { visibility: visible; transition: width var(--fc-duration-overlay) var(--fc-ease-standard); }
+/* While the finger moves, everything follows it at once. */
+.fc-leg[data-swipe="drag"] > :not(.fc-leg-swipe),
+.fc-leg[data-swipe="drag"] > .fc-leg-swipe { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .fc-leg[data-swipe] > :not(.fc-leg-swipe), .fc-leg[data-swipe] > .fc-leg-swipe { transition: none; }
+}
 /* A flag beside the name drops under it before the name truncates. */
 .fc-leg .fc-player-line { flex-wrap: wrap; row-gap: var(--fc-space-0_5); }
 .fc-leg .fc-player-line > .fc-badge { flex: none; align-self: center; }

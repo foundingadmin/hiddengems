@@ -67,7 +67,7 @@ await stage.sweep(row, { from: closeButton, wipe: true });
 | `stage.fly(dot, { to, duration, size, opacity, arc, ease, clip, delay, signal })` | One dot from a point to a point |
 | `stage.dust(dots, { clip, signal })` | Dots drift, shrink and fade to nothing |
 | `stage.sweep(el, { from, wipe, ...cloud })` | A cloud across an element from one end (or from a control) to the other; `wipe` clips the element away behind it (a `clip-path` animation, the one property besides opacity and transform that moments animate, because the row is revealed rather than moved). Defaults are the remove sweep |
-| `stage.unsweep(el, { to, ...cloud })` | The sweep backward; restores a wiped element |
+| `stage.unsweep(el, { to, reveal, ...cloud })` | The sweep backward; restores a wiped element. `reveal` does the same for an element rendered again after its sweep (a row Undo restored): it starts wiped, through any `delay`, and shows behind the cloud |
 | `stage.ripple(el, { from, edge, duration, spacing })` | Dots along one edge ripple outward from a point: the edge glint and the sheet shimmer. The edge comes from `--fc-glint-edge`; `from` carries `data-glint` while it plays |
 | `stage.orbit(el, { count, period, size, signal })` | Dots circle an element's rounded border until the signal aborts |
 | `stage.tone(n)` | A tone as a canvas color, refreshed when the theme changes |

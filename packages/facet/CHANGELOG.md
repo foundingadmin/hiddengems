@@ -15,6 +15,13 @@ Added, for micro moments (`patterns/moments.md`)
 - Edge glint hooks (`--fc-glint-edge`, `[data-glint]`) on the tab bar, rail items and the sheet.
 - Sheet spring motion (`.fc-sheet[data-motion="spring"]`, `[data-closing]`): opens from off its side on the spring, closes on the exit easing (`components/sheet.md`).
 - Rail slip leg count pop (`.fc-railslip-count[data-pop]`, `--fc-duration-pop`) and the on-slip phone row (`.fc-gem-item[data-checked]`).
+- `unsweep({ reveal })` for an element rendered again after its sweep; unsweep now honors `delay` for the wipe too.
+- Swipe to remove on editable legs (`.fc-leg-swipe`, `--fc-swipe`, `data-swipe`), and the × in the stop tokens on hover
+  and while its leg leaves (`data-leaving`) (`components/cert.md`).
+
+Changed
+- `.fc-legs` spaces legs with half the gap above and below each leg instead of `row-gap`, so a closing leg takes its
+  space with it. Same look.
 
 ## 0.2.0 (2026-11-03)
 

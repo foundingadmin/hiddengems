@@ -4,8 +4,8 @@
 // adds picks, and Josh places the bet himself (docs/prd.md section 13).
 import { parseStake } from '@hiddengems/core';
 import {
-  type SlipResult, addLeg as storeAddLeg, changeToOwnPlay, markPlaced as storeMarkPlaced, markSent as storeMarkSent,
-  removeLeg as storeRemoveLeg, setStake as storeSetStake,
+  type RemovedLeg, type SlipResult, addLeg as storeAddLeg, changeToOwnPlay, markPlaced as storeMarkPlaced, markSent as storeMarkSent,
+  removeLeg as storeRemoveLeg, restoreLeg as storeRestoreLeg, setStake as storeSetStake,
 } from '@hiddengems/db';
 import { revalidatePath } from 'next/cache';
 import { db, READ_ONLY, READ_ONLY_MESSAGE } from '@/lib/db';
@@ -15,6 +15,9 @@ import { db, READ_ONLY, READ_ONLY_MESSAGE } from '@/lib/db';
  * the slip is a suggested play, so the Change slip dialog comes first (components/change-slip-dialog.tsx).
  */
 export type ActionState = { ok: boolean; error?: string; value?: string; confirm?: 'change'; slipId?: string } | null;
+
+/** A removed leg, kept by the client for Undo (restoreLeg). */
+export type { RemovedLeg };
 
 const SLIP_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const SELECTION_KEY = /^[A-Za-z0-9:._-]{1,200}$/;
@@ -39,12 +42,25 @@ export async function addLeg(selectionKey: string): Promise<ActionState> {
   return done(storeAddLeg((await db()).db, key));
 }
 
-export async function removeLeg(slipId: string, selectionKey: string): Promise<ActionState> {
-  if (READ_ONLY) return readOnly();
+/** Removes a leg. removed is what Undo sends back to restoreLeg. */
+export async function removeLeg(slipId: string, selectionKey: string): Promise<NonNullable<ActionState> & { removed?: RemovedLeg }> {
+  if (READ_ONLY) return readOnly()!;
   const id = text(slipId), key = text(selectionKey);
+  if (!SLIP_ID.test(id)) return invalid('slip')!;
+  if (!SELECTION_KEY.test(key)) return invalid('pick')!;
+  const r = await storeRemoveLeg((await db()).db, id, key);
+  const state = await done(r);
+  return r.ok && r.removed ? { ...state!, removed: r.removed } : state!;
+}
+
+/** Undo for removeLeg: the same leg back on the same slip, at the price it was added at. */
+export async function restoreLeg(slipId: string, leg: RemovedLeg): Promise<ActionState> {
+  if (READ_ONLY) return readOnly();
+  const id = text(slipId), key = text(leg?.selectionKey);
   if (!SLIP_ID.test(id)) return invalid('slip');
   if (!SELECTION_KEY.test(key)) return invalid('pick');
-  return done(storeRemoveLeg((await db()).db, id, key));
+  const price = Number(leg.price), addedAt = text(leg.addedAt).slice(0, 40);
+  return done(storeRestoreLeg((await db()).db, id, { selectionKey: key, price, addedAt }));
 }
 
 /** Form action: slipId and stake ("15", "$15.00"). */

@@ -77,6 +77,8 @@ export interface SweepOptions extends Common {
 export interface UnsweepOptions extends Omit<SweepOptions, 'from' | 'wipe'> {
   /** Where the cloud returns to. Default 'left'. */
   to?: 'left' | 'right' | Target;
+  /** The element was rendered again after its sweep (a restored row): start it wiped and show it behind the cloud. */
+  reveal?: boolean;
 }
 export interface RippleOptions {
   signal?: AbortSignal;

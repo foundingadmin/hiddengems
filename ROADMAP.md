@@ -154,8 +154,9 @@ Each moment ships with its surface.
 | Unread gems | New gems row | Built: unread tint and sheen, six dots circle the newest |
 | Unread to read | Mark read, Mark all read | Built: a cloud sweeps each card; a failure puts the shine back |
 | Add a gem, drawer | Board Add, Slips in the rail and tab bar, gem sheet | Next |
-| Remove, swipe, erase | The slip | Next |
-| Send | Send handoff | Waits on the handoff |
+| Remove, swipe | The slip | Built: × or a phone swipe removes at once, the row sweeps and closes, Undo restores the leg at its added price |
+| Erase | Clear slip | Parked for the principal: the slip has no Clear control |
+| Send | Send handoff | Built: Open DraftKings dissolves the slip card into the gem; the handoff screen is unchanged |
 | New connection | A connections screen | Waits on the screen |
 
 ## Prove it (M4)

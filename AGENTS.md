@@ -72,6 +72,17 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
   Ship only on `Verdict: pass` from both verifiers.
 - A product's accent goes through `--fc-brand-*` (`packages/facet/tokens/facet.semantic.json`); reusing Facet for another product means changing those four tokens, not hunting for hues.
 
+## Branches and pull requests
+
+- One short-lived branch per task, cut from the latest `main`, one PR each. Prefix by kind: `ds/` (Facet),
+  `screens/` (build brief screens), `data/` (jobs, providers, Data health), `copy/` (wording), `fix/` (preview
+  comments and CI). Agents may push their own task branches and open draft PRs; never push to someone else's.
+- Before merge, the `pr-verifier` agent (`.claude/agents/pr-verifier.md`) checks merge state, CI, house rules, both
+  verifier verdicts and any owner step; its fix list goes to the agent that owns the branch. Merge only on
+  `Merge: ready`, then tell other open branches to update from `main`.
+- Keep a branch small enough to merge the same day; a branch that touches shared files (shell, `app.css`, Facet
+  CSS) merges first and the rest update from `main`.
+
 ## Data and jobs
 
 - Read `docs/architecture.md` before changing data, jobs or providers.

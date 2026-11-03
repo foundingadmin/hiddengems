@@ -3,6 +3,7 @@
 // .fc-dropdown of menuitemradio rows. Enter, Space or Down opens on the checked item, Up on the last;
 // Up/Down move, Home/End jump, a letter jumps by first letter, Escape closes back to the trigger, Tab
 // closes (INT-01, INT-03).
+import Link from 'next/link';
 import { type ReactNode, useEffect, useId, useRef, useState } from 'react';
 
 export interface DropdownItem {
@@ -11,6 +12,8 @@ export interface DropdownItem {
   detail?: string;
   /** A group heading before this item. */
   group?: string;
+  /** Navigates instead of selecting: rendered as a link (INT-27, menu.md MenuLink). */
+  href?: string;
 }
 
 export function Dropdown({
@@ -32,7 +35,7 @@ export function Dropdown({
   const id = useId();
   const root = useRef<HTMLDivElement>(null);
   const button = useRef<HTMLButtonElement>(null);
-  const rows = () => [...(root.current?.querySelectorAll<HTMLButtonElement>('[role^="menuitem"]') ?? [])];
+  const rows = () => [...(root.current?.querySelectorAll<HTMLElement>('[role^="menuitem"]') ?? [])];
   const focusAt = (i: number) => { const r = rows(); r[(i + r.length) % r.length]?.focus(); };
 
   const show = (at: 'checked' | 'last') => {
@@ -54,7 +57,7 @@ export function Dropdown({
 
   const onMenuKey = (e: React.KeyboardEvent) => {
     const r = rows();
-    const i = r.indexOf(document.activeElement as HTMLButtonElement);
+    const i = r.indexOf(document.activeElement as HTMLElement);
     if (e.key === 'ArrowDown') { e.preventDefault(); focusAt(i + 1); }
     else if (e.key === 'ArrowUp') { e.preventDefault(); focusAt(i - 1); }
     else if (e.key === 'Home') { e.preventDefault(); focusAt(0); }
@@ -85,13 +88,20 @@ export function Dropdown({
         {items.map((it) => (
           <div key={it.value} style={{ display: 'contents' }}>
             {it.group && <div className="fc-dropdown-label" role="presentation">{it.group}</div>}
-            <button
-              type="button" className="fc-dropdown-item" role={actions ? 'menuitem' : 'menuitemradio'} aria-checked={actions ? undefined : value === it.value} tabIndex={-1}
-              onClick={() => { onSelect(it.value); close(); }}
-            >
-              <span>{it.label}</span>
-              {it.detail && <span className="fc-dropdown-item-detail">{it.detail}</span>}
-            </button>
+            {it.href ? (
+              <Link className="fc-dropdown-item" role="menuitem" tabIndex={-1} href={it.href} onClick={() => close(false)}>
+                <span>{it.label}</span>
+                {it.detail && <span className="fc-dropdown-item-detail">{it.detail}</span>}
+              </Link>
+            ) : (
+              <button
+                type="button" className="fc-dropdown-item" role={actions ? 'menuitem' : 'menuitemradio'} aria-checked={actions ? undefined : value === it.value} tabIndex={-1}
+                onClick={() => { onSelect(it.value); close(); }}
+              >
+                <span>{it.label}</span>
+                {it.detail && <span className="fc-dropdown-item-detail">{it.detail}</span>}
+              </button>
+            )}
           </div>
         ))}
       </div>

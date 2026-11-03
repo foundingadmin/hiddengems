@@ -14,6 +14,18 @@ import { FixButton, PullAllButton, PullButton, PullQueue, ResultCell, RunCell } 
 import { SourceMenu } from './source-menu';
 
 export const dynamic = 'force-dynamic';
+
+// Note icons (Facet note anatomy): the shape tells warning from error, so color is never the only cue (CON-09).
+const WARNING_ICON = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" /><path d="M12 9v4" /><path d="M12 17h.01" />
+  </svg>
+);
+const ERROR_ICON = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="10" /><path d="m15 9-6 6" /><path d="m9 9 6 6" />
+  </svg>
+);
 // Each pull is its own request (see pulls.tsx); a full usage pull reads a season of play by play.
 export const maxDuration = 300;
 export const metadata: Metadata = { title: 'Data health' };
@@ -169,8 +181,9 @@ export default async function DataPage() {
                   <span className="fc-schedule-label">Last run</span>
                   {last ? (
                     <>
-                      <Link className="hg-run-link" href={`/data/logs?run=${last.id}`} aria-label={`${dayTime(last.startedAt, now)}, log of the last ${label.toLowerCase()} run`}>
+                      <Link className="hg-run-link" href={`/data/logs?run=${last.id}`}>
                         <time className="fc-timestamp" dateTime={last.startedAt.toISOString()} title={clock(last.startedAt)}>{dayTime(last.startedAt, now)}</time>
+                        <span className="fc-visually-hidden">, {label.toLowerCase()} run log</span>
                       </Link>
                       <span className="fc-schedule-detail">Ran {duration(last.durationMs)}</span>
                     </>
@@ -183,6 +196,7 @@ export default async function DataPage() {
                 {note && (
                   <div className="fc-list-row-note">
                     <div className="fc-note" data-type={note.type} data-size="small" data-action>
+                      {note.type === 'error' ? ERROR_ICON : WARNING_ICON}
                       <span>{note.text}</span>
                       <FixButton
                         className="fc-note-action" jobs={note.fix.jobs} text={note.fix.label}

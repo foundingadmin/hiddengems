@@ -78,9 +78,10 @@ freezing prices this week.
 - [ ] Principal: run `pnpm db:supabase-sql --app-password <password>` output in the production Supabase project, then
       set `DATABASE_URL` (Production) to the `hiddengems_app` login (`docs/architecture.md`, Database).
 - [x] Migrations 0005 to 0007 applied to production on Nov 3 through the Supabase connector (rapid build mode).
-- [x] Staging runs on an in-memory sample fixture, never a real database (decided Nov 3).
+- [x] Previews read production through the read-only `hiddengems_preview` login, or a sample fixture without it.
+- [ ] Principal: set the `hiddengems_preview` password and put it in Vercel's Preview `DATABASE_URL`
+      (`docs/architecture.md`, "Previews").
 - [x] 13 sample players a preview had written into production deleted on Nov 3, with their sample links.
-- [ ] Principal: remove the Preview-scoped `DATABASE_URL` in Vercel, so no preview holds production credentials.
 - [x] A scheduled Claude task checks each odds snapshot about 25 to 50 minutes after it (Sun 9:32, Tue 10:32, Sat
       20:32 Denver) and runs a missed one from production Data health. Adding the Supabase connector to it in
       claude.ai turns on its freeze gap check.

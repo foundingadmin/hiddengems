@@ -22,8 +22,9 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
   SQL tool) or `pnpm db:supabase-apply production [--sql "..."]`; with the GitHub secret set, every push to `main`
   applies migrations on its own. Run only what a merged change needs, a read, or a fix the principal asked for.
   Deleting or rewriting stored data stays the principal's call.
-- Staging and every preview have no database: `apps/web/lib/db.ts` ignores `DATABASE_URL` there and builds an
-  in-memory fixture from the sample provider on each server start. Never point a preview at a real database.
+- Staging and every preview never change a real database (`apps/web/lib/db.ts`): with `DATABASE_URL` set they read
+  production through `hiddengems_preview`, a login that can only select, and every action refuses to write;
+  without it they build an in-memory fixture from the sample provider. Never give a preview a login that can write.
 - The old pipeline (claude.ai dashboard store and its scheduled tasks) retired on Nov 3 2026. Its code is
   `ops/pipeline/hgs.py`; its directives, picks history and scorecard are in `docs/archive/pipeline/`.
 

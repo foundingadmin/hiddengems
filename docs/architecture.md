@@ -216,7 +216,7 @@ be explained later.
 |---|---|---|
 | Branch | `main` (merged only by the principal) | `staging` and task branches |
 | URL | hidden-gems-webapp.vercel.app | the staging preview (`hidden-gems-webapp-git-staging-...`) and per-branch previews |
-| Database | the real Supabase project (Vercel `DATABASE_URL`, Production) | an in-memory fixture built from the sample provider on each server start (`apps/web/lib/db.ts`); `DATABASE_URL` is ignored |
+| Database | the real Supabase project (Vercel `DATABASE_URL`, Production, login `hiddengems_app`) | production, read only (Vercel `DATABASE_URL`, Preview, login `hiddengems_preview`); without it, an in-memory sample fixture |
 | Data | live: nflverse and The Odds API | sample provider: realistic, fake games, rosters, odds and results, labeled "Sample data" |
 | Odds credits | spent on the snapshot schedule | never: previews are forced to sample mode in code (`VERCEL_ENV=preview`) |
 | Crons | run (`vercel.json`) | do not run on previews; pull with Data health's buttons |
@@ -225,6 +225,19 @@ be explained later.
 Preview's `DATABASE_URL` must never be the production URL: a pull there would append sample rows to production's
 history tables, which cannot be removed. A release with a migration needs its `pnpm db:supabase-sql` output run
 in both projects, staging first.
+
+## Previews
+
+Previews read production so staging is always full, and can change nothing (`apps/web/lib/db.ts`):
+
+- Vercel's Preview `DATABASE_URL` uses `hiddengems_preview`, a login with `SELECT` only whose transactions are
+  read only (`pnpm db:supabase-sql` creates it without a login). To set it up, run in the Supabase SQL editor
+  `ALTER ROLE hiddengems_preview LOGIN PASSWORD '<a long random password>';`, then copy the Production
+  `DATABASE_URL` into Preview with the user changed to `hiddengems_preview.<project ref>` and that password.
+- With it set, every server action (slips, Mark read, pulls, pause, the Jeweler) returns "Previews show production
+  data and cannot change it", and the cron route refuses. A preview with a new table shows its empty state until the
+  release migrates production.
+- Without it, a preview builds an in-memory fixture from the sample provider on each server start.
 
 ## Access
 

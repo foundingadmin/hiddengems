@@ -4,10 +4,15 @@ import { BOOTSTRAP, jobs, providersFor, runJob } from '@hiddengems/ingest';
 
 // One handle per server process. Locally without DATABASE_URL this is PGlite, migrated and seeded on
 // first use; with DATABASE_URL, migrations run explicitly (pnpm db:migrate), never on a request.
-// Previews (staging and every task branch) never touch a real database, whatever DATABASE_URL says: each
-// server process builds an in-memory fixture from the sample provider (owner decision, Nov 3 2026).
+// Previews (staging and every task branch) never change a real database (owner decisions, Nov 3 2026):
+// with DATABASE_URL set they read production through `hiddengems_preview`, a login that can only select,
+// and every action refuses to write; without it they build an in-memory fixture from the sample provider.
 const g = globalThis as typeof globalThis & { __hgDb?: Promise<DbHandle> };
 const preview = process.env.VERCEL_ENV === 'preview';
+
+/** A preview reading production: shows real data, changes nothing. */
+export const READ_ONLY = preview && Boolean(process.env.DATABASE_URL);
+export const READ_ONLY_MESSAGE = 'Previews show production data and cannot change it';
 
 export function db(): Promise<DbHandle> {
   if (!g.__hgDb) {
@@ -15,7 +20,7 @@ export function db(): Promise<DbHandle> {
       throw new Error('Connect a Postgres database (Neon or Supabase in the Vercel Marketplace) so DATABASE_URL is set');
     }
     g.__hgDb = (async () => {
-      const handle = createDb(preview ? 'memory://' : undefined);
+      const handle = createDb(preview && !READ_ONLY ? 'memory://' : undefined);
       if (handle.kind === 'pglite') {
         await handle.migrate();
         await seedReference(handle.db);

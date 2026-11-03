@@ -1,0 +1,228 @@
+{
+  "corpus": "Hidden Gems agents",
+  "version": "1.0",
+  "updated": "2026-11-03",
+  "principal": {
+    "name": "Titus",
+    "role": "Owner of Hidden Gems; decides every key and critical judgement",
+    "github": "foundingadmin",
+    "rules": "corpus/principal.md"
+  },
+  "lead": {
+    "name": "vice-principal",
+    "file": "vice-principal.md",
+    "role": "The lead session's standing role. Owns the perpetual staging branch and preview, dispatches every step of the order of work to its owning agent, makes the calls that are not the principal's, escalates. Never merges to main."
+  },
+  "documents": {
+    "readme": "README.md",
+    "principal": "corpus/principal.md",
+    "decisions": "corpus/decisions.md",
+    "lessons": "corpus/lessons.md",
+    "amendments": "corpus/amendments.md",
+    "house_rules": "../../AGENTS.md"
+  },
+  "agents": [
+    {
+      "name": "vice-principal",
+      "file": "vice-principal.md",
+      "kind": "lead",
+      "lanes": [
+        "all"
+      ],
+      "version": "1.1",
+      "updated": "2026-11-03",
+      "reads": "everything",
+      "returns": "dispatches, decisions, escalations",
+      "writes": "agents/ branches; staging merges only through staging-keeper"
+    },
+    {
+      "name": "staging-keeper",
+      "file": "staging-keeper.md",
+      "kind": "operations",
+      "lanes": [
+        "all"
+      ],
+      "version": "1.0",
+      "updated": "2026-11-03",
+      "reads": "pr-verifier verdicts, CI",
+      "returns": "merged PRs, staging state, branches to update, threads ready",
+      "writes": "merges into staging"
+    },
+    {
+      "name": "release-manager",
+      "file": "release-manager.md",
+      "kind": "operations",
+      "lanes": [
+        "all"
+      ],
+      "version": "1.0",
+      "updated": "2026-11-03",
+      "reads": "staging since main, task PRs",
+      "returns": "release PR for the principal; staging synced after ratification",
+      "writes": "release PR, staging sync"
+    },
+    {
+      "name": "corpus-steward",
+      "file": "corpus-steward.md",
+      "kind": "operations",
+      "lanes": [
+        "agents"
+      ],
+      "version": "1.0",
+      "updated": "2026-11-03",
+      "reads": "lessons, verdicts, escalations of a ratified run",
+      "returns": "agents/retro branch, escalations for major amendments",
+      "writes": ".claude/agents"
+    },
+    {
+      "name": "facet-curator",
+      "file": "facet-curator.md",
+      "kind": "operations",
+      "lanes": [
+        "ds"
+      ],
+      "version": "1.0",
+      "updated": "2026-11-03",
+      "reads": "a ratified release's Facet and app changes",
+      "returns": "ds/curate branch: specimens, screens, changelog, version; drift report",
+      "writes": "packages/facet"
+    },
+    {
+      "name": "preview-triager",
+      "file": "preview-triager.md",
+      "kind": "intake",
+      "lanes": [
+        "all"
+      ],
+      "version": "1.0",
+      "updated": "2026-11-03",
+      "reads": "Vercel toolbar threads",
+      "returns": "lane tasks with briefs; resolves threads after merge",
+      "writes": "thread status only"
+    },
+    {
+      "name": "screen-builder",
+      "file": "screen-builder.md",
+      "kind": "builder",
+      "lanes": [
+        "screens"
+      ],
+      "version": "1.0",
+      "updated": "2026-11-03",
+      "reads": "docs/build-brief.md, Facet",
+      "returns": "pushed screens/ branch, DS requests",
+      "writes": "apps/web"
+    },
+    {
+      "name": "data-builder",
+      "file": "data-builder.md",
+      "kind": "builder",
+      "lanes": [
+        "data",
+        "model"
+      ],
+      "version": "1.0",
+      "updated": "2026-11-03",
+      "reads": "docs/architecture.md",
+      "returns": "pushed data/ branch, owner steps",
+      "writes": "packages/core, packages/db, packages/ingest, apps/web data"
+    },
+    {
+      "name": "facet-builder",
+      "file": "facet-builder.md",
+      "kind": "builder",
+      "lanes": [
+        "ds"
+      ],
+      "version": "1.0",
+      "updated": "2026-11-03",
+      "reads": "DS requests, Facet docs",
+      "returns": "Facet parts and how to use them",
+      "writes": "packages/facet"
+    },
+    {
+      "name": "repo-hygiene",
+      "file": "repo-hygiene.md",
+      "kind": "maintainer",
+      "lanes": [
+        "fix"
+      ],
+      "version": "1.0",
+      "updated": "2026-11-03",
+      "reads": "the whole repo, branches, corpus",
+      "returns": "fix/hygiene branch, escalations",
+      "writes": "safe cleanups only"
+    },
+    {
+      "name": "content-verifier",
+      "file": "content-verifier.md",
+      "kind": "verifier",
+      "lanes": [
+        "all with words"
+      ],
+      "version": "1.0",
+      "updated": "2026-11-03",
+      "reads": "diff words",
+      "returns": "exact rewrites, Verdict",
+      "writes": "nothing"
+    },
+    {
+      "name": "design-verifier",
+      "file": "design-verifier.md",
+      "kind": "verifier",
+      "lanes": [
+        "all with UI"
+      ],
+      "version": "1.1",
+      "updated": "2026-11-03",
+      "reads": "diff UI, screenshots",
+      "returns": "exact fixes, DS requests, Verdict",
+      "writes": "nothing"
+    },
+    {
+      "name": "data-safety-verifier",
+      "file": "data-safety-verifier.md",
+      "kind": "verifier",
+      "lanes": [
+        "data",
+        "model"
+      ],
+      "version": "1.0",
+      "updated": "2026-11-03",
+      "reads": "diff data, jobs, secrets, credits",
+      "returns": "exact fixes, Verdict",
+      "writes": "nothing"
+    },
+    {
+      "name": "model-verifier",
+      "file": "model-verifier.md",
+      "kind": "verifier",
+      "lanes": [
+        "model"
+      ],
+      "version": "1.0",
+      "updated": "2026-11-03",
+      "reads": "packages/core model and gem rules",
+      "returns": "fixes, rating impact, Verdict",
+      "writes": "nothing"
+    },
+    {
+      "name": "pr-verifier",
+      "file": "pr-verifier.md",
+      "kind": "gate",
+      "lanes": [
+        "all"
+      ],
+      "version": "1.1",
+      "updated": "2026-11-03",
+      "reads": "one PR, CI, verdicts",
+      "returns": "fix list for the branch owner, Merge: ready or blocked (into staging)",
+      "writes": "nothing"
+    }
+  ],
+  "branches": {
+    "production": "main (merged only by the principal, from a release PR)",
+    "staging": "staging (perpetual; every task PR targets it; owned by the vice principal)",
+    "tasks": "<lane>/<slug> cut from staging"
+  }
+}

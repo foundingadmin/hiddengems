@@ -11,3 +11,7 @@ export * from './slips';
 export * from './history';
 export * from './weather';
 export * from './backtest';
+export * from './appraisal';
+export * from './opportunity';
+export * from './trends';
+export * from './matchup';

@@ -1,11 +1,7 @@
-# Appraisal snapshot
+# Retired
 
-Adds a price point to each prop's appraisal line between opening and kickoff. Runs Saturday 7:47 PM and Sunday 8:43 AM.
+The Hidden Gems pipeline these scheduled tasks ran was retired on Nov 3 2026. The app on Vercel now pulls odds, stats and results itself.
 
-1. Clock and schedule (`_shared.md`).
-2. Capture Outlier prices.
-3. Keep lines whose game has not kicked off and kicks off within the next 4 days. Group by week into `snapW.txt`.
-4. Load the pipeline.
-5. For each week: `python3 hgs.py open snapW.txt picks.json WEEK NOW sched.json` (adds props not yet logged and refreshes reads not frozen yet, keeping the original opening price), then `python3 hgs.py snap snapW.txt picks.json WEEK NOW sched.json` (adds one price point per row, never changing a frozen read or the opening price).
-6. Save the pipeline.
-7. Final message, short: props snapshotted and the three biggest price moves since the opening line (player, game, opening price to now). No dashes.
+If you are a scheduled run reading this: do nothing. Do not open a browser, call any API, run any script, or read or write any artifact or store. Reply with one line, "Hidden Gems pipeline run skipped: retired Nov 3 2026", and stop.
+
+The old directives, pipeline data and scorecard are archived in `docs/archive/pipeline/`; the pipeline code is `ops/pipeline/hgs.py`.

@@ -13,8 +13,8 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 - Superseded artifacts are archived in `docs/archive/` as they were; they are history, not specs.
 - Secrets live only in Vercel environment variables (`ODDS_API_KEY`, `DATABASE_URL`, `CRON_SECRET`,
   `APP_PASSWORD`, `ANTHROPIC_API_KEY`), never in the repo, an artifact or a scheduled task.
-- The one exception while the old pipeline runs as a shadow (`ops/directives/`): its picks data stays in
-  the dashboard store until the pipeline retires. Its code is `ops/pipeline/hgs.py`, here.
+- The old pipeline (claude.ai dashboard store and its scheduled tasks) retired on Nov 3 2026. Its code is
+  `ops/pipeline/hgs.py`; its directives, picks history and scorecard are in `docs/archive/pipeline/`.
 
 ## UI work must use Facet
 
@@ -67,4 +67,5 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 - `packages/core/` domain rules, `packages/db/` schema and client, `packages/ingest/` providers and jobs
 - `apps/web/` Hidden Gems app (Next.js, deploys on Vercel with Root Directory `apps/web`)
 - `docs/` project documentation
-- `ops/directives/` scheduled task directives; the Claude app tasks are stubs that read these from `main`
+- `ops/directives/` retired; each file tells any old scheduled run to do nothing
+- `ops/pipeline/hgs.py` the old pipeline's code, the reference the v3.0 model was ported from

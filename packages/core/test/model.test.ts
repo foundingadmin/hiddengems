@@ -1,6 +1,6 @@
 // The v3.0 port against hgs.py on Week 8. The fixture holds nflverse usage for every skill player
 // through Week 8 Sunday (the view the Week 8 board, CHI @ SEA, was frozen on) and what hgs.py computed
-// from it. Regenerate with the export script described in the fixture's source field.
+// from it. Rebuild it with packages/core/test/fixtures/export-week8.py.
 import { describe, expect, it } from 'vitest';
 import {
   type GameLine, type UsageGame, appraise, booksAgree, clarityScore, impliedFactor, leagueRates, playerForms, readProp, statsChance, statsWeight,

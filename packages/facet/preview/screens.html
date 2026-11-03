@@ -733,18 +733,17 @@
 <section id="data-logs" aria-labelledby="data-logs-h">
   <div class="fc-stack" style="--fc-gap: var(--fc-space-4)">
     <h2 id="data-logs-h" class="text-heading-32">Where runs are read</h2>
-    <div class="fc-page-header"><div class="fc-page-header-text"><h1 class="text-heading-32">Logs</h1></div></div>
   <div class="fc-stack" style="--fc-gap:16px" id="sl-run-detail">
     <section class="fc-row-detail" aria-labelledby="sl-run-h">
       <header class="fc-row-detail-head">
         <div>
-          <h4 class="fc-row-detail-title" id="sl-run-h">Odds</h4>
+          <h3 class="fc-row-detail-title" id="sl-run-h">Odds</h3>
           <p class="fc-row-detail-meta"><time datetime="2026-11-02T21:48:58-05:00">Nov 02 9:48:58 PM</time> · <span data-relative>7m ago</span></p>
         </div>
         <a class="fc-button" data-variant="secondary" data-size="small" href="#sl-run-detail" aria-label="Close run">Close</a>
       </header>
       <div class="fc-row-detail-body">
-        <p class="fc-note" data-type="warning"><span>Pulled 40 prices across 4 books for 3 games, 40 new, 0 suspended</span><a class="fc-link-action fc-note-link" href="#sl-log-h">Data health</a></p>
+        <p class="fc-note" data-type="warning"><span>Pulled 40 prices across 4 books for 3 games, 40 new, 0 suspended</span><a class="fc-link-action fc-note-link" href="#data-logs">Data health</a></p>
         <dl class="fc-description" data-compact>
           <div><dt>Status</dt><dd><span class="fc-level" data-level="warning">Warned</span></dd></div>
           <div><dt>Ran</dt><dd>0.4s</dd></div>
@@ -762,7 +761,7 @@
         </dl>
       </div>
       <div class="fc-row-detail-section">
-        <h5 class="text-heading-14">Log lines</h5>
+        <h4 class="text-heading-14">Log lines</h4>
         <div class="fc-table-wrap text-copy-13-mono">
           <table class="fc-table" data-variant="log">
             <caption class="fc-visually-hidden">In order, 3 lines</caption>
@@ -786,13 +785,10 @@
     </div>
     <div class="fc-table-wrap text-copy-13-mono">
       <table class="fc-table" data-variant="log">
-        <caption class="fc-visually-hidden">Newest first, 4 runs</caption>
+        <caption class="fc-visually-hidden">Newest first, 1 of 4 runs, source Odds</caption>
         <thead><tr><th scope="col">Time</th><th scope="col">Source</th><th scope="col" data-grow>Message</th><th scope="col" data-align="numeric">Ran</th></tr></thead>
         <tbody>
-          <tr data-level="warning"><td class="fc-log-time"><a class="fc-row-link" href="#sl-run-detail"><time datetime="2026-11-02T21:49:30-05:00">Nov 02 9:49:30 PM</time></a></td><td class="fc-log-source">Results</td><td class="fc-log-message"><span class="fc-level" data-level="warning">Provider down</span> Timed out after 30 seconds waiting for nflverse</td><td data-align="numeric">30.0s</td></tr>
-          <tr data-level="error"><td class="fc-log-time"><a class="fc-row-link" href="#sl-run-detail"><time datetime="2026-11-02T21:49:12-05:00">Nov 02 9:49:12 PM</time></a></td><td class="fc-log-source">Rosters</td><td class="fc-log-message"><span class="fc-level" data-level="error">Failed</span> Failed to read rosters: the file no longer has a gsis_id column</td><td data-align="numeric">0.2s</td></tr>
           <tr data-level="warning" aria-selected="true"><td class="fc-log-time"><a class="fc-row-link" href="#sl-run-detail" aria-current="true"><time datetime="2026-11-02T21:48:58-05:00">Nov 02 9:48:58 PM</time></a></td><td class="fc-log-source">Odds</td><td class="fc-log-message"><span class="fc-level" data-level="warning">Warned</span> Pulled 40 prices across 4 books for 3 games<span class="fc-log-detail">2 games on the schedule had no odds event</span></td><td data-align="numeric">0.4s</td></tr>
-          <tr><td class="fc-log-time"><a class="fc-row-link" href="#sl-run-detail"><time datetime="2026-11-02T21:47:21-05:00">Nov 02 9:47:21 PM</time></a></td><td class="fc-log-source">Backup</td><td class="fc-log-message">Backed up 216 rows from 18 tables, 6.8 KB</td><td data-align="numeric">0.1s</td></tr>
         </tbody>
       </table>
     </div>
@@ -805,15 +801,17 @@
     <h2 id="rating-lab-h" class="text-heading-32">Where the rating is tried</h2>
     <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="sl-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol></svg>
     <article class="fc-chart-card" aria-labelledby="sl-scatter-h">
-      <header class="fc-chart-card-header"><div class="fc-chart-card-titlerow"><div class="fc-chart-card-heading"><h3 class="fc-chart-card-title" id="sl-scatter-h">Score against odds</h3></div></div></header>
-      <div class="fc-chart-card-body">
-  <div class="fc-stack" style="--fc-gap:16px" id="sl-scatter">
-    <ul class="fc-legend" role="list">
+      <header class="fc-chart-card-header"><div class="fc-chart-card-titlerow"><div class="fc-chart-card-heading"><h3 class="fc-chart-card-title" id="sl-scatter-h">Score against odds</h3></div></div>
+      <ul class="fc-legend" role="list">
       <li class="fc-legend-item"><span class="fc-legend-key" data-gem id="sl-sc-key"></span><span class="fc-legend-name">Clears the posted price</span><span class="fc-legend-value" id="sl-sc-gems"></span></li>
       <li class="fc-legend-item"><span class="fc-legend-key" data-series="muted" data-shape="hollow"></span><span class="fc-legend-name">Misses</span><span class="fc-legend-value" id="sl-sc-miss"></span></li>
       <li class="fc-legend-item"><span class="fc-legend-key" data-shape="ring"></span><span class="fc-legend-name">Top 10</span></li>
     </ul>
-    <figure class="fc-chart" data-kind="scatter" role="img" id="sl-sc" aria-label="Score against odds for 60 sample props. The top 10 are ringed."></figure>
+      </header>
+      <div class="fc-chart-card-body">
+  <div class="fc-stack" style="--fc-gap:16px" id="sl-scatter">
+    <figure class="fc-chart" data-kind="scatter" role="img" id="sl-sc" aria-label="Score against odds for 60 sample props. The top 10 are ringed and listed in the table below."></figure>
+    <div class="fc-table-wrap" id="sl-top-wrap"></div>
     <script>
     (() => {
       const NS = 'http://www.w3.org/2000/svg', fig = document.getElementById('sl-sc');
@@ -842,6 +840,7 @@
         mk('title', {}, c, `${p.name}, ${p.price.toFixed(2)}, ${p.score.toFixed(1)}`);
       });
       top.forEach((p) => mk('circle', { class: 'fc-chart-ring', cx: x(p.price), cy: y(p.score), r: 8 }, svg));
+      document.getElementById('sl-top-wrap').innerHTML = `<table class="fc-table"><caption class="fc-visually-hidden">Top 10 props by score</caption><thead><tr><th scope="col" data-grow>Prop</th><th scope="col" data-align="numeric">Odds</th><th scope="col" data-align="numeric">Score</th></tr></thead><tbody>${[...top].sort((a, b) => b.score - a.score).map((r) => `<tr><th scope="row">${r.name}</th><td data-align="numeric">${r.price.toFixed(2)}</td><td data-align="numeric">${r.score.toFixed(1)}</td></tr>`).join('')}</tbody></table>`;
       document.getElementById('sl-sc-gems').textContent = props.filter((p) => p.clears).length;
       document.getElementById('sl-sc-key').style.setProperty('--rating', Math.max(0, ...props.filter((p) => p.clears).map((p) => Math.round(p.score))));
       document.getElementById('sl-sc-miss').textContent = props.filter((p) => !p.clears).length;
@@ -853,12 +852,12 @@
     <div class="fc-stack" style="--fc-gap:16px" id="sl-lab">
       <section class="fc-fieldset" aria-labelledby="sl-lab-t">
         <div class="fc-fieldset-content">
-          <h4 class="fc-fieldset-title" id="sl-lab-t">Try a prop</h4>
+          <h3 class="fc-fieldset-title" id="sl-lab-t">Try a prop</h3>
           <div class="fc-stack" style="--fc-gap:16px">
             <div class="fc-stat-strip" data-variant="cells" role="group" aria-label="Appraisal">
               <div class="fc-stat">
-                <p class="fc-stat-label">Result</p>
-                <p class="fc-stat-figure"><span class="fc-gem" data-size="stat" data-live style="--rating: 37" aria-label="Gem rating 37"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>37</span></span><span class="fc-stat-qualifier">Gem</span></p>
+                <p class="fc-stat-label">Rating</p>
+                <p class="fc-stat-figure"><span class="fc-gem" data-size="stat" data-live style="--rating: 37" aria-label="Gem rating 37"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span>37</span></span></p>
               </div>
               <div class="fc-stat">
                 <p class="fc-stat-label">Carat</p>
@@ -884,7 +883,7 @@ rating = round(100 × clamp(carat / 10, 0, 1) × clarity / 100)</pre></div>
           </div>
         </div>
         <div class="fc-fieldset-section">
-          <details class="fc-collapse" data-size="small" open>
+          <details class="fc-collapse" data-size="small">
             <summary><span class="fc-collapse-title">Clarity</span><span class="fc-collapse-value">71 of 100</span><svg class="fc-collapse-chevron" aria-hidden="true"><use href="#sl-chevron"/></svg></summary>
             <div class="fc-collapse-body">
               <div class="fc-slider">

@@ -86,8 +86,8 @@ export default async function LogsPage({ searchParams }: { searchParams: Params 
             </div>
           )}
 
-          <div className="fc-table-wrap hg-log text-copy-13-mono">
-            <table className="fc-table">
+          <div className="fc-table-wrap text-copy-13-mono">
+            <table className="fc-table" data-variant="log">
               <caption className="fc-visually-hidden">Newest first, {log.length} {source ? `${label(source)} runs` : 'runs'}</caption>
               <thead>
                 <tr>
@@ -106,17 +106,17 @@ export default async function LogsPage({ searchParams }: { searchParams: Params 
                   const warning = firstWarning.get(r.id);
                   const selected = r.id === open?.id;
                   return (
-                    <tr key={r.id} aria-selected={selected || undefined} data-level={r.status === 'failed' ? 'error' : r.status === 'warned' ? 'warning' : undefined}>
-                      <td className="hg-nowrap hg-sub">
-                        <Link href={logsHref({ source, run: r.id })} aria-current={selected || undefined}>
+                    <tr key={r.id} aria-selected={selected || undefined} data-level={runLevel(r) ?? undefined}>
+                      <td className="fc-log-time">
+                        <Link className="fc-row-link" href={logsHref({ source, run: r.id })} aria-current={selected || undefined}>
                           <time dateTime={r.startedAt.toISOString()} title={ago(r.startedAt, now)}>{stamp(r.startedAt)}</time>
                         </Link>
                       </td>
-                      <td className="hg-nowrap">{label(r.job)}<span className="hg-sub"> {r.trigger}</span></td>
-                      <td>
+                      <td className="fc-log-source">{label(r.job)}<span className="hg-sub"> {r.trigger}</span></td>
+                      <td className="fc-log-message">
                         {problem && <><RunStatus status={r.status} owner={r.failureOwner} />{' '}</>}
                         {r.message}
-                        {warning && warning !== r.message && <span className="hg-log-detail">{warning}</span>}
+                        {warning && warning !== r.message && <span className="fc-log-detail">{warning}</span>}
                       </td>
                       <td data-align="numeric">{duration(r.durationMs)}</td>
                     </tr>
@@ -135,31 +135,36 @@ export default async function LogsPage({ searchParams }: { searchParams: Params 
 type Run = typeof runs.$inferSelect;
 type Line = typeof runLogs.$inferSelect;
 
-/** One run's record (Facet patterns/data-ops.md, "Row detail") and every line it logged, in order. */
+/** The tint a run's row takes: amber for a warning or a failure out of our hands, red for one ours to fix. */
+function runLevel(run: Pick<Run, 'status' | 'failureOwner'>): 'warning' | 'error' | null {
+  if (run.status === 'failed') return run.failureOwner === 'provider' ? 'warning' : 'error';
+  return run.status === 'warned' ? 'warning' : null;
+}
+
+/** One run's record (Facet patterns/data-ops.md, "Inline row detail") and every line it logged, in order. */
 function RunDetail({ run, lines, now, close, label }: { run: Run; lines: Line[]; now: Date; close: string; label: string }) {
-  const failed = run.status === 'failed';
-  const tone = failed ? (run.failureOwner === 'provider' ? 'warning' : 'error') : run.status === 'warned' ? 'warning' : null;
+  const tone = runLevel(run);
   return (
-    <section className="fc-fieldset" data-type={tone ?? undefined} aria-labelledby="run-h">
-      <div className="fc-fieldset-content">
-        <div className="fc-fieldset-header">
-          <div>
-            <h2 id="run-h" className="fc-fieldset-title">{label}</h2>
-            <p className="fc-fieldset-subtitle">
-              <time dateTime={run.startedAt.toISOString()}>{stamp(run.startedAt)}</time> · <span data-relative>{ago(run.startedAt, now)}</span>
-            </p>
-          </div>
-          <Link className="fc-button" data-variant="secondary" data-size="small" href={close} aria-label="Close run">Close</Link>
+    <section className="fc-row-detail" aria-labelledby="run-h">
+      <header className="fc-row-detail-head">
+        <div>
+          <h2 id="run-h" className="fc-row-detail-title">{label}</h2>
+          <p className="fc-row-detail-meta">
+            <time dateTime={run.startedAt.toISOString()}>{stamp(run.startedAt)}</time> · <span data-relative>{ago(run.startedAt, now)}</span>
+          </p>
         </div>
+        <Link className="fc-button" data-variant="secondary" data-size="small" href={close} aria-label="Close run">Close</Link>
+      </header>
+      <div className="fc-row-detail-body">
         {tone
           ? (
-            <p className="fc-note hg-run-note" data-type={tone}>
+            <p className="fc-note" data-type={tone}>
               <span>{run.message ?? 'No message logged'}</span>
               <Link className="fc-link-action fc-note-link" href="/data">Data health</Link>
             </p>
           )
-          : run.message && <p className="fc-fieldset-consequence">{run.message}</p>}
-        <dl className="fc-description">
+          : run.message && <p className="text-copy-14">{run.message}</p>}
+        <dl className="fc-description" data-compact>
           <div><dt>Status</dt><dd><RunStatus status={run.status} owner={run.failureOwner} /></dd></div>
           <div><dt>Ran</dt><dd>{duration(run.durationMs)}</dd></div>
           <div><dt>Trigger</dt><dd>{sentence(run.trigger)}</dd></div>
@@ -168,15 +173,17 @@ function RunDetail({ run, lines, now, close, label }: { run: Run; lines: Line[];
           <div><dt>Rows written</dt><dd className="tabular">{run.rowsWritten.toLocaleString('en-US')}</dd></div>
           {run.errorCode && <div><dt>Error code</dt><dd><span className="fc-log-id">{run.errorCode}</span></dd></div>}
           <div><dt>Run ID</dt><dd><span className="fc-log-id">{run.id}</span></dd></div>
-          {run.meta && Object.keys(run.meta).length > 0 && <div className="hg-description-wide"><dt>Details</dt><dd><div className="text-copy-13-mono"><Data data={run.meta} /></div></dd></div>}
+          {run.meta && Object.keys(run.meta).length > 0 && (
+            <div className="fc-description-wide"><dt>Details</dt><dd className="text-copy-13-mono"><Data data={run.meta} /></dd></div>
+          )}
         </dl>
       </div>
-      <div className="fc-fieldset-section">
+      <div className="fc-row-detail-section">
         <h3 className="text-heading-14">Log lines</h3>
         {lines.length === 0 && <p className="hg-secondary text-copy-14">This run logged no lines</p>}
         {lines.length > 0 && (
-          <div className="fc-table-wrap hg-log text-copy-13-mono">
-            <table className="fc-table">
+          <div className="fc-table-wrap text-copy-13-mono">
+            <table className="fc-table" data-variant="log">
               <caption className="fc-visually-hidden">In order, {lines.length} lines</caption>
               <thead>
                 <tr>
@@ -189,10 +196,10 @@ function RunDetail({ run, lines, now, close, label }: { run: Run; lines: Line[];
                 {lines.map((l) => {
                   const [level, word] = LEVELS[l.level] ?? ['info', sentence(l.level)];
                   return (
-                    <tr key={l.id}>
+                    <tr key={l.id} data-level={level === 'info' ? undefined : level}>
                       <td className="fc-log-time"><time dateTime={l.at.toISOString()}>{seconds(l.at)}</time></td>
-                      <td className="hg-nowrap"><span className="fc-level" data-level={level}>{word}</span></td>
-                      <td>{l.message}<Data data={l.data} /></td>
+                      <td className="fc-log-level"><span className="fc-level" data-level={level}>{word}</span></td>
+                      <td className="fc-log-message">{l.message}<Data data={l.data} /></td>
                     </tr>
                   );
                 })}
@@ -209,12 +216,12 @@ function RunDetail({ run, lines, now, close, label }: { run: Run; lines: Line[];
 function Data({ data }: { data: Record<string, unknown> | null }) {
   if (!data || Object.keys(data).length === 0) return null;
   const compact = JSON.stringify(data);
-  if (compact.length <= INLINE_DATA) return <code className="hg-log-detail hg-break">{compact}</code>;
+  if (compact.length <= INLINE_DATA) return <code className="fc-log-data">{compact}</code>;
   const keys = Object.entries(data).map(([k, v]) => (Array.isArray(v) ? `${k} (${v.length})` : k)).join(', ');
   return (
-    <details className="hg-log-detail">
+    <details className="fc-log-data">
       <summary>{keys}</summary>
-      <pre className="hg-log-data hg-break">{JSON.stringify(data, null, 2)}</pre>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </details>
   );
 }

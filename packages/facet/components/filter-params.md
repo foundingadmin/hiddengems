@@ -59,7 +59,21 @@ Search, Add filter, readonly context, applied chips, suggestions, then the sort 
 | Applied chip | `.fc-filter-chip` (group) > `.fc-filter-edit` (key + values) + `.fc-filter-remove` | Key in `--fc-text-secondary`, value in primary 500. Several values sit in one pill, split by a hairline |
 | Suggestion | `button.fc-filter-chip[data-state="suggested"]` + plus icon | Dashed edge, muted value. Clicking applies it |
 | Readonly | `.fc-filter-chip[data-state="readonly"]` + optional `.fc-filter-info` | No remove. The info button's tooltip says where the value comes from |
+| Removable `[F]` | `.fc-filter-chip` (group) > `.fc-filter-key` + `.fc-filter-value` + `.fc-filter-remove` | Key, value and remove only, no edit menu: for a filter set by a link (`?source=`). The remove sits 4px from the pill's end, as on an applied chip |
 | Sort | `.fc-filter-sort` > sort icon + `.fc-select[data-size="small"]` | Synced with the sorted table header |
+
+### Removable chip `[F]`
+Owner request, 2026-11-03. A filter that arrives in a link and has nothing to edit (one value, chosen elsewhere) shows as key, value and remove.
+```html
+<span class="fc-filter-chip" role="group" aria-label="Source filter">
+  <span class="fc-filter-key">Source</span>
+  <span class="fc-filter-value">Results</span>
+  <a class="fc-filter-remove" href="/data/logs" aria-label="Show all sources"><svg aria-hidden="true">…</svg></a>
+</span>
+```
+- The remove is a link when removing is navigation (it drops the key from the URL, INT-27), a button otherwise. Its name says what you get ("Show all sources") or what goes ("Remove source filter") (CON-19).
+- States: rest, remove hover (gray circle), remove focus (focus ring, INT-02). The 24px remove target is the only control (INT-04).
+- Hidden Gems usage: Logs, `?source=` from a Data health row.
 
 ### Accessibility
 - The remove button names the filter: `aria-label="Remove book filter"`. After removal, focus moves to the next chip or to Add filter.

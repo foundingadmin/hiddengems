@@ -33,3 +33,37 @@ Not specified. Demo content is `text-copy-16`.
 
 
 Chevron: trailing, down when collapsed, rotating 180° to up when expanded (see the chevron table in `link-action.md`).
+
+## Facet implementation `[F]`
+CSS in `css/components.css` (`.fc-collapse`). Specimen: `preview/index.html#lf-lab`. Use it instead of `.fc-facet-group` wherever a group holds content rather than filter checkboxes.
+
+### Purpose
+One optional group of controls or detail that most readers skip, with its current result on the closed row, so a closed group still answers its question ("Clarity, 71 of 100").
+
+### Anatomy
+```html
+<details class="fc-collapse" data-size="small">
+  <summary>
+    <span class="fc-collapse-title">Clarity</span>
+    <span class="fc-collapse-value">71 of 100</span>
+    <svg class="fc-collapse-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+  </summary>
+  <div class="fc-collapse-body">…</div>
+</details>
+```
+- Summary row: title (16/24 500, small 14/20 500), optional trailing value (secondary, tabular, 14 or 13), chevron 16px secondary. Row height 48, small 40. The whole row is the hit target and fills on hover.
+- Body: a column with 20px between children, 12px under the summary.
+- `.fc-collapse-group` stacks several with one hairline between items and at the group's edges. A lone collapse draws no rules, so it sits inside a fieldset section without doubling its divider.
+
+### States
+Closed, open (chevron up), hover (row fill), keyboard focus (focus ring on the summary, INT-02). Open and close animate the height where the browser can size to auto (`interpolate-size`), and snap elsewhere; reduced motion snaps everywhere (ANI-01).
+
+### Rules
+- Never collapse primary content: the answer, a verdict, or anything the page exists to show. Collapse only optional, advanced or repetitive parts.
+- Native `<details>` and `<summary>`: Enter and Space toggle, the content stays in the DOM, no ARIA needed (CON-20, INT-01).
+- The value is a result, not a teaser: the same number the open group adds up to, in the same format. Leave it out when there is none.
+- The title is a noun in sentence case ("Clarity"), never "Show clarity".
+- No destructive actions inside a closed group.
+
+### Hidden Gems usage
+Rating lab, Try a prop: the Clarity group (four sliders) closed by default with the clarity total on its row, `data-size="small"`.

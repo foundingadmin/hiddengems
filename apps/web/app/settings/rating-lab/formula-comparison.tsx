@@ -5,6 +5,7 @@ import { type KeyboardEvent, useState } from 'react';
 import { GemMark, Player } from '@/components/marks';
 import { clears, FORMULAS, median, topTen, WEEK9 } from '@/lib/rating-lab/formulas';
 import { writeParams } from './controls';
+import { ScoreScatter } from './score-scatter';
 
 const LONG_SHOT = 10;
 
@@ -19,6 +20,7 @@ export function FormulaComparison() {
   const avg = (pick: (x: (typeof top)[number]) => number) => (n ? Math.round(top.reduce((a, x) => a + pick(x), 0) / n) : null);
   const hitAvg = avg((x) => x.prop.hitPct), clarityAvg = avg((x) => x.prop.clarity);
   const clearCount = top.filter((x) => clears(x.prop)).length;
+  const scoreName = f.status === 'Live rating' ? 'Rating' : 'Score';
 
   const choose = (next: string) => { setId(next); writeParams({ formula: next === 'rating' ? null : next }); };
   const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -61,7 +63,7 @@ export function FormulaComparison() {
                 <span className="fc-badge" data-contrast="low" data-size="sm">{f.status}</span>
                 <p className="text-copy-14 hg-flush">{f.plain}</p>
               </div>
-              <div className="fc-snippet"><code className="fc-snippet-value">{f.code}</code></div>
+              <div className="fc-snippet" data-wrap><pre className="fc-snippet-value">{f.code}</pre></div>
             </div>
 
             <div className="fc-stat-strip" data-variant="cells" role="group" aria-label={`Top 10 under ${f.name}`}>
@@ -89,6 +91,8 @@ export function FormulaComparison() {
               <div><dt>Verdict</dt><dd>{f.verdict}</dd></div>
             </dl>
 
+            <ScoreScatter formula={f} pool={pool} top={new Set(top.map((x) => x.prop))} scoreName={scoreName} />
+
             {n === 0 ? (
               <p className="text-copy-14 hg-secondary">No props qualify at these odds this week.</p>
             ) : (
@@ -103,7 +107,7 @@ export function FormulaComparison() {
                       <th scope="col" data-align="numeric">Odds</th>
                       <th scope="col" data-align="numeric">Hit chance</th>
                       <th scope="col" data-align="numeric">Priced</th>
-                      <th scope="col" data-align="numeric">{f.status === 'Live rating' ? 'Rating' : 'Score'}</th>
+                      <th scope="col" data-align="numeric">{scoreName}</th>
                       <th scope="col">Posted price</th>
                     </tr>
                   </thead>

@@ -18,7 +18,14 @@ const PARTS: { key: keyof ClarityParts; param: string; label: string; helper: st
   { key: 'booksAgree', param: 'books', label: 'Books agree', helper: `How close the books’ prices are. One book posted scores ${CLARITY_V3.oneBook}.` },
   { key: 'setup', param: 'setup', label: 'Setup', helper: 'Injury report and snap share trend.' },
 ];
-const DEFAULT_PARTS: ClarityParts = { sample: 28, consistency: 21, booksAgree: CLARITY_V3.oneBook, setup: CLARITY_MAX.setup };
+/** Sample and consistency start at 70% of what core says each is worth; one book posted; a clean setup. */
+const START_SHARE = 0.7;
+const DEFAULT_PARTS: ClarityParts = {
+  sample: Math.round(CLARITY_MAX.sample * START_SHARE),
+  consistency: Math.round(CLARITY_MAX.consistency * START_SHARE),
+  booksAgree: CLARITY_V3.oneBook,
+  setup: CLARITY_MAX.setup,
+};
 
 const clampTo = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n));
 const read = (params: URLSearchParams, key: string, fallback: number, lo: number, hi: number) => {
@@ -54,7 +61,7 @@ export function TryProp() {
   const setPart = (key: keyof ClarityParts, v: number) => setParts((p) => ({ ...p, [key]: v }));
 
   const result = {
-    gem: <><GemMark kind="gem" rating={g.rating} size="lg" /><span className="fc-stat-qualifier">Gem</span></>,
+    gem: <><GemMark kind="gem" rating={g.rating} size="stat" /><span className="fc-stat-qualifier">Gem</span></>,
     'fools-gold': <GemMark kind="fools-gold" rating={null} />,
     none: <span className="fc-stat-value">No gem</span>,
     unrated: <span className="fc-stat-value">Unrated</span>,

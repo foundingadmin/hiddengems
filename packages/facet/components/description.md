@@ -17,6 +17,16 @@ Renders `<dl>` with one `<div>` per pair holding `<dt>` and `<dd>`. Optional `<s
 </dl>
 ```
 
+- Compact `[F]` (`.fc-description[data-compact]`, owner request 2026-11-03): the grid layout, except that a pair with at least 288px of its own width puts the term left (40%) and the value right (60%) on one line. On desktop grids each column is narrower, so terms stay above values; on a phone the single column flips to one line per pair, halving the height. Each pair decides on its own width, so it works in any container (LAY-07).
+```html
+<dl class="fc-description" data-compact>
+  <div><dt>Status</dt><dd><span class="fc-level" data-level="warning">Warned</span></dd></div>
+  <div><dt>Ran</dt><dd>4.1s</dd></div>
+  <div class="fc-description-wide"><dt>Details</dt><dd>…</dd></div>
+</dl>
+```
+- Wide pair `[F]` (`.fc-description-wide`): spans every column, and always stacks the term above the value. Use it for long values (folded JSON, a sentence). IDs inside a value (`.fc-log-id`) wrap instead of widening the page (CON-14).
+
 ## States
 - Set values: primary, 500.
 - Unset values: the word "None" with `.fc-value-empty` (secondary, 400). No badge, no dash.
@@ -36,6 +46,7 @@ Renders `<dl>` with one `<div>` per pair holding `<dt>` and `<dd>`. Optional `<s
 - Provider detail (rows): Provider, Status, Plan, Books, Key (masked), Webhook "None", Alert routing "None", Added.
 - Alert rule overview (rows): Trigger, Books, Channels.
 - Bet sheet summary (grid): Sportsbook, Line, Odds, Implied, Model, Edge, Updated.
+- Logs run record (compact): Status, Ran, Trigger, Provider, Requests, Rows written, Error code, Run ID, then Details as a wide pair.
 
 ## Actions variant `[F]`
 

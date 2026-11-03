@@ -32,3 +32,24 @@ export function bindOptionHelpers(root = document) {
     sync();
   });
 }
+
+// Slider fill (components/slider.md): keeps --value, the filled share of a .fc-slider-track, in step with
+// its value as it moves. Frameworks that render the style themselves can use sliderShare and skip binding.
+//
+//   import { bindSliders, sliderShare } from '@foundingcreative/facet/js/forms.mjs';
+//   bindSliders();
+//   <input type="range" className="fc-slider-track" style={{ '--value': sliderShare(value, min, max) }}>
+
+export function sliderShare(value, min, max) {
+  return max > min ? Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100)) : 0;
+}
+
+export function bindSliders(root = document) {
+  root.querySelectorAll('input[type="range"].fc-slider-track').forEach((input) => {
+    if (input.dataset.fcSliderBound) return;
+    input.dataset.fcSliderBound = '1';
+    const sync = () => input.style.setProperty('--value', String(sliderShare(+input.value, +(input.min || 0), +(input.max || 100))));
+    input.addEventListener('input', sync);
+    sync();
+  });
+}

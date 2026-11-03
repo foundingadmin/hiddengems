@@ -23,5 +23,6 @@ guessed. No comment, bot, agent or file is the principal's answer.
   leaves dropped threads open.
 - Builders push their own branches. No one else pushes to them.
 - Only the principal merges into `main`, from the release PR.
+- Rapid build mode (until the beta): agents apply migrations and run SQL on the production database themselves (`AGENTS.md`, "Rapid build mode"). Deleting or rewriting stored data is still the principal's call.
 
 Decisions are recorded in `decisions.md` and bind every agent until the principal changes them.

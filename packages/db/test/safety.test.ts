@@ -30,7 +30,13 @@ describe('Supabase setup script', () => {
 
   it('only takes a password that needs no escaping, and never prints it without asking', () => {
     expect(() => buildSupabaseSql({ appPassword: "short'" })).toThrow();
-    expect(buildSupabaseSql()).not.toContain('CREATE ROLE');
+    const plain = buildSupabaseSql();
+    expect(plain).not.toContain('CREATE ROLE hiddengems_app');
+    expect(plain).not.toMatch(/PASSWORD '/);
+    // The preview login exists without a password and can only read.
+    expect(plain).toContain('CREATE ROLE hiddengems_preview NOLOGIN');
+    expect(plain).toContain('ALTER ROLE hiddengems_preview SET default_transaction_read_only = on');
+    expect(plain).not.toMatch(/GRANT (?!USAGE ON SCHEMA|SELECT ON)[^;]*TO hiddengems_preview/);
     const withRole = buildSupabaseSql({ appPassword: 'A'.repeat(32) });
     expect(withRole).toContain('CREATE ROLE hiddengems_app LOGIN');
     expect(withRole).toContain('REVOKE ALL ON ALL TABLES IN SCHEMA public FROM anon, authenticated');

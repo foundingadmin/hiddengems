@@ -22,7 +22,7 @@ Show and edit when odds and injury pulls run, whether the last run worked, and w
   </div>
 </li>
 ```
-- Lanes: main (fluid) | status (`--fc-schedule-status-w`, 144px) | next run | last run (`--fc-schedule-run-w`, 176px each) | actions (`--fc-schedule-actions-w`, 160px), with 32px gutters (`--fc-schedule-gap`). Owner feedback 2026-11-03: "give these columns more breathing room, they're crammed". Fixed lanes keep equal peers aligned down the list. Between 641px and 960px of list width the lanes drop back to the compact set (112px, 136px, 136px, 16px gutters) so the name keeps its room; under 640px the row stacks. Set the custom properties on the list only when a product needs different lanes. One `.fc-schedule-head` names the columns (owner feedback, 2026-11-02), so rows carry values only; each cell repeats its name in `.fc-schedule-label` for screen readers and the stacked narrow layout.
+- Lanes: main (fluid) | status (`--fc-schedule-status-w`, 144px) | next run | last run (`--fc-schedule-run-w`, 176px each) | actions (`--fc-schedule-actions-w`, 160px), with 32px gutters (`--fc-schedule-gap`). Owner feedback 2026-11-03: "give these columns more breathing room, they're crammed". Fixed lanes keep equal peers aligned down the list. Lanes and gutters take 784px, so the roomy set applies only above 1150px of list width, where the name keeps 335px or more. From 816px to 1150px the lanes drop to the compact set (112px, 136px, 136px, 136px, 16px gutters), which leaves the name 200px or more; at 815px and under the row stacks. Set the custom properties on the list only when a product needs different lanes. One `.fc-schedule-head` names the columns (owner feedback, 2026-11-02), so rows carry values only; each cell repeats its name in `.fc-schedule-label` for screen readers and the stacked narrow layout.
 - Main: the plain-language schedule is the fast path; the cron is the audit path, in mono, secondary, 12px.
 - Status words and dots: Succeeded (`live`, green), Failed (`failed`, red), Running (`recent`, blue), Paused (no freshness state, gray). The word always shows.
 - Every run time carries its day word ("Today 6:00 PM", "Tue 12:00 AM", "Oct 31 11:00 PM"), so peers in a column read the same way (owner feedback, 2026-11-02).
@@ -30,7 +30,7 @@ Show and edit when odds and injury pulls run, whether the last run worked, and w
 - Last run links to that run's log when there is one (`a.fc-time-link` around the `.fc-timestamp`, `[F]` 2026-11-03). The link takes the cell's color with no underline at rest, so the column still reads as values; hover underlines the time only, and keyboard focus draws the Facet ring on a 4px radius (INT-02). A visually hidden suffix names the target (", odds run log"), because "Today 6:00 PM" alone does not say where it goes (CON-18). The detail ("Ran 4.1s") stays outside the link. Navigation, so it is an `<a>` (INT-27).
 - Failed: a `.fc-list-row-note` error note under the row says what failed and what is stale. The row already has buttons, so the note's action is link-style, and it is left out when the fix is the row's own button (`components/note.md`, "Link action").
 - Menu: Edit, View runs, Pause (or Resume).
-- Under 640px the row stacks: name and actions, then status, then runs on one line.
+- At 815px of list width and under the row stacks: name, then status, then runs on one line, then actions.
 
 ## Global pause
 The first card on the Schedules page, a `.fc-fieldset`:

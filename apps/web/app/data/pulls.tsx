@@ -193,7 +193,7 @@ export function FixButton({ jobs, text, name, variant = 'secondary', look = 'but
       aria-busy={busy || undefined} aria-label={name}
       onClick={() => { if (!busy) enqueue(jobs.map((job) => ({ job, spend: false }))); }}
     >
-      {busy ? <><Spinner />Fixing</> : text}
+      {busy && <Spinner />}{text}
     </button>
   );
 }

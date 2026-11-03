@@ -40,7 +40,6 @@ When the stat itself says something needs doing, one small CTA sits under the ba
 - Holds one `.fc-button` (`data-size="small"`, secondary or tertiary) or one `.fc-link-action`. Never two, never primary: the page's primary action belongs to the page header.
 - 12px above it (the 4px stack gap plus 8px), so the basis still reads with its number and the CTA reads as the next step. It never stretches to the cell's width, so a phone cell (about 150px at 390px) keeps the button at its label's width.
 - Show it only while it has work to do ("Fix all" disappears when every source is clear), and say what it does in the label (CPY-14). A button that runs a job is a `<button>`; one that goes somewhere is an action link (INT-27). While it works it shows a spinner and `aria-busy="true"` (INT-09).
-- Peers without an action keep their height: parts stack from the top, so the extra line never pushes a peer's basis down.
 
 ## Variants
 - **Default strip** (`.fc-stat-strip`): cells separated by a vertical hairline. Use inside a card or panel that already has a boundary.

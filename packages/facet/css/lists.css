@@ -149,8 +149,9 @@
    main (name, plain-language schedule, mono cron) | status | runs (next over last) | actions. */
 /* Lane widths (owner feedback 2026-11-03: "give these columns more breathing room, they're crammed"):
    status 144px, each run 176px, actions 160px, 32px gutters. Override with --fc-schedule-status-w,
-   --fc-schedule-run-w, --fc-schedule-actions-w and --fc-schedule-gap. Between 641px and 960px of list width the
-   lanes and gutters drop back to the compact set so the name keeps its room; under 640px the row stacks. */
+   --fc-schedule-run-w, --fc-schedule-actions-w and --fc-schedule-gap. Lanes plus gutters take 784px, so the
+   roomy set needs a list wider than 1150px to leave the name 335px or more. From 816px to 1150px the lanes and
+   gutters drop to the compact set (584px), leaving the name 200px or more; at 815px and under the row stacks. */
 .fc-schedule-row,
 .fc-schedule-head {
   --_status-w: var(--fc-schedule-status-w, calc(var(--fc-space-4) * 9));
@@ -163,7 +164,7 @@
   column-gap: var(--fc-schedule-gap, var(--fc-space-8));
   row-gap: var(--fc-space-2);
 }
-@container fc-list (max-width: 960px) {
+@container fc-list (max-width: 1150px) {
   .fc-schedule-row,
   .fc-schedule-head {
     --_status-w: var(--fc-schedule-status-w, calc(var(--fc-space-4) * 7));
@@ -223,7 +224,7 @@
 .fc-schedule-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .fc-schedule-row[data-state="running"] .fc-list-row-actions .fc-button[data-run] { pointer-events: none; }
 
-@container fc-list (max-width: 640px) {
+@container fc-list (max-width: 815px) {
   .fc-schedule-head { display: none; }
   .fc-schedule-row {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);

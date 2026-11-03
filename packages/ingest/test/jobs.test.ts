@@ -7,6 +7,7 @@ import {
 import { and, count, desc, eq, inArray, sql } from 'drizzle-orm';
 import { BOOTSTRAP, grade, jobs, runJob } from '../src';
 import { theirs } from '../src/errors';
+import { teamId } from '../src/jobs/shared';
 import { githubBackup, memoryBackup, sampleProviders } from '../src/providers';
 import type { Providers } from '../src/providers';
 
@@ -220,10 +221,12 @@ describe('failures and locks', () => {
   describe('duplicate roster rows', () => {
     const NAME = 'Mike Gesicki';
     let n = 0;
-    // A pull a few minutes after the last, so each test gets its own run.
+    // A pull a few minutes after the last, so each test gets its own run. Like a real feed, the name is only quoted in
+    // its own team's game (Cincinnati's).
     const pull = (name: string, extra: string[] = []) => {
       const odd: Providers = { ...providers, odds: { ...providers.odds, async eventOdds(ctx, e, m) {
         const q = await providers.odds.eventOdds(ctx, e, m);
+        if (![teamId(e.awayTeam), teamId(e.homeTeam)].includes('cin')) return q;
         return [...q.map((x, i) => (i === 0 ? { ...x, playerName: name } : x)), ...extra.map((x) => ({ ...q[0]!, playerName: x }))];
       } } };
       return run('pull-odds', { providers: odd, force: true, now: new Date(now.getTime() + (90 + 10 * n++) * 60_000) });
@@ -254,6 +257,21 @@ describe('failures and locks', () => {
       expect(w.some((l) => /did not match a roster/.test(l.message))).toBe(false);
       await db.insert(providerRefs).values(refs);
       await db.delete(players).where(eq(players.id, dupe));
+    });
+
+    it('ignores a namesake on a team playing another game in the same pull', async () => {
+      const orig = await original();
+      const other = (await db.select().from(games)).find((g) => g.homeTeamId !== orig.teamId && g.awayTeamId !== orig.teamId)!;
+      const id = crypto.randomUUID();
+      await db.insert(players).values({ ...orig, id, teamId: other.homeTeamId, position: 'LB' });
+      await db.insert(providerRefs).values({ provider: providers.rosters.id, entity: 'player', externalId: `namesake-${id}`, internalId: id });
+      const r = await pull(NAME);
+      expect(await warns(r.runId!)).toEqual([]);
+      const priced = await db.select().from(oddsLatest).where(eq(oddsLatest.playerName, NAME));
+      expect(priced.some((p) => p.playerId === orig.id)).toBe(true);
+      expect(priced.some((p) => p.playerId === id)).toBe(false);
+      await db.delete(providerRefs).where(eq(providerRefs.internalId, id));
+      await db.delete(players).where(eq(players.id, id));
     });
 
     it('does not log team defenses', async () => {

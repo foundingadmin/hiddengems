@@ -4,3 +4,5 @@ export * as schema from './schema';
 export * from './schema';
 export * from './backup';
 export * from './supabase-sql';
+export * from './slips';
+export * from './history';

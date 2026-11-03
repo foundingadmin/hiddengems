@@ -20,7 +20,7 @@ export function dataMode(env: Record<string, string | undefined> = process.env):
 export function providersFor(env: Record<string, string | undefined> = process.env): Providers {
   const offsite = env.VERCEL_ENV !== 'preview' && (env.BACKUP_GITHUB_REPO || env.BACKUP_GITHUB_TOKEN);
   const backup = offsite ? githubBackup(env.BACKUP_GITHUB_TOKEN, env.BACKUP_GITHUB_REPO) : null;
-  if (dataMode(env) === 'sample') return { ...sampleProviders(), ...(backup ? { backup } : {}) };
+  if (dataMode(env) === 'sample') return { ...sampleProviders({ history: true }), ...(backup ? { backup } : {}) };
   if (!env.ODDS_API_KEY) throw ours('config', 'Add ODDS_API_KEY to pull live odds, or set DATA_MODE=sample');
   const stats = nflverse();
   return { schedule: stats, rosters: stats, odds: oddsApi(env.ODDS_API_KEY), results: stats, usage: stats, backup: backup ?? githubBackup(undefined, undefined) };
@@ -31,3 +31,4 @@ export { oddsApi, normalizeEventOdds } from './odds-api';
 export { nflverse, normalizeGames, normalizeRoster, normalizeStats, normalizeInjuries, buildUsage, easternKickoff, NFLVERSE_URLS } from './nflverse';
 export { sampleProviders, SAMPLE_PLAYERS } from './sample';
 export { githubBackup, memoryBackup } from './backup';
+export { anthropic, type AssistantProvider } from './anthropic';

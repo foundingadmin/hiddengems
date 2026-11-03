@@ -70,3 +70,14 @@ export function createDb(url = process.env.DATABASE_URL): DbHandle {
     close: () => client.close(),
   };
 }
+
+/**
+ * Whether a query failed because its table does not exist yet (Postgres 42P01): a migration the owner has
+ * not run on Supabase. Callers that read or write a new table skip it instead of failing.
+ */
+export function isMissingTable(err: unknown): boolean {
+  for (let e = err as { code?: unknown; cause?: unknown } | undefined, depth = 0; e && depth < 5; e = e.cause as typeof e, depth++) {
+    if (e.code === '42P01') return true;
+  }
+  return false;
+}

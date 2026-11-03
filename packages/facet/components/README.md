@@ -20,11 +20,14 @@ The reference writes UI labels in Title Case. Facet uses sentence case everywher
 | Component | Purpose | Tier | Spec |
 |---|---|---|---|
 | App shell | Sidebar, top bar and scope switcher frame | P0 | [app-shell.md](app-shell.md) |
+| Appraisal certificate | A slip as one card: legs, stakes, lose it all | P0 | [cert.md](cert.md) |
 | Page header | Page title row with actions | P0 | [page-header.md](page-header.md) |
 | Range select | Week, window and date range picker | P0 | [range-select.md](range-select.md) |
+| Rail slip | The slip in progress in the desktop rail | P0 | [rail-slip.md](rail-slip.md) |
 | Hero | Marketing moment with the animated field | P1 | [hero.md](hero.md) |
 | Stat | Headline number with basis line | P0 | [stat.md](stat.md) |
 | Chart card | Titled chart with axes, threshold and empty state | P0 | [chart-card.md](chart-card.md) |
+| Chat | Assistant transcript, context chips, suggestions and composer | P0 | [chat.md](chat.md) |
 | Legend | Series key with totals | P0 | [legend.md](legend.md) |
 | Metric row | Value, change and sparkline in one row | P0 | [metric-row.md](metric-row.md) |
 | Rank list | Top-N bars (best price share) | P1 | [rank-list.md](rank-list.md) |
@@ -40,12 +43,14 @@ The reference writes UI labels in Title Case. Facet uses sentence case everywher
 | Schedule | Pull schedule row and editor | P1 | [schedule.md](schedule.md) |
 | Input group | Input with prefix or suffix | P0 | [input-group.md](input-group.md) |
 | Stepper | Minus, value, plus | P1 | [stepper.md](stepper.md) |
+| Steps | Numbered steps for a short task done in order | P0 | [steps.md](steps.md) |
 | Secret | One-time key reveal and masked value | P1 | [secret.md](secret.md) |
 | Action link | Standalone text link ending in an arrow that slides through on hover | P0 | [link-action.md](link-action.md) |
 | Guide marker | Correct and incorrect usage in docs; neutral by default, critical for hard rules | P0 | [guide-marker.md](guide-marker.md) |
 | Table | Sortable, comparable same-shape rows (the bet slate) | P0 | [table.md](table.md) |
 | Badge | Static status/category label (confidence tier) | P0 | [badge.md](badge.md) |
 | Status dot | 10px lifecycle dot (deployments only in the reference; feed freshness as a Facet extension) | P0 | [status-dot.md](status-dot.md) |
+| Game log | Last 10 games, hit or miss, beside the season record | P0 | [game-log.md](game-log.md) |
 | Gauge | Circular 0–100 meter (composite gem score) | P0 | [gauge.md](gauge.md) |
 | Pie gauge | Inline 13–16px percentage icon (score column) | P0 | [pie-gauge.md](pie-gauge.md) |
 | Note | Inline persistent contextual message (data caveats) | P0 | [note.md](note.md) |
@@ -75,6 +80,7 @@ The reference writes UI labels in Title Case. Facet uses sentence case everywher
 | Description | Key/value metadata (Sheet summary) | P0 | [description.md](description.md) |
 | Keyboard input | Shortcut keycaps (`Kbd`) | P0 | [keyboard-input.md](keyboard-input.md) |
 | Show more | Expand truncated lists (signals, books) | P0 | [show-more.md](show-more.md) |
+| Signed money | Profit and loss with their sign, in edge green or red | P0 | [money.md](money.md) |
 | Separator | Section and toolbar dividers | P0 | [separator.md](separator.md) |
 | Checkbox | Multi-select and acknowledgements (bulk rows) | P0 | [checkbox.md](checkbox.md) |
 | Progress | Determinate progress bar (ingestion/scoring) | P1 | [progress.md](progress.md) |

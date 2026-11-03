@@ -1,0 +1,20 @@
+/* The Jeweler: layout glue between Facet's sheet and chat parts (packages/facet/components/chat.md). */
+
+/* Sheet: a hairline under the context chips, and the footer stacks note, suggestions and composer. */
+.hg-jeweler-head { padding-bottom: var(--fc-space-4); box-shadow: inset 0 -1px 0 var(--fc-border-default); }
+.hg-jeweler-foot { display: flex; flex-direction: column; align-items: stretch; gap: var(--fc-space-3); }
+.fc-sheet-footer.hg-jeweler-foot { flex-wrap: nowrap; }
+
+/* Page (the phone tab, and /jeweler on desktop): one column that fills the screen, composer at the foot. */
+.hg-jeweler-page {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fc-space-6);
+  width: 100%;
+  max-width: calc(var(--fc-space-4) * 45);
+  margin-inline: auto;
+}
+.hg-jeweler-page > .fc-chat { flex: 1 1 auto; }
+
+.hg-jeweler-wait { display: inline-flex; align-items: center; gap: var(--fc-space-2); color: var(--fc-text-secondary); }

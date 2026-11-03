@@ -50,7 +50,7 @@ When the stat itself says something needs doing, one small CTA sits under the ba
 - Units and qualifiers stay beside the number. Do not move them into the label.
 - Every stat that summarises a sample carries its basis. Under 20 events, show "n of m", not a bare percentage.
 - Distinguish observed, derived and projected values in the basis ("Projected from 6 games").
-- Signed values use a real sign; direction words ("lower") go in the qualifier. Color only through `.fc-delta`, never on the value itself.
+- Signed values use a real sign; direction words ("lower") go in the qualifier. Color only through `.fc-delta`, or `.fc-money` for profit and loss (`money.md`), never on the value itself.
 - Labels say what was measured, not a teaser. The basis is a disclosure, so it stays even when space is tight.
 - A missing value renders `–` with `aria-label="Unknown"`.
 

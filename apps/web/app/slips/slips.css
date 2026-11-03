@@ -1,0 +1,39 @@
+/* Slips: layout glue between Facet parts (cert, steps, modal, notes), Facet tokens only. */
+.hg-slips { display: flex; flex-direction: column; gap: var(--fc-space-6); min-width: 0; }
+
+/* The certificate (or the steps) with its side column. One column in the narrow shell. */
+.hg-slip {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, calc(var(--fc-space-4) * 22));
+  gap: var(--fc-space-8);
+  align-items: start;
+  max-width: calc(var(--fc-space-4) * 72);
+}
+@container fc-shell (max-width: 767px) {
+  .hg-slip { grid-template-columns: minmax(0, 1fr); gap: var(--fc-space-6); }
+}
+
+.hg-slip-side { display: flex; flex-direction: column; gap: var(--fc-space-4); min-width: 0; }
+.hg-slip-side > p { margin: 0; }
+.hg-slip-side > .fc-button { width: 100%; }
+.hg-slip-side > .fc-link-quiet { align-self: center; }
+.hg-appraisal { display: flex; flex-direction: column; gap: var(--fc-space-3); padding: var(--fc-space-5); }
+.hg-appraisal > * { margin: 0; }
+.hg-appraisal-title { display: flex; align-items: center; gap: var(--fc-space-2); }
+.hg-appraisal-title > svg { flex: none; width: var(--fc-space-4); height: var(--fc-space-4); }
+.hg-reminders { display: flex; flex-direction: column; gap: var(--fc-space-1); margin: 0; padding: 0; list-style: none; }
+
+.hg-stake { display: flex; flex-direction: column; min-width: 0; }
+
+/* Send to DraftKings */
+.hg-send { display: flex; flex-direction: column; align-items: flex-start; gap: var(--fc-space-4); min-width: 0; }
+.hg-send > .hg-slip { width: 100%; }
+.hg-gap-6 { --fc-gap: var(--fc-space-6); }
+.hg-send-summary { display: flex; flex-direction: column; gap: var(--fc-space-4); padding: var(--fc-space-5); }
+.hg-send-summary > .fc-separator { margin: 0; }
+.hg-send-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--fc-space-3); min-width: 0; }
+.hg-send-head > * { margin: 0; }
+/* The phone board keeps only the steps and the safety note. */
+@container fc-shell (max-width: 767px) {
+  .hg-send-summary { display: none; }
+}

@@ -94,6 +94,8 @@ export interface ProviderBase {
   headers?: Record<string, string>;
   /** Reads quota headers, when the provider sends them. */
   usage?(res: Response): { used: number | null; remaining: number | null } | null;
+  /** Replaces the network, for tests. */
+  fetch?: typeof fetch;
 }
 
 export interface ScheduleProvider extends ProviderBase {
@@ -109,6 +111,8 @@ export interface OddsProvider extends ProviderBase {
 export interface ResultsProvider extends ProviderBase {
   /** Stat lines for one week of games. */
   stats(ctx: ProviderContext, season: number, week: number): Promise<StatLine[]>;
+  /** Sample data only: pull-results fills in records and a placed slip for final games, so previews have graded history. */
+  sampleHistory?: boolean;
 }
 
 export interface UsageProvider extends ProviderBase {

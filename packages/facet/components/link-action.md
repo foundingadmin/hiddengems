@@ -35,3 +35,12 @@ Chevron direction (owner rule): **a chevron points where the new content will ap
 - **In a container edge:** where the link sits against a container's edge (a note's right side), its hover surface keeps an equal 4px inset from the top, bottom and side edges with a concentric corner, by growing into the container's padding with negative margins.
 - **Where:** note actions (`.fc-note-link`), page header docs links, fieldset footers, failure overlays, card footers. One per container.
 - **Not for:** links inside a sentence, which keep their underline so they read as links without the arrow. Destructive actions, which are buttons that confirm.
+
+## Quiet text action
+> Facet `[F]`, sprint 2026-11-03. CSS in `css/slip.css` (`.fc-link-quiet`). Specimen: `preview/index.html#slips`.
+
+A deliberate second choice that must not compete with the primary button beside it, such as Change this slip under Send to DraftKings. Secondary text, underlined in the border color, primary on hover; the 2px focus ring like a button. It may be a link or a button, and carries no arrow, because it can open a dialog in place.
+
+```html
+<button type="button" class="fc-link-quiet text-label-13" aria-haspopup="dialog">Change this slip</button>
+```

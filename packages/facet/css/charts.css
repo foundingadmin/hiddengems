@@ -787,7 +787,7 @@ tr[data-clickable]:hover .fc-log-open .fc-button { color: var(--fc-text-primary)
 /* Row link [F]: the cell that opens a row's record (usually the time) holds the row's one link. The link
    stretches over the whole row, so the row is the hit target (INT-04); at rest the link text carries a quiet
    underline, on row hover the row fills and the underline darkens. Keyboard focus rings the whole row.
-   Never put a second link or button in a row that has one. */
+   Never put a second link in a row that has one; the row's one own action sits above it in .fc-row-action (css/slip.css). */
 .fc-table tbody tr:has(.fc-row-link) { position: relative; cursor: pointer; }
 .fc-row-link { color: var(--fc-text-primary); text-decoration: underline; text-decoration-color: var(--fc-border-hover); text-underline-offset: 3px; outline: none; }
 .fc-row-link::before { content: ""; position: absolute; inset: 0; z-index: 1; }

@@ -1,19 +1,23 @@
 // Facet encodings as React: player tile and number, gem rating, edge, run status.
 // Markup mirrors packages/facet (css/teams.css, css/components.css); see packages/facet/patterns/hidden-gems.md.
 import { findTeam } from '@hiddengems/core';
-import type { CSSProperties, ReactNode } from 'react';
+import type { AnchorHTMLAttributes, CSSProperties, ReactNode } from 'react';
 import { points } from '@/lib/format';
 
-export function Player({ name, teamId, number, detail, badge }: { name: string; teamId: string | null; number: number | null; detail: ReactNode; badge?: ReactNode }) {
+/** link puts the name in a row link (packages/facet, .fc-row-link) that opens the row's record. */
+export function Player({ name, teamId, number, detail, badge, size = 'sm', link }: {
+  name: string; teamId: string | null; number: number | null; detail: ReactNode; badge?: ReactNode; size?: 'sm' | 'lg';
+  link?: AnchorHTMLAttributes<HTMLAnchorElement> & Record<`data-${string}`, string>;
+}) {
   const team = teamId ? findTeam(teamId) : null;
   return (
-    <span className="fc-player">
+    <span className="fc-player" data-size={size === 'lg' ? 'lg' : undefined}>
       {team
-        ? <span className="fc-player-avatar" data-team={team.id} data-size="sm" role="img" aria-label={`${team.city} ${team.name}`} />
-        : <span className="fc-player-avatar" data-size="sm" aria-hidden="true" />}
+        ? <span className="fc-player-avatar" data-team={team.id} data-size={size} role="img" aria-label={`${team.city} ${team.name}`} />
+        : <span className="fc-player-avatar" data-size={size} aria-hidden="true" />}
       <span className="fc-player-main">
         <span className="fc-player-line">
-          <span className="fc-player-name">{name}</span>
+          {link ? <a className="fc-player-name fc-row-link" {...link}>{name}</a> : <span className="fc-player-name">{name}</span>}
           {number != null && (
             <span className="fc-player-number"><span aria-hidden="true">#{number}</span><span className="fc-visually-hidden">, number {number}</span></span>
           )}
@@ -33,23 +37,29 @@ const GEM_PATHS = (
 );
 
 /** The gem rating mark (packages/facet, .fc-gem): one 0 to 100 number, purple deepening with it.
- * Fool's Gold is the hollow dashed gem with its label, never purple. */
-export function GemMark({ kind, rating, delay, size }: { kind: string; rating: number | null; delay?: number; size?: 'lg' | 'stat' }) {
+ * Fool's Gold is the hollow dashed gem with its label, never purple. bare leaves the label out, for a row
+ * too narrow to hold it that shows FoolsLabel beside the name instead. */
+export function GemMark({ kind, rating, delay, size, bare }: { kind: string; rating: number | null; delay?: number; size?: 'lg' | 'stat'; bare?: boolean }) {
   if (kind === 'fools-gold') {
+    if (bare) return <span className="fc-gem" data-fools aria-hidden="true">{GEM_PATHS}</span>;
     return (
       <span className="hg-gem-cell">
         <span className="fc-gem" data-fools aria-hidden="true">{GEM_PATHS}</span>
-        <span className="fc-gem-fools text-label-12">Fool&apos;s Gold</span>
+        <FoolsLabel />
       </span>
     );
   }
-  if (rating == null) return <span aria-label="No rating">{'\u2013'}</span>;
+  if (rating == null) return <span><span aria-hidden="true">{'\u2013'}</span><span className="fc-visually-hidden">No rating</span></span>;
   const style = { '--rating': rating, ...(delay != null ? { '--fc-gem-delay': `${delay}ms` } : {}) } as CSSProperties;
   return (
-    <span className="fc-gem" data-live data-size={size} style={style} aria-label={`Gem rating ${rating}`}>
-      {GEM_PATHS}<span>{rating}</span>
+    <span className="fc-gem" data-live data-size={size} style={style}>
+      {GEM_PATHS}<span><span className="fc-visually-hidden">Gem rating </span>{rating}</span>
     </span>
   );
+}
+
+export function FoolsLabel() {
+  return <span className="fc-gem-fools text-label-12">Fool&apos;s Gold</span>;
 }
 
 export function Edge({ pts }: { pts: number }) {

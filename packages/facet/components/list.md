@@ -34,6 +34,7 @@ A bordered, divided list of things the user owns or connects: sportsbooks, data 
 - One-line rows: `data-lines="1"` on the list or the row: 48px (`--fc-row-list-single`, proposed). Lead uses a 32px tile (`data-size="sm"`).
 - `data-interactive` on the list: whole-row hover fill for rows that open a detail sheet.
 - Narrow: the list is an inline-size container. Under 520px the aside drops under the title; lead, title and actions keep line 1.
+- `data-aside="beside"` `[F]` on the list: under 520px a short aside (a result and its amount) stays beside the title, which truncates. Used by History's past slips and the graded slip's legs on phones (LAY-02).
 
 ## States
 Default, hover (interactive lists only), and per-row state through `data-state` (see `patterns/connections.md`). Status is always `.fc-status` (dot + word), never a dot alone.
@@ -51,6 +52,19 @@ Default, hover (interactive lists only), and per-row state through `data-state` 
 
 ## Hidden Gems usage
 Sportsbooks, data providers, schedules (`components/schedule.md`), sessions on Security, alert rules.
+
+## Row links `[F]`
+
+A row that opens a record (a past slip on the phone) puts an `a.fc-row-link` in its title, as table rows do (`css/charts.css`). The link's hit area covers the whole row and `data-interactive` on the list adds the hover fill. The focus ring draws on the row. CSS in `css/slip.css`. Specimen: `preview/index.html#slips`.
+```html
+<ul class="fc-list" data-interactive role="list" aria-labelledby="past-h">
+  <li class="fc-list-row">
+    <div class="fc-list-row-main"><p class="fc-list-row-title"><a class="fc-row-link" href="/slips?slip=…">Cook and McLaurin</a></p><p class="fc-meta"><span>Week 8</span><span>$15 parlay</span></p></div>
+    <div class="fc-list-row-aside">…</div>
+  </li>
+</ul>
+```
+- One link per row, and no other controls in it: the link covers them.
 
 ## Lanes `[F]`
 

@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
-  SNAPSHOT_GRACE_MINUTES, americanToDecimal, appraise, clarityScore, compareRecommended, decimalToAmerican, dueFreezes, dueSnapshot,
-  fairChance, findTeam, gameId, gemRating, houseCut, impliedFromDecimal, nameKey, newGemReason, recommendedScore, selectionKey, zonedTimeToUtc,
+  SNAPSHOT_GRACE_MINUTES, americanToDecimal, anytimeTdHit, appraise, clarityScore, closingLineValue, compareRecommended, decimalToAmerican,
+  decisionSnapshot, dueFreezes, dueSnapshot, fairChance, fairDecimal, findTeam, gameId, gemRating, gradeBox, gradeTake, houseCut, impliedFromDecimal,
+  nameKey, newGemReason, priceAsOf, recommendedScore, selectionKey, zonedTimeToUtc,
   type Rankable,
 } from '../src';
 
@@ -162,5 +163,76 @@ describe('new gems', () => {
   });
   it('never surfaces a prop without a rating', () => {
     expect(newGemReason(null, null)).toBeNull();
+  });
+});
+
+describe('decision price', () => {
+  const denver = (date: string, time: string) => zonedTimeToUtc(date, time, 'America/Denver');
+  const slots = [
+    { slot: 'open:2026-11-03', pulledAt: denver('2026-11-03', '10:09') },
+    { slot: 'sat:2026-11-07', pulledAt: denver('2026-11-07', '19:49') },
+    { slot: 'sun:2026-11-08', pulledAt: denver('2026-11-08', '08:45') },
+    { slot: 'freeze:2026-11-08-mia-buf', pulledAt: denver('2026-11-08', '10:45') },
+    { slot: 'open:2026-10-27', pulledAt: denver('2026-10-27', '10:09') },
+  ];
+
+  it('takes Sunday 8:43 AM for Sunday and Monday games', () => {
+    expect(decisionSnapshot(denver('2026-11-08', '11:00'), slots)?.slot).toBe('sun:2026-11-08');
+    expect(decisionSnapshot(denver('2026-11-09', '18:15'), slots)?.slot).toBe('sun:2026-11-08');
+  });
+
+  it('takes the latest snapshot before kickoff for earlier games', () => {
+    expect(decisionSnapshot(denver('2026-11-05', '18:15'), slots)?.slot).toBe('open:2026-11-03');
+    expect(decisionSnapshot(denver('2026-11-07', '14:00'), slots)?.slot).toBe('open:2026-11-03');
+    expect(decisionSnapshot(denver('2026-11-07', '20:15'), slots)?.slot).toBe('sat:2026-11-07');
+  });
+
+  it('never uses a freeze, and finds nothing without a weekly snapshot', () => {
+    expect(decisionSnapshot(denver('2026-11-08', '11:00'), slots.filter((s) => s.slot.startsWith('freeze:')))).toBeNull();
+  });
+
+  it('reads the price as of a moment, or the first one seen when not listed yet', () => {
+    const at = (h: number) => new Date(Date.UTC(2026, 10, 8, h));
+    const history = [
+      { price: 3.1, pulledAt: at(1), observedAt: at(1) },
+      { price: 3.4, pulledAt: at(5), observedAt: at(4) },
+      { price: 2.9, pulledAt: at(9), observedAt: at(9) },
+    ];
+    expect(priceAsOf(history, at(6))?.price).toBe(3.4);
+    expect(priceAsOf(history, at(5))?.price).toBe(3.4);
+    expect(priceAsOf(history, at(0))?.price).toBe(3.1);
+    expect(priceAsOf([], at(0))).toBeNull();
+  });
+});
+
+describe('grading', () => {
+  it('computes CLV against the fair close', () => {
+    expect(closingLineValue(3.5, 3.2)).toBeCloseTo(3.5 / 3.2 - 1, 12);
+    expect(fairDecimal(3)).toBeCloseTo(1 / fairChance(3), 12);
+    expect(() => closingLineValue(1, 3)).toThrow(RangeError);
+  });
+
+  it('beats the close only when the price taken is longer than the fair close', () => {
+    const longer = gradeTake({ taken: 4.5, closePrice: 3.0, hit: true });
+    expect(longer.clv).toBeGreaterThan(0);
+    expect(longer.beatClose).toBe(true);
+    const same = gradeTake({ taken: 3.0, closePrice: 3.0, hit: true });
+    expect(same.clv).toBeLessThan(0); // the posted price still carries the cut
+    expect(same.beatClose).toBe(false);
+  });
+
+  it('lands every take in exactly one box', () => {
+    expect(gradeBox(true, true)).toBe('earned');
+    expect(gradeBox(true, false)).toBe('unlucky');
+    expect(gradeBox(false, true)).toBe('lucky');
+    expect(gradeBox(false, false)).toBe('wrong-read');
+    expect(gradeTake({ taken: 4.5, closePrice: 3.0, hit: false }).box).toBe('unlucky');
+    expect(gradeTake({ taken: 2.5, closePrice: 3.0, hit: true }).box).toBe('lucky');
+    expect(gradeTake({ taken: 2.5, closePrice: 3.0, hit: false }).box).toBe('wrong-read');
+  });
+
+  it('hits an anytime TD on one score or more', () => {
+    expect(anytimeTdHit(0)).toBe(false);
+    expect(anytimeTdHit(2)).toBe(true);
   });
 });

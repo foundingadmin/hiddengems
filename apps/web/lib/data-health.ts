@@ -14,11 +14,12 @@ export const SOURCES = [
   { job: 'pull-rosters', label: 'Rosters', live: 'nflverse' },
   { job: 'pull-results', label: 'Results', live: 'nflverse' },
   { job: 'pull-usage', label: 'Usage and injuries', live: 'nflverse' },
+  { job: 'pull-weather', label: 'Weather', live: 'Open-Meteo' },
   { job: 'build-picks', label: 'Ratings', live: 'Model v3.0' },
   { job: 'backup', label: 'Backup', live: 'GitHub, private' },
 ] as const;
 export const LABELS: Record<string, string> = Object.fromEntries(SOURCES.map((s) => [s.job, s.label]));
-export const PROVIDER_NAMES: Record<string, string> = { 'odds-api': 'The Odds API', nflverse: 'nflverse', sample: 'Sample', 'github-backup': 'GitHub', memory: 'Local' };
+export const PROVIDER_NAMES: Record<string, string> = { 'odds-api': 'The Odds API', nflverse: 'nflverse', sample: 'Sample', 'github-backup': 'GitHub', memory: 'Local', 'open-meteo': 'Open-Meteo' };
 
 const fmt = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat('en-US', { timeZone: ZONE, ...o });
 export const timeOfDay = (d: Date) => fmt({ hour: 'numeric', minute: '2-digit' }).format(d);
@@ -32,10 +33,11 @@ function dailyCron(job: string): { h: number; m: number } | null {
 }
 export const isDaily = (job: string) => dailyCron(job) != null;
 
-/** Plain-language schedule: "Daily at 4:17 AM", "Weekly and at kickoff", "After odds or usage". */
+/** Plain-language schedule: "Daily at 4:17 AM", "Weekly and at kickoff", "After odds or usage", "After odds". */
 export function scheduleText(job: string, now: Date): string {
   if (job === 'pull-odds') return 'Weekly and at kickoff';
   if (job === 'build-picks') return 'After odds or usage';
+  if (job === 'pull-weather') return 'After odds';
   const c = dailyCron(job);
   if (!c) return 'Daily';
   const at = new Date(now);

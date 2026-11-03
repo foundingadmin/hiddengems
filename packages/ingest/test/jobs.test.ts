@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { fairChance, gradeBox, zonedTimeToUtc } from '@hiddengems/core';
+import { STADIUMS, fairChance, gradeBox, weatherNote, zonedTimeToUtc } from '@hiddengems/core';
 import {
-  bets, createDb, jobSettings, estimates, gemRecords, games, grades, jobLocks, oddsLatest, oddsSlots, oddsSnapshots, picks, playerGameStats, playerUsage, players,
+  bets, createDb, gameWeather, getGameWeather, jobSettings, estimates, gemRecords, games, grades, jobLocks, oddsLatest, oddsSlots, oddsSnapshots, picks, playerGameStats, playerUsage, players,
   providerRefs, providerUsage, runLogs, runs, seedReference, slipLegs, slips, unpackBackup,
 } from '@hiddengems/db';
 import { and, count, desc, eq, inArray, sql } from 'drizzle-orm';
@@ -72,6 +72,60 @@ describe('bootstrap', () => {
   it('logs each run with its numbers', async () => {
     const [r] = await db.select().from(runs).where(eq(runs.job, 'build-picks')).orderBy(desc(runs.startedAt)).limit(1);
     expect(r!.message).toMatch(/^Appraised \d+ props for 5 games: \d+ gems?, \d+ Fool's Gold, \d+ unrated$/);
+  });
+});
+
+describe('kickoff weather', () => {
+  const OPEN = ['2026-11-08-cin-bal', '2026-11-08-mia-buf', '2026-11-08-ne-sea'];
+
+  it('follows an odds pull with forecasts for games at open stadiums only', async () => {
+    const rows = await db.select().from(gameWeather);
+    // ARI at NO (Superdome) and KC at LV (Allegiant) are under a roof.
+    expect(rows.map((r) => r.gameId).sort()).toEqual(OPEN);
+    for (const r of rows) expect(r).toMatchObject({ provider: 'sample' });
+    const [w] = await db.select().from(runs).where(eq(runs.job, 'pull-weather')).orderBy(desc(runs.startedAt)).limit(1);
+    expect(w).toMatchObject({ status: 'succeeded', provider: 'sample', requestCount: 0, rowsWritten: 3 });
+    expect(w!.message).toMatch(/^Pulled kickoff forecasts for 3 games at open stadiums, \d+ with a weather note$/);
+  });
+
+  it('skips neutral sites and keeps one row per game, replaced on each pull', async () => {
+    await db.insert(games).values({ id: '2026-11-08-chi-gb', season: 2026, week: 10, kickoffAt: new Date('2026-11-08T14:30:00Z'), awayTeamId: 'chi', homeTeamId: 'gb', neutralSite: true });
+    const later = new Date(now.getTime() + 3_600_000);
+    const r = await run('pull-weather', { trigger: 'manual', force: true, now: later });
+    expect(r.status, r.message).toBe('succeeded');
+    const rows = await db.select().from(gameWeather);
+    expect(rows.map((x) => x.gameId).sort()).toEqual(OPEN);
+    expect(rows.every((x) => x.pulledAt.getTime() === later.getTime())).toBe(true);
+    await db.delete(games).where(eq(games.id, '2026-11-08-chi-gb'));
+  });
+
+  it('reads one game for the gem sheet, with its note', async () => {
+    const w = await getGameWeather(db, '2026-11-08-mia-buf');
+    expect(w).toMatchObject({ provider: 'sample', stadium: STADIUMS.buf });
+    expect(w!.note).toBe(weatherNote(w!.forecast, 'open'));
+    expect(await getGameWeather(db, '2026-11-08-ari-no')).toBeNull();
+  });
+
+  it('records a forecast outage as theirs', async () => {
+    const down: Providers = { ...providers, weather: { ...providers.weather, async forecast() { throw theirs('server', 'sample returned 503'); } } };
+    const r = await run('pull-weather', { providers: down, force: true });
+    expect(r).toMatchObject({ status: 'failed', failureOwner: 'provider' });
+    expect(await db.select().from(gameWeather)).toHaveLength(3);
+  });
+
+  it('waits for its migration without failing the odds pull, the board or the backup', async () => {
+    const h = createDb('memory://');
+    await h.migrate();
+    await seedReference(h.db);
+    await h.db.execute(sql`drop table game_weather`);
+    const go = (job: string) => runJob(job, { db: h.db, providers: sampleProviders(), trigger: 'test', now, registry: jobs, force: true });
+    for (const job of BOOTSTRAP.slice(0, -1)) expect((await go(job)).status, job).toBe('succeeded');
+    const odds = await go('pull-odds');
+    expect(odds.status).toBe('succeeded');
+    expect(odds.followUps?.map((f) => [f.job, f.status])).toEqual([['build-picks', 'succeeded'], ['pull-weather', 'skipped']]);
+    expect(await getGameWeather(h.db, '2026-11-08-mia-buf')).toBeNull();
+    expect((await go('backup')).status).toBe('succeeded');
+    await h.close();
   });
 });
 

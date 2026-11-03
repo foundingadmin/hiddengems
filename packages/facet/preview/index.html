@@ -1849,9 +1849,61 @@
         <ol class="fc-step-list" aria-label="Workflow steps">
           <li><button class="fc-step" type="button"><span class="fc-step-index">01</span><span class="fc-step-body"><span class="fc-step-actor">principal</span><span class="fc-step-text">You leave two comments on the staging preview, then type go.</span></span><span class="fc-step-value"></span></button></li>
           <li><button class="fc-step" type="button" aria-current="step"><span class="fc-step-index">02</span><span class="fc-step-body"><span class="fc-step-actor">triage</span><span class="fc-step-text">The session reads every open thread and files sprint.json.</span></span><span class="fc-step-value">+22k</span></button></li>
-          <li><button class="fc-step" type="button" data-state="upcoming"><span class="fc-step-index">03</span><span class="fc-step-body"><span class="fc-step-actor">merge <span class="fc-badge" data-contrast="low" data-size="sm">Not reached here</span></span><span class="fc-step-text">If CI fails, the session spawns one CI fixer with the traces.</span><span class="fc-step-note">Not reached here, CI is green.</span></span><span class="fc-step-value"></span></button></li>
+          <li><button class="fc-step" type="button" data-state="upcoming"><span class="fc-step-index">03</span><span class="fc-step-body"><span class="fc-step-actor">merge <span class="fc-badge" data-contrast="low" data-size="sm">Not reached here</span></span><span class="fc-step-text">If CI fails, the session spawns one CI fixer with the traces.</span><span class="fc-step-note">CI is green.</span></span><span class="fc-step-value"></span></button></li>
           <li><button class="fc-step" type="button" data-state="upcoming"><span class="fc-step-index">04</span><span class="fc-step-body"><span class="fc-step-actor">verifier</span><span class="fc-step-text">One verifier reviews the whole sprint branch once.</span></span><span class="fc-step-value">+70k</span></button></li>
         </ol>
+      </div>
+    </div>
+
+    <!-- ============================================ Flow map (components/flow-map.md) -->
+    <div class="fc-stack" style="--fc-gap:16px" id="flow-map">
+      <h3 class="text-heading-20">Flow map</h3>
+      <div class="fc-flow-map">
+        <div class="fc-flow-map-toolbar">
+          <ul class="fc-legend" role="list">
+            <li class="fc-legend-item"><svg width="24" height="8" aria-hidden="true"><path class="fc-flow-edge" d="M0,4 H24"/></svg><span class="fc-legend-name">Hands forward</span></li>
+            <li class="fc-legend-item"><svg width="24" height="8" aria-hidden="true"><path class="fc-flow-edge" data-kind="return" d="M0,4 H24"/></svg><span class="fc-legend-name">Returns</span></li>
+          </ul>
+          <div class="fc-flow-map-zoom" role="group" aria-label="Zoom">
+            <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="Zoom out">−</button>
+            <output>100%</output>
+            <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="Zoom in">+</button>
+            <button class="fc-button" data-variant="tertiary" data-size="small" type="button">Fit</button>
+          </div>
+        </div>
+        <div class="fc-flow-map-viewport" tabindex="0" role="group" aria-label="Workflow map" style="height:260px">
+          <div class="fc-flow-map-stage" style="width:664px;height:240px">
+            <svg class="fc-flow-map-edges" width="664" height="240" aria-hidden="true">
+              <defs>
+                <marker id="pv-fa" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="fc-flow-arrow" d="M0,0 L8,4 L0,8 z"/></marker>
+                <marker id="pv-fa-on" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="fc-flow-arrow" data-tone="active" d="M0,0 L8,4 L0,8 z"/></marker>
+              </defs>
+              <path class="fc-flow-edge" data-state="past" d="M184,106 C216,106 216,106 242,106" marker-end="url(#pv-fa)"/>
+              <path class="fc-flow-edge" data-state="active" d="M416,106 C448,106 448,106 474,106" marker-end="url(#pv-fa-on)"/>
+              <path class="fc-flow-edge" data-kind="return" data-state="dim" d="M530,164 C530,224 366,224 366,170" marker-end="url(#pv-fa)"/>
+            </svg>
+            <div class="fc-flow-node" data-kind="person" style="left:16px;top:48px;width:168px;height:116px">
+              <div class="fc-flow-node-head"><span class="fc-flow-node-name">principal</span></div>
+              <p class="fc-flow-node-role">Leaves comments on the staging preview.</p>
+              <div class="fc-flow-node-foot"><span class="fc-flow-node-dot" data-state="done" aria-hidden="true"></span><span class="fc-flow-node-state">2 comments</span></div>
+            </div>
+            <div class="fc-flow-node" style="left:248px;top:48px;width:168px;height:116px">
+              <div class="fc-flow-node-head"><span class="fc-flow-node-name">builder</span></div>
+              <div class="fc-flow-node-tags"><span class="fc-badge" data-variant="inverted" data-size="sm">Lead model</span></div>
+              <div class="fc-flow-node-foot"><span class="fc-flow-node-dot" data-state="done" aria-hidden="true"></span><span class="fc-flow-node-state">Branch pushed</span><span class="fc-flow-node-tokens">88k</span></div>
+              <div class="fc-meter" aria-hidden="true"><div class="fc-meter-track"><span class="fc-meter-fill" style="--value:100"></span></div></div>
+            </div>
+            <div class="fc-flow-node" data-active style="left:480px;top:48px;width:168px;height:116px">
+              <div class="fc-flow-node-head"><span class="fc-flow-node-name">verifier</span><span class="fc-badge" data-variant="blue" data-contrast="low" data-size="sm">New</span></div>
+              <div class="fc-flow-node-tags"><span class="fc-badge" data-variant="inverted" data-size="sm">Lead model</span></div>
+              <div class="fc-flow-node-foot"><span class="fc-flow-node-dot" data-state="active" aria-hidden="true"></span><span class="fc-flow-node-state">Reviewing</span><span class="fc-flow-node-tokens">70k</span></div>
+              <div class="fc-meter" aria-hidden="true"><div class="fc-meter-track"><span class="fc-meter-fill" style="--value:80"></span></div></div>
+            </div>
+            <span class="fc-flow-label" data-state="past" style="left:213px;top:92px">Spawn</span>
+            <span class="fc-flow-label" data-state="active" style="left:445px;top:92px">Branch</span>
+            <span class="fc-flow-label" data-state="dim" style="left:448px;top:209px">Punchlist</span>
+          </div>
+        </div>
       </div>
     </div>
 

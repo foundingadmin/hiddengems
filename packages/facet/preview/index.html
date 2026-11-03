@@ -2882,6 +2882,38 @@ rating = round(100 × clamp(carat / 10, 0, 1) × clarity / 100)</pre></div>
       </footer>
     </div>
   </div>
+
+  <div class="sl-row">
+    <div class="fc-stack" style="--fc-gap:16px; flex: 1 1 26rem; min-width: 0">
+      <h3 class="text-heading-20">Editable legs</h3>
+      <ul class="fc-legs" data-editable>
+        <li class="fc-leg">
+          <span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">James Cook</span><span class="fc-player-number" data-number="4"></span></span><span class="fc-player-meta">MIA @ BUF · <time class="fc-time">11:00 AM</time></span></span></span>
+          <span class="fc-gem" style="--rating: 92" data-live><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>92</span></span>
+          <span class="fc-price text-label-14"><span class="fc-visually-hidden">Price </span>2.60</span>
+          <button type="button" class="fc-button fc-leg-action" data-variant="tertiary" data-size="tiny" data-shape="square" aria-label="Remove James Cook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        </li>
+      </ul>
+    </div>
+    <div class="fc-stack" style="--fc-gap:16px; flex: 1 1 26rem; min-width: 0">
+      <h3 class="text-heading-20">Modal and quiet text action</h3>
+      <button type="button" class="fc-link-quiet text-label-13" aria-haspopup="dialog" style="align-self: flex-start">Change this slip</button>
+      <dialog class="fc-modal" open aria-labelledby="sl-modal-h" style="position: static">
+        <div class="fc-modal-body">
+          <h4 id="sl-modal-h" class="text-heading-20">Change the suggested play?</h4>
+          <p class="text-copy-14">Hidden Gems built Slip 1 as the best way to play this week's gems. If you change it</p>
+          <ul class="text-copy-14">
+            <li>The Jeweler's appraisal no longer covers what you place</li>
+            <li>History tracks it as your own play, so you can see whether it beat the suggestion</li>
+          </ul>
+        </div>
+        <div class="fc-modal-actions">
+          <button type="button" class="fc-button" data-variant="secondary" data-size="small">Change slip</button>
+          <button type="button" class="fc-button" data-size="small">Keep suggested play</button>
+        </div>
+      </dialog>
+    </div>
+  </div>
 </section>
 
 </main>

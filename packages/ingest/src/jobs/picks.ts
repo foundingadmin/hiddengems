@@ -6,7 +6,7 @@
 import {
   type GameLine, MODEL_V3, PURCHASE_BOOK, type UsageGame, appraise, clarityScore, impliedFactor, playerForms, readProp, recommendedScore, seasonOf,
 } from '@hiddengems/core';
-import { estimates, gemMarks, games, oddsLatest, picks, playerUsage, players } from '@hiddengems/db';
+import { estimates, gemMarks, games, oddsLatest, picks, playerUsage, players, seedSampleSlip } from '@hiddengems/db';
 import { and, eq, gt, inArray, lt } from 'drizzle-orm';
 import type { Job } from '../runner';
 import { recordFrozenGames } from './records';
@@ -88,6 +88,8 @@ export const buildPicks: Job = {
     const recorded = await recordFrozenGames(ctx);
     if (!recorded) ctx.log('info', 'Gem records start once the database update runs (pnpm db:supabase-sql)');
     const onRecord = recorded?.written ? `, recorded ${plural(recorded.written, 'prop')} at the freeze` : '';
+    // Sample data only: a draft slip from the top gems, so previews have a slip to show.
+    if (ctx.providers.odds.id === 'sample' && await seedSampleSlip(db, now)) ctx.log('info', 'Started a sample draft slip from the top gems');
     return {
       message: `Appraised ${plural(pickRows.length, 'prop')} for ${plural(gameIds.length, 'game')}: ${plural(counts.gem, 'gem')}, ${counts['fools-gold']} Fool's Gold, ${counts.unrated} unrated${onRecord}`,
       rowsWritten: pickRows.length + (recorded?.written ?? 0),

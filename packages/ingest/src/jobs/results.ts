@@ -2,7 +2,7 @@
 // records the closing price (the last price before kickoff) and grades every gem record and placed bet
 // on a final game: closing line value against the fair close and one of four boxes (core gradeTake()).
 import { anytimeTdHit, fairChance, gradeTake, seasonOf } from '@hiddengems/core';
-import { bets, gemRecords, games, grades, isMissingTable, oddsSnapshots, playerGameStats } from '@hiddengems/db';
+import { bets, gemRecords, games, grades, isMissingTable, oddsSnapshots, parlayLegBets, playerGameStats } from '@hiddengems/db';
 import { type AnyColumn, and, desc, eq, inArray, isNotNull, isNull, lte, notInArray, sql } from 'drizzle-orm';
 import type { Job, JobContext } from '../runner';
 import { chunks, plural, refMap } from './shared';
@@ -77,6 +77,8 @@ export const pullResults: Job = {
 
     // Settle open bets on finished games.
     const open = await db.select().from(bets).where(and(eq(bets.status, 'open'), inArray(bets.gameId, [...finalIds])));
+    // A parlay leg's own payout means nothing (the slip pays only if every leg hits), so it settles with none.
+    const parlayLegs = await parlayLegBets(db, open.map((b) => b.id));
     let settled = 0;
     for (const bet of open) {
       if (!bet.playerId) continue;
@@ -85,8 +87,8 @@ export const pullResults: Job = {
       const result = grade(bet, stat);
       if (!result) continue;
       const stake = Number(bet.stake);
-      const payout = result === 'won' ? stake * bet.priceDecimal : 0;
-      await db.update(bets).set({ status: result, payout: payout.toFixed(2), settledAt: now }).where(eq(bets.id, bet.id));
+      const payout = parlayLegs.has(bet.id) ? null : (result === 'won' ? stake * bet.priceDecimal : 0).toFixed(2);
+      await db.update(bets).set({ status: result, payout, settledAt: now }).where(eq(bets.id, bet.id));
       settled++;
     }
 

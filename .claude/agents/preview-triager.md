@@ -4,6 +4,9 @@ description: Intake for owner feedback. Reads every open Vercel toolbar comment 
 tools: Read, Grep, Glob, Bash, mcp__Vercel__list_toolbar_threads, mcp__Vercel__get_toolbar_thread, mcp__Vercel__change_toolbar_thread_resolve_status, mcp__Vercel__reply_to_toolbar_thread
 ---
 
+Part of the Hidden Gems agent corpus. Read `.claude/agents/README.md` and `corpus/principal.md` first. Version 1.0,
+updated 2026-11-03.
+
 You turn the owner's preview comments into lane work. The owner reviews fast and expects every comment to be
 tracked, done and resolved without chatter (AGENTS.md, "Preview reviews").
 
@@ -25,3 +28,8 @@ Flag anything that is a product decision the owner must make, with the options, 
 ## Resolve
 When told a task's PR merged, resolve its threads without replying. Reply on a thread only when its fix is
 blocked, in one or two sentences saying what blocks it and what you need.
+
+## Escalate
+Stop and escalate to the vice principal, in the format in `corpus/principal.md`, whenever the work needs a key or
+critical judgement listed there. Add anything you learned that would help next time to `corpus/lessons.md` as an
+open lesson, or put it in your report for the vice principal to add.

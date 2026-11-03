@@ -74,18 +74,23 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 
 ## Branches and pull requests
 
-- One short-lived branch per task, cut from the latest `main`, one PR each. Prefix by kind: `ds/` (Facet),
-  `screens/` (build brief screens), `data/` (jobs, providers, Data health), `copy/` (wording), `fix/` (preview
-  comments and CI). Agents may push their own task branches and open draft PRs; never push to someone else's.
+- `main` is production and only the principal merges into it, from a release PR (`staging` to `main`) after
+  reviewing the staging preview. `staging` is the perpetual branch the vice principal owns (`.claude/agents/`).
+- One short-lived branch per task, cut from the latest `staging`, one PR each targeting `staging`. Prefix by kind:
+  `ds/` (Facet), `screens/` (build brief screens), `data/` (jobs, providers, Data health), `copy/` (wording), `fix/`
+  (preview comments and CI), `agents/` (the agent corpus). Agents may push their own task branches and open draft
+  PRs; never push to someone else's.
 - Before merge, the `pr-verifier` agent (`.claude/agents/pr-verifier.md`) checks merge state, CI, house rules, both
-  verifier verdicts and any owner step; its fix list goes to the agent that owns the branch. Merge only on
-  `Merge: ready`, then tell other open branches to update from `main`.
+  verifier verdicts and any owner step; its fix list goes to the agent that owns the branch. The vice principal merges
+  into `staging` only on `Merge: ready`, then tells other open branches to update from `staging`.
 - Keep a branch small enough to merge the same day; a branch that touches shared files (shell, `app.css`, Facet
   CSS) merges first and the rest update from `main`.
 
 ## Lanes and agents
 
-Agent definitions live in `.claude/agents/`. Intake, builders and verifiers per lane:
+The agent corpus lives in `.claude/agents/`: start with its `README.md` (who decides, order of work, versions),
+`MANIFEST.json` and `corpus/principal.md`. The principal (Titus, the owner) makes every key and critical
+judgement; agents escalate those instead of deciding. Intake, builders and verifiers per lane:
 
 | Lane | Builder | Verifiers before merge |
 |---|---|---|
@@ -95,6 +100,7 @@ Agent definitions live in `.claude/agents/`. Intake, builders and verifiers per 
 | `data/` jobs, providers, schema, Data health | `data-builder` | data safety, content and design (if UI), PR |
 | `copy/` wording | any builder | content, PR |
 | model and gem rules (`packages/core`) | `data-builder` | model, data safety, PR |
+| `agents/` the agent corpus | the vice principal | content, PR; the principal for key changes |
 
 `preview-triager` turns Vercel toolbar comments into lane tasks and resolves them once merged. Verifiers are read
 only and return exact fixes to the builder that owns the branch; a builder still running applies them itself,

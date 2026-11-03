@@ -334,14 +334,19 @@ function createStage(host, opts = {}) {
   }
 
   /** The sweep played backward: dust gathers at the far end, grows and returns to o.to (a control, 'left' or
-   *  'right'). Restores a wiped el. */
+   *  'right'). Restores a wiped el. reveal does the same for an el that was rendered again after its sweep (a
+   *  restored row): it starts wiped, through any delay, and shows behind the cloud. */
   function unsweep(el, o = {}) {
     const [a, b, side] = ends(el, o.to, o.inset ?? 6);
     const T = o.duration ?? 660, old = wipes.get(el);
-    if (old) {
+    if (old || o.reveal) {
       wipes.delete(el);
-      old.cancel();
-      if (!reducedMotion()) el.animate([{ clipPath: WIPE[side] }, { clipPath: 'inset(0 0 0 0)' }], { duration: T * 0.82, easing: 'ease-in-out' });
+      old?.cancel();
+      if (!reducedMotion()) {
+        el.animate([{ clipPath: WIPE[side] }, { clipPath: 'inset(0 0 0 0)' }], {
+          duration: T * 0.82, delay: o.delay ?? 0, easing: 'ease-in-out', fill: 'backwards',
+        });
+      }
     }
     return cloud({
       from: { x: b.x, y: b.y - (o.lift ?? 8) }, to: a, duration: T, count: o.count ?? 36, size: o.size ?? [0.2, 4.6],

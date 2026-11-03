@@ -1278,8 +1278,19 @@ header.top { display: flex; justify-content: space-between; gap: var(--fc-space-
 .legend { display: flex; gap: var(--fc-space-4); flex-wrap: wrap; align-items: center; }
 .legend span { display: inline-flex; align-items: center; gap: var(--fc-space-1); }
 .legend svg { overflow: visible; }
-.stage-scroll { overflow: auto; position: relative; }
-.stage { position: relative; transform-origin: 0 0; }
+.stage-scroll { overflow: hidden; position: relative; height: min(78vh, 880px); min-height: 420px; cursor: grab; touch-action: none; background: var(--fc-surface-subtle); background-image: radial-gradient(var(--fc-border-default) 1px, transparent 1px); background-size: 24px 24px; border-radius: 0 0 var(--fc-radius-lg) var(--fc-radius-lg); }
+.stage-scroll.panning { cursor: grabbing; }
+.stage-scroll.panning .node, .stage-scroll.panning .rail { cursor: grabbing; }
+.stage-scroll:focus-visible { outline: 2px solid var(--fc-focus-color); outline-offset: -2px; }
+.stage { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
+.zoombar { display: inline-flex; align-items: center; border: 1px solid var(--fc-border-default); border-radius: 6px; overflow: hidden; background: var(--fc-surface-canvas); }
+.zoombar button { all: unset; cursor: pointer; height: 30px; min-width: 32px; padding: 0 8px; display: inline-grid; place-items: center; color: var(--fc-text-primary); }
+.zoombar button + button, .zoombar span + button, .zoombar button + span { border-left: 1px solid var(--fc-border-default); }
+.zoombar button:hover { background: var(--fc-surface-fill-hover); }
+.zoombar button:focus-visible { outline: 2px solid var(--fc-focus-color); outline-offset: -2px; }
+.zoombar span { min-width: 52px; text-align: center; font-variant-numeric: tabular-nums; }
+.zoomhint { color: var(--fc-text-secondary); }
+@media (max-width: 700px) { .zoomhint { display: none; } }
 .stage svg.edges { position: absolute; inset: 0; overflow: visible; }
 .colhead { position: absolute; top: 8px; color: var(--fc-text-secondary); text-transform: uppercase; letter-spacing: .04em; }
 .colsep { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--fc-border-default); opacity: .45; }
@@ -1424,10 +1435,17 @@ table.t tbody tr:hover { background: var(--fc-surface-fill-hover); }
     <div class="toolbar">
       <div class="legend text-label-12 muted" id="legend"></div>
       <div class="row">
-        <button class="btn text-label-13" id="fitBtn" type="button">Fit width</button>
+        <span class="zoomhint text-label-12" id="zoomHint">⌘ scroll or pinch to zoom · drag to move</span>
+        <div class="zoombar text-label-13" role="group" aria-label="Zoom">
+          <button type="button" id="zOut" aria-label="Zoom out">−</button>
+          <span class="mono" id="zPct" aria-live="polite">100%</span>
+          <button type="button" id="zIn" aria-label="Zoom in">+</button>
+          <button type="button" id="zFit">Fit</button>
+          <button type="button" id="z100">100%</button>
+        </div>
       </div>
     </div>
-    <div class="stage-scroll" id="scroll"><div class="stage" id="stage"></div></div>
+    <div class="stage-scroll" id="scroll" tabindex="0" aria-label="Agent map. Drag to move, Command or Control with scroll to zoom, plus and minus keys to zoom, 0 to fit."><div class="stage" id="stage"></div></div>
   </section>
 
   <!-- RUN: comments and step log -->
@@ -2204,16 +2222,89 @@ function setTab(t) {
   $('#graphPanel').hidden = t === 'findings'; $('#inspector').hidden = t === 'findings';
   $('#mapTable').hidden = t !== 'map'; $('#findingsView').hidden = t !== 'findings';
   if (t === 'run' && state.step < 0) state.step = -1;
-  paint(); fit();
+  paint(); if (!view.touched) requestAnimationFrame(fitView);
 }
 
-function fit() {
-  const sc = $('#scroll'), st = $('#stage');
-  if (!sc.clientWidth) return;
-  const s = state.fit ? Math.min(1, (sc.clientWidth - 2) / G.width) : 1;
-  st.style.transform = s < 1 ? `scale(${s})` : '';
-  sc.style.height = (G.height * s + 8) + 'px';
-  $('#fitBtn').textContent = state.fit ? 'Actual size' : 'Fit width';
+/* Pan and zoom */
+const view = { x: 0, y: 0, k: 1, touched: false };
+const KMIN = 0.2, KMAX = 3;
+function applyView() {
+  $('#stage').style.transform = `translate(${view.x}px, ${view.y}px) scale(${view.k})`;
+  $('#zPct').textContent = Math.round(view.k * 100) + '%';
+}
+function fitView() {
+  const sc = $('#scroll'); if (!sc.clientWidth) return;
+  const pad = 16;
+  view.k = Math.min((sc.clientWidth - pad * 2) / G.width, (sc.clientHeight - pad * 2) / G.height, 1.2);
+  view.x = (sc.clientWidth - G.width * view.k) / 2;
+  view.y = (sc.clientHeight - G.height * view.k) / 2;
+  applyView();
+}
+function zoomAt(px, py, nk) {
+  nk = Math.max(KMIN, Math.min(KMAX, nk));
+  view.x = px - (px - view.x) * (nk / view.k);
+  view.y = py - (py - view.y) * (nk / view.k);
+  view.k = nk; view.touched = true; applyView();
+}
+function zoomCenter(f) { const sc = $('#scroll'); zoomAt(sc.clientWidth / 2, sc.clientHeight / 2, view.k * f); }
+function setupPanZoom() {
+  const sc = $('#scroll');
+  if (/Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent) === false) $('#zoomHint').textContent = 'Ctrl + scroll or pinch to zoom · drag to move';
+  sc.addEventListener('wheel', e => {
+    const r = sc.getBoundingClientRect();
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      const d = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY;
+      zoomAt(e.clientX - r.left, e.clientY - r.top, view.k * Math.exp(-d * (e.ctrlKey && !e.metaKey ? 0.01 : 0.0015)));
+    } else if (e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+      e.preventDefault();
+      view.x -= e.shiftKey && !e.deltaX ? e.deltaY : e.deltaX; view.touched = true; applyView();
+    }
+  }, { passive: false });
+  // drag to pan (mouse, pen, one finger), pinch with two fingers
+  const pts = new Map(); let start = null, moved = false, pinch = null;
+  sc.addEventListener('pointerdown', e => {
+    if (e.button !== 0 && e.pointerType === 'mouse') return;
+    pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pts.size === 1) { start = { x: e.clientX, y: e.clientY, vx: view.x, vy: view.y }; moved = false; }
+    if (pts.size === 2) { const [a, b] = [...pts.values()]; pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), k: view.k }; }
+  });
+  sc.addEventListener('pointermove', e => {
+    if (!pts.has(e.pointerId)) return;
+    pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pts.size === 2 && pinch) {
+      const [a, b] = [...pts.values()]; const r = sc.getBoundingClientRect();
+      zoomAt((a.x + b.x) / 2 - r.left, (a.y + b.y) / 2 - r.top, pinch.k * Math.hypot(a.x - b.x, a.y - b.y) / pinch.d);
+      moved = true; return;
+    }
+    if (!start) return;
+    const dx = e.clientX - start.x, dy = e.clientY - start.y;
+    if (!moved && Math.hypot(dx, dy) < 4) return;
+    if (!moved) { moved = true; sc.classList.add('panning'); try { sc.setPointerCapture(e.pointerId); } catch (_) {} }
+    view.x = start.vx + dx; view.y = start.vy + dy; view.touched = true; applyView();
+  });
+  const end = e => { pts.delete(e.pointerId); if (pts.size < 2) pinch = null; if (!pts.size) { start = null; sc.classList.remove('panning'); } };
+  sc.addEventListener('pointerup', end); sc.addEventListener('pointercancel', end);
+  // a drag must not count as a click on a card
+  sc.addEventListener('click', e => { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
+  sc.addEventListener('keydown', e => {
+    if (e.target !== sc) return;
+    const step = 60;
+    if (e.key === '+' || e.key === '=') zoomCenter(1.2);
+    else if (e.key === '-' || e.key === '_') zoomCenter(1 / 1.2);
+    else if (e.key === '0') { view.touched = false; fitView(); }
+    else if (e.key === 'ArrowLeft') { view.x += step; applyView(); }
+    else if (e.key === 'ArrowRight') { view.x -= step; applyView(); }
+    else if (e.key === 'ArrowUp') { view.y += step; applyView(); }
+    else if (e.key === 'ArrowDown') { view.y -= step; applyView(); }
+    else return;
+    e.preventDefault();
+  });
+  $('#zIn').onclick = () => zoomCenter(1.25);
+  $('#zOut').onclick = () => zoomCenter(1 / 1.25);
+  $('#zFit').onclick = () => { view.touched = false; fitView(); };
+  $('#z100').onclick = () => { const sc2 = $('#scroll'); const cx = (sc2.clientWidth / 2 - view.x) / view.k, cy = (sc2.clientHeight / 2 - view.y) / view.k; view.k = 1; view.x = sc2.clientWidth / 2 - cx; view.y = sc2.clientHeight / 2 - cy; view.touched = true; applyView(); };
+  addEventListener('resize', () => { if (!view.touched) fitView(); });
 }
 
 function theme() {
@@ -2230,10 +2321,8 @@ $('#bStep').onclick = () => { stop(); let n = state.step + 1; while (n < EVENTS.
 $('#bBack').onclick = () => { stop(); let n = state.step - 1; while (n > -1 && !evIncludes(EVENTS[n], state.cmt)) n--; state.step = n; paint(); };
 $('#bReset').onclick = () => { stop(); state.step = -1; paint(); };
 $('#bEnd').onclick = () => { stop(); state.step = EVENTS.length - 1; paint(); };
-$('#fitBtn').onclick = () => { state.fit = !state.fit; fit(); };
+setupPanZoom();
 $('#themeBtn').onclick = theme;
-state.fit = window.innerWidth >= 1100;
-addEventListener('resize', fit);
 const q = new URLSearchParams(location.search);
 setTab(q.get('tab') || 'map');
 if (q.get('step')) { state.step = +q.get('step'); paint(); }

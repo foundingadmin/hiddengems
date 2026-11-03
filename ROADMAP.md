@@ -34,7 +34,9 @@ thread.
 9. **Restore the stricter database rules.** Rapid build mode (Nov 3) lets migrations apply themselves and agents
    run SQL on both databases. Recommend: at the beta, sign the Supabase connector out of the production project, and
    apply production migrations by hand from the release PR again.
-10. **PRD v1.2.** Once 1 to 9 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
+10. **Notes that cost clarity (F2.3).** Each costly note lowers clarity a notch, which moves ratings. Recommend:
+    build the notes first as context only, then decide on the clarity effect after the Dec 1 formula lock.
+11. **PRD v1.2.** Once 1 to 10 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
    Outlier as price source, F2.8, F3.4, the old pipeline's freeze and close commands.
 
 ## Where it stands

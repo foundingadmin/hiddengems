@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { STADIUMS, fairChance, gradeBox, weatherNote, zonedTimeToUtc } from '@hiddengems/core';
+import { STADIUMS, fairChance, gemNotes, gradeBox, readEstimateInputs, weatherNote, zonedTimeToUtc } from '@hiddengems/core';
 import {
   bets, createDb, gameWeather, getGameWeather, jobSettings, estimates, gemRecords, games, grades, jobLocks, oddsLatest, oddsSlots, oddsSnapshots, picks, playerGameStats, playerUsage, players,
   providerRefs, providerUsage, runLogs, runs, seedReference, slipLegs, slips, unpackBackup,
@@ -288,6 +288,16 @@ describe('model inputs', () => {
     expect(all.every((p) => p.model === 'hg-v3.0')).toBe(true);
     const [e] = await db.select().from(estimates).where(eq(estimates.model, 'hg-v3.0')).limit(1);
     expect(e!.inputs).toHaveProperty('statsWeight');
+  });
+
+  it('stores the inputs the gem sheet notes read', async () => {
+    const [row] = await db.select({ inputs: estimates.inputs, injury: players.injuryStatus }).from(estimates)
+      .innerJoin(players, eq(players.id, estimates.playerId)).where(eq(players.name, 'Zay Flowers')).orderBy(desc(estimates.computedAt)).limit(1);
+    const inputs = readEstimateInputs(row!.inputs);
+    expect(inputs?.form).not.toBeNull();
+    expect([inputs?.statsChance, inputs?.statsWeight, inputs?.fair].every((n) => typeof n === 'number')).toBe(true);
+    const notes = gemNotes({ injuryStatus: row!.injury, spreadLine: null, home: null, position: 'WR', inputs });
+    expect(notes.find((n) => n.effect === 'cost')).toEqual({ kind: 'injury', effect: 'cost', status: 'Questionable' });
   });
 
   it('rebuilds picks after a usage pull', async () => {

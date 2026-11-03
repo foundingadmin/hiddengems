@@ -1,16 +1,16 @@
 'use client';
-// The gem sheet's read (docs/prd.md F2.1, F2.4, F2.5, F2.7): the price chart in Overview, trend lines in Notes,
+// The gem sheet's read (docs/prd.md F2.1, F2.3, F2.4, F2.5, F2.7): the price chart in Overview, adds, costs and trend lines in Notes,
 // the core sample and game conditions in Context, and the loupe (F2.2). Facet parts only (chart-card.md, rank
 // track, context rows, toggle chips and the game log in data.css); numbers come from packages/core through lib/gem.ts.
 import { mountTips } from '@foundingcreative/facet/js/tips.mjs';
 import {
-  type CoreSample, type GameLog, type LogGame, type Opportunity, type Split, type SplitKey, type SplitNote, type SplitSide, type Trend,
+  type CoreSample, type GameLog, type GemNote, type LogGame, type Opportunity, type Split, type SplitKey, type SplitNote, type SplitSide, type Trend,
   MATCHUP_WEEKS, SPLIT_KEYS, SPLIT_PRIOR_GAMES, combineSplits, gameLog, matchupTrack,
 } from '@hiddengems/core';
 import { useSearchParams } from 'next/navigation';
 import { type MouseEvent, type ReactNode, useEffect, useId, useRef, useState } from 'react';
 import { GameLogCells, GameLogKey } from '@/components/game-log';
-import type { Appraisal, Conditions, Loupe } from '@/lib/gem';
+import type { Appraisal, Conditions, Loupe, SourcedNote } from '@/lib/gem';
 import { ago } from '@/lib/format';
 
 const pct = (p: number) => `${Math.round(p * 100)}%`;
@@ -320,6 +320,57 @@ export function TrendLines({ trends, loupe, labelledBy }: { trends: Trend[]; lou
     <ul className="fc-list" data-lines="1" data-aside="beside" role="list" aria-labelledby={labelledBy}>
       {trends.map((t) => line(t.kind, trendWords(t), t.rate, trendCondition(t, loupe)))}
       {loupe?.notes.map((n) => line(`split-${n.key}`, splitWords(n, loupe), n.rate, n.key))}
+    </ul>
+  );
+}
+
+// ---------------------------------------------------------------- Adds and costs (F2.3)
+
+/** One note in words. Context only: no note moves clarity, the hit chance or the rating. */
+function noteWords(n: GemNote): string {
+  switch (n.kind) {
+    case 'injury': return `Listed ${n.status}`;
+    case 'blowout': return n.side === 'favorite' ? 'His team is a big favorite, so starters may sit late' : 'His team is a big underdog, so it may trail and throw';
+    case 'stats': return `His stats this season read ${n.effect === 'add' ? 'better' : 'worse'} than his price`;
+    case 'implied': return `His team’s implied points are ${n.effect === 'add' ? 'above' : 'below'} the league average`;
+    case 'snaps': return `His snap share is ${n.effect === 'add' ? 'up' : 'down'} over his last 3 games`;
+  }
+}
+
+function noteSource(s: SourcedNote): string {
+  if (s.note.kind === 'injury') return s.week != null ? `Week ${s.week} injury report` : 'Injury report';
+  if (s.note.kind === 'blowout') return 'Schedule spread';
+  return s.model ? `Model ${s.model}` : 'Model';
+}
+
+/** Freshness: live under 6 hours, recent under a day and a half (the daily pulls), stale after. */
+const freshness = (at: string, now: string) => {
+  const age = Date.parse(now) - Date.parse(at);
+  return age < FRESH_MS ? 'live' : age < 36 * 3_600_000 ? 'recent' : 'stale';
+};
+
+export function GemNotes({ notes, now, zone, labelledBy }: { notes: SourcedNote[]; now: string; zone: string; labelledBy: string }) {
+  if (!notes.length) return <div className="fc-empty"><strong>No adds or costs</strong></div>;
+  const exact = (iso: string) => new Intl.DateTimeFormat('en-US', { timeZone: zone, month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }).format(new Date(iso));
+  return (
+    <ul className="fc-list" data-aside="beside" role="list" aria-labelledby={labelledBy}>
+      {notes.map((s) => (
+        <li key={s.note.kind} className="fc-list-row">
+          <div className="fc-list-row-main">
+            <p className="text-copy-14">{noteWords(s.note)}</p>
+            <p className="fc-freshness">
+              {s.at && <span className="fc-status-dot" data-state={freshness(s.at, now)} aria-hidden="true" />}
+              <span>
+                {noteSource(s)}
+                {s.at && <>, <time dateTime={s.at} title={exact(s.at)} data-relative="">{ago(new Date(s.at), new Date(now)).replace(/^Just/, 'just')}</time></>}
+              </span>
+            </p>
+          </div>
+          <div className="fc-list-row-aside">
+            <span className="fc-delta text-label-14" data-direction={s.note.effect === 'add' ? 'positive' : 'negative'}>{s.note.effect === 'add' ? 'Adds' : 'Costs'}</span>
+          </div>
+        </li>
+      ))}
     </ul>
   );
 }

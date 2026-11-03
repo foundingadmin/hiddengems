@@ -16,3 +16,4 @@ export * from './opportunity';
 export * from './trends';
 export * from './matchup';
 export * from './splits';
+export * from './notes';

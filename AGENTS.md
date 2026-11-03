@@ -13,9 +13,14 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 - Superseded artifacts are archived in `docs/archive/` as they were; they are history, not specs.
 - Secrets live only in Vercel environment variables (`ODDS_API_KEY`, `DATABASE_URL`, `CRON_SECRET`,
   `APP_PASSWORD`, `ANTHROPIC_API_KEY`, `BACKUP_GITHUB_TOKEN`), never in the repo, an artifact or a scheduled task.
+  During rapid build mode, `SUPABASE_ACCESS_TOKEN` also lives in GitHub Actions secrets and the Claude cloud environment.
 - The database is protected by design (`docs/architecture.md`, "Database"): the app connects as `hiddengems_app`,
   which cannot alter or drop anything; history tables reject edits; `pnpm db:guard` blocks destructive
-  migrations. Never work around these. Schema changes reach Supabase through `pnpm db:supabase-sql`, run by the owner.
+  migrations. Never work around these.
+- **Rapid build mode** (owner decision, Nov 3 2026, until the beta): migrations apply themselves on every push to
+  `staging` (staging database) and `main` (production), and agents may apply migrations and run SQL on either
+  database with `pnpm db:supabase-apply <staging|production> [--sql "..."]`. Staging is free to use; on production,
+  run only what a merged change needs or a read. Deleting or rewriting stored data stays the principal's call.
 - The old pipeline (claude.ai dashboard store and its scheduled tasks) retired on Nov 3 2026. Its code is
   `ops/pipeline/hgs.py`; its directives, picks history and scorecard are in `docs/archive/pipeline/`.
 

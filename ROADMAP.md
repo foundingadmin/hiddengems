@@ -31,7 +31,10 @@ thread.
    reads Lucky, matching the gem boxes (F1.2).
 8. **Dates inside a sentence.** Facet sets every `<time>` in mono (decision Nov 2), so a date inside copy, such as on
    the graded slip, reads in mono too. Recommend: keep mono for dates in tables and metadata, sans inside sentences.
-9. **PRD v1.2.** Once 1 to 8 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
+9. **Restore the stricter database rules.** Rapid build mode (Nov 3) lets migrations apply themselves and agents
+   run SQL on both databases. Recommend: at the beta, remove `SUPABASE_ACCESS_TOKEN` from the Claude environment,
+   keep automatic migrations on `staging` only, and apply production by hand from the release PR again.
+10. **PRD v1.2.** Once 1 to 9 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
    Outlier as price source, F2.8, F3.4, the old pipeline's freeze and close commands.
 
 ## Where it stands
@@ -74,9 +77,9 @@ freezing prices this week.
 
 - [ ] Principal: run `pnpm db:supabase-sql --app-password <password>` output in the production Supabase project, then
       set `DATABASE_URL` (Production) to the `hiddengems_app` login (`docs/architecture.md`, Database).
-- [ ] Principal: after the release with gem records and grades merges, run `pnpm db:supabase-sql` output in the
-      staging Supabase project, then production (choose "Run without RLS"), before the first Week 9 kickoff Thu Nov 5.
-      Until then the jobs skip recording, so Week 9 games before it go unmeasured.
+- [ ] Principal: add `SUPABASE_ACCESS_TOKEN` (GitHub secret and Claude environment) and the two project refs, so
+      migrations 0005 to 0007 reach both databases before the first Week 9 kickoff Thu Nov 5. Until then the jobs skip
+      recording, so Week 9 games before it go unmeasured.
 - [ ] Principal: `ODDS_API_KEY`, `CRON_SECRET`, `BACKUP_GITHUB_TOKEN` and `BACKUP_GITHUB_REPO` set for Production only.
 - [ ] Data health shows today's Tue 10:07 AM opening snapshot. If it was missed, the next slot is Sat 7:47 PM; an off
       schedule pull spends credits and is the principal's call.

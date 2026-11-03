@@ -14,7 +14,8 @@
     "generate": "drizzle-kit generate",
     "migrate": "tsx src/scripts/migrate.ts",
     "restore": "tsx src/scripts/restore.ts",
-    "supabase-sql": "tsx src/scripts/supabase-sql.ts"
+    "supabase-sql": "tsx src/scripts/supabase-sql.ts",
+    "supabase-apply": "tsx src/scripts/supabase-apply.ts"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.14",

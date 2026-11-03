@@ -17,7 +17,8 @@
     "job": "pnpm --filter @hiddengems/ingest job",
     "db:guard": "node packages/db/scripts/guard-migrations.mjs",
     "db:restore": "pnpm --filter @hiddengems/db restore",
-    "db:supabase-sql": "pnpm --filter @hiddengems/db supabase-sql"
+    "db:supabase-sql": "pnpm --filter @hiddengems/db supabase-sql",
+    "db:supabase-apply": "pnpm --filter @hiddengems/db supabase-apply"
   },
   "devDependencies": {
     "turbo": "^2.11.10",

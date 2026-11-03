@@ -188,6 +188,12 @@ be explained later.
   drop or truncate. Run it again after any PR that adds a migration. If Supabase offers "Run and enable RLS",
   choose "Run without RLS": grants and the closed public API control access, and RLS without policies would block
   the app login.
+- **Applied automatically (rapid build mode, until the beta)**: `.github/workflows/db-migrate.yml` sends the same
+  script to the staging project on every push to `staging` and to production on every push to `main`, through the
+  Supabase Management API (`pnpm db:supabase-apply <staging|production>`). It needs the `SUPABASE_ACCESS_TOKEN`
+  secret and the `SUPABASE_STAGING_REF` and `SUPABASE_PRODUCTION_REF` variables in GitHub; without the secret it
+  skips. The same command runs one statement with `--sql "..."` and prints the rows, so a session holding the token
+  can inspect or fix either database. `pnpm db:guard` runs first, so a destructive migration never reaches one.
 - **Safety**: history tables reject update, delete and truncate (migrations 0003 and 0005); `pnpm db:guard` fails CI on
   a migration that drops, truncates or deletes unless the line says `-- destructive-approved: <reason>`.
 - **Backups**: the `backup` job (daily 11:07 UTC) writes the whole database as gzipped JSON to a private GitHub

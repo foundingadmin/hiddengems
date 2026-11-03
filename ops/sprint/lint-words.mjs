@@ -25,7 +25,7 @@ const problems = [];
 const add = (where, rule, text) => problems.push(`${where}  ${rule}: ${text.trim().slice(0, 120)}`);
 
 // Strip what is not prose: inline code, JSX expressions, tags, links' targets.
-const prose = (s) => s.replace(/`[^`]*`/g, ' ').replace(/\{[^}]*\}/g, ' ').replace(/<[^>]+>/g, ' ').replace(/\]\([^)]*\)/g, ']');
+const prose = (s) => s.replace(/&apos;|&#39;|&rsquo;/g, "'").replace(/`[^`]*`/g, ' ').replace(/\{[^}]*\}/g, ' ').replace(/<[^>]+>/g, ' ').replace(/\]\([^)]*\)/g, ']');
 
 function checkHeading(where, raw) {
   const text = prose(raw).replace(/[*_[\]]/g, ' ').trim();

@@ -31,3 +31,4 @@ export { oddsApi, normalizeEventOdds } from './odds-api';
 export { nflverse, normalizeGames, normalizeRoster, normalizeStats, normalizeInjuries, buildUsage, easternKickoff, NFLVERSE_URLS } from './nflverse';
 export { sampleProviders, SAMPLE_PLAYERS } from './sample';
 export { githubBackup, memoryBackup } from './backup';
+export { anthropic, type AssistantProvider } from './anthropic';

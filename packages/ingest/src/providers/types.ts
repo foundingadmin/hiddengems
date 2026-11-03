@@ -94,6 +94,8 @@ export interface ProviderBase {
   headers?: Record<string, string>;
   /** Reads quota headers, when the provider sends them. */
   usage?(res: Response): { used: number | null; remaining: number | null } | null;
+  /** Replaces the network, for tests. */
+  fetch?: typeof fetch;
 }
 
 export interface ScheduleProvider extends ProviderBase {

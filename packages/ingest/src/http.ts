@@ -16,6 +16,8 @@ export interface Http {
   getText(url: string): Promise<string>;
   /** Raw bytes, for compressed files. */
   getBytes(url: string): Promise<Uint8Array>;
+  /** Posts a JSON body and reads JSON back (the Anthropic Messages API). */
+  postJson(url: string, body: unknown): Promise<unknown>;
   readonly requestCount: number;
 }
 
@@ -28,16 +30,18 @@ export const redact = (url: string) =>
 export function createHttp(opts: HttpOptions): Http {
   const doFetch = opts.fetch ?? fetch;
   let requestCount = 0;
-  const once = async (url: string): Promise<Response> => {
+  const once = async (url: string, body?: string): Promise<Response> => {
     requestCount++;
-    return doFetch(url, { headers: { accept: 'application/json', ...opts.headers }, signal: AbortSignal.timeout(opts.timeoutMs ?? 20_000) });
+    const post = body === undefined ? {} : { method: 'POST', body };
+    const headers = { accept: 'application/json', ...(body === undefined ? {} : { 'content-type': 'application/json' }), ...opts.headers };
+    return doFetch(url, { ...post, headers, signal: AbortSignal.timeout(opts.timeoutMs ?? 20_000) });
   };
-  async function get(url: string): Promise<Response> {
+  async function get(url: string, body?: string): Promise<Response> {
     const safe = redact(url);
     let res: Response | undefined;
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
-        res = await once(url);
+        res = await once(url, body);
       } catch (err) {
         if (attempt === 0) { await sleep(750); continue; }
         const timedOut = err instanceof Error && err.name === 'TimeoutError';
@@ -70,6 +74,10 @@ export function createHttp(opts: HttpOptions): Http {
     async getBytes(url) {
       const res = await get(url);
       try { return new Uint8Array(await res.arrayBuffer()); } catch { throw unreadable(url); }
+    },
+    async postJson(url, body) {
+      const res = await get(url, JSON.stringify(body));
+      try { return await res.json(); } catch { throw unreadable(url); }
     },
   };
 }

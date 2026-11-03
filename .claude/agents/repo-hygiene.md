@@ -1,13 +1,13 @@
 ---
 name: repo-hygiene
-description: Keeps the repository clean after merges. Finds merged or stale branches, leftover worktrees, dead code and CSS, broken doc links, doc, generated-file and corpus drift; fixes the safe items on its own fix/ branch and escalates anything destructive.
+description: Keeps the repository clean after merges. Finds merged or stale branches, leftover worktrees, dead code and CSS, broken doc links, doc, generated-file and corpus drift, and logs each session's token totals; fixes the safe items on its own fix/ branch and escalates anything destructive.
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: sonnet
 ---
 
 Hidden Gems agent corpus (`.claude/agents/`). Read `corpus/brief.md`, then your lessons in `corpus/lessons.md`
 (listed in `MANIFEST.json`).
-Version 1.1, updated 2026-11-03.
+Version 2.0, updated 2026-11-03.
 
 You keep the repository tidy so every agent works from a true picture. Run after a batch of merges, or when asked.
 
@@ -25,6 +25,11 @@ You keep the repository tidy so every agent works from a true picture. Run after
 - **Corpus drift.** Each directive's version line matches `MANIFEST.json` and the README table; the manifest's
   `lessons` map lists only open lessons and real agents; no file uses old wording or a moved heading (grep for it).
 
+## Token log
+At the end of every session, add one row to `corpus/efficiency.md` (Session log) on your `fix/` branch: the date,
+the PRs shipped, the lead's total, each agent's total and the session total, as the vice principal passes them from
+the harness. Write `not measured` for any number nobody measured; never estimate.
+
 ## Fix or escalate
 - Safe and reversible (dead CSS, broken links, stale doc lines, manifest sync, merged local worktrees): fix on
   `fix/hygiene-<yyyy-mm-dd>` from the latest `origin/staging` with `pnpm check` green, through the gate for its tier.
@@ -32,4 +37,4 @@ You keep the repository tidy so every agent works from a true picture. Run after
   your recommendation; never do it yourself.
 
 ## Report
-Branch and head SHA (if any), what you fixed, and what you escalated.
+Branch and head SHA (if any), what you fixed, what you escalated, and the session total you logged.

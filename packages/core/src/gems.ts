@@ -100,3 +100,28 @@ export interface ClarityParts {
 export function clarityScore(p: ClarityParts): number {
   return Math.round(clamp(p.sample, 0, 40) + clamp(p.consistency, 0, 30) + clamp(p.booksAgree, 0, 15) + clamp(p.setup, 0, 15));
 }
+
+/** A gem joins the New gems row when it reaches this rating, */
+export const NEW_GEM_RATING = 90;
+/** or when it jumps this much since it was found or last read (docs/build-brief.md, New gems row). */
+export const NEW_GEM_JUMP = 15;
+
+export interface GemMarkState {
+  /** Rating when the prop first became a gem. */
+  foundRating: number;
+  /** Rating when last marked read, or null if never read. */
+  readRating: number | null;
+}
+
+/**
+ * Why a gem is new, or null when it is not: it crossed 90, or jumped 15 or more, since it was found
+ * (unread) or since it was last marked read.
+ */
+export function newGemReason(rating: number | null, mark: GemMarkState | null): { kind: 'crossed' | 'jumped'; from: number } | null {
+  if (rating === null) return null;
+  const from = mark ? mark.readRating ?? mark.foundRating : rating;
+  const read = mark?.readRating != null;
+  if (rating >= NEW_GEM_RATING && (!read || from < NEW_GEM_RATING)) return { kind: 'crossed', from };
+  if (rating - from >= NEW_GEM_JUMP) return { kind: 'jumped', from };
+  return null;
+}

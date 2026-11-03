@@ -6,7 +6,7 @@
 import {
   type GameLine, MODEL_V3, PURCHASE_BOOK, type UsageGame, appraise, clarityScore, impliedFactor, playerForms, readProp, recommendedScore, seasonOf,
 } from '@hiddengems/core';
-import { estimates, games, oddsLatest, picks, playerUsage, players } from '@hiddengems/db';
+import { estimates, gemMarks, games, oddsLatest, picks, playerUsage, players } from '@hiddengems/db';
 import { and, eq, gt, inArray, lt } from 'drizzle-orm';
 import type { Job } from '../runner';
 import { chunks, plural } from './shared';
@@ -78,6 +78,9 @@ export const buildPicks: Job = {
       for (const batch of chunks(estimateRows)) await tx.insert(estimates).values(batch);
       await tx.delete(picks).where(inArray(picks.gameId, gameIds));
       for (const batch of chunks(pickRows)) await tx.insert(picks).values(batch);
+      // First time each prop is a gem: when it was found, and its rating then.
+      const found = pickRows.filter((p) => p.kind === 'gem').map((p) => ({ selectionKey: p.selectionKey, foundAt: now, foundRating: p.rating ?? 0 }));
+      for (const batch of chunks(found)) await tx.insert(gemMarks).values(batch).onConflictDoNothing();
     });
     if (noPosted) ctx.log('info', `${plural(noPosted, 'prop')} had no DraftKings price yet`);
     return {

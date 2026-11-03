@@ -1,10 +1,10 @@
 // Facet encodings as React: player tile and number, gem rating, edge, run status.
 // Markup mirrors packages/facet (css/teams.css, css/components.css); see packages/facet/patterns/hidden-gems.md.
 import { findTeam } from '@hiddengems/core';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { points } from '@/lib/format';
 
-export function Player({ name, teamId, number, detail }: { name: string; teamId: string | null; number: number | null; detail: string }) {
+export function Player({ name, teamId, number, detail, badge }: { name: string; teamId: string | null; number: number | null; detail: ReactNode; badge?: ReactNode }) {
   const team = teamId ? findTeam(teamId) : null;
   return (
     <span className="fc-player">
@@ -17,6 +17,7 @@ export function Player({ name, teamId, number, detail }: { name: string; teamId:
           {number != null && (
             <span className="fc-player-number"><span aria-hidden="true">#{number}</span><span className="fc-visually-hidden">, number {number}</span></span>
           )}
+          {badge}
         </span>
         <span className="fc-player-meta">{detail}</span>
       </span>
@@ -33,7 +34,7 @@ const GEM_PATHS = (
 
 /** The gem rating mark (packages/facet, .fc-gem): one 0 to 100 number, purple deepening with it.
  * Fool's Gold is the hollow dashed gem with its label, never purple. */
-export function GemMark({ kind, rating, delay }: { kind: string; rating: number | null; delay?: number }) {
+export function GemMark({ kind, rating, delay, size }: { kind: string; rating: number | null; delay?: number; size?: 'lg' }) {
   if (kind === 'fools-gold') {
     return (
       <span className="hg-gem-cell">
@@ -45,7 +46,7 @@ export function GemMark({ kind, rating, delay }: { kind: string; rating: number 
   if (rating == null) return <span aria-label="No rating">{'\u2013'}</span>;
   const style = { '--rating': rating, ...(delay != null ? { '--fc-gem-delay': `${delay}ms` } : {}) } as CSSProperties;
   return (
-    <span className="fc-gem" data-live style={style} aria-label={`Gem rating ${rating}`}>
+    <span className="fc-gem" data-live data-size={size} style={style} aria-label={`Gem rating ${rating}`}>
       {GEM_PATHS}<span>{rating}</span>
     </span>
   );

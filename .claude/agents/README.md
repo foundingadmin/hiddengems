@@ -6,7 +6,7 @@ on staging, then types `go` in an open Claude session. That session runs `.claud
 | Step | Who | What |
 |---|---|---|
 | Triage | the session | Reads every open toolbar thread and files `ops/sprint/sprints/<id>.json`: each entry routed (lane, file group, size) or parked |
-| Park | the session | A line in `docs/ROADMAP.md` and a reply on each parked thread |
+| Park | the session | A line in `ROADMAP.md` and a reply on each parked thread |
 | Build | `builder`, one per file group, in parallel | Branch from staging, build data and UI together, checks, screenshots, push, trace |
 | Merge | the session and `ops/sprint/merge.mjs` | One sprint branch, one CI run; `ci-fixer` only when checks fail |
 | Verify | `verifier`, once per sprint | One punchlist for content, design, data safety and the model |

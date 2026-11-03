@@ -9,3 +9,7 @@ export * from './grades';
 export * from './log';
 export * from './slips';
 export * from './history';
+export * from './appraisal';
+export * from './opportunity';
+export * from './trends';
+export * from './matchup';

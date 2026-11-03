@@ -110,3 +110,11 @@ Implemented in `css/data.css` (load after `components.css`). Specimen: `preview/
 **Row count (owner feedback, 2026-11-02).** In a selectable table, the count sits in the main column header next to the select-all box (`.fc-th-count`): "5 of 31" when nothing is checked, "2 selected" when rows are. No "Showing 5 of 31" caption line; the visible sort arrow states the sort, and the caption keeps it for screen readers only.
 
 **Divider clearance (owner rule, 2026-11-02).** Cell content never sits closer than 16px to a vertical divider, on either side: the frozen column's divider, and any column marked `data-divider`.
+
+### Cell detail
+```html
+<td data-align="numeric"><span class="fc-cell-detail">11 of 18</span>61%</td>
+```
+- The count behind a share sits before the value in the same cell, 13px secondary with tabular figures, so every value in the column keeps one right edge.
+- Use it when the share alone hides a thin sample (a share of 7 is not a share of 70). Write the count as "n of m".
+- Gem sheet, Core sample: his share of his team's carries and targets inside the 10, season and last 3 games.

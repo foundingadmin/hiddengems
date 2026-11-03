@@ -8,7 +8,7 @@ import { Tips } from '@/components/tips';
 import {
   DAY, OVERDUE_MS, SOURCES, isDaily, nextDaily, nextOddsPull, scheduleText, snapshotTimes, until,
 } from '@/lib/data-health';
-import { db } from '@/lib/db';
+import { db, READ_ONLY } from '@/lib/db';
 import { clock, dayTime, duration } from '@/lib/format';
 import { FixButton, PullAllButton, PullButton, PullQueue, ResultCell, RunCell } from './pulls';
 import { SourceMenu } from './source-menu';
@@ -36,7 +36,8 @@ export const metadata: Metadata = { title: 'Data health' };
 export default async function DataPage() {
   const { db: d } = await db();
   const now = new Date();
-  const sample = dataMode() === 'sample';
+  // A preview reading production shows production's sources, not the sample ones it would pull with.
+  const sample = dataMode() === 'sample' && !READ_ONLY;
 
   const latest = await Promise.all(SOURCES.map(async (s) => {
     const [last] = await d.select().from(runs).where(eq(runs.job, s.job)).orderBy(desc(runs.startedAt)).limit(1);

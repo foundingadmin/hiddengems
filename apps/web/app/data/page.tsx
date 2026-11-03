@@ -58,11 +58,11 @@ export default async function DataPage() {
   // the roster or schedule does not know is fixed by pulling those first, then the source again.
   type Note = { type: 'error' | 'warning'; text: string; short: string; overdue?: boolean; fix: { label: string; jobs: string[] } };
   const fixFor = (job: string, label: string, text: string, again: boolean): Note['fix'] => {
-    const verb = again ? 'Pull again' : 'Pull now';
-    if (job === 'pull-odds') return { label: 'Pull rosters, then ratings', jobs: ['pull-rosters', 'build-picks'] };
-    if (/roster/i.test(text)) return { label: `Pull rosters, then ${label.toLowerCase()}`, jobs: ['pull-rosters', job] };
-    if (/schedule/i.test(text)) return { label: `Pull schedule, then ${label.toLowerCase()}`, jobs: ['pull-schedule', job] };
-    return { label: verb, jobs: [job] };
+    const verb = { label: again ? 'Pull again' : 'Pull now', jobs: [job] };
+    if (job === 'pull-odds') return /roster|player/i.test(text) ? { label: 'Pull rosters, then ratings', jobs: ['pull-rosters', 'build-picks'] } : verb;
+    if (job !== 'pull-rosters' && /roster/i.test(text)) return { label: `Pull rosters, then ${label.toLowerCase()}`, jobs: ['pull-rosters', job] };
+    if (job !== 'pull-schedule' && /schedule/i.test(text)) return { label: `Pull schedule, then ${label.toLowerCase()}`, jobs: ['pull-schedule', job] };
+    return verb;
   };
   const notes = new Map<string, Note>();
   for (const { job, label, last } of latest) {
@@ -74,7 +74,7 @@ export default async function DataPage() {
       notes.set(job, { type: 'warning', text, short: `${label} warned`, fix: fixFor(job, label, text, true) });
     } else if (!paused.has(job) && isDaily(job) && (!last || now.getTime() - last.startedAt.getTime() > OVERDUE_MS)) {
       notes.set(job, last
-        ? { type: 'warning', text: `Missed its daily run. Last ran ${dayTime(last.startedAt, now)}.`, short: `${label} overdue`, overdue: true, fix: { label: 'Pull now', jobs: [job] } }
+        ? { type: 'warning', text: 'Missed its daily run.', short: `${label} overdue`, overdue: true, fix: { label: 'Pull now', jobs: [job] } }
         : { type: 'warning', text: 'Has never run.', short: `${label} never ran`, fix: { label: 'Pull now', jobs: [job] } });
     }
   }
@@ -169,7 +169,7 @@ export default async function DataPage() {
                   <span className="fc-schedule-label">Last run</span>
                   {last ? (
                     <>
-                      <Link className="hg-run-link" href={`/data/logs?run=${last.id}`} aria-label={`Open the log for ${label}'s last run`}>
+                      <Link className="hg-run-link" href={`/data/logs?run=${last.id}`} aria-label={`${dayTime(last.startedAt, now)}, log of the last ${label.toLowerCase()} run`}>
                         <time className="fc-timestamp" dateTime={last.startedAt.toISOString()} title={clock(last.startedAt)}>{dayTime(last.startedAt, now)}</time>
                       </Link>
                       <span className="fc-schedule-detail">Ran {duration(last.durationMs)}</span>
@@ -184,7 +184,10 @@ export default async function DataPage() {
                   <div className="fc-list-row-note">
                     <div className="fc-note" data-type={note.type} data-size="small" data-action>
                       <span>{note.text}</span>
-                      <FixButton className="fc-note-action" jobs={note.fix.jobs} text={note.fix.label} />
+                      <FixButton
+                        className="fc-note-action" jobs={note.fix.jobs} text={note.fix.label}
+                        name={note.fix.label.includes(',') ? undefined : `${note.fix.label} for ${label.toLowerCase()}`}
+                      />
                     </div>
                   </div>
                 )}

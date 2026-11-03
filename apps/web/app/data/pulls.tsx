@@ -170,13 +170,15 @@ export function ResultCell({ job, children }: { job: string; children: ReactNode
  * A fix: queues one or more pulls in order ("Pull rosters, then results"). Paid odds never ride a fix; they
  * keep their own confirmed button.
  */
-export function FixButton({ jobs, text, variant = 'secondary', className }: { jobs: string[]; text: string; variant?: 'secondary' | 'tertiary'; className?: string }) {
+export function FixButton({ jobs, text, name, variant = 'secondary', className }: {
+  jobs: string[]; text: string; name?: string; variant?: 'secondary' | 'tertiary'; className?: string;
+}) {
   const { queued, running, enqueue } = usePulls();
   const busy = jobs.some((j) => j === running || queued.includes(j));
   return (
     <button
       className={`fc-button${className ? ` ${className}` : ''}`} data-variant={variant} data-size="small" type="button"
-      aria-busy={busy || undefined}
+      aria-busy={busy || undefined} aria-label={name}
       onClick={() => { if (!busy) enqueue(jobs.map((job) => ({ job, spend: false }))); }}
     >
       {busy ? <><Spinner />Fixing</> : text}

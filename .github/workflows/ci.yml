@@ -11,6 +11,9 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Full history so the writing check can diff a pull request against its base.
+          fetch-depth: 0
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
@@ -24,4 +27,7 @@ jobs:
       - run: pnpm test
       - run: pnpm lint:color
       - run: pnpm db:guard
+      # House writing rules on the lines a pull request adds (ops/sprint/lint-words.mjs).
+      - if: github.event_name == 'pull_request'
+        run: node ops/sprint/lint-words.mjs origin/${{ github.base_ref }}
       - run: pnpm --filter web build

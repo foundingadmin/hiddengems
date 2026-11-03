@@ -32,8 +32,8 @@ still reflects the design system after a release lands, so the principal and eve
    parts added, changed or retired in the release, each linking its task PR. Bump `packages/facet/package.json`
    (minor for added parts, patch for fixes; a changed rule such as hue allocation or an encoding is a principal
    judgement and is only recorded, never introduced here).
-6. **Look.** Open the preview pages (a static server or `file://`), screenshot each section you touched at 1440 and
-   390, dark and light, and read them.
+6. **Look.** Open the preview pages (a static server or `file://`), screenshot each section you touched at 1440,
+   about 1100 and 390, dark and light, and read them.
 7. **Deliver** on `ds/curate-<yyyy-mm-dd>` from `staging`, with `pnpm check` and the color lint green, through
    `design-verifier`, `content-verifier` and `pr-verifier`.
 

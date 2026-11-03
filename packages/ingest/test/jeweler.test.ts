@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createDb, providerCaps, providerUsage, runs, seedReference } from '@hiddengems/db';
 import { eq, sql } from 'drizzle-orm';
-import { askJeweler, buildJewelerPrompt, jewelerGate, jewelerStatus, type JewelerContext, type JewelerGem } from '../src';
+import { askJeweler, buildJewelerPrompt, describeSlip, jewelerGate, jewelerStatus, type JewelerContext, type JewelerGem, type JewelerSlip } from '../src';
 
 vi.setConfig({ testTimeout: 30_000 });
 
@@ -144,5 +144,28 @@ describe('the prompt', () => {
   it("names Fool's Gold and a negative edge plainly", () => {
     const p = buildJewelerPrompt({ week: 10, gem: { ...cook, kind: 'fools-gold', rating: null, edge: -2 }, board: [], slip: null });
     expect(p).toContain("edge −2 pts, clarity 92, Fool's Gold");
+  });
+
+  const slip: JewelerSlip = {
+    name: 'Slip 1', play: 'own', stake: 15, pays: 99.45, loseItAll: 0.77, correlated: false, appraisal: null,
+    legs: [
+      { player: 'James Cook', number: 4, matchup: 'MIA @ BUF', kickoff: 'Sun 1:00 PM', price: 2.6, hitChance: 0.49, rating: 92 },
+      { player: 'Deebo Samuel', number: 1, matchup: 'NYG @ WAS', kickoff: 'Sun 4:25 PM', price: 2.55, hitChance: 0.47, rating: 76 },
+    ],
+  };
+
+  it('carries the slip in progress as its certificate reads', () => {
+    const p = buildJewelerPrompt({ ...context, slip });
+    expect(p).toContain("The user's slip in progress:\nSlip 1, their own play, a 2 leg parlay:");
+    expect(p).toContain('- James Cook #4. MIA @ BUF, kickoff Sun 1:00 PM. DraftKings 2.60, our estimate 49%, gem rating 92.');
+    expect(p).toContain('Stake $15.00, pays $99.45 if every leg hits.');
+    expect(p).toContain('Lose it all (the chance at least one leg misses): 77%.');
+  });
+
+  it('gives no lose it all chance for same game legs, and leaves an empty slip out', () => {
+    expect(describeSlip({ ...slip, correlated: true, loseItAll: null, stake: null, pays: null }))
+      .toMatch(/No stake set yet\.\nLose it all: not shown, because legs share a game/);
+    expect(buildJewelerPrompt({ ...context, slip: { ...slip, legs: [] } })).not.toContain('slip in progress');
+    expect(buildJewelerPrompt(context)).not.toContain('slip in progress');
   });
 });

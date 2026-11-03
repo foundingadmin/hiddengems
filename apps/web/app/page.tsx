@@ -6,6 +6,7 @@ import { Tips } from '@/components/tips';
 import { board, resolveWeek } from '@/lib/board';
 import { ZONE, clock } from '@/lib/format';
 import { gemDetail } from '@/lib/gem';
+import { getCurrentSlip } from '@/lib/slips';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,8 +14,9 @@ export default async function GemsPage({ searchParams }: { searchParams: Promise
   const params = await searchParams;
   const { week } = await resolveWeek(params.week);
   const asked = typeof params.gem === 'string' && params.gem ? params.gem : null;
-  const [{ rows, lastRead }, detail] = await Promise.all([board(week), asked ? gemDetail(asked) : null]);
+  const [{ rows, lastRead }, detail, current] = await Promise.all([board(week), asked ? gemDetail(asked) : null, getCurrentSlip(week)]);
   const fresh = rows.filter((r) => r.fresh);
+  const slip = current ? { id: current.slip.id, keys: current.slip.legs.map((l) => l.selectionKey) } : null;
   return (
     <>
       <h1 className="fc-visually-hidden">Gems{week != null ? `, week ${week}` : ''}</h1>
@@ -24,8 +26,8 @@ export default async function GemsPage({ searchParams }: { searchParams: Promise
         </div>
       )}
       <NewGems rows={fresh} since={lastRead ? clock(lastRead) : null} zone={ZONE} />
-      <AllGems rows={rows} zone={ZONE} freshness={<Freshness label="Odds updated" short />} />
-      <GemSheet rows={rows} detail={detail} asked={asked} zone={ZONE} />
+      <AllGems rows={rows} zone={ZONE} freshness={<Freshness label="Odds updated" short />} slip={slip} />
+      <GemSheet rows={rows} detail={detail} asked={asked} zone={ZONE} slip={slip} />
       <Tips />
     </>
   );

@@ -2914,6 +2914,45 @@ rating = round(100 × clamp(carat / 10, 0, 1) × clarity / 100)</pre></div>
       </dialog>
     </div>
   </div>
+
+  <div class="fc-stack" style="--fc-gap:16px">
+    <h3 class="text-heading-20">Row action</h3>
+    <div class="fc-table-wrap">
+      <table class="fc-table" data-interactive>
+        <caption class="fc-visually-hidden">A board row with its link and its slip button</caption>
+        <thead><tr><th scope="col" data-grow>Pick</th><th scope="col" data-align="numeric">Price</th><th scope="col"><span class="fc-visually-hidden">Slip</span></th></tr></thead>
+        <tbody>
+          <tr>
+            <th scope="row"><span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm" role="img" aria-label="Buffalo Bills"></span><span class="fc-player-main"><span class="fc-player-line"><a class="fc-player-name fc-row-link" href="#slips">James Cook</a><span class="fc-player-number"><span aria-hidden="true">#4</span><span class="fc-visually-hidden">, number 4</span></span></span><span class="fc-player-meta">RB · MIA @ BUF</span></span></span></th>
+            <td data-align="numeric">2.60</td>
+            <td><span class="fc-row-action"><button type="button" class="fc-button" data-variant="secondary" data-size="small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>Add<span class="fc-visually-hidden">, James Cook</span></button></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="fc-stack" style="--fc-gap:16px; max-width: 24rem">
+    <h3 class="text-heading-20">Gem row with its slip button</h3>
+    <ul class="fc-gem-list">
+      <li class="fc-gem-item">
+        <a class="fc-gem-row" href="#slips">
+          <span class="fc-gem" data-live style="--rating: 92"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>92</span></span>
+          <span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm" role="img" aria-label="Buffalo Bills"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">James Cook</span><span class="fc-player-number"><span aria-hidden="true">#4</span><span class="fc-visually-hidden">, number 4</span></span></span><span class="fc-player-meta"><time class="text-copy-13-mono">11:00 AM</time> · MIA @ BUF</span></span></span>
+          <span class="fc-gem-row-end"><span class="fc-price text-label-14">2.60</span><span class="fc-delta" data-direction="positive">+11 pts</span></span>
+        </a>
+        <button type="button" class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" aria-label="Remove James Cook from slip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+      </li>
+      <li class="fc-gem-item">
+        <a class="fc-gem-row" href="#slips">
+          <span class="fc-gem" data-live style="--rating: 63"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>63</span></span>
+          <span class="fc-player"><span class="fc-player-avatar" data-team="cin" data-size="sm" role="img" aria-label="Cincinnati Bengals"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">Ja'Marr Chase</span><span class="fc-player-number"><span aria-hidden="true">#1</span><span class="fc-visually-hidden">, number 1</span></span></span><span class="fc-player-meta"><time class="text-copy-13-mono">2:25 PM</time> · CIN @ KC</span></span></span>
+          <span class="fc-gem-row-end"><span class="fc-price text-label-14">2.05</span><span class="fc-delta" data-direction="positive">+7 pts</span></span>
+        </a>
+        <button type="button" class="fc-button" data-variant="secondary" data-size="small" data-shape="square" aria-label="Add Ja'Marr Chase to slip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg></button>
+      </li>
+    </ul>
+  </div>
 </section>
 
 </main>

@@ -15,11 +15,13 @@ const SOURCES = [
   { job: 'pull-schedule', label: 'Schedule', cadence: 'Daily' },
   { job: 'pull-rosters', label: 'Rosters', cadence: 'Daily' },
   { job: 'pull-results', label: 'Results', cadence: 'Daily' },
-  { job: 'build-picks', label: 'Ratings', cadence: 'After every odds pull' },
+  { job: 'pull-usage', label: 'Usage and injuries', cadence: 'Daily' },
+  { job: 'build-picks', label: 'Ratings', cadence: 'After every odds or usage pull' },
+  { job: 'backup', label: 'Backup', cadence: 'Nightly' },
 ] as const;
 
 const LABELS: Record<string, string> = Object.fromEntries(SOURCES.map((s) => [s.job, s.label]));
-const PROVIDERS: Record<string, string> = { 'odds-api': 'The Odds API', nflverse: 'nflverse', sample: 'Sample' };
+const PROVIDERS: Record<string, string> = { 'odds-api': 'The Odds API', nflverse: 'nflverse', sample: 'Sample', 'github-backup': 'GitHub (private)', memory: 'Local' };
 
 export default async function DataPage() {
   const { db: d } = await db();

@@ -15,7 +15,9 @@ export default async function GemsPage({ searchParams }: { searchParams: Promise
     <>
       <h1 className="fc-visually-hidden">Gems{week != null ? `, week ${week}` : ''}</h1>
       {dataMode() === 'sample' && (
-        <div className="fc-note" data-size="small"><span>Sample data. Add ODDS_API_KEY to pull live odds.</span></div>
+        <div className="fc-note" data-size="small">
+          <span>{process.env.VERCEL_ENV === 'preview' ? 'Sample data.' : 'Sample data. Add ODDS_API_KEY to pull live odds.'}</span>
+        </div>
       )}
       <NewGems rows={fresh} since={lastRead ? clock(lastRead) : null} zone={ZONE} />
       <AllGems rows={rows} zone={ZONE} freshness={<Freshness label="Odds updated" short />} />

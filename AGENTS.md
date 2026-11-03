@@ -53,43 +53,34 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 ## Working agreements
 
 - Integrate approved scalability decisions as soon as they come up (tokens, slots, generators), rather than deferring them.
-- Preview reviews (Vercel toolbar comments): read every open thread with the Vercel
-  toolbar tools, turn each into a tracked task straight away, and resolve each thread once its fix merges into `staging`. Do
-  not reply on the thread unless something blocks the fix; report progress in the session instead.
-- When work (yours or a subagent's) needs a component, pattern, token or class that
-  Facet lacks, do not hand-roll it in app CSS: file a DS request (what is needed, where it is used, the closest
-  existing Facet part), have a design-system pass build it in `packages/facet` (tokens, CSS, component doc,
-  preview), then wire it into the feature. App CSS is only layout glue between Facet parts, using `--fc-*` tokens.
-  The `facet-builder` agent (`.claude/agents/facet-builder.md`) answers DS requests; its usage notes go back to
-  the agent that asked.
-- Every change that adds or edits words people read (UI copy, docs, comments, commit and PR text) goes through
-  the `content-verifier` agent (`.claude/agents/content-verifier.md`) before it ships. It returns exact
-  rewrites. Send them back to the agent that wrote the copy while it is still running; otherwise a new
-  generator agent applies them. Ship only on `Verdict: pass`.
-- Every change that touches what people see goes through the `design-verifier` agent
-  (`.claude/agents/design-verifier.md`), which checks the code and screenshots against Facet and the Hidden Gems
-  encodings. Its fixes go back to the building agent the same way; its DS requests go to `facet-builder`.
-  Ship only on `Verdict: pass` from the verifiers the tier requires (`.claude/agents/README.md`).
+- Preview reviews (Vercel toolbar comments) run as sprints: when the principal types `go`, run
+  `.claude/skills/sprint/SKILL.md`. Threads get a 👀 reaction when picked up and a one-line reply when resolved; reply
+  otherwise only to say why a comment is parked or dropped.
+- When work needs a component, pattern, token or class that Facet lacks, do not hand-roll it in app CSS: the builder
+  builds it in `packages/facet` in the same branch (tokens, CSS, component doc, preview specimen), then wires it into
+  the feature. App CSS is only layout glue between Facet parts, using `--fc-*` tokens.
+- Words and UI are checked twice: by scripts on every change (`pnpm check`, and `node ops/sprint/lint-words.mjs` for
+  em dashes, colons in headings and sentence case, which CI runs on every pull request), and by the one `verifier`
+  review of each sprint branch (content, design, data safety and the model).
 - A product's accent goes through `--fc-brand-*` (`packages/facet/tokens/facet.semantic.json`); reusing Facet for another product means changing those four tokens, not hunting for hues.
 
 ## Branches and pull requests
 
 - `main` is production and only the principal merges into it, from a release PR (`staging` to `main`) after
-  reviewing the staging preview. `staging` is the perpetual branch the vice principal owns (`.claude/agents/`).
-- One short-lived branch per task, cut from the latest `staging`, one PR each targeting `staging`. Prefix by kind:
-  `ds/` (Facet), `screens/` (build brief screens), `data/` (jobs, providers, Data health), `copy/` (wording), `fix/`
-  (preview comments and CI), `agents/` (the agent corpus). Agents may push their own task branches and open draft
-  PRs; never push to someone else's.
-- Gates before merge follow the tiers in `.claude/agents/README.md`. `staging-keeper` merges into `staging` once its
-  tier's checks pass, and the other open branches update from `staging`.
-- Keep a branch small enough to merge the same day; a branch that touches shared files (shell, `app.css`, Facet
-  CSS) merges first and the rest update from `staging`.
+  reviewing the staging preview.
+- Builders branch from the latest `staging` and push their branch, with no PR. Prefix by kind: `screens/`, `data/`,
+  `facet/`, `copy/`. Never push to someone else's branch, force push or rewrite history.
+- The sprint session merges every ready branch into one `sprint/<id>` branch, and merges one sprint PR into
+  `staging` once CI is green.
+- Work outside a sprint (tooling, docs, the agent workflow) goes on a `fix/` or `agents/` branch with one PR into
+  `staging`; changes to the agent workflow are the principal's call.
 
-## Lanes and agents
+## Agents
 
-The agent corpus lives in `.claude/agents/`. Agents and sessions start from `corpus/brief.md`; `README.md` is the
-human overview (who decides, order of work, versions). The principal (Titus, the owner) makes every key and critical
-judgement; agents escalate those instead of deciding. Lanes, builders and verifiers are in `.claude/agents/README.md`.
+The sprint workflow is in `.claude/skills/sprint/SKILL.md`; the agents it spawns (`builder`, `verifier`,
+`ci-fixer`) are in `.claude/agents/`, with an overview in `.claude/agents/README.md`. The principal (Titus, the
+owner) makes every key and critical judgement (`.claude/agents/corpus/principal.md`); work that needs one is parked,
+never guessed. Recorded decisions are in `.claude/agents/corpus/decisions.md`.
 
 ## Data and jobs
 
@@ -106,5 +97,6 @@ judgement; agents escalate those instead of deciding. Lanes, builders and verifi
 - `packages/core/` domain rules, `packages/db/` schema and client, `packages/ingest/` providers and jobs
 - `apps/web/` Hidden Gems app (Next.js, deploys on Vercel with Root Directory `apps/web`)
 - `docs/` project documentation
+- `ops/sprint/` sprint files, traces and scripts (`merge.mjs`, `lint-words.mjs`)
 - `ops/directives/` retired; each file tells any old scheduled run to do nothing
 - `ops/pipeline/hgs.py` the old pipeline's code, the reference the v3.0 model was ported from

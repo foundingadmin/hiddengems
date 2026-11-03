@@ -193,7 +193,8 @@ be explained later.
   Supabase Management API (`pnpm db:supabase-apply <staging|production>`). It needs the `SUPABASE_ACCESS_TOKEN`
   secret and the `SUPABASE_STAGING_REF` and `SUPABASE_PRODUCTION_REF` variables in GitHub; without the secret it
   skips. The same command runs one statement with `--sql "..."` and prints the rows, so a session holding the token
-  can inspect or fix either database. `pnpm db:guard` runs first, so a destructive migration never reaches one.
+  can inspect or fix either database; a session whose Supabase connector is signed in to the account that owns the
+  projects can do the same with the connector's SQL tool. `pnpm db:guard` runs first, so a destructive migration never reaches one.
 - **Safety**: history tables reject update, delete and truncate (migrations 0003 and 0005); `pnpm db:guard` fails CI on
   a migration that drops, truncates or deletes unless the line says `-- destructive-approved: <reason>`.
 - **Backups**: the `backup` job (daily 11:07 UTC) writes the whole database as gzipped JSON to a private GitHub

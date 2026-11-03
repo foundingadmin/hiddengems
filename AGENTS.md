@@ -19,7 +19,8 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
   migrations. Never work around these.
 - **Rapid build mode** (owner decision, Nov 3 2026, until the beta): migrations apply themselves on every push to
   `staging` (staging database) and `main` (production), and agents may apply migrations and run SQL on either
-  database with `pnpm db:supabase-apply <staging|production> [--sql "..."]`. Staging is free to use; on production,
+  database, through the Supabase connector (run the `pnpm db:supabase-sql` output with its SQL tool) or
+  `pnpm db:supabase-apply <staging|production> [--sql "..."]`. Staging is free to use; on production,
   run only what a merged change needs or a read. Deleting or rewriting stored data stays the principal's call.
 - The old pipeline (claude.ai dashboard store and its scheduled tasks) retired on Nov 3 2026. Its code is
   `ops/pipeline/hgs.py`; its directives, picks history and scorecard are in `docs/archive/pipeline/`.

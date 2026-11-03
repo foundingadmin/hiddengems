@@ -189,10 +189,9 @@ be explained later.
   choose "Run without RLS": grants and the closed public API control access, and RLS without policies would block
   the app login.
 - **Applied automatically (rapid build mode, until the beta)**: `.github/workflows/db-migrate.yml` sends the same
-  script to the staging project on every push to `staging` and to production on every push to `main`, through the
-  Supabase Management API (`pnpm db:supabase-apply <staging|production>`). It needs the `SUPABASE_ACCESS_TOKEN`
-  secret and the `SUPABASE_STAGING_REF` and `SUPABASE_PRODUCTION_REF` variables in GitHub; without the secret it
-  skips. The same command runs one statement with `--sql "..."` and prints the rows, so a session holding the token
+  script to production on every push to `main`, through the Supabase Management API
+  (`pnpm db:supabase-apply production`). It needs the `SUPABASE_ACCESS_TOKEN` secret and the
+  `SUPABASE_PRODUCTION_REF` variable in GitHub; without the secret it skips. The same command runs one statement with `--sql "..."` and prints the rows, so a session holding the token
   can inspect or fix either database; a session whose Supabase connector is signed in to the account that owns the
   projects can do the same with the connector's SQL tool. `pnpm db:guard` runs first, so a destructive migration never reaches one.
 - **Safety**: history tables reject update, delete and truncate (migrations 0003 and 0005); `pnpm db:guard` fails CI on
@@ -217,7 +216,7 @@ be explained later.
 |---|---|---|
 | Branch | `main` (merged only by the principal) | `staging` and task branches |
 | URL | hidden-gems-webapp.vercel.app | the staging preview (`hidden-gems-webapp-git-staging-...`) and per-branch previews |
-| Database | the real Supabase project (Vercel `DATABASE_URL`, Production) | a separate staging Supabase project (Vercel `DATABASE_URL`, Preview) |
+| Database | the real Supabase project (Vercel `DATABASE_URL`, Production) | an in-memory fixture built from the sample provider on each server start (`apps/web/lib/db.ts`); `DATABASE_URL` is ignored |
 | Data | live: nflverse and The Odds API | sample provider: realistic, fake games, rosters, odds and results, labeled "Sample data" |
 | Odds credits | spent on the snapshot schedule | never: previews are forced to sample mode in code (`VERCEL_ENV=preview`) |
 | Crons | run (`vercel.json`) | do not run on previews; pull with Data health's buttons |

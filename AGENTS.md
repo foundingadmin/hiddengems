@@ -17,11 +17,13 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 - The database is protected by design (`docs/architecture.md`, "Database"): the app connects as `hiddengems_app`,
   which cannot alter or drop anything; history tables reject edits; `pnpm db:guard` blocks destructive
   migrations. Never work around these.
-- **Rapid build mode** (owner decision, Nov 3 2026, until the beta): migrations apply themselves on every push to
-  `staging` (staging database) and `main` (production), and agents may apply migrations and run SQL on either
-  database, through the Supabase connector (run the `pnpm db:supabase-sql` output with its SQL tool) or
-  `pnpm db:supabase-apply <staging|production> [--sql "..."]`. Staging is free to use; on production,
-  run only what a merged change needs or a read. Deleting or rewriting stored data stays the principal's call.
+- **Rapid build mode** (owner decision, Nov 3 2026, until the beta): agents apply migrations and run SQL on the
+  production database themselves, through the Supabase connector (run the `pnpm db:supabase-sql` output with its
+  SQL tool) or `pnpm db:supabase-apply production [--sql "..."]`; with the GitHub secret set, every push to `main`
+  applies migrations on its own. Run only what a merged change needs, a read, or a fix the principal asked for.
+  Deleting or rewriting stored data stays the principal's call.
+- Staging and every preview have no database: `apps/web/lib/db.ts` ignores `DATABASE_URL` there and builds an
+  in-memory fixture from the sample provider on each server start. Never point a preview at a real database.
 - The old pipeline (claude.ai dashboard store and its scheduled tasks) retired on Nov 3 2026. Its code is
   `ops/pipeline/hgs.py`; its directives, picks history and scorecard are in `docs/archive/pipeline/`.
 

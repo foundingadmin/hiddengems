@@ -32,8 +32,8 @@ thread.
 8. **Dates inside a sentence.** Facet sets every `<time>` in mono (decision Nov 2), so a date inside copy, such as on
    the graded slip, reads in mono too. Recommend: keep mono for dates in tables and metadata, sans inside sentences.
 9. **Restore the stricter database rules.** Rapid build mode (Nov 3) lets migrations apply themselves and agents
-   run SQL on both databases. Recommend: at the beta, remove `SUPABASE_ACCESS_TOKEN` from the Claude environment,
-   keep automatic migrations on `staging` only, and apply production by hand from the release PR again.
+   run SQL on both databases. Recommend: at the beta, sign the Supabase connector out of the production project, and
+   apply production migrations by hand from the release PR again.
 10. **PRD v1.2.** Once 1 to 9 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
    Outlier as price source, F2.8, F3.4, the old pipeline's freeze and close commands.
 
@@ -78,10 +78,9 @@ freezing prices this week.
 - [ ] Principal: run `pnpm db:supabase-sql --app-password <password>` output in the production Supabase project, then
       set `DATABASE_URL` (Production) to the `hiddengems_app` login (`docs/architecture.md`, Database).
 - [x] Migrations 0005 to 0007 applied to production on Nov 3 through the Supabase connector (rapid build mode).
-- [ ] Staging database: the connector sees only the production project. Confirm where the staging project lives,
-      or point previews at sample data only, and apply the same migrations there.
-- [ ] Principal: 12 players have a second row from sample data in production (Derrick Henry, Ja'Marr Chase, Travis
-      Kelce and others). The release matches the nflverse row, so ratings are right; deleting the sample rows is your call.
+- [x] Staging runs on an in-memory sample fixture, never a real database (decided Nov 3).
+- [x] 13 sample players a preview had written into production deleted on Nov 3, with their sample links.
+- [ ] Principal: remove the Preview-scoped `DATABASE_URL` in Vercel, so no preview holds production credentials.
 - [ ] Principal: `ODDS_API_KEY`, `CRON_SECRET`, `BACKUP_GITHUB_TOKEN` and `BACKUP_GITHUB_REPO` set for Production only.
 - [ ] Data health shows today's Tue 10:07 AM opening snapshot. If it was missed, the next slot is Sat 7:47 PM; an off
       schedule pull spends credits and is the principal's call.

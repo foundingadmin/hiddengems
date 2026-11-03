@@ -1,5 +1,6 @@
 'use server';
 import { jobs, providersFor, runJob, type RunResult } from '@hiddengems/ingest';
+import { jobSettings } from '@hiddengems/db';
 import { revalidatePath } from 'next/cache';
 import { db } from '@/lib/db';
 
@@ -24,4 +25,13 @@ export async function pull(job: string, spendCredits = false): Promise<PullOutco
   revalidatePath('/');
   revalidatePath('/data');
   return [result, ...(result.followUps ?? [])].map(({ job: j, status, message }) => ({ job: j, status, message }));
+}
+
+/** Pause or resume a source's scheduled runs. Pull now keeps working either way. */
+export async function setPaused(job: string, paused: boolean): Promise<void> {
+  if (!jobs[job]) throw new Error(`Unknown job ${job}`);
+  const handle = await db();
+  await handle.db.insert(jobSettings).values({ job, paused, pausedAt: paused ? new Date() : null, updatedAt: new Date() })
+    .onConflictDoUpdate({ target: jobSettings.job, set: { paused, pausedAt: paused ? new Date() : null, updatedAt: new Date() } });
+  revalidatePath('/data');
 }

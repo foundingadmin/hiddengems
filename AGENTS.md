@@ -53,7 +53,52 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 ## Working agreements
 
 - Integrate approved scalability decisions as soon as they come up (tokens, slots, generators), rather than deferring them.
+- Preview reviews (Vercel toolbar comments): read every open thread with the Vercel
+  toolbar tools, turn each into a tracked task straight away, and resolve each thread once its fix is pushed. Do
+  not reply on the thread unless something blocks the fix; report progress in the session instead.
+- When work (yours or a subagent's) needs a component, pattern, token or class that
+  Facet lacks, do not hand-roll it in app CSS: file a DS request (what is needed, where it is used, the closest
+  existing Facet part), have a design-system pass build it in `packages/facet` (tokens, CSS, component doc,
+  preview), then wire it into the feature. App CSS is only layout glue between Facet parts, using `--fc-*` tokens.
+  The `facet-builder` agent (`.claude/agents/facet-builder.md`) answers DS requests; its usage notes go back to
+  the agent that asked.
+- Every change that adds or edits words people read (UI copy, docs, comments, commit and PR text) goes through
+  the `content-verifier` agent (`.claude/agents/content-verifier.md`) before it ships. It returns exact
+  rewrites. Send them back to the agent that wrote the copy while it is still running; otherwise a new
+  generator agent applies them. Ship only on `Verdict: pass`.
+- Every change that touches what people see goes through the `design-verifier` agent
+  (`.claude/agents/design-verifier.md`), which checks the code and screenshots against Facet and the Hidden Gems
+  encodings. Its fixes go back to the building agent the same way; its DS requests go to `facet-builder`.
+  Ship only on `Verdict: pass` from both verifiers.
 - A product's accent goes through `--fc-brand-*` (`packages/facet/tokens/facet.semantic.json`); reusing Facet for another product means changing those four tokens, not hunting for hues.
+
+## Branches and pull requests
+
+- One short-lived branch per task, cut from the latest `main`, one PR each. Prefix by kind: `ds/` (Facet),
+  `screens/` (build brief screens), `data/` (jobs, providers, Data health), `copy/` (wording), `fix/` (preview
+  comments and CI). Agents may push their own task branches and open draft PRs; never push to someone else's.
+- Before merge, the `pr-verifier` agent (`.claude/agents/pr-verifier.md`) checks merge state, CI, house rules, both
+  verifier verdicts and any owner step; its fix list goes to the agent that owns the branch. Merge only on
+  `Merge: ready`, then tell other open branches to update from `main`.
+- Keep a branch small enough to merge the same day; a branch that touches shared files (shell, `app.css`, Facet
+  CSS) merges first and the rest update from `main`.
+
+## Lanes and agents
+
+Agent definitions live in `.claude/agents/`. Intake, builders and verifiers per lane:
+
+| Lane | Builder | Verifiers before merge |
+|---|---|---|
+| `fix/` preview comments, small defects | the session or any builder | content, design (if UI), PR |
+| `screens/` build brief screens | `screen-builder` | content, design, PR |
+| `ds/` Facet parts | `facet-builder` | design, content (docs), PR |
+| `data/` jobs, providers, schema, Data health | `data-builder` | data safety, content and design (if UI), PR |
+| `copy/` wording | any builder | content, PR |
+| model and gem rules (`packages/core`) | `data-builder` | model, data safety, PR |
+
+`preview-triager` turns Vercel toolbar comments into lane tasks and resolves them once merged. Verifiers are read
+only and return exact fixes to the builder that owns the branch; a builder still running applies them itself,
+otherwise a new builder does.
 
 ## Data and jobs
 

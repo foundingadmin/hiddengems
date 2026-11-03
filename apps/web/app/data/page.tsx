@@ -121,7 +121,7 @@ export default async function DataPage() {
             </span>
           </dd>
           <dd className="fc-stat-basis">{needs.length ? needs.join(', ') : 'Every source ran on time'}</dd>
-          {needs.length > 0 && <dd className="hg-stat-action"><FixButton jobs={fixAll} text={needs.length > 1 ? 'Fix all' : 'Fix'} /></dd>}
+          {needs.length > 0 && <dd className="fc-stat-action"><FixButton jobs={fixAll} text={needs.length > 1 ? 'Fix all' : 'Fix'} /></dd>}
         </div>
         <div className="fc-stat">
           <dt className="fc-stat-label">Next odds pull</dt>
@@ -142,7 +142,7 @@ export default async function DataPage() {
 
       <section className="hg-section" aria-labelledby="sources-h">
         <h2 id="sources-h" className="text-heading-20">Sources</h2>
-        <ul className="fc-list hg-sources" role="list" aria-labelledby="sources-h">
+        <ul className="fc-list" role="list" aria-labelledby="sources-h">
           <li className="fc-schedule-head" aria-hidden="true"><span>Source</span><span>Status</span><span>Next run</span><span>Last run</span></li>
           {latest.map(({ job, label, live, last }) => {
             const isPaused = paused.has(job);
@@ -181,7 +181,7 @@ export default async function DataPage() {
                   <span className="fc-schedule-label">Last run</span>
                   {last ? (
                     <>
-                      <Link className="hg-run-link" href={`/data/logs?run=${last.id}`}>
+                      <Link className="fc-time-link" href={`/data/logs?run=${last.id}`}>
                         <time className="fc-timestamp" dateTime={last.startedAt.toISOString()} title={clock(last.startedAt)}>{dayTime(last.startedAt, now)}</time>
                         <span className="fc-visually-hidden">, {label.toLowerCase()} run log</span>
                       </Link>
@@ -195,13 +195,12 @@ export default async function DataPage() {
                 </div>
                 {note && (
                   <div className="fc-list-row-note">
-                    <div className="fc-note" data-type={note.type} data-size="small" data-action>
+                    <div className="fc-note" data-type={note.type} data-size="small">
                       {note.type === 'error' ? ERROR_ICON : WARNING_ICON}
                       <span>{note.text}</span>
-                      <FixButton
-                        className="fc-note-action" jobs={note.fix.jobs} text={note.fix.label}
-                        name={note.fix.label.includes(',') ? undefined : `${note.fix.label} for ${label.toLowerCase()}`}
-                      />
+                      {/* Facet note.md: in a row that has buttons the note's action is link-style, and it never
+                          repeats the row's Pull now; only a fix in several steps gets one. */}
+                      {note.fix.jobs.length > 1 && <FixButton look="note" jobs={note.fix.jobs} text={note.fix.label} />}
                     </div>
                   </div>
                 )}

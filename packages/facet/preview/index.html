@@ -254,6 +254,31 @@
         <div><dt>Start here</dt><dd>Gray and hollow<small>Most notes are context, not alarms</small></dd></div>
         <div><dt>Limit</dt><dd>One filled note per view<small>A second one means the page needs restructuring</small></dd></div>
       </dl>
+      <div class="sp-lesson">
+        <h3 class="text-heading-20">Note actions in rows</h3>
+        <p class="text-copy-14">A row with its own buttons gets a link-style action: an arrow link to go somewhere, a button to act in place. None when the fix is the row's own button.</p>
+      </div>
+      <div class="fc-stack" style="--fc-gap:12px">
+        <div class="fc-note" data-type="warning" data-size="small"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1 15 14H1z" opacity=".25"/><path d="M7.25 6h1.5v4h-1.5zM7.25 11h1.5v1.5h-1.5z"/></svg><span>SportsDataIO timed out, so injuries are from Saturday.</span><a class="fc-note-link fc-link-action" data-external href="https://status.sportsdata.io" target="_blank" rel="noopener noreferrer" tabindex="-1">Provider status</a></div>
+        <div class="fc-note" data-type="warning" data-size="small"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1 15 14H1z" opacity=".25"/><path d="M7.25 6h1.5v4h-1.5zM7.25 11h1.5v1.5h-1.5z"/></svg><span>2 players are not on a roster yet.</span><button class="fc-note-link" type="button" tabindex="-1">Pull rosters, then results</button></div>
+        <ul class="fc-list" role="list" aria-label="Schedule with a failed pull">
+          <li class="fc-list-row fc-schedule-row" data-state="failed">
+            <div class="fc-list-row-main">
+              <p class="fc-list-row-title">Schedule</p>
+              <p class="fc-meta"><span>Daily at 4:17 AM</span><span>ESPN</span></p>
+            </div>
+            <span class="fc-schedule-status fc-status"><span class="fc-status-dot" data-state="failed"></span>Failed</span>
+            <p class="fc-schedule-next"><span class="fc-schedule-label">Next run</span><time class="fc-timestamp" datetime="2026-11-04T04:17-05:00" title="Wednesday, Nov 4, 2026, 4:17 AM ET">Tomorrow 4:17 AM</time></p>
+            <p class="fc-schedule-last"><span class="fc-schedule-label">Last run</span><time class="fc-timestamp" datetime="2026-11-03T04:17-05:00" title="Tuesday, Nov 3, 2026, 4:17 AM ET">Today 4:17 AM</time><span class="fc-schedule-detail">Ran 2.3s</span></p>
+            <div class="fc-list-row-actions">
+              <button class="fc-button" data-variant="secondary" data-size="small" type="button" tabindex="-1" aria-label="Run schedule now">Run now</button>
+            </div>
+            <div class="fc-list-row-note">
+              <div class="fc-note" data-type="error" data-size="small"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 4h1.5v5h-1.5zM7.25 10.5h1.5V12h-1.5z"/></svg><span>The schedule pull failed, so kickoff times are from Sunday.</span></div>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -302,6 +327,24 @@
         <p class="fc-stat-basis">Price moved our way before kickoff</p>
       </div>
     </div>
+  </div>
+
+  <!-- Stat with an action slot -->
+  <div class="data-block">
+    <h3 class="text-heading-20">Source status</h3>
+    <dl class="fc-stat-strip" data-variant="cells" style="margin:0">
+      <div class="fc-stat">
+        <dt class="fc-stat-label">Status</dt>
+        <dd class="fc-stat-figure"><span class="fc-stat-value">2 need a look</span></dd>
+        <dd class="fc-stat-basis">Rosters overdue, Results failed</dd>
+        <dd class="fc-stat-action"><button class="fc-button" data-variant="secondary" data-size="small" type="button">Fix all</button></dd>
+      </div>
+      <div class="fc-stat">
+        <dt class="fc-stat-label">Next odds pull</dt>
+        <dd class="fc-stat-figure"><span class="fc-stat-value">Thu 4:00 PM</span></dd>
+        <dd class="fc-stat-basis">Pregame, in 2d 6h</dd>
+      </div>
+    </dl>
   </div>
 
   <!-- Slate: filter bar, sortable table with frozen pick column, selection and row actions -->
@@ -1785,7 +1828,7 @@
           </div>
           <span class="fc-schedule-status fc-status"><span class="fc-status-dot" data-state="live"></span><span data-status-word>Succeeded</span></span>
           <p class="fc-schedule-next"><span class="fc-schedule-label">Next run</span><time class="fc-timestamp" datetime="2026-11-02T18:05-05:00" title="Monday, Nov 2, 2026, 6:05 PM ET" >Today 6:05 PM</time><time class="fc-schedule-detail" datetime="2026-11-02T18:05-05:00" data-relative data-stamp>in 5m</time></p>
-          <p class="fc-schedule-last" data-last><span class="fc-schedule-label">Last run</span><time class="fc-timestamp" datetime="2026-11-02T18:00-05:00" title="Monday, Nov 2, 2026, 6:00 PM ET">Today 6:00 PM</time><span class="fc-schedule-detail">Ran 4.1s</span></p>
+          <p class="fc-schedule-last" data-last><span class="fc-schedule-label">Last run</span><a class="fc-time-link" href="#lf-schedules"><time class="fc-timestamp" datetime="2026-11-02T18:00-05:00" title="Monday, Nov 2, 2026, 6:00 PM ET">Today 6:00 PM</time><span class="fc-visually-hidden">, odds, all books run log</span></a><span class="fc-schedule-detail">Ran 4.1s</span></p>
           <div class="fc-list-row-actions">
             <button class="fc-button" data-variant="secondary" data-size="small" type="button" data-run aria-label="Run Odds, all books now">Run now</button>
             <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="More actions for Odds, all books" data-menu="Edit|View runs|Pause"><svg aria-hidden="true"><use href="#lf-more"/></svg></button>
@@ -1799,7 +1842,7 @@
           </div>
           <span class="fc-schedule-status fc-status"><span class="fc-status-dot" data-state="failed"></span><span data-status-word>Failed</span></span>
           <p class="fc-schedule-next"><span class="fc-schedule-label">Next run</span><time class="fc-timestamp" datetime="2026-11-03T00:00-05:00" title="Tuesday, Nov 3, 2026, 12:00 AM ET" >Tue 12:00 AM</time><time class="fc-schedule-detail" datetime="2026-11-03T00:00-05:00" data-relative data-stamp>in 6h</time></p>
-          <p class="fc-schedule-last" data-last><span class="fc-schedule-label">Last run</span><time class="fc-timestamp" datetime="2026-10-31T23:00-04:00" title="Saturday, Oct 31, 2026, 11:00 PM ET">Sat 11:00 PM</time><span class="fc-schedule-detail">Timed out after 30s</span></p>
+          <p class="fc-schedule-last" data-last><span class="fc-schedule-label">Last run</span><a class="fc-time-link" href="#lf-schedules"><time class="fc-timestamp" datetime="2026-10-31T23:00-04:00" title="Saturday, Oct 31, 2026, 11:00 PM ET">Sat 11:00 PM</time><span class="fc-visually-hidden">, injuries run log</span></a><span class="fc-schedule-detail">Timed out after 30s</span></p>
           <div class="fc-list-row-actions">
             <button class="fc-button" data-variant="secondary" data-size="small" type="button" data-run aria-label="Run Injuries and depth charts now">Run now</button>
             <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="More actions for Injuries and depth charts" data-menu="Edit|View runs|Pause"><svg aria-hidden="true"><use href="#lf-more"/></svg></button>
@@ -1816,7 +1859,7 @@
           </div>
           <span class="fc-schedule-status fc-status"><span class="fc-status-dot" data-state="paused"></span><span data-status-word>Paused</span></span>
           <p class="fc-schedule-next"><span class="fc-schedule-label">Next run</span><span class="fc-value-empty">None</span></p>
-          <p class="fc-schedule-last" data-last><span class="fc-schedule-label">Last run</span><time class="fc-timestamp" datetime="2026-11-01T22:45-05:00" title="Sunday, Nov 1, 2026, 10:45 PM ET">Sun 10:45 PM</time><span class="fc-schedule-detail">Ran 3.9s</span></p>
+          <p class="fc-schedule-last" data-last><span class="fc-schedule-label">Last run</span><a class="fc-time-link" href="#lf-schedules"><time class="fc-timestamp" datetime="2026-11-01T22:45-05:00" title="Sunday, Nov 1, 2026, 10:45 PM ET">Sun 10:45 PM</time><span class="fc-visually-hidden">, closing lines run log</span></a><span class="fc-schedule-detail">Ran 3.9s</span></p>
           <div class="fc-list-row-actions">
             <button class="fc-button" data-variant="secondary" data-size="small" type="button" data-run aria-label="Run Closing lines now">Run now</button>
             <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="More actions for Closing lines" data-menu="Edit|View runs|Resume"><svg aria-hidden="true"><use href="#lf-more"/></svg></button>

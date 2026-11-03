@@ -546,6 +546,20 @@ dialog.fc-sheet:not([open]) { display: none; }
 .fc-stat-figure { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 6px; min-width: 0; }
 .fc-stat-qualifier { font: 400 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }
 .fc-stat-basis { font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; text-wrap: pretty; }
+/* Action slot [F]: one small CTA under the basis, for when the stat itself says something needs doing
+   ("Fix all"). It sits at its own width at the start of the cell, never stretched, and leaves 12px of air above
+   it (4px stack gap plus 8px) so the basis still reads with its number.
+   <dd class="fc-stat-action"><button class="fc-button" data-variant="secondary" data-size="small" type="button">Fix all</button></dd> */
+.fc-stat > .fc-stat-action {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--fc-space-2);
+  min-width: 0;
+  margin-top: var(--fc-space-2);
+}
+.fc-stat-action > :is(.fc-button, .fc-link-action) { max-width: 100%; }
 
 /* Shared hairline cells: every edge drawn once, the strip wraps into rows without a card per metric.
    Each cell paints a 1px spread into the 1px gap; the strip clips the outside and draws one rounded ring. */

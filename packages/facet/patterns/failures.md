@@ -18,7 +18,7 @@ If a failure has no action the user can take and no owner to name, it is not rea
 
 ## In rows and banners
 
-A failure note always carries its next step. Yours to fix: a button (`.fc-note-action`), or a link (`.fc-note-link`) when the row already has buttons. Out of your hands: an amber warning note with a follow link, such as "Provider status". Never leave the fix hidden in an overflow menu.
+A failure note always carries its next step. Yours to fix: a button (`.fc-note-action`), or a link-style action when the row already has buttons (`a.fc-note-link` to go somewhere, `button.fc-note-link` to act in place, `components/note.md`). When the fix is the row's own button, the note carries no action: it never repeats the row's action. Out of your hands: an amber warning note with a follow link, such as "Provider status". Never leave the fix hidden in an overflow menu.
 
 ## Ghost
 

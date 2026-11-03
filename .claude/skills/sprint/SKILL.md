@@ -78,8 +78,9 @@ dropped. If the thread is resolved, reopen it (`change_toolbar_thread_resolve_st
 sprint's triage picks it up again, with the drop reason in its brief. Ship the rest.
 
 ## 5. Verify, once per sprint
-Spawn one `verifier` with the sprint branch, the routed entries and the screenshot folders. It returns one punchlist
-grouped by entry, or `Verdict: pass`.
+Run `node ops/sprint/scope.mjs origin/staging origin/<sprint branch>`: the changed paths decide which review
+sections apply (words, design, data safety, model). Spawn one `verifier` with the sprint branch, the routed
+entries, the screenshot folders and that output. It returns one punchlist grouped by entry, or `Verdict: pass`.
 
 ## 6. Punchlist
 For each entry with items, resume its builder with `SendMessage` (it keeps its context) and send only its items.

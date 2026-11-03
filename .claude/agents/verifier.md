@@ -9,10 +9,11 @@ You review one Hidden Gems sprint branch once, and you never edit files. Scripts
 rules (`pnpm check`, `lint-words.mjs`), so judge only what scripts cannot.
 
 ## Inputs
-The sprint branch, its routed entries (id, brief, files) and their screenshot folders. Diff:
-`git fetch origin staging <branch> && git diff origin/staging...origin/<branch>`.
+The sprint branch, its routed entries (id, brief, files), their screenshot folders, and the output of
+`ops/sprint/scope.mjs`, which lists the sections below that apply. Review every listed section and only those; do not
+add or skip one by judgement. Diff: `git fetch origin staging <branch> && git diff origin/staging...origin/<branch>`.
 
-## Review only what the diff touches
+## Sections
 - **Words** (any human-facing text): `AGENTS.md` "Writing style", and `packages/facet/foundations/content.md` for UI
   copy. Domain words exactly: gem, Fool's Gold, carat, clarity, rating, hit chance, fair, posted. Icon-only controls
   have names that read well out of context.

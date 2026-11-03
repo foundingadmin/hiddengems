@@ -1,10 +1,10 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { zonedTimeToUtc } from '@hiddengems/core';
-import { bets, createDb, estimates, games, jobLocks, oddsSlots, oddsSnapshots, picks, playerUsage, players, providerUsage, runLogs, runs, seedReference } from '@hiddengems/db';
+import { bets, createDb, estimates, games, jobLocks, oddsSlots, oddsSnapshots, picks, playerUsage, players, providerUsage, runLogs, runs, seedReference, unpackBackup } from '@hiddengems/db';
 import { count, desc, eq, inArray } from 'drizzle-orm';
 import { BOOTSTRAP, grade, jobs, runJob } from '../src';
 import { theirs } from '../src/errors';
-import { sampleProviders } from '../src/providers';
+import { githubBackup, memoryBackup, sampleProviders } from '../src/providers';
 import type { Providers } from '../src/providers';
 
 // A fixed Thursday, so the sample week (and its Sunday kickoffs) never depends on the day tests run.
@@ -167,6 +167,26 @@ describe('model inputs', () => {
     expect(r.status, r.message).toBe('succeeded');
     expect(r.message).toMatch(/^Pulled usage for \d+ player games across 1 week, 1 on the injury report$/);
     expect(r.followUps?.[0]).toMatchObject({ job: 'build-picks', status: 'succeeded' });
+  });
+});
+
+describe('backup', () => {
+  it('writes the whole database and a readable summary off-site', async () => {
+    const r = await run('backup', { force: true });
+    expect(r.status, r.message).toBe('succeeded');
+    expect(r.message).toMatch(/^Backed up \d+ rows from \d+ tables to memory, [\d.]+ KB$/);
+    const target = providers.backup as ReturnType<typeof memoryBackup>;
+    const file = [...target.files.keys()].find((k) => k.startsWith('backups/'))!;
+    expect(file).toMatch(/^backups\/\d{4}-\d{2}-\d{2}\.json\.gz$/);
+    const backup = unpackBackup(target.files.get(file)!);
+    expect(backup.tables.teams).toHaveLength(32);
+    expect(new TextDecoder().decode(target.files.get('BACKUP.md')!)).toContain('| odds_snapshots |');
+  });
+
+  it('says whose move it is when the backup repository is not set up', async () => {
+    const r = await run('backup', { force: true, providers: { ...providers, backup: githubBackup(undefined, undefined) } });
+    expect(r).toMatchObject({ status: 'failed', failureOwner: 'ours' });
+    expect(r.message).toMatch(/BACKUP_GITHUB_TOKEN/);
   });
 });
 

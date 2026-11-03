@@ -686,6 +686,36 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
 @container fc-shell (max-width: 767px) {
   .fc-gem-card { width: 18.5rem; padding: var(--fc-space-4); gap: var(--fc-space-3); }
 }
+/* Gem card states [F] (components/gem-card.md, patterns/moments.md).
+   data-unread: a brand tint and edge, and a slow sheen that crosses the card every 4.2s. The sheen is one of the
+   two named exceptions to the one-loop rule (foundations/layout-materials-motion.md); it never loops under
+   reduced motion, which keeps the still tint. Reading fades the tint out, after --fc-state-delay when a moment
+   staggers several cards.
+   data-selected: on the slip, a 2px brand edge. The two can be on together. */
+.fc-gem-card { position: relative; isolation: isolate; overflow: clip; }
+.fc-gem-card::before,
+.fc-gem-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--fc-duration-overlay) var(--fc-ease-standard) var(--fc-state-delay, 0s);
+}
+.fc-gem-card::before { background: var(--fc-brand-bg); box-shadow: inset 0 0 0 1px var(--fc-brand-border); }
+.fc-gem-card::after {
+  background: linear-gradient(112deg, transparent 20%, color-mix(in srgb, var(--fc-brand-fg) 26%, transparent) 50%, transparent 80%);
+  transform: translateX(-100%);
+}
+.fc-gem-card[data-unread]::before,
+.fc-gem-card[data-unread]::after { opacity: 1; }
+.fc-gem-card[data-selected] { box-shadow: 0 0 0 2px var(--fc-control-on); }
+@keyframes fc-card-sheen { 0% { transform: translateX(-100%); } 55%, 100% { transform: translateX(100%); } }
+@media (prefers-reduced-motion: no-preference) {
+  .fc-gem-card[data-unread]::after { animation: fc-card-sheen 4.2s ease-in-out infinite; }
+}
 /* Reasons list: a small gem-purple facet marks each line (purple, because these are a gem's reasons). */
 .fc-why { display: flex; flex-direction: column; gap: var(--fc-space-2); margin: 0; padding: 0; list-style: none; }
 .fc-why > li { display: grid; grid-template-columns: var(--fc-space-3) minmax(0, 1fr); gap: var(--fc-space-2); align-items: baseline; }
@@ -760,6 +790,85 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
 .fc-tabbar svg { width: 20px; height: 20px; }
 .fc-tabbar .fc-badge { position: absolute; top: var(--fc-space-1); left: calc(50% + var(--fc-space-2)); }
 @container fc-shell (max-width: 767px) { .fc-tabbar { display: grid; } }
+/* Edge glint hook (patterns/moments.md): js/dots.mjs ripples dots along the bar's top edge from the answering
+   tab, which lifts to primary while data-glint is on. */
+.fc-tabbar { --fc-glint-edge: top; }
+.fc-tabbar a { transition: color var(--fc-duration-overlay) ease; }
+.fc-tabbar a[data-glint] { color: var(--fc-text-primary); }
+
+/* ------------------------------------------------------------------ Moments stage [F]
+   The canvas js/dots.mjs draws on (patterns/moments.md). Never takes pointer events; aria-hidden in markup.
+   Default: fixed over the viewport. data-cover="host": over its host, grown by --fc-stage-outset. */
+.fc-stage {
+  position: fixed;
+  inset: 0;
+  z-index: var(--fc-z-stage);
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.fc-stage[data-cover="host"] {
+  position: absolute;
+  inset: auto;
+  top: calc(-1 * var(--fc-stage-outset, 0px));
+  left: calc(-1 * var(--fc-stage-outset, 0px));
+  z-index: auto;
+  width: calc(100% + 2 * var(--fc-stage-outset, 0px));
+  height: calc(100% + 2 * var(--fc-stage-outset, 0px));
+}
+
+/* ------------------------------------------------------------------ Toast [F]
+   Bottom right on desktop, above the tab bar on phones. The region is a polite live region that stays in the
+   DOM, so a toast added to it is announced. An Undo toast counts its 5 seconds down in five brand dots, last
+   first (js/undo.mjs holds the time while hovered or focused).
+   <div class="fc-toast-region" role="status">
+     <div class="fc-toast"><span class="fc-toast-text text-copy-14">Leg removed</span>
+       <span class="fc-toast-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+       <button class="fc-button" data-variant="secondary" data-size="small">Undo</button></div></div> */
+.fc-toast-region {
+  position: fixed;
+  z-index: var(--fc-z-toast);
+  right: var(--fc-space-6);
+  bottom: var(--fc-space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--fc-space-2);
+  pointer-events: none;
+}
+.fc-toast {
+  display: flex;
+  align-items: center;
+  gap: var(--fc-space-3);
+  max-width: min(26rem, calc(100vw - 2 * var(--fc-space-6)));
+  min-height: var(--fc-control-large);
+  padding: var(--fc-space-2) var(--fc-space-2) var(--fc-space-2) var(--fc-space-4);
+  border-radius: var(--fc-radius-lg);
+  background: var(--fc-surface-canvas);
+  box-shadow: var(--ds-shadow-menu);
+  color: var(--fc-text-primary);
+  pointer-events: auto;
+}
+.fc-toast-text { flex: 1 1 auto; min-width: 0; }
+.fc-toast-dots { display: inline-flex; flex: none; gap: var(--fc-space-1); }
+.fc-toast-dots > * {
+  width: var(--fc-space-1_5);
+  height: var(--fc-space-1_5);
+  border-radius: 50%;
+  background: var(--fc-illus-2);
+  transition: transform var(--fc-duration-popover) var(--fc-ease-standard);
+}
+.fc-toast-dots > [data-spent] { transform: scale(0); }
+.fc-toast > .fc-button { flex: none; }
+@keyframes fc-toast-in { from { opacity: 0; transform: translateY(var(--fc-space-2)); } }
+@media (prefers-reduced-motion: no-preference) {
+  .fc-toast { animation: fc-toast-in var(--fc-duration-popover) var(--fc-ease-swift); }
+}
+@media (max-width: 767px) {
+  .fc-toast-region { right: var(--fc-space-4); bottom: calc(var(--fc-space-16) + env(safe-area-inset-bottom)); left: var(--fc-space-4); align-items: stretch; }
+  .fc-toast { max-width: none; }
+}
 
 /* Range marker: where today's number sits between a low and a high (line, projection). */
 .fc-range { position: relative; display: block; height: 12px; min-width: 64px; }

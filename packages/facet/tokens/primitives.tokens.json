@@ -1355,6 +1355,11 @@
         "$value": "512px",
         "$description": "Side sheet."
       },
+      "leg-swipe-width": {
+        "$type": "dimension",
+        "$value": "88px",
+        "$description": "Swipe to remove on a slip leg: the Remove action's width, and how far an open pull rests (components/cert.md)."
+      },
       "sheet-inset": {
         "$type": "dimension",
         "$value": "12px",
@@ -1400,6 +1405,11 @@
       "$type": "number",
       "$value": 2001
     },
+    "stage": {
+      "$type": "number",
+      "$value": 4000,
+      "$description": "The shared moments canvas (js/dots.mjs): above menus and sheets on the page, below toasts and tooltips."
+    },
     "toast": {
       "$type": "number",
       "$value": 5000
@@ -1428,6 +1438,26 @@
           0.25,
           1
         ]
+      },
+      "emphasized": {
+        "$type": "cubicBezier",
+        "$value": [
+          0.2,
+          1.22,
+          0.36,
+          1
+        ],
+        "$description": "A spring that settles past its mark: the gem sheet opening (patterns/moments.md)."
+      },
+      "exit": {
+        "$type": "cubicBezier",
+        "$value": [
+          0.4,
+          0,
+          0.8,
+          0.4
+        ],
+        "$description": "Accelerating out with no spring: the gem sheet closing."
       }
     },
     "duration": {
@@ -1443,9 +1473,24 @@
         "$type": "duration",
         "$value": "200ms"
       },
+      "pop": {
+        "$type": "duration",
+        "$value": "220ms",
+        "$description": "A count answering a change: the rail slip's leg count when a gem is added."
+      },
       "overlay": {
         "$type": "duration",
         "$value": "300ms"
+      },
+      "sheet": {
+        "$type": "duration",
+        "$value": "460ms",
+        "$description": "The gem sheet's spring open, with --fc-ease-emphasized."
+      },
+      "undo": {
+        "$type": "duration",
+        "$value": "5000ms",
+        "$description": "How long an Undo toast stays, counted down by its five dots."
       }
     }
   }

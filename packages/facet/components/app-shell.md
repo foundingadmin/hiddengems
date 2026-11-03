@@ -90,5 +90,11 @@ The scope is the thing every page on the screen is filtered by. In Hidden Gems i
 - Breadcrumb: "Slate", or "Data / Odds pulls", or "Slate / Mike Gesicki receiving yards" on a pick.
 - Global actions: "Track bet" and Search.
 
+## Edge glint
+Nothing flies to the Slips tab (`patterns/moments.md`, rule 6); the tab answers an add with a glint. Hooks, CSS only:
+- `.fc-tabbar` sets `--fc-glint-edge: top`; `.fc-sidenav-item` sets `bottom`. `js/dots.mjs` ripples dots along that
+  edge from the answering item.
+- While it plays, the item carries `data-glint`: a tab bar link lifts to primary, a rail item takes the hover fill.
+
 ## Accessibility
 Landmarks: `aside` labelled "Main navigation", one `nav` per level, `nav` "Breadcrumb", `header`, `main`. Current page uses `aria-current="page"` in both the rail and the breadcrumb. Focus rings come from `--ds-focus-ring` (INT-02). Open and close motion is opacity plus transform only and stops under reduced motion (ANI-01).

@@ -164,6 +164,7 @@
   --fc-settings-nav-width: 256px;
   --fc-measure-settings: 912px;
   --fc-sheet-width: 512px;
+  --fc-leg-swipe-width: 88px;
   --fc-sheet-inset: 12px;
   --fc-row-list: 64px;
   --fc-row-list-single: 48px;
@@ -175,14 +176,20 @@
   --fc-z-drawer: 200;
   --fc-z-modal: 300;
   --fc-z-menu: 2001;
+  --fc-z-stage: 4000;
   --fc-z-toast: 5000;
   --fc-z-tooltip: 99999;
   --fc-ease-swift: cubic-bezier(0.175, 0.885, 0.32, 1.1);
   --fc-ease-standard: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --fc-ease-emphasized: cubic-bezier(0.2, 1.22, 0.36, 1);
+  --fc-ease-exit: cubic-bezier(0.4, 0, 0.8, 0.4);
   --fc-duration-instant: 100ms;
   --fc-duration-fast: 150ms;
   --fc-duration-popover: 200ms;
+  --fc-duration-pop: 220ms;
   --fc-duration-overlay: 300ms;
+  --fc-duration-sheet: 460ms;
+  --fc-duration-undo: 5000ms;
   --fc-text-primary: var(--ds-gray-1000);
   --fc-text-secondary: var(--ds-gray-900);
   --fc-text-disabled: var(--ds-gray-700);
@@ -277,6 +284,14 @@
   --fc-brand-solid: var(--ds-purple-700);
   --fc-brand-bg: var(--ds-purple-200);
   --fc-brand-border: var(--ds-purple-400);
+  --fc-illus-1: color-mix(in srgb, var(--fc-brand-fg) 55%, var(--ds-gray-1000));
+  --fc-illus-2: var(--fc-brand-fg);
+  --fc-illus-3: color-mix(in srgb, var(--fc-brand-fg) 30%, var(--fc-brand-solid));
+  --fc-illus-4: var(--fc-brand-solid);
+  --fc-illus-context-1: var(--ds-gray-1000);
+  --fc-illus-context-2: var(--ds-gray-900);
+  --fc-illus-context-3: var(--ds-gray-700);
+  --fc-illus-context-4: var(--ds-gray-500);
 }
 
 .dark-theme, [data-theme="dark"] {
@@ -388,6 +403,14 @@
   --fc-brand-solid: var(--ds-purple-800);
   --fc-brand-bg: var(--ds-purple-200);
   --fc-brand-border: var(--ds-purple-400);
+  --fc-illus-1: color-mix(in srgb, var(--fc-brand-fg) 55%, var(--ds-gray-1000));
+  --fc-illus-2: var(--fc-brand-fg);
+  --fc-illus-3: color-mix(in srgb, var(--fc-brand-fg) 30%, var(--fc-brand-solid));
+  --fc-illus-4: var(--fc-brand-solid);
+  --fc-illus-context-1: var(--ds-gray-1000);
+  --fc-illus-context-2: var(--ds-gray-900);
+  --fc-illus-context-3: var(--ds-gray-700);
+  --fc-illus-context-4: var(--ds-gray-500);
   --ds-gray-100: #1a1a1a;
   --ds-gray-200: #1f1f1f;
   --ds-gray-300: #292929;
@@ -599,6 +622,14 @@
     --fc-brand-solid: var(--ds-purple-800);
     --fc-brand-bg: var(--ds-purple-200);
     --fc-brand-border: var(--ds-purple-400);
+    --fc-illus-1: color-mix(in srgb, var(--fc-brand-fg) 55%, var(--ds-gray-1000));
+    --fc-illus-2: var(--fc-brand-fg);
+    --fc-illus-3: color-mix(in srgb, var(--fc-brand-fg) 30%, var(--fc-brand-solid));
+    --fc-illus-4: var(--fc-brand-solid);
+    --fc-illus-context-1: var(--ds-gray-1000);
+    --fc-illus-context-2: var(--ds-gray-900);
+    --fc-illus-context-3: var(--ds-gray-700);
+    --fc-illus-context-4: var(--ds-gray-500);
     --ds-gray-100: #1a1a1a;
     --ds-gray-200: #1f1f1f;
     --ds-gray-300: #292929;

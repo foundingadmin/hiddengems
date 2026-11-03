@@ -1,8 +1,8 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { eq, sql } from 'drizzle-orm';
 import {
-  BACKUP_TABLES, addLeg, bets, changeToOwnPlay, createDb, dumpDatabase, games, getSlip, markPlaced, markSent, openSlip, parlayLegBets, picks, players,
-  removeLeg, seedReference, seedSampleSlip, setStake, slipForWeek, slipLegs, slips,
+  BACKUP_TABLES, addLeg, bets, oddsSnapshots, changeToOwnPlay, createDb, dumpDatabase, games, getSlip, markPlaced, markSent, openSlip, parlayLegBets, picks, players,
+  removeLeg, restoreLeg, seedReference, seedSampleSlip, setStake, slipForWeek, slipLegs, slips,
 } from '../src';
 
 const handle = createDb('memory://');
@@ -82,10 +82,76 @@ describe('slips', () => {
     expect(await getSlip(db, s.id)).toMatchObject({ play: 'suggested', state: 'assessed', appraisal: 'Both legs clear the cut.' });
     expect((await getSlip(db, s.id))!.legs.map((l) => l.selectionKey)).toEqual(['k1', 'k2']);
     expect((await changeToOwnPlay(db, s.id, now)).ok).toBe(true);
-    expect(await removeLeg(db, s.id, 'k2', now)).toEqual({ ok: true, slipId: s.id });
+    expect(await removeLeg(db, s.id, 'k2', now)).toMatchObject({ ok: true, slipId: s.id });
     expect(await getSlip(db, s.id)).toMatchObject({ play: 'own', state: 'draft' });
     await addLeg(db, 'k2', now);
     await db.delete(picks).where(eq(picks.selectionKey, 'k5'));
+  });
+
+  it('undoes a remove: the same leg returns to its place with the price it was added at', async () => {
+    const s = (await openSlip(db, 2026, 10))!;
+    const before = s.legs.map((l) => [l.selectionKey, l.addedPrice]);
+    const [legRow] = await db.select().from(slipLegs).where(eq(slipLegs.selectionKey, 'k1'));
+    const r = await removeLeg(db, s.id, 'k1', now);
+    expect(r).toEqual({ ok: true, slipId: s.id, removed: { selectionKey: 'k1', price: 2.6, addedAt: legRow!.addedAt.toISOString() } });
+    expect((await getSlip(db, s.id))!.legs.map((l) => l.selectionKey)).toEqual(['k2']);
+    // The book posted 2.6 before the leg was added, and the board's price moved while it was off the slip: the leg
+    // keeps the price it was added at.
+    await db.insert(oddsSnapshots).values({
+      runId: 'r0', selectionKey: 'k1', gameId: 'g1', marketId: 'anytime_td', playerId: 'p1', side: 'yes', bookId: 'draftkings',
+      priceDecimal: 2.6, observedAt: new Date(legRow!.addedAt.getTime() - 3_600_000), pulledAt: legRow!.addedAt,
+    });
+    await db.update(picks).set({ price: 3.1 }).where(eq(picks.selectionKey, 'k1'));
+    expect(await restoreLeg(db, s.id, r.removed!, now)).toEqual({ ok: true, slipId: s.id });
+    const back = (await getSlip(db, s.id))!;
+    expect(back.legs.map((l) => [l.selectionKey, l.addedPrice])).toEqual(before);
+    expect(back.legs[0]).toMatchObject({ price: 3.1 });
+    const [again] = await db.select().from(slipLegs).where(eq(slipLegs.selectionKey, 'k1'));
+    expect(again).toMatchObject({ slipId: s.id, gameId: 'g1', playerId: 'p1', priceDecimal: 2.6, addedAt: legRow!.addedAt, betId: null });
+    // A second Undo changes nothing, and removing a leg already gone has nothing to undo.
+    expect(await restoreLeg(db, s.id, r.removed!, now)).toEqual({ ok: true, slipId: s.id });
+    expect((await getSlip(db, s.id))!.legs).toHaveLength(2);
+    expect(await removeLeg(db, s.id, 'nope', now)).toEqual({ ok: true, slipId: s.id });
+    await db.update(picks).set({ price: 2.6 }).where(eq(picks.selectionKey, 'k1'));
+  });
+
+  it('keeps a sent back price only if the book posted it by the time the leg was added', async () => {
+    const s = (await openSlip(db, 2026, 10))!;
+    const r = await removeLeg(db, s.id, 'k1', now);
+    await db.update(picks).set({ price: 3.1 }).where(eq(picks.selectionKey, 'k1'));
+    // A crafted price the book never posted takes the board's price now.
+    expect(await restoreLeg(db, s.id, { ...r.removed!, price: 9.9 }, now)).toEqual({ ok: true, slipId: s.id });
+    expect((await db.select().from(slipLegs).where(eq(slipLegs.selectionKey, 'k1')))[0]).toMatchObject({ priceDecimal: 3.1 });
+    await removeLeg(db, s.id, 'k1', now);
+    // So does a price the book posted only after the leg was added.
+    await db.insert(oddsSnapshots).values({
+      runId: 'r0', selectionKey: 'k1', gameId: 'g1', marketId: 'anytime_td', playerId: 'p1', side: 'yes', bookId: 'draftkings',
+      priceDecimal: 2.9, observedAt: new Date(now.getTime() + 60_000), pulledAt: new Date(now.getTime() + 60_000),
+    });
+    expect(await restoreLeg(db, s.id, { ...r.removed!, price: 2.9 }, new Date(now.getTime() + 120_000))).toEqual({ ok: true, slipId: s.id });
+    expect((await db.select().from(slipLegs).where(eq(slipLegs.selectionKey, 'k1')))[0]).toMatchObject({ priceDecimal: 3.1 });
+    await db.update(picks).set({ price: 2.6 }).where(eq(picks.selectionKey, 'k1'));
+  });
+
+  it('checks what Undo sends back and refuses what addLeg refuses', async () => {
+    const s = (await openSlip(db, 2026, 10))!;
+    const r = await removeLeg(db, s.id, 'k1', now);
+    expect(await restoreLeg(db, s.id, { ...r.removed!, selectionKey: 'nope' }, now)).toEqual({ ok: false, error: 'That prop is no longer on the board' });
+    expect(await restoreLeg(db, s.id, r.removed!, new Date(kickoff.getTime() + 60_000))).toEqual({ ok: false, error: 'Its game has kicked off' });
+    await db.update(picks).set({ kind: 'fools-gold' }).where(eq(picks.selectionKey, 'k1'));
+    expect(await restoreLeg(db, s.id, r.removed!, now)).toEqual({ ok: false, error: 'Only gems go on a slip' });
+    await db.update(picks).set({ kind: 'gem' }).where(eq(picks.selectionKey, 'k1'));
+    await db.update(games).set({ week: 11 }).where(eq(games.id, 'g1'));
+    expect(await restoreLeg(db, s.id, r.removed!, now)).toEqual({ ok: false, error: 'Its game is in another week' });
+    await db.update(games).set({ week: 10 }).where(eq(games.id, 'g1'));
+    expect((await getSlip(db, s.id))!.legs.map((l) => l.selectionKey)).toEqual(['k2']);
+    expect(await restoreLeg(db, s.id, { selectionKey: 'k1', price: 0.5, addedAt: 'not a date' }, now)).toEqual({ ok: true, slipId: s.id });
+    const [row] = await db.select().from(slipLegs).where(eq(slipLegs.selectionKey, 'k1'));
+    expect(row).toMatchObject({ priceDecimal: 2.6, addedAt: now });
+    await db.update(slips).set({ play: 'suggested' }).where(eq(slips.id, s.id));
+    expect(await restoreLeg(db, s.id, r.removed!, now)).toEqual({ ok: false, confirm: 'change', slipId: s.id });
+    await db.update(slips).set({ play: 'own' }).where(eq(slips.id, s.id));
+    expect(await restoreLeg(db, 'b0b0b0b0-0000-4000-8000-000000000000', r.removed!, now)).toEqual({ ok: false, error: 'That slip no longer exists' });
   });
 
   it('marks it sent, then placed once on a double submit, writing one bet per leg', async () => {
@@ -110,6 +176,7 @@ describe('slips', () => {
     expect(placed.state).toBe('placed');
     expect(await openSlip(db, 2026, 10)).toBeNull();
     expect(await removeLeg(db, placed.id, 'k1', now)).toEqual({ ok: false, error: 'This slip is already placed' });
+    expect(await restoreLeg(db, placed.id, { selectionKey: 'k1', price: 2.6, addedAt: now.toISOString() }, now)).toEqual({ ok: false, error: 'This slip is already placed' });
     expect(await markPlaced(db, placed.id, 'slip', now)).toEqual({ ok: false, error: 'This slip is already placed' });
     await addLeg(db, 'k1', new Date(now.getTime() + 1000));
     const next = (await slipForWeek(db, 2026, 10))!;
@@ -148,6 +215,7 @@ describe('slips', () => {
     expect(await openSlip(h.db, 2026, 10)).toBeNull();
     expect(await slipForWeek(h.db, 2026, 10)).toBeNull();
     expect(await addLeg(h.db, 'k1', now)).toEqual({ ok: false, error: 'Slips start once the database update runs' });
+    expect(await restoreLeg(h.db, 'x', { selectionKey: 'k1', price: 2.6, addedAt: now.toISOString() }, now)).toEqual({ ok: false, error: 'Slips start once the database update runs' });
     expect(await parlayLegBets(h.db, ['x'])).toEqual(new Set());
     expect(await seedSampleSlip(h.db, now)).toBeNull();
     expect(Object.keys((await dumpDatabase(h.db)).tables)).not.toContain('slips');

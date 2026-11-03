@@ -39,6 +39,7 @@
       <a class="fc-tab" href="#charts">Charts</a>
       <a class="fc-tab" href="#lists">Forms</a>
       <a class="fc-tab" href="#teams">Teams</a>
+      <a class="fc-tab" href="#moments">Moments</a>
     </nav>
   </div>
 </div>
@@ -2937,6 +2938,15 @@ rating = round(100 × clamp(carat / 10, 0, 1) × clarity / 100)</pre></div>
           <span class="fc-gem" style="--rating: 92" data-live><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>92</span></span>
           <span class="fc-price text-label-14"><span class="fc-visually-hidden">Price </span>2.60</span>
           <button type="button" class="fc-button fc-leg-action" data-variant="tertiary" data-size="tiny" data-shape="square" aria-label="Remove James Cook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+          <button type="button" class="fc-leg-swipe text-label-13"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Remove<span class="fc-visually-hidden"> James Cook</span></button>
+        </li>
+        <!-- A touch pull rests open over the Remove action (components/cert.md, Swipe to remove). -->
+        <li class="fc-leg" data-swipe="open" style="--fc-swipe: var(--fc-leg-swipe-width)">
+          <span class="fc-player"><span class="fc-player-avatar" data-team="was" data-size="sm"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">Deebo Samuel</span><span class="fc-player-number" data-number="1"></span></span><span class="fc-player-meta">NYG @ WAS · <time class="fc-time">2:25 PM</time></span></span></span>
+          <span class="fc-gem" style="--rating: 76" data-live><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>76</span></span>
+          <span class="fc-price text-label-14"><span class="fc-visually-hidden">Price </span>2.55</span>
+          <button type="button" class="fc-button fc-leg-action" data-variant="tertiary" data-size="tiny" data-shape="square" aria-label="Remove Deebo Samuel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+          <button type="button" class="fc-leg-swipe text-label-13"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>Remove<span class="fc-visually-hidden"> Deebo Samuel</span></button>
         </li>
       </ul>
     </div>
@@ -3000,6 +3010,142 @@ rating = round(100 × clamp(carat / 10, 0, 1) × clarity / 100)</pre></div>
   </div>
 </section>
 
+  <!-- ============================================================ Moments -->
+<!-- Moments (patterns/moments.md): gem card states, the dots engine (js/dots.mjs), the Undo toast (js/undo.mjs)
+     and the edge glint hooks. Under reduced motion nothing loops and no dots draw. -->
+<section id="moments" aria-labelledby="moments-h">
+  <style>
+    /* Page-owned layout only. */
+    #moments .mo-strip { max-width: 60rem; }
+    #moments .mo-strip .fc-gem-card { width: min(17rem, 80%); }
+    #moments .mo-tabs { display: grid; position: relative; max-width: 24rem; border-radius: var(--fc-radius-lg); box-shadow: var(--ds-shadow-border); }
+    #moments .mo-toasts { position: relative; min-height: var(--fc-space-16); }
+    #moments .mo-toasts > .fc-toast-region { position: absolute; right: auto; left: 0; bottom: 0; align-items: flex-start; }
+  </style>
+
+  <div class="sp-intro">
+    <h2 id="moments-h" class="text-heading-32">Moments</h2>
+  </div>
+
+  <div class="fc-stack" style="--fc-gap:16px">
+    <div class="fc-section-head">
+      <div><h3 class="text-heading-20">Gem card states</h3></div>
+      <div class="fc-section-head-actions">
+        <button type="button" class="fc-button" data-variant="tertiary" data-size="small" id="mo-read">Mark all read</button>
+        <button type="button" class="fc-button" data-variant="secondary" data-size="small" id="mo-reset">Reset</button>
+      </div>
+    </div>
+    <div class="fc-strip-wrap mo-strip" id="mo-wrap">
+      <div class="fc-strip" role="list" id="mo-strip">
+        <article class="fc-gem-card fc-card" role="listitem" data-unread data-newest aria-label="Ja'Marr Chase, new gem">
+          <div class="fc-gem-card-head">
+            <span class="fc-gem" data-size="lg" style="--rating: 94"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>94</span></span>
+            <span class="fc-player"><span class="fc-player-avatar" data-team="cin" data-size="sm" role="img" aria-label="Cincinnati Bengals"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">Ja'Marr Chase</span><span class="fc-player-number"><span aria-hidden="true">#1</span><span class="fc-visually-hidden">, number 1</span></span></span><span class="fc-player-meta">WR · CIN @ KC</span></span></span>
+          </div>
+          <div class="fc-gem-card-foot"><span class="text-label-13">Unread, newest</span></div>
+        </article>
+        <article class="fc-gem-card fc-card" role="listitem" data-unread aria-label="James Cook, new gem">
+          <div class="fc-gem-card-head">
+            <span class="fc-gem" data-size="lg" style="--rating: 81"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>81</span></span>
+            <span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm" role="img" aria-label="Buffalo Bills"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">James Cook</span><span class="fc-player-number"><span aria-hidden="true">#4</span><span class="fc-visually-hidden">, number 4</span></span></span><span class="fc-player-meta">RB · MIA @ BUF</span></span></span>
+          </div>
+          <div class="fc-gem-card-foot"><span class="text-label-13">Unread</span></div>
+        </article>
+        <article class="fc-gem-card fc-card" role="listitem" data-selected aria-label="Derrick Henry, on your slip">
+          <div class="fc-gem-card-head">
+            <span class="fc-gem" data-size="lg" style="--rating: 64"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>64</span></span>
+            <span class="fc-player"><span class="fc-player-avatar" data-team="bal" data-size="sm" role="img" aria-label="Baltimore Ravens"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">Derrick Henry</span><span class="fc-player-number"><span aria-hidden="true">#22</span><span class="fc-visually-hidden">, number 22</span></span></span><span class="fc-player-meta">RB · CIN @ BAL</span></span></span>
+          </div>
+          <div class="fc-gem-card-foot"><span class="text-label-13">Selected</span></div>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <div class="fc-stack" style="--fc-gap:16px">
+    <div class="fc-section-head">
+      <div><h3 class="text-heading-20">Add a gem and the drawer</h3></div>
+      <div class="fc-section-head-actions"><button type="button" class="fc-button" data-variant="secondary" data-size="small" id="mo-reset-add">Reset</button></div>
+    </div>
+    <style>#moments .mo-add { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--fc-space-6); } #moments .mo-add > .fc-gem-list { flex: 0 1 24rem; } #moments .mo-add > .fc-railslip { flex: 0 0 14rem; margin: 0; }</style>
+    <div class="mo-add">
+      <ul class="fc-gem-list" aria-label="Drawer specimen">
+        <li class="fc-gem-item" id="mo-add-row">
+          <a class="fc-gem-row" href="#moments" id="mo-open"><span class="fc-gem" style="--rating: 81"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>81</span></span><span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm" role="img" aria-label="Buffalo Bills"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">James Cook</span></span><span class="fc-player-meta">RB · MIA @ BUF</span></span></span><span class="fc-gem-row-end"><span class="fc-price text-label-14">2.60</span></span></a>
+          <button type="button" class="fc-button" data-variant="secondary" data-size="small" data-shape="square" aria-label="Add James Cook to slip" id="mo-add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+        </li>
+      </ul>
+      <section class="fc-railslip fc-card" aria-labelledby="mo-rs-h">
+        <header class="fc-railslip-head"><h4 id="mo-rs-h" class="text-heading-14">Slip 2</h4><span class="text-label-12"><span class="fc-railslip-count" id="mo-count">2</span> leg parlay</span></header>
+      </section>
+    </div>
+    <dialog class="fc-sheet" data-motion="spring" data-phone="full" id="mo-sheet" aria-labelledby="mo-sheet-h">
+      <header class="fc-sheet-header"><div class="fc-sheet-titlebar"><div class="fc-sheet-titles"><h4 id="mo-sheet-h" class="fc-sheet-title text-heading-20">James Cook</h4></div>
+        <button type="button" class="fc-button fc-sheet-close" data-variant="tertiary" data-size="small" data-shape="square" aria-label="Close" id="mo-sheet-x"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="m4 4 8 8m0-8-8 8"/></svg></button></div></header>
+      <div class="fc-sheet-body"><dl class="fc-description" data-compact><div><dt>Price</dt><dd>2.60</dd></div><div><dt>Rating</dt><dd>81</dd></div></dl></div>
+    </dialog>
+    <script>
+    // Add: the row takes data-checked, the count pops, the glint is the Edge glint specimen below. Drawer: the
+    // spring sheet with a ripple on a stage hosted in the dialog, and data-closing before close().
+    addEventListener('DOMContentLoaded', () => {
+      const { createStage, reducedMotion } = window.FacetDots, $ = (id) => document.getElementById(id);
+      const row = $('mo-add-row'), sheet = $('mo-sheet');
+      $('mo-add').addEventListener('click', () => {
+        if (row.hasAttribute('data-checked')) return;
+        row.setAttribute('data-checked', '');
+        const old = $('mo-count'), next = old.cloneNode();
+        next.textContent = String(Number(old.textContent) + 1);
+        next.setAttribute('data-pop', '');
+        old.replaceWith(next);
+      });
+      $('mo-reset-add').addEventListener('click', () => { row.removeAttribute('data-checked'); $('mo-count').textContent = '2'; });
+      $('mo-open').addEventListener('click', (e) => {
+        e.preventDefault();
+        const at = row.getBoundingClientRect();
+        row.setAttribute('aria-selected', 'true');
+        sheet.showModal();
+        if (reducedMotion()) return;
+        const stage = createStage(sheet, { outset: 'var(--fc-space-3)' });
+        stage.ripple(sheet, { from: { x: at.left + at.width / 2, y: at.top + at.height / 2 }, duration: 760 }).then(() => stage.destroy());
+      });
+      const close = () => {
+        if (reducedMotion()) { sheet.close(); return; }
+        sheet.setAttribute('data-closing', '');
+        sheet.addEventListener('animationend', function end(e) {
+          if (e.target !== sheet || e.pseudoElement) return;
+          sheet.removeEventListener('animationend', end);
+          sheet.close();
+          sheet.removeAttribute('data-closing');
+        });
+      };
+      $('mo-sheet-x').addEventListener('click', close);
+      sheet.addEventListener('cancel', (e) => { e.preventDefault(); close(); });
+      sheet.addEventListener('close', () => row.removeAttribute('aria-selected'));
+    });
+    </script>
+  </div>
+
+  <div class="fc-stack" style="--fc-gap:16px">
+    <div class="fc-section-head">
+      <div><h3 class="text-heading-20">Undo toast</h3></div>
+      <div class="fc-section-head-actions"><button type="button" class="fc-button" data-variant="secondary" data-size="small" id="mo-undo">Remove a leg</button></div>
+    </div>
+    <div class="mo-toasts"><div class="fc-toast-region" role="status" id="mo-region"></div></div>
+  </div>
+
+  <div class="fc-stack" style="--fc-gap:16px">
+    <div class="fc-section-head">
+      <div><h3 class="text-heading-20">Edge glint</h3></div>
+      <div class="fc-section-head-actions"><button type="button" class="fc-button" data-variant="secondary" data-size="small" id="mo-glint">Add to slip</button></div>
+    </div>
+    <nav class="fc-tabbar mo-tabs" aria-label="Glint specimen" id="mo-tabs">
+      <a href="#moments"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg><span class="text-label-12">Gems</span></a>
+      <a href="#moments" id="mo-slips"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg><span class="text-label-12">Slips</span></a>
+      <a href="#moments"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg><span class="text-label-12">Jeweler</span></a>
+    </nav>
+  </div>
+</section>
+
 </main>
 
 <script src="semantic-map.js"></script>
@@ -3008,7 +3154,48 @@ rating = round(100 × clamp(carat / 10, 0, 1) × clarity / 100)</pre></div>
 <script src="tips.js"></script>
 <script src="time.js"></script>
 <script src="forms.js"></script>
+<script src="dots.js"></script>
+<script src="undo.js"></script>
 <script src="specimen.js"></script>
+<script>
+// Moments specimen (patterns/moments.md): the newest unread card's orbit runs on a stage inside its strip; the
+// sweep, the Undo toast and the glint use one viewport stage.
+(() => {
+  const { createStage } = window.FacetDots, { mountUndo } = window.FacetUndo;
+  const wrap = document.getElementById('mo-wrap'), cards = [...wrap.querySelectorAll('.fc-gem-card')];
+  let page = null, orbit = null;
+  const stage = () => (page ||= createStage());
+  const startOrbit = () => {
+    const newest = wrap.querySelector('[data-newest][data-unread]');
+    if (!newest || orbit) return;
+    const local = createStage(wrap, { outset: 'var(--fc-space-2)' }), stop = new AbortController();
+    local.orbit(newest, { count: 6, period: 5200, signal: stop.signal });
+    orbit = () => { stop.abort(); local.destroy(); orbit = null; };
+  };
+  startOrbit();
+  document.getElementById('mo-read').addEventListener('click', () => {
+    orbit?.();
+    cards.filter((c) => c.hasAttribute('data-unread')).forEach((c, i) => {
+      c.style.setProperty('--fc-state-delay', `${170 * (i + 1)}ms`);
+      c.removeAttribute('data-unread');
+      stage().sweep(c, { from: 'left', duration: 420, count: 16, size: [2.6, 0.3], spread: [[16, 13], [30, 20]], opacity: [1, 0.3], arc: 0, lift: 0, inset: 10, delay: i * 170 });
+    });
+  });
+  document.getElementById('mo-reset').addEventListener('click', () => {
+    cards.slice(0, 2).forEach((c) => { c.style.removeProperty('--fc-state-delay'); c.setAttribute('data-unread', ''); });
+    startOrbit();
+  });
+  const region = document.getElementById('mo-region');
+  document.getElementById('mo-undo').addEventListener('click', () => {
+    region.innerHTML = '<div class="fc-toast"><span class="fc-toast-text text-copy-14">Leg removed</span><span class="fc-toast-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><button type="button" class="fc-button" data-variant="secondary" data-size="small">Undo</button></div>';
+    const toast = region.firstElementChild, undo = mountUndo(toast, { onExpire: () => toast.remove() });
+    toast.querySelector('button').addEventListener('click', () => { undo.destroy(); toast.remove(); });
+  });
+  document.getElementById('mo-glint').addEventListener('click', () => {
+    stage().ripple(document.getElementById('mo-tabs'), { from: document.getElementById('mo-slips') });
+  });
+})();
+</script>
 <script>
 const drawGems = () => { document.getElementById('gems').innerHTML = [38, 64, 81, 92].map((r) => gem(r)).join('') + gem(null); };
 drawGems();

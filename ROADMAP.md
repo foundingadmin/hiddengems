@@ -39,8 +39,11 @@ thread.
 11. **Backtest baseline.** The weekly backtest scores 0.1313 on full Weeks 4 to 8 data; the 0.1360 baseline was set
     before most Week 8 snap counts landed, so a regression under 0.0047 would not warn. Recommend: move the
     baseline to 0.1313 and record it in the PRD (section 4, goal 2).
-12. **PRD v1.2.** Once 1 to 11 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
-   Outlier as price source, F2.8, F3.4, the old pipeline's freeze and close commands.
+12. **Clear slip.** The micro moments package animates erasing a whole slip with a 5 second Undo, but neither the app
+    nor the wireframes have a Clear slip control. Recommend: no Clear slip for now, since a slip holds a few legs and
+    Remove with Undo covers it. The Erase moment waits until you want one (sprint 2026-11-03-3, e4).
+13. **PRD v1.2.** Once 1 to 12 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
+    Outlier as price source, F2.8, F3.4, the old pipeline's freeze and close commands.
 
 ## Where it stands
 
@@ -61,6 +64,7 @@ thread.
 | Phase 2, the read | F2.1 to F2.8 | Built: live price line, core sample, trend lines, implied points, matchup and weather in the gem sheet; weekly backtest on Data health (sprint 2026-11-03-2) | Splits and the loupe (F2.2), notes (F2.3, call 10), consensus (F2.6) |
 | Phase 3, the slip | F3.1 to F3.7 | Built: slips and states, lose it all, DraftKings slip link, handoff, change dialog, history, graded slip, the Jeweler | The Jeweler's key (call 5), provenance report data (F3.7), stake range (call 6) |
 | Facet parts from the brief | build brief | Promoted: every part the brief lists | |
+| Micro moments | `docs/animation/micro-moments` | Built in sprint 2026-11-03-3: 9 of 11 moments on Facet's dots engine | Erase (call 12), New connection (no screen) |
 
 ## Season calendar
 
@@ -143,6 +147,22 @@ Phase 3. Ship by Sat Nov 28. About 5.5 review hours.
 | The Jeweler (F3.3) | data and screens, L | Sheet on desktop, tab on phone; each ask carries the card and the slip; answers cite the app's numbers; no placing action exists | Call 5 |
 | Slip history and graded slip | screens, M | Season stats, past slips, the graded slip with took, closed and beat close per leg | M1 grade and box |
 | Provenance report (F3.7) | screens, M | Hit rate and average CLV by insight; under 15 graded gems shows cloudy | M2 notes and splits |
+
+## Micro moments
+
+The dot moments from `docs/animation/micro-moments/`, built on Facet's engine (`packages/facet/patterns/moments.md`).
+Each moment ships with its surface.
+
+| Moment | Surface | State |
+|---|---|---|
+| Foundation | Facet engine, tokens, card states, Undo toast, glint hooks; `apps/web/lib/moments` | Built |
+| Unread gems | New gems row | Built: unread tint and sheen, six dots circle the newest |
+| Unread to read | Mark read, Mark all read | Built: a cloud sweeps each card; a failure puts the shine back |
+| Add a gem, drawer | Board Add, Slips in the rail and tab bar, gem sheet | Built: Slips glints and the rail count pops; the sheet springs open with an edge ripple, its row stays selected |
+| Remove, swipe | The slip | Built: × or a phone swipe removes at once, the row sweeps and closes, Undo restores the leg at its added price |
+| Erase | Clear slip | Waits on call 12: the slip has no Clear control |
+| Send | Send handoff | Built: Open DraftKings dissolves the slip card into the gem; the handoff screen is unchanged |
+| New connection | A connections screen | Waits on the screen |
 
 ## Prove it (M4)
 

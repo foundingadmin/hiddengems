@@ -2612,6 +2612,184 @@ rating = round(100 × clamp(carat / 10, 0, 1) × clarity / 100)</pre></div>
   <div class="fc-note"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span>Team colors and logos stay inside team marks and player tiles. Rows, text, charts and status keep Facet colors, so a red team never reads as a loss.</span></div>
 </section>
 
+  <!-- ============================================================ Slips -->
+<!-- Slip parts: appraisal certificate, rail slip, numbered steps, signed money, chat. CSS in css/slip.css. -->
+<section id="slips" aria-labelledby="slips-h">
+  <style>
+    /* Page-owned layout only. */
+    #slips .sl-certs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); gap: var(--fc-space-6); align-items: start; }
+    #slips .sl-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--fc-space-8); }
+    #slips .sl-rail { width: 232px; height: 34rem; border-radius: var(--fc-radius-lg); box-shadow: var(--ds-shadow-border); overflow: hidden; }
+    #slips .sl-rail > .fc-sidenav { position: relative; height: 100%; box-shadow: none; }
+    #slips .sl-steps { flex: 1 1 24rem; max-width: 40rem; display: flex; flex-direction: column; gap: var(--fc-space-6); }
+    #slips .sl-chat { width: min(100%, 30rem); display: flex; flex-direction: column; border-radius: var(--fc-radius-lg); }
+    #slips .sl-chat > * { padding: var(--fc-space-4) var(--fc-space-5); }
+    #slips .sl-chat > * + * { border-top: 1px solid var(--fc-border-default); }
+    #slips .sl-chat > footer { display: flex; flex-direction: column; gap: var(--fc-space-3); }
+    #slips .sl-money td:first-child { white-space: nowrap; }
+    #slips .sl-money { flex: 1 1 22rem; max-width: 40rem; display: flex; flex-direction: column; gap: var(--fc-space-6); }
+  </style>
+
+  <div class="sp-intro">
+    <h2 id="slips-h" class="text-heading-32">Slips and the Jeweler</h2>
+  </div>
+
+  <div class="fc-stack" style="--fc-gap:16px">
+    <h3 class="text-heading-20">Appraisal certificate</h3>
+    <div class="sl-certs">
+      <article class="fc-cert fc-card" aria-labelledby="sl-cert-a">
+        <header class="fc-cert-head">
+          <p class="fc-cert-kicker text-label-12">Appraisal certificate</p>
+          <h4 id="sl-cert-a" class="text-heading-24">Slip 1</h4>
+          <p class="fc-cert-meta text-copy-14">Suggested play · 2 leg parlay</p>
+        </header>
+        <ul class="fc-legs">
+          <li class="fc-leg">
+            <span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">James Cook</span><span class="fc-player-number" data-number="4"></span></span><span class="fc-player-meta">MIA @ BUF · <time class="fc-time">11:00 AM</time></span></span></span>
+            <span class="fc-gem" style="--rating: 92" data-live><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>92</span></span>
+            <span class="fc-price text-label-14"><span class="fc-visually-hidden">Price </span>2.60</span>
+          </li>
+          <li class="fc-leg">
+            <span class="fc-player"><span class="fc-player-avatar" data-team="was" data-size="sm"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">Deebo Samuel</span><span class="fc-player-number" data-number="1"></span></span><span class="fc-player-meta">NYG @ WAS · <time class="fc-time">2:25 PM</time></span></span></span>
+            <span class="fc-gem" style="--rating: 76; --fc-gem-delay: 200ms" data-live><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>76</span></span>
+            <span class="fc-price text-label-14"><span class="fc-visually-hidden">Price </span>2.55</span>
+          </li>
+        </ul>
+        <div class="fc-stat-strip" role="group" aria-label="Stake and payout">
+          <div class="fc-stat"><p class="fc-stat-label">Stake</p><p class="fc-stat-value">$15.00</p></div>
+          <div class="fc-stat"><p class="fc-stat-label">Pays</p><p class="fc-stat-value">$99.45</p></div>
+          <div class="fc-stat"><p class="fc-stat-label">All hit</p><p class="fc-stat-value">23%</p><p class="fc-stat-basis">49% × 47%</p></div>
+        </div>
+        <p class="fc-loseit"><span class="fc-loseit-label text-heading-16">Lose it all</span><span class="fc-loseit-value text-heading-40">77%</span></p>
+      </article>
+
+      <article class="fc-cert fc-card" aria-labelledby="sl-cert-b">
+        <header class="fc-cert-head">
+          <p class="fc-cert-kicker text-label-12">Appraisal certificate</p>
+          <h4 id="sl-cert-b" class="text-heading-24">Slip 2</h4>
+          <p class="fc-cert-meta text-copy-14">Your own play · 2 leg parlay</p>
+        </header>
+        <ul class="fc-legs">
+          <li class="fc-leg">
+            <span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">James Cook</span><span class="fc-player-number" data-number="4"></span><span class="fc-badge" data-variant="amber" data-size="sm" data-contrast="low"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><path d="M8 12h8"/></svg>Same game</span></span><span class="fc-player-meta">MIA @ BUF · <time class="fc-time">11:00 AM</time></span></span></span>
+            <span class="fc-gem" style="--rating: 92" data-live><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>92</span></span>
+            <span class="fc-price text-label-14"><span class="fc-visually-hidden">Price </span>2.60</span>
+          </li>
+          <li class="fc-leg">
+            <span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">Khalil Shakir</span><span class="fc-player-number" data-number="10"></span><span class="fc-badge" data-variant="amber" data-size="sm" data-contrast="low"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><path d="M8 12h8"/></svg>Same game</span></span><span class="fc-player-meta">MIA @ BUF · <time class="fc-time">11:00 AM</time></span></span></span>
+            <span class="fc-gem" style="--rating: 88; --fc-gem-delay: 200ms" data-live><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>88</span></span>
+            <span class="fc-price text-label-14"><span class="fc-visually-hidden">Price </span>3.40</span>
+          </li>
+        </ul>
+        <div class="fc-stat-strip" role="group" aria-label="Stake and payout">
+          <div class="fc-stat"><p class="fc-stat-label">Stake</p><p class="fc-stat-value">$10.00</p></div>
+          <div class="fc-stat"><p class="fc-stat-label">Pays</p><p class="fc-stat-value">$88.40</p></div>
+          <div class="fc-stat"><p class="fc-stat-label">All hit</p><p class="fc-stat-value"><span aria-hidden="true">–</span><span class="fc-visually-hidden">Unknown</span></p><p class="fc-stat-basis">Correlated</p></div>
+        </div>
+        <div class="fc-loseit" data-correlated>
+          <span class="fc-loseit-label text-heading-16">Lose it all</span>
+          <span class="fc-badge" data-variant="amber" data-size="lg" data-contrast="low"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><path d="M8 12h8"/></svg>Correlated</span>
+          <p class="fc-loseit-note text-copy-13">Same game legs move together, so no chance is shown.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="fc-stack" style="--fc-gap:16px">
+    <h3 class="text-heading-20">Rail slip</h3>
+    <div class="sl-rail">
+      <aside class="fc-sidenav" aria-label="Rail with a slip in progress">
+        <div class="fc-sidenav-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>Hidden Gems</div>
+        <nav class="fc-sidenav-level" aria-label="Main">
+          <ul class="fc-sidenav-list" role="list">
+            <li><a class="fc-sidenav-item" href="#slips" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg><span>Gems</span></a></li>
+            <li><a class="fc-sidenav-item" href="#slips"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg><span>Slips</span></a></li>
+          </ul>
+        </nav>
+        <section class="fc-railslip fc-card" aria-labelledby="sl-rail-h">
+          <header class="fc-railslip-head"><h4 id="sl-rail-h" class="text-heading-14">Slip 1</h4><span class="text-label-12">Suggested parlay</span></header>
+          <ul class="fc-railslip-list text-label-13">
+            <li class="fc-railslip-row"><span>James Cook</span><span>2.60</span></li>
+            <li class="fc-railslip-row"><span>Deebo Samuel</span><span>2.55</span></li>
+          </ul>
+          <hr class="fc-separator">
+          <dl class="fc-railslip-list text-label-13">
+            <div class="fc-railslip-row"><dt>$15 pays</dt><dd>$99.45</dd></div>
+            <div class="fc-railslip-row"><dt>Lose it all</dt><dd>77%</dd></div>
+          </dl>
+          <a class="fc-button" data-size="small" href="#sl-cert-a">Review slip</a>
+        </section>
+        <ul class="fc-sidenav-list" role="list" style="padding: 0 var(--fc-space-2) var(--fc-space-2)">
+          <li><a class="fc-sidenav-item" href="#sl-chat-h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg><span>Ask the Jeweler</span></a></li>
+        </ul>
+        <div class="fc-sidenav-foot"><span class="fc-status"><span class="fc-status-dot" data-state="live" aria-hidden="true"></span><span>Odds pulled <time class="fc-timestamp" title="Sun, Nov 8, 2026, 8:43 AM MT" data-relative>2m ago</time></span></span></div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="sl-row">
+    <div class="sl-steps">
+      <h3 class="text-heading-20">Numbered steps</h3>
+      <ol class="fc-steps">
+        <li data-state="done"><div class="fc-step-body"><h4 class="text-heading-16"><span class="fc-visually-hidden">Done. </span>Open your slip in DraftKings</h4>
+          <p class="text-copy-14">Both legs land in your DraftKings bet slip. The link only adds the picks.</p>
+          <a class="fc-button" data-variant="secondary" href="https://sportsbook.draftkings.com/" target="_blank" rel="noopener noreferrer">Open DraftKings<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></div></li>
+        <li aria-current="step"><div class="fc-step-body"><h4 class="text-heading-16">Set the parlay and stake</h4>
+          <p class="text-copy-14">In DraftKings, put $15 on the parlay, check it and tap Place Bet. You choose singles or a parlay, and the stake, there.</p></div></li>
+        <li><div class="fc-step-body"><h4 class="text-heading-16">Mark it placed</h4>
+          <p class="text-copy-14">So History can grade it Tuesday against the closing price.</p>
+          <div class="fc-row"><button type="button" class="fc-button" data-variant="secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Placed as suggested</button><button type="button" class="fc-button" data-variant="tertiary">Placed something else</button></div></div></li>
+      </ol>
+      <div class="fc-note" data-type="info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.7 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/></svg><span>Hidden Gems never places bets or touches your money.</span></div>
+    </div>
+
+    <div class="sl-money">
+      <h3 class="text-heading-20">Signed money</h3>
+      <div class="fc-stat-strip" data-variant="cells" role="group" aria-label="Season so far">
+        <div class="fc-stat"><p class="fc-stat-label">Profit</p><p class="fc-stat-value"><span class="fc-money" data-sign="positive">+$90.20</span></p><p class="fc-stat-basis">On $60 placed</p></div>
+        <div class="fc-stat"><p class="fc-stat-label">Suggested plays</p><p class="fc-stat-value"><span class="fc-money" data-sign="positive">+$100.20</span></p><p class="fc-stat-basis">3 slips</p></div>
+        <div class="fc-stat"><p class="fc-stat-label">Your own plays</p><p class="fc-stat-value"><span class="fc-money" data-sign="negative">&minus;$10.00</span></p><p class="fc-stat-basis">1 slip</p></div>
+      </div>
+      <div class="fc-table-wrap"><table class="fc-table">
+        <caption class="fc-visually-hidden">Placed slips, newest first</caption>
+        <thead><tr><th scope="col">Week</th><th scope="col" data-grow>Slip</th><th scope="col">Result</th><th scope="col" data-align="numeric">Profit</th></tr></thead>
+        <tbody>
+          <tr><td>Week 8</td><th scope="row">Cook and McLaurin</th><td><span class="fc-signal" data-signal="go">Earned</span></td><td data-align="numeric"><span class="fc-money" data-sign="positive">+$100.20</span></td></tr>
+          <tr><td>Week 7</td><th scope="row">Kincaid single</th><td><span class="fc-signal">Void</span></td><td data-align="numeric"><span class="fc-money">$0.00</span></td></tr>
+          <tr><td>Week 6</td><th scope="row">Cook and Samuel</th><td><span class="fc-signal" data-signal="stop">Missed</span></td><td data-align="numeric"><span class="fc-money" data-sign="negative">&minus;$15.00</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="fc-stack" style="--fc-gap:16px">
+    <h3 id="sl-chat-h" class="text-heading-20">Chat</h3>
+    <div class="sl-chat fc-card">
+      <header>
+        <ul class="fc-chat-context" aria-label="Looking at">
+          <li><span class="fc-badge" data-size="sm" data-contrast="low">About James Cook</span></li>
+          <li><span class="fc-badge" data-size="sm" data-contrast="low">Slip 1</span></li>
+        </ul>
+      </header>
+      <div class="fc-chat" role="log" aria-label="Conversation with the Jeweler">
+        <div class="fc-msg text-copy-14" data-from="user"><p class="fc-visually-hidden">You</p><p>Why is Cook rated above Shakir when Shakir pays more?</p></div>
+        <div class="fc-msg text-copy-14" data-from="assistant">
+          <p class="fc-msg-by text-label-12"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>The Jeweler</p>
+          <p>Both clear the price by 10 points or more, so edge counts in full for each. The difference is clarity. Cook's notes agree with his numbers, 92. Shakir's read rests on a slot role that only started in Week 6, so his clarity is 88.</p>
+          <p>The longer price pays more when it hits, not more often. Cook is the likelier of the two, 49% to 42%.</p>
+        </div>
+      </div>
+      <footer>
+        <ul class="fc-suggest" aria-label="Suggested questions">
+          <li><button type="button" class="fc-button" data-variant="secondary" data-size="small" data-shape="rounded"><span>What could change before kickoff?</span></button></li>
+          <li><button type="button" class="fc-button" data-variant="secondary" data-size="small" data-shape="rounded"><span>Compare with McLaurin</span></button></li>
+        </ul>
+        <form class="fc-composer" onsubmit="return false"><input class="fc-input" type="text" placeholder="Ask about a gem or your slip" aria-label="Ask the Jeweler"><button type="submit" class="fc-button" data-shape="square" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 21.7a.5.5 0 0 0 .9-.1l6.5-19a.5.5 0 0 0-.6-.6l-19 6.5a.5.5 0 0 0-.1.9l7.9 3.2a2 2 0 0 1 1.1 1.1z"/><path d="m21.9 2.1-10.9 10.9"/></svg></button></form>
+      </footer>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <script src="semantic-map.js"></script>

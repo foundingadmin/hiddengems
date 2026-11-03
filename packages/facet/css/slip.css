@@ -1,0 +1,250 @@
+/* Facet slip parts [F]: the appraisal certificate, the rail slip, numbered steps, signed money and chat.
+   Promoted from the approved wireframes (docs/wireframes/hg-wire.css, sprint 2026-11-03). Built only from
+   Facet tokens and existing parts (.fc-card, .fc-player, .fc-gem, .fc-price, .fc-stat, .fc-badge,
+   .fc-button, .fc-input). Docs: components/cert.md, rail-slip.md, steps.md, money.md, chat.md. */
+
+/* ================================================================== Appraisal certificate
+   <article class="fc-cert fc-card" aria-labelledby="cert-h">
+     <header class="fc-cert-head"><p class="fc-cert-kicker">Appraisal certificate</p><h2 id="cert-h">Slip 1</h2>
+       <p class="fc-cert-meta">Suggested play · 2 leg parlay</p></header>
+     <ul class="fc-legs"><li class="fc-leg">player, gem mark, price</li></ul>
+     <div class="fc-stat-strip">stake, pays, all hit</div>
+     <p class="fc-loseit"><span class="fc-loseit-label">Lose it all</span><span class="fc-loseit-value">77%</span></p>
+   </article>
+   Same game legs carry a "Same game" flag beside the name, and the lose it all chance turns into a
+   Correlated flag with no number (docs/prd.md F3.2). */
+.fc-cert {
+  container: fc-cert / inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fc-space-5);
+  min-width: 0;
+  padding: var(--fc-space-6);
+  border-radius: var(--fc-radius-lg);
+}
+.fc-cert-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fc-space-1);
+  padding-bottom: var(--fc-space-4);
+  border-bottom: 1px solid var(--fc-border-default);
+}
+.fc-cert-head > * { margin: 0; }
+.fc-cert-kicker, .fc-cert-meta { color: var(--fc-text-secondary); }
+
+/* Legs share one grid, so every rating mark and price sits in the same lane. */
+.fc-legs {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  column-gap: var(--fc-space-4);
+  row-gap: var(--fc-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.fc-leg {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: center;
+  min-width: 0;
+}
+.fc-leg > .fc-player { grid-column: 1; min-width: 0; }
+.fc-leg > .fc-gem { grid-column: 2; justify-self: end; }
+.fc-leg > .fc-price { grid-column: 3; }
+/* A flag beside the name drops under it before the name truncates. */
+.fc-leg .fc-player-line { flex-wrap: wrap; row-gap: var(--fc-space-0_5); }
+.fc-leg .fc-player-line > .fc-badge { flex: none; align-self: center; }
+
+/* The stakes strip keeps three peers on one row down to phone width. */
+.fc-cert > .fc-stat-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+/* Lose it all: the one number the slip never hides, set large. */
+.fc-loseit {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--fc-space-2) var(--fc-space-4);
+  margin: 0;
+  padding: var(--fc-space-4) var(--fc-space-5);
+  border-radius: var(--fc-radius-md);
+  background: var(--fc-surface-subtle);
+  box-shadow: var(--ds-shadow-border);
+}
+.fc-loseit-value { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fc-loseit[data-correlated] { align-items: center; }
+.fc-loseit-note { grid-column: 1 / -1; margin: 0; color: var(--fc-text-secondary); }
+
+@container fc-cert (max-width: 28rem) {
+  .fc-cert > .fc-stat-strip .fc-stat { padding-inline: var(--fc-space-3); }
+  .fc-cert > .fc-stat-strip .fc-stat:first-child { padding-left: 0; }
+  .fc-loseit { padding: var(--fc-space-4); }
+}
+@container fc-shell (max-width: 767px) {
+  .fc-cert { padding: var(--fc-space-4); gap: var(--fc-space-4); }
+}
+
+/* ================================================================== Rail slip
+   The slip in progress, in the desktop rail between the nav level (which grows) and the pinned
+   Ask the Jeweler list. Hidden in the narrow shell, where Slips is a tab.
+   <section class="fc-railslip fc-card" aria-labelledby="rs-h">
+     <header class="fc-railslip-head"><h2 id="rs-h">Slip 1</h2><span>Suggested parlay</span></header>
+     <ul class="fc-railslip-list"><li class="fc-railslip-row"><span>James Cook</span><span>2.60</span></li></ul>
+     <hr class="fc-separator">
+     <dl class="fc-railslip-list"><div class="fc-railslip-row"><dt>$15 pays</dt><dd>$99.45</dd></div></dl>
+     <a class="fc-button" data-size="small" href="/slips">Review slip</a>
+   </section> */
+.fc-railslip {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fc-space-2);
+  margin: 0 var(--fc-space-3) var(--fc-space-3);
+  padding: var(--fc-space-3);
+  border-radius: var(--fc-radius-md);
+}
+.fc-railslip-list { display: flex; flex-direction: column; gap: var(--fc-space-2); margin: 0; padding: 0; list-style: none; }
+.fc-railslip-head, .fc-railslip-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--fc-space-2);
+  min-width: 0;
+}
+.fc-railslip-head > *, .fc-railslip-row > * { margin: 0; }
+.fc-railslip-head > :first-child, .fc-railslip-row > :first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fc-railslip-head > :last-child, .fc-railslip-row > :last-child { flex: none; }
+.fc-railslip-row > :last-child { font-variant-numeric: tabular-nums; }
+.fc-railslip-head > :last-child, .fc-railslip dt { color: var(--fc-text-secondary); }
+.fc-railslip > .fc-separator { margin: var(--fc-space-1) 0; }
+.fc-railslip > .fc-button { width: 100%; margin-top: var(--fc-space-1); }
+@container fc-shell (max-width: 767px) {
+  .fc-railslip { display: none; }
+}
+
+/* ================================================================== Numbered steps
+   An ordered task the reader carries out in order, often outside the app. Not the stepper
+   (components/stepper.md), which changes a number.
+   <ol class="fc-steps"><li><div class="fc-step-body"><h2>Open your slip in DraftKings</h2><p>…</p>
+     <a class="fc-button" …>Open DraftKings</a></div></li></ol>
+   Optional states on the li: aria-current="step" rings the number; data-state="done" swaps it for a check
+   (say "Done" in the heading for screen readers, in .fc-visually-hidden). */
+.fc-steps {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: fc-step;
+}
+.fc-steps > li {
+  counter-increment: fc-step;
+  display: grid;
+  grid-template-columns: var(--fc-control-small) minmax(0, 1fr);
+  column-gap: var(--fc-space-4);
+  padding: var(--fc-space-5) 0;
+  border-top: 1px solid var(--fc-border-default);
+}
+.fc-steps > li:first-child { padding-top: 0; border-top: 0; }
+.fc-steps > li:last-child { padding-bottom: 0; }
+.fc-steps > li::before {
+  content: counter(fc-step);
+  grid-row: 1;
+  grid-column: 1;
+  display: grid;
+  place-items: center;
+  width: var(--fc-control-small);
+  height: var(--fc-control-small);
+  border-radius: var(--fc-radius-full);
+  box-shadow: inset 0 0 0 1px var(--fc-border-default);
+  color: var(--fc-text-primary);
+  font: 500 14px/20px var(--fc-font-sans); /* text-label-14 */
+  font-variant-numeric: tabular-nums;
+}
+.fc-steps > li[aria-current="step"]::before { box-shadow: inset 0 0 0 1.5px var(--fc-text-primary); }
+.fc-steps > li[data-state="done"]::before {
+  content: "";
+  background: var(--fc-surface-contrast);
+  box-shadow: none;
+}
+.fc-steps > li[data-state="done"]::after {
+  content: "";
+  grid-row: 1;
+  grid-column: 1;
+  align-self: start;
+  justify-self: center;
+  margin-top: var(--fc-space-2); /* (32 - 16) / 2 centers it on the circle */
+  width: var(--fc-space-4);
+  height: var(--fc-space-4);
+  background: var(--fc-text-inverse);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.fc-step-body {
+  grid-row: 1;
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--fc-space-2);
+  min-width: 0;
+  /* Center the heading's first line on the 32px number. */
+  padding-top: var(--fc-space-1);
+}
+.fc-step-body > :is(h2, h3, h4, p) { margin: 0; }
+.fc-step-body > p { color: var(--fc-text-secondary); }
+.fc-step-body > :is(.fc-button, .fc-row) { margin-top: var(--fc-space-1); }
+.fc-step-body > .fc-row { flex-wrap: wrap; }
+
+/* ================================================================== Signed money
+   A result in money (profit, loss) always carries its sign in the text: +$100.20, −$15.00 (U+2212).
+   The sign is the cue; edge green or red repeats it. Stakes, payouts and balances are amounts, not
+   results, so they stay plain. Zero has no sign and no color.
+   <span class="fc-money" data-sign="positive">+$100.20</span> */
+.fc-money { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fc-money[data-sign="positive"] { color: var(--fc-edge-positive); }
+.fc-money[data-sign="negative"] { color: var(--fc-edge-negative); }
+
+/* ================================================================== Chat
+   A conversation with an assistant: context chips, the transcript, suggested questions and the composer.
+   <ul class="fc-chat-context" aria-label="Looking at"><li><span class="fc-badge">…</span></li></ul>
+   <div class="fc-chat" role="log" aria-label="Conversation">
+     <div class="fc-msg" data-from="user"><p class="fc-visually-hidden">You</p><p>Question</p></div>
+     <div class="fc-msg" data-from="assistant"><p class="fc-msg-by">icon The Jeweler</p><p>Answer</p></div>
+   </div>
+   <ul class="fc-suggest" aria-label="Suggested questions"><li><button class="fc-button" …>…</button></li></ul>
+   <form class="fc-composer"><input class="fc-input" …><button class="fc-button" data-shape="square" …></button></form> */
+.fc-chat { display: flex; flex-direction: column; gap: var(--fc-space-5); min-width: 0; }
+.fc-msg {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fc-space-2);
+  max-width: min(88%, 40rem);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.fc-msg > * { margin: 0; }
+.fc-msg[data-from="user"] {
+  align-self: flex-end;
+  padding: var(--fc-space-3) var(--fc-space-4);
+  border-radius: var(--fc-radius-lg);
+  background: var(--fc-surface-fill);
+}
+.fc-msg[data-from="assistant"] { align-self: flex-start; }
+.fc-msg-by { display: flex; align-items: center; gap: var(--fc-space-2); color: var(--fc-text-secondary); }
+.fc-msg-by > svg { flex: none; width: 14px; height: 14px; }
+.fc-chat-context, .fc-suggest {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fc-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  min-width: 0;
+}
+.fc-chat-context > li, .fc-suggest > li { display: flex; max-width: 100%; min-width: 0; }
+.fc-suggest .fc-button { max-width: 100%; }
+.fc-suggest .fc-button > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.fc-composer { display: flex; align-items: center; gap: var(--fc-space-2); width: 100%; margin: 0; }
+.fc-composer > .fc-input { flex: 1 1 auto; min-width: 0; }
+.fc-composer > .fc-button { flex: none; }

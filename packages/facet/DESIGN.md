@@ -145,7 +145,7 @@ Decorative gradients, glows, glass, textures or grid backgrounds. Gradient text.
 ## How to use it
 
 - **Plain HTML or a Claude artifact:** link `css/facet.css` (or inline it), then use the classes. The specimen has three guides: `preview/index.html` (Design), `preview/screens.html` (Screens) and `preview/content.html` (Content).
-- **Next.js + Tailwind v4:** `@import "tailwindcss"; @import "@foundingcreative/facet/css/tailwind.css";` then `base.css`, `typography.css`, `components.css` and the layers you need (`data.css`, `charts.css`, `lists.css`, `forms.css`, `shell.css`, `settings.css`, `surfaces.css`). `facet.css` imports all of them. Load fonts with the `geist` package (`geist/font/sans`, `geist/font/mono`); Facet picks up `--font-geist-sans` and `--font-geist-mono` automatically.
+- **Next.js + Tailwind v4:** `@import "tailwindcss"; @import "@foundingcreative/facet/css/tailwind.css";` then `base.css`, `typography.css`, `components.css` and the layers you need (`data.css`, `charts.css`, `lists.css`, `forms.css`, `shell.css`, `settings.css`, `surfaces.css`, `slip.css`). `facet.css` imports all of them. Load fonts with the `geist` package (`geist/font/sans`, `geist/font/mono`); Facet picks up `--font-geist-sans` and `--font-geist-mono` automatically.
 - **Hero field:** `import { autoMount } from '@foundingcreative/facet/js/field.mjs'` mounts every `canvas[data-fc-field]`.
 - **Tips:** `import { mountTips } from '@foundingcreative/facet/js/tips.mjs'` wires every `.fc-has-tip` for hover, focus and tap.
 - **Canvas or SVG charts:** `import { token } from '@foundingcreative/facet/js/tokens.mjs'` for resolved hex values per theme.

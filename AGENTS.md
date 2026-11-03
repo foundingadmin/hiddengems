@@ -66,6 +66,10 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
   the `content-verifier` agent (`.claude/agents/content-verifier.md`) before it ships. It returns exact
   rewrites. Send them back to the agent that wrote the copy while it is still running; otherwise a new
   generator agent applies them. Ship only on `Verdict: pass`.
+- Every change that touches what people see goes through the `design-verifier` agent
+  (`.claude/agents/design-verifier.md`), which checks the code and screenshots against Facet and the Hidden Gems
+  encodings. Its fixes go back to the building agent the same way; its DS requests go to `facet-builder`.
+  Ship only on `Verdict: pass` from both verifiers.
 - A product's accent goes through `--fc-brand-*` (`packages/facet/tokens/facet.semantic.json`); reusing Facet for another product means changing those four tokens, not hunting for hues.
 
 ## Data and jobs

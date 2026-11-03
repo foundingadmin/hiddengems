@@ -1,6 +1,6 @@
 // Provider contracts. Adapters translate a provider's payloads into these shapes and nothing else:
 // teams arrive as any name findTeam() resolves, and our ids are assigned by the jobs.
-import type { BookId, MarketId, Side } from '@hiddengems/core';
+import type { BookId, MarketId, Side, WeatherForecast } from '@hiddengems/core';
 import type { Http } from '../http';
 
 export interface ProviderContext {
@@ -121,6 +121,12 @@ export interface UsageProvider extends ProviderBase {
   injuries(ctx: ProviderContext, season: number): Promise<InjuryReport | null>;
 }
 
+/** Hourly forecasts at a point. */
+export interface WeatherProvider extends ProviderBase {
+  /** The forecast for the hour nearest kickoff, or null when the provider has none that close. */
+  forecast(ctx: ProviderContext, at: { lat: number; lon: number }, kickoff: Date): Promise<WeatherForecast | null>;
+}
+
 /** Off-site storage for nightly database backups. */
 export interface BackupTarget extends ProviderBase {
   /** Where backups land, for the run log ("owner/name"). */
@@ -136,5 +142,6 @@ export interface Providers {
   odds: OddsProvider;
   results: ResultsProvider;
   usage: UsageProvider;
+  weather: WeatherProvider;
   backup: BackupTarget;
 }

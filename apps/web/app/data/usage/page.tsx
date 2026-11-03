@@ -35,9 +35,10 @@ export default async function UsagePage() {
     e.runs += 1;
     byJob.set(r.job, e);
   }
-  // A source keeps its slot in every view: the order of SOURCES, skipping Ratings (it calls no provider).
+  // A source keeps its slot in every view: the order of SOURCES, skipping Ratings (it calls no provider) and,
+  // until charts have a seventh series slot, Weather (free, one request per open-air game; its runs are in Logs).
   const series: (UsageSeries & { job: string; runs: number; total: number })[] = SOURCES
-    .filter((s) => s.job !== 'build-picks')
+    .filter((s) => s.job !== 'build-picks' && s.job !== 'pull-weather')
     .map((s, i) => {
       const e = byJob.get(s.job) ?? { values: Array<number>(WINDOW_DAYS).fill(0), runs: 0 };
       return { job: s.job, label: s.label, slot: i + 1, values: e.values, runs: e.runs, total: e.values.reduce((a, b) => a + b, 0) };

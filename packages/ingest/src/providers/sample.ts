@@ -146,5 +146,23 @@ export function sampleProviders({ history = false }: { history?: boolean } = {})
         }));
       },
     },
+    weather: {
+      id: 'sample',
+      // Colder the further north, with stable noise per stadium and kickoff, so some games get a weather note.
+      async forecast(_ctx, { lat, lon }, kickoff) {
+        const key = `${lat},${lon}:${kickoff.toISOString()}`;
+        const temperatureF = Math.round((75 - (lat - 25) * 1.6 + (noise(`${key}:temp`) - 0.5) * 24) * 10) / 10;
+        const windMph = Math.round((4 + noise(`${key}:wind`) * 18) * 10) / 10;
+        const gustMph = Math.round(windMph * (1.3 + noise(`${key}:gust`) * 0.5) * 10) / 10;
+        const precipChance = Math.round(noise(`${key}:wet`) * 100);
+        const wet = precipChance >= 50;
+        const precipIn = wet ? round2(0.02 + noise(`${key}:rain`) * 0.2) : 0;
+        const snow = wet && temperatureF <= 32;
+        return {
+          at: new Date(Math.round(kickoff.getTime() / 3_600_000) * 3_600_000), temperatureF, windMph, gustMph, precipChance, precipIn,
+          snowIn: snow ? round2(precipIn * 10) : 0, weatherCode: snow ? 73 : wet ? 61 : 3,
+        };
+      },
+    },
   };
 }

@@ -349,6 +349,28 @@ export const grades = pgTable('grades', {
   gradedAt: tstz().notNull(),
 }, (t) => [uniqueIndex().on(t.gemRecordId), uniqueIndex().on(t.betId), index().on(t.gameId)]);
 
+/**
+ * The latest kickoff forecast for each upcoming game at an open stadium (core weatherNote()), replaced on every
+ * pull-weather run. Context for the gem sheet only; it never moves a rating. Current state, not history.
+ */
+export const gameWeather = pgTable('game_weather', {
+  gameId: text().primaryKey().references(() => games.id),
+  provider: text().notNull(),
+  /** The forecast hour nearest kickoff. */
+  forecastAt: tstz().notNull(),
+  temperatureF: doublePrecision(),
+  windMph: doublePrecision(),
+  gustMph: doublePrecision(),
+  /** Chance of precipitation, 0 to 100. */
+  precipChance: smallint(),
+  precipIn: doublePrecision(),
+  snowIn: doublePrecision(),
+  /** WMO weather code. */
+  weatherCode: smallint(),
+  runId: text().notNull(),
+  pulledAt: tstz().notNull(),
+});
+
 // ---------------------------------------------------------------- Runs, logs and providers
 
 /** One row per job run: the pull log. */

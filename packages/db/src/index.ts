@@ -6,3 +6,4 @@ export * from './backup';
 export * from './supabase-sql';
 export * from './slips';
 export * from './history';
+export * from './weather';

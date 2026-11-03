@@ -1,0 +1,219 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Gem Rating Lab</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: one column lab bench. Finding first, then formula tabs, chart, top 10, verdict. */
+:root{
+  --ground:#0E0B14;--surface:#18131F;--raise:#211A2B;--line:#2A2235;--ink:#EEEAF4;--soft:#C8C1D4;--mute:#A69DB8;
+  --brand:#9D4EDD;--brand-ink:#C9A6F5;--hollow:#4A3C5E;
+  --sans:Geist,system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"Geist Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark
+}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--ground:#F6F3F9;--surface:#FFFFFF;--raise:#F0EAF6;--line:#E2DAEB;--ink:#1B1524;--soft:#3D3449;--mute:#6B6178;--brand:#7B2FBF;--brand-ink:#6A28A8;--hollow:#C9BDD8;color-scheme:light}}
+:root[data-theme="light"]{--ground:#F6F3F9;--surface:#FFFFFF;--raise:#F0EAF6;--line:#E2DAEB;--ink:#1B1524;--soft:#3D3449;--mute:#6B6178;--brand:#7B2FBF;--brand-ink:#6A28A8;--hollow:#C9BDD8;color-scheme:light}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 56px;display:flex;flex-direction:column;gap:28px}
+.eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--brand-ink)}
+h1{margin:6px 0 4px;font-size:30px;font-weight:700;letter-spacing:-.02em;text-wrap:balance}
+h2{margin:0;font-size:19px;font-weight:650;text-wrap:balance}
+p{margin:0;max-width:65ch}
+.sub{color:var(--mute);font-size:13px}
+.finding{background:var(--surface);border:1px solid var(--brand);border-radius:16px;padding:20px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:center}
+.big{font:600 44px/1 var(--mono);color:var(--ink)}
+.big small{font-size:18px;color:var(--mute)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tab{font:500 13px var(--sans);padding:9px 14px;min-height:40px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
+.tab:focus-visible,.tog:focus-visible{outline:2px solid var(--brand-ink);outline-offset:2px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+code{font:500 12.5px/1.5 var(--mono);background:var(--raise);border-radius:8px;padding:10px 12px;display:block;white-space:pre-wrap;color:var(--soft)}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.stat{background:var(--raise);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.stat b{font:600 22px var(--mono);font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--mute)}
+.reads{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.read{font-size:14px;color:var(--soft)}
+.read strong{display:block;font:600 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:4px}
+.verdict{font-weight:600;font-size:14px;padding:10px 12px;border-radius:10px;background:var(--raise)}
+.verdict.keep{border-left:3px solid var(--brand)}
+.verdict.drop{border-left:3px solid var(--hollow);color:var(--soft)}
+.chart{width:100%;height:auto;display:block}
+.list{display:flex;flex-direction:column}
+.row{display:grid;grid-template-columns:22px minmax(0,1fr) 56px 64px 90px;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--line);font-size:14px}
+.row:first-child{border-top:0}
+.row .n{font:500 12px var(--mono);color:var(--mute)}
+.row .who{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .who small{color:var(--mute)}
+.row .num{font:500 13px var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.bar{height:8px;border-radius:4px;background:var(--raise);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--brand)}
+.tag{font:600 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border-radius:4px;justify-self:start}
+.tag.y{background:var(--brand);color:#fff}
+.tag.n{border:1px solid var(--hollow);color:var(--mute)}
+.head{color:var(--mute);font:600 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;border-top:0}
+.tog{display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;min-height:40px}
+.tog input{width:18px;height:18px;accent-color:var(--brand)}
+.legend{display:flex;gap:16px;font-size:12px;color:var(--mute);flex-wrap:wrap}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:-1px;margin-right:6px}
+ol.plan{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;color:var(--soft);max-width:65ch}
+@media (max-width:640px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.reads{grid-template-columns:1fr}.finding{grid-template-columns:1fr}.row{grid-template-columns:20px minmax(0,1fr) 48px 70px}.row .bar{display:none}h1{font-size:26px}}
+@media (prefers-reduced-motion:no-preference){.bar i{transition:width .3s ease}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Hidden Gems · rating lab · Week 9 opening lines</div>
+    <h1>Which rating finds a real gem?</h1>
+    <p class="sub">126 anytime TD props for Sun Nov 8 2026, logged from Outlier on Mon Nov 2. One book has posted so far (the opening line), so the numbers will move by Sunday. Same props, five ways to rate them. Switch formulas and watch who rises to the top.</p>
+  </header>
+
+  <section class="finding" aria-label="What this week's board says">
+    <div class="big" id="fClear">14<small> / 126</small></div>
+    <p><strong>Only 14 props clear the posted price this week, and every one pays 6.0 or more.</strong> None sit in your usual 2.5 to 5 range. So any formula has to choose between surfacing long shots that really have an edge, or surfacing shorter odds that don't. That choice is the real decision here, more than the math.</p>
+  </section>
+
+  <section class="card" aria-label="Your two decisions" style="border-color:var(--brand)">
+    <div class="eyebrow">What you're deciding</div>
+    <h2>1. What should the number on a gem mean?</h2>
+    <p>Each tab below is one answer. Click through them and ask one thing of each top 10 list: if every gem with a 90 looked like these, would I trust a 90?</p>
+    <ol class="plan">
+      <li><strong>The edge is real and the read is solid.</strong> Tab "Edge × clarity". My pick. A 90 means the model and the price disagree a lot, and the evidence behind the model is strong. Odds don't inflate it.</li>
+      <li><strong>It's likely to hit.</strong> Tab "Gate, then safest". A 90 means the likeliest real gem. Best used as the order of the board, not as the number.</li>
+      <li><strong>It pays the most over time.</strong> Tabs "Today's scorecard" and "Expected return". A 90 means a big payout. These fill the top with long shots, so I'd drop them.</li>
+    </ol>
+    <h2>2. What should the board do in a week like this one?</h2>
+    <p>This week only 14 props beat the posted price, and all of them pay 6.0 or more. Nothing in your usual 2.5 to 5 range has an edge yet. Tick the "Hide long shots over 10.0" box below to see how thin it gets.</p>
+    <ol class="plan">
+      <li><strong>Say so honestly.</strong> "No gems at your odds yet" at the top, with the real long shot gems listed below it. My pick, and it matches the design rule that empty is honest.</li>
+      <li><strong>Show the best shorter odds anyway,</strong> flagged Fool's Gold so you know they don't beat the price.</li>
+      <li><strong>Lead with the long shots</strong> because they are the only real edges.</li>
+    </ol>
+    <p class="sub">Reply with two numbers, like "1 and 1", or your own call. Numbers here are from opening lines with one book posted, so the board will look different by Sunday.</p>
+  </section>
+
+  <section class="card" aria-label="Formulas">
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div id="desc" style="display:flex;flex-direction:column;gap:12px"></div>
+    <label class="tog" for="cap"><input type="checkbox" id="cap"> Hide long shots over 10.0</label>
+    <div class="stats" id="stats"></div>
+    <div class="reads" id="reads"></div>
+    <div class="verdict" id="verdict"></div>
+  </section>
+
+  <section class="card" aria-label="Rating against odds">
+    <h2>Where each formula puts its weight</h2>
+    <p class="sub">Every prop by its odds (left is shorter, right is longer) and its rating under the selected formula. The top 10 are ringed.</p>
+    <div style="overflow-x:auto"><svg id="chart" class="chart" viewBox="0 0 800 300" role="img" aria-label="Scatter of rating against odds"></svg></div>
+    <div class="legend"><span><span class="dot" style="background:var(--brand)"></span>Clears the posted price</span><span><span class="dot" style="background:var(--hollow)"></span>Doesn't clear it</span></div>
+  </section>
+
+  <section class="card" aria-label="Top 10">
+    <h2 id="topH">Top 10</h2>
+    <div class="list" id="list"></div>
+  </section>
+
+  <section class="card" aria-label="Next">
+    <h2>What happens next</h2>
+    <ol class="plan">
+      <li>Pick the one or two formulas you want to carry forward. My read is in the verdict line on each tab.</li>
+      <li>Week 9 grades on Tue Nov 10 at 5:37 AM. I add the real results here: how each formula's top 10 hit, and whether they beat the closing price.</li>
+      <li>Four Sundays of that (Weeks 9 to 12) is about 500 graded props, enough to tell a real edge from luck. Then we lock the formula.</li>
+    </ol>
+  </section>
+</div>
+
+<script>
+const D=[{"pl":"Ja'Marr Chase","pos":"WR","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":2.05,"bk":49,"us":41,"cut":-7.9,"cl":83,"ct":-16,"nb":1,"inj":false},{"pl":"KeAndre Lambert-Smith","pos":"WR","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":16.0,"bk":6,"us":7,"cut":0.4,"cl":51,"ct":4,"nb":1,"inj":false},{"pl":"John Metchie III","pos":"WR","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":8.0,"bk":12,"us":14,"cut":1.3,"cl":58,"ct":7,"nb":1,"inj":false},{"pl":"Ja'Tavion Sanders","pos":"","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":29.0,"bk":3,"us":2,"cut":-1.2,"cl":46,"ct":0,"nb":1,"inj":false},{"pl":"Keaton Mitchell","pos":"RB","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":4.4,"bk":23,"us":19,"cut":-3.8,"cl":68,"ct":-14,"nb":1,"inj":false},{"pl":"Lil'Jordan Humphrey","pos":"WR","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":16.0,"bk":6,"us":5,"cut":-0.8,"cl":53,"ct":-9,"nb":1,"inj":false},{"pl":"Tetairoa McMillan","pos":"WR","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":3.2,"bk":31,"us":30,"cut":-0.8,"cl":63,"ct":-2,"nb":1,"inj":false},{"pl":"Josh Downs","pos":"WR","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":4.1,"bk":24,"us":22,"cut":-2.6,"cl":72,"ct":-9,"nb":1,"inj":false},{"pl":"Drew Sample","pos":"TE","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":11.0,"bk":9,"us":9,"cut":-0.1,"cl":56,"ct":-1,"nb":1,"inj":false},{"pl":"Austin Hooper","pos":"TE","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":12.0,"bk":8,"us":8,"cut":-0.4,"cl":60,"ct":-3,"nb":1,"inj":false},{"pl":"Keenan Allen","pos":"WR","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":2.65,"bk":38,"us":30,"cut":-7.7,"cl":77,"ct":-17,"nb":1,"inj":false},{"pl":"Xavier Hutchinson","pos":"WR","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":6.5,"bk":15,"us":17,"cut":1.3,"cl":60,"ct":6,"nb":1,"inj":false},{"pl":"Marvin Mims Jr.","pos":"WR","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":6.0,"bk":17,"us":12,"cut":-5.0,"cl":62,"ct":-21,"nb":1,"inj":false},{"pl":"Justice Hill","pos":"RB","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":6.0,"bk":17,"us":15,"cut":-1.9,"cl":61,"ct":-8,"nb":1,"inj":false},{"pl":"Evan Engram","pos":"TE","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":5.0,"bk":20,"us":17,"cut":-3.2,"cl":72,"ct":-14,"nb":1,"inj":false},{"pl":"Daniel Jones","pos":"QB","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":6.25,"bk":16,"us":15,"cut":-0.9,"cl":69,"ct":-5,"nb":1,"inj":false},{"pl":"Quintin Morris","pos":"TE","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":26.0,"bk":4,"us":3,"cut":-1.3,"cl":49,"ct":-19,"nb":1,"inj":false},{"pl":"Olamide Zaccheaus","pos":"WR","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":12.0,"bk":8,"us":8,"cut":-0.6,"cl":49,"ct":-4,"nb":1,"inj":true},{"pl":"Kayshon Boutte","pos":"WR","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":8.5,"bk":12,"us":10,"cut":-1.5,"cl":60,"ct":-9,"nb":1,"inj":false},{"pl":"Feleipe Franks","pos":"TE","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":61.0,"bk":2,"us":1,"cut":-0.5,"cl":52,"ct":-21,"nb":1,"inj":false},{"pl":"Dalton Schultz","pos":"TE","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":4.1,"bk":24,"us":18,"cut":-6.5,"cl":69,"ct":-23,"nb":1,"inj":false},{"pl":"Brycen Tremayne","pos":"WR","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":20.0,"bk":5,"us":5,"cut":0.2,"cl":44,"ct":2,"nb":1,"inj":false},{"pl":"Tyler Goodson","pos":"RB","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":5.0,"bk":20,"us":15,"cut":-5.4,"cl":59,"ct":-19,"nb":1,"inj":false},{"pl":"Ameer Abdullah","pos":"RB","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":10.5,"bk":10,"us":6,"cut":-3.1,"cl":53,"ct":-23,"nb":1,"inj":false},{"pl":"Trevor Etienne","pos":"RB","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":10.0,"bk":10,"us":8,"cut":-2.0,"cl":53,"ct":-14,"nb":1,"inj":false},{"pl":"Cade Stover","pos":"TE","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":26.0,"bk":4,"us":4,"cut":0.3,"cl":44,"ct":4,"nb":1,"inj":false},{"pl":"Jonathan Mingo","pos":"WR","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":14.0,"bk":7,"us":6,"cut":-1.1,"cl":56,"ct":-11,"nb":1,"inj":false},{"pl":"Tahj Brooks","pos":"","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":18.0,"bk":6,"us":4,"cut":-1.3,"cl":61,"ct":0,"nb":1,"inj":false},{"pl":"Ashton Dulin","pos":"WR","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":16.0,"bk":6,"us":5,"cut":-1.1,"cl":53,"ct":-12,"nb":1,"inj":false},{"pl":"Emari Demercado","pos":"RB","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":8.0,"bk":12,"us":10,"cut":-2.7,"cl":53,"ct":-15,"nb":1,"inj":false},{"pl":"Drew Ogletree","pos":"","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":18.0,"bk":6,"us":4,"cut":-1.3,"cl":59,"ct":0,"nb":1,"inj":false},{"pl":"Tre' Harris","pos":"WR","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":5.75,"bk":17,"us":16,"cut":-0.9,"cl":58,"ct":-4,"nb":1,"inj":false},{"pl":"DJ Giddens","pos":"RB","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":4.4,"bk":23,"us":19,"cut":-3.7,"cl":55,"ct":-11,"nb":1,"inj":false},{"pl":"Rasheen Ali","pos":"RB","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":12.0,"bk":8,"us":6,"cut":-2.0,"cl":52,"ct":-17,"nb":1,"inj":false},{"pl":"Mike Gesicki","pos":"TE","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":3.5,"bk":29,"us":29,"cut":0.5,"cl":59,"ct":1,"nb":1,"inj":false},{"pl":"Javonte Williams","pos":"RB","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":1.65,"bk":61,"us":55,"cut":-5.5,"cl":85,"ct":-9,"nb":1,"inj":false},{"pl":"Derrick Henry","pos":"RB","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":1.74,"bk":57,"us":54,"cut":-3.4,"cl":82,"ct":-6,"nb":1,"inj":false},{"pl":"Bhayshul Tuten","pos":"RB","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":1.95,"bk":51,"us":43,"cut":-8.2,"cl":91,"ct":-16,"nb":1,"inj":false},{"pl":"Chuba Hubbard","pos":"RB","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":1.74,"bk":57,"us":50,"cut":-7.3,"cl":89,"ct":-13,"nb":1,"inj":false},{"pl":"Jonathan Taylor","pos":"RB","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":1.43,"bk":70,"us":57,"cut":-13.2,"cl":84,"ct":-19,"nb":1,"inj":false},{"pl":"Chris Rodriguez Jr.","pos":"RB","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":2.85,"bk":35,"us":31,"cut":-3.8,"cl":77,"ct":-9,"nb":1,"inj":false},{"pl":"Omarion Hampton","pos":"RB","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":3.5,"bk":29,"us":29,"cut":0.3,"cl":73,"ct":1,"nb":1,"inj":false},{"pl":"Tee Higgins","pos":"WR","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":2.2,"bk":45,"us":34,"cut":-11.0,"cl":87,"ct":-24,"nb":1,"inj":false},{"pl":"Chris Olave","pos":"WR","g":"CLE @ NO","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":2.25,"bk":44,"us":35,"cut":-9.9,"cl":87,"ct":-22,"nb":1,"inj":false},{"pl":"Chase Brown","pos":"RB","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":1.65,"bk":61,"us":44,"cut":-16.5,"cl":60,"ct":-19,"nb":1,"inj":false},{"pl":"CeeDee Lamb","pos":"WR","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":2.15,"bk":47,"us":40,"cut":-6.6,"cl":90,"ct":-14,"nb":1,"inj":false},{"pl":"Bijan Robinson","pos":"RB","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":1.48,"bk":68,"us":51,"cut":-16.4,"cl":79,"ct":-21,"nb":1,"inj":false},{"pl":"Samaje Perine","pos":"RB","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":4.0,"bk":25,"us":25,"cut":-0.1,"cl":37,"ct":0,"nb":1,"inj":false},{"pl":"Jalen Coker","pos":"WR","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":3.4,"bk":29,"us":29,"cut":-0.0,"cl":68,"ct":0,"nb":1,"inj":false},{"pl":"Woody Marks","pos":"RB","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":1.83,"bk":55,"us":43,"cut":-11.9,"cl":79,"ct":-19,"nb":1,"inj":false},{"pl":"Kyle Pitts Sr.","pos":"TE","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":4.0,"bk":25,"us":24,"cut":-1.0,"cl":74,"ct":-3,"nb":1,"inj":false},{"pl":"Nico Collins","pos":"WR","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":2.8,"bk":36,"us":32,"cut":-4.0,"cl":72,"ct":-10,"nb":1,"inj":false},{"pl":"J.K. Dobbins","pos":"RB","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":2.75,"bk":36,"us":33,"cut":-3.1,"cl":82,"ct":-9,"nb":1,"inj":false},{"pl":"Tyler Warren","pos":"TE","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":3.0,"bk":33,"us":30,"cut":-3.2,"cl":75,"ct":-8,"nb":1,"inj":false},{"pl":"David Montgomery","pos":"RB","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":1.8,"bk":56,"us":42,"cut":-13.2,"cl":70,"ct":-20,"nb":1,"inj":false},{"pl":"Bryce Young","pos":"QB","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":6.25,"bk":16,"us":13,"cut":-2.7,"cl":60,"ct":-12,"nb":1,"inj":false},{"pl":"Jake Ferguson","pos":"TE","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":3.5,"bk":29,"us":26,"cut":-2.7,"cl":77,"ct":-8,"nb":1,"inj":false},{"pl":"Marvin Harrison Jr.","pos":"WR","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":4.3,"bk":23,"us":21,"cut":-2.0,"cl":65,"ct":-7,"nb":1,"inj":false},{"pl":"Darren Waller","pos":"TE","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":5.2,"bk":19,"us":18,"cut":-1.1,"cl":66,"ct":-5,"nb":1,"inj":false},{"pl":"Nate Adkins","pos":"TE","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":14.0,"bk":7,"us":10,"cut":2.4,"cl":60,"ct":24,"nb":1,"inj":false},{"pl":"Brian Thomas Jr.","pos":"WR","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":4.1,"bk":24,"us":24,"cut":-0.2,"cl":69,"ct":-1,"nb":1,"inj":false},{"pl":"Ryan Flournoy","pos":"WR","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":4.0,"bk":25,"us":25,"cut":-0.4,"cl":74,"ct":-1,"nb":1,"inj":false},{"pl":"Brian Robinson Jr.","pos":"RB","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":3.3,"bk":30,"us":27,"cut":-3.8,"cl":54,"ct":-9,"nb":1,"inj":true},{"pl":"Tommy Tremble","pos":"TE","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":5.5,"bk":18,"us":16,"cut":-2.1,"cl":67,"ct":-10,"nb":1,"inj":false},{"pl":"KaVontae Turpin","pos":"WR","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":9.0,"bk":11,"us":11,"cut":-0.4,"cl":43,"ct":-2,"nb":1,"inj":true},{"pl":"Drake London","pos":"WR","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":2.9,"bk":34,"us":28,"cut":-6.8,"cl":80,"ct":-20,"nb":1,"inj":false},{"pl":"Jaylen Waddle","pos":"WR","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":3.2,"bk":31,"us":27,"cut":-4.7,"cl":76,"ct":-13,"nb":1,"inj":true},{"pl":"Travis Hunter","pos":"WR","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":4.4,"bk":23,"us":17,"cut":-6.2,"cl":64,"ct":-19,"nb":1,"inj":false},{"pl":"Ladd McConkey","pos":"WR","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":4.1,"bk":24,"us":21,"cut":-3.3,"cl":66,"ct":-12,"nb":1,"inj":false},{"pl":"Kimani Vidal","pos":"RB","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":4.1,"bk":24,"us":20,"cut":-4.2,"cl":72,"ct":-15,"nb":1,"inj":false},{"pl":"Courtland Sutton","pos":"WR","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":3.5,"bk":29,"us":26,"cut":-2.8,"cl":71,"ct":-8,"nb":1,"inj":false},{"pl":"C.J. Stroud","pos":"QB","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":9.0,"bk":11,"us":10,"cut":-0.8,"cl":56,"ct":-5,"nb":1,"inj":false},{"pl":"Jahan Dotson","pos":"WR","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":6.0,"bk":17,"us":18,"cut":0.9,"cl":70,"ct":5,"nb":1,"inj":false},{"pl":"Alvin Kamara","pos":"RB","g":"CLE @ NO","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":2.5,"bk":40,"us":29,"cut":-11.0,"cl":84,"ct":-28,"nb":1,"inj":false},{"pl":"Bo Nix","pos":"QB","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":4.8,"bk":21,"us":21,"cut":-0.1,"cl":74,"ct":0,"nb":1,"inj":false},{"pl":"Foster Moreau","pos":"TE","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":7.0,"bk":14,"us":16,"cut":1.5,"cl":67,"ct":9,"nb":1,"inj":false},{"pl":"George Pickens","pos":"WR","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":2.65,"bk":38,"us":32,"cut":-5.9,"cl":77,"ct":-13,"nb":1,"inj":true},{"pl":"Devontez Walker","pos":"WR","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":23.0,"bk":4,"us":5,"cut":0.9,"cl":56,"ct":14,"nb":1,"inj":false},{"pl":"Joe Burrow","pos":"QB","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":8.5,"bk":12,"us":13,"cut":1.2,"cl":58,"ct":7,"nb":1,"inj":false},{"pl":"Mo Alie-Cox","pos":"TE","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":18.0,"bk":6,"us":6,"cut":0.6,"cl":57,"ct":8,"nb":1,"inj":false},{"pl":"Quentin Johnston","pos":"WR","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":4.8,"bk":21,"us":17,"cut":-3.4,"cl":63,"ct":-11,"nb":1,"inj":false},{"pl":"Rashod Bateman","pos":"WR","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":6.5,"bk":15,"us":15,"cut":0.1,"cl":66,"ct":1,"nb":1,"inj":false},{"pl":"Dak Prescott","pos":"QB","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":8.0,"bk":12,"us":13,"cut":1.0,"cl":63,"ct":6,"nb":1,"inj":false},{"pl":"Derius Davis","pos":"WR","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":18.0,"bk":6,"us":4,"cut":-1.4,"cl":54,"ct":-18,"nb":1,"inj":false},{"pl":"Laquon Treadwell","pos":"WR","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":4.6,"bk":22,"us":19,"cut":-2.9,"cl":66,"ct":-11,"nb":1,"inj":false},{"pl":"Dare Ogunbowale","pos":"RB","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":13.0,"bk":8,"us":6,"cut":-1.8,"cl":52,"ct":-16,"nb":1,"inj":false},{"pl":"Brevyn Spann-Ford","pos":"TE","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":3.7,"bk":27,"us":17,"cut":-10.4,"cl":79,"ct":-33,"nb":1,"inj":false},{"pl":"Troy Franklin","pos":"WR","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":6.0,"bk":17,"us":15,"cut":-1.8,"cl":63,"ct":-8,"nb":1,"inj":false},{"pl":"LaJohntay Wester","pos":"WR","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":18.0,"bk":6,"us":4,"cut":-1.8,"cl":50,"ct":-23,"nb":1,"inj":false},{"pl":"Scott Matlock","pos":"FB","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":29.0,"bk":3,"us":2,"cut":-1.1,"cl":50,"ct":-22,"nb":1,"inj":false},{"pl":"LeQuint Allen Jr.","pos":"RB","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":16.0,"bk":6,"us":6,"cut":-0.3,"cl":49,"ct":-3,"nb":1,"inj":false},{"pl":"Luke Schoonmaker","pos":"TE","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":11.0,"bk":9,"us":7,"cut":-2.6,"cl":47,"ct":-16,"nb":1,"inj":true},{"pl":"Adam Trautman","pos":"TE","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":11.0,"bk":9,"us":8,"cut":-0.8,"cl":61,"ct":-6,"nb":1,"inj":false},{"pl":"Chris Blair","pos":"WR","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":26.0,"bk":4,"us":4,"cut":-0.2,"cl":42,"ct":-3,"nb":1,"inj":false},{"pl":"Mitchell Evans","pos":"TE","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":10.0,"bk":10,"us":10,"cut":-0.2,"cl":55,"ct":-1,"nb":1,"inj":false},{"pl":"Michael Penix Jr.","pos":"QB","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":14.0,"bk":7,"us":6,"cut":-1.0,"cl":53,"ct":-10,"nb":1,"inj":false},{"pl":"Charlie Woerner","pos":"TE","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":14.0,"bk":7,"us":7,"cut":-0.4,"cl":59,"ct":-4,"nb":1,"inj":false},{"pl":"Hunter Luepke","pos":"FB","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":20.0,"bk":5,"us":4,"cut":-0.8,"cl":52,"ct":-11,"nb":1,"inj":false},{"pl":"Nick Vannett","pos":"TE","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":31.0,"bk":3,"us":2,"cut":-0.8,"cl":53,"ct":-17,"nb":1,"inj":false},{"pl":"Charlie Kolar","pos":"TE","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":5.75,"bk":17,"us":16,"cut":-1.2,"cl":58,"ct":-5,"nb":1,"inj":false},{"pl":"AJ Dillon","pos":"RB","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":18.0,"bk":6,"us":4,"cut":-1.1,"cl":52,"ct":-14,"nb":1,"inj":false},{"pl":"Jonah Coleman","pos":"RB","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":2.1,"bk":48,"us":42,"cut":-5.4,"cl":58,"ct":-8,"nb":1,"inj":false},{"pl":"Dohnte Meyers","pos":"WR","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":7.0,"bk":14,"us":14,"cut":-0.7,"cl":58,"ct":-3,"nb":1,"inj":false},{"pl":"Ja'Kobi Lane","pos":"WR","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":6.5,"bk":15,"us":17,"cut":2.0,"cl":48,"ct":7,"nb":1,"inj":false},{"pl":"Cam Grandy","pos":"","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":26.0,"bk":4,"us":3,"cut":-1.2,"cl":58,"ct":0,"nb":1,"inj":false},{"pl":"Pharaoh Brown","pos":"TE","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":23.0,"bk":4,"us":3,"cut":-1.1,"cl":52,"ct":-18,"nb":1,"inj":false},{"pl":"Nate Boerkircher","pos":"TE","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":8.5,"bk":12,"us":13,"cut":1.6,"cl":63,"ct":10,"nb":1,"inj":false},{"pl":"Deion Burks","pos":"WR","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":13.0,"bk":8,"us":6,"cut":-1.8,"cl":57,"ct":-16,"nb":1,"inj":false},{"pl":"Josh Cuevas","pos":"TE","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":16.0,"bk":6,"us":6,"cut":0.0,"cl":58,"ct":0,"nb":1,"inj":false},{"pl":"CJ Williams","pos":"WR","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":20.0,"bk":5,"us":4,"cut":-1.0,"cl":51,"ct":-14,"nb":1,"inj":false},{"pl":"Camden Brown","pos":"","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":23.0,"bk":4,"us":3,"cut":-1.2,"cl":35,"ct":0,"nb":1,"inj":false},{"pl":"Brevin Jordan","pos":"TE","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":51.0,"bk":2,"us":1,"cut":-0.6,"cl":52,"ct":-21,"nb":1,"inj":false},{"pl":"David Moore","pos":"WR","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":26.0,"bk":4,"us":3,"cut":-1.1,"cl":52,"ct":-20,"nb":1,"inj":false},{"pl":"Tank Dell","pos":"WR","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":7.0,"bk":14,"us":12,"cut":-2.7,"cl":53,"ct":-13,"nb":1,"inj":false},{"pl":"Nick Muse","pos":"TE","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":23.0,"bk":4,"us":4,"cut":-0.1,"cl":55,"ct":-2,"nb":1,"inj":false},{"pl":"Elijah Sarratt","pos":"WR","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":36.0,"bk":3,"us":2,"cut":-0.4,"cl":52,"ct":-10,"nb":1,"inj":false},{"pl":"Will Mallory","pos":"TE","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":13.0,"bk":8,"us":7,"cut":-0.8,"cl":53,"ct":-7,"nb":1,"inj":false},{"pl":"Jack Endries","pos":"TE","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":10.5,"bk":10,"us":9,"cut":-0.3,"cl":51,"ct":-2,"nb":1,"inj":false},{"pl":"Josh Cameron","pos":"WR","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":7.5,"bk":13,"us":15,"cut":1.4,"cl":65,"ct":9,"nb":1,"inj":false},{"pl":"Colbie Young","pos":"WR","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":14.0,"bk":7,"us":5,"cut":-1.7,"cl":54,"ct":-17,"nb":1,"inj":false},{"pl":"Seth McGowan","pos":"RB","g":"DAL @ IND","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":2.0,"bk":50,"us":30,"cut":-19.9,"cl":81,"ct":-40,"nb":1,"inj":false},{"pl":"Theo Wease Jr.","pos":"WR","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":16.0,"bk":6,"us":7,"cut":1.0,"cl":42,"ct":9,"nb":1,"inj":false},{"pl":"Anthony Tyus III","pos":"RB","g":"DEN @ CAR","k":"Sun Nov 8 \u00b7 11:00 AM MT","px":26.0,"bk":4,"us":3,"cut":-0.7,"cl":51,"ct":-13,"nb":1,"inj":false},{"pl":"Zachariah Branch","pos":"WR","g":"CIN @ ATL","k":"Sun Nov 8 \u00b7 7:30 AM MT","px":10.0,"bk":10,"us":10,"cut":-0.5,"cl":53,"ct":-4,"nb":1,"inj":false},{"pl":"Hayden Rucci","pos":"TE","g":"HOU @ LAC","k":"Sun Nov 8 \u00b7 2:05 PM MT","px":20.0,"bk":5,"us":6,"cut":0.7,"cl":54,"ct":10,"nb":1,"inj":false},{"pl":"Tanner Koziol","pos":"TE","g":"JAC @ BAL","k":"Thu Nov 5 \u00b7 6:15 PM MT","px":31.0,"bk":3,"us":2,"cut":-0.9,"cl":53,"ct":-20,"nb":1,"inj":false}];
+const cl=x=>Math.max(0,Math.min(1,x));
+const clears=r=>r.us>r.bk;
+const F=[
+ {id:'today',name:'Today\'s scorecard',
+  plain:'Edge times the odds times clarity. The carat number on the current scorecard.',
+  code:'carat = cut × odds × clarity_factor',
+  f:r=>r.ct,
+  likes:'Big payouts. The odds multiply the edge, so a small edge on a 20.0 long shot outranks a solid edge at 3.0.',
+  costs:'Top of the board fills with players you\'d rarely bet. Most of them miss even when the read is right.',
+  keep:false,verdict:'Drop. It ranks payout, not confidence that the gem is real.'},
+ {id:'blend',name:'PRD proposal',
+  plain:'60% edge, 40% clarity, added together. Gems that don\'t clear the posted price are capped at 40.',
+  code:'rating = 100 × (0.6 × clamp(cut/10) + 0.4 × clarity/100)\nif not clears: rating = min(rating, 40)',
+  f:r=>{const v=100*(0.6*cl(r.cut/10)+0.4*r.cl/100);return clears(r)?v:Math.min(v,40)},
+  likes:'Shorter odds and well known players with lots of games behind the read.',
+  costs:'Clarity is added, so a prop with no edge but a clean sample still scores 30 to 40. Most of its top 10 don\'t clear the posted price.',
+  keep:false,verdict:'Drop. Adding confidence lets props with no edge float up. This was my proposal and the data says it\'s wrong.'},
+ {id:'mult',name:'Edge × clarity',
+  plain:'Edge and clarity multiplied, so a gem needs both. Zero edge means zero rating, however clear.',
+  code:'rating = 100 × clamp(cut/10) × clarity/100\nif not clears: rating = min(rating, 40)',
+  f:r=>{const v=100*cl(r.cut/10)*r.cl/100;return clears(r)?v:Math.min(v,40)},
+  likes:'Props where the model disagrees with the price and the read is solid.',
+  costs:'Ignores the odds completely, so it\'s indifferent between a 6.0 and a 20.0 with the same edge.',
+  keep:true,verdict:'Keep. Every top 10 pick clears the price. The cleanest measure of whether a gem is real.'},
+ {id:'ev',name:'Expected return',
+  plain:'What a $1 bet returns on average if our hit chance is right.',
+  code:'rating = 100 × clamp((hit_chance × odds − 1) / 0.4)',
+  f:r=>100*cl((r.us/100*r.px-1)/0.4),
+  likes:'Long shots. Expected return grows with the payout.',
+  costs:'The math is right only over hundreds of bets. You treat each Sunday on its own, so this answers a question you don\'t ask.',
+  keep:false,verdict:'Drop. Long run math for a week by week bettor.'},
+ {id:'safe',name:'Gate, then safest',
+  plain:'Only props that clear the posted price qualify. Those are ranked by hit chance times clarity, so the likeliest real gem leads.',
+  code:'if not clears: no rating\nrating = hit_chance × clarity/100',
+  f:r=>clears(r)?r.us*r.cl/100:-1,
+  likes:'The shortest odds that still have a real edge. Closest to your rule of the lowest chance of losing the stake.',
+  costs:'Some weeks, like this one, the gate leaves few gems and none inside your usual odds. The empty state has to say that plainly.',
+  keep:true,verdict:'Keep, as the board\'s sort order. Pair it with edge × clarity for the number on the gem.'}
+];
+let cur=2,cap=false;
+const fmt=(n,d=0)=>Number(n).toFixed(d);
+const med=a=>{const s=[...a].sort((x,y)=>x-y),m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2};
+function pool(){return D.filter(r=>!cap||r.px<=10)}
+function topTen(fx){return pool().map(r=>({r,v:fx.f(r)})).sort((a,b)=>b.v-a.v).slice(0,10)}
+function render(){
+  const fx=F[cur];
+  document.querySelectorAll('.tab').forEach((t,i)=>t.setAttribute('aria-selected',i===cur));
+  document.getElementById('desc').innerHTML=`<p>${fx.plain}</p><code>${fx.code}</code>`;
+  const t=topTen(fx).filter(x=>x.v>=0),rs=t.map(x=>x.r);
+  const n=rs.length||1;
+  const nc=rs.filter(clears).length;
+  const odds=rs.length?med(rs.map(r=>r.px)):0;
+  const hit=rs.reduce((a,r)=>a+r.us,0)/n, cla=rs.reduce((a,r)=>a+r.cl,0)/n;
+  document.getElementById('stats').innerHTML=[
+    [rs.length?fmt(odds,2):'none','Middle odds of the top 10'],
+    [fmt(hit)+'%','Average hit chance'],
+    [nc+' of '+rs.length,'Clear the posted price'],
+    [fmt(cla),'Average clarity']
+  ].map(([b,s])=>`<div class="stat"><b>${b}</b><span>${s}</span></div>`).join('');
+  document.getElementById('reads').innerHTML=`<div class="read"><strong>It rewards</strong>${fx.likes}</div><div class="read"><strong>It costs you</strong>${fx.costs}</div>`;
+  const v=document.getElementById('verdict');v.textContent=fx.verdict;v.className='verdict '+(fx.keep?'keep':'drop');
+  document.getElementById('topH').textContent='Top 10 · '+fx.name+(cap?' · odds 10.0 and under':'');
+  const mx=Math.max(...t.map(x=>x.v),1);
+  document.getElementById('list').innerHTML=`<div class="row head"><span>#</span><span>Player · game</span><span class="num">Odds</span><span class="num">Hit chance</span><span>Clears</span></div>`+
+   (t.length?t.map((x,i)=>`<div class="row"><span class="n">${i+1}</span><span class="who">${x.r.pl} <small>· ${x.r.pos} · ${x.r.g}</small></span><span class="num">${fmt(x.r.px,2)}</span><span class="num">${x.r.us}% <small style="color:var(--mute)">vs ${x.r.bk}</small></span><span class="tag ${clears(x.r)?'y':'n'}">${clears(x.r)?'Clears':'No edge'}</span></div>`).join(''):`<p class="sub" style="padding:12px 0">No props qualify with this filter. That's a real answer: no gems at these odds this week.</p>`);
+  chart(fx,new Set(t.map(x=>x.r)));
+}
+function chart(fx,tops){
+  const svg=document.getElementById('chart'),W=800,H=300,L=44,R=16,T=14,B=40;
+  const P=pool(),vals=P.map(r=>fx.f(r)),lo=Math.min(0,...vals),hi=Math.max(...vals,1);
+  const lx=Math.log(1.3),hx=Math.log(30);
+  const X=px=>L+(Math.log(Math.min(Math.max(px,1.3),30))-lx)/(hx-lx)*(W-L-R);
+  const Y=v=>T+(1-(v-lo)/(hi-lo||1))*(H-T-B);
+  let g='';
+  [1.5,2,3,5,10,20].forEach(o=>{const x=X(o);g+=`<line x1="${x}" x2="${x}" y1="${T}" y2="${H-B}" stroke="var(--line)"/><text x="${x}" y="${H-B+18}" fill="var(--mute)" font-family="Geist Mono,monospace" font-size="11" text-anchor="middle">${o.toFixed(1)}</text>`});
+  g+=`<text x="${(W+L)/2}" y="${H-6}" fill="var(--mute)" font-family="Geist,sans-serif" font-size="11" text-anchor="middle">Odds (decimal)</text>`;
+  g+=`<text x="12" y="${(H-B+T)/2}" fill="var(--mute)" font-family="Geist,sans-serif" font-size="11" text-anchor="middle" transform="rotate(-90 12 ${(H-B+T)/2})">Rating</text>`;
+  if(lo<0){const y=Y(0);g+=`<line x1="${L}" x2="${W-R}" y1="${y}" y2="${y}" stroke="var(--hollow)" stroke-dasharray="3 4"/>`}
+  const band=`<rect x="${X(2.5)}" y="${T}" width="${X(5)-X(2.5)}" height="${H-T-B}" fill="var(--brand)" opacity="0.07"/><text x="${(X(2.5)+X(5))/2}" y="${T+12}" fill="var(--mute)" font-family="Geist,sans-serif" font-size="10" text-anchor="middle">your usual range</text>`;
+  let pts='',rings='';
+  P.forEach(r=>{const v=fx.f(r);if(v<0&&fx.id==='safe')return;const x=X(r.px),y=Y(v);pts+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4" fill="${clears(r)?'var(--brand)':'var(--hollow)'}" opacity="0.9"><title>${r.pl} · ${r.px.toFixed(2)} · ${v.toFixed(1)}</title></circle>`;if(tops.has(r))rings+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8" fill="none" stroke="var(--ink)" stroke-width="1.2"/>`});
+  svg.innerHTML=band+g+pts+rings;
+}
+const tabs=document.getElementById('tabs');
+F.forEach((fx,i)=>{const b=document.createElement('button');b.className='tab';b.type='button';b.role='tab';b.id='tab-'+fx.id;b.textContent=fx.name;b.onclick=()=>{cur=i;render()};tabs.appendChild(b)});
+document.getElementById('cap').onchange=e=>{cap=e.target.checked;render()};
+document.getElementById('fClear').innerHTML=D.filter(clears).length+'<small> / '+D.length+'</small>';
+render();
+</script>
+
+</body></html>

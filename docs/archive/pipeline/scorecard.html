@@ -1,0 +1,545 @@
+<meta name="dash-one-writer">
+<style>
+.hg{display:flex;flex-direction:column;gap:var(--cds-gap-lg);font-family:var(--font-anthropic-sans);font-variant-numeric:tabular-nums}
+.hg h1{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);margin:0}
+.hg h2{font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium);margin:0}
+.hg h3{font-size:var(--cds-font-size-body);font-weight:var(--cds-font-weight-medium);margin:0}
+.hg p{margin:0}
+.hg .muted{color:var(--color-fg-muted);font-size:var(--cds-font-size-caption)}
+.hg .lede{color:var(--color-fg-muted);max-width:70ch}
+.hg .lede b,.hg .card b{font-weight:600}
+.hg .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));gap:var(--cds-gap-md)}
+.hg .tile{background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-md) var(--cds-pad-lg);display:flex;flex-direction:column;gap:var(--cds-gap-xs)}
+.hg .tile .big{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);line-height:1.1}
+.hg .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,24rem),1fr));gap:var(--cds-gap-md)}
+.hg .card{background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-lg);display:flex;flex-direction:column;gap:var(--cds-gap-sm);min-width:0}
+.hg .chart{position:relative;min-height:240px}
+.hg .tip{position:absolute;pointer-events:none;background:var(--cds-surface-popover);border:1px solid var(--cds-border);border-radius:var(--cds-radius);box-shadow:var(--cds-shadow-popover);padding:var(--cds-pad-xs) var(--cds-pad-sm);font-size:var(--cds-font-size-caption);white-space:nowrap;z-index:2}
+.hg .tip .k{color:var(--cds-text-secondary)}
+.hg .legend{display:flex;flex-wrap:wrap;gap:var(--cds-gap-md);font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.hg .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.hg .tablebox{max-height:560px;overflow:auto;border-top:1px solid var(--color-border-line)}
+.hg table{width:100%;border-collapse:collapse;font-size:var(--cds-font-size-caption)}
+.hg th{position:sticky;top:0;background:var(--color-panel);text-align:left;font-weight:var(--cds-font-weight-medium);color:var(--color-fg-muted);padding:var(--cds-pad-xs) var(--cds-pad-sm);border-bottom:1px solid var(--color-border-line);white-space:nowrap}
+.hg th button{all:unset;cursor:pointer}
+.hg td{padding:var(--cds-pad-xs) var(--cds-pad-sm);border-bottom:1px solid var(--color-border-line);white-space:nowrap}
+.hg td.num,.hg th.num{text-align:right}
+.hg td.cap{text-transform:capitalize}
+.hg .tools{display:flex;flex-wrap:wrap;gap:var(--cds-gap-md);align-items:center;font-size:var(--cds-font-size-caption)}
+.hg .tools input[type=search]{font:inherit;padding:var(--cds-pad-xs) var(--cds-pad-sm);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);background:var(--color-bg);color:var(--color-fg);min-width:12rem}
+.hg .chips{display:flex;flex-wrap:wrap;gap:var(--cds-gap-xs)}
+.hg .chip{font:inherit;font-size:var(--cds-font-size-caption);display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border:1px solid var(--color-border-line);border-radius:999px;background:var(--color-bg);color:var(--color-fg-muted);cursor:pointer}
+.hg .chip[aria-pressed=true]{color:var(--color-fg);border-color:var(--color-fg)}
+.hg .chip i{width:8px;height:8px;border-radius:2px;display:inline-block}
+.hg .chip b{font-weight:500;color:var(--color-fg)}
+.hg tr.wstart td{border-top:1px solid var(--color-fg-muted)}
+.hg tr.wkstart td{border-top:2px solid var(--color-fg)}
+.hg .ok{color:var(--color-ok)}.hg .bad{color:var(--color-bad)}.hg .warn{color:var(--color-warn)}
+.hg .method{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr));gap:var(--cds-gap-md)}
+.hg .method p{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);line-height:1.5}
+.hg .method h3{margin-bottom:var(--cds-gap-xs)}
+.hg .fail{display:flex;align-items:center;justify-content:center;gap:8px;color:var(--color-fg-muted);font-size:var(--cds-font-size-caption);min-height:inherit}
+.hg .fail::before{content:"";width:.375rem;height:.375rem;border-radius:50%;background:var(--color-bad)}
+.hg .eyebrow{font-size:var(--cds-font-size-caption);font-weight:var(--cds-font-weight-medium);letter-spacing:.06em;text-transform:uppercase;color:var(--color-fg-muted);margin:0}
+.hg .say{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-title);line-height:1.15;margin:0}
+.hg .progress{height:8px;border-radius:4px;background:var(--color-border-line);overflow:hidden;max-width:520px}
+.hg .progress .bar{height:100%;min-height:8px}
+.hg .progress .bar i{display:block;height:100%;background:var(--color-fg);border-radius:4px}
+.hg .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr));gap:var(--cds-gap-md);margin-top:var(--cds-gap-sm)}
+.hg .fact{display:flex;flex-direction:column;gap:4px;border-top:1px solid var(--color-border-line);padding-top:var(--cds-pad-sm)}
+.hg .fact p{font-size:var(--cds-font-size-body);line-height:1.45}
+.hg .gems{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,19rem),1fr));gap:var(--cds-gap-md)}
+.hg .gem{background:var(--color-panel);border:1px solid var(--color-border-line);border-radius:var(--cds-radius);padding:var(--cds-pad-lg);display:flex;flex-direction:column;gap:10px;min-width:0}
+.hg .gem .top{display:flex;align-items:center;gap:10px}
+.hg .gem .ct{font-family:var(--font-anthropic-serif);font-size:var(--cds-font-size-title);line-height:1}
+.hg .gem .ct small{font-family:var(--font-anthropic-sans);font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);margin-left:3px}
+.hg .gem .odds{margin-left:auto;font-size:var(--cds-font-size-heading)}
+.hg .gem .who b{display:block;font-size:var(--cds-font-size-heading);font-weight:var(--cds-font-weight-medium)}
+.hg .gem .who span{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.hg .gem .why{font-size:var(--cds-font-size-body);line-height:1.45;color:var(--color-fg)}
+.hg .pill{display:inline-block;font-size:var(--cds-font-size-caption);border:1px solid var(--color-border-line);border-radius:999px;padding:1px 8px;color:var(--color-fg-muted)}
+.hg .track{position:relative;height:34px;margin-top:4px}
+.hg .track .line{position:absolute;left:0;right:0;top:20px;height:4px;border-radius:2px;background:var(--color-border-line)}
+.hg .track .span{position:absolute;top:20px;height:4px;border-radius:2px}
+.hg .track .mk{position:absolute;top:0;transform:translateX(-50%);font-size:11px;white-space:nowrap;color:var(--color-fg-muted)}
+.hg .track .mk.us{color:var(--color-fg);font-weight:600}
+.hg .track .tick{position:absolute;top:16px;width:2px;height:12px;margin-left:-1px;background:var(--color-fg-muted)}
+.hg .track .dot{position:absolute;top:15px;width:14px;height:14px;margin-left:-7px;border-radius:50%;border:2px solid var(--color-panel)}
+.hg .conf{display:flex;align-items:center;gap:8px;font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.hg .conf .cb{flex:1;height:4px;border-radius:2px;background:var(--color-border-line);overflow:hidden}
+.hg .conf .cb i{display:block;height:100%;background:var(--color-fg-muted)}
+.hg details.card>summary{cursor:pointer;list-style:none;display:flex;align-items:baseline;justify-content:space-between;gap:var(--cds-gap-md)}
+.hg details.card>summary::-webkit-details-marker{display:none}
+.hg details.card>summary::after{content:"Show";font-size:var(--cds-font-size-caption);color:var(--color-fg-muted)}
+.hg details.card[open]>summary::after{content:"Hide"}
+.hg .rows{display:flex;flex-direction:column;border-top:1px solid var(--color-border-line)}
+.hg .row{border-bottom:1px solid var(--color-border-line)}
+.hg .rhead{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:grid;grid-template-columns:72px minmax(0,1fr) minmax(120px,200px) 56px 24px;gap:14px;align-items:center;padding:10px 4px}
+.hg .rhead:hover{background:color-mix(in srgb,var(--color-fg) 4%,transparent)}
+.hg .rhead:focus-visible{outline:2px solid var(--color-fg);outline-offset:-2px}
+.hg .rgem{display:flex;align-items:center;gap:6px}
+.hg .rgem b{font-family:var(--font-anthropic-serif);font-weight:400;font-size:var(--cds-font-size-heading)}
+.hg .rwho{display:flex;flex-direction:column;min-width:0}
+.hg .rwho b{font-weight:var(--cds-font-weight-medium);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hg .rwho span{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hg .rodds{text-align:right;font-size:var(--cds-font-size-body)}
+.hg .chev{transition:transform var(--cds-dur-slow);color:var(--color-fg-muted);text-align:center}
+.hg .row.open .chev{transform:rotate(180deg)}
+.hg .rbody{padding:4px 4px 16px 90px;display:flex;flex-direction:column;gap:10px;max-width:760px}
+.hg .rbody .why{font-size:var(--cds-font-size-body);line-height:1.5}
+.hg .facts2{display:flex;flex-wrap:wrap;gap:6px}
+.hg .rows .track{height:30px;margin:0}
+.hg .rows .track .mk{font-size:10px}
+@media (max-width:640px){.hg .rhead{grid-template-columns:56px minmax(0,1fr) 48px 20px}.hg .rhead .track{grid-column:2/4;grid-row:2}.hg .rbody{padding-left:4px}}
+.hg .formula{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:var(--cds-font-size-body)}
+.hg .formula i{font-style:normal;color:var(--color-fg-muted);margin:0 6px}
+.hg .cc3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:var(--cds-gap-md)}
+.hg .cc3>div{display:flex;flex-direction:column;gap:6px}
+.hg .lab{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-fg-muted)}
+.hg .cc3 p{font-size:var(--cds-font-size-caption);line-height:1.5;color:var(--color-fg)}
+.hg .bands{display:grid;grid-template-columns:repeat(5,1fr);gap:3px}
+.hg .bands i{height:8px;border-radius:2px;opacity:.35}
+.hg .bands i.on{opacity:1;outline:2px solid var(--color-fg);outline-offset:1px}
+.hg .cparts{display:grid;grid-template-columns:40fr 30fr 15fr 15fr;gap:3px}
+.hg .cparts span{height:8px;border-radius:2px;background:var(--color-border-line);overflow:hidden}
+.hg .cparts span i{display:block;height:100%;background:var(--color-fg)}
+[data-dash-source-state=empty]{color:transparent}
+[data-dash-source-state=refreshing]{opacity:.5;transition:opacity var(--cds-dur-slow)}
+</style>
+<div class="hg">
+
+<header style="display:flex;flex-direction:column;gap:var(--cds-gap-xs)">
+<h1 id="top">Hidden Gem Scorecard</h1>
+<p class="lede">Plain answers first. Every number behind them is in the full board at the bottom.</p>
+</header>
+
+<section class="card" id="working">
+<p class="eyebrow">Is the scale working?</p>
+<h2 class="say verdict" data-v="early">Too early to tell.</h2>
+<h2 class="say verdict" data-v="forming" hidden>A trend is forming. Not proof yet.</h2>
+<h2 class="say verdict" data-v="ready" hidden>Enough graded picks to judge.</h2>
+<div class="progress"><div class="bar" data-draw="progress" data-source="summary" data-field="graded"></div></div>
+<p class="muted"><b data-draw="graded" data-source="summary" data-field="graded">—</b> picks graded so far. A fair test needs about 100, and the full board gets there in about two weeks of Sundays.</p>
+<div class="facts">
+<div class="fact"><p class="eyebrow">How often they hit</p><p><b data-draw="hits" data-source="summary" data-field="hits">—</b> of <b data-draw="graded" data-source="summary" data-field="graded">—</b> hit. The book expected <b data-draw="expBook" data-source="summary" data-field="exp_book">—</b> and our numbers expected <b data-draw="expOurs" data-source="summary" data-field="exp_ours">—</b>.</p></div>
+<div class="fact"><p class="eyebrow">If you had bet $10 on each</p><p>You would be <b data-draw="pl" data-source="summary" data-field="pl">—</b> on <b data-draw="stake" data-source="summary" data-field="stake">—</b> staked.</p></div>
+<div class="fact"><p class="eyebrow">Did the market move our way?</p>
+<p class="clvsay" data-c="wait">Waiting on the first closing odds, Monday night before kickoff. This is the earliest honest signal, long before hit rates mean anything.</p>
+<p class="clvsay" data-c="yes" hidden>Yes. On <b data-draw="clvBeat" data-source="summary" data-field="clv_beat">—</b> of <b data-draw="clvN" data-source="summary" data-field="clv_n">—</b> props the price shortened toward our read by kickoff, <b data-draw="clv" data-source="summary" data-field="clv_avg">—</b> on average.</p>
+<p class="clvsay" data-c="no" hidden>Not yet. Prices we froze drifted away from our read by kickoff, <b data-draw="clv" data-source="summary" data-field="clv_avg">—</b> on average.</p>
+</div>
+</div>
+</section>
+
+<section class="card" id="list">
+<p class="eyebrow">This week's board</p>
+<h2>Every prop, graded. Tap a row for the why.</h2>
+<div class="chips" role="group" aria-label="Which props to show">
+<button type="button" class="chip hg-view" data-view="gems" aria-pressed="true"><b>Gems</b> · where we beat the book</button>
+<button type="button" class="chip hg-view" data-view="skip" aria-pressed="false"><b>Skip list</b> · popular and overpriced</button>
+<button type="button" class="chip hg-view" data-view="all" aria-pressed="false"><b>Everything</b></button>
+</div>
+<div class="rows" data-draw="rows" data-source="picks"></div>
+<p class="muted">The gray tick is the chance the price implies. The dot is our read. Green means we think it is underpriced, red overpriced.</p>
+</section>
+
+<section class="card" id="by-carat">
+<p class="eyebrow">The real test</p>
+<h2>Do bigger stones hit more often?</h2>
+<p class="muted">If the scale works, each size of stone beats the book by more than the one below it, and fool's gold falls short. Bars fill in every Tuesday after grading.</p>
+<div class="legend" data-draw="tierLegend" data-source="tiers"></div>
+<div class="chart" data-draw="tierChart" data-source="tiers"></div>
+</section>
+
+<details class="card" id="board">
+<summary><h2>The full board · every prop and number</h2></summary>
+<p class="muted">Every anytime touchdown prop captured from the board, scored with Cut v3 and Clarity v3 on nflverse stats. Kickoffs are Mountain Time. Monday night's Week 8 game is frozen as of Sunday 8:25 PM. Week 9 rows are opening lines, frozen again the morning of each game, then closed before kickoff. Each time window keeps its color stripe however you sort; sort by Kickoff or Week to see the windows as bands.</p>
+<div class="tools">
+<input type="search" placeholder="Search player or game" aria-label="Search the board" class="hg-search">
+<label><input type="checkbox" class="hg-all"> Show dirt and fool's gold</label>
+</div>
+<div class="tools"><span class="muted">Time windows · tap one to show only it</span></div>
+<div class="chips" data-draw="windows" data-source="picks"></div>
+<div class="tablebox">
+<table data-source="picks" data-row-key="id">
+<thead><tr>
+<th class="num" data-field="carat"><button data-sort="carat">Carat</button></th>
+<th data-field="player"><button data-sort="player">Player</button></th>
+<th data-field="game"><button data-sort="game">Game</button></th>
+<th class="num" data-field="week"><button data-sort="week">Week</button></th>
+<th data-field="kick_label" aria-sort="ascending"><button data-sort="kick">Kickoff</button></th>
+<th class="num" data-field="price"><button data-sort="price">Odds</button></th>
+<th class="num" data-field="book_pct"><button data-sort="book_pct">Book %</button></th>
+<th class="num" data-field="our_pct"><button data-sort="our_pct">Our %</button></th>
+<th class="num" data-field="stats_pct"><button data-sort="stats_pct">Stats %</button></th>
+<th class="num" data-field="rz_pg"><button data-sort="rz_pg">Red zone / game</button></th>
+<th class="num" data-field="snap_recent"><button data-sort="snap_recent">Snaps</button></th>
+<th data-field="inj_status"><button data-sort="inj_status">Injury</button></th>
+<th data-field="clarity"><button data-sort="clarity_score">Clarity</button></th>
+<th class="num" data-field="clarity_score"><button data-sort="clarity_score">Score</button></th>
+<th data-field="books_txt">Books</th>
+<th data-field="status"><button data-sort="status">Status</button></th>
+<th class="num" data-field="close_price"><button data-sort="close_price">Close</button></th>
+<th class="num" data-field="clv"><button data-sort="clv">Line value</button></th>
+<th data-field="result"><button data-sort="result">Result</button></th>
+</tr></thead>
+<tbody data-draw="boardRows" data-source="picks"></tbody>
+</table>
+</div>
+</details>
+
+<details class="card" id="pilot">
+<summary><h2>Week 8 pilot · hand-picked, graded</h2></summary>
+<p class="muted">The eight researched picks from Sunday's slate, scored with the first version of the scale before the freeze existed. Both James Cook bets rode one touchdown, so they count as one group.</p>
+<div class="tablebox">
+<table data-source="picks" data-row-key="id">
+<thead><tr>
+<th class="num" data-field="carat">Carat</th>
+<th data-field="player">Player</th>
+<th data-field="market">Market</th>
+<th class="num" data-field="week">Week</th>
+<th data-field="kick_label">Kickoff</th>
+<th class="num" data-field="price">Odds</th>
+<th class="num" data-field="book_pct">Book %</th>
+<th class="num" data-field="our_pct">Our %</th>
+<th data-field="clarity">Clarity</th>
+<th data-field="result">Result</th>
+<th class="num" data-field="pl">$10 bet</th>
+</tr></thead>
+<tbody data-draw="pilotRows" data-source="picks"></tbody>
+</table>
+</div>
+</details>
+
+<details class="card" id="method">
+<summary><h2>How it is graded</h2></summary>
+<div class="method">
+<div><h3>Carat</h3><p>Carat = Cut × Color × Clarity. Cut is our hit chance minus the book's, in points. Color is the odds. Clarity shrinks the stone when the read is shaky. Under 5 is dirt, below 0 is fool's gold. Carat works out to roughly how far the price is off, in percent.</p></div>
+<div><h3>Cut v3 · real stats</h3><p>Our chance starts from nflverse play by play: carries and targets inside the 10 yard line times the league touchdown rate on each, plus long touchdowns scaled to snap share, recalibrated on 1,367 player games from weeks 4 to 8 (forecast error 0.131 against 0.137 for plain hit rates). That stats read is then blended with the price after removing the house cut, which grows on long shots. Long shots get less pull away from the market. Players with no 2026 stats get no read.</p></div>
+<div><h3>Clarity v3</h3><p>A 100 point score. Sample counts touchdowns we would expect to have seen in his real games. Consistency checks that red zone usage and actual touchdowns tell the same story. Books agreeing adds up to 15, and setup uses the official injury report plus a falling snap share. Clear 80+ ×1.0, slight haze 65+ ×0.85, hazy 50+ ×0.7, cloudy ×0.55.</p></div>
+<div><h3>Freeze and close</h3><p>Prices are captured before anyone knows the result, and never changed after. The last capture before kickoff is the close. Line value is our price over the closing price, minus 1: positive means the market moved our way, the best early sign the reads are real.</p></div>
+<div><h3>Linked groups</h3><p>Bets on the same player and the same event count once for hit rate, expected hits and forecast error, using the biggest stone in the group. Profit still adds every leg.</p></div>
+<div><h3>Honest read</h3><p>One graded Sunday is noise. A tier's hit rate starts to mean something after roughly 100 graded props in it, which the whole board reaches in about two weeks. Board grades are mechanical: the researched picks layer news and matchup on top.</p></div>
+</div>
+</details>
+
+</div>
+<script>
+(() => {
+const TIERS = [['30+', 30, Infinity], ['15 to 29', 15, 30], ['5 to 14', 5, 15], ['Dirt 0 to 4', 0, 5], ["Fool's gold", -Infinity, 0]];
+const tierOf = (ct) => TIERS.find(([, lo, hi]) => ct >= lo && ct < hi)[0];
+
+dash.calc('groups', {
+  title: 'Linked groups',
+  description: 'One row per player and event, the biggest stone standing in for the group; profit adds every leg.',
+  inputs: ['picks'],
+  fn: (picks) => {
+    const by = new Map();
+    for (const r of picks) { if (!by.has(r.group)) by.set(r.group, []); by.get(r.group).push(r); }
+    return [...by.entries()].map(([group, legs]) => {
+      const rep = legs.reduce((a, b) => (Number(b.carat) > Number(a.carat) ? b : a));
+      const graded = legs.every((l) => l.result === 'Hit' || l.result === 'Miss');
+      const clvs = legs.map((l) => l.clv).filter((v) => v !== null && v !== '' && v !== undefined).map(Number);
+      return {group, source: rep.source, legs: legs.length, carat: Number(rep.carat), tier: tierOf(Number(rep.carat)),
+        graded, hit: graded ? (rep.result === 'Hit' ? 1 : 0) : null, ours: Number(rep.our_pct) / 100, book: Number(rep.book_pct) / 100,
+        pl: graded ? legs.reduce((s, l) => s + Number(l.pl), 0) : null, stake: graded ? 10 * legs.length : 0,
+        clv: clvs.length ? clvs.reduce((a, b) => a + b, 0) / clvs.length : null};
+    });
+  }
+});
+
+dash.calc('summary', {
+  title: 'Scorecard totals',
+  description: 'Hits, expected hits, forecast error, flat $10 profit and closing line value over graded groups.',
+  inputs: ['groups', 'picks'],
+  fn: (groups, picks) => {
+    const g = groups.filter((x) => x.graded);
+    const n = g.length, hits = g.reduce((s, x) => s + x.hit, 0);
+    const eo = g.reduce((s, x) => s + x.ours, 0), eb = g.reduce((s, x) => s + x.book, 0);
+    const brier = (k) => (n ? g.reduce((s, x) => s + (x[k] - x.hit) ** 2, 0) / n : null);
+    const pl = g.reduce((s, x) => s + x.pl, 0), stake = g.reduce((s, x) => s + x.stake, 0);
+    const c = groups.filter((x) => x.clv !== null);
+    const open = picks.filter((r) => r.result !== 'Hit' && r.result !== 'Miss' && r.result !== 'Void');
+    return [{graded: n, hits, exp_ours: eo, exp_book: eb, hit_rate: n ? hits / n : null, exp_rate: n ? eo / n : null, book_rate: n ? eb / n : null,
+      brier_ours: brier('ours'), brier_book: brier('book'), pl, stake, roi: stake ? pl / stake : null,
+      clv_n: c.length, clv_beat: c.filter((x) => x.clv > 0).length, clv_avg: c.length ? c.reduce((s, x) => s + x.clv, 0) / c.length : null,
+      waiting: open.length, gems_now: open.filter((r) => Number(r.carat) >= 5).length}];
+  }
+});
+
+dash.calc('tiers', {
+  title: 'Hit rate by carat tier',
+  description: 'Graded groups per tier: actual hit rate against our expected rate and the book line, plus props still waiting.',
+  inputs: ['groups'],
+  fn: (groups) => TIERS.map(([tier]) => {
+    const all = groups.filter((x) => x.tier === tier), g = all.filter((x) => x.graded);
+    const avg = (k) => (g.length ? g.reduce((s, x) => s + x[k], 0) / g.length : null);
+    return {tier, graded: g.length, actual: avg('hit'), ours: avg('ours'), book: avg('book'), waiting: all.length - g.length};
+  })
+});
+
+const fmtPrice = d3.format('.2f');
+const pctf = d3.format('.0%'), num1 = d3.format('.1f'), br = d3.format('.3f');
+const money = (v) => (v < 0 ? '−$' : '+$') + d3.format(',.2f')(Math.abs(v));
+const S = () => dash.data('summary');
+const val = (f, fmt) => (el) => {
+  const s = S();
+  el.classList.remove('ok', 'bad');
+  if (s.status !== 'ok' || !s.data.length || s.data[0][f] === null) { el.textContent = '—'; return; }
+  el.textContent = fmt(s.data[0][f]);
+};
+dash.draw('hits', val('hits', String));
+dash.draw('graded', val('graded', String));
+dash.draw('expOurs', val('exp_ours', num1));
+dash.draw('expBook', val('exp_book', num1));
+dash.draw('pl', (el) => { val('pl', money)(el); const s = S(); if (s.status === 'ok' && s.data.length) el.classList.add(s.data[0].pl >= 0 ? 'ok' : 'bad'); });
+dash.draw('clv', (el) => {
+  const s = S();
+  el.classList.remove('ok', 'bad');
+  if (s.status !== 'ok' || !s.data.length) { el.textContent = '—'; return; }
+  const v = s.data[0].clv_avg;
+  if (v === null) { el.textContent = 'Waiting'; return; }
+  el.textContent = (v >= 0 ? '+' : '−') + num1(Math.abs(v)) + '%';
+  el.classList.add(v >= 0 ? 'ok' : 'bad');
+});
+dash.draw('clvBeat', val('clv_beat', String));
+dash.draw('clvN', val('clv_n', String));
+
+const fail = (el, id) => { const d = dash.data(id); if (d.status === 'error' || d.status === 'connect') { el.replaceChildren(Object.assign(document.createElement('div'), {className: 'fail', textContent: 'Failed to load'})); return true; } return false; };
+
+function tooltip(box) {
+  let t = box.querySelector('.tip');
+  if (!t) { t = document.createElement('div'); t.className = 'tip'; t.hidden = true; box.appendChild(t); }
+  return {
+    show(ev, lines) {
+      t.replaceChildren(...lines.map(([k, v, c], i) => {
+        const d = document.createElement('div');
+        if (i === 0) { d.className = 'k'; d.textContent = k; return d; }
+        if (c) { const sw = document.createElement('i'); sw.style.cssText = `display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;background:${c}`; d.appendChild(sw); }
+        d.appendChild(document.createTextNode(`${k}  ${v}`));
+        return d;
+      }));
+      t.hidden = false;
+      const r = box.getBoundingClientRect(), w = t.offsetWidth, h = t.offsetHeight;
+      let x = ev.clientX - r.left + 12, y = ev.clientY - r.top - h - 8;
+      if (x + w > r.width) x = ev.clientX - r.left - w - 12;
+      if (y < 0) y = ev.clientY - r.top + 12;
+      t.style.left = Math.max(0, x) + 'px'; t.style.top = y + 'px';
+    },
+    hide() { t.hidden = true; }
+  };
+}
+
+const SER = [['actual', 'Actual hit rate'], ['ours', 'Our expected'], ['book', 'Book line']];
+dash.draw('tierLegend', (el) => {
+  el.replaceChildren(...SER.map(([, name], i) => { const s = document.createElement('span'); const sw = document.createElement('i'); sw.style.background = i === 0 ? dash.colors[0] : i === 1 ? dash.colors[1] : 'var(--cds-chart-muted)'; s.append(sw, name); return s; }));
+});
+dash.draw('tierChart', (el) => {
+  el.replaceChildren();
+  const d = dash.data('tiers');
+  if (fail(el, 'tiers') || d.status !== 'ok') return;
+  const rows = d.data, W = el.clientWidth, rowH = 46, H = rows.length * rowH + 28;
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).style('display', 'block');
+  const lab = svg.append('g');
+  const probe = lab.selectAll('text').data(rows).join('text').attr('font-size', 12).text((r) => r.tier);
+  const L = Math.ceil(d3.max(probe.nodes(), (n) => n.getComputedTextLength())) + 12; probe.remove();
+  const nlab = svg.append('g');
+  const probe2 = nlab.selectAll('text').data(rows).join('text').attr('font-size', 12).text((r) => `${r.graded} graded · ${r.waiting} waiting`);
+  const R = Math.ceil(d3.max(probe2.nodes(), (n) => n.getComputedTextLength())) + 10; probe2.remove();
+  const x = d3.scaleLinear([0, 1], [L, Math.max(L + 40, W - R)]);
+  const y = d3.scaleBand(rows.map((r) => r.tier), [4, H - 24]).padding(0.25);
+  const sub = d3.scaleBand(SER.map((s) => s[0]), [0, y.bandwidth()]).padding(0.12);
+  const color = (k) => (k === 'actual' ? dash.colors[0] : k === 'ours' ? dash.colors[1] : 'var(--cds-chart-muted)');
+  svg.append('g').selectAll('line').data(x.ticks(4)).join('line').attr('x1', x).attr('x2', x).attr('y1', 0).attr('y2', H - 22).attr('stroke', 'var(--cds-chart-grid)');
+  svg.append('g').attr('transform', `translate(0,${H - 20})`).selectAll('text').data(x.ticks(4)).join('text').attr('x', x).attr('y', 12).attr('text-anchor', 'middle').attr('font-size', 11).attr('fill', 'var(--color-fg-muted)').text(pctf);
+  svg.append('g').selectAll('text').data(rows).join('text').attr('x', L - 10).attr('y', (r) => y(r.tier) + y.bandwidth() / 2).attr('dy', '0.35em').attr('text-anchor', 'end').attr('font-size', 12).attr('fill', 'var(--color-fg)').text((r) => r.tier);
+  svg.append('g').selectAll('text').data(rows).join('text').attr('x', x.range()[1] + 8).attr('y', (r) => y(r.tier) + y.bandwidth() / 2).attr('dy', '0.35em').attr('font-size', 12).attr('fill', 'var(--color-fg-muted)').text((r) => `${r.graded} graded · ${r.waiting} waiting`);
+  const tip = tooltip(el);
+  const g = svg.append('g').selectAll('g').data(rows).join('g').attr('transform', (r) => `translate(0,${y(r.tier)})`);
+  g.selectAll('rect').data((r) => SER.map(([k, name]) => ({r, k, name, v: r[k]})).filter((s) => s.v !== null))
+    .join('rect').attr('x', x(0)).attr('y', (s) => sub(s.k)).attr('height', Math.min(10, sub.bandwidth())).attr('width', (s) => Math.max(1, x(s.v) - x(0))).attr('rx', 2).attr('fill', (s) => color(s.k));
+  g.append('rect').attr('x', x(0)).attr('y', 0).attr('width', x.range()[1] - x(0)).attr('height', y.bandwidth()).attr('fill', 'transparent')
+    .on('mousemove', (ev, r) => tip.show(ev, [[`Carat ${r.tier} · ${r.graded} graded`], ...SER.map(([k, name]) => [name, r[k] === null ? 'not yet' : pctf(r[k]), color(k)])]))
+    .on('mouseleave', () => tip.hide());
+});
+
+
+dash.draw('stake', val('stake', (v) => '$' + d3.format(',')(v)));
+dash.draw('progress', (el) => {
+  el.replaceChildren();
+  const s = S(); if (s.status !== 'ok' || !s.data.length) return;
+  const i = document.createElement('i'); i.style.width = Math.min(100, s.data[0].graded) + '%'; el.appendChild(i);
+});
+// which plain sentence shows: decided by how much has been graded, and whether closing odds exist yet
+dash.onData(() => {
+  const s = S(); const r = s.status === 'ok' && s.data.length ? s.data[0] : null;
+  const v = !r ? 'early' : r.graded >= 100 ? 'ready' : r.graded >= 30 ? 'forming' : 'early';
+  document.querySelectorAll('.verdict').forEach((el) => { el.hidden = el.dataset.v !== v; });
+  const c = !r || r.clv_avg === null ? 'wait' : r.clv_avg >= 0 ? 'yes' : 'no';
+  document.querySelectorAll('.clvsay').forEach((el) => { el.hidden = el.dataset.c !== c; });
+});
+
+const STONE = {Diamond: '#9fd3ff', Ruby: '#e0435c', Emerald: '#1f9d6b', Sapphire: '#3567d6', Quartz: '#c9c2d9', Dirt: '#a8937a', "Fool's gold": '#d4a017', 'No read': '#9aa3a8'};
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; };
+function gemSvg(color) {
+  const ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('viewBox', '0 0 48 48'); svg.setAttribute('width', '34'); svg.setAttribute('height', '34'); svg.setAttribute('aria-hidden', 'true');
+  [['M14 8 H34 L44 20 H4 Z', 0.85], ['M4 20 H44 L24 44 Z', 1], ['M14 8 L24 20 L34 8', 0], ['M4 20 L24 44 L44 20', 0]].forEach(([d, o]) => {
+    const p = document.createElementNS(ns, 'path'); p.setAttribute('d', d);
+    if (o) { p.setAttribute('fill', color); p.setAttribute('fill-opacity', String(o)); } else { p.setAttribute('fill', 'none'); p.setAttribute('stroke', 'rgba(0,0,0,.18)'); }
+    svg.appendChild(p);
+  });
+  return svg;
+}
+function track(r) {
+  const mx = Math.max(10, Math.ceil(Math.max(r.book_pct, r.our_pct) * 1.25 / 10) * 10);
+  const x = (v) => Math.max(0, Math.min(100, v / mx * 100)) + '%';
+  const t = el('div', 'track'); t.appendChild(el('div', 'line'));
+  const lo = Math.min(r.book_pct, r.our_pct), hi = Math.max(r.book_pct, r.our_pct);
+  const sp = el('div', 'span'); sp.style.left = x(lo); sp.style.width = `calc(${x(hi)} - ${x(lo)})`;
+  sp.style.background = r.our_pct >= r.book_pct ? 'var(--color-ok)' : 'var(--color-bad)'; t.appendChild(sp);
+  const tk = el('div', 'tick'); tk.style.left = x(r.book_pct); t.appendChild(tk);
+  const dt = el('div', 'dot'); dt.style.left = x(r.our_pct); dt.style.background = 'var(--color-fg)'; t.appendChild(dt);
+  const near = Math.abs(r.book_pct - r.our_pct) / mx < 0.3;
+  const m1 = el('span', 'mk', `Book ${r.book_pct}%`); m1.style.left = x(r.book_pct);
+  const m2 = el('span', 'mk us', `Ours ${r.our_pct}%`); m2.style.left = x(r.our_pct);
+  if (near) { const left = r.book_pct <= r.our_pct; m1.style.transform = left ? 'translateX(-100%)' : 'translateX(0)'; m2.style.transform = left ? 'translateX(0)' : 'translateX(-100%)'; }
+  t.append(m1, m2);
+  return t;
+}
+const openIds = new Set();
+let view = 'gems';
+function row(r) {
+  const w = el('div', 'row' + (openIds.has(r.id) ? ' open' : '')); w.dataset.key = r.id;
+  const h = el('button', 'rhead'); h.type = 'button'; h.setAttribute('aria-expanded', String(openIds.has(r.id)));
+  const g = el('span', 'rgem'); const sv = gemSvg(STONE[r.grade] || '#999'); sv.setAttribute('width', '26'); sv.setAttribute('height', '26'); g.appendChild(sv); g.appendChild(el('b', '', String(r.carat))); h.appendChild(g);
+  const who = el('span', 'rwho'); who.appendChild(el('b', '', `${r.player} · ${r.headline || ''}`)); who.appendChild(el('span', '', `${r.game} · Week ${r.week} · ${r.kick_label || ''}`)); h.appendChild(who);
+  h.appendChild(track(r));
+  h.appendChild(el('span', 'rodds', fmtPrice(r.price)));
+  h.appendChild(el('span', 'chev', '⌄'));
+  w.appendChild(h);
+  const body = el('div', 'rbody'); body.hidden = !openIds.has(r.id);
+  body.appendChild(el('p', 'why', r.why || ''));
+  const fm = el('p', 'formula');
+  if (r.stats_match) {
+    const cutS = Math.abs(r.cut) >= 9.5 ? (r.cut > 0 ? '+' : '−') + Math.round(Math.abs(r.cut)) : (r.cut > 0 ? '+' : '−') + num1(Math.abs(r.cut));
+    fm.append(el('b', '', `${r.carat} ct`), el('i', '', '='), document.createTextNode(`${cutS} cut`), el('i', '', '×'), document.createTextNode(`${fmtPrice(r.price)} color`), el('i', '', '×'), document.createTextNode(`${r.clarity_x} clarity`));
+  } else fm.textContent = r.formula || 'No read';
+  body.appendChild(fm);
+  const cc = el('div', 'cc3');
+  const col = (label, vis, text) => { const d = el('div'); d.appendChild(el('span', 'lab', label)); if (vis) d.appendChild(vis); d.appendChild(el('p', '', text || '')); return d; };
+  // Cut: book tick vs our dot
+  cc.appendChild(col(`Cut · ${r.cut > 0 ? '+' : ''}${num1(r.cut)}`, track(r), r.cut_why));
+  // Color: the five payout bands, his highlighted
+  const bands = el('div', 'bands');
+  ['Quartz', 'Sapphire', 'Emerald', 'Ruby', 'Diamond'].forEach((k) => { const i = el('i', r.stone === k ? 'on' : ''); i.style.background = STONE[k]; i.title = k; bands.appendChild(i); });
+  cc.appendChild(col(`Color · ${r.stone || ''}`, bands, r.color_why));
+  // Clarity: four parts, each filled to its share
+  const cp = el('div', 'cparts');
+  [['c_sample', 40], ['c_consistency', 30], ['c_market', 15], ['c_setup', 15]].forEach(([k, m]) => { const sp = el('span'); const i = el('i'); i.style.width = Math.max(0, Math.min(100, (Number(r[k]) || 0) / m * 100)) + '%'; sp.appendChild(i); cp.appendChild(sp); });
+  cc.appendChild(col(`Clarity · ${r.clarity_score ?? ''} ${(r.clarity || '').toLowerCase()}`, r.stats_match ? cp : null, r.clarity_why));
+  body.appendChild(cc);
+  const f = el('div', 'facts2');
+  const add = (t) => { if (t) f.appendChild(el('span', 'pill', t)); };
+  add(r.status === 'frozen' ? 'Price frozen' : r.status === 'opening' ? 'Opening line · freezes game day' : r.status);
+  if (r.inj_status) add(`Injury report · ${r.inj_status}`);
+  if (r.close_price != null) add(`Closed at ${fmtPrice(r.close_price)} · line value ${r.clv >= 0 ? '+' : '−'}${num1(Math.abs(r.clv))}%`);
+  if (r.result) add(`Result · ${r.result}`);
+  body.appendChild(f);
+  w.appendChild(body);
+  h.onclick = () => { if (openIds.has(r.id)) openIds.delete(r.id); else openIds.add(r.id); const o = openIds.has(r.id); w.classList.toggle('open', o); body.hidden = !o; h.setAttribute('aria-expanded', String(o)); };
+  return w;
+}
+const openBoard = (d) => d.data.filter((r) => r.source === 'Board' && !['Hit', 'Miss', 'Void'].includes(r.result));
+dash.draw('rows', (box) => {
+  box.replaceChildren();
+  const d = dash.data('picks'); if (d.status !== 'ok') return;
+  let rows = openBoard(d);
+  if (view === 'gems') rows = rows.filter((r) => Number(r.carat) >= 5).sort((a, b) => b.carat - a.carat);
+  else if (view === 'skip') rows = rows.filter((r) => r.price < 3 && Number(r.carat) < 0 && r.stats_match).sort((a, b) => a.carat - b.carat).slice(0, 8);
+  else rows = rows.sort((a, b) => b.carat - a.carat);
+  if (!rows.length) { box.appendChild(el('p', 'muted', 'Nothing here right now.')); return; }
+  rows.forEach((r) => box.appendChild(row(r)));
+});
+document.querySelectorAll('.hg-view').forEach((b) => b.addEventListener('click', () => {
+  view = b.dataset.view;
+  document.querySelectorAll('.hg-view').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+  dash.draw('rows');
+}));
+
+let sortKey = 'kick', sortDir = 1, winFilter = null;
+const boardRowsOf = (data) => data.filter((r) => r.source === 'Board');
+const windowsOf = (data) => {
+  const m = new Map();
+  for (const r of boardRowsOf(data)) { const k = r.kick || ''; if (!m.has(k)) m.set(k, {kick: k, label: r.kick_label || 'No kickoff', week: r.week, n: 0, gems: 0}); const w = m.get(k); w.n++; if (Number(r.carat) >= 5) w.gems++; }
+  return [...m.values()].sort((a, b) => a.kick.localeCompare(b.kick)).map((w, i) => ({...w, color: dash.colors[i % dash.colors.length], i}));
+};
+dash.draw('windows', (el) => {
+  el.replaceChildren();
+  const d = dash.data('picks');
+  if (d.status !== 'ok') return;
+  const mk = (label, sub, color, key) => {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.setAttribute('aria-pressed', String(winFilter === key));
+    if (color) { const i = document.createElement('i'); i.style.background = color; b.appendChild(i); }
+    const t = document.createElement('b'); t.textContent = label; b.appendChild(t);
+    if (sub) b.appendChild(document.createTextNode(sub));
+    b.onclick = () => { winFilter = winFilter === key ? null : key; dash.draw('windows'); dash.draw('boardRows'); };
+    return b;
+  };
+  el.appendChild(mk('All windows', '', null, null));
+  for (const w of windowsOf(d.data)) el.appendChild(mk(`Week ${w.week} · ${w.label.replace(' MT', '')}`, ` · ${w.gems} gems`, w.color, w.kick));
+});
+function cells(tr, vals) { for (const [v, cls] of vals) { const td = document.createElement('td'); if (cls) td.className = cls; td.textContent = v; tr.appendChild(td); } }
+dash.draw('boardRows', (tb) => {
+  tb.replaceChildren();
+  const d = dash.data('picks');
+  if (d.status !== 'ok') return;
+  const q = [...document.querySelectorAll('.hg-search')].map((i) => i.value.trim().toLowerCase()).join('');
+  const all = [...document.querySelectorAll('.hg-all')].some((c) => c.checked);
+  const isNum = (k) => ['week', 'stats_pct', 'rz_pg', 'snap_recent', 'carat', 'price', 'book_pct', 'our_pct', 'clarity_score', 'close_price', 'clv'].includes(k);
+  const win = new Map(windowsOf(d.data).map((w) => [w.kick, w]));
+  const tie = (a, b) => String(a.kick || '').localeCompare(String(b.kick || '')) || Number(b.carat) - Number(a.carat);
+  const rows = d.data.filter((r) => r.source === 'Board' && (all || Number(r.carat) >= 5) && (winFilter === null || (r.kick || '') === winFilter) && (!q || (r.player + ' ' + r.game).toLowerCase().includes(q)))
+    .sort((a, b) => { const A = a[sortKey], B = b[sortKey]; let c; if (isNum(sortKey)) { const x = A === null || A === '' ? -1e9 : Number(A), y = B === null || B === '' ? -1e9 : Number(B); c = (x - y) * sortDir; } else c = String(A ?? '').localeCompare(String(B ?? '')) * sortDir; return c || tie(a, b); });
+  const grouped = sortKey === 'kick' || sortKey === 'week';
+  let prev = null;
+  for (const r of rows) {
+    const tr = document.createElement('tr'); tr.dataset.key = r.id;
+    const w = win.get(r.kick || '');
+    if (w) { tr.style.boxShadow = `inset 4px 0 0 ${w.color}`; if (grouped && w.i % 2) tr.style.background = `color-mix(in srgb, ${w.color} 7%, transparent)`; }
+    if (grouped && prev && prev.kick !== r.kick) tr.className = prev.week !== r.week ? 'wkstart' : 'wstart';
+    prev = r;
+    const clv = r.clv === null || r.clv === '' ? '' : (Number(r.clv) >= 0 ? '+' : '−') + num1(Math.abs(Number(r.clv))) + '%';
+    cells(tr, [[String(r.carat), 'num'], [r.player], [r.game], [String(r.week), 'num'], [r.kick_label || ''], [fmtPrice(r.price), 'num'], [r.book_pct + '%', 'num'], [r.our_pct + '%', 'num'],
+      [r.stats_pct == null ? '' : r.stats_pct + '%', 'num'], [r.rz_pg == null ? '' : num1(r.rz_pg), 'num'], [r.snap_recent == null ? '' : r.snap_recent + '%', 'num'], [r.inj_status || ''],
+      [r.clarity], [String(r.clarity_score), 'num'], [r.books_txt], [r.status, 'cap'], [r.close_price === null ? '' : fmtPrice(r.close_price), 'num'], [clv, 'num'], [r.result || '']]);
+    const c = tr.children;
+    if (r.clv !== null && r.clv !== '') c[17].classList.add(Number(r.clv) >= 0 ? 'ok' : 'bad');
+    if (r.result) c[18].classList.add(r.result === 'Hit' ? 'ok' : 'bad');
+    if (Number(r.carat) < 0) c[0].classList.add('warn');
+    tb.appendChild(tr);
+  }
+});
+dash.draw('pilotRows', (tb) => {
+  tb.replaceChildren();
+  const d = dash.data('picks');
+  if (d.status !== 'ok') return;
+  for (const r of d.data.filter((x) => x.source === 'Pilot').sort((a, b) => Number(b.carat) - Number(a.carat))) {
+    const tr = document.createElement('tr'); tr.dataset.key = r.id;
+    cells(tr, [[String(r.carat), 'num'], [r.player], [r.market], [String(r.week), 'num'], [r.kick_label || ''], [fmtPrice(r.price), 'num'], [r.book_pct + '%', 'num'], [r.our_pct + '%', 'num'], [r.clarity], [r.result], [money(Number(r.pl)), 'num']]);
+    tr.children[9].classList.add(r.result === 'Hit' ? 'ok' : 'bad');
+    tr.children[10].classList.add(Number(r.pl) >= 0 ? 'ok' : 'bad');
+    tb.appendChild(tr);
+  }
+});
+document.querySelectorAll('.hg-search').forEach((i) => i.addEventListener('input', () => dash.draw('boardRows')));
+document.querySelectorAll('.hg-all').forEach((i) => i.addEventListener('change', () => dash.draw('boardRows')));
+document.querySelectorAll('#board th button[data-sort]').forEach((b) => b.addEventListener('click', () => {
+  const k = b.dataset.sort;
+  if (sortKey === k) sortDir = -sortDir; else { sortKey = k; sortDir = ['player', 'game', 'status', 'result', 'kick', 'week'].includes(k) ? 1 : -1; }
+  document.querySelectorAll('#board th').forEach((th) => th.removeAttribute('aria-sort'));
+  b.closest('th').setAttribute('aria-sort', sortDir > 0 ? 'ascending' : 'descending');
+  dash.draw('boardRows');
+}));
+})();
+</script>

@@ -2,6 +2,23 @@
 
 These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working here.
 
+## The repo is the source of truth
+
+- This repository is the only source of truth for Hidden Gems: product (`docs/prd.md`), build briefs,
+  wireframes, design system, model, pipeline code and scheduled task directives. Start every task by
+  reading the latest `main`. Never work from a copy kept by an earlier session, a claude.ai artifact or memory.
+- Do not create, publish, update or consult claude.ai artifacts for this project (design systems,
+  canvases, dashboards, labs, docs). Anything worth keeping is a file here, changed by pull request. If
+  something you need lives only outside the repo, bring it in first, then work from the repo copy.
+- Superseded artifacts are archived in `docs/archive/` as they were; they are history, not specs.
+- Secrets live only in Vercel environment variables (`ODDS_API_KEY`, `DATABASE_URL`, `CRON_SECRET`,
+  `APP_PASSWORD`, `ANTHROPIC_API_KEY`, `BACKUP_GITHUB_TOKEN`), never in the repo, an artifact or a scheduled task.
+- The database is protected by design (`docs/architecture.md`, "Database"): the app connects as `hiddengems_app`,
+  which cannot alter or drop anything; history tables reject edits; `pnpm db:guard` blocks destructive
+  migrations. Never work around these. Schema changes reach Supabase through `pnpm db:supabase-sql`, run by the owner.
+- The old pipeline (claude.ai dashboard store and its scheduled tasks) retired on Nov 3 2026. Its code is
+  `ops/pipeline/hgs.py`; its directives, picks history and scorecard are in `docs/archive/pipeline/`.
+
 ## UI work must use Facet
 
 - Read `packages/facet/DESIGN.md` before designing or building any interface.
@@ -53,4 +70,5 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 - `packages/core/` domain rules, `packages/db/` schema and client, `packages/ingest/` providers and jobs
 - `apps/web/` Hidden Gems app (Next.js, deploys on Vercel with Root Directory `apps/web`)
 - `docs/` project documentation
-- `ops/directives/` scheduled task directives; the Claude app tasks are stubs that read these from `main`
+- `ops/directives/` retired; each file tells any old scheduled run to do nothing
+- `ops/pipeline/hgs.py` the old pipeline's code, the reference the v3.0 model was ported from

@@ -194,4 +194,3 @@ password and require `Authorization: Bearer $CRON_SECRET` instead.
 ## Next
 
 - The screens build (`docs/build-brief.md`): new gems row, gem sheet, slips, the Jeweler, history.
-- Retire the old pipeline once the app's own pulls match it for two Sundays.

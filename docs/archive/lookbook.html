@@ -1,0 +1,760 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Hidden Gems Feature Lookbook</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a shop floor. Thesis up top, the field's patterns, the brands, then a filterable shelf of feature cards, with a fixed cart that prices everything in hours. Geist voice to match the Hidden Gems design system. */
+:root{
+  --bg:#f7f7f8; --surface:#ffffff; --ink:#0b0b0d; --muted:#62656d; --line:#e2e3e7;
+  --wf:#eef0f3; --wf-ink:#a3a7af; --acc:#3446d4; --acc-soft:#e9ecfd; --on-acc:#ffffff;
+  --good:#17824a; --good-soft:#e2f3e9; --warn:#9a5c00; --warn-soft:#fbefd8;
+  --bad:#bf3a2f; --bad-soft:#fbe7e4; --own:#545862; --own-soft:#ebecef;
+  --sans:"Geist",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#09090a; --surface:#121214; --ink:#ececee; --muted:#9c9ea6; --line:#27282d;
+  --wf:#1b1c20; --wf-ink:#5d6069; --acc:#8c9bff; --acc-soft:#1b2042; --on-acc:#0b0b0d;
+  --good:#4fc283; --good-soft:#11271b; --warn:#e7aa4c; --warn-soft:#2a1f0f;
+  --bad:#f06f63; --bad-soft:#2d1513; --own:#a6a9b2; --own-soft:#1f2024; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#09090a; --surface:#121214; --ink:#ececee; --muted:#9c9ea6; --line:#27282d;
+  --wf:#1b1c20; --wf-ink:#5d6069; --acc:#8c9bff; --acc-soft:#1b2042; --on-acc:#0b0b0d;
+  --good:#4fc283; --good-soft:#11271b; --warn:#e7aa4c; --warn-soft:#2a1f0f;
+  --bad:#f06f63; --bad-soft:#2d1513; --own:#a6a9b2; --own-soft:#1f2024; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--sans);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+.wrap{max-width:1140px;margin:0 auto}
+a{color:var(--acc)}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.15}
+.eyebrow{font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--acc)}
+header.top{padding-block:48px 28px;display:grid;gap:14px;border-bottom:1px solid var(--line)}
+header.top h1{font-size:clamp(30px,5vw,48px);font-weight:700;letter-spacing:-.025em}
+.lede{max-width:66ch;color:var(--muted);font-size:16px}
+.lede b{color:var(--ink);font-weight:600}
+.thesis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:6px}
+.thesis div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.thesis .k{font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.thesis .v{font-size:15px;margin-top:4px}
+section{padding-block:40px 8px}
+section > .head{display:grid;gap:8px;margin-bottom:20px}
+section > .head h2{font-size:26px;letter-spacing:-.015em}
+section > .head p{margin:0;color:var(--muted);max-width:68ch}
+.gloss{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted);margin-top:4px}
+.gloss b{color:var(--ink);font-weight:600}
+/* patterns */
+.patterns{display:grid;gap:12px}
+.pat{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:20px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+.pat h3{font-size:17px}
+.pat .who{font:500 12px var(--mono);color:var(--muted);margin:4px 0 8px}
+.pat p{margin:0 0 6px;max-width:62ch}
+.pat .lesson{font-size:14px;color:var(--muted)}
+.pat .lesson b{color:var(--acc);font-weight:600}
+.art{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px;min-width:0}
+.art svg{display:block;width:100%;height:auto}
+/* brands */
+.brands{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.brand{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:10px;align-content:start;min-width:0}
+.brand .nm{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.brand .nm h3{font-size:18px}
+.brand .nm a{font:500 12px var(--mono);text-decoration:none}
+.sw{display:flex;gap:6px;flex-wrap:wrap}
+.sw span{display:grid;gap:4px;justify-items:center;font:500 10px var(--mono);color:var(--muted)}
+.sw i{display:block;width:34px;height:34px;border-radius:7px;border:1px solid var(--line)}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{font:500 11px var(--mono);padding:3px 7px;border-radius:5px;background:var(--wf);color:var(--muted)}
+.brand dl{margin:0;display:grid;gap:6px;font-size:13.5px}
+.brand dt{font:600 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.brand dd{margin:0}
+/* color wheel */
+.wheel{display:grid;grid-template-columns:minmax(0,440px) minmax(0,1fr);gap:24px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:16px}
+.wheel svg{display:block;width:100%;height:auto}
+.wheel h3{font-size:19px;margin-bottom:6px}
+.wheel .sub{font-size:13px;color:var(--muted);margin:0 0 14px}
+.wk{display:grid;gap:12px}
+.wk div{display:grid;gap:2px;padding-left:12px;border-left:3px solid var(--line)}
+.wk .open{border-left-color:var(--acc)}
+.wk b{font-size:14px}
+.wk span{font-size:13.5px;color:var(--muted)}
+.grounds{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.grounds i{width:18px;height:18px;border-radius:4px;border:1px solid var(--line);display:block}
+.whl-t{fill:var(--muted);font:500 10px var(--mono)}
+.whl-o{fill:var(--acc);font:600 11px var(--sans)}
+.whl-sec{fill:var(--acc);fill-opacity:.1;stroke:var(--acc);stroke-dasharray:4 3}
+.whl-ring{fill:none;stroke:var(--line)}
+.whl-dot{stroke:var(--ink);stroke-width:1.2}
+@media (max-width:820px){.wheel{grid-template-columns:1fr}}
+.palhead{display:grid;gap:6px;margin:8px 0 14px}
+.palhead h3{font-size:19px}
+.palhead p{margin:0;color:var(--muted);max-width:68ch;font-size:14px}
+.pals{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:28px}
+.pal{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:10px;align-content:start;min-width:0}
+.pal.rec{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}
+.pal .pt{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:0 4px}
+.pal .pt h4{margin:0;font-size:16px}
+.pal .pt span{font:600 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--acc)}
+.pal p{margin:0 4px;font-size:13.5px;color:var(--muted)}
+.pv{background:var(--g);padding:14px;border-radius:9px;border:1px solid var(--line)}
+.pvc{background:var(--s);color:var(--i);border-radius:9px;padding:12px;display:grid;gap:7px;font-family:var(--sans)}
+.pvt{display:flex;justify-content:space-between;align-items:center}
+.pvs{border:1px solid var(--k);color:var(--k);font:600 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:4px}
+.pvr{font:700 24px/1 var(--sans);color:var(--b)}
+.pvn{font-weight:600;font-size:14px}
+.pvm{font:500 11px var(--mono);opacity:.7}
+.pvf{display:flex;gap:7px;padding:3px 2px}
+.pvf i{display:block;width:9px;height:9px;transform:rotate(45deg);border-radius:1.5px;background:var(--b);border:1px solid var(--b)}
+.pvf i.o{background:transparent;border-color:color-mix(in srgb,var(--i) 35%,transparent)}
+.pvl{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;font:500 11px var(--mono)}
+.pvl i{display:block;height:6px;border-radius:3px;background:color-mix(in srgb,var(--i) 15%,transparent);overflow:hidden}
+.pvl b{display:block;height:100%;background:var(--b)}
+.pvx{display:flex;gap:10px;align-items:center;font:500 11px var(--mono)}
+.pvx .h{color:var(--h)} .pvx .m{color:var(--m)}
+.pvx em{margin-left:auto;font:600 12px var(--sans);font-style:normal;background:var(--b);color:var(--o);padding:5px 10px;border-radius:6px}
+.psw{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.psw span{display:grid;gap:3px;font:500 9px/1.2 var(--mono);color:var(--muted);text-align:center;min-width:0;overflow-wrap:anywhere}
+.psw i{display:block;height:26px;border-radius:5px;border:1px solid var(--line)}
+.whl-pro{fill:none;stroke-width:2.2}
+/* shelf controls */
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px}
+.chip{font:500 13px var(--sans);padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible,.add:focus-visible,select:focus-visible,summary:focus-visible,button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.controls label{margin-left:auto;font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center}
+select{font:500 13px var(--sans);padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.legend{font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 18px;margin-bottom:14px}
+.legend b{color:var(--ink);font-weight:600}
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr;min-width:0;overflow:hidden}
+.card.in{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}
+.card .art{border:0;border-bottom:1px solid var(--line);border-radius:0;padding:10px}
+.cb{padding:14px 16px 16px;display:grid;grid-template-columns:minmax(0,1fr);gap:10px;align-content:start;min-width:0}
+.cb > *,.dd > div,details{min-width:0}
+.why,.dd p,.data li span{overflow-wrap:anywhere}
+.ct{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.ct h3{font-size:17px;letter-spacing:-.01em}
+.verdict{font:600 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:5px;white-space:nowrap}
+.v-buy{background:var(--good-soft);color:var(--good)}
+.v-maybe{background:var(--warn-soft);color:var(--warn)}
+.v-skip{background:var(--bad-soft);color:var(--bad)}
+.v-never{background:var(--bad);color:var(--surface)}
+.v-own{background:var(--own-soft);color:var(--own)}
+.whohas{font:500 12px var(--mono);color:var(--muted)}
+.meters{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:4px 18px;font-size:12px;color:var(--muted)}
+.meters .m{display:grid;gap:4px}
+.gems{display:flex;gap:3px}
+.gems i{width:9px;height:9px;transform:rotate(45deg);border-radius:1.5px;background:var(--wf);border:1px solid var(--line)}
+.gems i.on{background:var(--acc);border-color:var(--acc)}
+.hrs{font:600 15px var(--mono);color:var(--ink);font-variant-numeric:tabular-nums}
+.why{margin:0;font-size:14px}
+details{border-top:1px solid var(--line);padding-top:8px}
+summary{cursor:pointer;font:500 13px var(--sans);color:var(--acc);list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+ ";font-family:var(--mono)}
+details[open] summary::before{content:"− "}
+.dd{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-top:10px;font-size:13.5px}
+.dd h4{margin:0 0 4px;font:600 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.dd p{margin:0}
+.data{list-style:none;margin:0;padding:0;display:grid;gap:5px}
+.data li{display:flex;gap:8px;align-items:baseline}
+.st{font:600 10px var(--mono);letter-spacing:.05em;text-transform:uppercase;padding:2px 6px;border-radius:4px;flex:none}
+.st-have{background:var(--good-soft);color:var(--good)}
+.st-part{background:var(--warn-soft);color:var(--warn)}
+.st-need{background:var(--bad-soft);color:var(--bad)}
+.ddw{border-top:1px solid var(--line);padding-top:2px;min-width:0}
+.hgd{background:var(--acc-soft);border-radius:8px;padding:10px 12px}
+.hgd h4{color:var(--acc)}
+.hgart{margin-top:10px;background:var(--surface)}
+.mkd{fill:var(--ink)}
+/* bench */
+.bench{display:grid;gap:12px}
+.stage{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+.stage .no{font:600 13px var(--mono);color:var(--acc);border:1px solid var(--acc);border-radius:8px;height:34px;display:grid;place-items:center}
+.stage h3{font-size:17px;margin-bottom:4px}
+.stage p{margin:0 0 10px;font-size:14px;color:var(--muted);max-width:70ch}
+.stage pre{margin:0 0 12px}
+.inputs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.inputs span{font:500 11px var(--mono);padding:3px 8px;border-radius:5px;background:var(--wf);color:var(--muted)}
+.knobs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.knob{border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:grid;gap:6px;min-width:0}
+.knob.prop{border-style:dashed}
+.knob .kl{display:flex;justify-content:space-between;gap:8px;font-size:13px}
+.knob .kv{font:600 13px var(--mono);font-variant-numeric:tabular-nums}
+.knob input[type=range]{width:100%;accent-color:var(--acc)}
+.knob .kn{font-size:12px;color:var(--muted)}
+.lock{font:600 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.clar{display:flex;height:26px;border-radius:6px;overflow:hidden;margin:4px 0 8px}
+.clar div{display:grid;place-items:center;font:600 11px var(--mono);color:var(--on-acc);min-width:0;overflow:hidden;white-space:nowrap}
+.brier{display:grid;gap:6px;max-width:520px}
+.brier .row{display:grid;grid-template-columns:150px minmax(0,1fr) 48px;gap:10px;align-items:center;font-size:13px}
+.brier .bar{height:10px;border-radius:5px;background:var(--wf);overflow:hidden}
+.brier .bar i{display:block;height:100%;background:var(--own)}
+.brier .row.me .bar i{background:var(--acc)}
+@media (max-width:520px){.stage{grid-template-columns:1fr}.brier .row{grid-template-columns:110px minmax(0,1fr) 44px}}
+code,pre{font-family:var(--mono)}
+pre{margin:6px 0 0;padding:8px 10px;background:var(--bg);border:1px solid var(--line);border-radius:6px;font-size:12px;overflow-x:auto;white-space:pre-wrap;overflow-wrap:anywhere}
+.add{justify-self:start;font:600 13px var(--sans);padding:8px 14px;border-radius:8px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+.card.in .add{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+.add[disabled]{opacity:.55;cursor:default;border-color:var(--line)}
+/* cart */
+.cart{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);
+  padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.cart .in{max-width:1140px;margin:0 auto;display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center}
+.cart .stat{display:grid;line-height:1.2}
+.cart .stat b{font:600 18px var(--mono);font-variant-numeric:tabular-nums}
+.cart .stat span{font-size:11.5px;color:var(--muted)}
+.cart .read{flex:1 1 260px;font-size:13.5px;color:var(--muted);min-width:0}
+.cart .read b{color:var(--ink)}
+.cart button{font:500 13px var(--sans);padding:7px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+footer{border-top:1px solid var(--line);margin-top:40px;padding-block:24px;font-size:13px;color:var(--muted);display:grid;gap:10px}
+footer ul{margin:0;padding-left:18px;display:grid;gap:3px}
+/* svg wireframe tokens */
+.bx{fill:var(--surface);stroke:var(--line)}
+.fl{fill:var(--wf)}
+.fl2{fill:var(--wf-ink);opacity:.45}
+.ln{stroke:var(--wf-ink);fill:none;stroke-width:1}
+.dsh{stroke:var(--wf-ink);fill:none;stroke-dasharray:3 3}
+.ac{fill:var(--acc)}
+.mk{stroke:var(--ink);fill:none;stroke-width:1.6}
+.acs{stroke:var(--acc);fill:none;stroke-width:1.6}
+.gd{fill:var(--good)} .bd{fill:var(--bad)}
+.wt{fill:var(--muted);font:500 8.5px var(--mono)}
+.wtb{fill:var(--ink);font:600 10px var(--sans)}
+.wton{fill:var(--on-acc);font:600 9px var(--sans)}
+.wbig{fill:var(--ink);font:700 22px var(--sans)}
+.wacc{fill:var(--acc);font:600 10px var(--sans)}
+@media (max-width:720px){.pat{grid-template-columns:1fr}.shelf{grid-template-columns:1fr}.controls label{margin-left:0}}
+@media (prefers-reduced-motion:no-preference){.card{transition:box-shadow .15s,border-color .15s}}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">Hidden Gems · competitive lookbook · Nov 2 2026</div>
+  <h1>Shop the field, pay in hours</h1>
+  <p class="lede"><span id="nFeat">24</span> features pulled from nine competitors, each drawn as a wireframe and priced in your build time. The cart starts loaded with the <b><span id="nBuy">9</span> buys</b> I'd make. Toggle anything in or out and the bar at the bottom reprices it against the Sundays left in the regular season.</p>
+  <div class="thesis">
+    <div><div class="k">What to buy first</div><div class="v">Closing line value tracking. It tells you within a few Sundays whether your model sees anything real.</div></div>
+    <div><div class="k">What you already own</div><div class="v">Model vs book grading, no-vig pricing and an AI analyst. Most rivals charge $20 to $200 a month for these.</div></div>
+    <div><div class="k">What to ignore</div><div class="v">Arbitrage, line shopping, mined trend systems and model sliders. They serve volume grinders, which you are not.</div></div>
+  </div>
+  <div class="gloss">
+    <span><b>Expected value (EV)</b> average profit per dollar if repeated</span>
+    <span><b>Closing line value (CLV)</b> beating the final price before kickoff</span>
+    <span><b>No-vig price</b> the book's price with its house cut removed</span>
+    <span><b>Last 10 games (L10)</b></span>
+    <span><b>Head to head (H2H)</b></span>
+    <span><b>Touchdown (TD)</b></span>
+    <span><b>Percentage points (pp)</b></span>
+  </div>
+</header>
+
+<section id="patterns">
+  <div class="head">
+    <div class="eyebrow">How they tame the data</div>
+    <h2>Five compression patterns the field uses</h2>
+    <p>Every serious app faces thousands of props a week. They solve it one of five ways. The winners for a single Sunday bettor are the first two.</p>
+  </div>
+  <div class="patterns" id="patList"></div>
+</section>
+
+<section id="brands">
+  <div class="head">
+    <div class="eyebrow">Brand and UI samples</div>
+    <h2>Who's on the shelf</h2>
+    <p>Colors were sampled from each live site's computed styles on Nov 2 2026, so they are real values rather than guesses. Logos aren't reproduced here; each name links to the real site.</p>
+  </div>
+  <div class="wheel" id="wheel">
+    <div id="wheelSvg"></div>
+    <div>
+      <h3>Where the field's colors sit, and where nobody is</h3>
+      <p class="sub">Every sampled brand color placed by hue around the circle and by saturation from the center out. Near blacks, navies and whites sit off the wheel under Grounds. Hover a dot to see its brand. Hollow diamonds mark the Hidden Gems palette proposals below.</p>
+      <div class="wk" id="wheelNotes"></div>
+    </div>
+  </div>
+  <div class="palhead"><div class="eyebrow">Proposals</div><h3>Four Hidden Gems palettes built in the open space</h3><p>Each one puts its brand and strike colors inside the empty violet and amber arcs. Hit and miss stay pure green and red so results never borrow the brand color. The preview is the same gem card in every palette.</p></div>
+  <div class="pals" id="palettes"></div>
+  <div class="brands" id="brandList"></div>
+</section>
+
+<section id="shelf">
+  <div class="head">
+    <div class="eyebrow">The feature shelf</div>
+    <h2>Every feature, priced</h2>
+    <p>Every card shows the data it needs and whether you already have it, how the math works, how rivals display it, and why I rated it the way I did.</p>
+  </div>
+  <div class="controls" role="toolbar" aria-label="Filter features">
+    <button class="chip" data-f="all" aria-pressed="true">All</button>
+    <button class="chip" data-f="buy" aria-pressed="false">Buy</button>
+    <button class="chip" data-f="maybe" aria-pressed="false">Maybe</button>
+    <button class="chip" data-f="own" aria-pressed="false">Already own</button>
+    <button class="chip" data-f="skip" aria-pressed="false">Skip</button>
+    <label for="sortSel">Sort
+      <select id="sortSel">
+        <option value="value">Value per hour</option>
+        <option value="edge">Edge</option>
+        <option value="hours">Fewest hours</option>
+      </select>
+    </label>
+  </div>
+  <div class="legend">
+    <span><b>Edge</b> how much it should improve which bets you pick</span>
+    <span><b>Speed</b> how much faster you reach a confident yes or no</span>
+    <span><b>Hours</b> your time with a Claude Code session building and reviewing it</span>
+  </div>
+  <div class="shelf" id="shelfList"></div>
+</section>
+
+<section id="bench">
+  <div class="head">
+    <div class="eyebrow">How the grade is built</div>
+    <h2>The jeweler's bench</h2>
+    <p>Hidden Gems v3.0, the grading model, laid out stage by stage, with every number it runs on today. The controls are locked, because tuning happens in code against the backtest. Each one is already wired as a real control, so turning this into a live tool later means unlocking them, not rebuilding the page.</p>
+  </div>
+  <div class="bench" id="benchList"></div>
+</section>
+
+<footer>
+  <div><b style="color:var(--ink)">Method.</b> Brand colors come from computed styles on each homepage, read in the browser Nov 2 2026. Outlier's in-app bar colors were eyeballed from a screenshot of its prop detail screen. Hour estimates assume a Claude Code session writes the code against your nflverse pipeline and you review the result. Season math assumes Week 8 was Sunday Nov 1 2026, which leaves Weeks 9 to 18, Nov 8 2026 to Jan 10 2027.</div>
+  <div>Sources</div>
+  <ul>
+    <li><a href="https://www.rotowire.com/betting/nfl/break-the-plane-anytime-td-scorer">RotoWire Break the Plane</a></li>
+    <li><a href="https://fantasyteamadvice.com/nfl/prop-edge">FTA NFL Prop Edge Tool</a></li>
+    <li><a href="https://www.actionnetwork.com/general/action-pro-picks-tools-projections">What Is Action PRO</a></li>
+    <li><a href="https://apps.appfollow.io/ios/oddsjam-sharp-sports-betting/6448072108?country=us">OddsJam app listing</a></li>
+    <li><a href="https://apps.apple.com/qa/app/propsignal/id6757769006">PropSignal app listing</a></li>
+    <li><a href="https://mwm.ai/apps/rithmm-ai-sports-betting/1641010681">Rithmm app profile</a></li>
+    <li><a href="https://buildingbankroll.beehiiv.com/p/sports-betting-newsletter-april-21-through-27-2025">Outlier Pro review</a></li>
+    <li><a href="https://bettoredge.com/post/props-cash-vs-other-prop-betting-tools">Props.Cash comparison</a></li>
+    <li><a href="https://www.oddsshopper.com/articles/betting-101/nfl-anytime-touchdown-props">OddsShopper anytime TD guide</a></li>
+    <li><a href="https://apps.apple.com/app/apple-store/id1083677479">Action Network app listing</a></li>
+  </ul>
+</footer>
+</div>
+
+<div class="cart" role="region" aria-label="Build cart">
+  <div class="in">
+    <div class="stat"><b id="cHrs">0</b><span>hours in build</span></div>
+    <div class="stat"><b id="cCount">0</b><span>features</span></div>
+    <div class="stat"><b id="cEdge">0</b><span>edge gems</span></div>
+    <div class="read" id="cRead"></div>
+    <button id="cReset" type="button">Reset to starter cart</button>
+  </div>
+</div>
+
+<script>
+/* ---------- wireframe primitives ---------- */
+const W=(s)=>`<svg viewBox="0 0 300 140" aria-hidden="true">${s}</svg>`;
+const R=(x,y,w,h,c,rx=3)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" class="${c}"/>`;
+const T=(x,y,s,c="wt",a="start")=>`<text x="${x}" y="${y}" class="${c}" text-anchor="${a}">${s}</text>`;
+const C=(x,y,r,c)=>`<circle cx="${x}" cy="${y}" r="${r}" class="${c}"/>`;
+const L=(x1,y1,x2,y2,c="ln")=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="${c}"/>`;
+const P=(pts,c="acs")=>`<polyline points="${pts}" class="${c}"/>`;
+
+const wires={
+ strip(){const pat=[1,1,0,1,1,1,0,1,1,0];let t="";pat.forEach((h,i)=>t+=R(56+i*10,82,7,5,h?"gd":"bd",1.5));
+  return W(R(8,30,284,78,"bx",9)+C(32,62,13,"fl")+T(56,52,"BUF vs MIA · Sun 11:00 AM")+T(56,70,"J. Cook · Anytime TD","wtb")+t+T(162,88,"70%","wtb")+T(174,88,"L10")+R(236,52,46,22,"fl",6)+T(259,67,"2.60","wtb","middle")+T(56,101,"Hit 7 of 10 · 2026 rate 64%"))},
+ bars(){const hs=[62,30,30,58,74,56,60,56,58,82];const cl=[60,56,52,44,50,52,54,54,55,60];let b="",pts=[];
+  hs.forEach((h,i)=>{const x=34+i*25;b+=R(x,120-h,17,h,h>=54?"gd":"bd",2);pts.push(`${x+8.5},${120-cl[i]-6}`)});
+  return W(T(10,16,"Over 25.5 · last 10","wtb")+L(28,120,292,120)+`<line x1="28" y1="66" x2="292" y2="66" class="dsh"/>`+T(8,69,"25.5")+b+P(pts.join(" "))+C(+pts[9].split(",")[0],+pts[9].split(",")[1],3,"ac")+T(292,16,"closing line","wacc","end"))},
+ toggles(){return W(R(10,14,64,20,"ac",10)+T(42,27,"Same QB","wton","middle")+R(80,14,62,20,"fl",10)+T(111,27,"WR1 out","wt","middle")+R(148,14,62,20,"ac",10)+T(179,27,"Same OC","wton","middle")+R(216,14,74,20,"fl",10)+T(253,27,"Home only","wt","middle")
+  +T(10,72,"71%","wbig")+T(62,64,"Anytime TD under these conditions","wt")+T(62,76,"5 of 7 games · shrunk toward season","wt")
+  +T(10,104,"Season")+R(70,96,220,10,"fl",5)+R(70,96,121,10,"fl2",5)+T(10,124,"Split")+R(70,116,220,10,"fl",5)+R(70,116,156,10,"ac",5))},
+ sentences(){const rows=[["Scored in 4 of last 5 games","80%"],["Scored in 3 of 3 games with this QB","100%"],["Scored in 2 of 3 road games","67%"]];let r="";
+  rows.forEach((x,i)=>{const y=62+i*24;r+=C(18,y-3,3,"ac")+T(28,y,x[0],"wt")+T(290,y,x[1],"wtb","end")+L(10,y+9,290,y+9)});
+  return W(C(22,22,12,"fl")+T(42,20,"K. Shakir · BUF","wtb")+T(42,33,"Anytime TD · 3.10")+r)},
+ bullbear(){let s=R(8,10,138,92,"bx",7)+T(18,28,"Bull case","wtb")+R(18,38,110,6,"fl",3)+R(18,52,96,6,"fl",3)+R(18,66,116,6,"fl",3)+R(18,80,70,6,"fl",3)
+  +R(154,10,138,92,"bx",7)+T(164,28,"Bear case","wtb")+R(164,38,104,6,"fl",3)+R(164,52,118,6,"fl",3)+R(164,66,84,6,"fl",3);
+  s+=R(8,112,84,20,"fl",10)+C(20,122,3.5,"bd")+T(28,125,"Questionable")+R(98,112,96,20,"fl",10)+C(110,122,3.5,"bd")+T(118,125,"Snaps falling")+R(200,112,92,20,"fl",10)+C(212,122,3.5,"gd")+T(220,125,"Role stable");return W(s)},
+ env(){return W(T(10,22,"Total 47.5","wtb")+T(110,22,"Spread −3.5","wtb")+T(10,38,"team points = total ÷ 2 − spread ÷ 2")
+  +L(10,82,290,82)+R(10,74,236,16,"fl",4)+R(10,74,196,16,"fl2",4)+R(10,74,236,16,"acs",4)
+  +`<line x1="206" y1="66" x2="206" y2="98" class="dsh"/>`+T(206,110,"season avg 22.0","wt","middle")+T(246,64,"25.5 implied","wacc","middle")
+  +T(10,130,"Red zone trips scaled ×1.16 · test in backtest first"))},
+ grade(){return W(R(10,24,58,58,"ac",10)+`<text x="39" y="66" class="wbig" text-anchor="middle" style="fill:var(--on-acc)">A</text>`+T(39,98,"grade","wt","middle")
+  +T(84,36,"Model hit chance")+R(84,42,206,12,"fl",6)+R(84,42,70,12,"ac",6)+T(290,38,"34%","wtb","end")
+  +T(84,74,"Book implied")+R(84,80,206,12,"fl",6)+R(84,80,54,12,"fl2",6)+T(290,76,"26%","wtb","end")
+  +T(84,116,"Edge +8 pp","wacc"))},
+ devig(){const rows=[["Yes","2.60","38.5%"],["No","1.45","69.0%"],["Fair yes","2.79","35.8%"]];let s=T(12,22,"Side")+T(150,22,"Decimal","wt","end")+T(286,22,"Implied","wt","end")+L(10,30,290,30);
+  rows.forEach((r,i)=>{const y=52+i*26;s+=T(12,y,r[0],i==2?"wacc":"wtb")+T(150,y,r[1],"wtb","end")+T(286,y,r[2],i==2?"wacc":"wtb","end")+L(10,y+9,290,y+9)});return W(s+T(12,132,"Book overround 7.5% removed"))},
+ move(){const pts="20,40 60,44 100,52 140,50 180,66 220,78 260,86";return W(T(10,16,"Anytime TD price since open","wtb")+L(20,110,280,110)+P(pts)+C(20,40,3.5,"fl2")+C(260,86,4,"ac")
+  +T(20,128,"Open 2.90 Sat 8 PM")+T(280,128,"Now 2.55 Sun 9 AM","wt","end")+R(150,20,138,20,"fl",10)+T(219,33,"moving toward model","wacc","middle"))},
+ alert(){return W(R(20,22,260,96,"bx",14)+R(34,36,24,24,"ac",6)+T(68,46,"Hidden Gems","wtb")+T(268,46,"Sat 8:00 PM","wt","end")+T(68,62,"Board ready · 3 new gems rated 85+","wt")+R(68,76,180,6,"fl",3)+R(68,90,140,6,"fl",3))},
+ parlay(){const legs=[["Leg 1 · BUF game","48%",0.48],["Leg 2 · WAS game","52%",0.52],["Leg 3 · DET game","45%",0.45]];let s="";
+  legs.forEach((l,i)=>{const y=18+i*24;s+=T(10,y,l[0])+R(120,y-8,130,9,"fl",4)+R(120,y-8,130*l[2],9,"fl2",4)+T(290,y,l[1],"wtb","end")});
+  return W(s+L(10,84,290,84)+T(10,104,"All three hit")+R(120,96,130,9,"fl",4)+R(120,96,15,9,"ac",4)+T(290,104,"11%","wtb","end")+T(10,130,"Lose it all","wtb")+T(290,132,"89%","wbig","end"))},
+ kelly(){return W(T(10,22,"Suggested stake","wtb")+L(30,72,270,72)+[30,150,270].map((x,i)=>C(x,72,5,"fl")+T(x,96,["$10","$15","$20"][i],"wtb","middle")).join("")+C(150,72,9,"ac")+T(10,124,"Quarter Kelly, clamped to your $10 to $20 band"))},
+ rz(){const seg=[["RB1",.42,"ac"],["WR1",.22,"fl2"],["TE",.14,"fl2"],["Other",.22,"fl"]];let x=10,s=T(10,22,"Share of team chances inside the 10","wtb");
+  seg.forEach(g=>{const w=280*g[1];s+=R(x,40,w-2,26,g[2],3)+T(x+4,84,g[0])+T(x+4,98,Math.round(g[1]*100)+"%","wtb");x+=w});return W(s+T(10,128,"Goal line carries 9 of 12 · end zone targets 3"))},
+ heat(){const pos=["QB","RB","WR","TE"];let s="";pos.forEach((p,r)=>{s+=T(10,34+r*26,p,"wtb");for(let c=0;c<8;c++){const o=((r*3+c*5)%9)/9*0.85+0.1;s+=`<rect x="${40+c*31}" y="${20+r*26}" width="28" height="22" rx="3" class="ac" style="opacity:${o.toFixed(2)}"/>`}});
+  return W(s+T(40,130,"Opponent rank vs position, 1 allows most"))},
+ shop(){const bk=["Book A","Book B","Book C","Book D"];let s=T(10,20,"Player")+bk.map((b,i)=>T(150+i*38,20,b,"wt","middle")).join("")+L(10,28,290,28);
+  [["2.60","2.75","2.50","2.62"],["3.10","3.00","3.30","3.05"],["1.95","2.05","1.98","1.90"]].forEach((row,r)=>{const y=50+r*26;s+=R(10,y-8,90,7,"fl",3);
+   const mx=Math.max(...row.map(Number));row.forEach((v,i)=>{s+=(+v===mx?R(150+i*38-16,y-12,32,17,"gd",4)+`<text x="${150+i*38}" y="${y}" class="wtb" text-anchor="middle" style="fill:var(--surface)">${v}</text>`:T(150+i*38,y,v,"wtb","middle"))})});return W(s+T(10,130,"Best price per row highlighted"))},
+ arb(){return W(R(10,24,124,56,"bx",8)+T(22,44,"Book A","wt")+T(22,66,"Over 2.10","wtb")+R(166,24,124,56,"bx",8)+T(178,44,"Book B","wt")+T(178,66,"Under 2.05","wtb")+T(150,58,"+","wtb","middle")+T(150,114,"Locked +3.6% either way","wacc","middle"))},
+ sliders(){const f=[["Red zone",.7],["Matchup",.4],["Recent form",.55],["Weather",.2]];let s="";f.forEach((x,i)=>{const y=24+i*28;s+=T(10,y+4,x[0])+L(100,y,280,y)+C(100+180*x[1],y,6,"ac")});return W(s+T(10,132,"Drag to reweight your own model"))},
+ systems(){return W(R(10,14,280,22,"fl",5)+T(18,29,"IF  RB  ·  home favorite by 7+","wt")+R(10,42,280,22,"fl",5)+T(18,57,"AND  goal line share above 60%","wt")+R(10,70,280,22,"fl",5)+T(18,85,"THEN  anytime TD","wt")
+  +T(10,118,"61% hit · 41 games","wtb")+R(200,104,90,22,"ac",11)+T(245,119,"ROI +18%","wton","middle"))},
+ sync(){let s="";["Sportsbook 1","Sportsbook 2","Sportsbook 3"].forEach((b,i)=>{const y=28+i*28;s+=C(22,y-4,9,"fl")+T(40,y,b,"wtb")+R(226,y-14,64,18,i<2?"gd":"fl",9)+`<text x="258" y="${y-1}" text-anchor="middle" class="wt" style="fill:${i<2?'var(--surface)':'var(--muted)'}">${i<2?'synced':'connect'}</text>`});return W(s+T(10,124,"142 bets imported automatically"))},
+ sharp(){return W(T(10,22,"Spread · home side","wtb")+T(10,52,"Tickets")+R(70,42,220,14,"fl",7)+R(70,42,158,14,"fl2",7)+T(290,38,"72%","wtb","end")
+  +T(10,86,"Money")+R(70,76,220,14,"fl",7)+R(70,76,90,14,"ac",7)+T(290,72,"41%","wtb","end")+T(10,124,"Money below tickets flags sharp action on the other side"))},
+ chat(){return W(R(110,14,180,30,"fl",12)+T(122,33,"Is Cook a buy at 2.60?","wt")+R(10,54,220,46,"bx",12)+R(22,66,180,6,"fl",3)+R(22,80,150,6,"fl",3)+R(10,108,120,22,"fl",11)+T(22,123,"Show the splits","wt"))},
+ alt(){const r=[["1+ TD","2.60","38%"],["2+ TD","9.00","9%"],["3+ TD","34.0","2%"]];let s=T(10,20,"Line")+T(160,20,"Price","wt","end")+T(286,20,"Model","wt","end")+L(10,28,290,28);
+  r.forEach((x,i)=>{const y=52+i*26;s+=T(10,y,x[0],"wtb")+T(160,y,x[1],"wtb","end")+T(286,y,x[2],"wtb","end")});return W(s+T(10,130,"Prices the whole ladder from one distribution"))},
+ crowd(){return W(R(10,16,280,48,"bx",8)+T(22,36,"Star WR · Anytime TD","wtb")+T(22,52,"246 researching · 70 added")+R(222,30,58,20,"fl",10)+T(251,44,"crowded","wt","middle")
+  +R(10,74,280,48,"bx",8)+T(22,94,"Backup TE · Anytime TD","wtb")+T(22,110,"9 researching · 1 added")+R(222,88,58,20,"ac",10)+T(251,102,"hidden","wton","middle"))},
+ clv(){const d=[[30,58],[52,82],[74,50],[96,66],[118,92],[140,54],[162,60],[184,48],[206,74],[228,52],[250,56],[272,46]];let s=T(10,16,"Price taken vs fair close, per bet","wtb")+`<line x1="20" y1="72" x2="290" y2="72" class="dsh"/>`+T(292,69,"0%","wt","end");
+  d.forEach(p=>s+=C(p[0],p[1],3.5,p[1]<72?"gd":"bd"));return W(s+P("30,58 52,70 74,63 96,64 118,70 140,67 162,66 184,64 206,65 228,64 250,63 272,62")+T(10,126,"Average CLV +4.1% over 12 bets","wacc"))},
+ appraisal(){return W(R(212,8,80,106,"fl",4)+L(20,114,292,114)
+  +`<line x1="20" y1="44" x2="210" y2="44" class="acs"/>`+T(22,37,"Your appraisal 34%","wacc")
+  +P("20,96 50,92 80,88 110,80 140,74 170,66 210,58","mk")+T(60,108,"Market appraisal")
+  +`<line x1="210" y1="8" x2="210" y2="114" class="dsh"/>`+T(218,24,"Kickoff","wtb")+T(218,36,"frozen")
+  +T(218,64,"CLV +6%","wacc")+R(218,76,60,18,"gd",9)+`<text x="248" y="89" class="wtb" text-anchor="middle" style="fill:var(--surface)">Hit +$16</text>`
+  +T(20,130,"Open Sat 8 PM")+T(210,130,"Sun 11:00 AM","wt","end")+T(292,130,"Final","wt","end"))},
+ tray(){const rows=[["J. Cook · Anytime TD","92",1],["K. Shakir · Anytime TD","88",1],["T. Kelce · Anytime TD","84",0]];let s=T(10,20,"The Tray","wtb")+R(66,9,44,15,"ac",7)+T(88,20,"3 new","wton","middle")+T(290,20,"newest first","wt","end");
+  rows.forEach((r,i)=>{const y=32+i*34;s+=R(10,y,280,28,"bx",6)+`<rect x="22" y="${y+9}" width="10" height="10" transform="rotate(45 27 ${y+14})" class="ac"/>`+T(42,y+18,r[0],"wtb")+T(236,y+18,r[1],"wacc","end")+(r[2]?R(242,y+7,32,14,"fl",7)+T(258,y+17,"new","wt","middle"):"")+T(284,y+18,"›","wtb","end")});
+  return W(s)},
+ handoff(){let s=R(8,14,118,112,"bx",8)+T(18,32,"Hidden Gems slip","wtb");["Cook · TD","Shakir · TD","Kelce · TD"].forEach((x,i)=>{const y=50+i*18;s+=`<rect x="18" y="${y-7}" width="8" height="8" transform="rotate(45 22 ${y-3})" class="ac"/>`+T(32,y,x)});
+  s+=R(18,100,98,18,"ac",9)+T(67,112,"Send to DraftKings","wton","middle")+P("132,70 162,70","acs")+`<polygon points="162,65 170,70 162,75" class="ac"/>`
+  +R(176,14,116,112,"bx",8)+T(186,32,"DraftKings slip","wtb")+R(186,42,96,10,"fl",3)+R(186,58,96,10,"fl",3)+R(186,74,96,10,"fl",3)+R(186,100,96,18,"fl",9)+T(234,112,"You tap Place Bet","wt","middle");return W(s)},
+ slip(){let s=R(8,8,284,124,"bx",10)+T(18,26,"Your slip · 3 gems","wtb")+T(282,26,"Pays $62 on $15","wt","end");
+  [["Cook · TD","92"],["Shakir · TD","88"],["Kelce · TD","71"]].forEach((r,i)=>{const y=46+i*16;s+=`<rect x="19" y="${y-7}" width="7" height="7" transform="rotate(45 22.5 ${y-3.5})" class="ac"/>`+T(32,y,r[0])+T(150,y,r[1],"wacc","end")});
+  s+=T(176,48,"Lose it all")+T(282,72,"89%","wbig","end")+R(18,88,264,16,"fl",4)+T(26,99,"Jeweler · Kelce is cloudy, consider two singles","wt")
+  +R(18,110,128,18,"bx",9)+T(82,122,"Ask the Jeweler","wacc","middle")+R(154,110,128,18,"ac",9)+T(218,122,"Send to DraftKings","wton","middle");return W(s)},
+ result(){return W(R(8,8,186,124,"bx",9)+T(18,26,"Appraisal closed · final")+R(130,13,56,18,"gd",9)+`<text x="158" y="26" class="wtb" text-anchor="middle" style="fill:var(--surface)">Hit +$16</text>`
+  +T(18,50,"Your appraisal")+R(18,56,150,8,"fl",4)+R(18,56,51,8,"ac",4)+T(186,63,"34%","wtb","end")
+  +T(18,82,"Market close")+R(18,88,150,8,"fl",4)+R(18,88,46,8,"fl2",4)+T(186,95,"31%","wtb","end")
+  +T(18,120,"Beat the close +6%","wacc")
+  +T(225,16,"Hit","wt","middle")+T(271,16,"Miss","wt","middle")
+  +R(204,22,42,46,"ac",5)+T(225,49,"Earned","wton","middle")+R(250,22,42,46,"fl",5)+T(271,49,"Unlucky","wt","middle")
+  +R(204,72,42,46,"fl",5)+T(225,99,"Lucky","wt","middle")+R(250,72,42,46,"fl",5)+T(271,95,"Wrong","wt","middle")+T(271,105,"read","wt","middle")
+  +T(248,132,"top row · beat close","wt","middle"))}
+};
+
+/* ---------- patterns ---------- */
+const patterns=[
+ {w:"strip",n:"One row per prop, depth on tap",who:"Outlier",d:"Each prop collapses into a single card: matchup and kickoff, player and market, ten colored ticks for the last ten games, a hit percent, and the price with its sportsbook glyph. Tapping opens a bar chart per game with a dashed line at the number and each game's closing line drawn over it.",l:"<b>Steal it.</b> This is the closest thing to the gem card you described, a single rank up front with the detail inside."},
+ {w:"sentences",n:"Translate numbers into sentences",who:"Linemate",d:"Trending cards skip charts entirely. A player, a prop, a price, then three plain lines such as scored in 4 of last 5 games, each with its percent on the right. It's built for people who never open a filter panel.",l:"<b>Steal it.</b> It matches your rule that the interpretation is the access to the data."},
+ {w:"heat",n:"Color the table",who:"Props.Cash, Outlier matchup tabs",d:"Dense tables survive by shading cells, so hit rates and defense ranks read as hot or cold before you read a digit.",l:"Good for a research screen, too much for a Sunday morning decision."},
+ {w:"grade",n:"Grade the edge",who:"Action PRO, FTA, RotoWire",d:"Model projection sits beside the book's price and the gap becomes a letter grade or edge figure, green for best and red for worst.",l:"You already do this. Your single gem rating is the simpler version."},
+ {w:"shop",n:"Give power users every column",who:"OddsJam, Unabated",d:"Wide odds screens with a column per sportsbook, filters for market and EV, and the best price highlighted. Speed comes from familiarity, not simplicity.",l:"Built for volume bettors. Skip the pattern."}
+];
+
+/* ---------- brands ---------- */
+const brands=[
+ {n:"Outlier",u:"https://www.outlier.bet",c:[["#020202","page"],["#0E0E0E","surface"],["#878787","text"],["#2ECBBA","teal"],["#5DFFB1","mint"],["#B7AAFF","lilac"],["#FF9675","coral"]],f:"Inter, 800 for headlines",s:["List cards","Tick strips","Bar chart","Line overlay","Split tabs"],t:"Teal to coral gradient on near black. One card per prop, the chart only on tap. Shows how many users are researching each prop.",p:"About $129 a month for Pro+, per one reviewer"},
+ {n:"Props.Cash",u:"https://www.props.cash",c:[["#0F0F0F","page"],["#27272A","surface"],["#FFFFFF","text"],["#27DA8E","cash green"]],f:"Diatype, condensed caps for headlines",s:["Sorted tables","Heat cells","Bar chart","Discord bot"],t:"Money green on graphite. Sorts thousands of lines by value and lets filters surface outliers.",p:"$19.99 a month or $199.99 a year"},
+ {n:"OddsJam",u:"https://oddsjam.com",c:[["#09141F","navy"],["#1863DC","blue"],["#00A8E8","cyan"],["#F2F3F5","light"],["#B7E08F","lime"]],f:"codeNext, semibold",s:["Odds screen","Filters","EV column","Bet tracker"],t:"Fintech navy and blue. Positions betting as a side hustle with arbitrage and EV tools.",p:"Positive EV tier listed at $199 a month in the app store"},
+ {n:"Action Network",u:"https://www.actionnetwork.com",c:[["#F7F8FD","page"],["#1D1D25","ink"],["#00C358","green"],["#0079F0","blue"],["#818188","gray"]],f:"Poppins bold",s:["News feed","Odds tables","Letter grades","Signal counts"],t:"The only light theme on the list. Media brand first, tools second, grades colored green to red.",p:"PRO $29.99 a month or $119.99 a year"},
+ {n:"Linemate",u:"https://linemate.io",c:[["#111113","page"],["#EDEEF0","text"],["#B0B4BA","muted"],["#657E9D","slate"],["#E64000","orange"]],f:"System sans, 600",s:["Matchup tiles","Trend sentences","Parlay builder"],t:"Team logo tiles, then plain sentences. Pitched as Expedia for betting, aimed at new bettors.",p:"Free, Linemate+ £9.99 a month in the UK store"},
+ {n:"Rithmm",u:"https://www.rithmm.com",c:[["#141414","page"],["#1C1C1C","surface"],["#FF5F00","orange"],["#34CC49","green"],["#F0EDE8","warm white"]],f:"Oxanium black for headlines, IBM Plex Sans",s:["Pick cards","Win probability","Parlay risk","Model sliders"],t:"Techy orange on charcoal. Bet like a quant positioning with custom models and an AI scout.",p:"7 day trial, price not checked"},
+ {n:"Unabated",u:"https://unabated.com",c:[["#121A24","navy"],["#1B8D46","green"],["#2FB160","green light"],["#F5F7FA","light"],["#EBF4FF","ice"]],f:"Play bold, Roboto",s:["Odds screen","Calculators","Projections","Education"],t:"Sober sharp bettor brand. Free calculators for no-vig odds and CLV, premium projections.",p:"Listed at $49 to $99 a month, premium tier $199"},
+ {n:"Pikkit",u:"https://pikkit.com",c:[["#0E1F39","navy"],["#13182B","deep"],["#8BB9FE","periwinkle"],["#FFFFFF","text"]],f:"Manrope bold",s:["Bet tracker","Profit charts","Social feed"],t:"Friendly navy and periwinkle. Tracks every bet and friend, not a research tool.",p:"Not checked"},
+ {n:"RotoWire Break the Plane",u:"https://www.rotowire.com/betting/nfl/break-the-plane-anytime-td-scorer",c:[["#0063B5","blue"],["#0D3C73","navy"],["#F22E45","red"],["#E9EFF7","ice"],["#333333","text"]],f:"Cosmica",s:["Sortable table","TD Score","Edge column","Signal breakdown"],t:"Fantasy media blue and red. The closest twin to your TD model, sorted by score or edge.",p:"Free page with sportsbook ads"}
+];
+
+/* ---------- features ---------- */
+const F=[
+ {id:"clv",n:"Appraisal over time",w:"appraisal",who:"OddsJam · Unabated · Action PRO · PropSignal · BetTrendz",v:"buy",h:7,e:5,s:3,
+  why:"One chart for the whole life of a gem. Before kickoff it shows the market moving toward or away from your appraisal. At kickoff it freezes, and after that line it shows CLV, the fastest proof your edge is real. A win and loss record needs a season of Sundays. CLV shows signal in three or four.",
+  data:[["have","Price you'd take, from the freeze command"],["have","Fair closing price, from the close command"],["have","Results, from autograde"],["part","Saturday night and Sunday 9 AM snapshots to add for the live line"]],
+  calc:"Before kickoff, track the change in the market's implied chance since open and whether it's heading toward your appraisal. At kickoff, freeze the line and compare the price you took with the fair close.",code:"drift = p_now - p_open\ntoward = sign(drift) == sign(p_model - p_open)\nclv = taken_decimal / close_fair_decimal - 1   # at kickoff",
+  disp:"PropSignal shows open, current and peak line with a timestamped history. OddsJam logs CLV per bet in its tracker. Outlier draws closing lines over past games. Nobody joins the live movement and the closing verdict in one chart."},
+ {id:"result",n:"Closed appraisal result",w:"result",who:"Pikkit · Action Network · OddsJam",v:"buy",h:3,e:2,s:4,
+  why:"Every gem needs an ending. Showing whether you beat the close separately from whether it hit tells you if a loss was bad luck or a bad read, which is what keeps you trusting the system through a losing Sunday.",
+  data:[["have","Result, from autograde"],["have","Fair closing price, from the close command"],["have","Your price and stake at the freeze"]],
+  calc:"Two separate verdicts. Process is whether your price beat the fair close. Outcome is whether the prop hit. Together they place the gem in one of four boxes, earned, unlucky, lucky or wrong read.",code:"process = clv > 0\noutcome = hit\nbox = {(True, True): 'Earned', (True, False): 'Unlucky',\n       (False, True): 'Lucky', (False, False): 'Wrong read'}[(process, outcome)]",
+  disp:"Pikkit and Action Network show settled bets as won or lost with profit. OddsJam's tracker adds CLV per bet. None of them separate a good read from a good result on the card itself."},
+ {id:"strip",n:"Last 10 tick strip",w:"strip",who:"Outlier · Props.Cash · Linemate · BetTrendz",v:"buy",h:2,e:1,s:5,
+  why:"The cheapest readability win on the board. You found the dense scorecard hard to read, and this is the compression every leader uses.",
+  data:[["have","nflverse weekly player stats"],["have","Prop line and price from Outlier"]],
+  calc:"Hits over games in each window, for L5, L10, L20, this season and H2H. Anytime TD is yes or no, so each tick is simply scored or didn't.",code:"rate = sum(stat > line) / n_games",
+  disp:"Outlier puts ten green and red ticks, a percent and the price pill on one row, then a per game bar chart on tap."},
+ {id:"splits",n:"Conditional splits",w:"toggles",who:"Outlier · Props.Cash",v:"buy",h:10,e:4,s:3,
+  why:"Your stated favorite, and the data you said is hardest to pull together yourself. It also feeds the consistency part of Clarity directly.",
+  data:[["have","nflverse play by play with passer and rusher ids"],["have","Snap counts, a few days behind"],["part","Coaching staff changes, a short list kept by hand"]],
+  calc:"Filter the game log to games where the condition holds, such as same starting QB, teammate in or out, or same coordinator. Then pull the rate toward the full season rate so a 3 game sample can't shout.",code:"rate_split = (hits_split + k * season_rate) / (n_split + k)   # k ≈ 4",
+  disp:"Outlier uses a filter menu with teammate on and off toggles that redraw the chart and the hit percent."},
+ {id:"sent",n:"Plain language trend lines",w:"sentences",who:"Linemate",v:"buy",h:3,e:1,s:5,
+  why:"Turns your splits into three sentences a layman can trust in five seconds. It's the access layer you described.",
+  data:[["have","Splits computed above"]],
+  calc:"Write a candidate sentence for every split, score each by how far it sits from a coin flip weighted by sample size, and keep the top three.",code:"score = abs(rate - 0.5) * sqrt(n_games)",
+  disp:"Linemate trending cards show player, prop and price, then three lines with the percent aligned right."},
+ {id:"bull",n:"Bull and bear case with risk flags",w:"bullbear",who:"PropSignal · ParlayLens",v:"buy",h:4,e:2,s:4,
+  why:"These are your Clarity inclusions made visible. A flag tells you why a stone is cloudy without opening the math.",
+  data:[["have","Model components from v3.0"],["have","Official injury reports, nflverse"],["have","News and beat reports, Claude web research"],["have","Spread for blowout risk, nflverse schedules"]],
+  calc:"Simple rules raise flags, such as a Questionable tag, snap share down two weeks running, or a 10 point spread where starters may sit late. Claude writes two short cases from the same components.",code:"flags = [q_tag, snaps_down_2wk, abs(spread) >= 10]",
+  disp:"PropSignal pairs plain bull and bear cases with chips for volatility, blowouts and usage changes."},
+ {id:"env",n:"Implied team total",w:"env",who:"OddsShopper · RotoWire · FTA",v:"buy",h:6,e:4,s:2,
+  why:"Different from the defense factor that didn't help. This is the market's own scoring forecast, and it's free in data you already pull. Unproven until your backtest says so.",
+  data:[["have","Spread and total lines, nflverse schedules"],["have","Season scoring averages, nflverse"]],
+  calc:"Work out the team's implied points from the total and spread. Scale expected red zone trips by implied points over the season average, rerun the walk forward backtest, and keep it only if the calibration score improves.",code:"team_pts = total / 2 - spread / 2   # spread from this team's side\nrz_scale = team_pts / season_avg_pts",
+  disp:"OddsShopper's TD guide says to start with the Vegas number. RotoWire folds game context into its TD Score."},
+ {id:"parlay",n:"Parlay lose it all meter",w:"parlay",who:"Rithmm · Linemate · OddsJam",v:"buy",h:5,e:2,s:4,
+  why:"Answers your own rule about the lowest chance of losing the whole stake. Showing the miss chance in big type is the anti long shot device.",
+  data:[["have","Leg hit chances from v3.0"],["need","Same game correlation, avoided by only allowing legs from different games"]],
+  calc:"Multiply leg chances across different games, then show one minus that product as the headline.",code:"p_all = p1 * p2 * p3\nlose_all = 1 - p_all",
+  disp:"Rithmm's parlay optimizer shows a win probability and risk level for each leg."},
+ {id:"crowd",n:"Mined count",w:"crowd",who:"Outlier · Linemate",v:"maybe",h:2,e:2,s:2,
+  why:"A literal hidden gem signal and on brand as Rarity. Log it for a few Sundays before giving it any weight.",
+  data:[["part","Researching and added counts, visible in Outlier but read by hand or browser"]],
+  calc:"Low crowd interest plus positive edge marks a stone nobody else is mining. Test whether low traffic props carry more edge than busy ones.",code:"rarity = 1 - percentile(researching_count)",
+  disp:"Outlier rows show how many users are researching a prop and how many added it to a slip."},
+ {id:"alert",n:"Latest finds feed",w:"tray",who:"Linemate · Outlier · OddsJam · Rithmm",v:"buy",h:4,e:1,s:5,
+  why:"No live alerts, but one place where the best new finds collect between sessions. Each find jumps straight to its spot on the full board, so nothing great slips past.",
+  data:[["have","Board grades and ranks"],["have","Scheduled tasks that regrade the board"],["have","Find times from each regrade"]],
+  calc:"Each time the board regrades, add any gem that crosses a top rank or jumps sharply since your last look. Newest first, and every find expires at its kickoff.",code:"if rank >= 90 or rank - last_rank >= 15:\n    tray.add(gem, found_at=now)\ntray.expire_at_kickoff()",
+  disp:"Linemate's Discover feed and Linemate+ give a presorted feed of multi trended plays. Outlier's Popular tab lists the most researched props. OddsJam and Rithmm push alerts instead of keeping a feed."},
+ {id:"kelly",n:"Stake guide",w:"kelly",who:"Unabated · OddsJam",v:"maybe",h:1,e:1,s:3,
+  why:"One hour to know when a gem deserves $20 instead of $10. Clamped into your fixed band, so your own rules stay in charge.",
+  data:[["have","Edge and price from v3.0"]],
+  calc:"Kelly sizing says how much of a bankroll an edge justifies. Use a quarter of it, then map it into your $10 to $20 band and never above.",code:"f = (b * p - q) / b        # b = decimal - 1, q = 1 - p\nstake = clamp(10, 20, 10 + 40 * f / 4)",
+  disp:"Unabated and OddsJam both ship betting calculators with inputs and a result."},
+ {id:"rz",n:"Red zone share chart",w:"rz",who:"RotoWire · PFF",v:"buy",h:3,e:1,s:4,
+  why:"Shows the work behind your biggest model input, so a grade can be trusted at a glance instead of on faith.",
+  data:[["have","nflverse play by play inside the 10"]],
+  calc:"Player's share of team carries and targets inside the 10, this season and last three weeks.",code:"share = player_inside10_opps / team_inside10_opps",
+  disp:"Break the Plane's player click shows red zone share, goal line role and opponent context beside the model number."},
+ {id:"grade",n:"Model vs book grade",w:"grade",who:"Action PRO · FTA · RotoWire · BettingPros",v:"own",h:0,e:5,s:4,
+  why:"You own this in v3.0. Keep your single rank number and spend nothing.",
+  data:[["have","Everything, already in v3.0"]],
+  calc:"Model hit chance minus the book's implied chance, folded with Clarity and the other factors into one rating.",code:"edge_pp = p_model - p_book",
+  disp:"Action grades every edge A to F, green to red. FTA shows projection, cover chance, edge in pp and EV."},
+ {id:"devig",n:"No-vig fair odds and EV",w:"devig",who:"OddsJam · Outlier Pro · Unabated · OddsShopper",v:"own",h:0,e:3,s:1,
+  why:"Already in v3.0, which estimates the house cut because many TD props only post the yes side.",
+  data:[["have","DraftKings price through Outlier"]],
+  calc:"Strip the cut from both sides when a no side exists, otherwise apply the v3.0 cut estimate.",code:"p_fair = p_yes / (p_yes + p_no)",
+  disp:"Outlier Pro lets users pick multiplicative, additive, Shin or power methods and weight the books they trust."},
+ {id:"dvp",n:"Defense vs position",w:"heat",who:"Outlier · Props.Cash · RotoWire",v:"own",h:0,e:0,s:1,
+  why:"You tested it in v3.0 and it didn't improve the backtest. Keep it as context only.",
+  data:[["have","nflverse play by play"]],
+  calc:"Rank each defense by TDs allowed to the position.",code:"def_rank = rank(tds_allowed_by_position)",
+  disp:"Heat grids of rank 1 to 32. Break the Plane gives matchup 20% of its score."},
+ {id:"chat",n:"The Jeweler chat",w:"chat",who:"PropOracle · Stat Sniper · Rithmm",v:"buy",h:5,e:1,s:4,
+  why:"Ask about any gem without leaving Hidden Gems on a Sunday morning. If Hidden Gems runs as a claude.ai artifact, the chat runs on your own Claude account with no separate key or bill.",
+  data:[["have","Claude through the artifact's built in ask Claude capability, on your account"],["have","Every gem card's numbers and notes"],["need","An Anthropic API key only if Hidden Gems is hosted outside claude.ai, billed separately"]],
+  calc:"Each question goes to Claude along with that gem's card, its notes and the Jeweler's instructions. Claude keeps no memory between asks, so the card travels with every question.",code:"answer = ask_claude(jeweler_instructions + gem_card + question)",
+  disp:"PropOracle and Stat Sniper offer an AI chat analyst inside the app. Rithmm calls its version Scout."},
+ {id:"slip",n:"Slip and final appraisal",w:"slip",who:"Rithmm · Linemate · Outlier",v:"buy",h:6,e:2,s:5,
+  why:"Your practice slip lives in Hidden Gems, and one button has the Jeweler look it over before anything goes to a real sportsbook. It's the last confidence check before money moves.",
+  data:[["have","Gem ratings and hit chances"],["have","Lose it all math from the parlay meter"],["have","The Jeweler chat"]],
+  calc:"The slip totals stake, payout and the chance of losing it all. Ask the Jeweler sends the whole slip and gets back a short verdict per leg, keep, swap or cut, plus one line on the slip as a whole.",code:"verdict = ask_claude(jeweler_instructions + slip + legs_cards)\n# returns keep / swap / cut per leg plus one summary line",
+  disp:"Rithmm's parlay optimizer rates risk per leg. Linemate's builder compares legs across books. Outlier's My Picks holds a cart that sends to a sportsbook."},
+ {id:"overlay",n:"Closing line overlay on history",w:"bars",who:"Outlier",v:"skip",h:6,e:1,s:2,
+  why:"Outlier already shows it. Once your CLV log runs a few weeks you get your own version at no extra cost.",
+  data:[["need","Historical player prop closes, not in nflverse"],["part","Your own snapshots, starting now"]],
+  calc:"Plot each past game's closing line over that game's result.",code:"",
+  disp:"Outlier draws a line through each game's close over the bars, a feature marked new on Nov 2 2026."},
+ {id:"shop",n:"Market consensus appraisal",w:"shop",who:"OddsJam · Outlier Pro · Unabated · Linemate",v:"buy",h:3,e:4,s:2,
+  why:"You still bet only on DraftKings. One book's price is a noisy appraisal, though, and three books averaged is a steadier one. Measuring the gap against that consensus makes Carat more trustworthy, and it shows when DraftKings is paying above market.",
+  data:[["part","Other books' prices through Outlier, already partly used for the books agree part of Clarity"],["have","No-vig method from v3.0"]],
+  calc:"Strip the house cut from each book's price, average the fair chances across three or more books, and measure your model against that average. Then compare DraftKings' price with the consensus to see if your book is paying extra. Rerun the backtest before switching Carat to the consensus.",code:"p_market = mean(devig(price) for price in book_prices)   # 3+ books\ncarat = p_model - p_market\ndk_extra = dk_decimal * p_market - 1",
+  disp:"OddsJam and Outlier Pro build a fair price from several books, and Outlier Pro lets users weight the books they trust. Line shopping screens highlight the best price in each row."},
+ {id:"arb",n:"Arbitrage and middles",w:"arb",who:"OddsJam",v:"never",h:12,e:0,s:0,
+  why:"Needs several funded accounts and constant speed. It's the opposite of your Sunday rhythm.",
+  data:[["need","Real time prices from many books"],["need","Accounts at several sportsbooks"]],
+  calc:"Bet both sides at two books when the prices together guarantee profit.",code:"1/over + 1/under < 1",
+  disp:"Live feed of paired bets with a guaranteed return percent."},
+ {id:"sliders",n:"Custom model sliders",w:"sliders",who:"Rithmm",v:"skip",h:8,e:0,s:1,
+  why:"You're the only user and can change weights in code. Sliders invite tuning to last Sunday's results.",
+  data:[["have","Model inputs"]],
+  calc:"User weights replace fitted weights.",code:"",
+  disp:"Rithmm lets users fine tune factors and player metrics in a model builder."},
+ {id:"systems",n:"Mined trend systems",w:"systems",who:"Rithmm · Action PRO",v:"skip",h:10,e:0,s:1,
+  why:"With eight weeks of data, mined rules mostly find noise. Your walk forward backtest is the honest version.",
+  data:[["have","History"]],
+  calc:"Search many if and then conditions for high historical hit rates.",code:"",
+  disp:"Rithmm's Smart Signals and Power Trends, Action's systems, shown as rule cards with ROI."},
+ {id:"sync",n:"Slip handoff to DraftKings",w:"handoff",who:"Outlier · OddsJam · Linemate",v:"buy",h:6,e:0,s:5,
+  why:"You build the slip in Hidden Gems and one tap opens DraftKings with every leg already loaded. Nothing is placed until you tap Place Bet yourself, so DraftKings stays fully under your control, and Hidden Gems knows exactly which slip you sent.",
+  data:[["have","Your slip, built in Hidden Gems"],["part","DraftKings event, market and outcome IDs for each prop, which Outlier already carries"],["need","DraftKings' slip link template, captured once from a link Outlier generates"]],
+  calc:"Outlier keeps a link template for each sportsbook and fills it with that book's own event, market and outcome IDs, one block per leg, plus your state. Opening the finished link drops every leg into the DraftKings slip. Phase 1 uses Outlier as the middle step. Phase 2 has Hidden Gems build the same link itself.",code:"link = template.base + sep.join(\n    template.selection.format(event=e, market=m, outcome=o) for e, m, o in legs)\nopen(link)   # DraftKings app opens with legs in slip, nothing placed",
+  disp:"Outlier's My Picks cart sends all picks to a chosen sportsbook in one tap. OddsJam and Linemate offer one click links to the book. Pikkit and Action Network go the other way and import placed bets after the fact."},
+ {id:"sharp",n:"Sharp vs public money",w:"sharp",who:"Action PRO",v:"skip",h:6,e:1,s:1,
+  why:"Built for spreads and totals, not player TD props, and the data isn't free.",
+  data:[["need","Ticket and money percentages"]],
+  calc:"Compare share of tickets with share of money on each side.",code:"signal = money_pct - ticket_pct",
+  disp:"Two bars per side, tickets versus money."},
+ {id:"alt",n:"Alt line ladder pricing",w:"alt",who:"Unabated · Outlier",v:"skip",h:6,e:1,s:1,
+  why:"Needs full stat distributions, and you avoid 2+ TD props anyway.",
+  data:[["part","Distributions you'd have to model"]],
+  calc:"Price every rung from one distribution of outcomes.",code:"p_k = 1 - poisson_cdf(k - 1, lam)",
+  disp:"Unabated's alt line calculator and Outlier's alt lines menu."}
+];
+const HG={
+ clv:"One chart on the prop card. Your appraisal is a flat violet line. The market's appraisal moves toward or away from it from open until a vertical kickoff line, where the chart freezes. Right of that line sit the CLV verdict and then the result. In the collapsed gem row the chart shrinks to a tiny line and an arrow.",
+ result:"The closed appraisal. When the final whistle blows, the gem's card settles into its final state. Your appraisal sits against the market's last appraisal, then the result, then the box it lands in. A sound appraisal that missed still reads as sound, so a loss never looks like a flawed stone when it wasn't.",
+ strip:"A row of ten diamonds under each gem, the same diamond scale these cards use for Edge and Speed. A diamond fills violet for a game he scored and stays hollow for a miss, so the last ten read at a glance. The rank number sits above the row, and the diamonds are the proof.",
+ splits:"Part of the jeweler's notes. Knowing which conditions matter is the jeweler's judgment, so the notes cite the splits that count, such as same QB and same coordinator, 5 of 7. Tap a note to open the loupe, where conditions toggle on and off and Clarity and the diamond row redraw. Thin samples render cloudy so a small split can't fake brilliance.",
+ sent:"The Jeweler's notes. Every app reads the same stats, the way every buyer reads the same grading certificate. This is where Hidden Gems adds what the paper doesn't show, the context a trained eye brings, such as role changes, injuries, coaching tendencies and off field news. It's read right after the rank, before any chart. The trend lines, conditional splits and bull and bear notes all live here, so the facts and the read sit in one place.",
+ bull:"Part of the Jeweler's notes. The bull and bear case become two kinds of note in one list, notes that add to the appraisal and notes that cost it, such as a Questionable tag, snaps falling or blowout risk. Each costly note is an inclusion and lowers Clarity a notch, so the notes and the score always agree.",
+ env:"Environmental factors. The gem is the prop, and the game it lives in shapes its rank. This panel holds every factor from that environment. Implied team points comes first, with defense vs position and weather beside it. A factor only moves the rank once it passes the backtest. Until then it shows as context.",
+ parlay:"Parlay risk, in plain numbers. Under the parlay slip, show each leg's hit chance, the chance all of them hit, and in big type the chance you lose the whole stake, next to the payout. Legs from the same game get a correlated flag instead of a number until a correlation model exists.",
+ crowd:"Mined count. Each gem shows how many other prospectors found it and how many mined it, read from Outlier's researching and added counts, as in found by 246 and mined by 70. A low mined count plus a real gap earns a deeper Rarity mark. A heavily mined gem gets tagged picked over, even when its grade is high.",
+ alert:"The Tray. Jewelers lay their finest stones on a tray for a client, so this is a feed of only the highest ranked gems found since you last looked, newest first, each marked new. Tap one and the board scrolls to its spot. An optional Saturday night push simply says the tray has 3 new finds.",
+ kelly:"Carat sets the setting. The size of the gap decides whether the stone gets a $10, $15 or $20 setting. Bigger, cleaner stones earn the larger setting, and nothing ever goes above your $20 rule.",
+ rz:"The core sample. A cross section of the team's opportunities drawn as strata, with this player's layer in violet. It shows where the stone actually came from. For touchdown props the strata are red zone chances. For yards and receptions props the same view swaps in target, carry or snap share, whichever opportunity drives that market.",
+ grade:"One gem, one rating. Every gem is the same violet, with no species to memorize. Its single score from 0 to 100 sums every calculation, including the gap, Clarity, the jeweler's notes and the environmental factors. The gem glows brighter as the score climbs, so the rating reads at a glance, and the dropdown explains what built it.",
+ devig:"Fair price, with a helper. The expanded gem card shows the posted DraftKings price and the fair price side by side, with a small Why two prices helper. The book builds its cut into every price, and stripping it gives the market's honest opinion. Two gaps come out of that. The gap to fair shows how strongly you disagree with the market. The gap to posted is what you actually beat after the cut, and a gem only clears if that one is positive. Example: model 40%, posted 2.60 implies 38.5%, fair is 35.8%, so you disagree by 4.2 points and clear the cut by 1.5.",
+ dvp:"One of the environmental factors, shown low on the expanded gem card as context only. A single line names the opponent and its rank, a 1 to 32 track shows where it sits from softest to toughest, and a tiny four week strip shows the recent trend. It's drawn in gray with a context only tag, so it never reads like part of the rating.",
+ chat:"The Jeweler. A chat drawer available on every screen, with an Ask the Jeweler button on each gem card. Answers come back in the brand voice, grounded in that gem's card, so you never switch apps mid research.",
+ slip:"The slip as an appraisal certificate. Each leg sits as a violet gem with its rating, with stake, payout and the lose it all chance at the bottom. Ask the Jeweler adds a short verdict beside each leg, then Send to DraftKings hands it off. It deserves its own design pass.",
+ overlay:"If you ever build it, draw each past game's close as a faint gold thread across the diamond row. Until then, link out to Outlier.",
+ shop:"Market consensus. The market's appraisal of a gem becomes the average fair price across three or more books, not DraftKings alone, and Carat is measured against it. DraftKings' own price shows as a small tag reading above market or below market, so you know when your book is giving you extra.",
+ arb:"Never. Hidden Gems will never do arbitrage. Betting both sides of the same hill is the opposite of finding something hidden. It stays on the shelf only as a record of what the field offers.",
+ sliders:"No live sliders yet. The jeweler's bench section below lays out the full model with every current number on locked controls, so it can become a live tool later just by unlocking them.",
+ systems:"Skip. In this world mined systems are Fool's Gold, shiny patterns with no proven depth.",
+ sync:"The handoff. Build a slip in Hidden Gems, tap Send to DraftKings, and DraftKings opens with every leg in your slip. You place it there. Hidden Gems logs the slip as sent, so the closed appraisal result knows which gems you actually played.",
+ sharp:"Skip. It belongs to spreads and totals, not the prop mine.",
+ alt:"Skip. The 2+ rungs would render as stacked stones with a Fool's Gold warning, matching your rule to avoid them."
+};
+const HGW={
+ dvp(){let s=T(10,20,"Matchup context","wtb")+R(214,8,76,16,"fl",8)+T(252,20,"context only","wt","middle")
+  +T(10,44,"MIA allows the 6th most TDs to RBs","wt")+R(10,58,280,8,"fl",4)+R(10,58,48,8,"fl2",4)+C(58,62,7,"mkd")
+  +T(10,84,"1 · softest")+T(290,84,"32 · toughest","wt","end")
+  +T(10,116,"TDs allowed to RBs, last 4 weeks")+L(204,120,282,120);
+  [2,1,3,2].forEach((h,i)=>s+=R(208+i*19,120-h*9,13,h*9,"fl2",2));return W(s)}
+};
+const STARTER=F.filter(f=>f.v==="buy").map(f=>f.id);
+const SUNDAYS=10;
+const verdictLabel={buy:"Buy",maybe:"Maybe",skip:"Skip",own:"Own it",never:"Never"};
+const stLabel={have:"Have",part:"Partial",need:"Need"};
+
+/* ---------- state ---------- */
+let cart=new Set(STARTER);
+try{const s=JSON.parse(localStorage.getItem("hg-cart")||"null");if(Array.isArray(s))cart=new Set(s.filter(id=>F.some(f=>f.id===id)))}catch(e){}
+const save=()=>{try{localStorage.setItem("hg-cart",JSON.stringify([...cart]))}catch(e){}};
+let filter="all",sort="value";
+const value=f=>f.v==="own"?-1:(f.e*2+f.s)/Math.max(f.h,0.5);
+const gems=(n)=>`<span class="gems" aria-label="${n} of 5">${[0,1,2,3,4].map(i=>`<i class="${i<n?"on":""}"></i>`).join("")}</span>`;
+
+/* ---------- render ---------- */
+document.getElementById("patList").innerHTML=patterns.map(p=>`<div class="pat"><div class="art">${wires[p.w]()}</div><div><h3>${p.n}</h3><div class="who">${p.who}</div><p>${p.d}</p><p class="lesson">${p.l}</p></div></div>`).join("");
+document.getElementById("brandList").innerHTML=brands.map(b=>`<article class="brand"><div class="nm"><h3>${b.n}</h3><a href="${b.u}" target="_blank" rel="noopener">site ↗</a></div>
+ <div class="sw">${b.c.map(c=>`<span><i style="background:${c[0]}"></i>${c[0]}<br>${c[1]}</span>`).join("")}</div>
+ <dl><dt>Type</dt><dd>${b.f}</dd><dt>Structure</dt><dd class="tags">${b.s.map(x=>`<span class="tag">${x}</span>`).join("")}</dd><dt>Read</dt><dd>${b.t}</dd><dt>Price</dt><dd>${b.p}</dd></dl></article>`).join("");
+
+/* ---------- palette proposals ---------- */
+const PAL=[
+ {n:"Amethyst Night",rec:1,d:"Dark ground for Saturday night research, tinted violet so it doesn't read as the field's charcoal. Amethyst carries the brand and gold appears only on a strike.",
+  c:{g:"#0E0B14",s:"#18131F",i:"#EEEAF4",b:"#9D4EDD",k:"#E8B23A",h:"#3DBE7E",m:"#E5484D",o:"#FFFFFF"}},
+ {n:"Geode Day",d:"A light ground, which only two of nine rivals use. Pale violet white like the inside of a geode, a deep orchid brand and amber strikes. Best for a sunny Sunday morning.",
+  c:{g:"#F6F3F9",s:"#FFFFFF",i:"#1B1524",b:"#7E1F86",k:"#B8770A",h:"#1E8556",m:"#C8373B",o:"#FFFFFF"}},
+ {n:"Rhodolite",d:"Pushes deepest into the empty arc with a garnet magenta. The most distinctive and the riskiest, since magenta sits near red, so misses shift to coral to stay apart.",
+  c:{g:"#130B11",s:"#20131C",i:"#F5EBF1",b:"#D6409F",k:"#F2C14E",h:"#46C28C",m:"#FF7A59",o:"#FFFFFF"}},
+ {n:"Imperial Topaz",d:"Flips the order so gold leads and violet supports. The warmest and most prospector feeling. Gold primaries can tip toward casino, so it needs restraint.",
+  c:{g:"#100D09",s:"#1B1610",i:"#F3EDE4",b:"#F2A51A",k:"#8B5CF6",h:"#46B97C",m:"#E9534A",o:"#100D09"}}
+];
+(function(){
+ const role={g:"Ground",s:"Surface",i:"Ink",b:"Brand",k:"Strike",h:"Hit",m:"Miss"};
+ const facets=[1,1,0,1,1,1,0,1,1,0];
+ document.getElementById("palettes").innerHTML=PAL.map(p=>{const v=Object.entries(p.c).map(([k,x])=>`--${k}:${x}`).join(";");
+  return `<article class="pal${p.rec?" rec":""}"><div class="pt"><h4>${p.n}</h4>${p.rec?"<span>Recommended</span>":""}</div>
+  <div class="pv" style="${v}"><div class="pvc"><div class="pvt"><span class="pvs">Gem rating</span><span class="pvr">92</span></div>
+   <div class="pvn">J. Cook · Anytime TD</div><div class="pvm">BUF vs MIA · Sun 11:00 AM · 2.60</div>
+   <div class="pvf">${facets.map(f=>`<i class="${f?"":"o"}"></i>`).join("")}</div>
+   <div class="pvl"><span>Clarity</span><i><b style="width:78%"></b></i></div>
+   <div class="pvx"><span class="h">● Hit</span><span class="m">● Miss</span><em>Add to tray</em></div></div></div>
+  <div class="psw">${Object.keys(role).map(k=>`<span><i style="background:${p.c[k]}"></i>${role[k]}<br>${p.c[k]}</span>`).join("")}</div>
+  <p>${p.d}</p></article>`}).join("");
+})();
+
+/* ---------- color wheel ---------- */
+(function(){
+ const toHsl=hex=>{const r=parseInt(hex.slice(1,3),16)/255,g=parseInt(hex.slice(3,5),16)/255,b=parseInt(hex.slice(5,7),16)/255;
+  const mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/2,d=mx-mn;let h=0,s=0;
+  if(d){s=d/(1-Math.abs(2*l-1));h=mx===r?((g-b)/d)%6:mx===g?(b-r)/d+2:(r-g)/d+4;h=(h*60+360)%360}return [h,s,l]};
+ const chroma=[],grounds=[];
+ brands.forEach(b=>b.c.forEach(c=>{const [h,s,l]=toHsl(c[0]);const o={b:b.n,hex:c[0],nm:c[1],h,s,l};(s>.25&&l>.15&&l<.9?chroma:grounds).push(o)}));
+ const cx=200,cy=200,R0=22,R1=160;
+ const pt=(deg,r)=>{const a=(deg-90)*Math.PI/180;return [cx+r*Math.cos(a),cy+r*Math.sin(a)]};
+ const arc=(a0,a1,r0,r1)=>{const [x0,y0]=pt(a0,r1),[x1,y1]=pt(a1,r1),[x2,y2]=pt(a1,r0),[x3,y3]=pt(a0,r0);const lg=((a1-a0+360)%360)>180?1:0;
+  return `M${x0.toFixed(1)},${y0.toFixed(1)}A${r1},${r1} 0 ${lg} 1 ${x1.toFixed(1)},${y1.toFixed(1)}L${x2.toFixed(1)},${y2.toFixed(1)}A${r0},${r0} 0 ${lg} 0 ${x3.toFixed(1)},${y3.toFixed(1)}Z`};
+ let s="";
+ for(let h=0;h<360;h+=5)s+=`<path d="${arc(h,h+5.4,168,178)}" style="fill:hsl(${h} 70% 55%)"/>`;
+ [0.25,0.5,0.75,1].forEach(v=>s+=`<circle cx="${cx}" cy="${cy}" r="${R0+(R1-R0)*v}" class="whl-ring"/>`);
+ [0,90,180,270].forEach(d=>{const [x,y]=pt(d,194);s+=`<text x="${x}" y="${y+4}" class="whl-t" text-anchor="middle">${d}°</text>`});
+ const hs=chroma.map(c=>c.h).sort((a,b)=>a-b);const gaps=[];
+ hs.forEach((h,i)=>{const n=hs[(i+1)%hs.length];const w=(n-h+360)%360;if(w>=45)gaps.push([h,n,w])});
+ gaps.sort((a,b)=>b[2]-a[2]);
+ gaps.forEach(g=>{const a0=g[0]+4,a1=g[1]-4;s+=`<path d="${arc(a0,a1+(a1<a0?360:0),R0,R1)}" class="whl-sec"/>`;
+  const mid=(g[0]+((g[1]-g[0]+360)%360)/2)%360;const [x,y]=pt(mid,R1*0.58);s+=`<text x="${x}" y="${y}" class="whl-o" text-anchor="middle">Open</text><text x="${x}" y="${y+13}" class="whl-t" text-anchor="middle">${Math.round(g[0])}° to ${Math.round(g[1])}°</text>`});
+ chroma.forEach(c=>{const [x,y]=pt(c.h,R0+(R1-R0)*Math.min(c.s,1));s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="7" class="whl-dot" style="fill:${c.hex}"><title>${c.b} · ${c.nm} · ${c.hex}</title></circle>`});
+ PAL.forEach(p=>["b","k"].forEach(k=>{const [h,sat]=toHsl(p.c[k]);const [x,y]=pt(h,R0+(R1-R0)*Math.min(sat,1));
+  s+=`<rect x="${(x-6).toFixed(1)}" y="${(y-6).toFixed(1)}" width="12" height="12" transform="rotate(45 ${x.toFixed(1)} ${y.toFixed(1)})" class="whl-pro" style="stroke:${p.c[k]}"><title>Proposal · ${p.n} · ${k==="b"?"brand":"strike"} · ${p.c[k]}</title></rect>`}));
+ s+=`<text x="${cx}" y="${cy+4}" class="whl-t" text-anchor="middle">gray</text>`;
+ document.getElementById("wheelSvg").innerHTML=`<svg viewBox="-10 -10 420 420" role="img" aria-label="Color wheel of competitor brand colors with open hue ranges marked">${s}</svg>`;
+ const zone=(lo,hi)=>[...new Set(chroma.filter(c=>c.h>=lo&&c.h<=hi).map(c=>c.b))];
+ const greens=zone(120,160),blues=zone(195,220),oranges=zone(10,25);
+ const gText=gaps.map(g=>`${Math.round(g[0])}° to ${Math.round(g[1])}°`);
+ document.getElementById("wheelNotes").innerHTML=`
+  <div class="open"><b>Open · violet through magenta</b><span>${gText[0]||""}. The widest empty arc on the wheel. Only Outlier's pale lilac touches its edge. This is amethyst territory, and it reads as gemstone before it reads as money.</span></div>
+  <div class="open"><b>Open · amber through yellow</b><span>${gText[1]||""}. Gold is the prospector's color and nobody claims it. Ideal as the strike accent for a Diamond or paydirt moment.</span></div>
+  <div><b>Crowded · money green</b><span>${greens.length} brands: ${greens.join(", ")}. Most of them also use that green to mean a win, so brand and result blur together.</span></div>
+  <div><b>Crowded · trust blue</b><span>${blues.length} brands: ${blues.join(", ")}.</span></div>
+  <div><b>Shared · alert orange</b><span>${oranges.join(", ")}.</span></div>
+  <div><b>Grounds</b><span>Seven of nine brands sit on near black or navy. Action Network and RotoWire are the light exceptions.</span><span class="grounds">${grounds.map(g=>`<i title="${g.b} · ${g.hex}" style="background:${g.hex}"></i>`).join("")}</span></div>
+  <div class="open"><b>Read for Hidden Gems</b><span>Put the brand in violet with a gold accent and keep green and red strictly for hit and miss. Every gem is the same violet, and only its single rating changes, so the brand color and the gem color are one and the same.</span></div>`;
+})();
+
+/* ---------- jeweler's bench ---------- */
+const BENCH=[
+ {t:"Red zone read",d:"Expected touchdowns from the work a player gets near the goal line, priced at league average scoring rates, plus long touchdowns scaled to his snap share.",inputs:["nflverse play by play","Inside 10 carries","Inside 10 targets","League TD rate per carry","League TD rate per target","Snap share"],code:"xTD = carries_in10 * rate_carry + targets_in10 * rate_target + long_td_rate * snap_share",knobs:[]},
+ {t:"Blend and recalibrate",d:"Mix the red zone read with his own touchdown history, pulled toward average when the sample is small, then bend the result along a curve so the chances match how often things actually happened in the backtest.",code:"p = 0.80 * p_redzone + 0.20 * p_hit_rate_shrunk\nlogit(p_cal) = a + b * logit(p)",knobs:[{id:"k_rz",l:"Red zone share",v:80,min:0,max:100,u:"%",n:"Hit rate gets the remaining 20%"},{id:"k_a",l:"Curve shift a",v:-0.213,min:-1,max:1,step:0.001,u:"",n:"Fitted on Weeks 4 to 8, 2026"},{id:"k_b",l:"Curve stretch b",v:0.755,min:0,max:2,step:0.001,u:"",n:"Below 1 pulls extreme chances inward"}]},
+ {t:"Weigh against the market",d:"Blend the stats read with the book's no-vig price. The stats get less say early in the season and on long shots, where the market usually knows more.",inputs:["DraftKings price via Outlier"],code:"cut = min(0.05 + 0.01 * decimal_odds, 0.35)\nw = (0.5 if games >= 4 else 0.3) * min(1, 8 / (decimal_odds + 4))\np_final = w * p_cal + (1 - w) * p_no_vig",knobs:[{id:"k_w",l:"Stats weight",v:0.5,min:0,max:1,step:0.05,u:"",n:"Drops to 0.3 under 4 games played"},{id:"k_ls",l:"Long shot dampener",v:8,min:2,max:20,step:1,u:"",n:"Multiplier is 8 over odds plus 4, capped at 1"},{id:"k_cut",l:"House cut base",v:5,min:0,max:15,step:0.5,u:"%",n:"Plus 1% per point of decimal odds, max 35%"}]},
+ {t:"Environmental factors",d:"Conditions around the game. Defense vs position was tested and didn't help, so it shows as context only. The two proposals from the shelf would enter here once they pass the backtest.",knobs:[{id:"k_dvp",l:"Defense vs position",v:0,min:0,max:1,step:1,u:"",n:"Off · context only, failed backtest",fmt:x=>x?"On":"Off"},{id:"k_env",l:"Implied team points",v:0,min:0,max:1,step:1,u:"",n:"Proposed · not yet tested",prop:1,fmt:x=>x?"On":"Off"},{id:"k_cons",l:"Market consensus baseline",v:0,min:0,max:1,step:1,u:"",n:"Proposed · 3+ books instead of one",prop:1,fmt:x=>x?"On":"Off"}]},
+ {t:"Clarity",d:"How much to trust the grade, scored out of 100. Inclusions from the jeweler's notes subtract here.",clar:[["Sample",40],["Consistency",30],["Books agree",15],["Setup",15]],code:"setup -= 5 if snap_share_falling\nsetup reflects the official injury report",knobs:[]},
+ {t:"Fallback",d:"If a player has no 2026 stats to read, the model stays out of it and the market price stands.",code:"if no_2026_match: p_final = p_no_vig",knobs:[]}
+];
+(function(){
+ const fmt=k=>k.fmt?k.fmt(k.v):(Number.isInteger(k.v)?k.v:k.v.toFixed(3).replace(/0+$/,"").replace(/\.$/,""))+(k.u||"");
+ const shades=["var(--acc)","color-mix(in srgb,var(--acc) 75%,var(--surface))","color-mix(in srgb,var(--acc) 55%,var(--surface))","color-mix(in srgb,var(--acc) 38%,var(--surface))"];
+ let h=BENCH.map((st,i)=>`<article class="stage"><div class="no">${i+1}</div><div style="min-width:0"><h3>${st.t}</h3><p>${st.d}</p>
+  ${st.inputs?`<div class="inputs">${st.inputs.map(x=>`<span>${x}</span>`).join("")}</div>`:""}
+  ${st.clar?`<div class="clar">${st.clar.map((c,j)=>`<div style="width:${c[1]}%;background:${shades[j]}" title="${c[0]} ${c[1]}">${c[0]} ${c[1]}</div>`).join("")}</div>`:""}
+  ${st.code?`<pre>${st.code}</pre>`:""}
+  ${st.knobs.length?`<div class="knobs">${st.knobs.map(k=>`<label class="knob${k.prop?" prop":""}" for="${k.id}"><span class="kl"><span>${k.l}</span><span class="kv">${fmt(k)}</span></span><input type="range" id="${k.id}" min="${k.min}" max="${k.max}" step="${k.step||1}" value="${k.v}" disabled><span class="kn">${k.n}</span><span class="lock">Locked · edit in code</span></label>`).join("")}</div>`:""}
+ </div></article>`).join("");
+ h+=`<article class="stage"><div class="no">✓</div><div style="min-width:0"><h3>Proof it works</h3><p>Walk forward backtest over Weeks 4 to 8 of 2026, 1,367 player games. The score measures how close each predicted chance was to what happened, and lower is better.</p>
+  <div class="brier">${[["Hidden Gems v3.0",0.131,1],["Plain hit rate",0.137,0],["Knowing nothing",0.147,0]].map(r=>`<div class="row${r[2]?" me":""}"><span>${r[0]}</span><span class="bar"><i style="width:${(r[1]/0.16*100).toFixed(1)}%"></i></span><span class="kv">${r[1].toFixed(3)}</span></div>`).join("")}</div></div></article>`;
+ document.getElementById("benchList").innerHTML=h;
+})();
+
+function renderShelf(){
+ let list=F.filter(f=>filter==="all"||f.v===filter||(filter==="skip"&&f.v==="never"));
+ list.sort((a,b)=>sort==="edge"?b.e-a.e:sort==="hours"?(a.h-b.h)||(b.e-a.e):value(b)-value(a));
+ document.getElementById("shelfList").innerHTML=list.map(f=>{const inCart=cart.has(f.id);const own=f.v==="own";const nv=f.v==="never";
+  return `<article class="card${inCart?" in":""}" data-id="${f.id}"><div class="art">${wires[f.w]()}</div><div class="cb">
+  <div class="ct"><h3>${f.n}</h3><span class="verdict v-${f.v}">${verdictLabel[f.v]}</span></div>
+  <div class="whohas">${f.who}</div>
+  <div class="meters"><div class="m">Edge${gems(f.e)}</div><div class="m">Speed${gems(f.s)}</div><div class="m">Hours<span class="hrs">${own?"0":f.h}</span></div></div>
+  <p class="why">${f.why}</p>
+  <div class="ddw"><div class="dd">
+   <div><h4>Data it needs</h4><ul class="data">${f.data.map(d=>`<li><span class="st st-${d[0]}">${stLabel[d[0]]}</span><span>${d[1]}</span></li>`).join("")}</ul></div>
+   <div><h4>How it's calculated</h4><p>${f.calc}</p>${f.code?`<pre>${f.code}</pre>`:""}</div>
+   <div><h4>How rivals display it</h4><p>${f.disp}</p></div>
+   <div class="hgd"><h4>How Hidden Gems would show it</h4><p>${HG[f.id]||""}</p>${HGW[f.id]?`<div class="art hgart">${HGW[f.id]()}</div>`:""}</div>
+  </div></div>
+  <button class="add" type="button" id="add-${f.id}" ${own||nv?"disabled":""} aria-pressed="${inCart}">${own?"Already in Hidden Gems":nv?"Never in Hidden Gems":inCart?"In build · remove":"Add to build"}</button>
+  </div></article>`}).join("");
+}
+function renderCart(){
+ const items=F.filter(f=>cart.has(f.id));const hrs=items.reduce((a,f)=>a+f.h,0);const edge=items.reduce((a,f)=>a+f.e,0);
+ document.getElementById("cHrs").textContent=hrs;document.getElementById("cCount").textContent=items.length;document.getElementById("cEdge").textContent=edge;
+ const per=(hrs/SUNDAYS).toFixed(1);const skips=items.filter(f=>f.v==="skip").length;
+ let read=items.length?`About <b>${per} hours per Sunday</b> across the ${SUNDAYS} left, Nov 8 2026 to Jan 10 2027.`:`Cart is empty. Add features from the shelf.`;
+ if(skips)read+=` ${skips} skip rated ${skips>1?"items are":"item is"} in here, check those twice.`;
+ else if(hrs>40)read+=` That's a heavy build for one season, consider trimming to CLV and splits first.`;
+ else if(items.length)read+=` Build CLV first so every Sunday after it is measured.`;
+ document.getElementById("cRead").innerHTML=read;
+}
+document.getElementById("shelfList").addEventListener("click",e=>{const b=e.target.closest(".add");if(!b||b.disabled)return;const id=b.id.slice(4);
+ cart.has(id)?cart.delete(id):cart.add(id);save();renderShelf();renderCart();const nb=document.getElementById("add-"+id);if(nb)nb.focus()});
+document.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{filter=c.dataset.f;document.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",x===c));renderShelf()}));
+document.getElementById("sortSel").addEventListener("change",e=>{sort=e.target.value;renderShelf()});
+document.getElementById("cReset").addEventListener("click",()=>{cart=new Set(STARTER);save();renderShelf();renderCart()});
+renderShelf();renderCart();
+document.getElementById("nFeat").textContent=F.length;document.getElementById("nBuy").textContent=STARTER.length;
+</script>
+
+</body></html>

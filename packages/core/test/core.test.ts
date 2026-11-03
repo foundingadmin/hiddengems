@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   SNAPSHOT_GRACE_MINUTES, americanToDecimal, appraise, clarityScore, compareRecommended, decimalToAmerican, dueFreezes, dueSnapshot,
-  fairChance, findTeam, gameId, gemRating, houseCut, impliedFromDecimal, nameKey, recommendedScore, selectionKey, zonedTimeToUtc,
+  fairChance, findTeam, gameId, gemRating, houseCut, impliedFromDecimal, nameKey, newGemReason, recommendedScore, selectionKey, zonedTimeToUtc,
   type Rankable,
 } from '../src';
 
@@ -21,7 +21,7 @@ describe('odds', () => {
     expect(houseCut(2)).toBeCloseTo(0.07);
     expect(houseCut(10)).toBeCloseTo(0.15);
     expect(houseCut(40)).toBeCloseTo(0.35);
-    expect(fairChance(2)).toBeCloseTo(0.5 / 1.07);
+    expect(fairChance(2)).toBeCloseTo(0.5 * 0.93);
   });
 });
 
@@ -36,11 +36,11 @@ describe('gem rating', () => {
   });
 
   it('rates a prop that clears the posted price', () => {
-    // posted 3.20 is 31.25% implied; fair is 31.25 / 1.082 = 28.9%
+    // posted 3.20 is 31.25% implied; fair is 31.25 x (1 - 0.082) = 28.69%
     const r = appraise({ hitChance: 0.4, price: 3.2, clarity: 80, hasStats: true });
     expect(r.kind).toBe('gem');
     expect(r.gapToPosted).toBeCloseTo(8.75);
-    expect(r.carat).toBeCloseTo(11.12, 1);
+    expect(r.carat).toBeCloseTo(11.31, 1);
     expect(r.rating).toBe(80);
   });
 
@@ -145,5 +145,22 @@ describe('identity', () => {
   it('resolves teams from the Facet kit', () => {
     expect(findTeam('Kansas City Chiefs')?.id).toBe('kc');
     expect(findTeam('JAC')?.id).toBe('jax');
+  });
+});
+
+describe('new gems', () => {
+  it('surfaces a gem that crosses 90 until it is read', () => {
+    expect(newGemReason(92, null)).toEqual({ kind: 'crossed', from: 92 });
+    expect(newGemReason(92, { foundRating: 92, readRating: null })).toMatchObject({ kind: 'crossed' });
+    expect(newGemReason(93, { foundRating: 92, readRating: 92 })).toBeNull();
+    expect(newGemReason(91, { foundRating: 70, readRating: 85 })).toEqual({ kind: 'crossed', from: 85 });
+  });
+  it('surfaces a jump of 15 or more since it was found or read', () => {
+    expect(newGemReason(88, { foundRating: 71, readRating: null })).toEqual({ kind: 'jumped', from: 71 });
+    expect(newGemReason(80, { foundRating: 71, readRating: null })).toBeNull();
+    expect(newGemReason(75, { foundRating: 40, readRating: 60 })).toEqual({ kind: 'jumped', from: 60 });
+  });
+  it('never surfaces a prop without a rating', () => {
+    expect(newGemReason(null, null)).toBeNull();
   });
 });

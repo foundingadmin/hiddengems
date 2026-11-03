@@ -42,6 +42,9 @@ export const players = pgTable('players', {
   teamId: text().references(() => teams.id),
   jerseyNumber: smallint(),
   status: text(),
+  /** Latest injury report game status (Out, Doubtful, Questionable), null when not listed. */
+  injuryStatus: text(),
+  injuryWeek: smallint(),
   updatedAt: createdAt(),
 }, (t) => [index().on(t.nameKey), index().on(t.teamId)]);
 
@@ -59,6 +62,9 @@ export const games = pgTable('games', {
   status: text().notNull().default('scheduled'),
   awayScore: smallint(),
   homeScore: smallint(),
+  /** Schedule lines for implied team points (model v3.0). spreadLine above zero: the home team is favored. */
+  spreadLine: doublePrecision(),
+  totalLine: doublePrecision(),
   updatedAt: createdAt(),
 }, (t) => [index().on(t.kickoffAt), index().on(t.season, t.week)]);
 
@@ -188,6 +194,40 @@ export const playerGameStats = pgTable('player_game_stats', {
   runId: text().notNull(),
   updatedAt: tstz().notNull(),
 }, (t) => [primaryKey({ columns: [t.gameId, t.playerId] })]);
+
+/**
+ * When each prop first became a gem, and when it was last marked read, with the rating each time. Feeds
+ * the New gems row: a gem is new when it crosses 90 or jumps 15 since it was found or last read.
+ */
+export const gemMarks = pgTable('gem_marks', {
+  selectionKey: text().primaryKey(),
+  foundAt: tstz().notNull(),
+  foundRating: integer().notNull(),
+  readAt: tstz(),
+  readRating: integer(),
+});
+
+/**
+ * The model's inputs: each skill player's usage per game from nflverse play by play and snap counts
+ * (core UsageGame). Current state, rebuilt by pull-usage; estimates keep the history of what it produced.
+ */
+export const playerUsage = pgTable('player_usage', {
+  gameId: text().notNull().references(() => games.id),
+  playerId: text().notNull().references(() => players.id),
+  season: smallint().notNull(),
+  week: smallint().notNull(),
+  teamId: text().notNull().references(() => teams.id),
+  position: text().notNull(),
+  /** Offensive snap share, 0 to 1; null until snap counts land. */
+  snapPct: doublePrecision(),
+  rzCarries: smallint().notNull().default(0),
+  rzTargets: smallint().notNull().default(0),
+  rzCarryTds: smallint().notNull().default(0),
+  rzTargetTds: smallint().notNull().default(0),
+  touchdowns: smallint().notNull().default(0),
+  runId: text().notNull(),
+  updatedAt: tstz().notNull(),
+}, (t) => [primaryKey({ columns: [t.gameId, t.playerId] }), index().on(t.season)]);
 
 export const bets = pgTable('bets', {
   id: uuid(),

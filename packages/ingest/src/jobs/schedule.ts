@@ -25,7 +25,8 @@ export const pullSchedule: Job = {
       if (before && before !== id) moved.push(before);
       rows.push({
         id, season: g.season, seasonType: g.seasonType, week: g.week, kickoffAt: g.kickoff, awayTeamId: away, homeTeamId: home,
-        neutralSite: g.neutralSite, status: g.status, awayScore: g.awayScore, homeScore: g.homeScore, updatedAt: ctx.now,
+        neutralSite: g.neutralSite, status: g.status, awayScore: g.awayScore, homeScore: g.homeScore,
+        spreadLine: g.spreadLine ?? null, totalLine: g.totalLine ?? null, updatedAt: ctx.now,
       });
       refs.push({ provider: provider.id, entity: 'game', externalId: g.externalId, internalId: id });
     }
@@ -36,7 +37,7 @@ export const pullSchedule: Job = {
         set: {
           season: sql`excluded.season`, seasonType: sql`excluded.season_type`, week: sql`excluded.week`, kickoffAt: sql`excluded.kickoff_at`,
           neutralSite: sql`excluded.neutral_site`, status: sql`excluded.status`, awayScore: sql`excluded.away_score`,
-          homeScore: sql`excluded.home_score`, updatedAt: sql`excluded.updated_at`,
+          homeScore: sql`excluded.home_score`, spreadLine: sql`excluded.spread_line`, totalLine: sql`excluded.total_line`, updatedAt: sql`excluded.updated_at`,
         },
       });
     }

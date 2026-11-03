@@ -10,11 +10,14 @@
     "dev": "turbo run dev --filter=web",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
-    "check": "turbo run typecheck test && pnpm lint:color",
+    "check": "turbo run typecheck test && pnpm lint:color && pnpm db:guard",
     "lint:color": "node packages/facet/scripts/lint-color.mjs apps",
     "db:generate": "pnpm --filter @hiddengems/db generate",
     "db:migrate": "pnpm --filter @hiddengems/db migrate",
-    "job": "pnpm --filter @hiddengems/ingest job"
+    "job": "pnpm --filter @hiddengems/ingest job",
+    "db:guard": "node packages/db/scripts/guard-migrations.mjs",
+    "db:restore": "pnpm --filter @hiddengems/db restore",
+    "db:supabase-sql": "pnpm --filter @hiddengems/db supabase-sql"
   },
   "devDependencies": {
     "turbo": "^2.11.10",

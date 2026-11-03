@@ -74,6 +74,9 @@
 /* A section page groups its cards; the gap between cards is the same 32px. */
 .fc-settings-page { display: flex; flex-direction: column; gap: var(--fc-space-8); }
 .fc-settings-page[hidden] { display: none; }
+/* Inside .fc-shell the rail drills into Settings (patterns/settings.md), so the column stands alone:
+   the rail already draws the edge, and the shell content already pads the page. */
+.fc-shell-content > .fc-settings-main { --_measure: var(--fc-measure-settings, 912px); padding: 0; box-shadow: none; }
 
 /* Narrow: the section list becomes one scrollable row above the column.
    (A container cannot restyle itself, so the children take full-width rows of the wrapping flex.) */

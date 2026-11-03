@@ -1,7 +1,7 @@
 # Hidden Gems · Product Requirements Document (PRD)
 
 Version 1.1 · updated Mon Nov 2 2026, 4 AM MT, with Josh's answers and comments · owner Josh Titus · grading model Hidden Gems v3.0 plus implied team points
-Rating lab, five rating formulas on the Week 9 board: `docs/rating-lab.html`
+Rating lab, five rating formulas on the Week 9 board: `apps/web/public/rating-lab.html` (in the app at Settings, Rating lab)
 Companion lookbook with competitor research, wireframes and the color wheel: `docs/archive/lookbook.html`
 Feature wireframes, 8 desktop and 8 phone screens on Facet: `docs/wireframes`
 
@@ -127,7 +127,7 @@ Competitors underinvest in design, so friction is everywhere: dense data sets, a
 
 # 8. Gem rating (approved for now Nov 2 2026)
 
-The rating lab compares five formulas on the same 126 Week 9 props: `docs/rating-lab.html`
+The rating lab compares five formulas on the same 126 Week 9 props: `apps/web/public/rating-lab.html` (in the app at Settings, Rating lab)
 
 What the Week 9 opening lines show (one book posted, numbers will move by Sunday):
 - **Today's scorecard (edge × odds × clarity):** top 10 has middle odds of 11.25 and an average hit chance of 10%. It ranks payout, not trust. Drop.
@@ -151,7 +151,7 @@ Empty state: when nothing clears at your usual odds, the board says so.
 
 Display: one violet gem with brightness keyed to the rating, the number beside it, the breakdown inside the expanded card.
 
-Next: grade each formula's top 10 after Weeks 9 to 12, about 500 props, then lock it. The lab (`docs/rating-lab.html`, open it in a browser) holds the Week 9 opening props inline; add each week's graded props to its data as they land.
+Next: grade each formula's top 10 after Weeks 9 to 12, about 500 props, then lock it. The lab (`apps/web/public/rating-lab.html`, in the app under Settings) holds the Week 9 opening props inline; add each week's graded props to its data as they land.
 
 # 9. Features and build plan
 
@@ -489,7 +489,7 @@ Geist and Geist Mono, following the Vercel Geist research in the hiddengems repo
 
 - Lookbook with competitor research, feature cards, color wheel, palettes and the Jeweler's bench: `docs/archive/lookbook.html`
 - Feature wireframes, 8 desktop and 8 phone screens on Facet: `docs/wireframes`
-- Rating lab: `docs/rating-lab.html`
+- Rating lab: `apps/web/public/rating-lab.html` (in the app at Settings, Rating lab)
 - Grading model doc: project doc claude/grading-v3-nflverse.md
 - Competitors reviewed: Outlier, Props.Cash, OddsJam, Action Network, Linemate, Rithmm, Unabated, Pikkit, RotoWire Break the Plane, FTA Prop Edge Tool, PropSignal, OddsShopper
 

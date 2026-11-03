@@ -1,13 +1,12 @@
 # Roadmap
 
 From today to the end of the 2026 regular season, measured against `docs/prd.md` (v1.1) and `docs/build-brief.md`.
-Assessed Tue Nov 3 2026 on `staging`. The sprint session parks comments under "Waiting for the principal"; finished
-work moves to "Shipped" with its PR.
+Assessed Tue Nov 3 2026 on `staging`. Finished work moves to "Shipped" with its PR.
 
 ## Waiting for the principal
 
-Calls the assessment surfaced, each with a recommendation. The sprint session adds parked comments below them: what
-was asked, why it waits, and the thread.
+Calls the assessment surfaced, each with a recommendation. Parked comments follow: what was asked, why it waits, the
+thread.
 
 1. **Measure every gem, not only placed bets.** F1.1 and F1.2 grade "sent" gems, but the slip arrives in Phase 3,
    so Weeks 9 to 11 would grade almost nothing and the Dec 6 test (30 graded gems) would miss. Recommend: freeze and
@@ -60,16 +59,14 @@ was asked, why it waits, and the thread.
 | 15 to 17 | Dec 20 to Jan 3 | M4 | Saturday and holiday slates |
 | 18 | Jan 10 | | Last Sunday; season review |
 
-Review time sets the pace: about 5 hours a week of the principal's review (PRD, totals and timeline).
-
 ## Production ready for Week 9 (M0)
 
-Ship by Thu Nov 5, before the first Week 9 kickoff. The old pipeline retired today, so the app is the only thing
+Ship by Thu Nov 5, before the first Week 9 kickoff. The old pipeline retired Nov 3, so the app is the only thing
 freezing prices this week.
 
-- [ ] Owner: run `pnpm db:supabase-sql --app-password <password>` output in the production Supabase project, then
+- [ ] Principal: run `pnpm db:supabase-sql --app-password <password>` output in the production Supabase project, then
       set `DATABASE_URL` (Production) to the `hiddengems_app` login (`docs/architecture.md`, Database).
-- [ ] Owner: `ODDS_API_KEY`, `CRON_SECRET`, `BACKUP_GITHUB_TOKEN` and `BACKUP_GITHUB_REPO` set for Production only.
+- [ ] Principal: `ODDS_API_KEY`, `CRON_SECRET`, `BACKUP_GITHUB_TOKEN` and `BACKUP_GITHUB_REPO` set for Production only.
 - [ ] Data health shows today's Tue 10:07 AM opening snapshot. If it was missed, the next slot is Sat 7:47 PM; an off
       schedule pull spends credits and is the principal's call.
 - [ ] `pull-results` and `pull-usage` have backfilled the season, and the Week 9 board shows ratings, not only
@@ -149,8 +146,8 @@ the off field social scan, and a protectable name.
 - **Snap counts lag.** Clarity's setup part runs on older snap shares early in the week.
 - **Calibration.** The recalibration constants were fit on the same backtest, so the baseline is slightly flattered;
   M2's backtest job makes drift visible.
-- **Sample only previews.** Staging never shows live data, so the first live view of each screen is production. Check
-  each release there on the next pull.
+- **Previews use sample data.** The first live view of each screen is production. Check each release there after the
+  next pull.
 
 ## Shipped
 

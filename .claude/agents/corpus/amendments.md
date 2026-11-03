@@ -40,7 +40,7 @@ How a directive (an agent file in `.claude/agents/`) changes.
 | 2026-11-03 | corpus-steward | 1.1 | Maintains `For:` lines and the `lessons` map; keeps directives short; tier gate. | Principal decision; L5 |
 | 2026-11-03 | repo-hygiene | 2.0 | Adds a Session log row to `corpus/efficiency.md` at the end of every session: lead, agents and session totals as the harness reported them. | Principal request |
 | 2026-11-03 | vice-principal | 2.1 | Passes the session's token totals to `repo-hygiene` in step 8. | Principal request |
-| 2026-11-03 | vice-principal | 2.2 | Each parallel writer in its own worktree, read-only agents through `git show` and `git diff`; unsubscribes from task PRs the harness subscribes it to. | L19, L20 |
+| 2026-11-03 | vice-principal | 2.2 | Each parallel writer in its own worktree, read-only agents through `git show` and `git diff`, or their own worktree when they run the app; unsubscribes from task PRs the harness subscribes it to. | L19, L20 |
 | 2026-11-03 | facet-curator | 1.2 | Specimen CSS scoped away from `fc-` parts; copied specimens get their own copy and computed data; full-page capture for `#hash` URLs; own worktree; `pnpm install` before `pnpm check`. | L19, L21, L22, L23, L24, L25 |
 | 2026-11-03 | facet-builder | 1.2 | Same specimen rules plus mixed tables for inline marks; `aria-hidden` glyph and `.fc-visually-hidden` name instead of `aria-label` on a span; full-page capture; own worktree; `pnpm install` first. | L19, L21, L22, L23, L24, L25, L26, L27 |
 | 2026-11-03 | screen-builder | 1.2 | `.fc-visually-hidden` name instead of `aria-label` on a span; own worktree; `pnpm install` first. | L19, L22, L27 |

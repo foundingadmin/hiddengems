@@ -132,8 +132,8 @@ Two agents shared one checkout: `facet-curator` branched while the lead had unco
 through `git show` and `git diff origin/...`.
 - Evidence: #28 and #29 (8a8a113 on the curate branch).
 - For: vice-principal, screen-builder, data-builder, facet-builder, facet-curator.
-- Status: adopted in vice-principal v2.2, screen-builder v1.2, data-builder v1.2, facet-builder v1.2, facet-curator
-  v1.2.
+- Status: adopted in vice-principal v2.2 (or their own worktree when they run the app), screen-builder v1.2,
+  data-builder v1.2, facet-builder v1.2, facet-curator v1.2.
 
 ## L20 · 2026-11-03 · vice-principal
 The harness subscribed the lead to every PR an agent opened, against "subscribe only to the release PR"; the lead

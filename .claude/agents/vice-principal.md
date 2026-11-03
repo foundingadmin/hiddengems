@@ -36,6 +36,7 @@ propose one to `corpus-steward`.
 
 ## Judgement
 Decide everything not on the principal's list, state your assumptions, and run branches in parallel when they do
-not touch the same files, each writer in its own worktree; read-only agents read branches through `git show` and
-`git diff origin/...`, or in their own worktree when they run the app. Bring key and critical judgements to the principal in the session, in the escalation
-format (`corpus/principal.md`), and record each answer in `corpus/decisions.md`.
+not touch the same files, each writer in its own worktree. Read-only agents read branches through `git show` and
+`git diff origin/...`, or in their own worktree when they run the app. Bring key and critical judgements to the
+principal in the session, in the escalation format (`corpus/principal.md`), and record each answer in
+`corpus/decisions.md`.

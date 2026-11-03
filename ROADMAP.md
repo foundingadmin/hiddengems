@@ -34,7 +34,12 @@ thread.
 9. **Restore the stricter database rules.** Rapid build mode (Nov 3) lets migrations apply themselves and agents
    run SQL on both databases. Recommend: at the beta, sign the Supabase connector out of the production project, and
    apply production migrations by hand from the release PR again.
-10. **PRD v1.2.** Once 1 to 9 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
+10. **Notes that cost clarity (F2.3).** Each costly note lowers clarity a notch, which moves ratings. Recommend:
+    build the notes first as context only, then decide on the clarity effect after the Dec 1 formula lock.
+11. **Backtest baseline.** The weekly backtest scores 0.1313 on full Weeks 4 to 8 data; the 0.1360 baseline was set
+    before most Week 8 snap counts landed, so a regression under 0.0047 would not warn. Recommend: move the
+    baseline to 0.1313 and record it in the PRD (section 4, goal 2).
+12. **PRD v1.2.** Once 1 to 11 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
    Outlier as price source, F2.8, F3.4, the old pipeline's freeze and close commands.
 
 ## Where it stands
@@ -43,7 +48,7 @@ thread.
 |---|---|---|---|
 | Data pipeline | sections 10, 12 | Built: six jobs on Vercel Cron, snapshot schedule, credit guard, run log, Data health | First live week in production |
 | Database safety | | Built: app login, append-only history, `db:guard`, nightly backups, staging database | |
-| Model v3.0 with implied points | section 11 | Built and matched to `hgs.py` on Week 8 | A backtest that runs on every refresh (goal 2) |
+| Model v3.0 with implied points | section 11 | Built and matched to `hgs.py` on Week 8; weekly walk-forward backtest (0.1313 on Weeks 4 to 8) | Baseline call 11 |
 | Gem rating, Fool's Gold, Recommended | F0.2, section 8 | Built in `packages/core` with tests | |
 | Gems board | F0.1 | Built: table, phone list, filters, sort, Add or On slip, rows open the gem sheet (sprint 2026-11-03) | Mined by (call 2) |
 | New gems | F3.5 | Built early: row, Mark read, nav count | The optional Saturday push |
@@ -53,7 +58,7 @@ thread.
 | CLV | F1.1 | Built: CLV for every gem and placed bet, results line on History | Owner SQL before Thu Nov 5 |
 | Closed appraisal result | F1.2 | Built: the four boxes for every gem, graded slip | Within an hour of final (call 1) |
 | Provenance | F1.3 | Built: a frozen record per gem at kickoff with its new flag and estimate | Notes and splits, once they exist |
-| Phase 2, the read | F2.1 to F2.8 | Implied points live; multi book prices and line history accumulating | Every view |
+| Phase 2, the read | F2.1 to F2.8 | Built: live price line, core sample, trend lines, implied points, matchup and weather in the gem sheet; weekly backtest on Data health (sprint 2026-11-03-2) | Splits and the loupe (F2.2), notes (F2.3, call 10), consensus (F2.6) |
 | Phase 3, the slip | F3.1 to F3.7 | Built: slips and states, lose it all, DraftKings slip link, handoff, change dialog, history, graded slip, the Jeweler | The Jeweler's key (call 5), provenance report data (F3.7), stake range (call 6) |
 | Facet parts from the brief | build brief | Promoted: every part the brief lists | |
 

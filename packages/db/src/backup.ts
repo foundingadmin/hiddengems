@@ -5,7 +5,7 @@ import { type AnyColumn, getTableColumns, getTableName } from 'drizzle-orm';
 import type { PgTable } from 'drizzle-orm/pg-core';
 import { type Db, isMissingTable } from './client';
 import {
-  bets, books, estimates, games, gemMarks, gemRecords, grades, jobSettings, markets, oddsLatest, oddsSlots, oddsSnapshots, picks, playerGameStats, playerUsage,
+  bets, books, estimates, games, gameWeather, gemMarks, gemRecords, grades, jobSettings, markets, oddsLatest, oddsSlots, oddsSnapshots, picks, playerGameStats, playerUsage,
   players, providerCaps, providerRefs, providerUsage, runs, slipLegs, slips, teams,
 } from './schema';
 
@@ -13,6 +13,7 @@ import {
 export const BACKUP_TABLES: PgTable[] = [
   teams, books, markets, players, games, providerRefs, oddsSnapshots, oddsLatest, oddsSlots, estimates, picks,
   playerGameStats, playerUsage, gemMarks, bets, slips, slipLegs, gemRecords, grades, runs, providerUsage, jobSettings, providerCaps,
+  gameWeather,
 ];
 
 

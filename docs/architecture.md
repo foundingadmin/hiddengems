@@ -36,6 +36,8 @@ providers ──> jobs (ingest) ──> Postgres ──> pages (web)
 | `build-picks` | after every odds pull | `estimates` (history), `picks` (the board: gem rating, Fool's Gold, Recommended order), `gem_records` (history) once a game's freeze is pulled | Follows `pull-odds` |
 | `pull-results` | nflverse | `player_game_stats` (backfills the season on first run); settles `bets`, records closing prices, writes `grades` | Daily 10:41 |
 | `pull-usage` | nflverse | `player_usage` (inside 10 carries and targets, touchdowns, snap share per player game), injury report onto `players`; then `build-picks` | Daily 10:53 |
+| `pull-weather` | Open-Meteo | `game_weather` (the latest kickoff forecast per game at an open stadium in the next 7 days) | Follows `pull-odds` |
+| `backtest` | our data | Nothing: its run keeps the walk-forward Brier against the 0.1360 baseline, one log line per week, and warns above it | Tuesday 12:37 |
 
 Cron runs every job often and lets the job decide. Odds come from The Odds API free plan: 500 credits a
 month, about 1 credit per game per pull, anytime TD only. So `pull-odds` fires every 5 minutes but calls
@@ -122,7 +124,7 @@ Every job run goes through `runJob` (`ingest/src/runner.ts`):
    - **ours**: a rejected key, a used-up quota, a payload the adapter no longer reads, missing config.
      Shown as red "Failed".
    - **provider**: outages, server errors, timeouts. The next run retries. Shown as amber "Provider down".
-5. Runs follow-up jobs on success (`pull-odds` then `build-picks`).
+5. Runs follow-up jobs on success (`pull-odds` then `build-picks` and `pull-weather`).
 
 HTTP to providers goes through one client (`ingest/src/http.ts`): 20 second timeout, one retry for
 network and 5xx errors, request counting, quota headers into `provider_usage`, keys redacted from logs.
@@ -133,6 +135,7 @@ network and 5xx errors, request counting, quota headers into `provider_usage`, k
 |---|---|---|
 | The Odds API v4, free plan | Anytime TD prices from DraftKings, FanDuel, BetMGM, Caesars, Fanatics, with DraftKings slip links | `ODDS_API_KEY` |
 | nflverse | Schedule with spread and total lines (`schedules/games.csv`), 2026 rosters with jersey numbers, weekly player stats, play by play, snap counts, injury reports | none |
+| Open-Meteo forecast API | Hourly forecast at kickoff for open stadiums: temperature, wind and gusts, precipitation chance and amount, snow | none |
 | Sample | Everything, deterministic, built around today's date | none |
 | Anthropic Messages API | The Jeweler's answers (`claude-sonnet-5-5`) | `ANTHROPIC_API_KEY` |
 
@@ -176,8 +179,21 @@ injury report) and `pull-schedule` (spread and total lines).
 
 `packages/core/test/model.test.ts` checks the port against `hgs.py` on Week 8: every player's form and
 stats chance, and every Week 8 board read, to 1e-9. The fixture is nflverse data as of the Week 8 freeze.
+The `backtest` job (`core/src/backtest.ts`) scores the same functions walk forward each Tuesday: every completed week from
+Week 4, each player game read from the weeks before it, against his stat line. `packages/core/test/backtest.test.ts`
+gives 0.1313 for Weeks 4 to 8 on the fixture; the 0.1360 baseline was scored before most Week 8 snap counts landed.
 Each estimate row stores its inputs (form, implied points, stats weight, clarity parts) so any read can
 be explained later.
+
+## Weather
+
+Context for the gem sheet's environmental factors (docs/prd.md F2.5); it never moves a rating.
+`core/src/weather.ts` holds each team's home stadium with its roof (dome, retractable, open) and `weatherNote()`,
+a short line only when it matters at an open stadium: wind 15 mph or more, 25°F or colder, a 50% chance of rain
+or more, or any snow. `pull-weather` runs after each odds pull that takes a snapshot or a freeze, one free request per
+game at an open stadium; domes, retractable roofs and neutral sites get none. `game_weather` holds the latest
+forecast per game. The sheet reads it with `getGameWeather(db, gameId)` (`packages/db/src/weather.ts`), which
+returns the forecast, the stadium and the note, or null.
 
 ## Database
 

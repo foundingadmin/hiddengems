@@ -685,3 +685,47 @@ dialog.fc-sheet:not([open]) { display: none; }
 .fc-game-log-key { display: flex; flex-wrap: wrap; gap: var(--fc-space-1) var(--fc-space-4); margin: 0; padding: 0; list-style: none; font: 400 12px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
 .fc-game-log-key > li { display: inline-flex; align-items: center; gap: var(--fc-space-1_5); }
 .fc-game-log-key > li::before { width: var(--fc-space-3); height: var(--fc-space-3); }
+
+/* ================================================================== Rank track [F]
+   Where one team sits from 1 to N (32 once every team has played): a dot on a hairline, both ends labelled.
+   The words beside it state the rank, so the track is aria-hidden.
+   <span class="fc-rank-track" aria-hidden="true" style="--at: 0.13">
+     <span>1</span><span class="fc-rank-track-rail"><span class="fc-rank-track-mark"></span></span><span>32</span>
+   </span> */
+.fc-rank-track {
+  display: grid;
+  grid-template-columns: auto minmax(var(--fc-space-16), 1fr) auto;
+  align-items: center;
+  gap: var(--fc-space-2);
+  max-width: calc(var(--fc-space-32) * 2);
+  font: 400 12px/16px var(--fc-font-sans);
+  color: var(--fc-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.fc-rank-track-rail { position: relative; height: var(--fc-space-3); }
+.fc-rank-track-rail::before { content: ""; position: absolute; left: 0; right: 0; top: calc(50% - 0.5px); height: 1px; background: var(--fc-border-active); }
+.fc-rank-track-mark {
+  position: absolute;
+  top: calc(50% - var(--fc-space-1));
+  left: calc(var(--at, 0) * 100%);
+  width: var(--fc-space-2);
+  height: var(--fc-space-2);
+  margin-left: calc(var(--fc-space-1) * -1);
+  border-radius: var(--fc-radius-full);
+  background: var(--fc-text-primary);
+}
+
+/* Context only [F]: a description row that informs but never moves the rating reads gray, value included,
+   tagged with a gray "Context only" badge so the tone is never the only cue. */
+.fc-description > div[data-context] > dd { font-weight: 400; color: var(--fc-text-secondary); }
+[data-context] .fc-rank-track-mark,
+[data-context] .fc-game-log-cells > li[data-result="hit"]::before { background: var(--fc-text-secondary); }
+/* A value with its tag on one line, its helper and any marks under it. */
+.fc-factor-value { display: flex; flex-wrap: wrap; align-items: center; gap: var(--fc-space-1) var(--fc-space-2); }
+.fc-description dd > :is(.fc-rank-track, .fc-game-log-cells) { margin-top: var(--fc-space-2); }
+/* A helper that carries freshness (status dot plus relative time) sits where <small> would. */
+.fc-description dd > .fc-freshness { margin-top: var(--fc-space-1); }
+
+/* Cell detail [F]: the count behind a share, before the value in the same cell, so the values keep one
+   right edge. <td data-align="numeric"><span class="fc-cell-detail">11 of 18</span>61%</td> */
+.fc-table .fc-cell-detail { margin-right: var(--fc-space-2); font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }

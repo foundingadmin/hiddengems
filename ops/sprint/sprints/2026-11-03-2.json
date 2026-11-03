@@ -1,0 +1,79 @@
+{
+  "id": "2026-11-03-2",
+  "startedAt": "2026-11-03T09:10:00Z",
+  "sprintBranch": "titus/eloquent-ritchie-l2d5sq",
+  "pr": "https://github.com/foundingadmin/hiddengems/pull/42",
+  "entries": [
+    {
+      "id": "e1",
+      "threads": [],
+      "page": "/?gem=",
+      "status": "ready",
+      "lane": "screens",
+      "fileGroup": "g1",
+      "size": "L",
+      "branch": "screens/2026-11-03-2-gem-read",
+      "brief": "Principal: keep working on the roadmap while away. M2 in the gem sheet: appraisal over time live line (F2.7), core sample (F2.4), trend lines (F2.1), implied team points and matchup context (F2.5 without weather).",
+      "head": "3193470",
+      "reason": "",
+      "releasedIn": ""
+    },
+    {
+      "id": "e2",
+      "threads": [],
+      "page": "/data",
+      "status": "ready",
+      "lane": "data",
+      "fileGroup": "g2",
+      "size": "M",
+      "branch": "data/2026-11-03-2-weather",
+      "brief": "M2 F2.5 weather: a free forecast source with no key, a job on the snapshot schedule, the sprint's only schema change; no UI.",
+      "head": "e8431c4",
+      "reason": "",
+      "releasedIn": ""
+    },
+    {
+      "id": "e3",
+      "threads": [],
+      "page": "/data",
+      "status": "ready",
+      "lane": "data",
+      "fileGroup": "g3",
+      "size": "M",
+      "branch": "data/2026-11-03-2-backtest",
+      "brief": "M2 goal 2: a weekly job scores the walk forward Brier and Data health shows it against 0.1360; no schema change.",
+      "head": "a8701dd",
+      "reason": "",
+      "releasedIn": ""
+    },
+    {
+      "id": "f1",
+      "threads": [],
+      "page": "",
+      "status": "parked",
+      "lane": "data",
+      "fileGroup": "",
+      "size": "M",
+      "branch": "",
+      "brief": "M2 F2.3 notes that add or cost: each costly note lowers clarity a notch.",
+      "head": "",
+      "reason": "Moves clarity and so ratings: the principal's call (principal.md 2).",
+      "releasedIn": ""
+    },
+    {
+      "id": "e4",
+      "threads": [],
+      "page": "/?gem=",
+      "status": "ready",
+      "lane": "screens",
+      "fileGroup": "g4",
+      "size": "S",
+      "branch": "titus/eloquent-ritchie-l2d5sq",
+      "brief": "Wire the weather line into the gem sheet conditions once e1 and e2 merged: context only, only when relevant.",
+      "head": "",
+      "reason": "",
+      "releasedIn": ""
+    }
+  ],
+  "lesson": "Parallel builders each appended to the same job and source lists (jobs/index.ts, data-health.ts, core index) and the lead resolved five conflicts; next sprint, name the exact insertion point per builder or give list edits to one entry."
+}

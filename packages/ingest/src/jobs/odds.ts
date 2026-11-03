@@ -18,7 +18,8 @@ const isTeamDefense = (name: string) => /\b(D\/ST|Defense)$/i.test(name.trim());
 export const pullOdds: Job = {
   name: 'pull-odds',
   provider: 'odds',
-  then: ['build-picks'],
+  // A pull that took a snapshot or a freeze rebuilds the board, then refreshes kickoff weather (free).
+  then: ['build-picks', 'pull-weather'],
   async run(ctx) {
     const { db, now } = ctx;
     const provider = ctx.providers.odds;

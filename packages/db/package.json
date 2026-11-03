@@ -12,7 +12,9 @@
     "typecheck": "tsc -p .",
     "test": "vitest run",
     "generate": "drizzle-kit generate",
-    "migrate": "tsx src/scripts/migrate.ts"
+    "migrate": "tsx src/scripts/migrate.ts",
+    "restore": "tsx src/scripts/restore.ts",
+    "supabase-sql": "tsx src/scripts/supabase-sql.ts"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.14",

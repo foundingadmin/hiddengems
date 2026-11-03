@@ -14,6 +14,8 @@ export interface HttpOptions {
 export interface Http {
   getJson(url: string): Promise<unknown>;
   getText(url: string): Promise<string>;
+  /** Raw bytes, for compressed files. */
+  getBytes(url: string): Promise<Uint8Array>;
   readonly requestCount: number;
 }
 
@@ -62,6 +64,10 @@ export function createHttp(opts: HttpOptions): Http {
     async getText(url) {
       const res = await get(url);
       try { return await res.text(); } catch { throw unreadable(url); }
+    },
+    async getBytes(url) {
+      const res = await get(url);
+      try { return new Uint8Array(await res.arrayBuffer()); } catch { throw unreadable(url); }
     },
   };
 }

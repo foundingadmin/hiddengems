@@ -7,4 +7,20 @@ body { margin: 0; background: var(--fc-surface-canvas); color: var(--fc-text-pri
 .hg-section h2 { margin: 0; }
 .hg-gem-cell { display: inline-flex; align-items: center; gap: var(--fc-space-2); }
 .hg-inline-form { display: inline; }
+.hg-secondary { color: var(--fc-text-secondary); margin: 0; }
+.hg-end { align-items: flex-end; }
+.hg-started > * { opacity: 0.64; }
+.hg-phone-only { display: none; }
+@container fc-shell (max-width: 767px) {
+  .hg-desktop-only { display: none; }
+  .hg-phone-only { display: flex; }
+}
+.hg-nav-count { margin-left: auto; }
+@container fc-shell (max-width: 767px) {
+  .fc-topbar .fc-shell-toggle { display: none; }
+}
+.hg-card-price { align-items: center; gap: var(--fc-space-3); }
+@container fc-shell (max-width: 767px) {
+  .fc-gem-card-head { grid-template-columns: auto minmax(0, 1fr); }
+}
 .hg-lab-frame { display: block; width: 100%; height: 80vh; border: 0; border-radius: var(--fc-radius-sm); box-shadow: var(--ds-shadow-border); background: var(--fc-surface-canvas); }

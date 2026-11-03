@@ -325,7 +325,7 @@ Claude Code runs while you're elsewhere, so your review hours set the pace. Phas
 - nflverse: play by play, weekly stats, snap counts (a few days behind), injury reports, players table, schedules with spread and total lines.
 - Outlier, paid (Premium lists at $19.99 a month, Premium+ $29.99, Pro $79.99), source of truth for prices today: DraftKings price, other books' prices, mined counts, and sportsbook slip links.
 - Claude web research: news and qualitative context for the Jeweler's notes.
-- The existing pipeline in the Hidden Gem Scorecard dashboard store (code now `ops/pipeline/hgs.py` in the repo), with freeze, open, snap, close and autograde, run by scheduled tasks. Price capture runs in the built in browser on Josh's computer, so the computer must be awake with the Claude app open at those times.
+- The old pipeline (freeze, open, snap, close and autograde, run by scheduled tasks from the Hidden Gem Scorecard dashboard store) retired Nov 3 2026. Code: `ops/pipeline/hgs.py`; picks history and directives: `docs/archive/pipeline/`.
 
 **Added Nov 2 2026**
 - Saturday 7:47 PM and Sunday 8:43 AM price snapshots, stored as a `snaps` list on each prop.
@@ -392,7 +392,7 @@ Source: project doc claude/grading-v3-nflverse.md.
 - **Data.** nflverse for stats, The Odds API free plan for prices, pulled by Vercel Cron on the snapshot schedule (section 10).
 - **The Jeweler.** Runs through the Anthropic API with its own key, billed separately from the Claude plan.
 - **Keys.** All keys are Vercel Secrets, never committed to the repo, which is public.
-- **Moving off the old pipeline.** The dashboard store pipeline and its scheduled tasks keep running as a shadow until the app's own pulls match them for two Sundays. Then they retire, along with Outlier.
+- **Moving off the old pipeline.** Retired Nov 3 2026 (owner decision): its scheduled tasks are off and the dashboard is archived. The app's own pulls, grades and history replace it; its picks history is kept in `docs/archive/pipeline/picks.json`.
 - **Launching it like its own app.** Add the deployed URL to the iPhone home screen (Share, then Add to Home Screen) and install it as an app in Comet on desktop. With a real domain, no Claude framing shows.
 
 # 13. Control and safety rules

@@ -27,8 +27,8 @@ The boards are wireframes built from real Facet classes, so the markup can be li
    - Database: Josh's personal free Supabase project (us-east-1), never the agency's Supabase org, reached through the transaction pooler on port 6543, so the Drizzle client sets `prepare: false`.
    - Drop `apps/artifact`.
    - Keys are Vercel env Secrets, never in the repo: `ODDS_API_KEY`, `ANTHROPIC_API_KEY` for the Jeweler, `CRON_SECRET`, `APP_PASSWORD`.
-   - The old pipeline (the Hidden Gem Scorecard dashboard store and its scheduled tasks) keeps running as a shadow until the app's own pulls match it for two Sundays. Then it retires.
-   - Its `pipeline/build` script (`hgs.py`) holds the working model math to port into `packages/core`.
+   - The old pipeline (the Hidden Gem Scorecard dashboard store and its scheduled tasks) retired Nov 3 2026; see `docs/archive/pipeline/`.
+   - Its script is `ops/pipeline/hgs.py`, the source of the v3.0 model in `packages/core`.
 4. **Navigation.**
    - The rail is Gems, Slips, then "Ask the Jeweler" pinned at the bottom.
    - There is no Tray, Watchlist or Alerts in the primary nav. The scaffold's data health pages can stay as a quiet drill-in.

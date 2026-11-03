@@ -4,3 +4,4 @@ export * from './gems';
 export * from './snapshots';
 export * from './games';
 export * from './teams';
+export * from './model';

@@ -30,11 +30,12 @@ providers ──> jobs (ingest) ──> Postgres ──> pages (web)
 
 | Job | Source | Writes | Cron (UTC) |
 |---|---|---|---|
-| `pull-schedule` | nflverse | `games`, `provider_refs` | Daily 09:17 |
+| `pull-schedule` | nflverse | `games` (with spread and total lines), `provider_refs` | Daily 09:17 |
 | `pull-rosters` | nflverse | `players` (team, position, jersey number), `provider_refs` | Daily 09:23 |
 | `pull-odds` | The Odds API | `odds_snapshots` (history), `odds_latest` (current, with slip links), `odds_slots` | Every 5 minutes, pulls only on the snapshot schedule |
 | `build-picks` | after every odds pull | `estimates` (history), `picks` (the board: gem rating, Fool's Gold, Recommended order) | Follows `pull-odds` |
 | `pull-results` | nflverse | `player_game_stats` (backfills the season on first run); settles `bets`, records closing prices | Daily 10:41 |
+| `pull-usage` | nflverse | `player_usage` (inside 10 carries and targets, touchdowns, snap share per player game), injury report onto `players`; then `build-picks` | Daily 10:53 |
 
 Cron runs every job often and lets the job decide. Odds come from The Odds API free plan: 500 credits a
 month, about 1 credit per game per pull, anytime TD only. So `pull-odds` fires every 5 minutes but calls
@@ -58,7 +59,7 @@ due is skipped and leaves no pull-log row.
 `packages/core/src/gems.ts` holds the rules from `docs/prd.md` section 8:
 
 - **Posted price**: DraftKings, the purchase book. Other books inform the estimate.
-- **Fair chance**: the posted price's implied chance with the assumed cut taken out (5% plus 1% per
+- **Fair chance**: the posted price's implied chance times one minus the assumed cut (5% plus 1% per
   point of decimal odds, at most 35%; section 11.4).
 - **Gem**: our hit chance beats the posted price's implied chance (clears the cut). Rating =
   `round(100 * clamp(carat / 10, 0, 1) * clarity / 100)`, where carat is our chance minus the fair
@@ -66,6 +67,10 @@ due is skipped and leaves no pull-log row.
 - **Fool's Gold**: beats the fair price but not the posted price, so the cut eats it. No rating.
 - **Unrated**: no 2026 stats, so no read and the market stands.
 - **Recommended order**: gems by hit chance times clarity, then unrated, then Fool's Gold last.
+
+Approved Nov 3 2026: Fool's Gold beats the fair price but not the posted price (a prop that beats
+neither is no gem); the rating uses carat (gap to fair), while the Edge column shows our chance minus the
+priced chance; the opening snapshot is Tue 10:07 AM Denver.
 
 ## Identity
 
@@ -111,7 +116,7 @@ network and 5xx errors, request counting, quota headers into `provider_usage`, k
 | Provider | Used for | Key |
 |---|---|---|
 | The Odds API v4, free plan | Anytime TD prices from DraftKings, FanDuel, BetMGM, Caesars, Fanatics, with DraftKings slip links | `ODDS_API_KEY` |
-| nflverse | Schedule (`schedules/games.csv`), 2026 rosters with jersey numbers, weekly player stats | none |
+| nflverse | Schedule with spread and total lines (`schedules/games.csv`), 2026 rosters with jersey numbers, weekly player stats, play by play, snap counts, injury reports | none |
 | Sample | Everything, deterministic, built around today's date | none |
 
 `DATA_MODE=sample` (the default when `ODDS_API_KEY` is unset) runs the whole pipeline on sample data:
@@ -126,15 +131,39 @@ in `providers/index.ts`.
 
 ## Model
 
-`build-picks` uses `consensus-v0` (`ingest/src/model/consensus.ts`) until the Hidden Gems v3.0 model
-(PRD section 11, `hgs.py` in the old pipeline) is ported. Its hit chance is the average fair chance behind
-the other books' prices, so a gem here means DraftKings is longer than the market: line shopping, not a
-forecast. Clarity is `clarity-v0` (`ingest/src/jobs/picks.ts`), section 11.7's four parts from what the
-app has: games played (sample), how steady the TD rate is (consistency), the spread of the books' fair
-chances (books agree) and roster status (setup). Porting the model replaces `estimate()` and `clarityV0()`;
-the tables, the rating and the pages do not change.
+`build-picks` reads every prop with Hidden Gems v3.0 (PRD section 11), ported from `hgs.py` into
+`packages/core/src/model.ts`. Inputs come from `pull-usage` (nflverse play by play and snap counts, the
+injury report) and `pull-schedule` (spread and total lines).
+
+1. **Red zone read**: inside 10 carries times the league's TD rate per carry, plus inside 10 targets times
+   the rate per target, plus long touchdowns shrunk toward his position's rate for his snap share
+   (32 prior games). Scaled by implied team points over the league average through that week.
+2. **Blend**: 80% red zone read, 20% TD hit rate (shrunk toward 20% over 8 games, scaled by snap share),
+   then logistic recalibration (a = -0.213, b = 0.755).
+3. **Market blend**: stats weight 0.5 (0.3 under 4 games) times min(1, 8 / (odds + 4)); the rest is the
+   fair price. No 2026 games: no read, the market stands, unrated.
+4. **Clarity**: sample 40 (touchdowns we would expect to have seen), consistency 30 (red zone read and
+   hit rate agree), books agree 15 (range of the books' implied chances over their mean), setup 15
+   (injury report: Questionable 8, Doubtful 2, Out 0; minus 5 for a falling snap share).
+
+`packages/core/test/model.test.ts` checks the port against `hgs.py` on Week 8: every player's form and
+stats chance, and every Week 8 board read, to 1e-9. The fixture is nflverse data as of the Week 8 freeze.
+Each estimate row stores its inputs (form, implied points, stats weight, clarity parts) so any read can
+be explained later.
 
 ## Database
+
+- **Setup and migrations on Supabase**: `pnpm db:supabase-sql [--app-password <password>]` writes one script to
+  paste into the Supabase SQL editor (run as the owner). It applies each migration once, recorded exactly as
+  `pnpm db:migrate` records it, upserts reference data, closes Supabase's automatic public API on the app's
+  tables, and (with a password) creates `hiddengems_app`, the login the app uses: rows only, no create, alter,
+  drop or truncate. Run it again after any PR that adds a migration.
+- **Safety**: history tables reject update, delete and truncate (migration 0003); `pnpm db:guard` fails CI on
+  a migration that drops, truncates or deletes unless the line says `-- destructive-approved: <reason>`.
+- **Backups**: the `backup` job (daily 11:07 UTC) writes the whole database as gzipped JSON to a private GitHub
+  repository (`BACKUP_GITHUB_REPO`, written with `BACKUP_GITHUB_TOKEN`, a fine-grained token for that one
+  repository with Contents read and write), one file per day plus `BACKUP.md` with row counts. Never this
+  repository. Restore with `pnpm db:restore <file>` into an empty, migrated database.
 
 - **Production**: Postgres from the Vercel Marketplace (Neon or Supabase). `DATABASE_URL` uses
   postgres.js with prepared statements off, so transaction poolers work.
@@ -157,7 +186,7 @@ password and require `Authorization: Bearer $CRON_SECRET` instead.
 |---|---|
 | `pnpm install` | Installs the workspace (pnpm 10, Node 22+) |
 | `pnpm dev` | Runs the app on PGlite with sample data |
-| `pnpm job all` | Pulls schedule, rosters, results, then odds (and ratings), in order |
+| `pnpm job all` | Pulls schedule, rosters, results, usage, then odds (and ratings), in order |
 | `pnpm job <name> [--force]` | Runs one job; `--force` ignores cadence |
 | `pnpm db:generate` / `pnpm db:migrate` | Writes / applies migrations |
 | `pnpm check` | Typecheck, tests, color lint |
@@ -165,5 +194,3 @@ password and require `Authorization: Bearer $CRON_SECRET` instead.
 ## Next
 
 - The screens build (`docs/build-brief.md`): new gems row, gem sheet, slips, the Jeweler, history.
-- Port the Hidden Gems v3.0 model and clarity from `hgs.py` into `packages/core`.
-- Retire the old pipeline once the app's own pulls match it for two Sundays.

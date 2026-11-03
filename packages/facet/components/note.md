@@ -57,8 +57,17 @@ Owner feedback, 2026-11-02. A note that needs a next step always offers one; the
 
 - **Button** (`data-action` + `.fc-note-action`): the fix is yours and the note stands alone ("Rotate key", "Retry").
 - **Link** (`a.fc-note-link.fc-link-action`): a short action link with an arrow, no underline (`components/link-action.md`), hugging the note's right edge, outside the message. Use it inside dense rows where a button would compete with the row's own buttons, and for problems out of your hands, where the step is to follow, not fix ("Provider status", with an arrow when it leaves the app). See `patterns/failures.md`.
+- **Link-style button** (`button.fc-note-link`) `[F]`, 2026-11-03: the link's look for an action that happens in place, such as an in-row fix that runs a job. A fix is an action, not navigation, so it is a `<button type="button">`, never an `<a>` styled as one (INT-27, CON-20). Same color, weight 500, right-edge position, 4px inset hover tint and concentric corner (DES-03) as the link; no arrow, because the arrow means the action takes you somewhere. While it works it shows a small spinner and carries `aria-busy="true"` (INT-09).
 - One action per note, button or link, never both. The CTA never repeats the message.
+- **In dense rows** (a list row that already has buttons), the note's action is link-style (`a.fc-note-link` or `button.fc-note-link`), never a second solid button. It never repeats the row's own action: if the fix is the row's button ("Pull now"), the note carries no action and the row's button is the fix. Keep a note action only when it does more than the row can, such as a fix in several steps ("Pull rosters, then results").
 - **Links adopt the note's color** (owner decision, 2026-11-02), so the CTA reads at the same severity as the message: amber in a warning, red in an error, blue in info, gray in a default note. Weight 500, the arrow and the right-edge position separate it from the message, so color is never the only cue. Buttons (`.fc-note-action`) stay neutral, like every button.
+```html
+<!-- Navigation: an arrow link -->
+<div class="fc-note" data-type="warning" data-size="small"><svg aria-hidden="true">...</svg><span>SportsDataIO timed out, so injuries are from Saturday.</span><a class="fc-note-link fc-link-action" data-external href="https://status.sportsdata.io" target="_blank" rel="noopener noreferrer">Provider status</a></div>
+<!-- An action in place, inside a row that already has buttons -->
+<div class="fc-note" data-type="warning" data-size="small"><svg aria-hidden="true">...</svg><span>2 players are not on a roster yet.</span><button class="fc-note-link" type="button">Pull rosters, then results</button></div>
+```
+- Keyboard and screen readers: the link-style button is in the tab order, takes the Facet focus ring (INT-01, INT-02) and is named by its visible label, so the label says the whole action (CON-18, CPY-14). Hover adds the tint and never moves the layout (DES-07).
 - **Never put a destructive action in a note link.** Red already means error and destructive; a red "Delete" link would read as both. Destructive actions are buttons that confirm.
 
 ## Brand note `[F]`

@@ -147,14 +147,30 @@
 /* ------------------------------------------------------------------ Schedule row [F]
    Odds pull schedules. Fixed lanes so equal peers align across rows:
    main (name, plain-language schedule, mono cron) | status | runs (next over last) | actions. */
+/* Lane widths (owner feedback 2026-11-03: "give these columns more breathing room, they're crammed"):
+   status 144px, each run 176px, actions 160px, 32px gutters. Override with --fc-schedule-status-w,
+   --fc-schedule-run-w, --fc-schedule-actions-w and --fc-schedule-gap. Between 641px and 960px of list width the
+   lanes and gutters drop back to the compact set so the name keeps its room; under 640px the row stacks. */
 .fc-schedule-row,
 .fc-schedule-head {
+  --_status-w: var(--fc-schedule-status-w, calc(var(--fc-space-4) * 9));
+  --_run-w: var(--fc-schedule-run-w, calc(var(--fc-space-4) * 11));
+  --_actions-w: var(--fc-schedule-actions-w, calc(var(--fc-space-4) * 10));
   display: grid;
-  grid-template-columns: minmax(0, 1fr) var(--fc-schedule-status-w, 112px) var(--fc-schedule-run-w, 136px) var(--fc-schedule-run-w, 136px) var(--fc-schedule-actions-w, 136px);
+  grid-template-columns: minmax(0, 1fr) var(--_status-w) var(--_run-w) var(--_run-w) var(--_actions-w);
   grid-template-areas: "main status next last actions";
   align-items: center;
-  column-gap: var(--fc-space-4);
+  column-gap: var(--fc-schedule-gap, var(--fc-space-8));
   row-gap: var(--fc-space-2);
+}
+@container fc-list (max-width: 960px) {
+  .fc-schedule-row,
+  .fc-schedule-head {
+    --_status-w: var(--fc-schedule-status-w, calc(var(--fc-space-4) * 7));
+    --_run-w: var(--fc-schedule-run-w, calc(var(--fc-space-4) * 8.5));
+    --_actions-w: var(--fc-schedule-actions-w, calc(var(--fc-space-4) * 8.5));
+    column-gap: var(--fc-schedule-gap, var(--fc-space-4));
+  }
 }
 /* Column headers, once per list (owner feedback 2026-11-02): Next run and Last run are their own columns,
    so rows carry values only. Rows repeat the names for screen readers and for the stacked narrow layout. */
@@ -195,6 +211,13 @@
 }
 .fc-schedule-next > *, .fc-schedule-last > * { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .fc-schedule-detail { color: var(--fc-text-secondary); }
+/* Run time that opens its log [F]: the Last run time links to that run's log lines. The link takes the cell's
+   color; hover underlines the time only, and keyboard focus draws the Facet ring on a 4px radius.
+   <a class="fc-time-link" href="/data/logs?run=..."><time class="fc-timestamp" datetime="..." title="...">Today 6:00 PM</time>
+     <span class="fc-visually-hidden">, odds run log</span></a> */
+.fc-time-link { align-self: flex-start; max-width: 100%; color: inherit; text-decoration: none; border-radius: var(--fc-radius-xs); }
+.fc-time-link:hover .fc-timestamp { text-decoration: underline; }
+.fc-time-link:focus-visible { border-radius: var(--fc-radius-xs); box-shadow: var(--ds-focus-ring); outline: none; }
 .fc-schedule-next .fc-value-empty { color: var(--fc-text-secondary); }
 /* The header names the columns, so the per-cell name is for screen readers only. */
 .fc-schedule-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

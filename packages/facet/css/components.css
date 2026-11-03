@@ -833,11 +833,32 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
 .fc-note a:not(.fc-link-action):hover { text-decoration: underline; }
 .fc-note-action { margin-left: auto; flex: 0 0 auto; }
 /* Note link action [F]: an action link (.fc-link-action) hugging the note's right edge, outside the message.
-   It adopts the note's severity color. One per note. */
-.fc-note a.fc-note-link { margin-left: auto; flex: 0 0 auto; }
+   It adopts the note's severity color. One per note.
+   <a class="fc-note-link fc-link-action" href="/runs">View runs</a>        navigation: arrow, link-action hover
+   <button class="fc-note-link" type="button">Pull rosters, then results</button>
+                                                                           an action in place (runs a job): same look,
+   no arrow, because the arrow means "takes you somewhere" (components/link-action.md). */
+.fc-note .fc-note-link { margin-left: auto; flex: 0 0 auto; }
+.fc-note button.fc-note-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fc-space-1_5);
+  appearance: none;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 500;
+  color: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--fc-duration-fast) ease;
+}
+.fc-note button.fc-note-link:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
+.fc-note button.fc-note-link:is([aria-busy="true"], [aria-disabled="true"]) { cursor: default; }
+.fc-note button.fc-note-link:is([aria-busy="true"], [aria-disabled="true"]):hover { background: none; }
 /* Inside a note the hover surface sits exactly 4px from the note's top, bottom and right edges, with a
-   concentric corner. The link grows into the note's padding with negative margins, so nothing moves. */
-.fc-note a.fc-note-link {
+   concentric corner. The action grows into the note's padding with negative margins, so nothing moves. */
+.fc-note .fc-note-link {
   --_inset: 4px;
   --_py: calc(7px - var(--_inset));
   --_px: calc(12px - var(--_inset));
@@ -845,7 +866,7 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
   margin: calc(-1 * var(--_py)) calc(-1 * var(--_px)) calc(-1 * var(--_py)) auto;
   border-radius: calc(var(--fc-radius-sm) - var(--_inset));
 }
-.fc-note[data-size="small"] a.fc-note-link { --_py: calc(6px - var(--_inset)); --_px: calc(8px - var(--_inset)); }
+.fc-note[data-size="small"] .fc-note-link { --_py: calc(6px - var(--_inset)); --_px: calc(8px - var(--_inset)); }
 .fc-note a.fc-note-link:hover { box-shadow: none; }
 .fc-note:has(> .fc-note-link) { flex-wrap: wrap; align-items: center; }
 .fc-note:has(> .fc-note-link) > span { flex: 1 1 200px; min-width: 0; padding-right: var(--fc-space-2); }

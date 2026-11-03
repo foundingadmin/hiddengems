@@ -176,16 +176,20 @@ export function ResultCell({ job, children }: { job: string; children: ReactNode
 
 /**
  * A fix: queues one or more pulls in order ("Pull rosters, then results"). Paid odds never ride a fix; they
- * keep their own confirmed button.
+ * keep their own confirmed button. `look="note"` is the link-style action inside a row's note
+ * (Facet button.fc-note-link), since the row already has buttons.
  */
-export function FixButton({ jobs, text, name, variant = 'secondary', className }: {
-  jobs: string[]; text: string; name?: string; variant?: 'secondary' | 'tertiary'; className?: string;
+export function FixButton({ jobs, text, name, variant = 'secondary', look = 'button' }: {
+  jobs: string[]; text: string; name?: string; variant?: 'secondary' | 'tertiary'; look?: 'button' | 'note';
 }) {
   const { queued, running, enqueue } = usePulls();
   const busy = jobs.some((j) => j === running || queued.includes(j));
+  const style = look === 'note'
+    ? { className: 'fc-note-link' }
+    : { className: 'fc-button', 'data-variant': variant, 'data-size': 'small' };
   return (
     <button
-      className={`fc-button${className ? ` ${className}` : ''}`} data-variant={variant} data-size="small" type="button"
+      {...style} type="button"
       aria-busy={busy || undefined} aria-label={name}
       onClick={() => { if (!busy) enqueue(jobs.map((job) => ({ job, spend: false }))); }}
     >

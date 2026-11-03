@@ -23,8 +23,24 @@ One number the reader came for, kept together with what it measures and how far 
 | Qualifier | `.fc-stat-qualifier` | Unit, count or direction that belongs to the number ("pts", "23 of 42", "lower"). 14px secondary |
 | Basis | `.fc-stat-basis` | Sample, window or source ("41 picks, Weeks 1 to 8"). 13px secondary |
 | Detail | `.fc-stat-detail` | Existing free-form line; still supported |
+| Action | `.fc-stat-action` | Optional. One small CTA under the basis (`[F]`, 2026-11-03) |
 
 The parts stack top-down with 4px gaps and never spread apart to fill a taller cell, so a basis line always reads with its own number.
+
+## Action slot `[F]`
+When the stat itself says something needs doing, one small CTA sits under the basis line, at its own width and at the start of the cell.
+```html
+<div class="fc-stat">
+  <dt class="fc-stat-label">Status</dt>
+  <dd class="fc-stat-figure"><span class="fc-stat-value">2 need a look</span></dd>
+  <dd class="fc-stat-basis">Rosters overdue, Results failed</dd>
+  <dd class="fc-stat-action"><button class="fc-button" data-variant="secondary" data-size="small" type="button">Fix all</button></dd>
+</div>
+```
+- Holds one `.fc-button` (`data-size="small"`, secondary or tertiary) or one `.fc-link-action`. Never two, never primary: the page's primary action belongs to the page header.
+- 12px above it (the 4px stack gap plus 8px), so the basis still reads with its number and the CTA reads as the next step. It never stretches to the cell's width, so a phone cell (about 150px at 390px) keeps the button at its label's width.
+- Show it only while it has work to do ("Fix all" disappears when every source is clear), and say what it does in the label (CPY-14). A button that runs a job is a `<button>`; one that goes somewhere is an action link (INT-27). While it works it shows a spinner and `aria-busy="true"` (INT-09).
+- Peers without an action keep their height: parts stack from the top, so the extra line never pushes a peer's basis down.
 
 ## Variants
 - **Default strip** (`.fc-stat-strip`): cells separated by a vertical hairline. Use inside a card or panel that already has a boundary.
@@ -42,4 +58,5 @@ The parts stack top-down with 4px gaps and never spread apart to fill a taller c
 ## Hidden Gems usage
 - Track record strip on History: Return on stake `+6.2%` (41 picks, Weeks 1 to 8), Hit rate `55%` `23 of 42`, Average gap `+4.0` `pts`, Beat the closing line `29` `of 41`.
 - Slate summary above the table: picks, average gap, go verdicts, odds freshness.
+- Data health overview: Status carries "Fix all" (or "Fix" for one source) in `.fc-stat-action` while any source needs a look.
 - A selectable strip that drives a chart (metric tabs) is a planned extension, `data-selectable`.

@@ -15,19 +15,20 @@ Show and edit when odds and injury pulls run, whether the last run worked, and w
   </div>
   <span class="fc-schedule-status fc-status"><span class="fc-status-dot" data-state="live"></span>Succeeded</span>
   <p class="fc-schedule-next"><span class="fc-schedule-label">Next run</span><time class="fc-timestamp" datetime="..." title="...">Today 6:05 PM</time></p>
-  <p class="fc-schedule-last" data-last><span class="fc-schedule-label">Last run</span><time class="fc-timestamp" datetime="..." title="...">6:00 PM</time><span class="fc-schedule-detail">4.1 s</span></p>
+  <p class="fc-schedule-last" data-last><span class="fc-schedule-label">Last run</span><a class="fc-time-link" href="/runs/..."><time class="fc-timestamp" datetime="..." title="...">Today 6:00 PM</time><span class="fc-visually-hidden">, odds run log</span></a><span class="fc-schedule-detail">Ran 4.1s</span></p>
   <div class="fc-list-row-actions">
     <button class="fc-button" data-variant="secondary" data-size="small" type="button" aria-label="Run Odds, all books now">Run now</button>
     <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="More actions for Odds, all books" aria-haspopup="menu">...</button>
   </div>
 </li>
 ```
-- Lanes: main (fluid) | status (`--fc-schedule-status-w`, 112px) | next run | last run (`--fc-schedule-run-w`, 136px each) | actions. Fixed lanes keep equal peers aligned down the list. One `.fc-schedule-head` names the columns (owner feedback, 2026-11-02), so rows carry values only; each cell repeats its name in `.fc-schedule-label` for screen readers and the stacked narrow layout.
+- Lanes: main (fluid) | status (`--fc-schedule-status-w`, 144px) | next run | last run (`--fc-schedule-run-w`, 176px each) | actions (`--fc-schedule-actions-w`, 160px), with 32px gutters (`--fc-schedule-gap`). Owner feedback 2026-11-03: "give these columns more breathing room, they're crammed". Fixed lanes keep equal peers aligned down the list. Between 641px and 960px of list width the lanes drop back to the compact set (112px, 136px, 136px, 16px gutters) so the name keeps its room; under 640px the row stacks. Set the custom properties on the list only when a product needs different lanes. One `.fc-schedule-head` names the columns (owner feedback, 2026-11-02), so rows carry values only; each cell repeats its name in `.fc-schedule-label` for screen readers and the stacked narrow layout.
 - Main: the plain-language schedule is the fast path; the cron is the audit path, in mono, secondary, 12px.
 - Status words and dots: Succeeded (`live`, green), Failed (`failed`, red), Running (`recent`, blue), Paused (no freshness state, gray). The word always shows.
 - Every run time carries its day word ("Today 6:00 PM", "Tue 12:00 AM", "Oct 31 11:00 PM"), so peers in a column read the same way (owner feedback, 2026-11-02).
 - Next run: the time in primary, then a countdown in secondary (`<time class="fc-schedule-detail" datetime data-relative data-stamp>`, filled by `stampTimes()` in `js/time.mjs`): "in 5m", "in 6h", "in 1d 6h". Printed once at load, never animated (owner decision, 2026-11-02). A paused row has no countdown. Last run: the time in primary, then what happened in secondary (`.fc-schedule-detail`): "Ran 4.1s" or "Timed out after 30s", never a bare number. A paused row reads Next "None" (`.fc-value-empty`).
-- Failed: a `.fc-list-row-note` error note under the row says what failed and what is stale.
+- Last run links to that run's log when there is one (`a.fc-time-link` around the `.fc-timestamp`, `[F]` 2026-11-03). The link takes the cell's color with no underline at rest, so the column still reads as values; hover underlines the time only, and keyboard focus draws the Facet ring on a 4px radius (INT-02). A visually hidden suffix names the target (", odds run log"), because "Today 6:00 PM" alone does not say where it goes (CON-18). The detail ("Ran 4.1s") stays outside the link. Navigation, so it is an `<a>` (INT-27).
+- Failed: a `.fc-list-row-note` error note under the row says what failed and what is stale. The row already has buttons, so the note's action is link-style, and it is left out when the fix is the row's own button (`components/note.md`, "Link action").
 - Menu: Edit, View runs, Pause (or Resume).
 - Under 640px the row stacks: name and actions, then status, then runs on one line.
 

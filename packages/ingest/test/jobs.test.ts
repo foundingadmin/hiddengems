@@ -295,7 +295,7 @@ describe('model inputs', () => {
       .innerJoin(players, eq(players.id, estimates.playerId)).where(eq(players.name, 'Zay Flowers')).orderBy(desc(estimates.computedAt)).limit(1);
     const inputs = readEstimateInputs(row!.inputs);
     expect(inputs?.form).not.toBeNull();
-    expect([inputs?.statsChance, inputs?.statsWeight, inputs?.fair].every((n) => typeof n === 'number')).toBe(true);
+    expect(typeof inputs?.impliedFactor).toBe('number');
     const notes = gemNotes({ injuryStatus: row!.injury, spreadLine: null, home: null, position: 'WR', inputs });
     expect(notes.find((n) => n.effect === 'cost')).toEqual({ kind: 'injury', effect: 'cost', status: 'Questionable' });
   });

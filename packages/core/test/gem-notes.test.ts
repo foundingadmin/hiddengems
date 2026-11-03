@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { type EstimateInputs, NOTE_LIMIT, NOTE_THRESHOLDS, blowoutNote, gemNotes, injuryNote, modelNotes, readEstimateInputs } from '../src';
+import {
+  type EstimateInputs, FRESH_MS, NOTE_LIMIT, NOTE_THRESHOLDS, blowoutNote, freshnessState, gemNotes, impliedNote, injuryNote, readEstimateInputs,
+  snapNote,
+} from '../src';
 
-const form = { rzCarriesPerGame: 1.2, rzTargetsPerGame: 0.4, snapRecent: 0.7, snapSeason: 0.7 };
-const inputs = (over: Partial<EstimateInputs> = {}): EstimateInputs => ({
-  statsChance: 0.4, statsWeight: 0.5, fair: 0.4, impliedFactor: 1, form, ...over,
-});
+const form = { snapRecent: 0.7, snapSeason: 0.7 };
+const inputs = (over: Partial<EstimateInputs> = {}): EstimateInputs => ({ impliedFactor: 1, form, ...over });
 
 describe('injuryNote', () => {
   it('costs when listed Questionable, Doubtful or Out', () => {
@@ -38,30 +39,22 @@ describe('blowoutNote', () => {
   });
 });
 
-describe('modelNotes', () => {
-  it('reads nothing without inputs or when every part sits near the market and the average', () => {
-    expect(modelNotes(null)).toEqual([]);
-    expect(modelNotes(inputs())).toEqual([]);
+describe('impliedNote', () => {
+  it('adds or costs once implied team points sit 5% off the league average', () => {
+    expect(impliedNote(1.05)).toEqual({ kind: 'implied', effect: 'add' });
+    expect(impliedNote(0.9)).toEqual({ kind: 'implied', effect: 'cost' });
+    expect(impliedNote(0.97)).toBeNull();
+    expect(impliedNote(null)).toBeNull();
   });
-  it('the stats read lifts or lowers the hit chance once it moves it a point', () => {
-    expect(modelNotes(inputs({ statsChance: 0.5 }))).toEqual([{ kind: 'stats', effect: 'add' }]);
-    expect(modelNotes(inputs({ statsChance: 0.3 }))[0]).toMatchObject({ kind: 'stats', effect: 'cost' });
-    // 0.5 x 0.019 moves it under a point.
-    expect(modelNotes(inputs({ statsChance: 0.419 }))).toEqual([]);
-  });
-  it('implied team points past 5% of the average', () => {
-    expect(modelNotes(inputs({ impliedFactor: 1.05 }))).toEqual([{ kind: 'implied', effect: 'add' }]);
-    expect(modelNotes(inputs({ impliedFactor: 0.9 }))).toEqual([{ kind: 'implied', effect: 'cost' }]);
-    expect(modelNotes(inputs({ impliedFactor: 0.97 }))).toEqual([]);
-  });
-  it('snap share over his last 3 games, up or falling', () => {
-    expect(modelNotes(inputs({ form: { ...form, snapRecent: 0.81, snapSeason: 0.7 } }))).toEqual([{ kind: 'snaps', effect: 'add' }]);
-    expect(modelNotes(inputs({ form: { ...form, snapRecent: 0.5, snapSeason: 0.7 } }))).toEqual([{ kind: 'snaps', effect: 'cost' }]);
-    expect(modelNotes(inputs({ form: { ...form, snapRecent: 0.6, snapSeason: 0.7 } }))).toEqual([]);
-  });
-  it('keeps two lines: stats, then implied points, then snaps', () => {
-    const all = modelNotes(inputs({ statsChance: 0.5, impliedFactor: 0.8, form: { ...form, snapRecent: 0.9 } }));
-    expect(all.map((n) => n.kind)).toEqual(['stats', 'implied']);
+});
+
+describe('snapNote', () => {
+  it('snap share over his last 3 games, up or falling against his season', () => {
+    expect(snapNote({ snapRecent: 0.81, snapSeason: 0.7 })).toEqual({ kind: 'snaps', effect: 'add' });
+    expect(snapNote({ snapRecent: 0.5, snapSeason: 0.7 })).toEqual({ kind: 'snaps', effect: 'cost' });
+    expect(snapNote({ snapRecent: 0.6, snapSeason: 0.7 })).toBeNull();
+    expect(snapNote({ snapRecent: 0.6, snapSeason: 0 })).toBeNull();
+    expect(snapNote(null)).toBeNull();
   });
 });
 
@@ -69,32 +62,42 @@ describe('readEstimateInputs', () => {
   it('reads what build-picks stores', () => {
     const raw = {
       books: { draftkings: 3.2 }, statsChance: 0.31, statsWeight: 0.5, fair: 0.28, impliedFactor: 1.1, impliedPoints: 25, injury: null,
-      clarity: { sample: 40 }, form: { games: 8, tdGames: 3, lambda: 0.3, ...form },
+      clarity: { sample: 40 }, form: { games: 8, tdGames: 3, lambda: 0.3, rzCarriesPerGame: 1, rzTargetsPerGame: 0.4, ...form },
     };
-    expect(readEstimateInputs(raw)).toEqual({ statsChance: 0.31, statsWeight: 0.5, fair: 0.28, impliedFactor: 1.1, form });
+    expect(readEstimateInputs(raw)).toEqual({ impliedFactor: 1.1, form });
   });
   it('drops what is missing or malformed', () => {
     expect(readEstimateInputs(null)).toBeNull();
     expect(readEstimateInputs('x')).toBeNull();
-    expect(readEstimateInputs({ statsChance: 'high', form: { rzCarriesPerGame: 1 } })).toEqual({
-      statsChance: null, statsWeight: null, fair: null, impliedFactor: null, form: null,
-    });
+    expect(readEstimateInputs({ impliedFactor: 'high', form: { snapRecent: 1 } })).toEqual({ impliedFactor: null, form: null });
   });
 });
 
 describe('gemNotes', () => {
   it('ranks adds first, then costs, injury leading the costs', () => {
     const notes = gemNotes({
-      injuryStatus: 'Questionable', spreadLine: -11, home: true, position: 'WR', inputs: inputs({ statsChance: 0.3, impliedFactor: 1.2 }),
+      injuryStatus: 'Questionable', spreadLine: -11, home: true, position: 'WR',
+      inputs: inputs({ impliedFactor: 1.2, form: { snapRecent: 0.4, snapSeason: 0.7 } }),
     });
-    expect(notes.map((n) => `${n.effect} ${n.kind}`)).toEqual(['add implied', 'add blowout', 'cost injury', 'cost stats']);
+    expect(notes.map((n) => `${n.effect} ${n.kind}`)).toEqual(['add implied', 'add blowout', 'cost injury', 'cost snaps']);
   });
   it('holds at most five and nothing without data', () => {
     expect(gemNotes({ injuryStatus: null, spreadLine: null, home: null, position: null, inputs: null })).toEqual([]);
-    expect(gemNotes({ injuryStatus: 'Out', spreadLine: 14, home: true, position: 'RB', inputs: inputs({ statsChance: 0.6, impliedFactor: 1.3 }) }).length)
+    expect(gemNotes({ injuryStatus: 'Out', spreadLine: 14, home: true, position: 'RB', inputs: inputs({ impliedFactor: 1.3 }) }).length)
       .toBeLessThanOrEqual(NOTE_LIMIT);
   });
   it('skips blowout risk when his side is unknown', () => {
     expect(gemNotes({ injuryStatus: null, spreadLine: 14, home: null, position: 'RB', inputs: null })).toEqual([]);
+  });
+});
+
+describe('freshnessState', () => {
+  const now = new Date('2026-11-05T15:00:00Z');
+  it('reads live under 6 hours, stale from 6, queued when nothing was pulled', () => {
+    expect(freshnessState(new Date(now.getTime() - FRESH_MS + 1), now)).toBe('live');
+    expect(freshnessState(new Date(now.getTime() - FRESH_MS), now)).toBe('stale');
+    expect(freshnessState('2026-11-04T15:00:00Z', now.toISOString())).toBe('stale');
+    expect(freshnessState(null, now)).toBe('queued');
+    expect(freshnessState('not a time', now)).toBe('queued');
   });
 });

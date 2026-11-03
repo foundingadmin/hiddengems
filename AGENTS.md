@@ -83,6 +83,23 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 - Keep a branch small enough to merge the same day; a branch that touches shared files (shell, `app.css`, Facet
   CSS) merges first and the rest update from `main`.
 
+## Lanes and agents
+
+Agent definitions live in `.claude/agents/`. Intake, builders and verifiers per lane:
+
+| Lane | Builder | Verifiers before merge |
+|---|---|---|
+| `fix/` preview comments, small defects | the session or any builder | content, design (if UI), PR |
+| `screens/` build brief screens | `screen-builder` | content, design, PR |
+| `ds/` Facet parts | `facet-builder` | design, content (docs), PR |
+| `data/` jobs, providers, schema, Data health | `data-builder` | data safety, content and design (if UI), PR |
+| `copy/` wording | any builder | content, PR |
+| model and gem rules (`packages/core`) | `data-builder` | model, data safety, PR |
+
+`preview-triager` turns Vercel toolbar comments into lane tasks and resolves them once merged. Verifiers are read
+only and return exact fixes to the builder that owns the branch; a builder still running applies them itself,
+otherwise a new builder does.
+
 ## Data and jobs
 
 - Read `docs/architecture.md` before changing data, jobs or providers.

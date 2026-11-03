@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { zonedTimeToUtc } from '@hiddengems/core';
-import { bets, createDb, estimates, games, jobLocks, oddsSlots, oddsSnapshots, picks, playerUsage, players, providerUsage, runLogs, runs, seedReference, unpackBackup } from '@hiddengems/db';
+import { bets, createDb, jobSettings, estimates, games, jobLocks, oddsSlots, oddsSnapshots, picks, playerUsage, players, providerUsage, runLogs, runs, seedReference, unpackBackup } from '@hiddengems/db';
 import { count, desc, eq, inArray } from 'drizzle-orm';
 import { BOOTSTRAP, grade, jobs, runJob } from '../src';
 import { theirs } from '../src/errors';
@@ -128,6 +128,17 @@ describe('odds pulls follow the snapshot schedule', () => {
     await run('pull-odds', { force: true });
     const [after] = await db.select({ n: count() }).from(oddsSnapshots);
     expect(after!.n).toBe(before!.n);
+  });
+});
+
+describe('pausing a source', () => {
+  it('skips its scheduled runs but still pulls on demand', async () => {
+    await db.insert(jobSettings).values({ job: 'pull-schedule', paused: true, pausedAt: now });
+    const before = (await db.select({ n: count() }).from(runs).where(eq(runs.job, 'pull-schedule')))[0]!.n;
+    expect(await run('pull-schedule', { trigger: 'cron' })).toMatchObject({ status: 'skipped', message: 'Paused' });
+    expect((await db.select({ n: count() }).from(runs).where(eq(runs.job, 'pull-schedule')))[0]!.n).toBe(before);
+    expect((await run('pull-schedule', { trigger: 'manual', force: true })).status).toBe('succeeded');
+    await db.delete(jobSettings);
   });
 });
 

@@ -7,7 +7,7 @@ import { count } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/pglite';
 import { migrate } from 'drizzle-orm/pglite/migrator';
 import {
-  bets, buildSupabaseSql, createDb, dumpDatabase, games, migrationSql, migrationsFolder, oddsSnapshots, packBackup, restoreDatabase, seedReference, teams, unpackBackup,
+  bets, buildSupabaseSql, createDb, dumpDatabase, games, migrationSql, migrationStatements, migrationsFolder, oddsSnapshots, packBackup, restoreDatabase, seedReference, teams, unpackBackup,
 } from '../src';
 
 const handles: ReturnType<typeof createDb>[] = [];
@@ -24,7 +24,7 @@ describe('Supabase setup script', () => {
     const [t] = await db.select({ n: count() }).from(teams);
     expect(t!.n).toBe(32);
     const recorded = await client.query<{ n: number }>('select count(*)::int as n from drizzle.__drizzle_migrations');
-    expect(recorded.rows[0]!.n).toBe(4);
+    expect(recorded.rows[0]!.n).toBe(migrationStatements().length);
     await client.close();
   });
 

@@ -63,3 +63,15 @@ body { margin: 0; background: var(--fc-surface-canvas); color: var(--fc-text-pri
 .hg-spark-col { width: 25%; }
 .hg-spark { height: var(--fc-space-6); }
 .hg-tables { max-width: calc(var(--fc-space-4) * 40); }
+/* Data health sources (owner feedback 2026-11-03: more breathing room). Wider status, run and action lanes,
+   a wider gutter, and the last run time links to that run's log lines. */
+.hg-sources {
+  --fc-schedule-status-w: calc(var(--fc-space-4) * 9);
+  --fc-schedule-run-w: calc(var(--fc-space-4) * 11);
+  --fc-schedule-actions-w: calc(var(--fc-space-4) * 10);
+}
+.hg-sources > :is(.fc-schedule-row, .fc-schedule-head) { column-gap: var(--fc-space-8); }
+.hg-run-link { color: inherit; text-decoration: none; }
+.hg-run-link:hover .fc-timestamp { text-decoration: underline; }
+.hg-run-link:focus-visible { border-radius: var(--fc-radius-xs); box-shadow: var(--ds-focus-ring); outline: none; }
+.hg-stat-action { margin-top: var(--fc-space-2); }

@@ -16,10 +16,13 @@ interface Pulls {
   summary: string | null;
   notes: Record<string, Note>;
   enqueue(items: Item[], batch?: boolean): void;
+  /** Sources whose pause or resume is saving, shown at once in the status cell (INT-12). */
+  saving: Record<string, 'Pausing' | 'Resuming'>;
+  setSaving(job: string, state: 'Pausing' | 'Resuming' | null): void;
 }
 
 const Ctx = createContext<Pulls | null>(null);
-const usePulls = () => {
+export const usePulls = () => {
   const c = useContext(Ctx);
   if (!c) throw new Error('Pull controls need <PullQueue>');
   return c;
@@ -39,6 +42,10 @@ export function PullQueue({ children }: { children: ReactNode }) {
   const [batch, setBatch] = useState<{ done: number; total: number } | null>(null);
   const [summary, setSummary] = useState<string | null>(null);
   const [notes, setNotes] = useState<Record<string, Note>>({});
+  const [saving, setSavingState] = useState<Record<string, 'Pausing' | 'Resuming'>>({});
+  const setSaving = useCallback((job: string, state: 'Pausing' | 'Resuming' | null) => {
+    setSavingState(({ [job]: _old, ...rest }) => (state ? { ...rest, [job]: state } : rest));
+  }, []);
   const busy = useRef(false);
   const outcomes = useRef<PullOutcome[]>([]);
 
@@ -82,7 +89,7 @@ export function PullQueue({ children }: { children: ReactNode }) {
   }, [queue, running]);
 
   return (
-    <Ctx.Provider value={{ queued: queue.map((i) => i.job), running, batch, summary, notes, enqueue }}>
+    <Ctx.Provider value={{ queued: queue.map((i) => i.job), running, batch, summary, notes, enqueue, saving, setSaving }}>
       {children}
     </Ctx.Provider>
   );
@@ -151,7 +158,8 @@ export function PullButton({ job, label, text = 'Pull now', variant = 'tertiary'
 
 /** The row's last run, replaced by Queued or Running while a pull is under way, or a skip it left. */
 export function RunCell({ job, children }: { job: string; children: ReactNode }) {
-  const { queued, running, notes } = usePulls();
+  const { queued, running, notes, saving } = usePulls();
+  if (saving[job]) return <span className="fc-status text-copy-14" aria-busy="true"><span className="fc-spinner" data-size="small" aria-hidden="true" />{saving[job]}</span>;
   if (running === job) return <span className="fc-status text-copy-14" aria-busy="true"><span className="fc-spinner" data-size="small" aria-hidden="true" />Running</span>;
   if (queued.includes(job)) return <span className="fc-level">Queued</span>;
   const note = notes[job];
@@ -164,4 +172,24 @@ export function ResultCell({ job, children }: { job: string; children: ReactNode
   const { notes } = usePulls();
   const note = notes[job];
   return <>{note ? note.message : children}</>;
+}
+
+/**
+ * A fix: queues one or more pulls in order ("Pull rosters, then results"). Paid odds never ride a fix; they
+ * keep their own confirmed button.
+ */
+export function FixButton({ jobs, text, name, variant = 'secondary', className }: {
+  jobs: string[]; text: string; name?: string; variant?: 'secondary' | 'tertiary'; className?: string;
+}) {
+  const { queued, running, enqueue } = usePulls();
+  const busy = jobs.some((j) => j === running || queued.includes(j));
+  return (
+    <button
+      className={`fc-button${className ? ` ${className}` : ''}`} data-variant={variant} data-size="small" type="button"
+      aria-busy={busy || undefined} aria-label={name}
+      onClick={() => { if (!busy) enqueue(jobs.map((job) => ({ job, spend: false }))); }}
+    >
+      {busy ? <><Spinner />Fixing</> : text}
+    </button>
+  );
 }

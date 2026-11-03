@@ -29,7 +29,9 @@ thread.
 7. **A won slip that lost to the close.** The graded slip follows the brief: a win reads Earned, with the note that
    a win at a worse price is luck. That note contradicts the label. Recommend: a slip that won but lost to the close
    reads Lucky, matching the gem boxes (F1.2).
-8. **PRD v1.2.** Once 1 to 7 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
+8. **Dates inside a sentence.** Facet sets every `<time>` in mono (decision Nov 2), so a date inside copy, such as on
+   the graded slip, reads in mono too. Recommend: keep mono for dates in tables and metadata, sans inside sentences.
+9. **PRD v1.2.** Once 1 to 8 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
    Outlier as price source, F2.8, F3.4, the old pipeline's freeze and close commands.
 
 ## Where it stands
@@ -40,17 +42,17 @@ thread.
 | Database safety | | Built: app login, append-only history, `db:guard`, nightly backups, staging database | |
 | Model v3.0 with implied points | section 11 | Built and matched to `hgs.py` on Week 8 | A backtest that runs on every refresh (goal 2) |
 | Gem rating, Fool's Gold, Recommended | F0.2, section 8 | Built in `packages/core` with tests | |
-| Gems board | F0.1 | Built: table, phone list, filters, sort, empty state | Add or On slip, rows that open the gem sheet |
+| Gems board | F0.1 | Built: table, phone list, filters, sort, Add or On slip, rows open the gem sheet (sprint 2026-11-03) | Mined by (call 2) |
 | New gems | F3.5 | Built early: row, Mark read, nav count | The optional Saturday push |
 | Rating lab | section 8 | Built in Settings on Week 9 opening props | Graded weeks |
-| Last 10 diamond row | F0.3 | Data in `player_usage` | Facet game log, the view |
-| Posted vs fair helper | F0.4 | Prices stored in `picks` | Gem sheet, helper line |
-| CLV | F1.1 | Closing price recorded on `bets` | Bet entry, per gem CLV, summary line |
-| Closed appraisal result | F1.2 | Not started | |
-| Provenance | F1.3 | Model inputs kept in `estimates` | A frozen record per gem with its new flag, notes and splits |
+| Last 10 diamond row | F0.3 | Built: Facet game log in the gem sheet, season rate beside it | On the row, if call 4 says so |
+| Posted vs fair helper | F0.4 | Built: gem sheet Overview, Why two prices, Clears the cut | Price chart since found (F2.7) |
+| CLV | F1.1 | Built: CLV for every gem and placed bet, results line on History | Owner SQL before Thu Nov 5 |
+| Closed appraisal result | F1.2 | Built: the four boxes for every gem, graded slip | Within an hour of final (call 1) |
+| Provenance | F1.3 | Built: a frozen record per gem at kickoff with its new flag and estimate | Notes and splits, once they exist |
 | Phase 2, the read | F2.1 to F2.8 | Implied points live; multi book prices and line history accumulating | Every view |
-| Phase 3, the slip | F3.1 to F3.7 | Slips and Ask the Jeweler are placeholders | Everything but F3.5 |
-| Facet parts from the brief | build brief | Promoted: gem mark, new gem card and strip, sheet, phone tab bar, phone gem row | Game log, appraisal certificate, rail slip, chat, numbered steps, signed money |
+| Phase 3, the slip | F3.1 to F3.7 | Built: slips and states, lose it all, DraftKings slip link, handoff, change dialog, history, graded slip, the Jeweler | The Jeweler's key (call 5), provenance report data (F3.7), stake range (call 6) |
+| Facet parts from the brief | build brief | Promoted: every part the brief lists | |
 
 ## Season calendar
 

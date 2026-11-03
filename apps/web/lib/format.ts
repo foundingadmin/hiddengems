@@ -35,6 +35,11 @@ export function stamp(d: Date): string {
   return `${p.month} ${p.day} ${p.hour}:${p.minute}:${p.second} ${p.dayPeriod}`;
 }
 
+/** A clock time to the second ("8:55:12 PM"), for the lines inside one run. */
+export function seconds(d: Date): string {
+  return new Intl.DateTimeFormat('en-US', { timeZone: ZONE, hour: 'numeric', minute: '2-digit', second: '2-digit' }).format(d);
+}
+
 /** Relative time with compact units ("Just now", "4m ago", "3h ago", "2d ago"); a date after a week. */
 export function ago(d: Date, now = new Date()): string {
   const ms = now.getTime() - d.getTime();

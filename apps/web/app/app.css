@@ -39,8 +39,15 @@ body { margin: 0; background: var(--fc-surface-canvas); color: var(--fc-text-pri
 .hg-log tr[data-level="warning"] { background: var(--fc-status-warning-bg); }
 .hg-log tr[data-level] .fc-level { display: inline-flex; margin-right: var(--fc-space-2); }
 .hg-log-detail { display: block; color: var(--fc-text-secondary); }
-.hg-log tr[data-level="error"] .hg-log-detail { color: inherit; }
+.hg-log tr[data-level="error"] :is(.hg-log-detail, .fc-log-message) { color: inherit; }
 .hg-log .fc-cell-actions .fc-button { margin-block: calc(-1 * var(--fc-space-1)); }
+/* Logs page stack: an open run's card, then the filter and the log. */
+.hg-logs { display: flex; flex-direction: column; gap: var(--fc-space-8); min-width: 0; }
+/* Run detail (?run=<id>): a run's data folds behind its keys when long; the lines table sits in the card. */
+.hg-run-note { margin-bottom: var(--fc-space-5); }
+.hg-log-data { margin: var(--fc-space-1) 0 0; white-space: pre-wrap; }
+.hg-log summary, .hg-description-wide summary { cursor: pointer; }
+.hg-description-wide { grid-column: 1 / -1; }
 .hg-log-end { margin: 0; padding: var(--fc-space-6) 0; text-align: center; color: var(--fc-text-secondary); }
 /* Data health overview: status, next odds pull, credits, on one hairline strip. */
 .hg-overview { margin: 0; border-radius: var(--fc-radius-md); box-shadow: inset 0 0 0 1px var(--fc-border-default); }

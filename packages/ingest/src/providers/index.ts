@@ -17,10 +17,10 @@ export function providersFor(env: Record<string, string | undefined> = process.e
   if (dataMode(env) === 'sample') return sampleProviders();
   if (!env.ODDS_API_KEY) throw ours('config', 'Add ODDS_API_KEY to pull live odds, or set DATA_MODE=sample');
   const stats = nflverse();
-  return { schedule: stats, rosters: stats, odds: oddsApi(env.ODDS_API_KEY), results: stats };
+  return { schedule: stats, rosters: stats, odds: oddsApi(env.ODDS_API_KEY), results: stats, usage: stats };
 }
 
 export * from './types';
 export { oddsApi, normalizeEventOdds } from './odds-api';
-export { nflverse, normalizeGames, normalizeRoster, normalizeStats, easternKickoff, NFLVERSE_URLS } from './nflverse';
+export { nflverse, normalizeGames, normalizeRoster, normalizeStats, normalizeInjuries, buildUsage, easternKickoff, NFLVERSE_URLS } from './nflverse';
 export { sampleProviders, SAMPLE_PLAYERS } from './sample';

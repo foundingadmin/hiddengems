@@ -1,8 +1,8 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { zonedTimeToUtc } from '@hiddengems/core';
-import { bets, createDb, games, jobLocks, oddsSlots, oddsSnapshots, picks, players, providerUsage, runLogs, runs, seedReference } from '@hiddengems/db';
+import { bets, createDb, estimates, games, jobLocks, oddsSlots, oddsSnapshots, picks, playerUsage, players, providerUsage, runLogs, runs, seedReference } from '@hiddengems/db';
 import { count, desc, eq, inArray } from 'drizzle-orm';
-import { BOOTSTRAP, clarityV0, grade, jobs, runJob } from '../src';
+import { BOOTSTRAP, grade, jobs, runJob } from '../src';
 import { theirs } from '../src/errors';
 import { sampleProviders } from '../src/providers';
 import type { Providers } from '../src/providers';
@@ -143,14 +143,30 @@ describe('failures and locks', () => {
   });
 });
 
-describe('clarity-v0', () => {
-  const game = (week: number, touchdowns: number) => ({ kickoff: new Date(Date.UTC(2026, 8, 7 * week)), touchdowns });
-  it('fills its four parts from games played, steadiness, book agreement and roster status', () => {
-    const steady = [1, 2, 3, 4, 5, 6, 7, 8].map((w) => game(w, w % 2));
-    expect(clarityV0(steady, [0.3, 0.3, 0.3], 'ACT').clarity).toBe(100);
-    expect(clarityV0([], [0.3], null).clarity).toBe(15); // nothing known but the books
-    const swing = [game(1, 1), game(2, 1), game(3, 0), game(4, 0)];
-    expect(clarityV0(swing, [0.2, 0.3], 'ACT').parts).toMatchObject({ sample: 20, consistency: 0, setup: 15 });
+describe('model inputs', () => {
+  it('stores usage per player game and the injury report', async () => {
+    const usage = await db.select().from(playerUsage);
+    expect(usage.length).toBeGreaterThan(0);
+    for (const u of usage) {
+      expect(u.rzCarryTds + u.rzTargetTds).toBeLessThanOrEqual(u.touchdowns);
+      expect(u.snapPct).toBeGreaterThan(0);
+    }
+    const [flowers] = await db.select().from(players).where(eq(players.name, 'Zay Flowers'));
+    expect(flowers).toMatchObject({ injuryStatus: 'Questionable' });
+  });
+
+  it('reads every prop with the v3.0 model', async () => {
+    const all = await db.select().from(picks);
+    expect(all.every((p) => p.model === 'hg-v3.0')).toBe(true);
+    const [e] = await db.select().from(estimates).where(eq(estimates.model, 'hg-v3.0')).limit(1);
+    expect(e!.inputs).toHaveProperty('statsWeight');
+  });
+
+  it('rebuilds picks after a usage pull', async () => {
+    const r = await run('pull-usage', { force: true });
+    expect(r.status, r.message).toBe('succeeded');
+    expect(r.message).toMatch(/^Pulled usage for \d+ player games across 1 week, 1 on the injury report$/);
+    expect(r.followUps?.[0]).toMatchObject({ job: 'build-picks', status: 'succeeded' });
   });
 });
 

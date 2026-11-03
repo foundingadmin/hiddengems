@@ -3,7 +3,7 @@
 // Prices drift in 15-minute steps, so repeated pulls build real-looking line history.
 import { type BookId, seasonOf } from '@hiddengems/core';
 import { easternKickoff } from './nflverse';
-import type { OddsEvent, OddsQuote, Providers, RosterPlayer, ScheduleGame, StatLine } from './types';
+import type { InjuryReport, OddsEvent, OddsQuote, Providers, RosterPlayer, ScheduleGame, StatLine, UsageLine } from './types';
 
 const DAY = 86_400_000;
 
@@ -60,6 +60,7 @@ export function sampleProviders(): Providers {
         externalId: `sample-${date}-${away}-${home}`, season, seasonType: 'reg', week: wk, kickoff, awayTeam: away, homeTeam: home, neutralSite: false,
         status: final ? 'final' : live ? (now.getTime() - kickoff.getTime() > 4 * 3_600_000 ? 'final' : 'in_progress') : 'scheduled',
         awayScore: a, homeScore: h,
+        spreadLine: Math.round((noise(`${away}${home}:spread`) * 14 - 7) * 2) / 2, totalLine: 40 + Math.round(noise(`${away}${home}:total`) * 14),
       };
     };
     return [
@@ -101,6 +102,27 @@ export function sampleProviders(): Providers {
           }
         }
         return quotes;
+      },
+    },
+    usage: {
+      id: 'sample',
+      async gameUsage(ctx): Promise<UsageLine[]> {
+        const finals = scheduleFor(ctx.now).filter((g) => g.status === 'final');
+        return finals.flatMap((g) => SAMPLE_PLAYERS.filter((p) => p.team === g.awayTeam || p.team === g.homeTeam).map((p) => {
+          const r = noise(`${g.externalId}:${p.id}`);
+          const touchdowns = r < p.td ? (r < p.td / 4 ? 2 : 1) : 0;
+          const rzCarries = p.position === 'RB' ? Math.round(p.td * 4 * noise(`${g.externalId}:${p.id}:rzc`)) : 0;
+          const rzTargets = Math.round(p.td * 3 * noise(`${g.externalId}:${p.id}:rzt`));
+          const inside = Math.min(touchdowns, rzCarries + rzTargets);
+          return {
+            playerExternalId: p.id, gameExternalId: g.externalId, week: g.week ?? 1, team: p.team, position: p.position,
+            snapPct: Math.round((0.55 + noise(`${g.externalId}:${p.id}:snap`) * 0.4) * 100) / 100,
+            rzCarries, rzTargets, rzCarryTds: Math.min(inside, rzCarries), rzTargetTds: inside - Math.min(inside, rzCarries), touchdowns,
+          };
+        }));
+      },
+      async injuries(ctx): Promise<InjuryReport> {
+        return { week: sundays(ctx.now).week, statuses: [{ playerExternalId: 'flowers', status: 'Questionable' }] };
       },
     },
     results: {

@@ -19,8 +19,10 @@ thread.
    Outlier by hand on Weeks 9 and 10, then cancel Outlier on Tue Nov 17.
 4. **Last 10 on the row.** The PRD puts the diamond row on every board row (F0.1); the approved wireframes keep it in
    the gem sheet. Recommend the wireframes, and amend F0.1.
-5. **Anthropic API key and monthly cap.** Not set as of Nov 3. The Jeweler (F3.3) and news notes (F2.3) wait for
-   it; their screens can be built without it.
+5. **Anthropic API key and monthly cap.** Not set as of Nov 3. The Jeweler (F3.3) is built and shows a not set up
+   state until both exist; news notes (F2.3) wait too. To turn it on: add `ANTHROPIC_API_KEY` in Vercel, set the
+   monthly cap with the SQL in `docs/architecture.md`, and confirm the Sonnet 5.5 prices in `JEWELER.price`
+   (`packages/ingest/src/jeweler.ts`), which the cap counts against.
 6. **PRD v1.2.** Once 1 to 5 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
    Outlier as price source, F2.8, F3.4, the old pipeline's freeze and close commands.
 

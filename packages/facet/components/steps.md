@@ -25,7 +25,7 @@ A short ordered task the reader carries out in turn, often outside the app. Not 
 |---|---|---|
 | Upcoming | none | Gray ring, number |
 | Current | `aria-current="step"` on the `li` | Primary ring, number |
-| Done | `data-state="done"` on the `li`, plus `<span class="fc-visually-hidden">Done. </span>` at the start of the heading | Filled contrast circle with a check |
+| Done | `data-state="done"` on the `li`, plus `<span class="fc-visually-hidden">, done</span>` at the end of the heading | Filled contrast circle with a check |
 
 States are optional. A handoff where every step stays open uses none.
 

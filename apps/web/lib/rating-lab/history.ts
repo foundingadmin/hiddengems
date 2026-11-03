@@ -7,7 +7,7 @@ const REPO = 'https://github.com/foundingadmin/hiddengems';
 export interface HistoryEntry {
   /** Calendar date the change was made or approved, as the source records it. */
   date: string;
-  /** Owner decisions read as "You"; code changes as "Model". */
+  /** Owner decisions read as "You"; code changes as "Code". */
   actor: 'decision' | 'code';
   /** The changed thing, set in strong text, then the rest of the sentence. */
   subject: string;
@@ -22,12 +22,12 @@ const doc = (label: string, path: string) => ({ label, href: `${REPO}/blob/main/
 export const HISTORY: readonly HistoryEntry[] = [
   {
     date: '2026-11-03', actor: 'code', subject: 'Old pipeline',
-    text: 'retired; the app now reads every prop, and the pipeline picks history moved to docs/archive.',
+    text: 'retired. The app now reads every prop, and the pipeline picks history moved to docs/archive.',
     source: commit('fc7eddd'),
   },
   {
     date: '2026-11-03', actor: 'decision', subject: "Fool's Gold",
-    text: 'narrowed to props that beat the fair price but not the posted price; beating neither is no gem. The rating keeps carat, while the Edge column shows the gap to the priced chance.',
+    text: 'narrowed to props that beat the fair price but not the posted price. Beating neither is no gem. The rating keeps carat, while the Edge column shows the gap to the priced chance.',
     source: doc('Architecture', 'docs/architecture.md'),
   },
   {
@@ -37,7 +37,7 @@ export const HISTORY: readonly HistoryEntry[] = [
   },
   {
     date: '2026-11-03', actor: 'code', subject: 'Hidden Gems v3.0',
-    text: 'ported from hgs.py into core; fair chance became the implied chance times one minus the cut, matching the old pipeline to 1e-9 on Week 8.',
+    text: 'ported from hgs.py into core. Fair chance became the implied chance times one minus the cut, matching the old pipeline to 1e-9 on Week 8.',
     source: commit('1d1c5df'),
   },
   {
@@ -57,7 +57,7 @@ export const HISTORY: readonly HistoryEntry[] = [
   },
   {
     date: '2026-11-02', actor: 'decision', subject: 'Implied team points',
-    text: 'added to v3.0 at exponent 1.0 after the Weeks 4 to 8 backtest scored 0.1360 against 0.1371 without it.',
+    text: 'added to v3.0 at exponent 1.0 after it lowered the Weeks 4 to 8 Brier score to 0.1360 from 0.1371.',
     source: doc('PRD 11.8', 'docs/prd.md'),
   },
 ];

@@ -1,11 +1,15 @@
 // The rating lab's formula comparison (docs/prd.md section 8): five candidate ratings on the 126 Week 9
 // opening props, logged Nov 2 2026 with one book posted. The two kept formulas run through core's live
 // rules; the three dropped ones stay here only as the record of what was compared.
-import { gemRating, recommendedScore } from '@hiddengems/core';
+import { FULL_CARAT, gemRating, recommendedScore } from '@hiddengems/core';
 import week9 from './week9-opening.json';
 
 export interface LabProp {
   player: string;
+  /** Team abbreviation from the archived Week 9 board (docs/archive/pipeline/picks.json); null where it had none. */
+  team: string | null;
+  /** Jersey number where the repo states it (sample provider, nflverse roster fixture), else null. */
+  number: number | null;
   position: string;
   game: string;
   kickoff: string;
@@ -68,7 +72,7 @@ export const FORMULAS: readonly Formula[] = [
   {
     id: 'rating', name: 'Edge × clarity', status: 'Live rating',
     plain: 'Carat and clarity multiplied, so a gem needs both. Only props that clear the posted price are rated.',
-    code: 'if not clears: no rating; rating = round(100 × clamp(carat / 10, 0, 1) × clarity / 100)',
+    code: `if not clears: no rating; rating = round(100 × clamp(carat / ${FULL_CARAT}, 0, 1) × clarity / 100)`,
     rewards: 'Props where the model disagrees with the price and the read is solid.',
     costs: 'Ignores the odds, so a 6.0 and a 20.0 with the same edge rate the same.',
     verdict: 'Every top 10 pick clears the price. The number on the gem.',

@@ -35,10 +35,7 @@ export function FormulaComparison() {
     <section className="fc-fieldset" aria-labelledby="cmp-t">
       <div className="fc-fieldset-content">
         <h2 className="fc-fieldset-title" id="cmp-t">Formula comparison</h2>
-        <p className="fc-fieldset-subtitle">
-          Five candidate ratings on the {WEEK9.length} Week 9 opening props, logged Nov 2 with one book posted.
-          Each formula&apos;s top 10 is graded after Weeks 9 to 12, about 500 props, before the formula is locked.
-        </p>
+        <p className="fc-fieldset-subtitle">Candidate ratings on the {WEEK9.length} Week 9 opening props, logged Nov 2 with one book posted.</p>
         <div className="fc-stack hg-gap-5">
           <div className="fc-row hg-wrap hg-between">
             <div className="fc-tabs" data-variant="secondary" role="tablist" aria-label="Formula" onKeyDown={onKey}>
@@ -93,7 +90,7 @@ export function FormulaComparison() {
             </dl>
 
             {n === 0 ? (
-              <p className="text-copy-14 hg-secondary">No props qualify at these odds, which is a real answer: no gems here this week.</p>
+              <p className="text-copy-14 hg-secondary">No props qualify at these odds this week.</p>
             ) : (
               <div className="fc-table-wrap">
                 <table className="fc-table" data-sticky-column>
@@ -107,20 +104,20 @@ export function FormulaComparison() {
                       <th scope="col" data-align="numeric">Hit chance</th>
                       <th scope="col" data-align="numeric">Priced</th>
                       <th scope="col" data-align="numeric">{f.status === 'Live rating' ? 'Rating' : 'Score'}</th>
-                      <th scope="col">Price</th>
+                      <th scope="col">Posted price</th>
                     </tr>
                   </thead>
                   <tbody>
                     {top.map(({ prop, score }) => (
                       <tr key={prop.player + prop.game}>
-                        <th scope="row"><Player name={prop.player} teamId={null} number={null} detail={[prop.position, prop.game].filter(Boolean).join(' · ')} /></th>
+                        <th scope="row"><Player name={prop.player} teamId={prop.team} number={prop.number} detail={[prop.position, prop.game].filter(Boolean).join(' · ')} /></th>
                         <td data-align="numeric">{prop.price.toFixed(2)}</td>
                         <td data-align="numeric">{prop.hitPct}%</td>
                         <td data-align="numeric">{prop.pricedPct}%</td>
                         <td data-align="numeric">
                           {f.status === 'Live rating' ? <GemMark kind="gem" rating={score} /> : score.toFixed(f.id === 'scorecard' ? 0 : 1)}
                         </td>
-                        <td>{clears(prop) ? 'Clears' : 'No edge'}</td>
+                        <td>{clears(prop) ? 'Clears' : 'Misses'}</td>
                       </tr>
                     ))}
                   </tbody>

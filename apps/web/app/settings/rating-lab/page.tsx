@@ -57,7 +57,7 @@ export default function RatingLabPage() {
         <div className="fc-fieldset-content">
           <h2 className="fc-fieldset-title" id="gem-t">Gem rating</h2>
           <p className="fc-fieldset-subtitle">
-            One number for each prop that beats the posted price. It multiplies carat by clarity, so a big edge on a murky read cannot score high.
+            Carat times clarity, so a big edge on a murky read cannot score high.
           </p>
           <dl className="fc-description">
             <div><dt>Model</dt><dd className="hg-mono">{MODEL_V3}</dd></div>
@@ -85,14 +85,14 @@ export default function RatingLabPage() {
           </div>
         </div>
         <Rows title="Rating" rows={[
-          ['Rating', <span key="r" className="hg-mono">round(100 × clamp(carat / {FULL_CARAT}, 0, 1) × clarity / 100)</span>, 'Only for props that clear the posted price'],
+          ['Formula', <span key="r" className="hg-mono">round(100 × clamp(carat / {FULL_CARAT}, 0, 1) × clarity / 100)</span>, 'Only for props that clear the posted price'],
           ['Board order', 'Hit chance × clarity', "Gems first, then unrated, Fool's Gold last"],
         ]} />
         <Rows title="Market" rows={[
           ['Assumed cut', `${pc(HOUSE_CUT.base)} plus ${pc(HOUSE_CUT.perPoint)} per point of decimal odds, at most ${pc(HOUSE_CUT.max)}`],
           ['Fair chance', 'Implied chance × (1 − cut)'],
           ['Stats weight', `${V3.statsWeight} from ${V3.thinGames} games, ${V3.statsWeightThin} under`,
-            `Times min(1, ${V3.longShotScale} / (odds + ${V3.longShotShift})); the rest is the fair price`],
+            `Times min(1, ${V3.longShotScale} / (odds + ${V3.longShotShift})). The fair price gets the rest`],
         ]} />
         <Rows title="Model" rows={[
           ['Red zone read', pc(V3.redZoneWeight), 'The rest is the shrunk touchdown hit rate'],
@@ -104,8 +104,8 @@ export default function RatingLabPage() {
         <Rows title="Clarity" rows={[
           ['Sample', `${CLARITY_MAX.sample} points`, `Full at ${CLARITY_V3.sampleTds} expected touchdowns`],
           ['Consistency', `${CLARITY_MAX.consistency} points`, `Zero once the red zone read and hit rate differ by ${pc(CLARITY_V3.consistencyGap)}`],
-          ['Books agree', `${CLARITY_MAX.booksAgree} points`, `Zero at a ${pc(CLARITY_V3.booksRange)} price range; ${CLARITY_V3.oneBook} with one book`],
-          ['Setup', `${CLARITY_MAX.setup} points`, `${injuries}; ${minus(-CLARITY_V3.fallingPenalty)} when snaps fall under ${pc(CLARITY_V3.fallingSnaps)} of the season's`],
+          ['Books agree', `${CLARITY_MAX.booksAgree} points`, `Zero at a ${pc(CLARITY_V3.booksRange)} price range, ${CLARITY_V3.oneBook} with one book`],
+          ['Setup', `${CLARITY_MAX.setup} points`, `${injuries}. ${minus(-CLARITY_V3.fallingPenalty)} when snaps fall under ${pc(CLARITY_V3.fallingSnaps)} of the season's`],
         ]} />
         <Docs href={`${REPO}/docs/prd.md#11-model-spec--hidden-gems-v30`}>How the model was fit</Docs>
       </section>

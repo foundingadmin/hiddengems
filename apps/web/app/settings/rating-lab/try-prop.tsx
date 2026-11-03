@@ -15,10 +15,10 @@ const HIT = { min: 0.5, max: 95, step: 0.5 };
 const PARTS: { key: keyof ClarityParts; param: string; label: string; helper: string }[] = [
   { key: 'sample', param: 'sample', label: 'Sample', helper: 'Touchdowns we would expect to have seen so far.' },
   { key: 'consistency', param: 'consistency', label: 'Consistency', helper: 'How closely the red zone read and the hit rate agree.' },
-  { key: 'booksAgree', param: 'books', label: 'Books agree', helper: `How close the books’ prices are; one book posted scores ${CLARITY_V3.oneBook}.` },
+  { key: 'booksAgree', param: 'books', label: 'Books agree', helper: `How close the books’ prices are. One book posted scores ${CLARITY_V3.oneBook}.` },
   { key: 'setup', param: 'setup', label: 'Setup', helper: 'Injury report and snap share trend.' },
 ];
-const DEFAULT_PARTS: ClarityParts = { sample: 28, consistency: 21, booksAgree: 7, setup: 15 };
+const DEFAULT_PARTS: ClarityParts = { sample: 28, consistency: 21, booksAgree: CLARITY_V3.oneBook, setup: CLARITY_MAX.setup };
 
 const clampTo = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n));
 const read = (params: URLSearchParams, key: string, fallback: number, lo: number, hi: number) => {
@@ -32,7 +32,6 @@ const signed = (n: number, digits = 1) => {
   return `${r > 0 ? '+' : r < 0 ? '−' : ''}${Math.abs(r).toFixed(digits)}`;
 };
 const pct1 = (p: number) => `${(p * 100).toFixed(1)}%`;
-const fmtHit = (n: number) => (Number.isInteger(n) ? String(n) : n.toFixed(1));
 
 export function TryProp() {
   const params = useSearchParams();
@@ -52,10 +51,7 @@ export function TryProp() {
   const fresh = newGemReason(g.rating, null);
   const gapDir = g.gapToPosted > 0.05 ? 'positive' : g.gapToPosted < -0.05 ? 'negative' : 'neutral';
 
-  const setPart = (key: keyof ClarityParts, param: string, v: number) => {
-    setParts((p) => ({ ...p, [key]: v }));
-    writeParams({ [param]: String(v) });
-  };
+  const setPart = (key: keyof ClarityParts, v: number) => setParts((p) => ({ ...p, [key]: v }));
 
   const result = {
     gem: <><GemMark kind="gem" rating={g.rating} size="lg" /><span className="fc-stat-qualifier">Gem</span></>,
@@ -80,8 +76,7 @@ export function TryProp() {
   return (
     <section className="fc-fieldset" aria-labelledby="try-t">
       <div className="fc-fieldset-content">
-        <h2 className="fc-fieldset-title" id="try-t">Try a prop</h2>
-        <p className="fc-fieldset-subtitle">Set a price, a hit chance and clarity to see how the live rules rate the prop.</p>
+        <h2 className="fc-fieldset-title hg-gap-below" id="try-t">Try a prop</h2>
         <div className="fc-stack">
           <div className="fc-stat-strip" data-variant="cells" role="group" aria-label="Appraisal" aria-live="polite">
             <div className="fc-stat">
@@ -94,7 +89,7 @@ export function TryProp() {
               <p className="fc-stat-basis">Over the fair chance, {pct1(g.fair)}</p>
             </div>
             <div className="fc-stat">
-              <p className="fc-stat-label">Gap to posted</p>
+              <p className="fc-stat-label">Edge</p>
               <p className="fc-stat-figure">
                 <span className="fc-stat-value"><span className="fc-delta" data-direction={gapDir}>{signed(g.gapToPosted)}</span></span>
                 <span className="fc-stat-qualifier">pts</span>
@@ -110,14 +105,14 @@ export function TryProp() {
         </div>
       </div>
       <div className="fc-fieldset-section">
-        <Group title="Price" value={price.toFixed(2)} open>
-          <Slider
-            label="Decimal odds" value={price} min={PRICE.min} max={PRICE.max} step={PRICE.step} digits={2}
-            helper={`Implied ${pct1(impliedFromDecimal(price))}, less an assumed cut of ${Math.round(houseCut(price) * 100)}%.`}
-            onChange={(v) => { setPrice(v); writeParams({ price: String(v) }); }}
-          />
-        </Group>
-        <Group title="Hit chance" value={hasStats ? `${fmtHit(hit)}%` : 'No stats'} open>
+        <Slider
+          label="Price" value={price} min={PRICE.min} max={PRICE.max} step={PRICE.step} digits={2}
+          helper={`Decimal odds. Implied ${pct1(impliedFromDecimal(price))}, less an assumed cut of ${Math.round(houseCut(price) * 100)}%.`}
+          onChange={setPrice} onCommit={(v) => writeParams({ price: String(v) })}
+        />
+      </div>
+      <div className="fc-fieldset-section">
+        <div className="fc-stack">
           <label className="fc-row">
             <input
               type="checkbox" className="fc-toggle" role="switch" checked={hasStats}
@@ -128,15 +123,17 @@ export function TryProp() {
           {hasStats && (
             <Slider
               label="Our hit chance" value={hit} min={HIT.min} max={HIT.max} step={HIT.step} unit="%" digits={1}
-              onChange={(v) => { setHit(v); writeParams({ hit: String(v) }); }}
+              onChange={setHit} onCommit={(v) => writeParams({ hit: String(v) })}
             />
           )}
-        </Group>
+        </div>
+      </div>
+      <div className="fc-fieldset-section">
         <Group title="Clarity" value={`${clarity} of 100`}>
           {PARTS.map((p) => (
             <Slider
               key={p.key} label={p.label} value={parts[p.key]} min={0} max={CLARITY_MAX[p.key]} step={1} unit={`of ${CLARITY_MAX[p.key]}`} digits={0}
-              helper={p.helper} onChange={(v) => setPart(p.key, p.param, v)}
+              helper={p.helper} onChange={(v) => setPart(p.key, v)} onCommit={(v) => writeParams({ [p.param]: String(v) })}
             />
           ))}
         </Group>

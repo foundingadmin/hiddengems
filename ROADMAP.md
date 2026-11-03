@@ -36,7 +36,10 @@ thread.
    apply production migrations by hand from the release PR again.
 10. **Notes that cost clarity (F2.3).** Each costly note lowers clarity a notch, which moves ratings. Recommend:
     build the notes first as context only, then decide on the clarity effect after the Dec 1 formula lock.
-11. **PRD v1.2.** Once 1 to 10 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
+11. **Backtest baseline.** The weekly backtest scores 0.1313 on full Weeks 4 to 8 data; the 0.1360 baseline was set
+    before most Week 8 snap counts landed, so a regression under 0.0047 would not warn. Recommend: move the
+    baseline to 0.1313 and record it in the PRD (section 4, goal 2).
+12. **PRD v1.2.** Once 1 to 11 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
    Outlier as price source, F2.8, F3.4, the old pipeline's freeze and close commands.
 
 ## Where it stands

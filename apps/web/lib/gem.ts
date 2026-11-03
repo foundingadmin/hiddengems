@@ -43,7 +43,7 @@ export interface SourcedNote {
   note: GemNote;
   /** The injury report's week, for injury notes. */
   week: number | null;
-  /** The model that read it ("v3.0"), for the model's lines. */
+  /** The model that read it ("v3.0"), for implied points. */
   model: string | null;
   at: string | null;
 }
@@ -146,8 +146,8 @@ export async function gemDetail(key: string, now = new Date()): Promise<GemDetai
 }
 
 /**
- * The notes and their sources: the injury report as of the last usage pull, the spread as of the last schedule
- * pull, and the model's lines from the estimate behind this pick.
+ * The notes and their sources: the injury report and snap counts as of the last usage pull, the spread as of the
+ * last schedule pull, and implied points from the model's estimate behind this pick.
  */
 async function notesOf(
   pick: typeof picks.$inferSelect, game: typeof games.$inferSelect, team: string | null, position: string | null,
@@ -157,10 +157,8 @@ async function notesOf(
   const [[estimate], [usagePull]] = await Promise.all([
     d.select({ inputs: estimates.inputs, model: estimates.model, computedAt: estimates.computedAt }).from(estimates)
       .where(eq(estimates.selectionKey, pick.selectionKey)).orderBy(desc(estimates.computedAt)).limit(1),
-    player?.injuryStatus
-      ? d.select({ at: runs.finishedAt }).from(runs)
-        .where(and(eq(runs.job, 'pull-usage'), inArray(runs.status, ['succeeded', 'warned']))).orderBy(desc(runs.startedAt)).limit(1)
-      : [],
+    d.select({ at: runs.finishedAt }).from(runs)
+      .where(and(eq(runs.job, 'pull-usage'), inArray(runs.status, ['succeeded', 'warned']))).orderBy(desc(runs.startedAt)).limit(1),
   ]);
   const notes = gemNotes({
     injuryStatus: player?.injuryStatus ?? null,
@@ -169,10 +167,14 @@ async function notesOf(
     position,
     inputs: readEstimateInputs(estimate?.inputs),
   });
+  const usageAt = usagePull?.at?.toISOString() ?? null;
   return notes.map((note): SourcedNote => {
-    if (note.kind === 'injury') return { note, week: player?.injuryWeek ?? null, model: null, at: usagePull?.at?.toISOString() ?? null };
-    if (note.kind === 'blowout') return { note, week: null, model: null, at: game.updatedAt.toISOString() };
-    return { note, week: null, model: estimate?.model.replace(/^hg-/, '') ?? null, at: estimate?.computedAt.toISOString() ?? null };
+    switch (note.kind) {
+      case 'injury': return { note, week: player?.injuryWeek ?? null, model: null, at: usageAt };
+      case 'snaps': return { note, week: null, model: null, at: usageAt };
+      case 'blowout': return { note, week: null, model: null, at: game.updatedAt.toISOString() };
+      case 'implied': return { note, week: null, model: estimate?.model.replace(/^hg-/, '') ?? null, at: estimate?.computedAt.toISOString() ?? null };
+    }
   });
 }
 

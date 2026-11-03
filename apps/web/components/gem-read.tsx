@@ -5,7 +5,7 @@
 import { mountTips } from '@foundingcreative/facet/js/tips.mjs';
 import {
   type CoreSample, type GameLog, type GemNote, type LogGame, type Opportunity, type Split, type SplitKey, type SplitNote, type SplitSide, type Trend,
-  MATCHUP_WEEKS, SPLIT_KEYS, SPLIT_PRIOR_GAMES, combineSplits, gameLog, matchupTrack,
+  MATCHUP_WEEKS, SPLIT_KEYS, SPLIT_PRIOR_GAMES, combineSplits, freshnessState, gameLog, matchupTrack,
 } from '@hiddengems/core';
 import { useSearchParams } from 'next/navigation';
 import { type MouseEvent, type ReactNode, useEffect, useId, useRef, useState } from 'react';
@@ -21,8 +21,6 @@ const ordinal = (n: number) => {
   const s = n % 100 >= 11 && n % 100 <= 13 ? 'th' : ['th', 'st', 'nd', 'rd'][n % 10] ?? 'th';
   return `${n}${s}`;
 };
-/** A pull under 6 hours old reads live. */
-const FRESH_MS = 6 * 3_600_000;
 const clockIn = (zone: string) => (iso: string) => new Intl.DateTimeFormat('en-US', { timeZone: zone, weekday: 'short', hour: 'numeric', minute: '2-digit' }).format(new Date(iso));
 
 // ---------------------------------------------------------------- Price chart (F2.7)
@@ -148,7 +146,6 @@ export function PriceChart({ appraisal: a, book, kickoff, now, zone }: { apprais
       a.clv != null ? `Closing line value ${clvText(a.clv)} against the fair close.` : '',
     ].filter(Boolean).join(' ');
 
-  const fresh = pulled != null && tNow - pulled < FRESH_MS;
   const rows = [
     ...trail.map((p) => ({ key: `p${p.t}`, at: p.t, what: p.t === first?.t ? 'Open' : 'Moved', price: p.price })),
     ...(rec ? [{ key: 'dec', at: Date.parse(rec.decisionAt), what: 'Decision', price: rec.decisionPrice }, { key: 'frz', at: Date.parse(rec.freezeAt), what: 'Close', price: rec.freezePrice }] : []),
@@ -234,7 +231,7 @@ export function PriceChart({ appraisal: a, book, kickoff, now, zone }: { apprais
       <div className="fc-chart-card-footer">
         {!started && (
           <p className="fc-freshness">
-            <span className="fc-status-dot" data-state={pulled == null ? 'queued' : fresh ? 'live' : 'stale'} aria-hidden="true" />
+            <span className="fc-status-dot" data-state={freshnessState(a.pulledAt, now)} aria-hidden="true" />
             {pulled != null
               ? <span>Updated <time dateTime={a.pulledAt!} title={clock(a.pulledAt!)} data-relative="">{ago(new Date(pulled), new Date(tNow)).replace(/^Just now$/, 'just now')}</time></span>
               : <span>Not pulled yet</span>}
@@ -331,7 +328,6 @@ function noteWords(n: GemNote): string {
   switch (n.kind) {
     case 'injury': return `Listed ${n.status}`;
     case 'blowout': return n.side === 'favorite' ? 'His team is a big favorite, so starters may sit late' : 'His team is a big underdog, so it may trail and throw';
-    case 'stats': return `His stats this season read ${n.effect === 'add' ? 'better' : 'worse'} than his price`;
     case 'implied': return `His team’s implied points are ${n.effect === 'add' ? 'above' : 'below'} the league average`;
     case 'snaps': return `His snap share is ${n.effect === 'add' ? 'up' : 'down'} over his last 3 games`;
   }
@@ -340,14 +336,10 @@ function noteWords(n: GemNote): string {
 function noteSource(s: SourcedNote): string {
   if (s.note.kind === 'injury') return s.week != null ? `Week ${s.week} injury report` : 'Injury report';
   if (s.note.kind === 'blowout') return 'Schedule spread';
+  if (s.note.kind === 'snaps') return 'Snap counts';
   return s.model ? `Model ${s.model}` : 'Model';
 }
 
-/** Freshness: live under 6 hours, recent under a day and a half (the daily pulls), stale after. */
-const freshness = (at: string, now: string) => {
-  const age = Date.parse(now) - Date.parse(at);
-  return age < FRESH_MS ? 'live' : age < 36 * 3_600_000 ? 'recent' : 'stale';
-};
 
 export function GemNotes({ notes, now, zone, labelledBy }: { notes: SourcedNote[]; now: string; zone: string; labelledBy: string }) {
   if (!notes.length) return <div className="fc-empty"><strong>No adds or costs</strong></div>;
@@ -359,7 +351,7 @@ export function GemNotes({ notes, now, zone, labelledBy }: { notes: SourcedNote[
           <div className="fc-list-row-main">
             <p className="text-copy-14">{noteWords(s.note)}</p>
             <p className="fc-freshness">
-              {s.at && <span className="fc-status-dot" data-state={freshness(s.at, now)} aria-hidden="true" />}
+              {s.at && <span className="fc-status-dot" data-state={freshnessState(s.at, now)} aria-hidden="true" />}
               <span>
                 {noteSource(s)}
                 {s.at && <>, <time dateTime={s.at} title={exact(s.at)} data-relative="">{ago(new Date(s.at), new Date(now)).replace(/^Just/, 'just')}</time></>}
@@ -367,7 +359,7 @@ export function GemNotes({ notes, now, zone, labelledBy }: { notes: SourcedNote[
             </p>
           </div>
           <div className="fc-list-row-aside">
-            <span className="fc-delta text-label-14" data-direction={s.note.effect === 'add' ? 'positive' : 'negative'}>{s.note.effect === 'add' ? 'Adds' : 'Costs'}</span>
+            <span className="fc-effect" data-effect={s.note.effect}>{s.note.effect === 'add' ? 'Adds' : 'Costs'}</span>
           </div>
         </li>
       ))}
@@ -467,7 +459,7 @@ export function ConditionsList({ conditions: c, now }: { conditions: Conditions;
               <span className="fc-badge" data-variant="gray" data-size="sm" data-contrast="low">Context only</span>
             </span>
             <p className="fc-freshness">
-              <span className="fc-status-dot" data-state={Date.parse(now) - Date.parse(w.pulledAt) < FRESH_MS ? 'live' : 'stale'} aria-hidden="true" />
+              <span className="fc-status-dot" data-state={freshnessState(w.pulledAt, now)} aria-hidden="true" />
               <span>Open-Meteo forecast, <time dateTime={w.pulledAt} data-relative="">{ago(new Date(w.pulledAt), new Date(now)).replace(/^Just/, 'just')}</time></span>
             </p>
           </dd>

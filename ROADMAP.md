@@ -33,6 +33,9 @@ thread.
    the graded slip, reads in mono too. Recommend: keep mono for dates in tables and metadata, sans inside sentences.
 9. **PRD v1.2.** Once 1 to 8 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
    Outlier as price source, F2.8, F3.4, the old pipeline's freeze and close commands.
+10. **Clear slip.** The micro moments package animates erasing a whole slip with a 5 second Undo, but neither the app
+   nor the wireframes have a Clear slip control. Recommend: no Clear slip for now, since a slip holds a few legs and
+   Remove with Undo covers it. The Erase moment waits until you want one (sprint 2026-11-03-2, e4).
 
 ## Where it stands
 
@@ -53,6 +56,7 @@ thread.
 | Phase 2, the read | F2.1 to F2.8 | Implied points live; multi book prices and line history accumulating | Every view |
 | Phase 3, the slip | F3.1 to F3.7 | Built: slips and states, lose it all, DraftKings slip link, handoff, change dialog, history, graded slip, the Jeweler | The Jeweler's key (call 5), provenance report data (F3.7), stake range (call 6) |
 | Facet parts from the brief | build brief | Promoted: every part the brief lists | |
+| Micro moments | `docs/animation/micro-moments` | In sprint 2026-11-03-2: foundation, New gems, Add, gem sheet, Remove, Swipe, Send | Erase (call 10), New connection (no screen) |
 
 ## Season calendar
 
@@ -130,6 +134,21 @@ Phase 3. Ship by Sat Nov 28. About 5.5 review hours.
 | The Jeweler (F3.3) | data and screens, L | Sheet on desktop, tab on phone; each ask carries the card and the slip; answers cite the app's numbers; no placing action exists | Call 5 |
 | Slip history and graded slip | screens, M | Season stats, past slips, the graded slip with took, closed and beat close per leg | M1 grade and box |
 | Provenance report (F3.7) | screens, M | Hit rate and average CLV by insight; under 15 graded gems shows cloudy | M2 notes and splits |
+
+## Micro moments
+
+The interaction moments in `docs/animation/micro-moments`, wired in as each surface exists. The engine and its rules
+live in Facet (`packages/facet/patterns/moments.md` once sprint 2026-11-03-2 merges); each screen plays its own scene.
+
+| Moment | Surface | State |
+|---|---|---|
+| Unread gems, Unread to read | New gems row, nav count | Sprint 2026-11-03-2 (e1) |
+| Add a gem | Add or On slip, Slips in the rail and tab bar | Sprint 2026-11-03-2 (e2) |
+| Drawer, phone and desktop | Gem sheet | Sprint 2026-11-03-2 (e2) |
+| Remove, Swipe soft and hard | Slip legs | Sprint 2026-11-03-2 (e3) |
+| Send | Send handoff | Sprint 2026-11-03-2 (e3) |
+| Erase | Slip | Waits on call 10 |
+| New connection | A connections screen | Waits on the screen; build the moment with it |
 
 ## Prove it (M4)
 

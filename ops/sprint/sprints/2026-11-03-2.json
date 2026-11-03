@@ -1,0 +1,79 @@
+{
+  "id": "2026-11-03-2",
+  "startedAt": "2026-11-03T20:00:00Z",
+  "sprintBranch": "",
+  "pr": "",
+  "entries": [
+    {
+      "id": "e1",
+      "threads": [],
+      "page": "/",
+      "status": "building",
+      "lane": "facet",
+      "fileGroup": "g1",
+      "size": "L",
+      "branch": "facet/2026-11-03-2-moments",
+      "brief": "Principal in chat: wire the micro moments package (docs/animation/micro-moments, rundoc.md) into the app for longevity and scalability. Foundation plus the two moments whose surface is New gems: illus and motion tokens, a dependency-free dot engine in packages/facet/js, Facet parts (unread and selected gem card, Undo toast with dot countdown, edge glint), the moments pattern doc and loop exceptions, an app MomentsProvider in the Shell, then Unread gems and Unread to read on NewGems with real events.",
+      "head": "",
+      "reason": "",
+      "releasedIn": ""
+    },
+    {
+      "id": "e2",
+      "threads": [],
+      "page": "/",
+      "status": "routed",
+      "lane": "screens",
+      "fileGroup": "g2",
+      "size": "M",
+      "branch": "screens/2026-11-03-2-board-moments",
+      "brief": "Micro moments on the board, from the e1 foundation: Add a gem (selected state, edge glint on the Slips nav item in the rail and tab bar, nothing flies) and the gem sheet drawer (spring open with dots rippling along its leading edge from the row, row stays active under the tint, close with no spring).",
+      "head": "",
+      "reason": "",
+      "releasedIn": ""
+    },
+    {
+      "id": "e3",
+      "threads": [],
+      "page": "/slips",
+      "status": "routed",
+      "lane": "screens",
+      "fileGroup": "g3",
+      "size": "L",
+      "branch": "screens/2026-11-03-2-slip-moments",
+      "brief": "Micro moments on the slip, from the e1 foundation: Remove a leg (cloud sweep from the control, row closes, totals update, 5 second Undo that restores the leg and plays the sweep in reverse), swipe to remove on phone (soft and hard pull), and the Send moment on the existing handoff. A suggested play still confirms first.",
+      "head": "",
+      "reason": "",
+      "releasedIn": ""
+    },
+    {
+      "id": "e4",
+      "threads": [],
+      "page": "/slips",
+      "status": "parked",
+      "lane": "screens",
+      "fileGroup": "g3",
+      "size": "S",
+      "branch": "",
+      "brief": "Erase the slip: one large cloud sweeps every leg, then the empty slip and Undo show.",
+      "head": "",
+      "reason": "Needs a Clear slip control, which neither the app nor the wireframes have. Adding a control that empties a slip is product meaning (principal.md 1).",
+      "releasedIn": ""
+    },
+    {
+      "id": "e5",
+      "threads": [],
+      "page": "",
+      "status": "parked",
+      "lane": "screens",
+      "fileGroup": "",
+      "size": "S",
+      "branch": "",
+      "brief": "New connection: gray dots search, turn brand color, fall in line, a pulse loops into the gem.",
+      "head": "",
+      "reason": "No connections screen exists yet. Built with that screen; tracked in ROADMAP.md.",
+      "releasedIn": ""
+    }
+  ],
+  "lesson": ""
+}

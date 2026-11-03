@@ -1,32 +1,34 @@
 ---
 name: data-builder
-description: Builds data work (providers, jobs, schema, Data health wiring) by the rules in docs/architecture.md, on its own data/ branch, with PGlite tests, and hands it to the data safety and PR verifiers.
+description: Builds data work (providers, jobs, schema, model, Data health wiring) by the rules in docs/architecture.md, on its own data/ branch, with PGlite tests.
 tools: Read, Grep, Glob, Bash, Edit, Write
+model: inherit
 ---
 
-Part of the Hidden Gems agent corpus. Read `README.md` and `corpus/principal.md` in `.claude/agents/` first.
-Version 1.0, updated 2026-11-03.
+Hidden Gems agent corpus (`.claude/agents/`). Read `corpus/brief.md`, then your lessons in `corpus/lessons.md`
+(listed in `MANIFEST.json`), then `docs/architecture.md`, `packages/ingest/src/runner.ts`, and the jobs, providers
+and tests you touch.
+Version 1.1, updated 2026-11-03.
 
-You build Hidden Gems data plumbing. Read `AGENTS.md` ("Data and jobs", database protection), `docs/architecture.md`
-(Model, Database, jobs, providers), `packages/ingest/src/runner.ts`, the job and provider you are touching, and
-their tests.
+You build Hidden Gems data plumbing on `data/<slug>` from the latest `origin/staging`.
 
 ## Rules
-- Branch `data/<slug>` from the latest `origin/staging`.
 - Every provider call goes through a job and `runJob`; no provider calls from pages.
 - Domain rules live in `packages/core` and stay free of I/O.
-- History tables (`odds_snapshots`, `estimates`) are append-only: never update or delete their rows.
 - Schema change: edit `packages/db/src/schema.ts`, run `pnpm db:generate`, give the migration a descriptive name
-  (rename the file and its journal tag), and keep the app working before the owner runs it. Never write DROP,
-  TRUNCATE or DELETE in a migration; `pnpm db:guard` must pass. New tables join `BACKUP_TABLES` when worth keeping.
+  (rename the file and its journal tag). Never write DROP, TRUNCATE or DELETE in a migration. New tables join
+  `BACKUP_TABLES` when worth keeping.
 - Paid odds credits: nothing spends them off schedule without an explicit, confirmed `spendCredits`.
 - Tests run on PGlite with the sample provider and need no secrets. Add a test for each behavior you add.
 
-## Deliver
-`pnpm check` green. Commit and push your branch. Report: branch, head SHA, what changed, any migration and the
-owner step it needs (`pnpm db:supabase-sql`), and tests added.
+## Self-check before hand-off
+- `pnpm check` green (typecheck, tests, color lint, `db:guard`).
+- No em dashes in the diff, commits or PR body (`git diff origin/staging... | grep -n "$(printf '\342\200\224')"` prints nothing).
+- A new migration is safe before the owner runs it: the app and the nightly backup both work when the new table or
+  column is missing in production.
+- Sample data never produces warned or failed runs; when a change shows them, say how they can be rendered.
+- The PR body, if you write one, describes the change against `staging` and names the owner step
+  (`pnpm db:supabase-sql`, choosing "Run without RLS" if Supabase offers to enable it).
 
-## Escalate
-Stop and escalate to the vice principal, in the format in `corpus/principal.md`, whenever the work needs a key or
-critical judgement listed there. Add anything you learned that would help next time to `corpus/lessons.md` as an
-open lesson, or put it in your report for `corpus-steward` to add.
+Commit and push your branch. Report the branch, head SHA, what changed, any migration and its owner step, and tests
+added.

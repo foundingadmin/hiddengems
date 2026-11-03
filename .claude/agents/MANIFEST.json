@@ -1,6 +1,6 @@
 {
   "corpus": "Hidden Gems agents",
-  "version": "1.0",
+  "version": "1.1",
   "updated": "2026-11-03",
   "principal": {
     "name": "Titus",
@@ -14,6 +14,7 @@
     "role": "The lead session's standing role. Owns the perpetual staging branch and preview, dispatches every step of the order of work to its owning agent, makes the calls that are not the principal's, escalates. Never merges to main."
   },
   "documents": {
+    "brief": "corpus/brief.md",
     "readme": "README.md",
     "principal": "corpus/principal.md",
     "decisions": "corpus/decisions.md",
@@ -26,12 +27,13 @@
       "name": "vice-principal",
       "file": "vice-principal.md",
       "kind": "lead",
+      "model": "inherit",
       "lanes": [
         "all"
       ],
-      "version": "1.1",
+      "version": "2.0",
       "updated": "2026-11-03",
-      "reads": "everything",
+      "reads": "brief, README, decisions, agent reports",
       "returns": "dispatches, decisions, escalations",
       "writes": "agents/ branches; staging merges only through staging-keeper"
     },
@@ -39,25 +41,27 @@
       "name": "staging-keeper",
       "file": "staging-keeper.md",
       "kind": "operations",
+      "model": "sonnet",
       "lanes": [
         "all"
       ],
-      "version": "1.0",
+      "version": "2.0",
       "updated": "2026-11-03",
-      "reads": "pr-verifier verdicts, CI",
-      "returns": "merged PRs, staging state, branches to update, threads ready",
+      "reads": "brief, PR diff, CI, verdicts",
+      "returns": "checklist result, merged PRs, staging state, branches to update, threads ready",
       "writes": "merges into staging"
     },
     {
       "name": "release-manager",
       "file": "release-manager.md",
       "kind": "operations",
+      "model": "sonnet",
       "lanes": [
         "all"
       ],
-      "version": "1.0",
+      "version": "1.1",
       "updated": "2026-11-03",
-      "reads": "staging since main, task PRs",
+      "reads": "brief, staging since main, task PRs",
       "returns": "release PR for the principal; staging synced after ratification",
       "writes": "release PR, staging sync"
     },
@@ -65,12 +69,13 @@
       "name": "corpus-steward",
       "file": "corpus-steward.md",
       "kind": "operations",
+      "model": "inherit",
       "lanes": [
         "agents"
       ],
-      "version": "1.0",
+      "version": "1.1",
       "updated": "2026-11-03",
-      "reads": "lessons, verdicts, escalations of a ratified run",
+      "reads": "brief, amendments, a ratified run's reports",
       "returns": "agents/retro branch, escalations for major amendments",
       "writes": ".claude/agents"
     },
@@ -78,12 +83,13 @@
       "name": "facet-curator",
       "file": "facet-curator.md",
       "kind": "operations",
+      "model": "sonnet",
       "lanes": [
         "ds"
       ],
-      "version": "1.0",
+      "version": "1.1",
       "updated": "2026-11-03",
-      "reads": "a ratified release's Facet and app changes",
+      "reads": "brief, docs of the parts a release touched",
       "returns": "ds/curate branch: specimens, screens, changelog, version; drift report",
       "writes": "packages/facet"
     },
@@ -91,12 +97,13 @@
       "name": "preview-triager",
       "file": "preview-triager.md",
       "kind": "intake",
+      "model": "sonnet",
       "lanes": [
         "all"
       ],
-      "version": "1.0",
+      "version": "1.1",
       "updated": "2026-11-03",
-      "reads": "Vercel toolbar threads",
+      "reads": "brief, Vercel toolbar threads",
       "returns": "lane tasks with briefs; resolves threads after merge",
       "writes": "thread status only"
     },
@@ -104,12 +111,13 @@
       "name": "screen-builder",
       "file": "screen-builder.md",
       "kind": "builder",
+      "model": "inherit",
       "lanes": [
         "screens"
       ],
-      "version": "1.0",
+      "version": "1.1",
       "updated": "2026-11-03",
-      "reads": "docs/build-brief.md, Facet",
+      "reads": "brief, docs/build-brief.md, DESIGN.md, docs of parts used",
       "returns": "pushed screens/ branch, DS requests",
       "writes": "apps/web"
     },
@@ -117,13 +125,14 @@
       "name": "data-builder",
       "file": "data-builder.md",
       "kind": "builder",
+      "model": "inherit",
       "lanes": [
         "data",
         "model"
       ],
-      "version": "1.0",
+      "version": "1.1",
       "updated": "2026-11-03",
-      "reads": "docs/architecture.md",
+      "reads": "brief, docs/architecture.md",
       "returns": "pushed data/ branch, owner steps",
       "writes": "packages/core, packages/db, packages/ingest, apps/web data"
     },
@@ -131,12 +140,13 @@
       "name": "facet-builder",
       "file": "facet-builder.md",
       "kind": "builder",
+      "model": "inherit",
       "lanes": [
         "ds"
       ],
-      "version": "1.0",
+      "version": "1.1",
       "updated": "2026-11-03",
-      "reads": "DS requests, Facet docs",
+      "reads": "brief, DESIGN.md, docs of the closest parts",
       "returns": "Facet parts and how to use them",
       "writes": "packages/facet"
     },
@@ -144,12 +154,13 @@
       "name": "repo-hygiene",
       "file": "repo-hygiene.md",
       "kind": "maintainer",
+      "model": "sonnet",
       "lanes": [
         "fix"
       ],
-      "version": "1.0",
+      "version": "1.1",
       "updated": "2026-11-03",
-      "reads": "the whole repo, branches, corpus",
+      "reads": "brief, the repo, branches, corpus",
       "returns": "fix/hygiene branch, escalations",
       "writes": "safe cleanups only"
     },
@@ -157,12 +168,13 @@
       "name": "content-verifier",
       "file": "content-verifier.md",
       "kind": "verifier",
+      "model": "sonnet",
       "lanes": [
         "all with words"
       ],
-      "version": "1.0",
+      "version": "2.0",
       "updated": "2026-11-03",
-      "reads": "diff words",
+      "reads": "brief, diff words; content.md for UI copy",
       "returns": "exact rewrites, Verdict",
       "writes": "nothing"
     },
@@ -170,12 +182,13 @@
       "name": "design-verifier",
       "file": "design-verifier.md",
       "kind": "verifier",
+      "model": "inherit",
       "lanes": [
         "all with UI"
       ],
-      "version": "1.1",
+      "version": "2.0",
       "updated": "2026-11-03",
-      "reads": "diff UI, screenshots",
+      "reads": "brief, DESIGN.md, docs of parts touched, screenshots",
       "returns": "exact fixes, DS requests, Verdict",
       "writes": "nothing"
     },
@@ -183,13 +196,14 @@
       "name": "data-safety-verifier",
       "file": "data-safety-verifier.md",
       "kind": "verifier",
+      "model": "inherit",
       "lanes": [
         "data",
         "model"
       ],
-      "version": "1.0",
+      "version": "2.0",
       "updated": "2026-11-03",
-      "reads": "diff data, jobs, secrets, credits",
+      "reads": "brief, docs/architecture.md (Database), diff",
       "returns": "exact fixes, Verdict",
       "writes": "nothing"
     },
@@ -197,12 +211,13 @@
       "name": "model-verifier",
       "file": "model-verifier.md",
       "kind": "verifier",
+      "model": "inherit",
       "lanes": [
         "model"
       ],
-      "version": "1.0",
+      "version": "2.0",
       "updated": "2026-11-03",
-      "reads": "packages/core model and gem rules",
+      "reads": "brief, docs/architecture.md (Model), diff",
       "returns": "fixes, rating impact, Verdict",
       "writes": "nothing"
     },
@@ -210,12 +225,14 @@
       "name": "pr-verifier",
       "file": "pr-verifier.md",
       "kind": "gate",
+      "model": "sonnet",
       "lanes": [
-        "all"
+        "heavy tier",
+        "escalated"
       ],
-      "version": "1.1",
+      "version": "2.0",
       "updated": "2026-11-03",
-      "reads": "one PR, CI, verdicts",
+      "reads": "brief, one heavy or escalated PR, CI, verdicts",
       "returns": "fix list for the branch owner, Merge: ready or blocked (into staging)",
       "writes": "nothing"
     }
@@ -224,5 +241,33 @@
     "production": "main (merged only by the principal, from a release PR)",
     "staging": "staging (perpetual; every task PR targets it; owned by the vice principal)",
     "tasks": "<lane>/<slug> cut from staging"
+  },
+  "tiers": {
+    "tiny": "content-verifier on the delta, then staging-keeper",
+    "standard": "lane verifiers, then staging-keeper; pr-verifier only if something is open or the branch is large",
+    "heavy": "lane verifiers, then pr-verifier, then staging-keeper"
+  },
+  "lessons": {
+    "vice-principal": [],
+    "staging-keeper": [],
+    "release-manager": [],
+    "corpus-steward": [],
+    "facet-curator": [],
+    "preview-triager": [],
+    "screen-builder": [
+      "L2"
+    ],
+    "data-builder": [
+      "L2"
+    ],
+    "facet-builder": [],
+    "repo-hygiene": [],
+    "content-verifier": [],
+    "design-verifier": [
+      "L2"
+    ],
+    "data-safety-verifier": [],
+    "model-verifier": [],
+    "pr-verifier": []
   }
 }

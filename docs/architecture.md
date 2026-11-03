@@ -157,7 +157,9 @@ be explained later.
   paste into the Supabase SQL editor (run as the owner). It applies each migration once, recorded exactly as
   `pnpm db:migrate` records it, upserts reference data, closes Supabase's automatic public API on the app's
   tables, and (with a password) creates `hiddengems_app`, the login the app uses: rows only, no create, alter,
-  drop or truncate. Run it again after any PR that adds a migration.
+  drop or truncate. Run it again after any PR that adds a migration. If Supabase offers "Run and enable RLS",
+  choose "Run without RLS": grants and the closed public API control access, and RLS without policies would block
+  the app login.
 - **Safety**: history tables reject update, delete and truncate (migration 0003); `pnpm db:guard` fails CI on
   a migration that drops, truncates or deletes unless the line says `-- destructive-approved: <reason>`.
 - **Backups**: the `backup` job (daily 11:07 UTC) writes the whole database as gzipped JSON to a private GitHub

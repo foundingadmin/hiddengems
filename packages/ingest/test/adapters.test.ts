@@ -97,6 +97,17 @@ describe('http', () => {
     expect((await fail([401])).detail.url).toBe('https://x.test/?apiKey=***');
     expect(redact('https://a.test/x?key=abc&b=1')).toBe('https://a.test/x?key=***&b=1');
   });
+  it('masks every secret-named query param, in any case, and nothing else', () => {
+    const names = ['api_key', 'apikey', 'key', 'token', 'access_token', 'secret', 'sig', 'signature'];
+    for (const name of names) {
+      for (const n of [name, name.toUpperCase()]) {
+        expect(redact(`https://a.test/x?${n}=s3cr3t&b=1`)).toBe(`https://a.test/x?${n}=***&b=1`);
+        expect(redact(`https://a.test/x?a=1&${n}=s3cr3t`)).toBe(`https://a.test/x?a=1&${n}=***`);
+      }
+    }
+    expect(redact('https://a.test/x?Api_Key=a&Access_Token=b#frag')).toBe('https://a.test/x?Api_Key=***&Access_Token=***#frag');
+    expect(redact('https://a.test/x?monkey=1&keys=2&tokens=3&season=2026')).toBe('https://a.test/x?monkey=1&keys=2&tokens=3&season=2026');
+  });
 });
 
 describe('nflverse usage (hgs.py game_logs)', () => {

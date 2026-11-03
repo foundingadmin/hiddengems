@@ -302,3 +302,11 @@ export const providerUsage = pgTable('provider_usage', {
   remaining: integer(),
   updatedAt: tstz().notNull().default(sql`now()`),
 });
+
+/** Monthly spending caps for paid providers, in US cents, set by the owner. No row means no cap, and a paid
+ * provider with no cap is never called (the Jeweler reads Anthropic's row; its spend is in provider_usage). */
+export const providerCaps = pgTable('provider_caps', {
+  provider: text().primaryKey(),
+  monthlyCents: integer().notNull(),
+  updatedAt: createdAt(),
+});

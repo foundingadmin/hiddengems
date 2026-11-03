@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { type ReactNode, useEffect, useState } from 'react';
 import { Dropdown } from '@/components/dropdown';
+import { JewelerSheet } from '@/components/jeweler';
 
 const icon = (d: ReactNode) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{d}</svg>
@@ -36,6 +37,9 @@ export function Shell({ children, foot, weeks, newCount }: { children: ReactNode
   useEffect(() => setOpen(false), [path]);
   const inSettings = path.startsWith('/settings') || path === '/data' || path.startsWith('/data/');
   const week = Number(params.get('week')) || weeks.current;
+  const asking = new URLSearchParams(params);
+  asking.set('ask', '1');
+  const askHref = `${path}?${asking}`;
   const withWeek = (href: string) => (params.get('week') ? `${href}?week=${params.get('week')}` : href);
   const count = (label: string) => newCount > 0 && (
     <span className="fc-badge hg-nav-count" data-variant="purple" data-size="sm" data-contrast="low">
@@ -75,7 +79,12 @@ export function Shell({ children, foot, weeks, newCount }: { children: ReactNode
           </nav>
         )}
         <div className="hg-rail-spacer" />
-        <ul className="fc-sidenav-list" role="list">{item('/jeweler', 'Ask the Jeweler', CHAT)}</ul>
+        <ul className="fc-sidenav-list" role="list">
+          {/* Opens the Jeweler as a sheet over the open page (?ask=1); on /jeweler itself it is the page. */}
+          {path === '/jeweler' ? item('/jeweler', 'Ask the Jeweler', CHAT) : (
+            <li><Link className="fc-sidenav-item" href={askHref} scroll={false}>{CHAT}<span>Ask the Jeweler</span></Link></li>
+          )}
+        </ul>
         <div className="fc-sidenav-foot">{foot}</div>
       </aside>
       <div className="fc-shell-main">
@@ -120,6 +129,7 @@ export function Shell({ children, foot, weeks, newCount }: { children: ReactNode
           {tab('/jeweler', 'Jeweler', CHAT)}
         </nav>
       </div>
+      <JewelerSheet />
     </div>
   );
 }

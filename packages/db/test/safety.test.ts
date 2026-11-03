@@ -3,7 +3,7 @@ import { afterAll, describe, expect, it, vi } from 'vitest';
 
 // Each test boots one or two in-memory Postgres databases and migrates them, which is slow under load.
 vi.setConfig({ testTimeout: 30_000 });
-import { count } from 'drizzle-orm';
+import { count, sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/pglite';
 import { migrate } from 'drizzle-orm/pglite/migrator';
 import {
@@ -57,5 +57,18 @@ describe('backup and restore', () => {
     expect(s!.observedAt.toISOString()).toBe(at.toISOString());
     const [b] = await dst.db.select({ n: count() }).from(bets);
     expect(b!.n).toBe(1);
+  });
+
+  it('keeps backing up before the owner runs a migration that adds a table', async () => {
+    const src = fresh();
+    await src.migrate();
+    await seedReference(src.db);
+    await src.db.execute(sql`drop table provider_caps`); // as if migration 0005 had not run yet
+    const backup = await dumpDatabase(src.db);
+    expect(backup.tables.teams).toHaveLength(32);
+    expect(backup.tables).not.toHaveProperty('provider_caps');
+    const dst = fresh();
+    await dst.migrate();
+    expect((await restoreDatabase(dst.db, backup)).provider_caps).toBe(0);
   });
 });

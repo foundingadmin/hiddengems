@@ -5,15 +5,21 @@ import { type AnyColumn, getTableColumns, getTableName } from 'drizzle-orm';
 import type { PgTable } from 'drizzle-orm/pg-core';
 import type { Db } from './client';
 import {
-  bets, books, estimates, games, gemMarks, jobSettings, markets, oddsLatest, oddsSlots, oddsSnapshots, picks, playerGameStats, playerUsage, players, providerRefs,
-  providerUsage, runs, teams,
+  bets, books, estimates, games, gemMarks, jobSettings, markets, oddsLatest, oddsSlots, oddsSnapshots, picks, playerGameStats, playerUsage, players, providerCaps,
+  providerRefs, providerUsage, runs, teams,
 } from './schema';
 
 /** Every table worth keeping, parents before children. Run logs and job locks are left out: they are noise. */
 export const BACKUP_TABLES: PgTable[] = [
   teams, books, markets, players, games, providerRefs, oddsSnapshots, oddsLatest, oddsSlots, estimates, picks,
-  playerGameStats, playerUsage, gemMarks, bets, runs, providerUsage, jobSettings,
+  playerGameStats, playerUsage, gemMarks, bets, runs, providerUsage, jobSettings, providerCaps,
 ];
+
+/** Postgres "undefined_table": a table whose migration the owner has not run yet. Drizzle wraps driver errors. */
+const missingTable = (e: unknown): boolean => {
+  for (let x = e as { code?: unknown; cause?: unknown } | undefined; x; x = x.cause as typeof x) if (x.code === '42P01') return true;
+  return false;
+};
 
 export interface Backup {
   version: 1;
@@ -23,7 +29,10 @@ export interface Backup {
 
 export async function dumpDatabase(db: Db, now = new Date()): Promise<Backup> {
   const tables: Backup['tables'] = {};
-  for (const t of BACKUP_TABLES) tables[getTableName(t)] = await db.select().from(t) as Record<string, unknown>[];
+  for (const t of BACKUP_TABLES) {
+    // A table added by a migration not yet run in this database is left out, so the nightly backup keeps working.
+    try { tables[getTableName(t)] = await db.select().from(t) as Record<string, unknown>[]; } catch (e) { if (!missingTable(e)) throw e; }
+  }
   return { version: 1, takenAt: now.toISOString(), tables };
 }
 

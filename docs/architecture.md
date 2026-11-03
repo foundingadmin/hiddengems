@@ -118,6 +118,7 @@ network and 5xx errors, request counting, quota headers into `provider_usage`, k
 | The Odds API v4, free plan | Anytime TD prices from DraftKings, FanDuel, BetMGM, Caesars, Fanatics, with DraftKings slip links | `ODDS_API_KEY` |
 | nflverse | Schedule with spread and total lines (`schedules/games.csv`), 2026 rosters with jersey numbers, weekly player stats, play by play, snap counts, injury reports | none |
 | Sample | Everything, deterministic, built around today's date | none |
+| Anthropic Messages API | The Jeweler's answers (`claude-sonnet-5-5`) | `ANTHROPIC_API_KEY` |
 
 `DATA_MODE=sample` (the default when `ODDS_API_KEY` is unset) runs the whole pipeline on sample data:
 local development, tests, CI and previews need no secrets. Adapters validate payloads with zod, so
@@ -128,6 +129,17 @@ first live pull.
 Adding a provider: implement the interface for its role in `ingest/src/providers/types.ts`, map its
 team names through `findTeam` and its ids through `provider_refs`, add fixture tests, and select it
 in `providers/index.ts`.
+
+## The Jeweler
+
+An ask is interactive, so it is not on cron: the Jeweler's server action runs it at once as the `ask-jeweler`
+job through `runJob` (`ingest/src/jeweler.ts`), so every call lands in the pull log with whose move a failure is.
+Before any call a guard needs both `ANTHROPIC_API_KEY` and the owner's monthly cap (`provider_caps`, US cents,
+provider `anthropic`), and refuses an ask the month's spend (`provider_usage`, cents, restarting each UTC month)
+cannot cover at the longest answer. Without either, the composer is off and a note says why. The prompt carries the
+gem in context and the week's board, read from `picks`. `ANTHROPIC_BASE_URL` points the adapter at a stub for
+screenshots. Set the cap in the Supabase SQL editor:
+`insert into provider_caps (provider, monthly_cents) values ('anthropic', <cents>) on conflict (provider) do update set monthly_cents = excluded.monthly_cents;`
 
 ## Model
 

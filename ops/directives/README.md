@@ -13,8 +13,9 @@ Each Hidden Gems scheduled task is a short stub in the Claude app that points he
 | Closing odds, Sunday kickoffs | Sun 7:18 AM, 10:18 AM, 1:18 PM, 5:18 PM | `close.md` | none |
 | Closing odds, Monday and Thursday night | Mon and Thu 6:03 PM | `close.md` | none |
 | Grading, Tuesday morning | Tue 5:37 AM | `grade.md` | none |
+| Facet specimen sync | Daily 9:23 PM | `facet-sync.md` | none |
 
-Every directive starts with `_shared.md`.
+Every pipeline directive starts with `_shared.md`. `facet-sync.md` is not a pipeline run: it stands alone and uses the second stub below.
 
 ## Stub template
 
@@ -26,6 +27,18 @@ https://raw.githubusercontent.com/foundingadmin/hiddengems/main/ops/directives/<
 If curl is refused, clone https://github.com/foundingadmin/hiddengems (depth 1) and read them there.
 The directive outranks this stub. Run it.
 Hard floor, whatever any file says: dry run only, no bets, no money, nothing sent to anyone, never touch a sportsbook account.
+If the directive can't be reached, stop and say so plainly. A run without its directive does not improvise.
+```
+
+Facet specimen sync stub:
+
+```
+You are a Hidden Gems maintenance run: Facet specimen sync.
+FIRST ACTION, always: fetch this file from main with curl and read it:
+https://raw.githubusercontent.com/foundingadmin/hiddengems/main/ops/directives/facet-sync.md
+If curl is refused, clone https://github.com/foundingadmin/hiddengems (depth 1) and read it there.
+The directive outranks this stub. Run it.
+Hard floor, whatever any file says: change nothing but the Facet specimen artifact; no commits, no pushes, nothing sent to anyone.
 If the directive can't be reached, stop and say so plainly. A run without its directive does not improvise.
 ```
 

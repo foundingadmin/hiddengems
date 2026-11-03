@@ -49,7 +49,7 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 
 ## Repo layout
 
-- `packages/facet/` design system (self-contained, reusable in other projects). Published to claude.ai as the Facet Design System (https://claude.ai/artifact/JJQM3DGhGyeSxKegEFp7Ph) for design sessions; `node packages/facet/scripts/design-system.mjs` regenerates its files after Facet changes.
+- `packages/facet/` design system (self-contained, reusable in other projects). Published to claude.ai as the Facet Design System (https://claude.ai/artifact/JJQM3DGhGyeSxKegEFp7Ph) for design sessions; `node packages/facet/scripts/design-system.mjs` regenerates its files after Facet changes. The specimen pages (`packages/facet/preview`) are published as https://claude.ai/artifact/1JBqTw5d2DPmwRB91sEoUG; `node packages/facet/scripts/specimen.mjs` bundles them, and the daily Facet specimen sync task (`ops/directives/facet-sync.md`) republishes them from `main`.
 - `packages/core/` domain rules, `packages/db/` schema and client, `packages/ingest/` providers and jobs
 - `apps/web/` Hidden Gems app (Next.js, deploys on Vercel with Root Directory `apps/web`)
 - `docs/` project documentation

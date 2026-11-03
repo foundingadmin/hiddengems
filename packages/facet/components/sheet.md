@@ -57,6 +57,7 @@ Implemented in `css/data.css` as `.fc-sheet`.
 - The body scrolls (`overscroll-behavior: contain`); the footer stays pinned with a hairline above it. Page scroll locks while the modal is open.
 - Tabs follow the APG tabs pattern: arrow keys, Home and End move selection; only the selected tab is in the tab order.
 - Motion: slides in 16px over 300ms (`--fc-duration-overlay`, standard easing) with a backdrop fade; none under reduced motion.
+- Edge glint hook: `--fc-glint-edge` names the edge facing the page (left; right for `data-side="left"`; top for a full-screen phone sheet). `js/dots.mjs` ripples dots along it as the sheet opens (`patterns/moments.md`). The sheet's spring open uses `--fc-ease-emphasized` over `--fc-duration-sheet`, and its close `--fc-ease-exit`.
 - Title is the pick, not a sentence. Do not repeat the close action in the footer.
 
 ### One scroll with section tabs `[F]`

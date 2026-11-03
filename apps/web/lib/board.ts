@@ -86,7 +86,7 @@ export interface BoardRow {
   clarity: number;
   recommended: number;
   /** Unread and new: crossed 90 or jumped 15 since found or read. */
-  fresh: { kind: 'crossed' | 'jumped'; from: number; at: string } | null;
+  fresh: { kind: 'crossed' | 'jumped'; from: number; at: string; since: string } | null;
   reasons: string[];
 }
 
@@ -106,6 +106,7 @@ export async function board(week: number | null, now = new Date()): Promise<{ ro
     const team = player?.teamId ? findTeam(player.teamId) : null;
     const started = game.kickoffAt <= now;
     const isNew = pick.kind === 'gem' && !started && mark ? newGemReason(pick.rating, mark) : null;
+    const newAt = isNew && mark ? (isNew.kind === 'crossed' && !mark.readAt ? mark.foundAt : (mark.readAt ?? mark.foundAt)) : null;
     return {
       key: pick.selectionKey, kind: pick.kind as GemKind, rating: pick.rating,
       name: player?.name ?? pick.playerName ?? 'Unknown player', teamId: team?.id ?? null, number: player?.jerseyNumber ?? null,
@@ -113,7 +114,7 @@ export async function board(week: number | null, now = new Date()): Promise<{ ro
       kickoff: game.kickoffAt.toISOString(), started, window: windowOf(game.kickoffAt),
       price: pick.price, priced: pick.priced, hitChance: pick.hitChance, gap: pick.gapToPosted, carat: pick.carat, clarity: pick.clarity,
       recommended: i,
-      fresh: isNew ? { ...isNew, at: clock(isNew.kind === 'crossed' && !mark?.readAt ? mark!.foundAt : (mark?.readAt ?? mark!.foundAt)) } : null,
+      fresh: isNew && newAt ? { ...isNew, at: clock(newAt), since: newAt.toISOString() } : null,
       reasons: reasons(pick, inputs as Inputs | null, team?.name ?? null),
     };
   });

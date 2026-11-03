@@ -570,6 +570,11 @@ dialog.fc-sheet:not([open]) { display: none; }
   .fc-sheet[data-side="left"][open] { animation-name: fc-sheet-in-left; }
   .fc-sheet[open]::backdrop { animation: fc-backdrop-in var(--fc-duration-overlay) var(--fc-ease-standard); }
 }
+/* Edge glint hook (patterns/moments.md): the edge js/dots.mjs shimmers along as the sheet opens, the one facing
+   the page. A full-screen phone sheet shimmers along its top. */
+.fc-sheet { --fc-glint-edge: left; }
+.fc-sheet[data-side="left"] { --fc-glint-edge: right; }
+@media (max-width: 767px) { .fc-sheet[data-phone="full"] { --fc-glint-edge: top; } }
 @keyframes fc-sheet-in { from { transform: translateX(var(--fc-space-4)); opacity: 0; } }
 @keyframes fc-sheet-in-left { from { transform: translateX(calc(-1 * var(--fc-space-4))); opacity: 0; } }
 @keyframes fc-backdrop-in { from { opacity: 0; } }

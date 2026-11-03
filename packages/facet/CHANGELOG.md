@@ -7,6 +7,13 @@ Added, for the agent workflow page
 - Step list (`.fc-step-list`, `.fc-step`): replay steps with the current one marked (`components/step-list.md`).
 - Flow map (`.fc-flow-map`, `.fc-flow-node`, `.fc-flow-edge`, `.fc-flow-label`, `.fc-flow-map-zoom`): who hands what to whom, with pan, zoom and a replay state per edge and node (`components/flow-map.md`).
 
+Added, for micro moments (`patterns/moments.md`)
+- Dots engine (`js/dots.mjs`, types in `js/dots.d.mts`): stages and the cloud, fly, dust, sweep, unsweep, ripple and orbit primitives, with the no-touch rule tested in `scripts/dots.test.mjs`.
+- Tokens: `--fc-illus-1` to `4` (brand ramp) and `--fc-illus-context-1` to `4` (gray); `--fc-ease-emphasized`, `--fc-ease-exit`, `--fc-duration-sheet`, `--fc-duration-undo`, `--fc-z-stage`. The build now resolves `color-mix` between two token references.
+- Gem card states `data-unread` (tint and sheen) and `data-selected` (`components/gem-card.md`).
+- Toast (`.fc-toast-region`, `.fc-toast`) and the Undo countdown (`.fc-toast-dots`, `js/undo.mjs`) (`components/toast.md`).
+- Edge glint hooks (`--fc-glint-edge`, `[data-glint]`) on the tab bar, rail items and the sheet.
+
 ## 0.2.0 (2026-11-03)
 
 Minor: batch 2 added parts, and no existing part changed its API.

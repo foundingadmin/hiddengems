@@ -25,10 +25,12 @@ packages/facet/
     base.css                  Fonts, reset, focus, selection, reduced motion, layout primitives
     components.css            .fc-* components (measured from the vercel.com reference) and Hidden Gems pieces
   js/tokens.mjs             GENERATED: resolved hex values per theme for canvas/SVG charts
+  js/dots.mjs               The moments engine: dot clouds, sweeps, ripples, orbits (patterns/moments.md)
+  js/undo.mjs               The Undo toast countdown
   fonts/                    Sans + Mono variable WOFF2 (SIL OFL 1.1, license included)
   foundations/              Color, typography, content, layout/materials/motion/icons
   components/               56 component specs synthesized from vercel.com reference docs, with Hidden Gems usage
-  patterns/                 Hidden Gems composition patterns (slate, verdicts, tiers, freshness, states)
+  patterns/                 Hidden Gems composition patterns (slate, verdicts, tiers, freshness, states, moments)
   guidelines/               Vercel Web Interface Guidelines digest (rule IDs for reviews)
   reference/                Raw captures (computed tokens, P3 values, component measurements),
                             Vercel ecosystem notes, and inbox/ for third-party material

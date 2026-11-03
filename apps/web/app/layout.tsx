@@ -6,6 +6,7 @@ import type { ReactNode } from 'react';
 import { Freshness } from '@/components/freshness';
 import { RailSlip } from '@/components/rail-slip';
 import { Shell } from '@/components/shell';
+import { MomentsProvider } from '@/lib/moments/provider';
 import { newGemCount, weeks } from '@/lib/board';
 
 export const metadata: Metadata = {
@@ -20,7 +21,10 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     <html lang="en">
       <body>
         <a className="fc-visually-hidden" href="#main">Skip to content</a>
-        <Shell foot={<Freshness label="Odds pulled" />} slip={<RailSlip />} weeks={w} newCount={newCount}>{children}</Shell>
+        {/* Around the Shell, so the Shell's own nav can play moments too (the Slips glint). */}
+        <MomentsProvider>
+          <Shell foot={<Freshness label="Odds pulled" />} slip={<RailSlip />} weeks={w} newCount={newCount}>{children}</Shell>
+        </MomentsProvider>
       </body>
     </html>
   );

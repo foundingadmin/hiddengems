@@ -8,6 +8,15 @@ Hidden Gems pieces built only from Facet tokens, promoted from the approved wire
 - Body: a `text-heading-14` heading "Why it's a gem" and `.fc-why`, three reasons. Each reason carries its number; the purple facet only marks the line.
 - Foot (`.fc-gem-card-foot`): when it was found, and Mark read (`.fc-button[data-variant=tertiary][data-size=small]`).
 
+### States
+- `data-unread`: a new gem the reader has not read. Brand tint and edge, and a slow sheen that crosses the card every
+  4.2s (a named exception to the one-loop rule, `patterns/moments.md`). Under reduced motion the tint stays and the
+  sheen never runs. Removing the attribute fades the tint over 300ms, after `--fc-state-delay` when a moment staggers
+  several cards (Mark all read sets 170ms per card so each fades as its cloud passes).
+- `data-selected`: the gem is on the slip. A 2px brand edge (`--fc-control-on`). It can sit with `data-unread`.
+- The newest unread card carries six circling dots, drawn by `js/dots.mjs` on a stage inside the strip, not by CSS.
+- The card label still says the state in words ("Ja'Marr Chase, new gem"); the tint is never the only cue.
+
 ## Gem row
 - `.fc-gem-row`, the phone form of a board row: rating, player with position and matchup, then price over edge (`.fc-gem-row-end`). A list of them is `.fc-gem-list`.
 - `.fc-gem-item` (CSS in `css/slip.css`): a list item holding the row link and its slip button, a small square button (`data-variant="secondary"` with a plus to add, `tertiary` with a check once on the slip). The two share the row's hairline. Never put the button inside the link. A row with no button (Fool's Gold) spans both lanes, so its name and label keep the room.

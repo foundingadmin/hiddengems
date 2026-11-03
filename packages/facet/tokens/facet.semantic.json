@@ -579,5 +579,50 @@
       "$value": "{color.purple.400}",
       "$description": "Brand edges."
     }
+  },
+  "illus": {
+    "$description": "Dot illustration tones for moments (js/dots.mjs, patterns/moments.md). 1 to 4 are a ramp built from the brand slot, so a rebrand carries them: 1 leans toward the primary text color (the brightest dot on dark, the deepest on light), 4 is the brand fill. Dots that travel use only these four. The context ramp is gray, for dots that stand for things other than the brand.",
+    "1": {
+      "$type": "color",
+      "$value": "color-mix(in srgb, {brand.fg} 55%, {color.gray.1000})",
+      "$description": "The lead dot of a cloud or orbit."
+    },
+    "2": {
+      "$type": "color",
+      "$value": "{brand.fg}",
+      "$description": "The body of a cloud."
+    },
+    "3": {
+      "$type": "color",
+      "$value": "color-mix(in srgb, {brand.fg} 30%, {brand.solid})",
+      "$description": "The body of a cloud, one step deeper."
+    },
+    "4": {
+      "$type": "color",
+      "$value": "{brand.solid}",
+      "$description": "The deepest dot, and the fill a cloud settles into."
+    },
+    "context": {
+      "1": {
+        "$type": "color",
+        "$value": "{color.gray.1000}",
+        "$description": "Context dots, strongest."
+      },
+      "2": {
+        "$type": "color",
+        "$value": "{color.gray.900}",
+        "$description": "Context dots."
+      },
+      "3": {
+        "$type": "color",
+        "$value": "{color.gray.700}",
+        "$description": "Context dots, quiet."
+      },
+      "4": {
+        "$type": "color",
+        "$value": "{color.gray.500}",
+        "$description": "Context dots, quietest."
+      }
+    }
   }
 }

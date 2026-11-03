@@ -4,6 +4,6 @@ Branded motion packages. Each folder holds working proofs, source, and a rundoc 
 
 | Package | Holds | Status |
 |---|---|---|
-| [`micro-moments/`](micro-moments/README.md) | 11 interaction moments: adding, removing, sending, reading, drawers | Ready to integrate |
+| [`micro-moments/`](micro-moments/README.md) | 11 interaction moments: adding, removing, sending, reading, drawers | Integrating: foundation and New gems live; see `ROADMAP.md`, Micro moments |
 
 Add each new package as its own folder with a `README.md` and a `rundoc.md`.

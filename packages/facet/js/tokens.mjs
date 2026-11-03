@@ -286,7 +286,15 @@ export const semantic = {
     "brand-fg": "#7820bc",
     "brand-solid": "#8e4ec6",
     "brand-bg": "#f9f1fe",
-    "brand-border": "#eddcf9"
+    "brand-border": "#eddcf9",
+    "illus-1": "#4c1c72",
+    "illus-2": "#7820bc",
+    "illus-3": "#8740c3",
+    "illus-4": "#8e4ec6",
+    "illus-context-1": "#171717",
+    "illus-context-2": "#4d4d4d",
+    "illus-context-3": "#8f8f8f",
+    "illus-context-4": "#c9c9c9"
   },
   "dark": {
     "text-primary": "#ededed",
@@ -382,7 +390,15 @@ export const semantic = {
     "brand-fg": "#bf7af0",
     "brand-solid": "#763da9",
     "brand-bg": "#2e1938",
-    "brand-border": "#4f2768"
+    "brand-border": "#4f2768",
+    "illus-1": "#d4aeef",
+    "illus-2": "#bf7af0",
+    "illus-3": "#8c4fbe",
+    "illus-4": "#763da9",
+    "illus-context-1": "#ededed",
+    "illus-context-2": "#a1a1a1",
+    "illus-context-3": "#8f8f8f",
+    "illus-context-4": "#454545"
   }
 };
 export const typography = {

@@ -8,7 +8,7 @@
 //   blend           80% red zone read, 20% shrunk TD hit rate, then logistic recalibration
 //   market blend    stats weight 0.5 (0.3 under 4 games) x min(1, 8 / (odds + 4)), the rest is the fair price
 //   clarity         sample 40, consistency 30, books agree 15, setup 15
-import { type ClarityParts, fairChance } from './gems';
+import { CLARITY_MAX, type ClarityParts, fairChance } from './gems';
 import { impliedFromDecimal } from './odds';
 
 export const MODEL_V3 = 'hg-v3.0';
@@ -34,6 +34,24 @@ export const V3 = {
   statsWeight: 0.5,
   statsWeightThin: 0.3,
   thinGames: 4,
+  /** Long shots need more proof: the stats weight is multiplied by min(1, longShotScale / (odds + longShotShift)). */
+  longShotScale: 8,
+  longShotShift: 4,
+} as const;
+
+/** How clarity's four parts are measured (section 11.7); CLARITY_MAX in gems.ts holds what each is worth. */
+export const CLARITY_V3 = {
+  /** Sample: full marks once the touchdowns we would expect to have seen reach this many. */
+  sampleTds: 3,
+  /** Consistency: zero once the red zone read and the hit rate differ by this much. */
+  consistencyGap: 0.25,
+  /** Books agree: zero once the range of the books' implied chances reaches this share of their mean. */
+  booksRange: 0.25,
+  /** Books agree with only one book posted. */
+  oneBook: 7,
+  /** Setup: a snap share under this share of the season's is falling, and costs fallingPenalty points. */
+  fallingSnaps: 0.8,
+  fallingPenalty: 5,
 } as const;
 
 /** One player's usage in one game, built from nflverse play by play and snap counts. */
@@ -195,7 +213,7 @@ export function statsChance(form: PlayerForm, impliedFactorValue = 1): StatsRead
 
 /** How much the stats get to say against the market: long shots need more proof (section 11.4). */
 export function statsWeight(games: number, price: number): number {
-  return (games >= V3.thinGames ? V3.statsWeight : V3.statsWeightThin) * Math.min(1, 8 / (price + 4));
+  return (games >= V3.thinGames ? V3.statsWeight : V3.statsWeightThin) * Math.min(1, V3.longShotScale / (price + V3.longShotShift));
 }
 
 /** Injury report statuses and what each leaves of the 15 setup points. Anything else (or none) keeps all 15. */
@@ -216,21 +234,21 @@ export interface ClarityInput {
 
 /** Books agree: the range of the books' implied chances over their mean, full marks when equal, zero at 25%. One book: 7. */
 export function booksAgree(prices: readonly number[]): number {
-  if (prices.length < 2) return 7;
+  if (prices.length < 2) return CLARITY_V3.oneBook;
   const ips = prices.map(impliedFromDecimal);
   const range = Math.max(...ips) - Math.min(...ips);
-  return 15 * (1 - Math.min(1, range / mean(ips) / 0.25));
+  return CLARITY_MAX.booksAgree * (1 - Math.min(1, range / mean(ips) / CLARITY_V3.booksRange));
 }
 
 /** Clarity's four parts (section 11.7). Without stats there is no sample or consistency to measure. */
 export function clarityParts(c: ClarityInput): ClarityParts {
-  const injury = c.injuryStatus ? INJURY_SETUP[c.injuryStatus] ?? 15 : 15;
+  const injury = c.injuryStatus ? INJURY_SETUP[c.injuryStatus] ?? CLARITY_MAX.setup : CLARITY_MAX.setup;
   if (!c.form || !c.stats) return { sample: 0, consistency: 0, booksAgree: booksAgree(c.bookPrices), setup: injury };
   const priced = impliedFromDecimal(c.price);
-  const falling = c.form.snapRecent < 0.8 * c.form.snapSeason ? 5 : 0;
+  const falling = c.form.snapRecent < CLARITY_V3.fallingSnaps * c.form.snapSeason ? CLARITY_V3.fallingPenalty : 0;
   return {
-    sample: 40 * Math.min(1, c.form.games * Math.max(priced, c.hitChance) / 3),
-    consistency: 30 * (1 - Math.min(1, Math.abs(c.stats.chance - c.stats.hitRate) / 0.25)),
+    sample: CLARITY_MAX.sample * Math.min(1, c.form.games * Math.max(priced, c.hitChance) / CLARITY_V3.sampleTds),
+    consistency: CLARITY_MAX.consistency * (1 - Math.min(1, Math.abs(c.stats.chance - c.stats.hitRate) / CLARITY_V3.consistencyGap)),
     booksAgree: booksAgree(c.bookPrices),
     setup: Math.max(0, injury - falling),
   };

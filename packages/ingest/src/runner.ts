@@ -1,6 +1,6 @@
 // The job runner: every run gets a row in `runs` (the pull log) and its lines in `run_logs`, takes a
 // lock so overlapping cron deliveries cannot double-pull, and records whose move it is on failure.
-import { type Db, jobLocks, providerUsage, runLogs, runs } from '@hiddengems/db';
+import { type Db, jobLocks, jobSettings, providerUsage, runLogs, runs } from '@hiddengems/db';
 import { and, eq, isNull, lt, or, sql } from 'drizzle-orm';
 import { type FailureOwner, toJobError } from './errors';
 import { createHttp, type Http } from './http';
@@ -78,6 +78,16 @@ async function acquire(db: Db, job: string, holder: string, ms: number): Promise
 const release = (db: Db, job: string, holder: string) =>
   db.update(jobLocks).set({ holder: null, lockedUntil: null }).where(and(eq(jobLocks.job, job), eq(jobLocks.holder, holder)));
 
+/** Whether a source is paused. Reads as not paused until the job_settings migration has run. */
+export async function isPaused(db: Db, job: string): Promise<boolean> {
+  try {
+    const [row] = await db.select({ paused: jobSettings.paused }).from(jobSettings).where(eq(jobSettings.job, job));
+    return row?.paused ?? false;
+  } catch {
+    return false;
+  }
+}
+
 export async function runJob(name: string, opts: RunOptions): Promise<RunResult> {
   const job = opts.registry[name];
   if (!job) throw new Error(`Unknown job "${name}". Jobs: ${Object.keys(opts.registry).join(', ')}`);
@@ -85,6 +95,12 @@ export async function runJob(name: string, opts: RunOptions): Promise<RunResult>
   const now = opts.now ?? new Date();
   const holder = crypto.randomUUID();
   const { db } = opts;
+
+  // A paused source skips its scheduled runs (Data health, source menu). Pull now still runs it.
+  if (opts.trigger === 'cron' && (await isPaused(db, name))) {
+    if (opts.echo) console.log(JSON.stringify({ job: name, status: 'skipped', reason: 'Paused' }));
+    return { job: name, runId: null, status: 'skipped', message: 'Paused', durationMs: Date.now() - started };
+  }
 
   if (!(await acquire(db, name, holder, job.lockMs ?? 10 * 60_000))) {
     return { job: name, runId: null, status: 'locked', message: `${name} is already running`, durationMs: Date.now() - started };

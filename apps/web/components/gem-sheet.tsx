@@ -9,7 +9,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { type MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { SlipButton } from '@/components/add-to-slip';
 import { GameLog, GameLogKey } from '@/components/game-log';
-import { ConditionsList, CoreSampleTable, LoupeView, PriceChart, TrendLines, scrollTopFor } from '@/components/gem-read';
+import { ConditionsList, CoreSampleTable, GemNotes, LoupeView, PriceChart, TrendLines, scrollTopFor } from '@/components/gem-read';
 import { useCrumb } from '@/components/shell';
 import { Edge, GemMark, Player } from '@/components/marks';
 import type { BoardRow } from '@/lib/board';
@@ -256,9 +256,17 @@ function Sections({ gem, zone }: { gem: GemDetail; zone: string }) {
         <PriceChart appraisal={gem.appraisal} book={gem.book} kickoff={gem.kickoff} now={gem.now} zone={zone} />
       </section>
 
-      <section id="gem-notes" className="fc-sheet-section" aria-labelledby="gem-notes-h">
-        <h3 id="gem-notes-h" className="text-heading-20">What the numbers miss</h3>
-        <TrendLines trends={gem.trends} loupe={gem.loupe} labelledBy="gem-notes-h" />
+      <section id="gem-notes" className="fc-sheet-section" aria-label="Notes">
+        <div className="hg-blocks">
+          <div className="fc-stack">
+            <h3 id="gem-adds-h" className="text-heading-20">Adds and costs</h3>
+            <GemNotes notes={gem.notes} now={gem.now} zone={zone} labelledBy="gem-adds-h" />
+          </div>
+          <div className="fc-stack">
+            <h3 id="gem-notes-h" className="text-heading-20">What the numbers miss</h3>
+            <TrendLines trends={gem.trends} loupe={gem.loupe} labelledBy="gem-notes-h" />
+          </div>
+        </div>
       </section>
 
       <section id="gem-loupe" className="fc-sheet-section" aria-labelledby="gem-loupe-h">

@@ -2,16 +2,16 @@ import 'server-only';
 // One gem for the gem sheet (docs/build-brief.md, Gem sheet): the stored pick with its own numbers, the best
 // price on offer, the Last 10 game log from player_game_stats (player_usage where stats lag), and the read:
 // the purchase book's price over time with the gem record and its grade, trend lines, the core sample and
-// game conditions (docs/prd.md F2.1, F2.4, F2.5, F2.7), and the splits behind the loupe (F2.2), loaded once so
-// toggling a condition redraws on the client.
+// game conditions (docs/prd.md F2.1, F2.4, F2.5, F2.7), the splits behind the loupe (F2.2), loaded once so
+// toggling a condition redraws on the client, and the notes that add to or cost it (F2.3, context only).
 import {
-  type CoreSample, type GameLine, type GameLog, type GemKind, type LogGame, type Matchup, type MatchupScore, type SplitNote, type Trend, type TrendGame,
+  type CoreSample, type GameLine, type GameLog, type GemKind, type GemNote, type LogGame, type Matchup, type MatchupScore, type SplitNote, type Trend, type TrendGame,
   type UsageGame, coreSample, fairPriceFor, favoredBySpread, findTeam, gameLog, impliedFactor, matchup, matchupPosition, newGemReason, priceTrail,
-  splitNotes, trendLines,
+  gemNotes, readEstimateInputs, splitNotes, trendLines,
 } from '@hiddengems/core';
 import {
-  type PlayerSplits, books, gemMarks, gemRecords, games, getGameWeather, getSplits, grades, isMissingTable, oddsLatest, oddsSnapshots, picks,
-  playerGameStats, playerUsage, players,
+  type PlayerSplits, books, estimates, gemMarks, gemRecords, games, getGameWeather, getSplits, grades, isMissingTable, oddsLatest, oddsSnapshots, picks,
+  playerGameStats, playerUsage, players, runs,
 } from '@hiddengems/db';
 import { and, desc, eq, inArray, lt, or } from 'drizzle-orm';
 import { db } from '@/lib/db';
@@ -36,6 +36,16 @@ export interface Conditions {
   matchup: Matchup | null;
   /** The kickoff forecast's line when it matters at an open stadium (core weatherNote()), else null. */
   weather: { note: string; pulledAt: string } | null;
+}
+
+/** A note with where it came from and when that was pulled (ISO, null when unknown). */
+export interface SourcedNote {
+  note: GemNote;
+  /** The injury report's week, for injury notes. */
+  week: number | null;
+  /** The model that read it ("v3.0"), for the model's lines. */
+  model: string | null;
+  at: string | null;
 }
 
 /** His splits for this game (core splitsFor()), each game's opponent, and the splits the Notes cite. */
@@ -75,6 +85,8 @@ export interface GemDetail {
   conditions: Conditions;
   /** Null when he has no games this season before this one. */
   loupe: Loupe | null;
+  /** What adds to or costs this gem, adds first (core gemNotes()). Context only. */
+  notes: SourcedNote[];
 }
 
 /** A table a pending migration adds reads as empty until the owner runs it (docs/architecture.md, Database). */
@@ -106,10 +118,12 @@ export async function gemDetail(key: string, now = new Date()): Promise<GemDetai
 
   const history = player ? await playerSeason(player.id, player.teamId, game) : null;
   const team = player?.teamId ?? history?.usage.at(-1)?.team ?? null;
-  const [appraisal, conditions, loupe] = await Promise.all([
+  const position = player?.position ?? history?.usage.at(-1)?.position ?? null;
+  const [appraisal, conditions, loupe, notes] = await Promise.all([
     appraisalOf(pick, game.kickoffAt),
-    conditionsOf(game, team, player?.position ?? history?.usage.at(-1)?.position ?? null),
+    conditionsOf(game, team, position),
     player ? loupeOf(player.id, game.id) : null,
+    notesOf(pick, game, team, position, player ?? null),
   ]);
   const home = team === game.homeTeamId;
   return {
@@ -127,7 +141,39 @@ export async function gemDetail(key: string, now = new Date()): Promise<GemDetai
     sample: history ? coreSample(history.usage, history.teamUsage, player?.position ?? null) : null,
     conditions,
     loupe,
+    notes,
   };
+}
+
+/**
+ * The notes and their sources: the injury report as of the last usage pull, the spread as of the last schedule
+ * pull, and the model's lines from the estimate behind this pick.
+ */
+async function notesOf(
+  pick: typeof picks.$inferSelect, game: typeof games.$inferSelect, team: string | null, position: string | null,
+  player: typeof players.$inferSelect | null,
+): Promise<SourcedNote[]> {
+  const { db: d } = await db();
+  const [[estimate], [usagePull]] = await Promise.all([
+    d.select({ inputs: estimates.inputs, model: estimates.model, computedAt: estimates.computedAt }).from(estimates)
+      .where(eq(estimates.selectionKey, pick.selectionKey)).orderBy(desc(estimates.computedAt)).limit(1),
+    player?.injuryStatus
+      ? d.select({ at: runs.finishedAt }).from(runs)
+        .where(and(eq(runs.job, 'pull-usage'), inArray(runs.status, ['succeeded', 'warned']))).orderBy(desc(runs.startedAt)).limit(1)
+      : [],
+  ]);
+  const notes = gemNotes({
+    injuryStatus: player?.injuryStatus ?? null,
+    spreadLine: game.spreadLine,
+    home: team === game.homeTeamId ? true : team === game.awayTeamId ? false : null,
+    position,
+    inputs: readEstimateInputs(estimate?.inputs),
+  });
+  return notes.map((note): SourcedNote => {
+    if (note.kind === 'injury') return { note, week: player?.injuryWeek ?? null, model: null, at: usagePull?.at?.toISOString() ?? null };
+    if (note.kind === 'blowout') return { note, week: null, model: null, at: game.updatedAt.toISOString() };
+    return { note, week: null, model: estimate?.model.replace(/^hg-/, '') ?? null, at: estimate?.computedAt.toISOString() ?? null };
+  });
 }
 
 async function loupeOf(playerId: string, gameId: string): Promise<Loupe | null> {

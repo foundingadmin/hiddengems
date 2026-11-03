@@ -28,9 +28,9 @@ One run builds one release. Every step has an owner; the vice principal dispatch
 
 | Lane | Builder | Verifiers before merge |
 |---|---|---|
-| `fix/` preview comments, small defects | the vice principal or any builder | content, design (if UI), PR |
+| `fix/` preview comments, small defects | any builder, or `repo-hygiene` for tidying | content, design (if UI), PR |
 | `screens/` build brief screens | `screen-builder` | content, design, PR |
-| `ds/` Facet parts | `facet-builder` | design, content (docs), PR |
+| `ds/` Facet parts | `facet-builder`; `facet-curator` (after a release) | design, content (docs), PR |
 | `data/` jobs, providers, schema, Data health | `data-builder` | data safety, content and design (if UI), PR |
 | `copy/` wording | any builder | content, PR |
 | model and gem rules (`packages/core`) | `data-builder` | model, data safety, PR |

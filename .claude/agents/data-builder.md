@@ -29,4 +29,4 @@ owner step it needs (`pnpm db:supabase-sql`), and tests added.
 ## Escalate
 Stop and escalate to the vice principal, in the format in `corpus/principal.md`, whenever the work needs a key or
 critical judgement listed there. Add anything you learned that would help next time to `corpus/lessons.md` as an
-open lesson, or put it in your report for the vice principal to add.
+open lesson, or put it in your report for `corpus-steward` to add.

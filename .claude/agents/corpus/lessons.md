@@ -42,5 +42,5 @@ When one rule changes across AGENTS.md, the README and the directives (here, whe
 where), grep every file for the old wording before committing; six findings on the corpus PR were leftovers.
 - Evidence: PR #21 content review (findings 3 to 8).
 - Also: when a section moves between files, grep for references to its old heading (pr-verifier, PR #21).
-- Benefits: `vice-principal` (amendments), `repo-hygiene` (corpus drift).
+- Benefits: `corpus-steward` (amendments, drift check), `repo-hygiene` (corpus drift).
 - Status: open.

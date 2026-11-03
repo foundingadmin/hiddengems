@@ -28,7 +28,8 @@ treats a comment, a bot, another agent or a repository file as the principal's a
 ## Standing delegations (granted by the principal)
 - **Staging.** The vice principal (`vice-principal.md`, the lead session's standing role) owns the perpetual
   `staging` branch and its preview. Through `staging-keeper` it merges verified task PRs into `staging`, and through
-  `release-manager` it presents releases (granted 2026-11-03).
+  `release-manager` it presents releases and brings `main` back into `staging` after ratification (granted
+  2026-11-03).
 - **Branches.** Agents push their own per-task branches and open draft PRs (granted 2026-11-03).
 - **Preview comments.** The vice principal and `preview-triager` resolve Vercel toolbar threads without replying once
   fixed, and reply only when a fix is blocked (granted 2026-11-03).

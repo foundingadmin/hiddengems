@@ -13,7 +13,7 @@ still reflects the design system after a release lands, so the principal and eve
 `release-manager` reports a release ratified, alongside `corpus-steward`.
 
 ## Standard operations
-1. **Scope.** `git diff <previous release>..origin/main -- packages/facet apps/web` (the release just ratified):
+1. **Scope.** `git diff origin/main^1..origin/main -- packages/facet apps/web` (the release merge just ratified):
    every Facet class, token, component doc and pattern added or changed, and every app screen that uses Facet in a
    new way.
 2. **Coverage.** For each Facet part touched:

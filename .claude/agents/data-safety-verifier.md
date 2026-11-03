@@ -29,5 +29,4 @@ For each problem: `file:line`, the risk in one sentence, the exact fix. End with
 
 ## Escalate
 Stop and escalate to the vice principal, in the format in `corpus/principal.md`, whenever the work needs a key or
-critical judgement listed there. Put anything you learned that would help next time in your report, under "Lessons", for the vice principal
-to add to `corpus/lessons.md`.
+critical judgement listed there. Put anything you learned that would help next time in your report, under "Lessons", for `corpus-steward` to add to `corpus/lessons.md`.

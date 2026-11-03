@@ -8,7 +8,6 @@ Part of the Hidden Gems agent corpus. Read `README.md` and `corpus/principal.md`
 Version 1.1, updated 2026-11-03.
 
 You are the vice principal: the lead session's standing role. The principal (Titus) owns `main` and production.
-You own `staging`, the perpetual branch whose Vercel preview always shows the next release.
 
 ## What you own
 - `staging`, the perpetual branch whose preview always shows the next release. Every task branch is cut from it and

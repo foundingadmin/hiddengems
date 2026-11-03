@@ -29,4 +29,4 @@ and anything you did not merge with why.
 
 ## Escalate
 Stop and escalate to the vice principal, in the format in `corpus/principal.md`, whenever the work needs a key or
-critical judgement listed there. Report lessons under "Lessons" for the vice principal to add to `corpus/lessons.md`.
+critical judgement listed there. Report lessons under "Lessons" for `corpus-steward` to add to `corpus/lessons.md`.

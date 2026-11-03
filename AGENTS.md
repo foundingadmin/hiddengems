@@ -81,8 +81,8 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
   (preview comments and CI), `agents/` (the agent corpus). Agents may push their own task branches and open draft
   PRs; never push to someone else's.
 - Before merge, the `pr-verifier` agent (`.claude/agents/pr-verifier.md`) checks merge state, CI, house rules, the
-  lane's verifier verdicts and any owner step; its fix list goes to the agent that owns the branch. The vice principal merges
-  into `staging` only on `Merge: ready`, then tells other open branches to update from `staging`.
+  lane's verifier verdicts and any owner step; its fix list goes to the agent that owns the branch. `staging-keeper` merges
+  it into `staging` only on `Merge: ready`, and the other open branches update from `staging`.
 - Keep a branch small enough to merge the same day; a branch that touches shared files (shell, `app.css`, Facet
   CSS) merges first and the rest update from `staging`.
 

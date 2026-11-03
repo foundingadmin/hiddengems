@@ -51,7 +51,8 @@ function sundays(now: Date): { thisWeek: string; lastWeek: string; week: number;
 
 const round2 = (n: number) => Math.round(n * 100) / 100;
 
-export function sampleProviders(): Providers {
+/** history: pull-results also writes graded history for final games (the app's sample mode); tests leave it off. */
+export function sampleProviders({ history = false }: { history?: boolean } = {}): Providers {
   const scheduleFor = (now: Date): ScheduleGame[] => {
     const { thisWeek, lastWeek, week, season } = sundays(now);
     const game = (date: string, away: string, home: string, time: string, wk: number, final: boolean, a: number | null, h: number | null): ScheduleGame => {
@@ -129,6 +130,7 @@ export function sampleProviders(): Providers {
     },
     results: {
       id: 'sample',
+      sampleHistory: history,
       async stats(ctx): Promise<StatLine[]> {
         const finals = scheduleFor(ctx.now).filter((g) => g.status === 'final');
         return finals.flatMap((g) => SAMPLE_PLAYERS.filter((p) => p.team === g.awayTeam || p.team === g.homeTeam).map((p) => {

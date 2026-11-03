@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { resolveWeek } from '@/lib/board';
 import { weekSlip } from '@/lib/slips';
+import { GradedSlip, SlipNotFound } from './graded-slip';
+import { getGradedSlip, getHistory } from './history-data';
 import { HistoryTab } from './history-tab';
 import { SendToBook } from './send';
 import { ThisWeek } from './this-week';
@@ -13,7 +15,10 @@ export const metadata: Metadata = { title: 'Slips' };
 type Params = Record<string, string | string[] | undefined>;
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
 
-/** Slips: This week and History tabs (?tab=history); Send to DraftKings is ?view=send. The week rides along in ?week=. */
+/**
+ * Slips: This week and History tabs (?tab=history); Send to DraftKings is ?view=send; a graded slip is ?slip=<id>.
+ * The week rides along in ?week=.
+ */
 export default async function SlipsPage({ searchParams }: { searchParams: Promise<Params> }) {
   const sp = await searchParams;
   const { week } = await resolveWeek(sp.week);
@@ -22,6 +27,12 @@ export default async function SlipsPage({ searchParams }: { searchParams: Promis
     const q = new URLSearchParams({ ...(weekParam ? { week: weekParam } : {}), ...extra });
     return q.size ? `/slips?${q}` : '/slips';
   };
+  const slipId = one(sp.slip);
+  if (slipId) {
+    const graded = await getGradedSlip(slipId);
+    const back = href({ tab: 'history' });
+    return graded ? <GradedSlip graded={graded} back={back} /> : <SlipNotFound back={back} />;
+  }
   const history = one(sp.tab) === 'history';
   const summary = history ? null : await weekSlip(week);
 
@@ -38,7 +49,7 @@ export default async function SlipsPage({ searchParams }: { searchParams: Promis
         <Link className="fc-tab" href={href({ tab: 'history' })} aria-current={history ? 'page' : undefined}>History</Link>
       </nav>
       {history
-        ? <HistoryTab />
+        ? <HistoryTab history={await getHistory()} slipHref={(id) => href({ slip: id })} />
         : <ThisWeek summary={summary} sendHref={href({ view: 'send' })} jewelerReady={Boolean(process.env.ANTHROPIC_API_KEY)} />}
     </div>
   );

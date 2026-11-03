@@ -431,3 +431,29 @@ describe('slips', () => {
     }
   });
 });
+
+describe('sample history', () => {
+  it('records, places, settles and grades last week once, so previews have a graded slip', async () => {
+    const h = createDb('memory://');
+    await h.migrate();
+    await seedReference(h.db);
+    const go = (job: string) => runJob(job, { db: h.db, providers: sampleProviders({ history: true }), trigger: 'test', now, registry: jobs, force: true });
+    for (const job of BOOTSTRAP) expect((await go(job)).status, job).toBe('succeeded');
+    const finals = (await h.db.select().from(games).where(eq(games.status, 'final'))).map((g) => g.id);
+    const records = await h.db.select().from(gemRecords);
+    expect(new Set(records.map((r) => r.gameId))).toEqual(new Set(finals));
+    expect(await h.db.select().from(grades).where(eq(grades.subject, 'gem'))).toHaveLength(records.length);
+    const placed = await h.db.select().from(slips).where(eq(slips.state, 'placed'));
+    expect(placed.map((s) => s.play).sort()).toEqual(['own', 'suggested']);
+    const legBets = await h.db.select({ bet: bets }).from(slipLegs).innerJoin(bets, eq(bets.id, slipLegs.betId))
+      .where(inArray(slipLegs.slipId, placed.map((s) => s.id)));
+    expect(legBets.length).toBeGreaterThanOrEqual(2);
+    for (const { bet } of legBets) expect(['won', 'lost']).toContain(bet.status);
+    expect(await h.db.select().from(grades).where(eq(grades.subject, 'bet'))).toHaveLength(legBets.length);
+
+    await go('pull-results');
+    expect(await h.db.select().from(gemRecords)).toHaveLength(records.length);
+    expect(await h.db.select().from(slips).where(eq(slips.state, 'placed'))).toHaveLength(2);
+    await h.close();
+  });
+});

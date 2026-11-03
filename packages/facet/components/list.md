@@ -52,6 +52,19 @@ Default, hover (interactive lists only), and per-row state through `data-state` 
 ## Hidden Gems usage
 Sportsbooks, data providers, schedules (`components/schedule.md`), sessions on Security, alert rules.
 
+## Row links `[F]`
+
+A row that opens a record (a past slip on the phone) puts an `a.fc-row-link` in its title, as table rows do (`css/charts.css`). The link's hit area covers the whole row and `data-interactive` on the list adds the hover fill. The focus ring draws on the row. CSS in `css/slip.css`. Specimen: `preview/index.html#slips`.
+```html
+<ul class="fc-list" data-interactive role="list" aria-labelledby="past-h">
+  <li class="fc-list-row">
+    <div class="fc-list-row-main"><p class="fc-list-row-title"><a class="fc-row-link" href="/slips?slip=…">Cook and McLaurin</a></p><p class="fc-meta"><span>Week 8</span><span>$15 parlay</span></p></div>
+    <div class="fc-list-row-aside">…</div>
+  </li>
+</ul>
+```
+- One link per row, and no other controls in it: the link covers them.
+
 ## Lanes `[F]`
 
 Owner feedback, 2026-11-02. Add `data-lanes` to a list whose rows carry status and actions. The aside (status, with its relative time stacked under it in secondary, aligned with the status word rather than its dot) and the actions sit in fixed-width lanes (`--fc-list-aside-w` 136px, `--fc-list-actions-w` 112px), so every status lines up down the list however long the times or buttons are. A row without a status keeps an empty aside to hold its lane. Narrow lists still drop the aside under the title.

@@ -111,6 +111,8 @@ export interface OddsProvider extends ProviderBase {
 export interface ResultsProvider extends ProviderBase {
   /** Stat lines for one week of games. */
   stats(ctx: ProviderContext, season: number, week: number): Promise<StatLine[]>;
+  /** Sample data only: pull-results fills in records and a placed slip for final games, so previews have graded history. */
+  sampleHistory?: boolean;
 }
 
 export interface UsageProvider extends ProviderBase {

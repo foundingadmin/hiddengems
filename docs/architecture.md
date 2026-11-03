@@ -103,6 +103,10 @@ priced chance; the opening snapshot is Tue 10:07 AM Denver.
   pick's selection with its price when added (`packages/db/src/slips.ts`). Marking a slip placed writes one `bets`
   row per leg, so `pull-results` records the close and grades it; a parlay leg settles with no payout of its own.
   In sample mode `build-picks` starts one draft from the top gems, so previews have a slip.
+- Slips, History reads them through `packages/db/src/history.ts` (graded gems, placed slips with each leg's bet
+  and grade) and `core/src/history.ts` (the results line, each slip's outcome, the season record). In sample mode
+  (`providersFor()`, never in tests) `pull-results` first writes gem records and two placed slips for final games
+  with no records, so previews have graded gems and a graded slip.
 
 ## Runs, logs and failures
 

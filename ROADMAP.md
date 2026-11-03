@@ -62,7 +62,7 @@ was asked, why it waits, and the thread.
 
 Review time sets the pace: about 5 hours a week of the principal's review (PRD, totals and timeline).
 
-## M0 · Production ready for Week 9
+## Production ready for Week 9 (M0)
 
 Ship by Thu Nov 5, before the first Week 9 kickoff. The old pipeline retired today, so the app is the only thing
 freezing prices this week.
@@ -76,7 +76,7 @@ freezing prices this week.
       unrated rows.
 - [ ] The first nightly backup landed in the private repository.
 
-## M1 · Measured Sunday
+## The measured Sunday (M1)
 
 Phases 0 and 1. Ship by Sat Nov 7 before the 7:47 PM snapshot. About 4 review hours.
 
@@ -89,7 +89,7 @@ Phases 0 and 1. Ship by Sat Nov 7 before the 7:47 PM snapshot. About 4 review ho
 | Mark placed | screens, S | The sheet footer records a bet at a price and stake into `bets`; nothing links to the sportsbook | |
 | Results line | screens, S | Slips, History shows gems graded, average CLV and the four box counts | Grade and box |
 
-## M2 · The read
+## The read (M2)
 
 Phase 2. Ship by Sat Nov 21. About 7.5 review hours. Start with what the data already holds.
 
@@ -108,7 +108,7 @@ Phase 2. Ship by Sat Nov 21. About 7.5 review hours. Start with what the data al
 The consensus appraisal (F2.6) needs three Sundays of multi book history. Run its backtest gate Tue Nov 24; switching
 the baseline is the principal's call.
 
-## M3 · The slip
+## The slip (M3)
 
 Phase 3. Ship by Sat Nov 28. About 5.5 review hours.
 
@@ -123,7 +123,7 @@ Phase 3. Ship by Sat Nov 28. About 5.5 review hours.
 | Slip history and graded slip | screens, M | Season stats, past slips, the graded slip with took, closed and beat close per leg | M1 grade and box |
 | Provenance report (F3.7) | screens, M | Hit rate and average CLV by insight; under 15 graded gems shows cloudy | M2 notes and splits |
 
-## M4 · Prove it
+## Prove it (M4)
 
 Weeks 13 to 18. The system is complete; the work is judging it and the Phase 4 list.
 
@@ -135,9 +135,9 @@ Weeks 13 to 18. The system is complete; the work is judging it and the Phase 4 l
 - The Jeweler's bench as live controls (Phase 4).
 - Mined count logging, only if call 3 keeps Outlier.
 
-## After Jan 10 2027
+## After the season
 
-The season review against every goal, then the open questions in PRD section 14: playoffs, Rarity and mined counts,
+From Jan 11 2027: the season review against every goal, then the open questions in PRD section 14: playoffs, Rarity and mined counts,
 the off field social scan, and a protectable name.
 
 ## Risks

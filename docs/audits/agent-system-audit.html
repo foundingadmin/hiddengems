@@ -1696,8 +1696,7 @@ const ALL = 'all';
 
 // Review and intake
 ev('Lead', 'principal', 'preview-triager', 'Leaves 8 toolbar comments on the production Gems board', 'flow', {}, ALL, 'The corpus assumes comments on the staging preview. Nothing says which branch a production thread maps to.', 0);
-ev('Lead', 'principal', 'vice-principal', 'Asks the lead session to run them', 'flow', { 'vice-principal': 22 }, ALL, 'Fresh lead session per release: AGENTS.md, brief, all 27 lessons, README, decisions.', 0);
-ev('Intake', 'vice-principal', 'preview-triager', 'Dispatch intake', 'dispatch', { 'preview-triager': 46 }, ALL, 'Reads 8 threads, opens the Gems page, table and filter bar code. Groups by part: T1 ds/, T2 screens/, T3 data/. Flags C4 as an encoding change and C6 as data plus UI.');
+ev('Intake', 'vice-principal', 'preview-triager', 'Lead starts from the open threads and dispatches intake', 'dispatch', { 'vice-principal': 22, 'preview-triager': 46 }, ALL, 'No separate ask from the principal: the comments start the run. Lead cold start (AGENTS.md, brief, all 27 lessons, README, decisions), then the triager reads 8 threads, opens the Gems page, table and filter bar code, groups by part (T1 ds/, T2 screens/, T3 data/) and flags C4 as an encoding change and C6 as data plus UI.');
 ev('Intake', 'preview-triager', 'vice-principal', 'Returns 3 lane tasks with tiers and briefs; 2 flags', 'flow', { 'vice-principal': 6 }, ALL, 'T1 standard, T2 standard (touches app.css, so pr-verifier will run), T3 heavy (new table).');
 ev('Intake', 'vice-principal', 'principal', 'Escalates C4: steeper gem ramp below 60 changes a fixed encoding', 'escalate', { 'vice-principal': 4 }, [4], 'Key judgement 6 (brand and fixed encodings). T1 starts without C4; T2 must wait for T1 anyway.');
 

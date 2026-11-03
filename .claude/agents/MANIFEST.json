@@ -11,7 +11,7 @@
   "lead": {
     "name": "vice-principal",
     "file": "vice-principal.md",
-    "role": "The lead session's standing role. Owns the perpetual staging branch and preview, runs the lanes, merges verified task PRs into staging, presents releases. Never merges to main."
+    "role": "The lead session's standing role. Owns the perpetual staging branch and preview, dispatches every step of the order of work to its owning agent, makes the calls that are not the principal's, escalates. Never merges to main."
   },
   "documents": {
     "readme": "README.md",
@@ -29,11 +29,50 @@
       "lanes": [
         "all"
       ],
-      "version": "1.0",
+      "version": "1.1",
       "updated": "2026-11-03",
       "reads": "everything",
-      "returns": "release PRs staging to main, escalations",
-      "writes": "staging merges, agents/ branches"
+      "returns": "dispatches, decisions, escalations",
+      "writes": "agents/ branches; staging merges only through staging-keeper"
+    },
+    {
+      "name": "staging-keeper",
+      "file": "staging-keeper.md",
+      "kind": "operations",
+      "lanes": [
+        "all"
+      ],
+      "version": "1.0",
+      "updated": "2026-11-03",
+      "reads": "pr-verifier verdicts, CI",
+      "returns": "merged PRs, staging state, branches to update, threads ready",
+      "writes": "merges into staging"
+    },
+    {
+      "name": "release-manager",
+      "file": "release-manager.md",
+      "kind": "operations",
+      "lanes": [
+        "all"
+      ],
+      "version": "1.0",
+      "updated": "2026-11-03",
+      "reads": "staging since main, task PRs",
+      "returns": "release PR for the principal; staging synced after ratification",
+      "writes": "release PR, staging sync"
+    },
+    {
+      "name": "corpus-steward",
+      "file": "corpus-steward.md",
+      "kind": "operations",
+      "lanes": [
+        "agents"
+      ],
+      "version": "1.0",
+      "updated": "2026-11-03",
+      "reads": "lessons, verdicts, escalations of a ratified run",
+      "returns": "agents/retro branch, escalations for major amendments",
+      "writes": ".claude/agents"
     },
     {
       "name": "preview-triager",

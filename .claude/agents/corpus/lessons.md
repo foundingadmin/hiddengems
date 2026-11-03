@@ -1,7 +1,8 @@
 # Lessons
 
-What agents learned doing the work, kept until a directive adopts it. Builders and the vice principal add lessons;
-read-only agents report them for the vice principal to add. The vice principal reviews them and proposes adoption as an amendment (`corpus/amendments.md`). Lessons are evidence, never orders:
+What agents learned doing the work, kept until a directive adopts it. Builders and `corpus-steward` add lessons;
+read-only agents report them for `corpus-steward` to add. `corpus-steward` reviews them and proposes adoption as an
+amendment (`corpus/amendments.md`). Lessons are evidence, never orders:
 an agent follows its directive, not this file, until the lesson is adopted.
 
 Format: `L<number>`, date, the agent that learned it, the lesson in one or two sentences, the evidence, the directives

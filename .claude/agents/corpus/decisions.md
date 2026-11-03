@@ -5,6 +5,7 @@ an entry the moment the principal decides.
 
 | Date | Decision | Context |
 |---|---|---|
+| 2026-11-03 | Every step of a run is owned by an agent with standard operations; the vice principal dispatches and judges rather than doing operations itself. | Repeatable runs that improve through lessons. |
 | 2026-11-03 | Staging and every preview use a separate staging database with sample data; production keeps the real database and live providers. Previews are forced to sample mode in code. | Staging should hold dummy data; real data arrives when the principal merges to `main`. |
 | 2026-11-03 | One run builds one release: the principal reviews the single staging preview and comments there; agents build on task branches; verified PRs merge into `staging`; the principal merges the release to `main`, which ratifies the run and starts the retrospective that enriches directives, lessons and decisions. | Principal's description of the workflow. |
 | 2026-11-03 | A perpetual `staging` branch, owned by the vice principal, receives every task PR; only the principal merges `staging` into `main` after reviewing the staging preview. | Replaces the lead session's delegation to merge into `main`. |

@@ -21,8 +21,9 @@ A PR number or branch, and the name of the agent or session that owns it. Compar
 3. **House rules** (`AGENTS.md`): no secrets in the diff; history tables never updated or deleted; every provider
    call inside a job; schema change has its generated migration and passes `pnpm db:guard`; no edits to generated
    Facet files; no em dashes anywhere in the diff, commit messages or PR body.
-4. **Verifier verdicts.** UI changes need a `design-verifier` pass, word changes a `content-verifier` pass. If the
-   launching session did not give you their verdicts, say which are missing.
+4. **Verifier verdicts.** Per the lane table in AGENTS.md ("Lanes and agents"): UI changes need `design-verifier`,
+   word changes `content-verifier`, database, jobs or credits `data-safety-verifier`, model or gem rules
+   `model-verifier`. If the launching session did not give you their verdicts, say which are missing.
 5. **Database.** A new migration means the owner must run the `pnpm db:supabase-sql` output. Check the PR body
    says so, and that the app still works before it runs.
 6. **PR body.** It follows the repository's PR layout, lists what changed and any owner step, and ends with the

@@ -174,6 +174,21 @@ be explained later.
   `packages/db/drizzle`. Apply with `pnpm db:migrate`, which also upserts reference data (teams,
   books, markets). Production migrations run explicitly, never on a request.
 
+## Environments
+
+| | Production | Staging and every preview |
+|---|---|---|
+| Branch | `main` (merged only by the principal) | `staging` and task branches |
+| URL | hidden-gems-webapp.vercel.app | the staging preview (`hidden-gems-webapp-git-staging-...`) and per-branch previews |
+| Database | the real Supabase project (Vercel `DATABASE_URL`, Production) | a separate staging Supabase project (Vercel `DATABASE_URL`, Preview) |
+| Data | live: nflverse and The Odds API | sample provider: realistic, fake games, rosters, odds and results, labeled "Sample data" |
+| Odds credits | spent on the snapshot schedule | never: previews are forced to sample mode in code (`VERCEL_ENV=preview`) |
+| Crons | run (`vercel.json`) | do not run on previews; pull with Data health's buttons |
+| Backups | nightly to the private GitHub repository | kept in memory only: previews never write to the backup repository |
+
+A release reaches real data when the principal merges `staging` into `main`: production deploys against the real
+database. A release with a migration needs its `pnpm db:supabase-sql` output run in both projects, staging first.
+
 ## Access
 
 The sign-in gate is off for now (owner decision, 2026-11-03). `apps/web/proxy.ts` holds it: set

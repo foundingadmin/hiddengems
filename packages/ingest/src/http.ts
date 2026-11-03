@@ -20,8 +20,10 @@ export interface Http {
 }
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-/** Keeps keys out of logs: strips apiKey and key query params. */
-export const redact = (url: string) => url.replace(/([?&](api_?key|key)=)[^&]+/gi, '$1***');
+/** Keeps secrets out of logs and run data, which the Logs page shows: masks the value of any query param
+ * named api_key, apikey, key, token, access_token, secret, sig or signature, in any case. */
+export const redact = (url: string) =>
+  url.replace(/([?&](?:api_?key|key|token|access_token|secret|sig|signature)=)[^&#]+/gi, '$1***');
 
 export function createHttp(opts: HttpOptions): Http {
   const doFetch = opts.fetch ?? fetch;

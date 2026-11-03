@@ -69,7 +69,7 @@ export default async function LogsPage({ searchParams }: { searchParams: Params 
           : (
             <p className="fc-note" role="status">
               <span>Run not found</span>
-              <Link className="fc-note-link" href={logsHref({ source })}>Close</Link>
+              <Link className="fc-link-action fc-note-link" href={logsHref({ source })} aria-label="Close run">Close</Link>
             </p>
           ))}
 
@@ -113,7 +113,7 @@ export default async function LogsPage({ searchParams }: { searchParams: Params 
                         </Link>
                       </td>
                       <td className="hg-nowrap">{label(r.job)}<span className="hg-sub"> {r.trigger}</span></td>
-                      <td className="fc-log-message">
+                      <td>
                         {problem && <><RunStatus status={r.status} owner={r.failureOwner} />{' '}</>}
                         {r.message}
                         {warning && warning !== r.message && <span className="hg-log-detail">{warning}</span>}
@@ -146,28 +146,28 @@ function RunDetail({ run, lines, now, close, label }: { run: Run; lines: Line[];
           <div>
             <h2 id="run-h" className="fc-fieldset-title">{label}</h2>
             <p className="fc-fieldset-subtitle">
-              <time dateTime={run.startedAt.toISOString()}>{stamp(run.startedAt)}</time>, <span data-relative>{ago(run.startedAt, now)}</span>
+              <time dateTime={run.startedAt.toISOString()}>{stamp(run.startedAt)}</time> · <span data-relative>{ago(run.startedAt, now)}</span>
             </p>
           </div>
-          <Link className="fc-button" data-variant="secondary" data-size="small" href={close}>Close</Link>
+          <Link className="fc-button" data-variant="secondary" data-size="small" href={close} aria-label="Close run">Close</Link>
         </div>
         {tone
           ? (
             <p className="fc-note hg-run-note" data-type={tone}>
-              <span>{run.message ?? (failed ? 'The run failed.' : 'The run warned.')}</span>
+              <span>{run.message ?? 'No message logged'}</span>
               <Link className="fc-link-action fc-note-link" href="/data">Data health</Link>
             </p>
           )
           : run.message && <p className="fc-fieldset-consequence">{run.message}</p>}
         <dl className="fc-description">
           <div><dt>Status</dt><dd><RunStatus status={run.status} owner={run.failureOwner} /></dd></div>
-          <div><dt>Duration</dt><dd>{duration(run.durationMs)}</dd></div>
+          <div><dt>Ran</dt><dd>{duration(run.durationMs)}</dd></div>
           <div><dt>Trigger</dt><dd>{sentence(run.trigger)}</dd></div>
           <div><dt>Provider</dt><dd>{run.provider ? PROVIDER_NAMES[run.provider] ?? run.provider : 'None'}</dd></div>
           <div><dt>Requests</dt><dd className="tabular">{run.requestCount.toLocaleString('en-US')}</dd></div>
           <div><dt>Rows written</dt><dd className="tabular">{run.rowsWritten.toLocaleString('en-US')}</dd></div>
-          {run.errorCode && <div><dt>Error code</dt><dd><span className="fc-mono">{run.errorCode}</span></dd></div>}
-          <div><dt>Run ID</dt><dd><span className="fc-mono hg-break">{run.id}</span></dd></div>
+          {run.errorCode && <div><dt>Error code</dt><dd><span className="fc-log-id">{run.errorCode}</span></dd></div>}
+          <div><dt>Run ID</dt><dd><span className="fc-log-id">{run.id}</span></dd></div>
           {run.meta && Object.keys(run.meta).length > 0 && <div className="hg-description-wide"><dt>Details</dt><dd><div className="text-copy-13-mono"><Data data={run.meta} /></div></dd></div>}
         </dl>
       </div>
@@ -192,7 +192,7 @@ function RunDetail({ run, lines, now, close, label }: { run: Run; lines: Line[];
                     <tr key={l.id}>
                       <td className="fc-log-time"><time dateTime={l.at.toISOString()}>{seconds(l.at)}</time></td>
                       <td className="hg-nowrap"><span className="fc-level" data-level={level}>{word}</span></td>
-                      <td className="fc-log-message">{l.message}<Data data={l.data} /></td>
+                      <td>{l.message}<Data data={l.data} /></td>
                     </tr>
                   );
                 })}

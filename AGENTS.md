@@ -69,7 +69,7 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 - Every change that touches what people see goes through the `design-verifier` agent
   (`.claude/agents/design-verifier.md`), which checks the code and screenshots against Facet and the Hidden Gems
   encodings. Its fixes go back to the building agent the same way; its DS requests go to `facet-builder`.
-  Ship only on `Verdict: pass` from both verifiers.
+  Ship only on `Verdict: pass` from the verifiers the tier requires (`.claude/agents/README.md`).
 - A product's accent goes through `--fc-brand-*` (`packages/facet/tokens/facet.semantic.json`); reusing Facet for another product means changing those four tokens, not hunting for hues.
 
 ## Branches and pull requests
@@ -80,16 +80,15 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
   `ds/` (Facet), `screens/` (build brief screens), `data/` (jobs, providers, Data health), `copy/` (wording), `fix/`
   (preview comments and CI), `agents/` (the agent corpus). Agents may push their own task branches and open draft
   PRs; never push to someone else's.
-- Before merge, the `pr-verifier` agent (`.claude/agents/pr-verifier.md`) checks merge state, CI, house rules, the
-  lane's verifier verdicts and any owner step; its fix list goes to the agent that owns the branch. `staging-keeper` merges
-  it into `staging` only on `Merge: ready`, and the other open branches update from `staging`.
+- Gates before merge follow the tiers in `.claude/agents/README.md`. `staging-keeper` merges into `staging` once its
+  tier's checks pass, and the other open branches update from `staging`.
 - Keep a branch small enough to merge the same day; a branch that touches shared files (shell, `app.css`, Facet
   CSS) merges first and the rest update from `staging`.
 
 ## Lanes and agents
 
-The agent corpus lives in `.claude/agents/`: start with its `README.md` (who decides, order of work, versions),
-`MANIFEST.json` and `corpus/principal.md`. The principal (Titus, the owner) makes every key and critical
+The agent corpus lives in `.claude/agents/`. Agents and sessions start from `corpus/brief.md`; `README.md` is the
+human overview (who decides, order of work, versions). The principal (Titus, the owner) makes every key and critical
 judgement; agents escalate those instead of deciding. Lanes, builders and verifiers are in `.claude/agents/README.md`.
 
 ## Data and jobs

@@ -22,7 +22,15 @@ body { margin: 0; background: var(--fc-surface-canvas); color: var(--fc-text-pri
 @container fc-shell (max-width: 767px) {
   .fc-gem-card-head { grid-template-columns: auto minmax(0, 1fr); }
 }
-.hg-lab-frame { display: block; width: 100%; height: 80vh; border: 0; border-radius: var(--fc-radius-sm); box-shadow: var(--ds-shadow-border); background: var(--fc-surface-canvas); }
+/* Rating lab: spacing between Facet parts only. */
+.hg-group-body { padding: var(--fc-space-4); --fc-gap: var(--fc-space-5); }
+.hg-grow { flex: 1 1 auto; min-width: 0; }
+.hg-wrap { flex-wrap: wrap; }
+.hg-between { justify-content: space-between; --fc-gap: var(--fc-space-3) var(--fc-space-4); }
+.hg-gap-5 { --fc-gap: var(--fc-space-5); }
+.hg-gap-2 { --fc-gap: var(--fc-space-2); }
+.hg-flush { margin: 0; }
+.hg-gap-below { margin-bottom: var(--fc-space-5); }
 /* Data pages: secondary text, no-wrap cells, and the inline credit confirm. */
 .hg-sub { color: var(--fc-text-secondary); font-weight: 400; }
 .hg-nowrap { white-space: nowrap; }

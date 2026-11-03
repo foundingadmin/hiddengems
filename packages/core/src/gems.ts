@@ -2,9 +2,11 @@
 // to revisit after Week 9 grades). Market math from section 11.4, clarity from section 11.7.
 import { impliedFromDecimal } from './odds';
 
-/** The book's cut assumed on a one-sided price: 5% plus 1% per point of decimal odds, at most 35%. */
+/** The book's cut assumed on a one-sided price: 5% plus 1% per point of decimal odds, at most 35% (section 11.4). */
+export const HOUSE_CUT = { base: 0.05, perPoint: 0.01, max: 0.35 } as const;
+
 export function houseCut(decimal: number): number {
-  return Math.min(0.35, 0.05 + 0.01 * decimal);
+  return Math.min(HOUSE_CUT.max, HOUSE_CUT.base + HOUSE_CUT.perPoint * decimal);
 }
 
 /** The market's fair chance behind a posted price: the implied chance less the assumed cut (hgs.py v3.0). */
@@ -47,9 +49,12 @@ export interface GemRead {
 
 const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n));
 
+/** Carat, in points, that earns the full edge half of the rating. */
+export const FULL_CARAT = 10;
+
 /** rating = round(100 * clamp(carat / 10, 0, 1) * clarity / 100), only for props that clear the cut. */
 export function gemRating(carat: number, clarity: number): number {
-  return Math.round(100 * clamp(carat / 10, 0, 1) * clamp(clarity, 0, 100) / 100);
+  return Math.round(100 * clamp(carat / FULL_CARAT, 0, 1) * clamp(clarity, 0, 100) / 100);
 }
 
 export function appraise({ hitChance, price, clarity, hasStats }: GemInput): GemRead {
@@ -96,9 +101,13 @@ export interface ClarityParts {
   setup: number;
 }
 
+/** What each clarity part is worth; they add up to 100 (section 11.7). */
+export const CLARITY_MAX: Readonly<ClarityParts> = { sample: 40, consistency: 30, booksAgree: 15, setup: 15 };
+
 /** Clarity out of 100: sample 40, consistency 30, books agree 15, setup 15 (section 11.7). */
 export function clarityScore(p: ClarityParts): number {
-  return Math.round(clamp(p.sample, 0, 40) + clamp(p.consistency, 0, 30) + clamp(p.booksAgree, 0, 15) + clamp(p.setup, 0, 15));
+  return Math.round(clamp(p.sample, 0, CLARITY_MAX.sample) + clamp(p.consistency, 0, CLARITY_MAX.consistency)
+    + clamp(p.booksAgree, 0, CLARITY_MAX.booksAgree) + clamp(p.setup, 0, CLARITY_MAX.setup));
 }
 
 /** A gem joins the New gems row when it reaches this rating, */

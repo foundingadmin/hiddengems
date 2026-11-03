@@ -63,7 +63,7 @@ Owner question, 2026-11-02. A line whose subject lives elsewhere in the app link
 
 ## Source slot `[F]`
 
-Owner request, 2026-11-03. CSS in `css/lists.css` (`.fc-feed-source`). Specimen: `preview/index.html#batch2-forms`.
+Owner request, 2026-11-03. CSS in `css/lists.css` (`.fc-feed-source`). Specimen: `preview/index.html#lf-history`.
 
 ### Purpose
 A dated history row whose record lives outside the app (a commit, a document, a pull request) names where it is recorded, so every line can be checked.

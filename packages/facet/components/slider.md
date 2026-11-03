@@ -29,7 +29,7 @@ Not specified by the reference.
 - **Model weight** sliders (quant vs qualitative) on the settings page.
 
 ## Facet implementation `[F]`
-CSS in `css/forms.css` (`.fc-slider`), fill helper in `js/forms.mjs` (`bindSliders`, `sliderShare`). Specimen: `preview/index.html#batch2-forms`.
+CSS in `css/forms.css` (`.fc-slider`), fill helper in `js/forms.mjs` (`bindSliders`, `sliderShare`). Specimen: `preview/index.html#lf-lab`.
 
 ### Purpose
 A value people move to feel its effect, with the exact number one tab away.
@@ -40,7 +40,7 @@ A value people move to feel its effect, with the exact number one tab away.
   <div class="fc-slider-head">
     <label class="fc-label" for="price-r">Price</label>
     <div class="fc-input-group" data-size="small">
-      <input class="fc-input fc-num" inputmode="decimal" aria-label="Price" value="6.00">
+      <input class="fc-input fc-num" inputmode="decimal" aria-label="Price, exact" value="6.00">
     </div>
   </div>
   <input class="fc-slider-track" id="price-r" type="range" min="1.3" max="30" step="0.05" value="6"
@@ -59,7 +59,7 @@ Idle, dragging (thumb grows 10%), keyboard focus (focus ring on the thumb, INT-0
 - Narrow containers keep the track full width: the number field lives in the label row, never beside the track.
 - Two events: change runs live while dragging or typing; commit runs on release, so expensive work and URL writes happen once per change (INT-11). Commit on pointer up, key up and blur for the track, and on blur and Enter for the field.
 - The number field accepts any keystroke and validates after (FRM-06); out of range keeps the last good value and says the range.
-- Name both inputs: the track by its `<label>`, the field with the same name plus its unit (`aria-label="Our hit chance, %"`, FRM-03).
+- Name both inputs: the track by its `<label>`, the field with the same name plus its unit, or plus "exact" when it has none (`aria-label="Our hit chance, %"`, `aria-label="Price, exact"`, FRM-03).
 - Native keys stay: arrows step, PageUp and PageDown jump, Home and End go to the ends.
 
 ### Hidden Gems usage

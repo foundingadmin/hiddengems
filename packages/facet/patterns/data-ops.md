@@ -66,7 +66,7 @@ Data, then Odds pulls: Level, Source (sportsbook) and Market facets; scheduled p
 
 ## Log table variant `[F]`
 
-Owner feedback and reference, 2026-11-03: a log reads as history, like the vercel.com runtime log. CSS in `css/charts.css`. Specimen: `preview/index.html#batch2-logs`.
+Owner feedback and reference, 2026-11-03: a log reads as history, like the vercel.com runtime log. CSS in `css/charts.css`. Specimen: `preview/index.html#ch-run-detail`.
 
 ```html
 <div class="fc-table-wrap text-copy-13-mono">

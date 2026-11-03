@@ -1042,7 +1042,7 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
    phone shows one line per pair instead of two. No container query needed: each pair flips on its own width.
    A pair that must span the grid (long JSON, a sentence) takes .fc-description-wide and always stacks. */
 .fc-description[data-compact] { row-gap: var(--fc-space-4); }
-.fc-description[data-compact] > div { flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: var(--fc-space-2) var(--fc-space-4); }
+.fc-description[data-compact] > div { flex-direction: row; flex-wrap: wrap; align-items: baseline; align-content: flex-start; gap: var(--fc-space-2) var(--fc-space-4); }
 .fc-description[data-compact] > div > :is(dt, dd) { min-width: 0; flex-basis: calc((var(--fc-space-24) * 3 - 100%) * 999); }
 .fc-description[data-compact] > div > dt { flex-grow: 2; }
 .fc-description[data-compact] > div > dd { flex-grow: 3; overflow-wrap: anywhere; }

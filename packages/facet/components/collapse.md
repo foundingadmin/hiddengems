@@ -35,7 +35,7 @@ Not specified. Demo content is `text-copy-16`.
 Chevron: trailing, down when collapsed, rotating 180° to up when expanded (see the chevron table in `link-action.md`).
 
 ## Facet implementation `[F]`
-CSS in `css/components.css` (`.fc-collapse`). Specimen: `preview/index.html#batch2-forms`. Replaces the Logs rail's `.fc-facet-group` wherever a group holds content rather than filter checkboxes (the facet group stays for the filter rail).
+CSS in `css/components.css` (`.fc-collapse`). Specimen: `preview/index.html#lf-lab`. Use it instead of `.fc-facet-group` wherever a group holds content rather than filter checkboxes.
 
 ### Purpose
 One optional group of controls or detail that most readers skip, with its current result on the closed row, so a closed group still answers its question ("Clarity, 71 of 100").

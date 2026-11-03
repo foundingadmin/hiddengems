@@ -1,6 +1,9 @@
 // Every prop's score under one formula against its odds (Facet scatter, packages/facet/components/chart-card.md).
-// Odds run on a log scale so short prices get room; a prop that clears the posted price is a gem point, the
-// rest are gray, and the top 10 are ringed. Positions are percentages, so the chart needs no measuring.
+// Odds run on a log scale so short prices get room. A prop that clears the posted price is a filled gem point
+// whose purple follows its live gem rating; the rest are hollow gray. The top 10 are ringed. Positions are
+// percentages, so the chart needs no measuring.
+import { gemRating } from '@hiddengems/core';
+import type { CSSProperties } from 'react';
 import { clears, type Formula, type LabProp } from '@/lib/rating-lab/formulas';
 
 const ODDS: [number, number] = [1.3, 30];
@@ -40,7 +43,7 @@ export function ScoreScatter({ formula, pool, top, scoreName }: {
       <ul className="fc-legend" role="list">
         <li className="fc-legend-item"><span className="fc-legend-key" data-gem /><span className="fc-legend-name">Clears the posted price</span><span className="fc-legend-value">{gems}</span></li>
         {points.length > gems && (
-          <li className="fc-legend-item"><span className="fc-legend-key" data-series="muted" /><span className="fc-legend-name">Misses</span><span className="fc-legend-value">{points.length - gems}</span></li>
+          <li className="fc-legend-item"><span className="fc-legend-key" data-series="muted" data-shape="hollow" /><span className="fc-legend-name">Misses</span><span className="fc-legend-value">{points.length - gems}</span></li>
         )}
         <li className="fc-legend-item"><span className="fc-legend-key" data-shape="ring" /><span className="fc-legend-name">Top 10</span></li>
       </ul>
@@ -64,6 +67,7 @@ export function ScoreScatter({ formula, pool, top, scoreName }: {
             <circle
               key={prop.player + prop.game} className="fc-chart-point" data-gem={gem || undefined} data-series={gem ? undefined : 'muted'}
               cx={pct(xPct(prop.price))} cy={pct(yPct(score))} r="4"
+              style={gem ? ({ '--rating': gemRating(prop.carat, prop.clarity) } as CSSProperties) : undefined}
             >
               <title>{`${prop.player}, ${prop.price.toFixed(2)}, ${score.toFixed(digits)}`}</title>
             </circle>

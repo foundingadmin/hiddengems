@@ -1130,7 +1130,7 @@
     <h3 class="text-heading-20">Scatter</h3>
     <ul class="fc-legend" role="list">
       <li class="fc-legend-item"><span class="fc-legend-key" data-gem></span><span class="fc-legend-name">Clears the posted price</span><span class="fc-legend-value" id="ch-sc-gems"></span></li>
-      <li class="fc-legend-item"><span class="fc-legend-key" data-series="muted"></span><span class="fc-legend-name">Misses</span><span class="fc-legend-value" id="ch-sc-miss"></span></li>
+      <li class="fc-legend-item"><span class="fc-legend-key" data-series="muted" data-shape="hollow"></span><span class="fc-legend-name">Misses</span><span class="fc-legend-value" id="ch-sc-miss"></span></li>
       <li class="fc-legend-item"><span class="fc-legend-key" data-shape="ring"></span><span class="fc-legend-name">Top 10</span></li>
     </ul>
     <figure class="fc-chart" data-kind="scatter" role="img" id="ch-sc" aria-label="Score against odds for 60 sample props. The top 10 are ringed."></figure>
@@ -1158,7 +1158,7 @@
       mk('text', { class: 'fc-chart-axis-title', x: '100%', y: '100%', dy: 34, 'text-anchor': 'end' }, svg, 'Odds, log scale');
       mk('text', { class: 'fc-chart-axis-title', x: 0, y: 0, dy: -12 }, svg, 'Score');
       [...props.filter((p) => !p.clears), ...props.filter((p) => p.clears)].forEach((p) => {
-        const c = mk('circle', { class: 'fc-chart-point', cx: x(p.price), cy: y(p.score), r: 4, ...(p.clears ? { 'data-gem': '' } : { 'data-series': 'muted' }) }, svg);
+        const c = mk('circle', { class: 'fc-chart-point', cx: x(p.price), cy: y(p.score), r: 4, ...(p.clears ? { 'data-gem': '', style: `--rating: ${Math.round(p.score)}` } : { 'data-series': 'muted' }) }, svg);
         mk('title', {}, c, `${p.name}, ${p.price.toFixed(2)}, ${p.score.toFixed(1)}`);
       });
       top.forEach((p) => mk('circle', { class: 'fc-chart-ring', cx: x(p.price), cy: y(p.score), r: 8 }, svg));
@@ -1225,9 +1225,9 @@
         <caption class="fc-visually-hidden">Newest first, 4 runs</caption>
         <thead><tr><th scope="col">Time</th><th scope="col">Source</th><th scope="col" data-grow>Message</th><th scope="col" data-align="numeric">Ran</th></tr></thead>
         <tbody>
-          <tr data-level="warning"><td class="fc-log-time"><a class="fc-row-link" href="#ch-run-detail"><time datetime="2026-11-02T21:49:30-05:00">Nov 02 9:49:30 PM</time></a></td><td class="fc-log-source">Results</td><td class="fc-log-message"><span class="fc-level" data-level="warning">Provider down</span>Timed out after 30 seconds waiting for nflverse</td><td data-align="numeric">30.0s</td></tr>
-          <tr data-level="error"><td class="fc-log-time"><a class="fc-row-link" href="#ch-run-detail"><time datetime="2026-11-02T21:49:12-05:00">Nov 02 9:49:12 PM</time></a></td><td class="fc-log-source">Rosters</td><td class="fc-log-message"><span class="fc-level" data-level="error">Failed</span>Failed to read rosters: the file no longer has a gsis_id column</td><td data-align="numeric">0.2s</td></tr>
-          <tr data-level="warning" aria-selected="true"><td class="fc-log-time"><a class="fc-row-link" href="#ch-run-detail" aria-current="true"><time datetime="2026-11-02T21:48:58-05:00">Nov 02 9:48:58 PM</time></a></td><td class="fc-log-source">Odds</td><td class="fc-log-message"><span class="fc-level" data-level="warning">Warned</span>Pulled 40 prices across 4 books for 3 games<span class="fc-log-detail">2 games on the schedule had no odds event</span></td><td data-align="numeric">0.4s</td></tr>
+          <tr data-level="warning"><td class="fc-log-time"><a class="fc-row-link" href="#ch-run-detail"><time datetime="2026-11-02T21:49:30-05:00">Nov 02 9:49:30 PM</time></a></td><td class="fc-log-source">Results</td><td class="fc-log-message"><span class="fc-level" data-level="warning">Provider down</span> Timed out after 30 seconds waiting for nflverse</td><td data-align="numeric">30.0s</td></tr>
+          <tr data-level="error"><td class="fc-log-time"><a class="fc-row-link" href="#ch-run-detail"><time datetime="2026-11-02T21:49:12-05:00">Nov 02 9:49:12 PM</time></a></td><td class="fc-log-source">Rosters</td><td class="fc-log-message"><span class="fc-level" data-level="error">Failed</span> Failed to read rosters: the file no longer has a gsis_id column</td><td data-align="numeric">0.2s</td></tr>
+          <tr data-level="warning" aria-selected="true"><td class="fc-log-time"><a class="fc-row-link" href="#ch-run-detail" aria-current="true"><time datetime="2026-11-02T21:48:58-05:00">Nov 02 9:48:58 PM</time></a></td><td class="fc-log-source">Odds</td><td class="fc-log-message"><span class="fc-level" data-level="warning">Warned</span> Pulled 40 prices across 4 books for 3 games<span class="fc-log-detail">2 games on the schedule had no odds event</span></td><td data-align="numeric">0.4s</td></tr>
           <tr><td class="fc-log-time"><a class="fc-row-link" href="#ch-run-detail"><time datetime="2026-11-02T21:47:21-05:00">Nov 02 9:47:21 PM</time></a></td><td class="fc-log-source">Backup</td><td class="fc-log-message">Backed up 216 rows from 18 tables, 6.8 KB</td><td data-align="numeric">0.1s</td></tr>
         </tbody>
       </table>
@@ -2113,7 +2113,7 @@ rating = round(100 × clamp(carat / 10, 0, 1) × clarity / 100)</pre></div>
           <div class="fc-slider">
             <div class="fc-slider-head">
               <label class="fc-label" for="lf-price-r">Price</label>
-              <div class="fc-input-group" data-size="small"><input class="fc-input fc-num" inputmode="decimal" aria-label="Price" value="6.00"></div>
+              <div class="fc-input-group" data-size="small"><input class="fc-input fc-num" inputmode="decimal" aria-label="Price, exact" value="6.00"></div>
             </div>
             <input class="fc-slider-track" id="lf-price-r" type="range" min="1.3" max="30" step="0.05" value="6" aria-describedby="lf-price-h">
             <p class="fc-helper" id="lf-price-h">Decimal odds. Implied 16.7%, less an assumed cut of 11%.</p>
@@ -2143,8 +2143,8 @@ rating = round(100 × clamp(carat / 10, 0, 1) × clarity / 100)</pre></div>
         </div>
       </section>
       <div class="fc-collapse-group">
-        <details class="fc-collapse"><summary><span class="fc-collapse-title">Market</span><span class="fc-collapse-value">3 settings</span><svg class="fc-collapse-chevron" aria-hidden="true"><use href="#lf-chevron"/></svg></summary><div class="fc-collapse-body"><p class="text-copy-14">Assumed cut, fair chance and stats weight.</p></div></details>
-        <details class="fc-collapse"><summary><span class="fc-collapse-title">Model</span><span class="fc-collapse-value">5 settings</span><svg class="fc-collapse-chevron" aria-hidden="true"><use href="#lf-chevron"/></svg></summary><div class="fc-collapse-body"><p class="text-copy-14">Red zone read, recalibration and priors.</p></div></details>
+        <details class="fc-collapse"><summary><span class="fc-collapse-title">Market</span><svg class="fc-collapse-chevron" aria-hidden="true"><use href="#lf-chevron"/></svg></summary><div class="fc-collapse-body"><p class="text-copy-14">Assumed cut, fair chance and stats weight.</p></div></details>
+        <details class="fc-collapse"><summary><span class="fc-collapse-title">Model</span><svg class="fc-collapse-chevron" aria-hidden="true"><use href="#lf-chevron"/></svg></summary><div class="fc-collapse-body"><p class="text-copy-14">Red zone read, recalibration and priors.</p></div></details>
       </div>
     </div>
 

@@ -141,7 +141,7 @@ function runLevel(run: Pick<Run, 'status' | 'failureOwner'>): 'warning' | 'error
   return run.status === 'warned' ? 'warning' : null;
 }
 
-/** One run's record (Facet patterns/data-ops.md, "Row detail") and every line it logged, in order. */
+/** One run's record (Facet patterns/data-ops.md, "Inline row detail") and every line it logged, in order. */
 function RunDetail({ run, lines, now, close, label }: { run: Run; lines: Line[]; now: Date; close: string; label: string }) {
   const tone = runLevel(run);
   return (

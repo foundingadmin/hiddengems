@@ -33,7 +33,8 @@ export function writeParams(values: Record<string, string | null>) {
 
 /**
  * A slider paired with an exact number field. onChange runs live while dragging or typing; onCommit runs
- * on release (pointer up, key up, blur, Enter), so the URL is written once per change, not per step (INT-11).
+ * on release (pointer up, key up, blur, Enter) when the value changed, so the URL is written once per change,
+ * not per step (INT-11).
  * A number outside the range keeps the last good value and marks the field invalid with the range (FRM-09).
  */
 export function Slider({ label, value, min, max, step, unit, digits, helper, onChange, onCommit }: {
@@ -42,6 +43,9 @@ export function Slider({ label, value, min, max, step, unit, digits, helper, onC
 }) {
   const id = useId();
   const editing = useRef(false);
+  // The last value written, so releasing or blurring without a change writes nothing (tabbing through is free).
+  const committed = useRef(value);
+  const commit = (v: number) => { if (v !== committed.current) { committed.current = v; onCommit(v); } };
   const [draft, setDraft] = useState(value.toFixed(digits));
   useEffect(() => { if (!editing.current) setDraft(value.toFixed(digits)); }, [value, digits]);
   const parse = (text: string) => {
@@ -58,10 +62,10 @@ export function Slider({ label, value, min, max, step, unit, digits, helper, onC
   const settle = () => {
     editing.current = false;
     const n = parse(draft);
-    if (n !== null) onCommit(n);
+    if (n !== null) commit(n);
     setDraft((n ?? value).toFixed(digits));
   };
-  const release = (e: { currentTarget: HTMLInputElement }) => onCommit(Number(e.currentTarget.value));
+  const release = (e: { currentTarget: HTMLInputElement }) => commit(Number(e.currentTarget.value));
   const helpId = `${id}-h`, errId = `${id}-e`;
   return (
     <div className="fc-slider">
@@ -69,7 +73,7 @@ export function Slider({ label, value, min, max, step, unit, digits, helper, onC
         <label className="fc-label" htmlFor={`${id}-r`}>{label}</label>
         <div className="fc-input-group" data-size="small">
           <input
-            className="fc-input fc-num" inputMode="decimal" aria-label={unit ? `${label}, ${unit}` : label} value={draft}
+            className="fc-input fc-num" inputMode="decimal" aria-label={`${label}, ${unit ?? 'exact'}`} value={draft}
             aria-invalid={invalid || undefined} aria-describedby={invalid ? errId : helper ? helpId : undefined}
             onFocus={() => { editing.current = true; }} onChange={(e) => type(e.target.value)} onBlur={settle}
             onKeyDown={(e) => { if (e.key === 'Enter') settle(); }}

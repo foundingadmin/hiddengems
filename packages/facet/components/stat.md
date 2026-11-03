@@ -55,7 +55,7 @@ When the stat itself says something needs doing, one small CTA sits under the ba
 - A missing value renders `–` with `aria-label="Unknown"`.
 
 ## Gem rating as the value `[F]`
-CSS in `css/components.css` (`.fc-gem[data-size="stat"]`). Specimen: `preview/index.html#batch2-forms`.
+CSS in `css/components.css` (`.fc-gem[data-size="stat"]`). Specimen: `preview/index.html#lf-lab`.
 
 When a stat's value is a gem rating, the gem mark replaces `.fc-stat-value` at the same role: number 600 24/32, the gem glyph one em tall, 8px between. So a gem rating beside plain stats reads as an equal peer (rule 7), and the purple intensity still rises with the number.
 ```html

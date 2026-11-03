@@ -9,3 +9,4 @@ export * from './grades';
 export * from './log';
 export * from './slips';
 export * from './history';
+export * from './backtest';

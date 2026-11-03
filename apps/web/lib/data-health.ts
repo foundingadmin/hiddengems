@@ -16,7 +16,10 @@ export const SOURCES = [
   { job: 'pull-usage', label: 'Usage and injuries', live: 'nflverse' },
   { job: 'build-picks', label: 'Ratings', live: 'Model v3.0' },
   { job: 'backup', label: 'Backup', live: 'GitHub, private' },
+  { job: 'backtest', label: 'Backtest', live: 'Model v3.0' },
 ] as const;
+/** Sources that call no provider: they run on our own data, so Usage leaves them out and sample mode keeps their name. */
+export const NO_PROVIDER: ReadonlySet<string> = new Set(['build-picks', 'backtest']);
 export const LABELS: Record<string, string> = Object.fromEntries(SOURCES.map((s) => [s.job, s.label]));
 export const PROVIDER_NAMES: Record<string, string> = { 'odds-api': 'The Odds API', nflverse: 'nflverse', sample: 'Sample', 'github-backup': 'GitHub', memory: 'Local' };
 
@@ -24,23 +27,27 @@ const fmt = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat('en-US', 
 export const timeOfDay = (d: Date) => fmt({ hour: 'numeric', minute: '2-digit' }).format(d);
 export const weekdayTime = (d: Date) => fmt({ weekday: 'short', hour: 'numeric', minute: '2-digit' }).format(d);
 
-/** The job's daily cron time in vercel.json (UTC), or null when it is not a daily job. */
-function dailyCron(job: string): { h: number; m: number } | null {
+/** The job's cron time in vercel.json (UTC): daily, or weekly on one weekday (0 is Sunday). Null for anything else. */
+function fixedCron(job: string): { h: number; m: number; weekday: number | null } | null {
   const cron = vercel.crons.find((c) => c.path === `/api/cron/${job}`)?.schedule.split(' ');
-  if (!cron || cron[2] !== '*' || !/^\d+$/.test(cron[0]!) || !/^\d+$/.test(cron[1]!)) return null;
-  return { h: Number(cron[1]), m: Number(cron[0]) };
+  if (!cron || cron[2] !== '*' || cron[3] !== '*' || !/^\d+$/.test(cron[0]!) || !/^\d+$/.test(cron[1]!)) return null;
+  if (cron[4] !== '*' && !/^[0-6]$/.test(cron[4]!)) return null;
+  return { h: Number(cron[1]), m: Number(cron[0]), weekday: cron[4] === '*' ? null : Number(cron[4]) };
 }
+const dailyCron = (job: string) => { const c = fixedCron(job); return c && c.weekday === null ? c : null; };
 export const isDaily = (job: string) => dailyCron(job) != null;
+export const isWeekly = (job: string) => fixedCron(job)?.weekday != null;
+/** How long after its last run a daily or weekly source counts as overdue, with the same slack; null for the rest. */
+export const overdueAfter = (job: string) => (isDaily(job) ? OVERDUE_MS : isWeekly(job) ? OVERDUE_MS + 6 * DAY : null);
 
-/** Plain-language schedule: "Daily at 4:17 AM", "Weekly and at kickoff", "After odds or usage". */
+/** Plain-language schedule: "Daily at 4:17 AM", "Tuesdays at 5:37 AM", "Weekly and at kickoff", "After odds or usage". */
 export function scheduleText(job: string, now: Date): string {
   if (job === 'pull-odds') return 'Weekly and at kickoff';
   if (job === 'build-picks') return 'After odds or usage';
-  const c = dailyCron(job);
+  const c = fixedCron(job);
   if (!c) return 'Daily';
-  const at = new Date(now);
-  at.setUTCHours(c.h, c.m, 0, 0);
-  return `Daily at ${timeOfDay(at)}`;
+  const at = nextCron(job, now)!;
+  return c.weekday === null ? `Daily at ${timeOfDay(at)}` : `${fmt({ weekday: 'long' }).format(at)}s at ${timeOfDay(at)}`;
 }
 
 const dateIn = (d: Date) => new Intl.DateTimeFormat('en-CA', { timeZone: SNAPSHOT_ZONE }).format(d);
@@ -80,11 +87,17 @@ export function nextOddsPull(now: Date, kickoffs: Date[]): { at: Date; what: str
 
 /** When a daily job runs next. */
 export function nextDaily(job: string, now: Date): Date | null {
-  const c = dailyCron(job);
+  return dailyCron(job) ? nextCron(job, now) : null;
+}
+
+/** When a daily or weekly cron job runs next. */
+export function nextCron(job: string, now: Date): Date | null {
+  const c = fixedCron(job);
   if (!c) return null;
   const at = new Date(now);
   at.setUTCHours(c.h, c.m, 0, 0);
-  if (at <= now) at.setTime(at.getTime() + DAY);
+  if (c.weekday !== null) at.setTime(at.getTime() + ((c.weekday - at.getUTCDay() + 7) % 7) * DAY);
+  if (at <= now) at.setTime(at.getTime() + (c.weekday !== null ? 7 : 1) * DAY);
   return at;
 }
 

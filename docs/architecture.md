@@ -36,6 +36,7 @@ providers ──> jobs (ingest) ──> Postgres ──> pages (web)
 | `build-picks` | after every odds pull | `estimates` (history), `picks` (the board: gem rating, Fool's Gold, Recommended order), `gem_records` (history) once a game's freeze is pulled | Follows `pull-odds` |
 | `pull-results` | nflverse | `player_game_stats` (backfills the season on first run); settles `bets`, records closing prices, writes `grades` | Daily 10:41 |
 | `pull-usage` | nflverse | `player_usage` (inside 10 carries and targets, touchdowns, snap share per player game), injury report onto `players`; then `build-picks` | Daily 10:53 |
+| `backtest` | our data | Nothing: its run keeps the walk-forward Brier against the 0.1360 baseline, one log line per week, and warns above it | Tuesday 12:37 |
 
 Cron runs every job often and lets the job decide. Odds come from The Odds API free plan: 500 credits a
 month, about 1 credit per game per pull, anytime TD only. So `pull-odds` fires every 5 minutes but calls
@@ -176,6 +177,9 @@ injury report) and `pull-schedule` (spread and total lines).
 
 `packages/core/test/model.test.ts` checks the port against `hgs.py` on Week 8: every player's form and
 stats chance, and every Week 8 board read, to 1e-9. The fixture is nflverse data as of the Week 8 freeze.
+The `backtest` job (`core/src/backtest.ts`) scores the same functions walk forward each Tuesday: every completed week from
+Week 4, each player game read from the weeks before it, against his stat line. `packages/core/test/backtest.test.ts`
+gives 0.1313 for Weeks 4 to 8 on the fixture; the 0.1360 baseline was scored before most Week 8 snap counts landed.
 Each estimate row stores its inputs (form, implied points, stats weight, clarity parts) so any read can
 be explained later.
 

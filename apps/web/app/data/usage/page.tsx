@@ -3,7 +3,7 @@ import { dataMode } from '@hiddengems/ingest';
 import { eq, gte } from 'drizzle-orm';
 import type { Metadata } from 'next';
 import { Sparkline, UsageChart, type UsageSeries } from '@/components/usage-chart';
-import { DAY, SOURCES } from '@/lib/data-health';
+import { DAY, NO_PROVIDER, SOURCES } from '@/lib/data-health';
 import { db } from '@/lib/db';
 import { ZONE } from '@/lib/format';
 
@@ -35,9 +35,9 @@ export default async function UsagePage() {
     e.runs += 1;
     byJob.set(r.job, e);
   }
-  // A source keeps its slot in every view: the order of SOURCES, skipping Ratings (it calls no provider).
+  // A source keeps its slot in every view: the order of SOURCES, skipping Ratings and Backtest (they call no provider).
   const series: (UsageSeries & { job: string; runs: number; total: number })[] = SOURCES
-    .filter((s) => s.job !== 'build-picks')
+    .filter((s) => !NO_PROVIDER.has(s.job))
     .map((s, i) => {
       const e = byJob.get(s.job) ?? { values: Array<number>(WINDOW_DAYS).fill(0), runs: 0 };
       return { job: s.job, label: s.label, slot: i + 1, values: e.values, runs: e.runs, total: e.values.reduce((a, b) => a + b, 0) };

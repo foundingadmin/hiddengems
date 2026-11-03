@@ -6,6 +6,7 @@ row at the end of every session.
 ## Session log
 | Date | Shipped | Lead | Agents | Session total | Change |
 |---|---|---|---|---|---|
+| 2026-11-03 (second session) | #28 token log rule, #29 Facet curation after release #27 (3 fix rounds) | not measured | 392k: facet-curator 110k, design-verifier 157k, content-verifier 79k (27k on #28, 52k on #29), staging-keeper 46k; repo-hygiene and corpus-steward not measured | 392k agents, lead not measured | #29 (276 lines, 3 fix rounds) and #28 together measured 392k, against 966k for #24 alone (1,000 lines, 3 fix rounds) |
 
 ## Corpus 1.1 baseline
 Real runs from the 2026-11-03 session, before and after corpus 1.1 (PR #26). "Measured" is the token count the

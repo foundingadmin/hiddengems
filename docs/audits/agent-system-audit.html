@@ -1391,8 +1391,8 @@ table.t tbody tr:hover { background: var(--fc-surface-fill-hover); }
     </div>
     <div class="row">
       <div class="tabs" role="tablist" aria-label="View">
-        <button role="tab" aria-selected="true" data-tab="map" class="text-label-13">System map</button>
-        <button role="tab" aria-selected="false" data-tab="run" class="text-label-13">Fixture run</button>
+        <button role="tab" aria-selected="false" data-tab="map" class="text-label-13">System map</button>
+        <button role="tab" aria-selected="true" data-tab="run" class="text-label-13">Fixture run</button>
         <button role="tab" aria-selected="false" data-tab="findings" class="text-label-13">Findings</button>
       </div>
       <button class="btn text-label-13" id="themeBtn" type="button" aria-label="Switch color theme">Theme</button>
@@ -2323,7 +2323,7 @@ $('#bEnd').onclick = () => { stop(); state.step = EVENTS.length - 1; paint(); };
 setupPanZoom();
 $('#themeBtn').onclick = theme;
 const q = new URLSearchParams(location.search);
-setTab(q.get('tab') || 'map');
+setTab(q.get('tab') || 'run');
 if (q.get('step')) { state.step = +q.get('step'); paint(); }
 if (q.get('sel')) select(q.get('sel'));
 </script>

@@ -29,7 +29,7 @@ When the principal merges the release to `main`:
 1. Fast forward `staging` to `main` (`git push origin origin/main:staging` only when `staging` has nothing newer;
    otherwise merge `main` into `staging` on a `fix/sync-main` branch for `staging-keeper`).
 2. Confirm the production deploy succeeded and report it, with any owner step still outstanding.
-3. Tell the vice principal the release is ratified, so `corpus-steward` can run the retrospective.
+3. Tell the vice principal the release is ratified, so `corpus-steward` and `facet-curator` can run.
 
 Never merge into `main`, force push or delete branches.
 

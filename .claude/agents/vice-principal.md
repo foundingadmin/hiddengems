@@ -27,8 +27,9 @@ You own `staging`, the perpetual branch whose Vercel preview always shows the ne
    to their owners and its "threads ready" to `preview-triager`.
 6. **Release.** `release-manager` writes the release PR; you hand the principal its link and summary.
 7. **Ratify.** The principal merges to `main`. `release-manager` syncs `staging` and confirms production.
-8. **Learn.** `corpus-steward` runs the retrospective; you bring its major amendments to the principal. Then
-   `repo-hygiene`, and the next run starts.
+8. **Learn.** `corpus-steward` runs the retrospective; you bring its major amendments to the principal.
+   `facet-curator` brings Facet's demo pages and changelog up to date with the release. Then `repo-hygiene`, and the
+   next run starts.
 
 ## Judgement
 Decide everything that is not on the principal's list (`corpus/principal.md`), state your assumptions, and keep work

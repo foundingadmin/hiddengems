@@ -18,5 +18,6 @@ How a directive (an agent file in `.claude/agents/`) changes.
 | 2026-11-03 | all | 1.0 | Corpus created: manifest, README, principal, decisions, lessons, amendments; `repo-hygiene` added. | Principal request |
 | 2026-11-03 | vice-principal | 1.0 | Added: owns `staging` and its preview, presents releases; only the principal merges to `main`. | Principal request |
 | 2026-11-03 | vice-principal | 1.1 | Dispatches every step to its owning agent instead of doing operations itself; added `staging-keeper`, `release-manager`, `corpus-steward`. | Principal request |
+| 2026-11-03 | facet-curator | 1.0 | Added: after each ratified release, Facet's demo pages, changelog and version catch up. | Principal request |
 | 2026-11-03 | pr-verifier | 1.1 | Does not block on PR body footers rewritten by the connector. | L1 |
 | 2026-11-03 | design-verifier | 1.1 | Screenshots a middle width (about 1100) as well as 1440 and 390. | L3 |

@@ -75,6 +75,19 @@
       "writes": ".claude/agents"
     },
     {
+      "name": "facet-curator",
+      "file": "facet-curator.md",
+      "kind": "operations",
+      "lanes": [
+        "ds"
+      ],
+      "version": "1.0",
+      "updated": "2026-11-03",
+      "reads": "a ratified release's Facet and app changes",
+      "returns": "ds/curate branch: specimens, screens, changelog, version; drift report",
+      "writes": "packages/facet"
+    },
+    {
       "name": "preview-triager",
       "file": "preview-triager.md",
       "kind": "intake",

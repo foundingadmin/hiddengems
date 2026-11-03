@@ -24,7 +24,7 @@ One run builds one release. Every step has an owner; the vice principal dispatch
 | 5. Merge to staging | `pr-verifier`, then `staging-keeper` | Verdict, then a merge on `Merge: ready` with CI green, in a conflict-free order; branches told to update |
 | 6. Release | `release-manager` | Release PR from `staging` to `main` with the preview link, review routes, changes and owner steps |
 | 7. Ratify | the principal | Merges the release to `main`; that merge ratifies the run. `release-manager` syncs `staging` |
-| 8. Learn | `corpus-steward`, then `repo-hygiene` | Retrospective: lessons, decisions, minor amendments applied, major ones to the principal; then tidying |
+| 8. Learn | `corpus-steward` and `facet-curator`, then `repo-hygiene` | Retrospective: lessons, decisions, minor amendments applied, major ones to the principal; Facet's demo pages and changelog brought up to date with the release; then tidying |
 
 | Lane | Builder | Verifiers before merge |
 |---|---|---|
@@ -43,6 +43,7 @@ One run builds one release. Every step has an owner; the vice principal dispatch
 | `staging-keeper` | operations | 1.0 | 2026-11-03 | Merges verified PRs into staging, keeps it green |
 | `release-manager` | operations | 1.0 | 2026-11-03 | Release PR for the principal's review; syncs staging after ratification |
 | `corpus-steward` | operations | 1.0 | 2026-11-03 | Retrospective: lessons, decisions, amendments, versions |
+| `facet-curator` | operations | 1.0 | 2026-11-03 | Facet demo pages, changelog and version after each release |
 | `preview-triager` | intake | 1.0 | 2026-11-03 | Vercel comments into lane tasks; resolves threads after merge |
 | `screen-builder` | builder | 1.0 | 2026-11-03 | Build brief screens in Facet |
 | `data-builder` | builder | 1.0 | 2026-11-03 | Jobs, providers, schema, model changes |

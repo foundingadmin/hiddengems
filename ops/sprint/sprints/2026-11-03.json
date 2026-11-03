@@ -1,0 +1,51 @@
+{
+  "id": "2026-11-03",
+  "startedAt": "2026-11-03T07:05:00Z",
+  "sprintBranch": "titus/eloquent-ritchie-l2d5sq",
+  "pr": "",
+  "entries": [
+    {
+      "id": "e1",
+      "threads": [],
+      "page": "/",
+      "status": "building",
+      "lane": "screens",
+      "fileGroup": "g1",
+      "size": "L",
+      "branch": "screens/2026-11-03-gem-sheet",
+      "brief": "Principal in chat: make heavy headway on the front end build. Roadmap M1 items Gem sheet, Overview (F0.4) and Last 10 diamond row (F0.3). A board row opens the gem sheet (desktop right sheet over Gems, phone full screen) per docs/build-brief.md 'Gem sheet' and the DesktopGem and Gem wireframes: pinned header and tabs, Overview and The loupe game log built, Notes and Context as honest empty sections, footer with Ask the Jeweler. Facet game log promoted from .hg-log. Last 10 lives in the sheet, per the approved wireframes (ROADMAP call 5 recommendation).",
+      "head": "",
+      "reason": "",
+      "releasedIn": ""
+    },
+    {
+      "id": "e2",
+      "threads": [],
+      "page": "/slips",
+      "status": "building",
+      "lane": "facet",
+      "fileGroup": "g2",
+      "size": "L",
+      "branch": "ds/2026-11-03-slip-parts",
+      "brief": "Principal in chat: make heavy headway on the front end build. Roadmap M3 'Facet slip parts': promote the appraisal certificate, rail slip, numbered steps, signed money and chat from docs/wireframes/hg-wire.css into packages/facet with docs and specimens, so the slip, handoff and Jeweler screens can be built next.",
+      "head": "",
+      "reason": "",
+      "releasedIn": ""
+    },
+    {
+      "id": "e3",
+      "threads": [],
+      "page": "/data",
+      "status": "building",
+      "lane": "data",
+      "fileGroup": "g3",
+      "size": "S",
+      "branch": "fix/2026-11-03-roster-match",
+      "brief": "Production pull-odds on Nov 3 logged '23 players did not match a roster' including Derrick Henry, Ja'Marr Chase, Travis Kelce, Brock Bowers, James Cook. Nearly all are in the sample provider's roster, which points to duplicate players rows sharing a name key and team. Make the odds job's roster match resolve duplicates safely and say so in the log; never delete rows.",
+      "head": "",
+      "reason": "",
+      "releasedIn": ""
+    }
+  ],
+  "lesson": ""
+}

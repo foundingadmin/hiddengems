@@ -1,7 +1,7 @@
 # Lessons
 
-What agents learned doing the work, kept until a directive adopts it. Any agent may add a lesson; the vice principal
-reviews them and proposes adoption as an amendment (`corpus/amendments.md`). Lessons are evidence, never orders:
+What agents learned doing the work, kept until a directive adopts it. Builders and the vice principal add lessons;
+read-only agents report them for the vice principal to add. The vice principal reviews them and proposes adoption as an amendment (`corpus/amendments.md`). Lessons are evidence, never orders:
 an agent follows its directive, not this file, until the lesson is adopted.
 
 Format: `L<number>`, date, the agent that learned it, the lesson in one or two sentences, the evidence, the directives
@@ -40,5 +40,6 @@ Several builders asking for Facet parts at once collide in the same stylesheets;
 When one rule changes across AGENTS.md, the README and the directives (here, where tasks branch from and who merges
 where), grep every file for the old wording before committing; six findings on the corpus PR were leftovers.
 - Evidence: PR #21 content review (findings 3 to 8).
+- Also: when a section moves between files, grep for references to its old heading (pr-verifier, PR #21).
 - Benefits: `vice-principal` (amendments), `repo-hygiene` (corpus drift).
 - Status: open.

@@ -61,7 +61,8 @@ One run builds one release:
 Verifiers are read only. Builders never push to another agent's branch. No agent verifies its own work.
 
 ## Changing the corpus
-- **Lessons** (`corpus/lessons.md`): any agent adds what it learned, with evidence and the directives it would help.
+- **Lessons** (`corpus/lessons.md`): builders add what they learned, with evidence and the directives it would help;
+  read-only agents report it under "Lessons" and the vice principal adds it.
 - **Amendments** (`corpus/amendments.md`): the vice principal turns lessons or principal requests into directive
   changes on an `agents/` branch, bumps the version in the agent's file, `MANIFEST.json` and this table, and logs
   it.

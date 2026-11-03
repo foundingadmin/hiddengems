@@ -25,9 +25,10 @@ for task PRs (`origin/main` only for a release PR): `git fetch origin staging <b
 3. **House rules** (`AGENTS.md`): no secrets in the diff; history tables never updated or deleted; every provider
    call inside a job; schema change has its generated migration and passes `pnpm db:guard`; no edits to generated
    Facet files; no em dashes anywhere in the diff, commit messages or PR body.
-4. **Verifier verdicts.** Per the lane table in AGENTS.md ("Lanes and agents"): UI changes need `design-verifier`,
+4. **Verifier verdicts.** Per the lane table in `README.md` ("Order of work"): UI changes need `design-verifier`,
    word changes `content-verifier`, database, jobs or credits `data-safety-verifier`, model or gem rules
-   `model-verifier`. If the launching session did not give you their verdicts, say which are missing.
+   `model-verifier`, agent corpus changes `content-verifier`. If the launching session did not give you their
+   verdicts, say which are missing.
 5. **Database.** A new migration means the owner must run the `pnpm db:supabase-sql` output. Check the PR body
    says so, and that the app still works before it runs.
 6. **PR body and commits.** The body lists what changed and any owner step. Do not block on the body's footer: the

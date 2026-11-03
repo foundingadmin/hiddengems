@@ -21,6 +21,9 @@ export interface ScheduleGame {
   status: 'scheduled' | 'in_progress' | 'final' | 'postponed' | 'canceled';
   awayScore: number | null;
   homeScore: number | null;
+  /** Closing lines from the schedule, for implied team points. Above zero means the home team is favored. */
+  spreadLine?: number | null;
+  totalLine?: number | null;
 }
 
 export interface RosterPlayer {
@@ -64,6 +67,27 @@ export interface StatLine {
   extra?: Record<string, unknown>;
 }
 
+/** One player's usage in one game (core UsageGame, with the provider's ids). */
+export interface UsageLine {
+  playerExternalId: string;
+  gameExternalId: string;
+  week: number;
+  team: string;
+  position: string;
+  snapPct: number | null;
+  rzCarries: number;
+  rzTargets: number;
+  rzCarryTds: number;
+  rzTargetTds: number;
+  touchdowns: number;
+}
+
+/** The latest injury report: its week and each listed player's game status (Out, Doubtful, Questionable). */
+export interface InjuryReport {
+  week: number;
+  statuses: { playerExternalId: string; status: string }[];
+}
+
 /** What every adapter shares: its id, request headers (keys) and an optional quota reader. */
 export interface ProviderBase {
   id: string;
@@ -87,9 +111,16 @@ export interface ResultsProvider extends ProviderBase {
   stats(ctx: ProviderContext, season: number, week: number): Promise<StatLine[]>;
 }
 
+export interface UsageProvider extends ProviderBase {
+  /** Every skill player's usage in every game of the season so far. */
+  gameUsage(ctx: ProviderContext, season: number): Promise<UsageLine[]>;
+  injuries(ctx: ProviderContext, season: number): Promise<InjuryReport | null>;
+}
+
 export interface Providers {
   schedule: ScheduleProvider;
   rosters: RosterProvider;
   odds: OddsProvider;
   results: ResultsProvider;
+  usage: UsageProvider;
 }

@@ -7,9 +7,9 @@ export function houseCut(decimal: number): number {
   return Math.min(0.35, 0.05 + 0.01 * decimal);
 }
 
-/** The market's fair chance behind a posted price, with the assumed cut taken out. */
+/** The market's fair chance behind a posted price: the implied chance less the assumed cut (hgs.py v3.0). */
 export function fairChance(decimal: number): number {
-  return impliedFromDecimal(decimal) / (1 + houseCut(decimal));
+  return impliedFromDecimal(decimal) * (1 - houseCut(decimal));
 }
 
 export interface GemInput {

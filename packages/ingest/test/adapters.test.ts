@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { parseCsv } from '../src/csv';
 import { JobError } from '../src/errors';
 import { createHttp, redact } from '../src/http';
-import { easternKickoff, normalizeEventOdds, normalizeGames, normalizeRoster, normalizeStats } from '../src/providers';
+import { buildUsage, easternKickoff, normalizeEventOdds, normalizeGames, normalizeInjuries, normalizeRoster, normalizeStats } from '../src/providers';
 
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
 
@@ -96,5 +96,60 @@ describe('http', () => {
   it('keeps keys out of logs', async () => {
     expect((await fail([401])).detail.url).toBe('https://x.test/?apiKey=***');
     expect(redact('https://a.test/x?key=abc&b=1')).toBe('https://a.test/x?key=***&b=1');
+  });
+});
+
+describe('nflverse usage (hgs.py game_logs)', () => {
+  const roster = [
+    'gsis_id,pfr_id,full_name,team,position',
+    '00-1,CookJa01,James Cook,BUF,RB',
+    '00-2,,Dalton Kincaid,BUF,TE', // no pfr id: matched by name and team
+    '00-3,AllenJo02,Josh Allen,BUF,QB',
+    '00-4,AchaDe00,De\'Von Achane,MIA,RB',
+  ].join('\n');
+  const snaps = [
+    'game_id,week,player,pfr_player_id,position,team,offense_snaps,offense_pct',
+    '2026_09_MIA_BUF,9,James Cook,CookJa01,RB,BUF,50,0.75',
+    '2026_09_MIA_BUF,9,Dalton Kincaid,KincDa00,TE,BUF,40,0.6',
+    '2026_09_MIA_BUF,9,Josh Allen,AllenJo02,QB,BUF,66,1',
+    '2026_09_MIA_BUF,9,Spencer Brown,BrowSp00,T,BUF,66,1', // not a skill position
+  ].join('\n');
+  const pbp = [
+    'game_id,week,posteam,yardline_100,play_type,rusher_player_id,passer_player_id,receiver_player_id,td_player_id,touchdown,desc',
+    '2026_09_MIA_BUF,9,BUF,8,run,00-1,,,,0,"Cook, up the middle"',
+    '2026_09_MIA_BUF,9,BUF,3,run,00-1,,,00-1,1,"Cook, 3 yard TD"',
+    '2026_09_MIA_BUF,9,BUF,9,pass,,00-3,00-2,,0,"incomplete"',
+    '2026_09_MIA_BUF,9,BUF,45,pass,,00-3,00-2,00-2,1,"long TD"',
+    '2026_09_MIA_BUF,9,BUF,12,no_play,00-1,,,,0,"penalty"',
+    // A game with no snap counts yet: anyone who ran, caught or threw counts, with no snap share.
+    '2026_10_BUF_MIA,10,MIA,5,run,00-4,,,00-4,1,"Achane TD"',
+    '2026_10_BUF_MIA,10,,,,,,,,,"End of quarter"',
+  ].join('\n');
+
+  it('counts inside 10 carries, targets and touchdowns per player game', () => {
+    const { lines, unmatchedSnaps } = buildUsage(pbp, snaps, roster);
+    expect(unmatchedSnaps).toEqual([]);
+    const by = (id: string, game: string) => lines.find((l) => l.playerExternalId === id && l.gameExternalId === game);
+    expect(by('00-1', '2026_09_MIA_BUF')).toMatchObject({ team: 'BUF', position: 'RB', snapPct: 0.75, rzCarries: 2, rzCarryTds: 1, touchdowns: 1 });
+    expect(by('00-2', '2026_09_MIA_BUF')).toMatchObject({ snapPct: 0.6, rzTargets: 1, rzTargetTds: 0, touchdowns: 1 });
+    expect(by('00-3', '2026_09_MIA_BUF')).toMatchObject({ position: 'QB', touchdowns: 0 });
+    expect(by('00-4', '2026_10_BUF_MIA')).toMatchObject({ team: 'MIA', snapPct: null, rzCarries: 1, rzCarryTds: 1, touchdowns: 1 });
+    expect(lines).toHaveLength(4);
+  });
+
+  it('calls a play by play file without its columns ours to fix', () => {
+    expect(() => buildUsage('game_id,week\n1,2', snaps, roster)).toThrow(JobError);
+  });
+
+  it('reads the latest injury report week only', () => {
+    const r = normalizeInjuries(['week,gsis_id,report_status', '8,00-1,Out', '9,00-1,Questionable', '9,00-2,NA', '9,00-3,'].join('\n'));
+    expect(r).toEqual({ week: 9, statuses: [{ playerExternalId: '00-1', status: 'Questionable' }] });
+  });
+
+  it('keeps one row per player from the roster', () => {
+    const text = fixture('nflverse-roster.csv');
+    const lines = text.trim().split('\n');
+    const doubled = [...lines, lines[1]!].join('\n');
+    expect(normalizeRoster(doubled)).toHaveLength(normalizeRoster(text).length);
   });
 });

@@ -1129,7 +1129,7 @@
   <div class="fc-stack" style="--fc-gap:16px" id="ch-scatter">
     <h3 class="text-heading-20">Scatter</h3>
     <ul class="fc-legend" role="list">
-      <li class="fc-legend-item"><span class="fc-legend-key" data-gem></span><span class="fc-legend-name">Clears the posted price</span><span class="fc-legend-value" id="ch-sc-gems"></span></li>
+      <li class="fc-legend-item"><span class="fc-legend-key" data-gem id="ch-sc-key"></span><span class="fc-legend-name">Clears the posted price</span><span class="fc-legend-value" id="ch-sc-gems"></span></li>
       <li class="fc-legend-item"><span class="fc-legend-key" data-series="muted" data-shape="hollow"></span><span class="fc-legend-name">Misses</span><span class="fc-legend-value" id="ch-sc-miss"></span></li>
       <li class="fc-legend-item"><span class="fc-legend-key" data-shape="ring"></span><span class="fc-legend-name">Top 10</span></li>
     </ul>
@@ -1163,6 +1163,7 @@
       });
       top.forEach((p) => mk('circle', { class: 'fc-chart-ring', cx: x(p.price), cy: y(p.score), r: 8 }, svg));
       document.getElementById('ch-sc-gems').textContent = props.filter((p) => p.clears).length;
+      document.getElementById('ch-sc-key').style.setProperty('--rating', Math.max(0, ...props.filter((p) => p.clears).map((p) => Math.round(p.score))));
       document.getElementById('ch-sc-miss').textContent = props.filter((p) => !p.clears).length;
     })();
     </script>

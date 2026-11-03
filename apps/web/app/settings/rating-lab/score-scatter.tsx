@@ -36,12 +36,14 @@ export function ScoreScatter({ formula, pool, top, scoreName }: {
   const y0 = yTicks[0]!, y1 = yTicks[yTicks.length - 1]!;
   const yPct = (v: number) => (1 - (v - y0) / (y1 - y0 || 1)) * 100;
   const gems = points.filter((p) => p.gem).length;
+  // The legend key takes the highest plotted gem rating, so it matches the brightest point.
+  const keyRating = Math.max(0, ...points.filter((p) => p.gem).map((p) => gemRating(p.prop.carat, p.prop.clarity)));
   const digits = formula.id === 'scorecard' ? 0 : 1;
 
   return (
     <div className="fc-stack">
       <ul className="fc-legend" role="list">
-        <li className="fc-legend-item"><span className="fc-legend-key" data-gem /><span className="fc-legend-name">Clears the posted price</span><span className="fc-legend-value">{gems}</span></li>
+        <li className="fc-legend-item"><span className="fc-legend-key" data-gem style={{ '--rating': keyRating } as CSSProperties} /><span className="fc-legend-name">Clears the posted price</span><span className="fc-legend-value">{gems}</span></li>
         {points.length > gems && (
           <li className="fc-legend-item"><span className="fc-legend-key" data-series="muted" data-shape="hollow" /><span className="fc-legend-name">Misses</span><span className="fc-legend-value">{points.length - gems}</span></li>
         )}

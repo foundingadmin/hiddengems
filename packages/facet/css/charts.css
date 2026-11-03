@@ -572,7 +572,7 @@ tr[data-clickable] { cursor: pointer; transition: background-color var(--fc-dura
 #log-sheet-note:not(:empty) { margin-bottom: var(--fc-space-4); }
 tr[data-clickable]:hover .fc-log-open .fc-button { color: var(--fc-text-primary); }
 
-/* ================================================================== Log table [F]
+/* ================================================================== Log table variant [F]
    .fc-table[data-variant="log"] inside .fc-table-wrap.text-copy-13-mono (patterns/data-ops.md, "Log table variant").
    Read as history, like the vercel.com runtime log: dense mono rows, time first, square row ends, cells on
    one baseline. Rows that need a look carry data-level ("warning" or "error"): a tint plus the level word in
@@ -675,7 +675,7 @@ tr[data-clickable]:hover .fc-log-open .fc-button { color: var(--fc-text-primary)
   tab-size: 2;
 }
 
-/* ================================================================== Row detail [F]
+/* ================================================================== Inline row detail [F]
    One row's full record shown inline above its table (patterns/data-ops.md, "Inline row detail"), for a record
    worth keeping open while reading the rest: a run and every line it logged. Header (title, time, Close)
    stays on one line at every width; then the record; then sections such as a lines table.

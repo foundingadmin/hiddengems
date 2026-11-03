@@ -91,7 +91,7 @@ Shows where every item of a set sits on two measures at once, so a weighting rea
 ### Anatomy
 ```html
 <ul class="fc-legend" role="list">
-  <li class="fc-legend-item"><span class="fc-legend-key" data-gem></span><span class="fc-legend-name">Clears the posted price</span><span class="fc-legend-value">38</span></li>
+  <li class="fc-legend-item"><span class="fc-legend-key" data-gem style="--rating: 14"></span><span class="fc-legend-name">Clears the posted price</span><span class="fc-legend-value">38</span></li>
   <li class="fc-legend-item"><span class="fc-legend-key" data-series="muted" data-shape="hollow"></span><span class="fc-legend-name">Misses</span><span class="fc-legend-value">88</span></li>
   <li class="fc-legend-item"><span class="fc-legend-key" data-shape="ring"></span><span class="fc-legend-name">Top 10</span></li>
 </ul>
@@ -114,9 +114,9 @@ Shows where every item of a set sits on two measures at once, so a weighting rea
 - The figure's padding is the axis lanes: `--fc-chart-gutter` (40px) on the left for y ticks, 40px below for x ticks and the x title, 32px above for the y title. The `<svg>` covers the plot only, so every mark position is a percentage of the plot. Nothing is measured and text stays 12px at any width (LAY-07).
 - Height 280 (220 with `data-size="small"`), including the lanes.
 - Points: 4px radius. Shape tells gems from misses: a gem point (`data-gem`) is filled, with a 1px canvas stroke so overlaps stay countable; every other point (`data-series="muted"`) is a hollow gray ring. Draw misses first so gems sit on top.
-- Gem points follow the gem intensity ramp: set `--rating` (the prop's 0 to 100 gem rating) on each, and the fill mixes the gem color with gray in the same proportion as `.fc-gem` (one number, purple rising with it, no tiers). Without `--rating` a gem point is full strength, as in the legend key.
+- Gem points follow the gem intensity ramp: set `--rating` (the prop's 0 to 100 gem rating) on each, and the fill mixes the gem color with gray in the same proportion as `.fc-gem` (one number, purple rising with it, no tiers). Without `--rating` a gem mark is full strength.
 - Top N: an 8px ring in primary text around each leading point (`.fc-chart-ring`). The ring marks rank; neither rank nor gem status relies on color alone (CON-09, DES-05).
-- Legend keys: `data-gem` for a filled gem dot, `data-shape="hollow"` on the muted key for misses, `data-shape="ring"` for the rank ring.
+- Legend keys: `data-gem` for a filled gem dot, `data-shape="hollow"` on the muted key for misses, `data-shape="ring"` for the rank ring. The gem key takes `--rating` from the highest-rated plotted gem, so it matches the brightest point; it shows full strength only when a 100 is plotted.
 - Optional band (`.fc-chart-range` plus `.fc-chart-range-label`): a gray fill for a range the reader cares about, such as a usual odds range. Gray only, labelled in place.
 - Horizontal gridlines at 3 to 5 round y ticks; the zero line is the baseline. A log x axis labels round values only (1.5, 2, 3, 5, 10, 20).
 

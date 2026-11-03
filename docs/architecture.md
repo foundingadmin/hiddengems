@@ -188,6 +188,12 @@ be explained later.
   drop or truncate. Run it again after any PR that adds a migration. If Supabase offers "Run and enable RLS",
   choose "Run without RLS": grants and the closed public API control access, and RLS without policies would block
   the app login.
+- **Applied automatically (rapid build mode, until the beta)**: `.github/workflows/db-migrate.yml` sends the same
+  script to production on every push to `main`, through the Supabase Management API
+  (`pnpm db:supabase-apply production`). It needs the `SUPABASE_ACCESS_TOKEN` secret and the
+  `SUPABASE_PRODUCTION_REF` variable in GitHub; without the secret it skips. The same command runs one statement with `--sql "..."` and prints the rows, so a session holding the token
+  can inspect or fix either database; a session whose Supabase connector is signed in to the account that owns the
+  projects can do the same with the connector's SQL tool. `pnpm db:guard` runs first, so a destructive migration never reaches one.
 - **Safety**: history tables reject update, delete and truncate (migrations 0003 and 0005); `pnpm db:guard` fails CI on
   a migration that drops, truncates or deletes unless the line says `-- destructive-approved: <reason>`.
 - **Backups**: the `backup` job (daily 11:07 UTC) writes the whole database as gzipped JSON to a private GitHub
@@ -210,7 +216,7 @@ be explained later.
 |---|---|---|
 | Branch | `main` (merged only by the principal) | `staging` and task branches |
 | URL | hidden-gems-webapp.vercel.app | the staging preview (`hidden-gems-webapp-git-staging-...`) and per-branch previews |
-| Database | the real Supabase project (Vercel `DATABASE_URL`, Production) | a separate staging Supabase project (Vercel `DATABASE_URL`, Preview) |
+| Database | the real Supabase project (Vercel `DATABASE_URL`, Production, login `hiddengems_app`) | production, read only (Vercel `DATABASE_URL`, Preview, login `hiddengems_preview`); without it, an in-memory sample fixture |
 | Data | live: nflverse and The Odds API | sample provider: realistic, fake games, rosters, odds and results, labeled "Sample data" |
 | Odds credits | spent on the snapshot schedule | never: previews are forced to sample mode in code (`VERCEL_ENV=preview`) |
 | Crons | run (`vercel.json`) | do not run on previews; pull with Data health's buttons |
@@ -219,6 +225,19 @@ be explained later.
 Preview's `DATABASE_URL` must never be the production URL: a pull there would append sample rows to production's
 history tables, which cannot be removed. A release with a migration needs its `pnpm db:supabase-sql` output run
 in both projects, staging first.
+
+## Previews
+
+Previews read production so staging is always full, and can change nothing (`apps/web/lib/db.ts`):
+
+- Vercel's Preview `DATABASE_URL` uses `hiddengems_preview`, a login with `SELECT` only whose transactions are
+  read only (`pnpm db:supabase-sql` creates it without a login). To set it up, run in the Supabase SQL editor
+  `ALTER ROLE hiddengems_preview LOGIN PASSWORD '<a long random password>';`, then copy the Production
+  `DATABASE_URL` into Preview with the user changed to `hiddengems_preview.<project ref>` and that password.
+- With it set, every server action (slips, Mark read, pulls, pause, the Jeweler) returns "Previews show production
+  data and cannot change it", and the cron route refuses. A preview with a new table shows its empty state until the
+  release migrates production.
+- Without it, a preview builds an in-memory fixture from the sample provider on each server start.
 
 ## Access
 

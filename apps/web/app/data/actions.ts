@@ -2,7 +2,7 @@
 import { jobs, providersFor, runJob, type RunResult } from '@hiddengems/ingest';
 import { jobSettings } from '@hiddengems/db';
 import { revalidatePath } from 'next/cache';
-import { db } from '@/lib/db';
+import { db, READ_ONLY, READ_ONLY_MESSAGE } from '@/lib/db';
 
 export interface PullOutcome {
   job: string;
@@ -17,6 +17,7 @@ export interface PullOutcome {
  */
 export async function pull(job: string, spendCredits = false): Promise<PullOutcome[]> {
   if (!jobs[job]) throw new Error(`Unknown job ${job}`);
+  if (READ_ONLY) return [{ job, status: 'skipped', message: READ_ONLY_MESSAGE }];
   const handle = await db();
   const result = await runJob(job, {
     db: handle.db, providers: providersFor(), trigger: 'manual', force: true, registry: jobs, echo: true,
@@ -30,6 +31,7 @@ export async function pull(job: string, spendCredits = false): Promise<PullOutco
 /** Pause or resume a source's scheduled runs. Pull now keeps working either way. */
 export async function setPaused(job: string, paused: boolean): Promise<void> {
   if (!jobs[job]) throw new Error(`Unknown job ${job}`);
+  if (READ_ONLY) return;
   const handle = await db();
   await handle.db.insert(jobSettings).values({ job, paused, pausedAt: paused ? new Date() : null, updatedAt: new Date() })
     .onConflictDoUpdate({ target: jobSettings.job, set: { paused, pausedAt: paused ? new Date() : null, updatedAt: new Date() } });

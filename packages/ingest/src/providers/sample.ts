@@ -2,6 +2,7 @@
 // current date, so every job runs end to end with no API keys (local dev, CI, previews).
 // Prices drift in 15-minute steps, so repeated pulls build real-looking line history.
 import { type BookId, seasonOf } from '@hiddengems/core';
+import { memoryBackup } from './backup';
 import { easternKickoff } from './nflverse';
 import type { InjuryReport, OddsEvent, OddsQuote, Providers, RosterPlayer, ScheduleGame, StatLine, UsageLine } from './types';
 
@@ -104,6 +105,7 @@ export function sampleProviders(): Providers {
         return quotes;
       },
     },
+    backup: memoryBackup(),
     usage: {
       id: 'sample',
       async gameUsage(ctx): Promise<UsageLine[]> {

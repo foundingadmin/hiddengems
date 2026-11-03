@@ -117,10 +117,18 @@ export interface UsageProvider extends ProviderBase {
   injuries(ctx: ProviderContext, season: number): Promise<InjuryReport | null>;
 }
 
+/** Off-site storage for nightly database backups. */
+export interface BackupTarget extends ProviderBase {
+  /** Where backups land, for the run log ("owner/name"). */
+  where: string;
+  put(ctx: ProviderContext, path: string, bytes: Uint8Array, message: string): Promise<void>;
+}
+
 export interface Providers {
   schedule: ScheduleProvider;
   rosters: RosterProvider;
   odds: OddsProvider;
   results: ResultsProvider;
   usage: UsageProvider;
+  backup: BackupTarget;
 }

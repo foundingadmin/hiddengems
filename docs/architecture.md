@@ -153,6 +153,18 @@ be explained later.
 
 ## Database
 
+- **Setup and migrations on Supabase**: `pnpm db:supabase-sql [--app-password <password>]` writes one script to
+  paste into the Supabase SQL editor (run as the owner). It applies each migration once, recorded exactly as
+  `pnpm db:migrate` records it, upserts reference data, closes Supabase's automatic public API on the app's
+  tables, and (with a password) creates `hiddengems_app`, the login the app uses: rows only, no create, alter,
+  drop or truncate. Run it again after any PR that adds a migration.
+- **Safety**: history tables reject update, delete and truncate (migration 0003); `pnpm db:guard` fails CI on
+  a migration that drops, truncates or deletes unless the line says `-- destructive-approved: <reason>`.
+- **Backups**: the `backup` job (daily 11:07 UTC) writes the whole database as gzipped JSON to a private GitHub
+  repository (`BACKUP_GITHUB_REPO`, written with `BACKUP_GITHUB_TOKEN`, a fine-grained token for that one
+  repository with Contents read and write), one file per day plus `BACKUP.md` with row counts. Never this
+  repository. Restore with `pnpm db:restore <file>` into an empty, migrated database.
+
 - **Production**: Postgres from the Vercel Marketplace (Neon or Supabase). `DATABASE_URL` uses
   postgres.js with prepared statements off, so transaction poolers work.
 - **Local and tests**: PGlite (Postgres in WebAssembly). Without `DATABASE_URL`, data lives in

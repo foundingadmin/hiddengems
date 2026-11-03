@@ -1,6 +1,7 @@
 // Picks providers from the environment. DATA_MODE=sample (the default without a key) uses the sample
 // provider everywhere; DATA_MODE=live uses nflverse (free, no key) and The Odds API (ODDS_API_KEY).
 import { ours } from '../errors';
+import { githubBackup, memoryBackup } from './backup';
 import { oddsApi } from './odds-api';
 import { sampleProviders } from './sample';
 import { nflverse } from './nflverse';
@@ -14,13 +15,15 @@ export function dataMode(env: Record<string, string | undefined> = process.env):
 }
 
 export function providersFor(env: Record<string, string | undefined> = process.env): Providers {
-  if (dataMode(env) === 'sample') return sampleProviders();
+  const backup = env.BACKUP_GITHUB_REPO || env.BACKUP_GITHUB_TOKEN ? githubBackup(env.BACKUP_GITHUB_TOKEN, env.BACKUP_GITHUB_REPO) : null;
+  if (dataMode(env) === 'sample') return { ...sampleProviders(), ...(backup ? { backup } : {}) };
   if (!env.ODDS_API_KEY) throw ours('config', 'Add ODDS_API_KEY to pull live odds, or set DATA_MODE=sample');
   const stats = nflverse();
-  return { schedule: stats, rosters: stats, odds: oddsApi(env.ODDS_API_KEY), results: stats, usage: stats };
+  return { schedule: stats, rosters: stats, odds: oddsApi(env.ODDS_API_KEY), results: stats, usage: stats, backup: backup ?? githubBackup(undefined, undefined) };
 }
 
 export * from './types';
 export { oddsApi, normalizeEventOdds } from './odds-api';
 export { nflverse, normalizeGames, normalizeRoster, normalizeStats, normalizeInjuries, buildUsage, easternKickoff, NFLVERSE_URLS } from './nflverse';
 export { sampleProviders, SAMPLE_PLAYERS } from './sample';
+export { githubBackup, memoryBackup } from './backup';

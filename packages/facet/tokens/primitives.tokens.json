@@ -1355,6 +1355,11 @@
         "$value": "512px",
         "$description": "Side sheet."
       },
+      "leg-swipe-width": {
+        "$type": "dimension",
+        "$value": "88px",
+        "$description": "Swipe to remove on a slip leg: the Remove action's width, and how far an open pull rests (components/cert.md)."
+      },
       "sheet-inset": {
         "$type": "dimension",
         "$value": "12px",

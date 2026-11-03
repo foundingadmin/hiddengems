@@ -4,8 +4,10 @@
 // remove moment (remove.ts) plays from the revealed action. Pointer events only: the leg's touch-action leaves
 // vertical scrolling to the browser, and the × stays the keyboard and desktop path.
 
-/** The open action's width, px. */
-export const OPEN_PX = 88;
+/** The open action's width in px, from Facet's --fc-leg-swipe-width (the action's own width if the token is unset). */
+function openWidth(row: HTMLElement, action: HTMLElement): number {
+  return parseFloat(getComputedStyle(row).getPropertyValue('--fc-leg-swipe-width')) || action.offsetWidth;
+}
 /** How far a touch moves before it picks an axis, px. */
 const SLOP = 10;
 /** How far past open a second pull has to go to remove, px. */
@@ -20,7 +22,7 @@ type Mode = 'drag' | 'open' | 'settle';
 /** Binds the gesture to row; onRemove runs once a pull or a tap on action asks to remove. Returns the cleanup. */
 export function bindSwipe(row: HTMLElement, action: HTMLElement, onRemove: () => void): () => void {
   let touch: { id: number; x: number; y: number; base: number } | null = null;
-  let axis: 'x' | 'y' | null = null, pull = 0, open = false, dragged = false, timer = 0;
+  let axis: 'x' | 'y' | null = null, pull = 0, open = false, dragged = false, timer = 0, openPx = 0;
 
   const set = (px: number, mode: Mode) => {
     row.style.setProperty('--fc-swipe', `${Math.round(px)}px`);
@@ -37,7 +39,8 @@ export function bindSwipe(row: HTMLElement, action: HTMLElement, onRemove: () =>
   const down = (e: PointerEvent) => {
     dragged = false;
     if (e.pointerType !== 'touch' || !e.isPrimary || leaving() || action.contains(e.target as Node)) return;
-    touch = { id: e.pointerId, x: e.clientX, y: e.clientY, base: open ? OPEN_PX : 0 };
+    openPx = openWidth(row, action);
+    touch = { id: e.pointerId, x: e.clientX, y: e.clientY, base: open ? openPx : 0 };
     axis = null;
   };
   const move = (e: PointerEvent) => {
@@ -63,13 +66,13 @@ export function bindSwipe(row: HTMLElement, action: HTMLElement, onRemove: () =>
       if (open && e.type === 'pointerup') shut();
       return;
     }
-    if (e.type === 'pointerup' && (pull >= row.clientWidth * HARD || (base > 0 && pull >= OPEN_PX + SECOND_PULL))) {
+    if (e.type === 'pointerup' && (pull >= row.clientWidth * HARD || (base > 0 && pull >= openPx + SECOND_PULL))) {
       open = false;
       set(pull, 'open');
       onRemove();
       return;
     }
-    if (pull >= OPEN_PX / 2) { open = true; set(OPEN_PX, 'open'); } else shut();
+    if (pull >= openPx / 2) { open = true; set(openPx, 'open'); } else shut();
   };
   // A drag that started on the × must not also click it.
   const click = (e: MouseEvent) => {

@@ -52,8 +52,22 @@ export function EditableLegs({ children }: { children: ReactNode }) {
 }
 
 /** Undo for one removed leg. It outlives the row, so it uses nothing of the component. */
-async function offerUndo(moments: Moments, slipId: string, removed: RemovedLeg, name: string, say: (t: string) => void) {
-  if ((await moments.undo('Leg removed')) !== 'undone') return;
+/** Focus goes to the Undo button once its toast shows and the removed row has let go of focus. */
+function focusUndo() {
+  const until = performance.now() + 1500;
+  const look = () => {
+    const button = document.querySelector<HTMLElement>('.fc-toast-region .fc-toast button');
+    const free = !document.activeElement || document.activeElement === document.body || !document.activeElement.isConnected;
+    if (button && free) button.focus();
+    else if (performance.now() < until) requestAnimationFrame(look);
+  };
+  requestAnimationFrame(look);
+}
+
+async function offerUndo(moments: Moments, slipId: string, removed: RemovedLeg, name: string, say: (t: string) => void, focus: boolean) {
+  const answer = moments.undo('Leg removed');
+  if (focus) focusUndo();
+  if ((await answer) !== 'undone') return;
   willReturn(slipId, removed.selectionKey);
   startTransition(async () => {
     let r: ActionState = null;
@@ -78,9 +92,9 @@ export function RemoveLeg({ slipId, selectionKey, name }: { slipId: string; sele
     if (!row || busy.current) return;
     busy.current = true;
     legs?.show(null);
-    const next = row.contains(document.activeElement)
-      ? (row.nextElementSibling ?? row.previousElementSibling)?.querySelector<HTMLElement>('.fc-leg-action') ?? null
-      : null;
+    // A leg removed from the keyboard hands focus to its neighbor's ×, or to Undo when it was the last leg.
+    const held = row.contains(document.activeElement);
+    const next = held ? (row.nextElementSibling ?? row.previousElementSibling)?.querySelector<HTMLElement>('.fc-leg-action') ?? null : null;
     const stage = moments.stage();
     const motion = sweepRow(stage, row, from);
     // The removal is sent now; the transition holds its answer (the row gone, the new totals) until the row has
@@ -101,7 +115,7 @@ export function RemoveLeg({ slipId, selectionKey, name }: { slipId: string; sele
         return;
       }
       legs?.focusAfter(next);
-      if (r.removed) void offerUndo(moments, slipId, r.removed, name, say);
+      if (r.removed) void offerUndo(moments, slipId, r.removed, name, say, held && !next);
     });
   };
   const removeRef = useRef(remove);

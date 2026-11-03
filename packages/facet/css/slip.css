@@ -64,10 +64,11 @@
 .fc-button.fc-leg-action:hover,
 .fc-leg[data-leaving] > .fc-leg-action { --_fg: var(--fc-signal-stop-fg); --_bg: var(--fc-signal-stop-bg); --_bg-hover: var(--fc-signal-stop-bg); }
 
-/* Swipe to remove, on touch. A pull slides the leg's parts left over its Remove action, which grows into the
-   space. The app sets --fc-swipe (the pull, a length) and data-swipe on the leg: "drag" while the finger moves,
-   "open" while it rests open, "settle" while it slides shut. Vertical scrolling and zoom keep working.
-   <li class="fc-leg" data-swipe="open" style="--fc-swipe: 88px">… <button class="fc-leg-swipe">x Remove</button></li> */
+/* Swipe to remove, on touch. A pull slides the leg's parts left, and the Remove action (stop tokens, a fixed
+   --fc-leg-swipe-width) slides in behind them, its left edge on theirs. Both move only by transform. The app sets
+   --fc-swipe (the pull, a length) and data-swipe on the leg: "drag" while the finger moves, "open" while it rests
+   open, "settle" while it slides shut. Vertical scrolling and zoom keep working.
+   <li class="fc-leg" data-swipe="open" style="--fc-swipe: var(--fc-leg-swipe-width)">… <button class="fc-leg-swipe">x Remove</button></li> */
 .fc-legs[data-editable] > .fc-leg { position: relative; touch-action: pan-y pinch-zoom; }
 .fc-leg[data-swipe] { overflow-x: clip; }
 .fc-leg[data-swipe] > :not(.fc-leg-swipe) {
@@ -82,20 +83,22 @@
   align-items: center;
   justify-content: center;
   gap: var(--fc-space-1);
-  width: var(--fc-swipe, 0px);
+  width: var(--fc-leg-swipe-width);
   padding: 0;
-  overflow: hidden;
   border: 0;
   border-radius: var(--fc-radius-md);
   background: var(--fc-signal-stop-bg);
   color: var(--fc-signal-stop-fg);
   white-space: nowrap;
+  transform: translateX(calc(var(--fc-leg-swipe-width) - var(--fc-swipe, 0px)));
   visibility: hidden;
-  transition: width var(--fc-duration-overlay) var(--fc-ease-standard), visibility 0s linear var(--fc-duration-overlay);
+  transition: transform var(--fc-duration-overlay) var(--fc-ease-standard), visibility 0s linear var(--fc-duration-overlay);
 }
+/* At rest the action is not rendered, so it never widens the page beyond the leg. */
+.fc-leg:not([data-swipe]) > .fc-leg-swipe { display: none; }
 .fc-leg-swipe > svg { flex: none; width: var(--fc-space-4); height: var(--fc-space-4); }
 .fc-leg-swipe:focus-visible { box-shadow: var(--ds-focus-ring); }
-.fc-leg:is([data-swipe="drag"], [data-swipe="open"]) > .fc-leg-swipe { visibility: visible; transition: width var(--fc-duration-overlay) var(--fc-ease-standard); }
+.fc-leg:is([data-swipe="drag"], [data-swipe="open"]) > .fc-leg-swipe { visibility: visible; transition: transform var(--fc-duration-overlay) var(--fc-ease-standard); }
 /* While the finger moves, everything follows it at once. */
 .fc-leg[data-swipe="drag"] > :not(.fc-leg-swipe),
 .fc-leg[data-swipe="drag"] > .fc-leg-swipe { transition: none; }

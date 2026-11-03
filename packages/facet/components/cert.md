@@ -56,17 +56,18 @@ tokens (`--fc-signal-stop-fg` on `--fc-signal-stop-bg`) under the pointer and wh
 the leg, set for the remove moment).
 
 ### Swipe to remove
-On touch, a pull slides the leg's parts left over a Remove action that grows into the space. The × stays the keyboard
-and desktop path.
+On touch, a pull slides the leg's parts left and the Remove action slides in behind them, its left edge on theirs.
+Both move only by transform; the action keeps one width, `--fc-leg-swipe-width`, which is also where an open pull
+rests. The × stays the keyboard and desktop path.
 ```html
-<li class="fc-leg" data-swipe="open" style="--fc-swipe: 88px">
+<li class="fc-leg" data-swipe="open" style="--fc-swipe: var(--fc-leg-swipe-width)">
   … <button type="button" class="fc-button fc-leg-action" …>x</button>
   <button type="button" class="fc-leg-swipe text-label-13"><svg aria-hidden="true">x</svg>Remove<span class="fc-visually-hidden"> James Cook</span></button>
 </li>
 ```
 | Part | Class or hook | Role |
 |---|---|---|
-| Action | `.fc-leg-swipe` | Pinned to the leg's right edge, as wide as `--fc-swipe`. Stop tokens. Hidden, and out of the tab order, until a pull shows it |
+| Action | `.fc-leg-swipe` | `--fc-leg-swipe-width` wide, moved in from the leg's right edge by the pull. Stop tokens. Hidden, and out of the tab order, until a pull shows it |
 | Pull | `--fc-swipe` on the leg | How far the leg has moved, a length |
 | State | `data-swipe` on the leg | `drag` follows the finger with no easing, `open` rests at the action's width, `settle` slides shut; absent at rest |
 

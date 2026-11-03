@@ -14,8 +14,9 @@ Added, for micro moments (`patterns/moments.md`)
 - Toast (`.fc-toast-region`, `.fc-toast`) and the Undo countdown (`.fc-toast-dots`, `js/undo.mjs`) (`components/toast.md`).
 - Edge glint hooks (`--fc-glint-edge`, `[data-glint]`) on the tab bar, rail items and the sheet.
 - `unsweep({ reveal })` for an element rendered again after its sweep; unsweep now honors `delay` for the wipe too.
-- Swipe to remove on editable legs (`.fc-leg-swipe`, `--fc-swipe`, `data-swipe`), and the × in the stop tokens on hover
-  and while its leg leaves (`data-leaving`) (`components/cert.md`).
+- Swipe to remove on editable legs (`.fc-leg-swipe`, `--fc-swipe`, `data-swipe`, token `--fc-leg-swipe-width`), moved
+  only by transform, and the × in the stop tokens on hover and while its leg leaves (`data-leaving`) (`components/cert.md`).
+- Motion foundation names the closing slip leg (height and padding, 220ms) as an exception to opacity and transform only.
 
 Changed
 - `.fc-legs` spaces legs with half the gap above and below each leg instead of `row-gap`, so a closing leg takes its

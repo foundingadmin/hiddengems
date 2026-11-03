@@ -59,7 +59,7 @@ thread.
 | Phase 2, the read | F2.1 to F2.8 | Implied points live; multi book prices and line history accumulating | Every view |
 | Phase 3, the slip | F3.1 to F3.7 | Built: slips and states, lose it all, DraftKings slip link, handoff, change dialog, history, graded slip, the Jeweler | The Jeweler's key (call 5), provenance report data (F3.7), stake range (call 6) |
 | Facet parts from the brief | build brief | Promoted: every part the brief lists | |
-| Micro moments | `docs/animation/micro-moments` | Sprint 2026-11-03-2: foundation and New gems built; Add, gem sheet, Remove, Swipe, Send building | Erase (call 10), New connection (no screen) |
+| Micro moments | `docs/animation/micro-moments` | Built in sprint 2026-11-03-2: 9 of 11 moments on Facet's dots engine | Erase (call 10), New connection (no screen) |
 
 ## Season calendar
 
@@ -153,9 +153,9 @@ Each moment ships with its surface.
 | Foundation | Facet engine, tokens, card states, Undo toast, glint hooks; `apps/web/lib/moments` | Built |
 | Unread gems | New gems row | Built: unread tint and sheen, six dots circle the newest |
 | Unread to read | Mark read, Mark all read | Built: a cloud sweeps each card; a failure puts the shine back |
-| Add a gem, drawer | Board Add, Slips in the rail and tab bar, gem sheet | Next |
+| Add a gem, drawer | Board Add, Slips in the rail and tab bar, gem sheet | Built: Slips glints and the rail count pops; the sheet springs open with an edge ripple, its row stays selected |
 | Remove, swipe | The slip | Built: × or a phone swipe removes at once, the row sweeps and closes, Undo restores the leg at its added price |
-| Erase | Clear slip | Parked for the principal: the slip has no Clear control |
+| Erase | Clear slip | Waits on call 10: the slip has no Clear control |
 | Send | Send handoff | Built: Open DraftKings dissolves the slip card into the gem; the handoff screen is unchanged |
 | New connection | A connections screen | Waits on the screen |
 

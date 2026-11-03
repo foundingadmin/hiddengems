@@ -1,7 +1,7 @@
 {
   "id": "2026-11-03-2",
   "startedAt": "2026-11-03T20:00:00Z",
-  "sprintBranch": "",
+  "sprintBranch": "sprint/2026-11-03-2",
   "pr": "",
   "entries": [
     {
@@ -16,7 +16,8 @@
       "brief": "Principal in chat: wire the micro moments package (docs/animation/micro-moments, rundoc.md) into the app for longevity and scalability. Foundation plus the two moments whose surface is New gems: illus and motion tokens, a dependency-free dot engine in packages/facet/js, Facet parts (unread and selected gem card, Undo toast with dot countdown, edge glint), the moments pattern doc and loop exceptions, an app MomentsProvider in the Shell, then Unread gems and Unread to read on NewGems with real events.",
       "head": "cbc566c",
       "reason": "",
-      "releasedIn": ""
+      "releasedIn": "",
+      "merged": "cbc566c2098c420934a6bd7f6e5f5a09c44545c4"
     },
     {
       "id": "e2",
@@ -30,7 +31,8 @@
       "brief": "Micro moments on the board, from the e1 foundation: Add a gem (selected state, edge glint on the Slips nav item in the rail and tab bar, nothing flies) and the gem sheet drawer (spring open with dots rippling along its leading edge from the row, row stays active under the tint, close with no spring).",
       "head": "79af7d3",
       "reason": "",
-      "releasedIn": ""
+      "releasedIn": "",
+      "merged": "79af7d365a85a5b3ade371fe790f83089b41a9ad"
     },
     {
       "id": "e3",
@@ -44,7 +46,8 @@
       "brief": "Micro moments on the slip, from the e1 foundation: Remove a leg (cloud sweep from the control, row closes, totals update, 5 second Undo that restores the leg and plays the sweep in reverse), swipe to remove on phone (soft and hard pull), and the Send moment on the existing handoff. A suggested play still confirms first.",
       "head": "386e986",
       "reason": "",
-      "releasedIn": ""
+      "releasedIn": "",
+      "merged": "386e986caa11b88ebc68dd0d7f4c6ded27fab7fd"
     },
     {
       "id": "e4",

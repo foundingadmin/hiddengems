@@ -125,3 +125,66 @@ Owner-facing SQL steps should warn about Supabase's "Potential issue detected" d
 - For: release-manager, data-builder, data-safety-verifier.
 - Status: adopted in release-manager v1.1, data-builder v1.1, data-safety-verifier v2.0, and `docs/architecture.md`
   ("Database").
+
+## L19 · 2026-11-03 · vice-principal
+Two agents shared one checkout: `facet-curator` branched while the lead had uncommitted edits, so the lead's commit
+8a8a113 landed on `ds/curate-2026-11-03`. Run parallel writers in separate worktrees; read-only agents read branches
+through `git show` and `git diff origin/...`.
+- Evidence: #28 and #29 (8a8a113 on the curate branch).
+- For: vice-principal, screen-builder, data-builder, facet-builder, facet-curator.
+- Status: adopted in vice-principal v2.2, screen-builder v1.2, data-builder v1.2, facet-builder v1.2, facet-curator
+  v1.2.
+
+## L20 · 2026-11-03 · vice-principal
+The harness subscribed the lead to every PR an agent opened, against "subscribe only to the release PR"; the lead
+unsubscribed by hand each time.
+- Evidence: #28 and #29.
+- For: vice-principal.
+- Status: adopted in vice-principal v2.2.
+
+## L21 · 2026-11-03 · facet-curator
+Headless Chrome rendered a `#hash` URL blank. Capture the full page and crop to the section.
+- Evidence: #29 screenshots.
+- For: design-verifier, facet-curator, facet-builder, screen-builder.
+- Status: adopted in design-verifier v2.1, facet-curator v1.2, facet-builder v1.2 (`screen-builder` routes take no
+  hash).
+
+## L22 · 2026-11-03 · facet-curator
+`pnpm check` fails in a fresh checkout or worktree until `pnpm install` runs.
+- Evidence: #29.
+- For: screen-builder, data-builder, facet-builder, facet-curator, repo-hygiene.
+- Status: adopted in screen-builder v1.2, data-builder v1.2, facet-builder v1.2, facet-curator v1.2, repo-hygiene v2.1.
+
+## L23 · 2026-11-03 · design-verifier
+A bare `section` selector in `preview/specimen.css` leaked 24px gaps into `section.fc-*` parts. Scope specimen CSS
+away from `fc-` classes.
+- Evidence: #29 design review; fixed as `section:not([class^="fc-"])`.
+- For: facet-curator, facet-builder.
+- Status: adopted in facet-curator v1.2, facet-builder v1.2.
+
+## L24 · 2026-11-03 · design-verifier
+A "domain kept" specimen reused percentages instead of computing them from the shared log scale.
+- Evidence: #29 design review (b3ff768, scatter domain).
+- For: facet-curator, facet-builder.
+- Status: adopted in facet-curator v1.2, facet-builder v1.2.
+
+## L25 · 2026-11-03 · content-verifier, design-verifier
+A copied specimen kept its source's copy ("Top 10" on a 4-point chart). Re-derive copy and data when copying a
+specimen.
+- Evidence: #29 content and design reviews.
+- For: facet-curator, facet-builder.
+- Status: adopted in facet-curator v1.2, facet-builder v1.2.
+
+## L26 · 2026-11-03 · design-verifier
+Gem marks change row height and baseline only in rows next to rows without them, so a specimen needs a mixed table.
+- Evidence: #29 design review; the DS request for the `.fc-gem` baseline in table cells (`css/components.css:601`)
+  is deferred to the next run.
+- For: facet-builder.
+- Status: open (the deferred DS request); mixed-table specimens adopted in facet-builder v1.2.
+
+## L27 · 2026-11-03 · content-verifier
+An `aria-label` on a span with no role is not reliably announced. Put `aria-hidden` on the glyph and the name in
+`.fc-visually-hidden` text.
+- Evidence: #29 (7ba4c54, the unrated cell).
+- For: screen-builder, facet-builder, design-verifier.
+- Status: adopted in screen-builder v1.2, facet-builder v1.2, design-verifier v2.1 (`data-builder` writes no markup).

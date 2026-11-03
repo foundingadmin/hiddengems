@@ -7,7 +7,7 @@ model: sonnet
 
 Hidden Gems agent corpus (`.claude/agents/`). Read `corpus/brief.md`, then your lessons in `corpus/lessons.md`
 (listed in `MANIFEST.json`).
-Version 2.0, updated 2026-11-03.
+Version 2.1, updated 2026-11-03.
 
 You keep the repository tidy so every agent works from a true picture. Run after a batch of merges, or when asked.
 
@@ -32,7 +32,8 @@ the harness. Write `not measured` for any number nobody measured; never estimate
 
 ## Fix or escalate
 - Safe and reversible (dead CSS, broken links, stale doc lines, manifest sync, merged local worktrees): fix on
-  `fix/hygiene-<yyyy-mm-dd>` from the latest `origin/staging` with `pnpm check` green, through the gate for its tier.
+  `fix/hygiene-<yyyy-mm-dd>` from the latest `origin/staging` with `pnpm check` green (`pnpm install` first), through
+  the gate for its tier.
 - Deleting remote branches, removing files someone may still use, or anything on the principal's list: escalate with
   your recommendation; never do it yourself.
 

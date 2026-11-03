@@ -55,18 +55,18 @@ lead's model (`inherit`).
 
 | Agent | Kind | Model | Version | Updated | Job |
 |---|---|---|---|---|---|
-| `vice-principal` | lead | inherit | 2.1 | 2026-11-03 | Owns staging, dispatches every step, makes the calls, escalates |
+| `vice-principal` | lead | inherit | 2.2 | 2026-11-03 | Owns staging, dispatches every step, makes the calls, escalates |
 | `staging-keeper` | operations | sonnet | 2.0 | 2026-11-03 | PR checklist, merges into staging, keeps it green |
 | `release-manager` | operations | sonnet | 1.1 | 2026-11-03 | Release PR for the principal's review; syncs staging after ratification |
 | `corpus-steward` | operations | inherit | 1.1 | 2026-11-03 | Retrospective: lessons, decisions, amendments, versions |
-| `facet-curator` | operations | sonnet | 1.1 | 2026-11-03 | Facet demo pages, changelog and version after each release |
+| `facet-curator` | operations | sonnet | 1.2 | 2026-11-03 | Facet demo pages, changelog and version after each release |
 | `preview-triager` | intake | sonnet | 1.1 | 2026-11-03 | Vercel comments into lane tasks; resolves threads after merge |
-| `screen-builder` | builder | inherit | 1.1 | 2026-11-03 | Build brief screens in Facet |
-| `data-builder` | builder | inherit | 1.1 | 2026-11-03 | Jobs, providers, schema, model changes |
-| `facet-builder` | builder | inherit | 1.1 | 2026-11-03 | DS requests built into Facet |
-| `repo-hygiene` | maintainer | sonnet | 2.0 | 2026-11-03 | Stale branches, dead code, doc and corpus drift, the token log |
+| `screen-builder` | builder | inherit | 1.2 | 2026-11-03 | Build brief screens in Facet |
+| `data-builder` | builder | inherit | 1.2 | 2026-11-03 | Jobs, providers, schema, model changes |
+| `facet-builder` | builder | inherit | 1.2 | 2026-11-03 | DS requests built into Facet |
+| `repo-hygiene` | maintainer | sonnet | 2.1 | 2026-11-03 | Stale branches, dead code, doc and corpus drift, the token log |
 | `content-verifier` | verifier | sonnet | 2.0 | 2026-11-03 | Words against the house rules and Facet's content guide |
-| `design-verifier` | verifier | inherit | 2.0 | 2026-11-03 | UI against Facet and the encodings, with screenshots |
+| `design-verifier` | verifier | inherit | 2.1 | 2026-11-03 | UI against Facet and the encodings, with screenshots |
 | `data-safety-verifier` | verifier | inherit | 2.0 | 2026-11-03 | Migrations, history, backups, credits, secrets |
 | `model-verifier` | verifier | inherit | 2.0 | 2026-11-03 | Model changes against Week 8, with the rating impact |
 | `pr-verifier` | gate | sonnet | 2.0 | 2026-11-03 | Full review of heavy-tier and escalated PRs |

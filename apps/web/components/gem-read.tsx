@@ -1,10 +1,16 @@
 'use client';
 // The gem sheet's read (docs/prd.md F2.1, F2.4, F2.5, F2.7): the price chart in Overview, trend lines in Notes,
-// the core sample and game conditions in Context. Facet parts only (chart-card.md, rank track and context rows
-// in data.css); numbers come from packages/core through lib/gem.ts.
-import { type CoreSample, type Opportunity, type Trend, MATCHUP_WEEKS, matchupTrack } from '@hiddengems/core';
-import { type ReactNode, useEffect, useId, useRef, useState } from 'react';
-import type { Appraisal, Conditions } from '@/lib/gem';
+// the core sample and game conditions in Context, and the loupe (F2.2). Facet parts only (chart-card.md, rank
+// track, context rows, toggle chips and the game log in data.css); numbers come from packages/core through lib/gem.ts.
+import { mountTips } from '@foundingcreative/facet/js/tips.mjs';
+import {
+  type CoreSample, type GameLog, type LogGame, type Opportunity, type Split, type SplitKey, type SplitNote, type SplitSide, type Trend,
+  MATCHUP_WEEKS, SPLIT_KEYS, SPLIT_PRIOR_GAMES, combineSplits, gameLog, matchupTrack,
+} from '@hiddengems/core';
+import { useSearchParams } from 'next/navigation';
+import { type MouseEvent, type ReactNode, useEffect, useId, useRef, useState } from 'react';
+import { GameLogCells, GameLogKey } from '@/components/game-log';
+import type { Appraisal, Conditions, Loupe } from '@/lib/gem';
 import { ago } from '@/lib/format';
 
 const pct = (p: number) => `${Math.round(p * 100)}%`;
@@ -257,16 +263,63 @@ function trendWords(t: Trend): string {
   }
 }
 
-export function TrendLines({ trends, labelledBy }: { trends: Trend[]; labelledBy: string }) {
+/** A split the Notes cite, in the trend lines' words. */
+function splitWords(n: SplitNote, loupe: Loupe): string {
+  const of = `Scored in ${n.hits} of ${n.games} games`;
+  const qbId = loupe.splits.find((s) => s.key === 'qb')?.players[0];
+  const qb = (qbId && loupe.people[qbId]?.name) || 'his usual QB';
+  switch (n.side) {
+    case 'usual': return `${of} with ${qb} starting`;
+    case 'other': return `${of} without ${qb} starting`;
+    case 'in': return `${of} with his top teammates in`;
+    case 'out': return `${of} with a top teammate out`;
+    case 'short': return `${of} on a short week`;
+    case 'normal': return `${of} on normal rest`;
+    case 'bye': return `${of} off a bye`;
+    case 'above': return `${of} with his team’s implied points above average`;
+    case 'below': return `${of} with his team’s implied points below average`;
+    default: return of;
+  }
+}
+
+/** The sheet body's scroll that puts a section at its top, clear of its scroll margin. */
+export function scrollTopFor(body: HTMLElement, section: HTMLElement): number {
+  const margin = parseFloat(getComputedStyle(section).scrollMarginTop) || 0;
+  return body.scrollTop + section.getBoundingClientRect().top - body.getBoundingClientRect().top - margin;
+}
+
+/** The loupe condition a trend line matches, when this week's side is the trend's. */
+function trendCondition(t: Trend, loupe: Loupe | null): SplitKey | null {
+  const key = t.kind === 'venue' ? 'venue' : t.kind === 'role' ? 'role' : null;
+  return key && loupe?.splits.find((s) => s.key === key)?.current === t.side ? key : null;
+}
+
+export function TrendLines({ trends, loupe, labelledBy }: { trends: Trend[]; loupe: Loupe | null; labelledBy: string }) {
+  const { href, set } = useLoupe(loupe);
   if (!trends.length) return <div className="fc-empty"><strong>No trends yet</strong><p>A trend needs 3 games</p></div>;
+  // A line that cites a condition opens the loupe with it on: the URL changes in place, then the loupe scrolls in.
+  const open = (e: MouseEvent, key: SplitKey) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    e.preventDefault();
+    set([key]);
+    const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const section = document.getElementById('gem-loupe');
+    const body = section?.closest<HTMLElement>('.fc-sheet-body');
+    if (section && body) body.scrollTo({ top: scrollTopFor(body, section), behavior: smooth ? 'smooth' : 'auto' });
+    requestAnimationFrame(() => document.querySelector<HTMLElement>(`#gem-loupe [data-condition="${key}"]`)?.focus({ preventScroll: true }));
+  };
+  const line = (key: string, words: string, rate: number, condition: SplitKey | null) => (
+    <li key={key} className="fc-list-row">
+      <div className="fc-list-row-main">
+        <p className="text-copy-14">{condition ? <a className="fc-row-link" href={href([condition])} onClick={(e) => open(e, condition)}>{words}</a> : words}</p>
+      </div>
+      <div className="fc-list-row-aside"><span className="text-label-14 tabular">{pct(rate)}</span></div>
+    </li>
+  );
   return (
     <ul className="fc-list" data-lines="1" data-aside="beside" role="list" aria-labelledby={labelledBy}>
-      {trends.map((t) => (
-        <li key={t.kind} className="fc-list-row">
-          <div className="fc-list-row-main"><p className="text-copy-14">{trendWords(t)}</p></div>
-          <div className="fc-list-row-aside"><span className="text-label-14 tabular">{pct(t.rate)}</span></div>
-        </li>
-      ))}
+      {trends.map((t) => line(t.kind, trendWords(t), t.rate, trendCondition(t, loupe)))}
+      {loupe?.notes.map((n) => line(`split-${n.key}`, splitWords(n, loupe), n.rate, n.key))}
     </ul>
   );
 }
@@ -370,5 +423,116 @@ export function ConditionsList({ conditions: c, now }: { conditions: Conditions;
         </div>
       )}
     </dl>
+  );
+}
+
+// ---------------------------------------------------------------- The loupe (F2.2)
+
+/** The conditions on, from ?loupe=qb,rest: a search param, so a note can open the loupe with its condition on. */
+export function useLoupe(loupe: Loupe | null) {
+  const params = useSearchParams();
+  const usable = (k: string): k is SplitKey => !!loupe?.splits.some((s) => s.key === k && s.current != null);
+  const on = (params.get('loupe') ?? '').split(',').filter(usable);
+  const href = (keys: readonly SplitKey[]) => {
+    const next = new URLSearchParams(params);
+    if (keys.length) next.set('loupe', SPLIT_KEYS.filter((k) => keys.includes(k)).join(','));
+    else next.delete('loupe');
+    return `?${next.toString().replace(/%2C/g, ',')}`;
+  };
+  // A shallow URL change: no request, the loupe redraws from what the sheet loaded.
+  const set = (keys: readonly SplitKey[]) => window.history.replaceState(null, '', href(keys));
+  return { on, href, set };
+}
+
+const SIDE_NAMES: Record<SplitSide, string> = {
+  usual: 'starts', other: 'out', in: 'Top teammates in', out: 'A top teammate out', home: 'Home', away: 'Away',
+  short: 'Short week', normal: 'Normal rest', bye: 'Off a bye', above: 'Implied points above average', below: 'Implied points below average',
+  favorite: 'Favored', underdog: 'Underdog',
+};
+
+/** A condition's toggle names this week's side. */
+function conditionName(loupe: Loupe, split: Split): string {
+  const side = split.current!;
+  if (split.key !== 'qb') return SIDE_NAMES[side];
+  const qb = split.players[0] ? loupe.people[split.players[0]]?.name : null;
+  return qb ? `${qb} ${SIDE_NAMES[side]}` : side === 'usual' ? 'Usual QB starts' : 'Usual QB out';
+}
+
+const matchWords = (games: number) => (games === 0 ? 'No games match' : `${games} ${games === 1 ? 'game matches' : 'games match'}`);
+const PLUS = <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true"><path d="M5 12h14" /><path d="M12 5v14" /></svg>;
+const CHECK = <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>;
+
+/**
+ * Condition toggles over the game log. Toggling filters his games to those on this week's side of every condition
+ * on, and shows their rate shrunk toward his season (core combineSplits()) beside the season rate. Under 3 games
+ * the rate and the log turn cloudy. Context only: the rating never moves.
+ */
+export function LoupeView({ loupe, log }: { loupe: Loupe; log: GameLog }) {
+  const { on, set } = useLoupe(loupe);
+  const ref = useRef<HTMLDivElement>(null);
+  const [said, setSaid] = useState('');
+  const season = loupe.season;
+  const conditions = loupe.splits.filter((s) => s.current != null);
+  const side = (k: SplitKey) => loupe.splits.find((s) => s.key === k)!.current;
+  const c = on.length ? combineSplits(loupe, on) : null;
+  const cells = c
+    ? gameLog([], loupe.log.filter((g) => on.every((k) => g.sides[k] === side(k))).flatMap((g): LogGame[] => {
+      const o = loupe.opponents[g.gameId];
+      return o ? [{ week: g.week, opponent: o.opponent, home: o.home, touchdowns: g.touchdowns }] : [];
+    })).cells
+    : log.cells;
+
+  // The blend's helper is a Facet tip, bound when the matching rate appears.
+  const shown = c != null && c.games > 0;
+  useEffect(() => (shown && ref.current ? mountTips(ref.current).destroy : undefined), [shown]);
+
+  // Every change of conditions after the sheet opens is announced, whether a chip or a note made it.
+  const onKey = on.join(',');
+  const before = useRef(onKey);
+  useEffect(() => {
+    if (before.current === onKey) return;
+    before.current = onKey;
+    setSaid(c ? `${matchWords(c.games)}${c.games ? `, ${pct(c.rate)}` : ''}` : `All ${season.games} games, ${pct(season.rate)}`);
+  }, [onKey, c, season]);
+
+  const toggle = (k: SplitKey) => set(on.includes(k) ? on.filter((x) => x !== k) : [...on, k]);
+
+  return (
+    <div className="fc-stack" ref={ref}>
+      <div className="fc-toggle-chips" role="group" aria-label="Conditions this week">
+        {conditions.map((s) => {
+          const pressed = on.includes(s.key);
+          return (
+            <button key={s.key} type="button" className="fc-toggle-chip" data-condition={s.key} aria-pressed={pressed} onClick={() => toggle(s.key)}>
+              {pressed ? CHECK : PLUS}{conditionName(loupe, s)}
+            </button>
+          );
+        })}
+      </div>
+      <div className="fc-game-log">
+        <p className="fc-game-log-rate">
+          <span className="fc-game-log-value">{pct(season.rate)}</span>
+          <span className="fc-game-log-label">{season.hits} of {season.games} this season</span>
+        </p>
+        {c && (
+          <p className="fc-game-log-rate" data-cloudy={c.thin ? '' : undefined}>
+            {c.games ? (
+              <span className="fc-game-log-value">
+                <span className="fc-has-tip" data-tip={`Blended with his season rate, as if he played ${SPLIT_PRIOR_GAMES} more games at ${pct(season.rate)}`}>{pct(c.rate)}</span>
+              </span>
+            ) : (
+              <span className="fc-game-log-value"><span aria-hidden="true">–</span><span className="fc-visually-hidden">No rate</span></span>
+            )}
+            <span className="fc-game-log-label">{c.thin && c.games ? `Only ${matchWords(c.games).toLowerCase()}` : matchWords(c.games)}</span>
+          </p>
+        )}
+        {cells.length > 0 && <GameLogCells cells={cells} matching={c != null} cloudy={!!c?.thin} />}
+      </div>
+      <div className="fc-row hg-wrap hg-between">
+        <GameLogKey />
+        <span className="fc-badge" data-variant="gray" data-size="sm" data-contrast="low">Context only</span>
+      </div>
+      <p className="fc-visually-hidden" role="status">{said}</p>
+    </div>
   );
 }

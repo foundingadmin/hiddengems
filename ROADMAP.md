@@ -42,7 +42,10 @@ thread.
 12. **Clear slip.** The micro moments package animates erasing a whole slip with a 5 second Undo, but neither the app
     nor the wireframes have a Clear slip control. Recommend: no Clear slip for now, since a slip holds a few legs and
     Remove with Undo covers it. The Erase moment waits until you want one (sprint 2026-11-03-3, e4).
-13. **PRD v1.2.** Once 1 to 12 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
+13. **Clarity in the loupe (F2.2).** The PRD has clarity redraw as conditions toggle; the loupe built Nov 3 keeps
+    the rating and clarity fixed and filters the game log and rate only, so nothing a user toggles changes a rating.
+    Recommend: keep it that way until the Dec 1 formula lock, then decide with the provenance read.
+14. **PRD v1.2.** Once 1 to 13 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
     Outlier as price source, F2.8, F3.4, the old pipeline's freeze and close commands.
 
 ## Where it stands
@@ -61,7 +64,7 @@ thread.
 | CLV | F1.1 | Built: CLV for every gem and placed bet, results line on History | Owner SQL before Thu Nov 5 |
 | Closed appraisal result | F1.2 | Built: the four boxes for every gem, graded slip | Within an hour of final (call 1) |
 | Provenance | F1.3 | Built: a frozen record per gem at kickoff with its new flag and estimate | Notes and splits, once they exist |
-| Phase 2, the read | F2.1 to F2.8 | Built: live price line, core sample, trend lines, implied points, matchup and weather in the gem sheet; weekly backtest on Data health (sprint 2026-11-03-2) | Splits and the loupe (F2.2), notes (F2.3, call 10), consensus (F2.6) |
+| Phase 2, the read | F2.1 to F2.8 | Built: live price line, core sample, trend lines, splits and the loupe, implied points, matchup and weather in the gem sheet; weekly backtest on Data health | Notes (F2.3, call 10), consensus (F2.6) |
 | Phase 3, the slip | F3.1 to F3.7 | Built: slips and states, lose it all, DraftKings slip link, handoff, change dialog, history, graded slip, the Jeweler | The Jeweler's key (call 5), provenance report data (F3.7), stake range (call 6) |
 | Facet parts from the brief | build brief | Promoted: every part the brief lists | |
 | Micro moments | `docs/animation/micro-moments` | Built in sprint 2026-11-03-3: 9 of 11 moments on Facet's dots engine | Erase (call 12), New connection (no screen) |

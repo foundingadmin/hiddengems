@@ -51,6 +51,7 @@ The reference writes UI labels in Title Case. Facet uses sentence case everywher
 | Badge | Static status/category label (confidence tier) | P0 | [badge.md](badge.md) |
 | Status dot | 10px lifecycle dot (deployments only in the reference; feed freshness as a Facet extension) | P0 | [status-dot.md](status-dot.md) |
 | Game log | Last 10 games, hit or miss, beside the season record | P0 | [game-log.md](game-log.md) |
+| Toggle chips | Conditions that each turn on or off and combine (the loupe) | P1 | [toggle-chip.md](toggle-chip.md) |
 | Rank track | One team's rank from 1 to 32 on a hairline | P1 | [rank-track.md](rank-track.md) |
 | Gauge | Circular 0–100 meter (composite gem score) | P0 | [gauge.md](gauge.md) |
 | Pie gauge | Inline 13–16px percentage icon (score column) | P0 | [pie-gauge.md](pie-gauge.md) |

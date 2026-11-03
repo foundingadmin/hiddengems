@@ -9,7 +9,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { type MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { SlipButton } from '@/components/add-to-slip';
 import { GameLog, GameLogKey } from '@/components/game-log';
-import { ConditionsList, CoreSampleTable, PriceChart, TrendLines } from '@/components/gem-read';
+import { ConditionsList, CoreSampleTable, LoupeView, PriceChart, TrendLines, scrollTopFor } from '@/components/gem-read';
 import { useCrumb } from '@/components/shell';
 import { Edge, GemMark, Player } from '@/components/marks';
 import type { BoardRow } from '@/lib/board';
@@ -40,6 +40,7 @@ export function useGemLink() {
   const href = useCallback((key: string) => {
     const next = new URLSearchParams(params);
     next.set('gem', key);
+    next.delete('loupe');
     return `${path}?${next}`;
   }, [params, path]);
   const open = useCallback((e: MouseEvent, key: string) => {
@@ -104,8 +105,10 @@ export function GemSheet({ rows, detail, asked, zone }: {
       }
       // Focus the scroll body, so arrow keys read the sheet; Tab reaches the tabs and Close.
       body.current?.focus({ preventScroll: true, focusVisible: false } as FocusOptions);
-      body.current?.scrollTo({ top: 0 });
-      setActive(SECTIONS[0].id);
+      // A link with conditions (?loupe=) opens on the loupe.
+      const loupe = new URLSearchParams(location.search).has('loupe') ? document.getElementById('gem-loupe') : null;
+      body.current?.scrollTo({ top: loupe ? scrollTopFor(body.current, loupe) : 0 });
+      setActive(loupe ? 'gem-loupe' : SECTIONS[0].id);
     } else if (el.open) closeSheet(el);
   }, [key]);
 
@@ -123,6 +126,7 @@ export function GemSheet({ rows, detail, asked, zone }: {
         if (back) router.back(); else {
           const next = new URLSearchParams(location.search);
           next.delete('gem');
+          next.delete('loupe');
           router.replace(`${path}${next.size ? `?${next}` : ''}`, { scroll: false });
         }
       }
@@ -254,12 +258,12 @@ function Sections({ gem, zone }: { gem: GemDetail; zone: string }) {
 
       <section id="gem-notes" className="fc-sheet-section" aria-labelledby="gem-notes-h">
         <h3 id="gem-notes-h" className="text-heading-20">What the numbers miss</h3>
-        <TrendLines trends={gem.trends} labelledBy="gem-notes-h" />
+        <TrendLines trends={gem.trends} loupe={gem.loupe} labelledBy="gem-notes-h" />
       </section>
 
       <section id="gem-loupe" className="fc-sheet-section" aria-labelledby="gem-loupe-h">
         <h3 id="gem-loupe-h" className="text-heading-20">The loupe</h3>
-        {gem.log.season.games ? (
+        {gem.loupe ? <LoupeView loupe={gem.loupe} log={gem.log} /> : gem.log.season.games ? (
           <>
             <GameLog log={gem.log} />
             <GameLogKey />

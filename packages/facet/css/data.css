@@ -708,6 +708,54 @@ dialog.fc-sheet:not([open]) { display: none; }
 .fc-game-log-key { display: flex; flex-wrap: wrap; gap: var(--fc-space-1) var(--fc-space-4); margin: 0; padding: 0; list-style: none; font: 400 12px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
 .fc-game-log-key > li { display: inline-flex; align-items: center; gap: var(--fc-space-1_5); }
 .fc-game-log-key > li::before { width: var(--fc-space-3); height: var(--fc-space-3); }
+/* Cloudy [F]: a thin sample (under 3 games, docs/prd.md F2.2) reads as if seen through haze. The marks blur and
+   fade, a rate's value drops to secondary gray and softens; the opponents and the label stay sharp, and the label
+   says how many games there are, so the haze is never the only cue. Reduced transparency drops the blur. */
+.fc-game-log-rate[data-cloudy] .fc-game-log-value { color: var(--fc-text-secondary); filter: blur(0.5px); }
+.fc-game-log-cells[data-cloudy] > li::before { filter: blur(1.5px); opacity: 0.55; }
+@media (prefers-reduced-transparency: reduce) {
+  .fc-game-log-rate[data-cloudy] .fc-game-log-value { filter: none; }
+  .fc-game-log-cells[data-cloudy] > li::before { filter: none; opacity: 0.4; }
+}
+
+/* ================================================================== Toggle chips [F]
+   Conditions that each turn on or off, any number at once (the loupe's split conditions). A real button with
+   aria-pressed whose name never changes. Off: the suggestion chip's dashed edge and a plus, secondary text.
+   On: a checked control, so the brand edge, tint and check (DESIGN.md, Brand accent), primary text.
+   <div class="fc-toggle-chips" role="group" aria-label="Conditions this week">
+     <button type="button" class="fc-toggle-chip" aria-pressed="true"><svg aria-hidden="true">check</svg>Home</button>
+     <button type="button" class="fc-toggle-chip" aria-pressed="false"><svg aria-hidden="true">plus</svg>Short week</button>
+   </div> */
+.fc-toggle-chips { display: flex; flex-wrap: wrap; gap: var(--fc-space-2); }
+.fc-toggle-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  height: var(--fc-control-small);
+  padding: 0 12px 0 10px;
+  border: 0;
+  border-radius: var(--fc-radius-full);
+  background: var(--fc-surface-canvas);
+  outline: 1px dashed var(--fc-border-hover);
+  outline-offset: -1px;
+  color: var(--fc-text-secondary);
+  font: 500 14px/20px var(--fc-font-sans);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--fc-duration-fast) ease, color var(--fc-duration-fast) ease;
+}
+.fc-toggle-chip svg { flex: 0 0 auto; width: 16px; height: 16px; }
+.fc-toggle-chip:hover { background: var(--fc-surface-fill); color: var(--fc-text-primary); }
+.fc-toggle-chip[aria-pressed="true"] {
+  outline: 0;
+  background: color-mix(in srgb, var(--fc-control-on) 6%, var(--fc-surface-canvas));
+  box-shadow: 0 0 0 1px var(--fc-control-on);
+  color: var(--fc-text-primary);
+}
+.fc-toggle-chip[aria-pressed="true"] svg { color: var(--fc-control-on); }
+.fc-toggle-chip[aria-pressed="true"]:hover { background: color-mix(in srgb, var(--fc-control-on) 12%, var(--fc-surface-canvas)); }
+.fc-toggle-chip:focus-visible { outline: 0; box-shadow: var(--ds-focus-ring); }
 
 /* ================================================================== Rank track [F]
    Where one team sits from 1 to N (32 once every team has played): a dot on a hairline, both ends labelled.

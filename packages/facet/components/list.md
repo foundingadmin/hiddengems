@@ -65,6 +65,8 @@ A row that opens a record (a past slip on the phone) puts an `a.fc-row-link` in 
 </ul>
 ```
 - One link per row, and no other controls in it: the link covers them.
+- A link row fills on hover by itself, so a list can mix link rows with plain ones (the gem sheet's Notes, where
+  a line citing a condition opens the loupe with it on).
 
 ## Lanes `[F]`
 

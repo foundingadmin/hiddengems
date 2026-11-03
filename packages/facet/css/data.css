@@ -587,3 +587,67 @@ dialog.fc-sheet:not([open]) { display: none; }
   padding: var(--fc-space-4) var(--fc-space-5);
   box-shadow: 0 0 0 1px var(--fc-border-default);
 }
+
+/* ================================================================== Sheet sections [F]
+   A detail sheet read as one scroll: pinned header and tabs, each tab jumps to its section.
+   <nav class="fc-tabs fc-sheet-tabs" aria-label="…"><a class="fc-tab" href="#s1" aria-current="true">…</a></nav>
+   <div class="fc-sheet-body"><section class="fc-sheet-section" id="s1">…</section>…</div>
+   The tab for the section in view carries aria-current="true". data-phone="full" takes the whole
+   screen under 768px, where an inset panel would leave a sliver of page. */
+.fc-sheet-tabs .fc-tab[aria-current="true"] { color: var(--fc-text-primary); border-bottom-color: var(--fc-text-primary); }
+.fc-sheet-section { display: flex; flex-direction: column; gap: var(--fc-space-4); padding-bottom: var(--fc-space-8); scroll-margin-top: var(--fc-space-4); }
+.fc-sheet-section + .fc-sheet-section { padding-top: var(--fc-space-8); border-top: 1px solid var(--fc-border-default); }
+.fc-sheet-section:last-child { padding-bottom: 0; }
+.fc-sheet-section > :is(h2, h3, h4, p) { margin: 0; }
+@media (max-width: 767px) {
+  .fc-sheet[data-phone="full"] { inset: 0; width: 100%; border-radius: 0; }
+  .fc-sheet[data-phone="full"] .fc-sheet-header { padding: var(--fc-space-4) var(--fc-space-4) 0; }
+  .fc-sheet[data-phone="full"] .fc-sheet-tabs { padding-inline: var(--fc-space-4); }
+  .fc-sheet[data-phone="full"] .fc-sheet-body { padding: var(--fc-space-5) var(--fc-space-4); }
+  .fc-sheet[data-phone="full"] .fc-sheet-footer { padding: var(--fc-space-3) var(--fc-space-4) var(--fc-space-4); }
+}
+
+/* ================================================================== Game log [F]
+   One cell per game, oldest first: filled for a hit, hollow for a miss, dashed for a bye, the
+   opponent under each. The season rate sits beside it and leads, because it outranks the last 10.
+   Gray only: a hit is a result, not a gem, so purple stays out (DESIGN.md, Hue allocation).
+   <div class="fc-game-log">
+     <p class="fc-game-log-rate"><span class="fc-game-log-value">5 of 8</span><span class="fc-game-log-label">This season</span></p>
+     <ol class="fc-game-log-cells" aria-label="Last 9 weeks, oldest first">
+       <li data-result="hit"><span aria-hidden="true">NYJ</span><span class="fc-visually-hidden">Week 1 vs NYJ, TD</span></li>
+       <li data-result="miss">…</li><li data-result="bye">Bye</li>
+     </ol>
+   </div>
+   <ul class="fc-game-log-key"><li data-result="hit">TD</li><li data-result="miss">No TD</li><li data-result="bye">Bye</li></ul> */
+.fc-game-log { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--fc-space-3) var(--fc-space-6); }
+.fc-game-log-rate { display: flex; flex: 0 0 auto; flex-direction: column; gap: var(--fc-space-1); margin: 0; }
+.fc-game-log-value { font: 600 16px/24px var(--fc-font-sans); letter-spacing: -0.32px; color: var(--fc-text-primary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fc-game-log-label { font: 400 13px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
+.fc-game-log-cells { display: flex; flex: 1 1 16rem; gap: var(--fc-space-2); min-width: 0; margin: 0; padding: 0; list-style: none; }
+.fc-game-log-cells > li {
+  display: flex;
+  flex: 0 1 var(--fc-space-10);
+  flex-direction: column;
+  align-items: center;
+  gap: var(--fc-space-1);
+  min-width: 0;
+  font: 400 12px/16px var(--fc-font-sans);
+  color: var(--fc-text-secondary);
+  white-space: nowrap;
+}
+.fc-game-log-cells > li::before,
+.fc-game-log-key > li::before {
+  content: "";
+  flex: 0 0 auto;
+  width: var(--fc-space-4);
+  height: var(--fc-space-4);
+  border-radius: var(--fc-radius-xs);
+  box-shadow: inset 0 0 0 1.5px var(--ds-gray-700);
+}
+.fc-game-log-cells > li[data-result="hit"]::before,
+.fc-game-log-key > li[data-result="hit"]::before { background: var(--fc-text-primary); box-shadow: none; }
+.fc-game-log-cells > li[data-result="bye"]::before,
+.fc-game-log-key > li[data-result="bye"]::before { box-shadow: none; outline: 1.5px dashed var(--fc-border-active); outline-offset: -1.5px; }
+.fc-game-log-key { display: flex; flex-wrap: wrap; gap: var(--fc-space-1) var(--fc-space-4); margin: 0; padding: 0; list-style: none; font: 400 12px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
+.fc-game-log-key > li { display: inline-flex; align-items: center; gap: var(--fc-space-1_5); }
+.fc-game-log-key > li::before { width: var(--fc-space-3); height: var(--fc-space-3); }

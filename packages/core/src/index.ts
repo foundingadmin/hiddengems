@@ -5,3 +5,4 @@ export * from './snapshots';
 export * from './games';
 export * from './teams';
 export * from './model';
+export * from './log';

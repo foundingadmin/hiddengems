@@ -7,3 +7,4 @@ body { margin: 0; background: var(--fc-surface-canvas); color: var(--fc-text-pri
 .hg-section h2 { margin: 0; }
 .hg-gem-cell { display: inline-flex; align-items: center; gap: var(--fc-space-2); }
 .hg-inline-form { display: inline; }
+.hg-lab-frame { display: block; width: 100%; height: 80vh; border: 0; border-radius: var(--fc-radius-sm); box-shadow: var(--ds-shadow-border); background: var(--fc-surface-canvas); }

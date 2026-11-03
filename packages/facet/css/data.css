@@ -723,6 +723,8 @@ dialog.fc-sheet:not([open]) { display: none; }
 /* A value with its tag on one line, its helper and any marks under it. */
 .fc-factor-value { display: flex; flex-wrap: wrap; align-items: center; gap: var(--fc-space-1) var(--fc-space-2); }
 .fc-description dd > :is(.fc-rank-track, .fc-game-log-cells) { margin-top: var(--fc-space-2); }
+/* A helper that carries freshness (status dot plus relative time) sits where <small> would. */
+.fc-description dd > .fc-freshness { margin-top: var(--fc-space-1); }
 
 /* Cell detail [F]: the count behind a share, before the value in the same cell, so the values keep one
    right edge. <td data-align="numeric"><span class="fc-cell-detail">11 of 18</span>61%</td> */

@@ -12,6 +12,9 @@ const db = handle.db;
 const providers = sampleProviders();
 const tuesday = new Date('2026-11-03T12:37:00Z');
 const run = (job: string, now = tuesday) => runJob(job, { db, providers, trigger: 'test', now, registry: jobs, force: true });
+// The same data read as if it came from nflverse, so the baseline check runs.
+const live = { ...providers, usage: { ...providers.usage, id: 'nflverse' } };
+const runLive = (job: string) => runJob(job, { db, providers: live, trigger: 'test', now: tuesday, registry: jobs, force: true });
 
 beforeAll(async () => {
   await handle.migrate();
@@ -32,7 +35,7 @@ describe('backtest', () => {
     for (let t = new Date('2026-09-29T12:37:00Z'); t <= tuesday; t = new Date(t.getTime() + 7 * 86_400_000)) {
       for (const job of ['pull-schedule', 'pull-results', 'pull-usage']) await run(job, t);
     }
-    const r = await run('backtest');
+    const r = await runLive('backtest');
     // The sample's players score far more often than real ones, so it lands above the baseline and warns.
     expect(r.status).toBe('warned');
     expect(r.message).toMatch(/^Brier 0\.\d{4} over \d+ player games in Weeks 4 to 8$/);
@@ -53,6 +56,18 @@ describe('backtest', () => {
 
     expect(meta.aboveBaseline).toBe(true);
     expect(logs.filter((l) => l.level === 'warn').map((l) => l.message)).toEqual([`Brier is ${meta.delta!.toFixed(4)} above the 0.1360 baseline`]);
+  });
+
+  it('on sample data reports its score without the baseline check and does not warn', async () => {
+    const r = await run('backtest');
+    expect(r.status, r.message).toBe('succeeded');
+    const [row] = await db.select().from(runs).where(eq(runs.id, r.runId!));
+    const meta = row!.meta as unknown as ReturnType<typeof walkForward>;
+    expect(meta.aboveBaseline).toBe(true);
+    expect(r.message).toBe(`Brier ${meta.brier!.toFixed(4)} over ${meta.games} player games in Weeks 4 to 8 on sample data`);
+    const logs = await db.select().from(runLogs).where(eq(runLogs.runId, r.runId!));
+    expect(logs.filter((l) => l.level === 'warn')).toEqual([]);
+    expect(logs.filter((l) => l.level === 'info')).toHaveLength(5);
   });
 
   it('reads whether he scored from his stat line', async () => {

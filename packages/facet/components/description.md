@@ -66,4 +66,6 @@ Owner brief, 2026-11-03 (docs/prd.md F2.5): a factor that informs a reading but 
 - Add `data-context` to the row's `<div>`. The value turns 400 weight and secondary, like the term, and any rank track (`rank-track.md`) or game log cells inside it turn gray.
 - Tag both kinds in words with a gray subtle badge after the value (`.fc-factor-value` puts value and tag on one line): "Context only" on a context row, "In the rating" on a factor the model uses. Tone is never the only cue.
 - The helper (`<small>`) states the basis ("1.1 a game over 8 games", "League average 22.9").
+- A helper that dates the value uses `.fc-freshness` instead of `<small>`: status dot plus source and relative time
+  ("Open-Meteo forecast, 5m ago").
 - Gem sheet, Context: implied team points (in the rating), the matchup (context only), and later weather.

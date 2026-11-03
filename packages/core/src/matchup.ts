@@ -1,6 +1,7 @@
 // Game conditions for the gem sheet (docs/prd.md F2.5). Implied team points move the rating (model v3.0, see
 // impliedFactor in model.ts). The matchup is context only and never moves it: the opponent's rank in
 // touchdowns allowed to the player's position, on a 1 to 32 track, with its last four games beside it.
+import { TREND_MIN_GAMES } from './trends';
 
 /** A final game this season whose usage is in. */
 export interface MatchupGame {
@@ -32,6 +33,8 @@ export interface Matchup {
   position: string;
   /** 1 allows the most touchdowns per game to the position. Ties share a rank. */
   rank: number;
+  /** Another defense allows the same rate, so the rank is shared. */
+  tied: boolean;
   /** Teams ranked: 32 once every team has played. */
   teams: number;
   perGame: number;
@@ -74,7 +77,18 @@ export function matchup(games: readonly MatchupGame[], scores: readonly MatchupS
   return {
     defense, position: pos,
     rank: 1 + rates.filter((r) => r > perGame + 1e-9).length,
+    tied: rates.filter((r) => Math.abs(r - perGame) <= 1e-9).length > 1,
     teams: rates.length, perGame, games: own.length,
     recent: [...own].sort((a, b) => a.week - b.week).slice(-weeks),
   };
+}
+
+/**
+ * Where the defense sits on the rank track: 0 at rank 1 (the most allowed), 1 at the last rank. One that has
+ * allowed none sits at the last rank. Null under TREND_MIN_GAMES games, too few to rank.
+ */
+export function matchupTrack(m: Matchup): number | null {
+  if (m.games < TREND_MIN_GAMES) return null;
+  if (m.perGame === 0 || m.teams <= 1) return m.perGame === 0 ? 1 : 0;
+  return (m.rank - 1) / (m.teams - 1);
 }

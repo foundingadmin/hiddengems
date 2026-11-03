@@ -48,6 +48,9 @@ cannot break them.
 | Gem card states | `.fc-gem-card[data-unread]`, `[data-selected]` | Unread tint and sheen; selected brand edge (`components/gem-card.md`) |
 | Undo toast | `.fc-toast`, `.fc-toast-dots`, `js/undo.mjs` | Five dots count 5 seconds down (`components/toast.md`) |
 | Edge glint hooks | `--fc-glint-edge`, `[data-glint]` | Which edge to ripple on the tab bar, rail items and the sheet |
+| Sheet spring | `.fc-sheet[data-motion="spring"]`, `[data-closing]` | The gem sheet's spring open from its side and plain close (`components/sheet.md`) |
+| Count pop | `.fc-railslip-count[data-pop]`, `--fc-duration-pop` | The rail slip's leg count answering an add |
+| On-slip rows | `tr[data-checked]`, `.fc-gem-item[data-checked]`, `.fc-gem-card[data-selected]` | A gem on the slip, set at once on Add (state first) |
 
 ## The engine
 

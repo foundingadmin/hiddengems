@@ -578,6 +578,24 @@ dialog.fc-sheet:not([open]) { display: none; }
 @keyframes fc-sheet-in { from { transform: translateX(var(--fc-space-4)); opacity: 0; } }
 @keyframes fc-sheet-in-left { from { transform: translateX(calc(-1 * var(--fc-space-4))); opacity: 0; } }
 @keyframes fc-backdrop-in { from { opacity: 0; } }
+/* Spring motion [F] (patterns/moments.md, Drawer). data-motion="spring" opens the sheet from off its side (from
+   the bottom for a full-screen phone sheet) on the spring over --fc-duration-sheet, and closes it back out over
+   --fc-duration-overlay on the exit easing, no spring. A dialog closes at once, so the caller sets data-closing,
+   waits for the sheet's animationend, then calls close(). Reduced motion: no slide, open and close at once.
+   While js/dots.mjs ripples dots along its leading edge (data-glint), the sheet lets them past its bounds. */
+.fc-sheet[data-motion="spring"] { --_sheet-off: translateX(calc(100% + var(--fc-space-3))); }
+.fc-sheet[data-motion="spring"][data-side="left"] { --_sheet-off: translateX(calc(-100% - var(--fc-space-3))); }
+@media (max-width: 767px) { .fc-sheet[data-motion="spring"][data-phone="full"] { --_sheet-off: translateY(100%); } }
+.fc-sheet[data-glint] { overflow: visible; }
+@media (prefers-reduced-motion: no-preference) {
+  .fc-sheet[data-motion="spring"][open] { animation: fc-sheet-spring-in var(--fc-duration-sheet) var(--fc-ease-emphasized); }
+  .fc-sheet[data-motion="spring"][open]::backdrop { animation: fc-backdrop-in var(--fc-duration-sheet) var(--fc-ease-standard); }
+  .fc-sheet[data-motion="spring"][data-closing] { animation: fc-sheet-spring-out var(--fc-duration-overlay) var(--fc-ease-exit) forwards; }
+  .fc-sheet[data-motion="spring"][data-closing]::backdrop { animation: fc-backdrop-out var(--fc-duration-overlay) var(--fc-ease-exit) forwards; }
+}
+@keyframes fc-sheet-spring-in { from { transform: var(--_sheet-off); } }
+@keyframes fc-sheet-spring-out { to { transform: var(--_sheet-off); } }
+@keyframes fc-backdrop-out { to { opacity: 0; } }
 
 /* ================================================================== Stat with basis [F]
    One reading unit: label, figure (value plus qualifier), basis (sample, window, source).

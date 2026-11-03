@@ -124,6 +124,14 @@
 .fc-railslip-head > :last-child, .fc-railslip dt { color: var(--fc-text-secondary); }
 .fc-railslip > .fc-separator { margin: var(--fc-space-1) 0; }
 .fc-railslip > .fc-button { width: 100%; margin-top: var(--fc-space-1); }
+/* The leg count in the head ("<span class="fc-railslip-count">3</span> leg parlay") pops when a gem is added
+   (patterns/moments.md, Add a gem): render it with data-pop as a new element, and it scales down into place over
+   --fc-duration-pop. Transform only, so nothing shifts; none under reduced motion. */
+.fc-railslip-count { display: inline-block; font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: no-preference) {
+  .fc-railslip-count[data-pop] { animation: fc-count-pop var(--fc-duration-pop) var(--fc-ease-standard); }
+}
+@keyframes fc-count-pop { from { transform: scale(1.4); } }
 @container fc-shell (max-width: 767px) {
   .fc-railslip { display: none; }
 }
@@ -148,6 +156,12 @@
   border-top: 1px solid var(--fc-border-default);
 }
 .fc-gem-item > .fc-gem-row { border-top: 0; }
+/* data-checked, on the slip: the fill step a checked table row takes (css/data.css), bled 8px past each side so
+   the content keeps its air. The button's check and its "Remove … from slip" name are the second cue. */
+.fc-gem-item[data-checked] {
+  background: var(--fc-surface-fill);
+  box-shadow: calc(-1 * var(--fc-space-2)) 0 0 var(--fc-surface-fill), var(--fc-space-2) 0 0 var(--fc-surface-fill);
+}
 .fc-gem-item > .fc-gem-row:only-child { grid-column: 1 / -1; }
 
 /* ================================================================== Numbered steps

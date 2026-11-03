@@ -13,6 +13,8 @@ Added, for micro moments (`patterns/moments.md`)
 - Gem card states `data-unread` (tint and sheen) and `data-selected` (`components/gem-card.md`).
 - Toast (`.fc-toast-region`, `.fc-toast`) and the Undo countdown (`.fc-toast-dots`, `js/undo.mjs`) (`components/toast.md`).
 - Edge glint hooks (`--fc-glint-edge`, `[data-glint]`) on the tab bar, rail items and the sheet.
+- Sheet spring motion (`.fc-sheet[data-motion="spring"]`, `[data-closing]`): opens from off its side on the spring, closes on the exit easing (`components/sheet.md`).
+- Rail slip leg count pop (`.fc-railslip-count[data-pop]`, `--fc-duration-pop`) and the on-slip phone row (`.fc-gem-item[data-checked]`).
 
 ## 0.2.0 (2026-11-03)
 

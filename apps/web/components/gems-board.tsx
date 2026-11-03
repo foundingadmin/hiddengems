@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { flushSync } from 'react-dom';
 import { markRead } from '@/app/gems-actions';
-import { SlipButton, type SlipRef } from '@/components/add-to-slip';
+import { SlipButton, useSlip } from '@/components/add-to-slip';
 import { Dropdown } from '@/components/dropdown';
 import { useGemLink } from '@/components/gem-sheet';
 import { Edge, FoolsLabel, GemMark, Player } from '@/components/marks';
@@ -51,6 +51,7 @@ export function NewGems({ rows, since, zone }: { rows: BoardRow[]; since: string
   const wrap = useRef<HTMLDivElement>(null);
   const cards = useRef(new Map<string, HTMLElement>());
   const moments = useMoments();
+  const slip = useSlip();
   const [pending, start] = useTransition();
   // Gems read here and not yet confirmed by the server, with when each card's tint fades (packages/facet
   // patterns/moments.md: state first, the motion follows, a failure puts it back).
@@ -107,9 +108,10 @@ export function NewGems({ rows, since, zone }: { rows: BoardRow[]; since: string
       <div className="fc-strip-wrap" ref={wrap}>
         <div className="fc-strip" role="list" ref={strip}>
           {rows.map((r, i) => (
-            <article key={r.key} className="fc-gem-card fc-card" role="listitem" aria-label={`${r.name}, new gem`}
+            <article key={r.key} className="fc-gem-card fc-card" role="listitem"
+              aria-label={`${r.name}, new gem${slip.has(r.key) ? ', on your slip' : ''}`}
               ref={(el) => { if (el) cards.current.set(r.key, el); else cards.current.delete(r.key); }}
-              data-unread={reading.has(r.key) ? undefined : ''}
+              data-unread={reading.has(r.key) ? undefined : ''} data-selected={slip.has(r.key) ? '' : undefined}
               style={reading.has(r.key) ? { ['--fc-state-delay' as string]: reading.get(r.key) } : undefined}>
               <div className="fc-gem-card-head">
                 <GemMark kind={r.kind} rating={r.rating} size="lg" delay={i * 160} />
@@ -142,12 +144,13 @@ export function NewGems({ rows, since, zone }: { rows: BoardRow[]; since: string
   );
 }
 
-export function AllGems({ rows, zone, freshness, slip }: { rows: BoardRow[]; zone: string; freshness: React.ReactNode; slip: SlipRef | null }) {
+export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: string; freshness: React.ReactNode }) {
   const params = useSearchParams();
   const router = useRouter();
   const path = usePathname();
   const search = useRef<HTMLInputElement>(null);
   const gemLink = useGemLink();
+  const slip = useSlip();
   const q = params.get('q') ?? '';
   const win = params.get('window');
   const hideFools = params.get('fools') === 'hide';
@@ -264,7 +267,8 @@ export function AllGems({ rows, zone, freshness, slip }: { rows: BoardRow[]; zon
               </thead>
               <tbody>
                 {shown.map((r, i) => (
-                  <tr key={r.key} className={r.started ? 'hg-started' : undefined} aria-selected={gemLink.current === r.key ? true : undefined}>
+                  <tr key={r.key} className={r.started ? 'hg-started' : undefined} aria-selected={gemLink.current === r.key ? true : undefined}
+                    data-checked={slip.has(r.key) ? '' : undefined}>
                     <td><GemMark kind={r.kind} rating={r.rating} delay={(shown.length - 1 - i) * 160} /></td>
                     <th scope="row">
                       <Player name={r.name} teamId={r.teamId} number={r.number} detail={detail(r)}
@@ -277,7 +281,7 @@ export function AllGems({ rows, zone, freshness, slip }: { rows: BoardRow[]; zon
                     <td data-align="numeric">{pct(r.hitChance)}</td>
                     <td data-align="numeric"><Edge pts={Math.round(r.gap)} /></td>
                     <td data-align="numeric">{r.clarity}</td>
-                    <td><SlipButton row={r} slip={slip} /></td>
+                    <td><SlipButton row={r} /></td>
                   </tr>
                 ))}
               </tbody>
@@ -285,7 +289,7 @@ export function AllGems({ rows, zone, freshness, slip }: { rows: BoardRow[]; zon
           </div>
           <ul className="fc-gem-list hg-phone-only" aria-label={SORTS[sort]?.caption}>
             {shown.map((r) => (
-              <li key={r.key} className="fc-gem-item">
+              <li key={r.key} className="fc-gem-item" data-checked={slip.has(r.key) ? '' : undefined}>
                 <a className="fc-gem-row" href={gemLink.href(r.key)} onClick={(e) => gemLink.open(e, r.key)} data-gem-link={r.key}>
                   <GemMark kind={r.kind} rating={r.rating} bare />
                   <Player name={r.name} teamId={r.teamId} number={r.number}
@@ -297,7 +301,7 @@ export function AllGems({ rows, zone, freshness, slip }: { rows: BoardRow[]; zon
                     <Edge pts={Math.round(r.gap)} />
                   </span>
                 </a>
-                <SlipButton row={r} slip={slip} place="icon" />
+                <SlipButton row={r} place="icon" />
               </li>
             ))}
           </ul>

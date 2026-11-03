@@ -25,6 +25,8 @@ const paragraphs = (text: string) => text.split(/\n\s*\n/).map((p) => p.trim()).
 
 function useJeweler(initial: JewelerView) {
   const [view, setView] = useState(initial);
+  // A fresh view (the sheet reopened, the slip changed) keeps the conversation.
+  useEffect(() => setView(initial), [initial]);
   const [turns, setTurns] = useState<Turn[]>([]);
   const [asked, setAsked] = useState<string[]>([]);
   const [pending, setPending] = useState(false);
@@ -71,10 +73,10 @@ export function JewelerChat({ initial, frame, onClose }: { initial: JewelerView;
   };
   const pick = (q: string) => { void send(q); input.current?.focus(); };
 
-  const chips = view.gem && (
+  const chips = (view.gem || view.slip) && (
     <ul className="fc-chat-context" aria-label="Looking at">
-      <li><span className="fc-badge" data-size="sm" data-contrast="low">About {view.gem.name}</span></li>
-      {/* The slip chip joins here once slips exist (F3.1). */}
+      {view.gem && <li><span className="fc-badge" data-size="sm" data-contrast="low">About {view.gem.name}</span></li>}
+      {view.slip && <li><span className="fc-badge" data-size="sm" data-contrast="low">{view.slip.name}</span></li>}
     </ul>
   );
   const log = (
@@ -164,12 +166,13 @@ export function JewelerSheet() {
   const [view, setView] = useState<{ gemId: string | null; view: JewelerView } | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
 
+  // Read on every open, so the chips show the slip as it is now.
   useEffect(() => {
-    if (!open || (view && view.gemId === gemId)) return;
+    if (!open) return;
     let live = true;
     loadJeweler(gemId).then((v) => { if (live) setView({ gemId, view: v }); }).catch(() => {});
     return () => { live = false; };
-  }, [open, gemId, view]);
+  }, [open, gemId]);
 
   useEffect(() => {
     const d = dialog.current;

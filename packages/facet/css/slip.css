@@ -128,6 +128,28 @@
   .fc-railslip { display: none; }
 }
 
+/* ================================================================== Row action
+   A board row's own action (Add / On slip) in a table row that has a stretched .fc-row-link: lifted above the
+   link so the button takes its own clicks while the rest of the row still opens the record.
+   <td><span class="fc-row-action"><button class="fc-button" …>Add</button></span></td> */
+.fc-row-action { position: relative; z-index: 2; }
+
+/* ================================================================== Gem row with its slip button
+   The phone board row and its Add / On slip button share one hairline. The row link fills the first lane and
+   a square small button the second. A row with no button (Fool's Gold) spans both lanes, so its name and label
+   keep the room.
+   <ul class="fc-gem-list"><li class="fc-gem-item"><a class="fc-gem-row" href="…">…</a>
+     <button class="fc-button" data-variant="secondary" data-size="small" data-shape="square" aria-label="Add James Cook to slip">…</button></li></ul> */
+.fc-gem-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--fc-control-small);
+  align-items: center;
+  column-gap: var(--fc-space-3);
+  border-top: 1px solid var(--fc-border-default);
+}
+.fc-gem-item > .fc-gem-row { border-top: 0; }
+.fc-gem-item > .fc-gem-row:only-child { grid-column: 1 / -1; }
+
 /* ================================================================== Numbered steps
    An ordered task the reader carries out in order, often outside the app. Not the stepper
    (components/stepper.md), which changes a number.

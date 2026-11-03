@@ -1,11 +1,11 @@
 'use client';
-// The Facet app shell (packages/facet/components/app-shell.md): the rail holds Gems and Slips, with
-// Ask the Jeweler pinned at the bottom and freshness in the foot (docs/build-brief.md, Navigation).
+// The Facet app shell (packages/facet/components/app-shell.md): the rail holds Gems and Slips, the slip in
+// progress, Ask the Jeweler pinned at the bottom and freshness in the foot (docs/build-brief.md, Navigation).
 // The top bar holds the week (the scope every page reads, kept in ?week=) and search. Under 768px a
 // tab bar at the bottom replaces the rail.
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { type ReactNode, useEffect, useState } from 'react';
+import { type ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { Dropdown } from '@/components/dropdown';
 import { JewelerSheet } from '@/components/jeweler';
 
@@ -27,13 +27,26 @@ const SETTINGS = [
 const LEFT = icon(<path d="m15 18-6-6 6-6" />);
 const GEAR = icon(<><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" /></>);
 
+/** Names an open record (the gem sheet's player) as the breadcrumb's last step while it is open. */
+const CrumbContext = createContext<(label: string | null) => void>(() => {});
+export function useCrumb(label: string | null) {
+  const set = useContext(CrumbContext);
+  useEffect(() => {
+    set(label);
+    return () => set(null);
+  }, [label, set]);
+}
+
 export interface ShellWeeks { list: { week: number; label: string; detail?: string }[]; current: number | null }
 
-export function Shell({ children, foot, weeks, newCount }: { children: ReactNode; foot: ReactNode; weeks: ShellWeeks; newCount: number }) {
+export function Shell({ children, foot, slip, weeks, newCount }: {
+  children: ReactNode; foot: ReactNode; slip: ReactNode; weeks: ShellWeeks; newCount: number;
+}) {
   const path = usePathname();
   const params = useSearchParams();
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [crumb, setCrumb] = useState<string | null>(null);
   useEffect(() => setOpen(false), [path]);
   const inSettings = path.startsWith('/settings') || path === '/data' || path.startsWith('/data/');
   const week = Number(params.get('week')) || weeks.current;
@@ -51,6 +64,16 @@ export function Shell({ children, foot, weeks, newCount }: { children: ReactNode
       <Link className="fc-sidenav-item" href={withWeek(href)} aria-current={path === href ? 'page' : undefined}>{glyph}<span>{label}</span>{extra}</Link>
     </li>
   );
+  // Breadcrumb: the page, then the view or record open on it (packages/facet/components/app-shell.md).
+  const plain = new URLSearchParams(params);
+  for (const k of ['gem', 'ask', 'view', 'tab']) plain.delete(k);
+  const trail: { label: string; href?: string }[] = [];
+  if (inSettings) trail.push({ label: 'Settings', href: SETTINGS[0]!.href });
+  trail.push({ label: TITLES[path] ?? 'Hidden Gems', href: `${path}${plain.size ? `?${plain}` : ''}` });
+  if (path === '/slips' && params.get('view') === 'send') trail.push({ label: 'Send to DraftKings' });
+  else if (path === '/slips' && params.get('tab') === 'history') trail.push({ label: 'History' });
+  if (crumb) trail.push({ label: crumb });
+  if (params.get('ask') === '1' && path !== '/jeweler') trail.push({ label: 'The Jeweler' });
   const tab = (href: string, label: string, glyph: ReactNode, extra?: ReactNode) => (
     <Link href={withWeek(href)} aria-current={path === href ? 'page' : undefined}>{glyph}<span className="text-label-12">{label}</span>{extra}</Link>
   );
@@ -79,6 +102,8 @@ export function Shell({ children, foot, weeks, newCount }: { children: ReactNode
           </nav>
         )}
         <div className="hg-rail-spacer" />
+        {/* The slip in progress; Slips shows the certificate itself. */}
+        {path !== '/slips' && slip}
         <ul className="fc-sidenav-list" role="list">
           {/* Opens the Jeweler as a sheet over the open page (?ask=1); on /jeweler itself it is the page. */}
           {path === '/jeweler' ? item('/jeweler', 'Ask the Jeweler', CHAT) : (
@@ -111,8 +136,9 @@ export function Shell({ children, foot, weeks, newCount }: { children: ReactNode
           </div>
           <nav className="fc-breadcrumbs hg-desktop-only" aria-label="Breadcrumb">
             <ol>
-              {inSettings && <li><Link href={SETTINGS[0]!.href}>Settings</Link></li>}
-              <li><span aria-current="page">{TITLES[path] ?? 'Hidden Gems'}</span></li>
+              {trail.map((t, i) => (
+                <li key={i}>{i === trail.length - 1 ? <span aria-current="page">{t.label}</span> : <Link href={t.href ?? path}>{t.label}</Link>}</li>
+              ))}
             </ol>
           </nav>
           <div className="fc-topbar-actions">
@@ -122,7 +148,7 @@ export function Shell({ children, foot, weeks, newCount }: { children: ReactNode
               aria-current={inSettings ? 'page' : undefined}>{GEAR}</Link>
           </div>
         </header>
-        <main id="main" className="fc-shell-content">{children}</main>
+        <main id="main" className="fc-shell-content"><CrumbContext.Provider value={setCrumb}>{children}</CrumbContext.Provider></main>
         <nav className="fc-tabbar" aria-label="Main">
           {tab('/', 'Gems', GEM, newCount > 0 && <span className="fc-badge" data-variant="purple" data-size="sm" data-contrast="low">{newCount}<span className="fc-visually-hidden"> unread</span></span>)}
           {tab('/slips', 'Slips', SLIP)}

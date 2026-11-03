@@ -100,8 +100,35 @@ export interface JewelerContext {
   week: number | null;
   gem: JewelerGem | null;
   board: JewelerGem[];
-  /** Slips arrive with F3.1. Until then nothing fills this, and no slip chip shows. */
-  slip: null;
+  /** The slip in progress for the week, null when there is none (or the slips update has not run). */
+  slip: JewelerSlip | null;
+}
+
+/** One leg of the slip, with the numbers the certificate shows. */
+export interface JewelerSlipLeg {
+  player: string;
+  number: number | null;
+  matchup: string;
+  kickoff: string;
+  price: number;
+  /** Null once the board no longer lists the prop. */
+  hitChance: number | null;
+  rating: number | null;
+}
+
+/** The slip as the certificate shows it: legs, stake, pays and the lose it all chance. */
+export interface JewelerSlip {
+  /** "Slip 1". */
+  name: string;
+  play: 'suggested' | 'own';
+  legs: JewelerSlipLeg[];
+  stake: number | null;
+  pays: number | null;
+  /** 0 to 1; null when a leg has no read or legs share a game. */
+  loseItAll: number | null;
+  /** Two or more legs share a game, so no lose it all chance is shown. */
+  correlated: boolean;
+  appraisal: string | null;
 }
 
 const pct = (p: number) => `${Math.round(p * 100)}%`;
@@ -116,6 +143,25 @@ export function describeGem(g: JewelerGem): string {
   const who = [`${g.player}${g.number != null ? ` #${g.number}` : ''}`, g.position, g.team].filter(Boolean).join(', ');
   return `${who}. ${g.matchup}, kickoff ${g.kickoff}. Anytime touchdown at DraftKings ${g.price.toFixed(2)}. ` +
     `Priced ${pct(g.priced)}, our estimate ${pct(g.hitChance)}, edge ${pts(g.edge)}, clarity ${g.clarity}, ${standing(g)}.`;
+}
+
+const money = (n: number) => `$${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+/** The slip as its certificate reads: one line per leg, then stake, pays and lose it all. */
+export function describeSlip(s: JewelerSlip): string {
+  const kind = s.legs.length === 1 ? 'a single' : `a ${s.legs.length} leg parlay`;
+  const lines = [`${s.name}, ${s.play === 'suggested' ? "the Jeweler's suggested play" : 'their own play'}, ${kind}:`];
+  for (const l of s.legs) {
+    lines.push(`- ${l.player}${l.number != null ? ` #${l.number}` : ''}. ${l.matchup}, kickoff ${l.kickoff}. DraftKings ${l.price.toFixed(2)}` +
+      (l.hitChance != null ? `, our estimate ${pct(l.hitChance)}` : ', no longer on the board') +
+      (l.rating != null ? `, gem rating ${l.rating}` : '') + '.');
+  }
+  lines.push(s.stake != null ? `Stake ${money(s.stake)}${s.pays != null ? `, pays ${money(s.pays)} if every leg hits` : ''}.` : 'No stake set yet.');
+  lines.push(s.correlated
+    ? 'Lose it all: not shown, because legs share a game and move together.'
+    : s.loseItAll != null ? `Lose it all (the chance at least one leg misses): ${pct(s.loseItAll)}.` : 'Lose it all: unknown, a leg has no read.');
+  if (s.appraisal) lines.push(`The Jeweler's appraisal on the slip: ${s.appraisal}`);
+  return lines.join('\n');
 }
 
 const RULES = `You are the Jeweler, the assistant inside Hidden Gems. Hidden Gems reads NFL anytime touchdown props for one person and rates each one.
@@ -143,6 +189,7 @@ export function buildJewelerPrompt(ctx: JewelerContext): string {
         ? `\n${ctx.gem.kind === 'gem' ? 'What the app lists under "Why it\'s a gem"' : 'What the app lists about it'}:\n${ctx.gem.reasons.map((r) => `- ${r}`).join('\n')}`
         : ''));
   }
+  if (ctx.slip?.legs.length) parts.push(`The user's slip in progress:\n${describeSlip(ctx.slip)}`);
   const others = ctx.board.filter((g) => g.id !== ctx.gem?.id);
   if (others.length) {
     parts.push(`${ctx.gem ? 'Other props' : 'Props'} on the board${ctx.week != null ? ` for Week ${ctx.week}` : ''}, in Recommended order:\n` +

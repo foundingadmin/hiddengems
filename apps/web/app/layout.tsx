@@ -4,6 +4,7 @@ import './app.css';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { Freshness } from '@/components/freshness';
+import { RailSlip } from '@/components/rail-slip';
 import { Shell } from '@/components/shell';
 import { newGemCount, weeks } from '@/lib/board';
 
@@ -19,7 +20,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     <html lang="en">
       <body>
         <a className="fc-visually-hidden" href="#main">Skip to content</a>
-        <Shell foot={<Freshness label="Odds pulled" />} weeks={w} newCount={newCount}>{children}</Shell>
+        <Shell foot={<Freshness label="Odds pulled" />} slip={<RailSlip />} weeks={w} newCount={newCount}>{children}</Shell>
       </body>
     </html>
   );

@@ -6,7 +6,9 @@ import { FULL_CARAT } from '@hiddengems/core';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { type MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { SlipButton, type SlipRef } from '@/components/add-to-slip';
 import { GameLog, GameLogKey } from '@/components/game-log';
+import { useCrumb } from '@/components/shell';
 import { Edge, GemMark, Player } from '@/components/marks';
 import type { BoardRow } from '@/lib/board';
 import type { GemDetail } from '@/lib/gem';
@@ -57,7 +59,9 @@ const kickoffFull = (iso: string, zone: string) => new Intl.DateTimeFormat('en-U
 type Head = Pick<GemDetail, 'key' | 'kind' | 'rating' | 'name' | 'teamId' | 'number' | 'position' | 'matchup' | 'kickoff' | 'price' | 'gapToPosted' | 'fresh'>;
 const headOf = (r: BoardRow): Head => ({ ...r, gapToPosted: r.gap, fresh: !!r.fresh });
 
-export function GemSheet({ rows, detail, asked, zone }: { rows: BoardRow[]; detail: GemDetail | null; asked: string | null; zone: string }) {
+export function GemSheet({ rows, detail, asked, zone, slip }: {
+  rows: BoardRow[]; detail: GemDetail | null; asked: string | null; zone: string; slip: SlipRef | null;
+}) {
   const params = useSearchParams();
   const router = useRouter();
   const path = usePathname();
@@ -71,6 +75,10 @@ export function GemSheet({ rows, detail, asked, zone }: { rows: BoardRow[]; deta
   const gem = detail && detail.key === key ? detail : null;
   const head: Head | null = gem ?? (row ? headOf(row) : null);
   const missing = key != null && asked === key && !detail;
+  useCrumb(key ? (head?.name ?? null) : null);
+  // Ask the Jeweler about this gem: the sheet over this page on desktop (?ask=1 keeps ?gem=), the tab on phone.
+  const asking = new URLSearchParams(params);
+  asking.set('ask', '1');
 
   // Open on a gem in the URL, close when it leaves (Back, or a link without it).
   useEffect(() => {
@@ -175,7 +183,11 @@ export function GemSheet({ rows, detail, asked, zone }: { rows: BoardRow[]; deta
             )}
           </div>
           <footer className="fc-sheet-footer">
-            <Link className="fc-button" data-variant="secondary" data-size="small" href="/jeweler">{CHAT}Ask the Jeweler</Link>
+            <Link className="fc-button hg-desktop-only" data-variant="secondary" data-size="small" href={`${path}?${asking}`} scroll={false}>{CHAT}Ask the Jeweler</Link>
+            <Link className="fc-button hg-phone-only" data-variant="secondary" data-size="small" href={`/jeweler?gem=${encodeURIComponent(key)}`}>{CHAT}Ask the Jeweler</Link>
+            {head && !missing && (
+              <SlipButton row={{ key: head.key, name: head.name, kind: head.kind, started: Date.parse(head.kickoff) <= Date.now() }} slip={slip} place="footer" />
+            )}
           </footer>
         </>
       )}

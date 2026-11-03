@@ -4,6 +4,7 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useTransition } from 'react';
 import { markRead } from '@/app/gems-actions';
+import { SlipButton, type SlipRef } from '@/components/add-to-slip';
 import { Dropdown } from '@/components/dropdown';
 import { useGemLink } from '@/components/gem-sheet';
 import { Edge, FoolsLabel, GemMark, Player } from '@/components/marks';
@@ -98,7 +99,7 @@ export function NewGems({ rows, since, zone }: { rows: BoardRow[]; since: string
   );
 }
 
-export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: string; freshness: React.ReactNode }) {
+export function AllGems({ rows, zone, freshness, slip }: { rows: BoardRow[]; zone: string; freshness: React.ReactNode; slip: SlipRef | null }) {
   const params = useSearchParams();
   const router = useRouter();
   const path = usePathname();
@@ -206,6 +207,7 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
                   <th scope="col" data-align="numeric">{tip('Our est.', 'Our hit chance: the v3.0 model blended with the fair price')}</th>
                   <th scope="col" data-align="numeric">{tip('Edge', 'Our estimate minus the priced chance. Above zero clears the cut')}</th>
                   <th scope="col" data-align="numeric">{tip('Clarity', 'Confidence in the read, 0 to 100: sample, consistency, books agreeing, setup')}</th>
+                  <th scope="col"><span className="fc-visually-hidden">Slip</span></th>
                 </tr>
               </thead>
               <tbody>
@@ -223,6 +225,7 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
                     <td data-align="numeric">{pct(r.hitChance)}</td>
                     <td data-align="numeric"><Edge pts={Math.round(r.gap)} /></td>
                     <td data-align="numeric">{r.clarity}</td>
+                    <td><SlipButton row={r} slip={slip} /></td>
                   </tr>
                 ))}
               </tbody>
@@ -230,7 +233,7 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
           </div>
           <ul className="fc-gem-list hg-phone-only" aria-label={SORTS[sort]?.caption}>
             {shown.map((r) => (
-              <li key={r.key}>
+              <li key={r.key} className="fc-gem-item">
                 <a className="fc-gem-row" href={gemLink.href(r.key)} onClick={(e) => gemLink.open(e, r.key)} data-gem-link={r.key}>
                   <GemMark kind={r.kind} rating={r.rating} bare />
                   <Player name={r.name} teamId={r.teamId} number={r.number}
@@ -242,6 +245,7 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
                     <Edge pts={Math.round(r.gap)} />
                   </span>
                 </a>
+                <SlipButton row={r} slip={slip} place="icon" />
               </li>
             ))}
           </ul>

@@ -77,9 +77,11 @@ freezing prices this week.
 
 - [ ] Principal: run `pnpm db:supabase-sql --app-password <password>` output in the production Supabase project, then
       set `DATABASE_URL` (Production) to the `hiddengems_app` login (`docs/architecture.md`, Database).
-- [ ] Principal: add `SUPABASE_ACCESS_TOKEN` (GitHub secret and Claude environment) and the two project refs, so
-      migrations 0005 to 0007 reach both databases before the first Week 9 kickoff Thu Nov 5. Until then the jobs skip
-      recording, so Week 9 games before it go unmeasured.
+- [x] Migrations 0005 to 0007 applied to production on Nov 3 through the Supabase connector (rapid build mode).
+- [ ] Staging database: the connector sees only the production project. Confirm where the staging project lives,
+      or point previews at sample data only, and apply the same migrations there.
+- [ ] Principal: 12 players have a second row from sample data in production (Derrick Henry, Ja'Marr Chase, Travis
+      Kelce and others). The release matches the nflverse row, so ratings are right; deleting the sample rows is your call.
 - [ ] Principal: `ODDS_API_KEY`, `CRON_SECRET`, `BACKUP_GITHUB_TOKEN` and `BACKUP_GITHUB_REPO` set for Production only.
 - [ ] Data health shows today's Tue 10:07 AM opening snapshot. If it was missed, the next slot is Sat 7:47 PM; an off
       schedule pull spends credits and is the principal's call.

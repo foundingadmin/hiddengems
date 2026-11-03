@@ -11,7 +11,8 @@ packages/core/     Domain rules: odds math, gem rating, Recommended order, snaps
 packages/db/       Postgres schema, migrations, client
 packages/ingest/   Providers, jobs, the run log
 packages/facet/    Facet, the design system (start with packages/facet/DESIGN.md)
-docs/              Architecture and deployment
+docs/              Product spec, architecture and deployment
+ROADMAP.md         What ships when, and the calls waiting on the owner
 ```
 
 ## Start

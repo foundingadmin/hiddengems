@@ -43,7 +43,7 @@ reported are treated as failed and their entries dropped; ready entries go to Me
 4. More than 8 routed entries: ship the first 8 by file group and leave the rest for the next sprint.
 
 ## 2. Park (in this session, no spawn)
-For each parked entry: add one line to `docs/ROADMAP.md` under "Waiting for the principal" (what, why parked, thread
+For each parked entry: add one line to `ROADMAP.md` under "Waiting for the principal" (what, why parked, thread
 link), reply on its thread in one or two sentences (what decision is needed), and set the entry `status: parked`.
 Leave the thread open; it resolves at the release (see Release).
 
@@ -110,7 +110,7 @@ backstop).
 2. Once it is merged (the principal says so, or the next session finds it merged), clean the toolbar, on staging and
    production threads alike:
    - resolve the thread of every `shipped` entry whose sprint PR is in the release;
-   - resolve every `parked` thread whose line is in `docs/ROADMAP.md`;
+   - resolve every `parked` thread whose line is in `ROADMAP.md`;
    - leave `dropped` threads and threads no sprint has handled open.
    Set `releasedIn: "<release PR>"` on each resolved entry and commit the sprint files with the next sprint.
 

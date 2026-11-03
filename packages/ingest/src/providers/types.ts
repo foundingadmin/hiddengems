@@ -121,6 +121,8 @@ export interface UsageProvider extends ProviderBase {
 export interface BackupTarget extends ProviderBase {
   /** Where backups land, for the run log ("owner/name"). */
   where: string;
+  /** A page where a person can open a stored file, when the storage has one. */
+  link?(path: string): string;
   put(ctx: ProviderContext, path: string, bytes: Uint8Array, message: string): Promise<void>;
 }
 

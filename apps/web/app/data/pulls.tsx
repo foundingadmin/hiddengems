@@ -1,5 +1,5 @@
 'use client';
-// Pull progress on Data health. Pulls run one at a time from a queue: "Pull everything" queues every
+// Pull progress on Data health. Pulls run one at a time from a queue: the header pull queues every
 // source, a row's "Pull now" queues one. Each row shows Queued, then Running, then its fresh result as
 // the page refreshes after each pull, so progress is visible while it happens.
 import { createContext, type ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react';
@@ -90,8 +90,8 @@ export function PullQueue({ children }: { children: ReactNode }) {
 
 const Spinner = () => <span className="fc-spinner" aria-hidden="true" />;
 
-/** "Pull everything": queues every source and counts through them. */
-export function PullAllButton({ jobs }: { jobs: string[] }) {
+/** The header pull: queues every free source and counts through them. */
+export function PullAllButton({ jobs, label }: { jobs: string[]; label: string }) {
   const { batch, summary, enqueue } = usePulls();
   return (
     <>
@@ -101,7 +101,7 @@ export function PullAllButton({ jobs }: { jobs: string[] }) {
         aria-busy={batch ? true : undefined}
         onClick={() => { if (!batch) enqueue(jobs.map((job) => ({ job, spend: false })), true); }}
       >
-        {batch ? <><Spinner />Pulling {Math.min(batch.done + 1, batch.total)} of {batch.total}</> : 'Pull everything'}
+        {batch ? <><Spinner />Pulling {Math.min(batch.done + 1, batch.total)} of {batch.total}</> : label}
       </button>
     </>
   );
@@ -111,7 +111,9 @@ export function PullAllButton({ jobs }: { jobs: string[] }) {
  * A row's "Pull now". With a cost (paid odds), the first press asks to confirm the credits it spends;
  * the confirm is refused when the month cannot cover it.
  */
-export function PullButton({ job, label, cost, left }: { job: string; label: string; cost?: number; left?: number | null }) {
+export function PullButton({ job, label, text = 'Pull now', variant = 'tertiary', cost, left }: {
+  job: string; label: string; text?: string; variant?: 'secondary' | 'tertiary'; cost?: number; left?: number | null;
+}) {
   const { queued, running, enqueue } = usePulls();
   const [confirming, setConfirming] = useState(false);
   const confirmRef = useRef<HTMLButtonElement>(null);
@@ -119,7 +121,7 @@ export function PullButton({ job, label, cost, left }: { job: string; label: str
 
   // The status cell already says Queued or Running; the button just stops taking presses.
   if (running === job || queued.includes(job)) {
-    return <button className="fc-button" data-variant="tertiary" data-size="small" type="button" aria-disabled="true">Pull now</button>;
+    return <button className="fc-button" data-variant={variant} data-size="small" type="button" aria-disabled="true">{text}</button>;
   }
   if (cost != null && confirming) {
     const short = left != null && left < cost;
@@ -139,10 +141,10 @@ export function PullButton({ job, label, cost, left }: { job: string; label: str
   }
   return (
     <button
-      className="fc-button" data-variant="tertiary" data-size="small" type="button" aria-label={`Pull ${label.toLowerCase()} now`}
+      className="fc-button" data-variant={variant} data-size="small" type="button" aria-label={`${text} for ${label.toLowerCase()}`}
       onClick={() => (cost != null ? setConfirming(true) : enqueue([{ job, spend: false }]))}
     >
-      Pull now
+      {text}
     </button>
   );
 }

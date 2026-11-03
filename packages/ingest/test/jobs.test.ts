@@ -196,6 +196,9 @@ describe('backup', () => {
     const backup = unpackBackup(target.files.get(file)!);
     expect(backup.tables.teams).toHaveLength(32);
     expect(new TextDecoder().decode(target.files.get('BACKUP.md')!)).toContain('| odds_snapshots |');
+    // The Backups page reads what was stored from the run log.
+    const [row] = await db.select().from(runs).where(eq(runs.id, r.runId!));
+    expect(row!.meta).toMatchObject({ file, where: 'memory', link: null, tables: { teams: 32 } });
   });
 
   it('says whose move it is when the backup repository is not set up', async () => {

@@ -132,6 +132,9 @@
   .fc-list[data-lanes] > .fc-list-row > .fc-list-row-aside { flex: 1 0 100%; }
   .fc-list[data-lanes] > .fc-list-row > .fc-list-row-aside:empty { display: none; }
   .fc-list[data-lanes] > .fc-list-row > .fc-list-row-actions { flex: 0 0 auto; }
+  /* data-aside="beside" [F]: a short aside (a result and its amount) stays beside the title, which truncates. */
+  .fc-list[data-aside="beside"] > .fc-list-row { flex-wrap: nowrap; }
+  .fc-list[data-aside="beside"] > .fc-list-row > .fc-list-row-aside { order: 0; flex-basis: auto; padding-left: 0; }
 }
 
 /* ------------------------------------------------------------------ Connection row
@@ -313,3 +316,38 @@
   .fc-feed-row:has(> .fc-feed-source) { row-gap: var(--fc-space-1); }
   .fc-feed-source { grid-column: 2; justify-self: start; }
 }
+
+/* ------------------------------------------------------------------ Step list [F]
+   A replay of ordered steps (components/step-list.md): index, actor over its sentence, and a value lane.
+   Each step is a button that moves the replay there. The current step carries aria-current="step", a fill
+   and a 3px rule on its leading edge; later steps set data-state="upcoming" and quiet their actor and value.
+   The list scrolls inside its own panel; keep the current step in view by scrolling the list, not the page. */
+.fc-step-list { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
+.fc-step-list > li + li { box-shadow: inset 0 1px 0 var(--fc-border-default); }
+.fc-step {
+  display: grid;
+  grid-template-columns: var(--fc-space-6) minmax(0, 1fr) max-content;
+  column-gap: var(--fc-space-2);
+  align-items: baseline;
+  width: 100%;
+  padding: var(--fc-space-2) var(--fc-space-3);
+  border: 0;
+  background: none;
+  color: var(--fc-text-primary);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--fc-duration-fast) ease;
+}
+.fc-step:hover { background: var(--fc-surface-fill); }
+.fc-step:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--fc-focus-color); }
+.fc-step[aria-current="step"] { background: var(--fc-surface-fill); box-shadow: inset 3px 0 0 var(--fc-text-primary); }
+.fc-step[aria-current="step"]:focus-visible { box-shadow: inset 3px 0 0 var(--fc-text-primary), inset 0 0 0 2px var(--fc-focus-color); }
+.fc-step-index { font: 400 12px/20px var(--fc-font-mono); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }
+.fc-step-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.fc-step-actor { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--fc-space-2); font: 500 13px/20px var(--fc-font-mono); }
+.fc-step-text { font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); }
+.fc-step-note { font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-primary); }
+.fc-step-value { font: 400 12px/20px var(--fc-font-sans); font-variant-numeric: tabular-nums; color: var(--fc-text-primary); white-space: nowrap; }
+.fc-step[data-state="upcoming"] :is(.fc-step-actor, .fc-step-note, .fc-step-value) { color: var(--fc-text-secondary); }
+@media (prefers-reduced-motion: reduce) { .fc-step { transition: none; } }

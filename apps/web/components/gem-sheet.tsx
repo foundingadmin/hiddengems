@@ -1,0 +1,258 @@
+'use client';
+// The gem sheet (docs/build-brief.md, Gem sheet): a right side Facet sheet over Gems, full screen on a phone.
+// The open gem lives in the URL (?gem=<selection key>), so it can be linked and Back closes it. The header and
+// tabs stay pinned; the body is one scroll and each tab jumps to its section.
+import { FULL_CARAT } from '@hiddengems/core';
+import Link from 'next/link';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { type MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { SlipButton, type SlipRef } from '@/components/add-to-slip';
+import { GameLog, GameLogKey } from '@/components/game-log';
+import { useCrumb } from '@/components/shell';
+import { Edge, GemMark, Player } from '@/components/marks';
+import type { BoardRow } from '@/lib/board';
+import type { GemDetail } from '@/lib/gem';
+
+const svg = (d: React.ReactNode) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{d}</svg>
+);
+const X = svg(<><path d="M18 6 6 18" /><path d="m6 6 12 12" /></>);
+const CHAT = svg(<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />);
+
+const SECTIONS = [
+  { id: 'gem-overview', tab: 'Overview' },
+  { id: 'gem-notes', tab: 'Notes' },
+  { id: 'gem-loupe', tab: 'The loupe' },
+  { id: 'gem-context', tab: 'Context' },
+] as const;
+
+/** Set when this tab opened the sheet itself, so closing can go Back instead of stacking history. */
+let pushed = false;
+
+/** Links that open a gem: a real href (new tab works) that pushes ?gem= so Back closes the sheet. */
+export function useGemLink() {
+  const params = useSearchParams();
+  const router = useRouter();
+  const path = usePathname();
+  const href = useCallback((key: string) => {
+    const next = new URLSearchParams(params);
+    next.set('gem', key);
+    return `${path}?${next}`;
+  }, [params, path]);
+  const open = useCallback((e: MouseEvent, key: string) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    e.preventDefault();
+    pushed = true;
+    router.push(href(key), { scroll: false });
+  }, [href, router]);
+  return { href, open, current: params.get('gem') };
+}
+
+const pct = (p: number) => `${Math.round(p * 100)}%`;
+/** Whole points, or one decimal under a point so a small edge never reads as zero. */
+const pts = (n: number) => (Math.abs(n) < 1 ? Math.round(n * 10) / 10 : Math.round(n));
+const possessive = (s: string) => (s.endsWith('s') ? `${s}’` : `${s}’s`);
+const kickoffLabel = (iso: string, zone: string) => new Intl.DateTimeFormat('en-US', { timeZone: zone, weekday: 'short', hour: 'numeric', minute: '2-digit' }).format(new Date(iso));
+const kickoffFull = (iso: string, zone: string) => new Intl.DateTimeFormat('en-US', { timeZone: zone, weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }).format(new Date(iso));
+
+/** What the header needs, from the board row while the sheet loads, then from the gem itself. */
+type Head = Pick<GemDetail, 'key' | 'kind' | 'rating' | 'name' | 'teamId' | 'number' | 'position' | 'matchup' | 'kickoff' | 'price' | 'gapToPosted' | 'fresh'>;
+const headOf = (r: BoardRow): Head => ({ ...r, gapToPosted: r.gap, fresh: !!r.fresh });
+
+export function GemSheet({ rows, detail, asked, zone, slip }: {
+  rows: BoardRow[]; detail: GemDetail | null; asked: string | null; zone: string; slip: SlipRef | null;
+}) {
+  const params = useSearchParams();
+  const router = useRouter();
+  const path = usePathname();
+  const key = params.get('gem');
+  const dialog = useRef<HTMLDialogElement>(null);
+  const body = useRef<HTMLDivElement>(null);
+  const last = useRef<string | null>(null);
+  const [active, setActive] = useState<string>(SECTIONS[0].id);
+
+  const row = key ? rows.find((r) => r.key === key) : undefined;
+  const gem = detail && detail.key === key ? detail : null;
+  const head: Head | null = gem ?? (row ? headOf(row) : null);
+  const missing = key != null && asked === key && !detail;
+  useCrumb(key ? (head?.name ?? null) : null);
+  // Ask the Jeweler about this gem: the sheet over this page on desktop (?ask=1 keeps ?gem=), the tab on phone.
+  const asking = new URLSearchParams(params);
+  asking.set('ask', '1');
+
+  // Open on a gem in the URL, close when it leaves (Back, or a link without it).
+  useEffect(() => {
+    const el = dialog.current;
+    if (!el) return;
+    if (key) {
+      last.current = key;
+      if (!el.open) el.showModal();
+      // Focus the scroll body, so arrow keys read the sheet; Tab reaches the tabs and Close.
+      body.current?.focus({ preventScroll: true, focusVisible: false } as FocusOptions);
+      body.current?.scrollTo({ top: 0 });
+      setActive(SECTIONS[0].id);
+    } else if (el.open) el.close();
+  }, [key]);
+
+  // Escape, the close button, or Back: drop ?gem= from the URL, then hand focus back to the row.
+  useEffect(() => {
+    const el = dialog.current;
+    if (!el) return;
+    const onClose = () => {
+      const back = pushed;
+      pushed = false;
+      if (new URLSearchParams(location.search).has('gem')) {
+        if (back) router.back(); else {
+          const next = new URLSearchParams(location.search);
+          next.delete('gem');
+          router.replace(`${path}${next.size ? `?${next}` : ''}`, { scroll: false });
+        }
+      }
+      const links = [...document.querySelectorAll<HTMLElement>(`[data-gem-link="${CSS.escape(last.current ?? '')}"]`)];
+      links.find((a) => a.offsetParent !== null)?.focus();
+    };
+    el.addEventListener('close', onClose);
+    return () => el.removeEventListener('close', onClose);
+  }, [path, router]);
+
+  // The tab for the section in view. A jump keeps its tab until the scroll it started settles, since a short
+  // last section can never reach the top.
+  const jumping = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const onScroll = () => {
+    const b = body.current;
+    if (!b || jumping.current) return;
+    if (b.scrollTop + b.clientHeight >= b.scrollHeight - 2) { setActive(SECTIONS[SECTIONS.length - 1]!.id); return; }
+    const top = b.getBoundingClientRect().top;
+    let current: string = SECTIONS[0].id;
+    for (const s of SECTIONS) {
+      const el = document.getElementById(s.id);
+      if (el && el.getBoundingClientRect().top - top <= b.clientHeight / 3) current = s.id;
+    }
+    setActive(current);
+  };
+  const jump = (e: MouseEvent, id: string) => {
+    e.preventDefault();
+    const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (jumping.current) clearTimeout(jumping.current);
+    jumping.current = setTimeout(() => { jumping.current = null; }, smooth ? 1000 : 100);
+    document.getElementById(id)?.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+    setActive(id);
+  };
+
+  return (
+    <dialog ref={dialog} className="fc-sheet" data-phone="full" aria-labelledby="gem-sheet-title">
+      {key && (
+        <>
+          <header className="fc-sheet-header">
+            <div className="fc-sheet-titlebar">
+              <div className="fc-sheet-titles">
+                <h2 id="gem-sheet-title" className="fc-sheet-title">
+                  {head ? (
+                    <Player name={head.name} teamId={head.teamId} number={head.number} size="lg"
+                      detail={<>{[head.position, 'Anytime TD', head.matchup].filter(Boolean).join(' · ')} · <time dateTime={head.kickoff} title={kickoffFull(head.kickoff, zone)}>{kickoffLabel(head.kickoff, zone)}</time></>} />
+                  ) : missing ? 'Gem not found' : <span className="fc-skeleton" style={{ height: 'var(--fc-space-12)', width: 'calc(var(--fc-space-32) * 2)' }}>Loading</span>}
+                </h2>
+              </div>
+              <button type="button" className="fc-button fc-sheet-close" data-variant="tertiary" data-size="small" data-shape="square" aria-label="Close"
+                onClick={() => dialog.current?.close()}>{X}</button>
+            </div>
+            {head && (
+              <div className="fc-sheet-badges">
+                <GemMark kind={head.kind} rating={head.rating} size="lg" />
+                <span className="fc-price text-label-14">{head.price.toFixed(2)}</span>
+                <Edge pts={pts(head.gapToPosted)} />
+                {head.fresh && <span className="fc-badge" data-variant="purple" data-size="sm" data-contrast="low">New</span>}
+              </div>
+            )}
+          </header>
+          {!missing && (
+            <nav className="fc-tabs fc-sheet-tabs" aria-label="Gem sections">
+              {SECTIONS.map((s) => (
+                <a key={s.id} className="fc-tab" href={`#${s.id}`} aria-current={active === s.id ? 'true' : undefined} onClick={(e) => jump(e, s.id)}>{s.tab}</a>
+              ))}
+            </nav>
+          )}
+          <div className="fc-sheet-body" ref={body} onScroll={onScroll} tabIndex={-1}>
+            {gem ? <Sections gem={gem} /> : missing ? (
+              <div className="fc-empty"><strong>This gem is no longer on the board</strong></div>
+            ) : (
+              <div className="fc-stack" aria-busy="true">
+                <span className="fc-skeleton" style={{ height: 'var(--fc-space-24)' }} />
+                <span className="fc-skeleton" style={{ height: 'var(--fc-space-32)' }} />
+              </div>
+            )}
+          </div>
+          <footer className="fc-sheet-footer">
+            <Link className="fc-button hg-desktop-only" data-variant="secondary" data-size="small" href={`${path}?${asking}`} scroll={false}>{CHAT}Ask the Jeweler</Link>
+            <Link className="fc-button hg-phone-only" data-variant="secondary" data-size="small" href={`/jeweler?gem=${encodeURIComponent(key)}`}>{CHAT}Ask the Jeweler</Link>
+            {head && !missing && (
+              <SlipButton row={{ key: head.key, name: head.name, kind: head.kind, started: Date.parse(head.kickoff) <= Date.now() }} slip={slip} place="footer" />
+            )}
+          </footer>
+        </>
+      )}
+    </dialog>
+  );
+}
+
+function Sections({ gem }: { gem: GemDetail }) {
+  const same = Math.round(gem.priced * 100) === Math.round(gem.hitChance * 100);
+  const show = (p: number) => (same ? `${(p * 100).toFixed(1)}%` : pct(p));
+  const share = Math.min(1, Math.max(0, gem.carat / FULL_CARAT));
+  const caratPts = Math.round(gem.carat * 10) / 10;
+  return (
+    <>
+      <section id="gem-overview" className="fc-sheet-section" aria-label="Overview">
+        <div className="fc-stat-strip fc-card" role="group" aria-label="Price and read">
+          <div className="fc-stat"><p className="fc-stat-label">Priced</p><p className="fc-stat-value">{show(gem.priced)}</p><p className="fc-stat-detail">{gem.price.toFixed(2)} at {gem.book}</p></div>
+          <div className="fc-stat"><p className="fc-stat-label">Our est.</p><p className="fc-stat-value">{show(gem.hitChance)}</p><p className="fc-stat-detail">Clarity {gem.clarity}</p></div>
+          <div className="fc-stat">
+            <p className="fc-stat-label">Edge</p>
+            <p className="fc-stat-value"><Edge pts={pts(gem.gapToPosted)} /></p>
+            {gem.gapToPosted > 0 && <p className="fc-stat-detail">Clears the cut</p>}
+          </div>
+        </div>
+        <p className="fc-runin text-copy-14">
+          <strong>Why two prices.</strong> Without {possessive(gem.book)} cut, the fair price is {(1 / gem.fair).toFixed(2)}, a {pct(gem.fair)} shot.
+        </p>
+        <dl className="fc-description" data-compact aria-label="Rating">
+          <div>
+            <dt>Rating</dt>
+            {gem.rating != null ? (
+              <dd>{gem.rating}<small>Gap to fair, as a share of {FULL_CARAT} pts, times clarity</small></dd>
+            ) : (
+              <dd>None<small>{gem.kind === 'unrated' ? 'No 2026 stats, so the market stands' : 'Does not clear the posted price'}</small></dd>
+            )}
+          </div>
+          <div>
+            <dt>Gap to fair</dt>
+            <dd><Edge pts={caratPts} /><small>{gem.carat > 0 ? `Counts ${pct(share)}, full at ${FULL_CARAT} pts` : 'Counts nothing'}</small></dd>
+          </div>
+          {gem.best && <div><dt>Best price</dt><dd>{gem.best.price.toFixed(2)} at {gem.best.book}</dd></div>}
+        </dl>
+      </section>
+
+      <section id="gem-notes" className="fc-sheet-section" aria-labelledby="gem-notes-h">
+        <h3 id="gem-notes-h" className="text-heading-20">What the numbers miss</h3>
+        <div className="fc-empty"><strong>No notes yet</strong></div>
+      </section>
+
+      <section id="gem-loupe" className="fc-sheet-section" aria-labelledby="gem-loupe-h">
+        <h3 id="gem-loupe-h" className="text-heading-20">The loupe</h3>
+        {gem.log.season.games ? (
+          <>
+            <GameLog log={gem.log} />
+            <GameLogKey />
+          </>
+        ) : (
+          <div className="fc-empty"><strong>No games this season yet</strong></div>
+        )}
+      </section>
+
+      <section id="gem-context" className="fc-sheet-section" aria-labelledby="gem-context-h">
+        <h3 id="gem-context-h" className="text-heading-20">Core sample and conditions</h3>
+        <div className="fc-empty"><strong>No core sample or conditions yet</strong></div>
+      </section>
+    </>
+  );
+}

@@ -33,8 +33,8 @@ providers ──> jobs (ingest) ──> Postgres ──> pages (web)
 | `pull-schedule` | nflverse | `games` (with spread and total lines), `provider_refs` | Daily 09:17 |
 | `pull-rosters` | nflverse | `players` (team, position, jersey number), `provider_refs` | Daily 09:23 |
 | `pull-odds` | The Odds API | `odds_snapshots` (history), `odds_latest` (current, with slip links), `odds_slots` | Every 5 minutes, pulls only on the snapshot schedule |
-| `build-picks` | after every odds pull | `estimates` (history), `picks` (the board: gem rating, Fool's Gold, Recommended order) | Follows `pull-odds` |
-| `pull-results` | nflverse | `player_game_stats` (backfills the season on first run); settles `bets`, records closing prices | Daily 10:41 |
+| `build-picks` | after every odds pull | `estimates` (history), `picks` (the board: gem rating, Fool's Gold, Recommended order), `gem_records` (history) once a game's freeze is pulled | Follows `pull-odds` |
+| `pull-results` | nflverse | `player_game_stats` (backfills the season on first run); settles `bets`, records closing prices, writes `grades` | Daily 10:41 |
 | `pull-usage` | nflverse | `player_usage` (inside 10 carries and targets, touchdowns, snap share per player game), injury report onto `players`; then `build-picks` | Daily 10:53 |
 
 Cron runs every job often and lets the job decide. Odds come from The Odds API free plan: 500 credits a
@@ -89,8 +89,24 @@ priced chance; the opening snapshot is Tue 10:07 AM Denver.
   selection, book and the provider's observed time), so repeated pulls cost nothing and line
   movement, closing prices and any past slate can be rebuilt.
 - `estimates` is append-only: every model output, with its inputs.
+- `gem_records` is append-only: every appraised prop (all four kinds) once per game, written when its
+  freeze is pulled. It keeps the board at the freeze, priced and fair at the decision price and at the
+  freeze, the New gems flag and the estimate behind it. The decision price is DraftKings as of the last
+  weekly snapshot before kickoff (`decisionSnapshot()`): Sunday 8:43 AM, or earlier for Thursday and
+  Saturday games.
+- `grades` holds one row per gem record or placed bet once the game is final and the player's stat line is
+  in: CLV (`taken / close fair - 1`, taken being the decision price or the bet's price, close fair the
+  fair chance at the freeze) and the box (Earned, Unlucky, Lucky, Wrong read), from `core/src/grades.ts`.
 - `odds_latest` and `picks` are current state, small, and what the app reads. A selection a book
   stops listing is marked `available = false`.
+- `slips` and `slip_legs` are current state: one open slip per week (draft, assessed, sent, placed), each leg a
+  pick's selection with its price when added (`packages/db/src/slips.ts`). Marking a slip placed writes one `bets`
+  row per leg, so `pull-results` records the close and grades it; a parlay leg settles with no payout of its own.
+  In sample mode `build-picks` starts one draft from the top gems, so previews have a slip.
+- Slips, History reads them through `packages/db/src/history.ts` (graded gems, placed slips with each leg's bet
+  and grade) and `core/src/history.ts` (the results line, each slip's outcome, the season record). In sample mode
+  (`providersFor()`, never in tests) `pull-results` first writes gem records and two placed slips for final games
+  with no records, so previews have graded gems and a graded slip.
 
 ## Runs, logs and failures
 
@@ -118,6 +134,7 @@ network and 5xx errors, request counting, quota headers into `provider_usage`, k
 | The Odds API v4, free plan | Anytime TD prices from DraftKings, FanDuel, BetMGM, Caesars, Fanatics, with DraftKings slip links | `ODDS_API_KEY` |
 | nflverse | Schedule with spread and total lines (`schedules/games.csv`), 2026 rosters with jersey numbers, weekly player stats, play by play, snap counts, injury reports | none |
 | Sample | Everything, deterministic, built around today's date | none |
+| Anthropic Messages API | The Jeweler's answers (`claude-sonnet-5-5`) | `ANTHROPIC_API_KEY` |
 
 `DATA_MODE=sample` (the default when `ODDS_API_KEY` is unset) runs the whole pipeline on sample data:
 local development, tests, CI and previews need no secrets. Adapters validate payloads with zod, so
@@ -128,6 +145,17 @@ first live pull.
 Adding a provider: implement the interface for its role in `ingest/src/providers/types.ts`, map its
 team names through `findTeam` and its ids through `provider_refs`, add fixture tests, and select it
 in `providers/index.ts`.
+
+## The Jeweler
+
+An ask is interactive, so it is not on cron: the Jeweler's server action runs it at once as the `ask-jeweler`
+job through `runJob` (`ingest/src/jeweler.ts`), so every call lands in the pull log with whose move a failure is.
+Before any call a guard needs both `ANTHROPIC_API_KEY` and the owner's monthly cap (`provider_caps`, US cents,
+provider `anthropic`), and refuses an ask the month's spend (`provider_usage`, cents, restarting each UTC month)
+cannot cover at the longest answer. Without either, the composer is off and a note says why. The prompt carries the
+gem in context and the week's board, read from `picks`. `ANTHROPIC_BASE_URL` points the adapter at a stub for
+screenshots. Set the cap in the Supabase SQL editor:
+`insert into provider_caps (provider, monthly_cents) values ('anthropic', <cents>) on conflict (provider) do update set monthly_cents = excluded.monthly_cents;`
 
 ## Model
 
@@ -160,7 +188,7 @@ be explained later.
   drop or truncate. Run it again after any PR that adds a migration. If Supabase offers "Run and enable RLS",
   choose "Run without RLS": grants and the closed public API control access, and RLS without policies would block
   the app login.
-- **Safety**: history tables reject update, delete and truncate (migration 0003); `pnpm db:guard` fails CI on
+- **Safety**: history tables reject update, delete and truncate (migrations 0003 and 0005); `pnpm db:guard` fails CI on
   a migration that drops, truncates or deletes unless the line says `-- destructive-approved: <reason>`.
 - **Backups**: the `backup` job (daily 11:07 UTC) writes the whole database as gzipped JSON to a private GitHub
   repository (`BACKUP_GITHUB_REPO`, written with `BACKUP_GITHUB_TOKEN`, a fine-grained token for that one

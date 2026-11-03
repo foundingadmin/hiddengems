@@ -10,6 +10,24 @@ A blocking dialog for a decision the user must make before going back to the pag
 - `ModalActions` > `ModalAction` (`variant="secondary"`, `disabled`, `fullWidth`, `prefix`, `ref`).
 - Becomes a bottom sheet on mobile viewports.
 
+## Facet markup `[F]`
+CSS in `css/slip.css`. Specimen: `preview/index.html#slips`.
+```html
+<dialog class="fc-modal" aria-labelledby="m-h">
+  <div class="fc-modal-body">
+    <h2 id="m-h" class="text-heading-20">Change the suggested play?</h2>
+    <p class="text-copy-14">Consequence first, one to three sentences.</p>
+  </div>
+  <div class="fc-modal-actions">
+    <button type="button" class="fc-button" data-variant="secondary" data-size="small">Change slip</button>
+    <button type="button" class="fc-button" data-size="small" autofocus>Keep suggested play</button>
+  </div>
+</dialog>
+```
+- Open it with `showModal()`: the page goes inert, Escape closes it and focus returns to the trigger. `autofocus` sets the initial focus.
+- 480px wide, centered, 12px radius, `--ds-shadow-modal`, the overlay backdrop. The actions band sits on the subtle surface under a hairline.
+- Under 768px the actions stack full width with the primary on top.
+
 ## Variants & sizes
 - `sticky`: header and actions stay pinned while long content scrolls.
 - Single full-width action. Disabled primary. Inset section. Initial focus control (button or input).
@@ -33,5 +51,6 @@ Closed, open, submitting (use action `disabled` / loading), error inside (focus 
 - `aria-labelledby` points to the title.
 
 ## Hidden Gems usage
+- Slips: changing the suggested play (`DesktopSlipChange`, `SlipChange`). The approved wireframe titles it as a question and focuses Keep suggested play, the safe choice.
 - Rare in a research dashboard. Use for `Save filter preset` (name input with `initialFocusRef`), `Delete saved filter` (destructive, Cancel focused), and first-run responsible-gambling acknowledgement (`Done`).
 - Never use Modal for bet details. Those go in `Sheet` so the slate stays visible.

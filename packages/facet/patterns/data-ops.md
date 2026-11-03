@@ -97,7 +97,7 @@ When a row's record opens on the same page (a `?run=` panel above the table), th
 - The link stretches over the whole row, so the row is the hit target (INT-04) and Cmd or Ctrl click still opens a new tab (INT-27).
 - At rest the link text carries a quiet underline (the default link cue); on row hover the row fills and the underline darkens. Keyboard focus draws a 2px brand ring inside the whole row (INT-02).
 - The open row's link has `aria-current="true"`; the row has `aria-selected="true"`.
-- One link per row: never put another link or button in a row that has one.
+- One link per row: never put another link in a row that has one. The one exception is the row's own action in its last cell (Add / On slip on the Gems board): wrap it in `.fc-row-action` (CSS in `css/slip.css`), which lifts it above the stretched link so it takes its own clicks. One action per row at most.
 
 ## Log data `[F]`
 

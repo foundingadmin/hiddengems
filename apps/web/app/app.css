@@ -49,3 +49,32 @@ body { margin: 0; background: var(--fc-surface-canvas); color: var(--fc-text-pri
 .hg-spark-col { width: 25%; }
 .hg-spark { height: var(--fc-space-6); }
 .hg-tables { max-width: calc(var(--fc-space-4) * 40); }
+/* Agent workflow: the replay head, the map beside its steps (one height, so the list scrolls and the page does
+   not), and the findings grid. Spacing and sizing between Facet parts only. */
+.hg-agents { display: flex; flex-direction: column; gap: var(--fc-space-8); min-width: 0; }
+.hg-gap-3 { --fc-gap: var(--fc-space-3); }
+.hg-replay { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, calc(var(--fc-space-4) * 30)); gap: var(--fc-space-6) var(--fc-space-10); align-items: start; }
+.hg-replay p { margin: 0; }
+.hg-now { display: flex; flex-direction: column; gap: var(--fc-space-1); min-height: var(--fc-space-24); }
+.hg-tokens { gap: var(--fc-space-2); padding: 0; }
+.hg-flow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) calc(var(--fc-space-4) * 24);
+  gap: var(--fc-space-4);
+  height: max(calc(var(--fc-space-4) * 28), calc(100dvh - var(--fc-space-4) * 28));
+}
+.hg-steps { display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.hg-steps > h2 { margin: 0; padding: var(--fc-space-3) var(--fc-space-4); box-shadow: inset 0 -1px 0 var(--fc-border-default); }
+.hg-steps-list { position: relative; flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+@container fc-shell (max-width: 1199px) {
+  .hg-replay { grid-template-columns: minmax(0, 1fr); }
+  .hg-flow { grid-template-columns: minmax(0, 1fr); grid-template-rows: max(calc(var(--fc-space-4) * 26), 60dvh) calc(var(--fc-space-4) * 26); height: auto; }
+}
+.hg-agent { display: flex; flex-direction: column; gap: var(--fc-space-0_5); min-width: calc(var(--fc-space-4) * 16); white-space: normal; }
+.hg-agent-cell { font-weight: 400; }
+.hg-agent-name { display: inline-flex; align-items: center; gap: var(--fc-space-2); }
+.hg-points { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--fc-space-4) * 20)), 1fr)); gap: var(--fc-space-5) var(--fc-space-8); margin: 0; padding-left: var(--fc-space-6); }
+.hg-points p { margin: 0; }
+.hg-findings { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--fc-space-4) * 22)), 1fr)); gap: var(--fc-space-4); }
+.hg-finding { display: flex; flex-direction: column; gap: var(--fc-space-2); padding: var(--fc-space-4); }
+.hg-finding > :is(h3, p) { margin: 0; }

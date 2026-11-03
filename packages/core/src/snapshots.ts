@@ -69,3 +69,41 @@ export function dueFreezes<G extends { id: string; kickoff: Date }>(now: Date, g
     return until > 0 && until <= FREEZE_LEAD_MINUTES * 60_000 && !taken.has(`freeze:${g.id}`);
   });
 }
+
+export interface TakenSlot {
+  slot: string;
+  pulledAt: Date;
+}
+
+/**
+ * The decision point for a game: the last weekly snapshot (open, sat, sun) pulled before its kickoff and
+ * within a week of it. That is Sunday 8:43 AM for Sunday and Monday games, and the latest snapshot before
+ * it for earlier games (Tuesday's opening line for Thursday, Saturday night for a late Saturday game).
+ * Null when no weekly snapshot was taken (manual pulls only).
+ */
+export function decisionSnapshot<S extends TakenSlot>(kickoff: Date, slots: readonly S[]): S | null {
+  const from = kickoff.getTime() - 7 * 86_400_000;
+  let best: S | null = null;
+  for (const s of slots) {
+    if (s.slot.startsWith('freeze:')) continue;
+    const t = s.pulledAt.getTime();
+    if (t >= kickoff.getTime() || t <= from) continue;
+    if (!best || t > best.pulledAt.getTime()) best = s;
+  }
+  return best;
+}
+
+/**
+ * One selection's price as of a moment, from its snapshot history: the last price pulled at or before
+ * `at`, or, when the book had not listed it yet, the first price seen after.
+ */
+export function priceAsOf<P extends { pulledAt: Date; observedAt: Date }>(history: readonly P[], at: Date): P | null {
+  const t = at.getTime();
+  let before: P | null = null, after: P | null = null;
+  const later = (a: P, b: P) => a.pulledAt.getTime() - b.pulledAt.getTime() || a.observedAt.getTime() - b.observedAt.getTime();
+  for (const p of history) {
+    if (p.pulledAt.getTime() <= t) { if (!before || later(p, before) > 0) before = p; }
+    else if (!after || later(p, after) < 0) after = p;
+  }
+  return before ?? after;
+}

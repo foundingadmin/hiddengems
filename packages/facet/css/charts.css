@@ -1,6 +1,6 @@
 /* Facet charts and monitoring [F]. Built only from Facet tokens; load after facet.css.
    Specs: components/chart-card.md, legend.md, metric-row.md, rank-list.md, meter.md,
-   severity.md, freshness.md, progress.md ("Facet additions"), patterns/data-ops.md.
+   severity.md, freshness.md, stacked-bar.md, flow-map.md, progress.md ("Facet additions"), patterns/data-ops.md.
    Measurements marked [G] come from the vercel.com app captures (2026-11-01, see
    reference/inbox-review-2026-11-02/01-dashboard-monitoring.md); the rest are Facet decisions.
 
@@ -11,15 +11,15 @@
 
 /* ================================================================== Series slots
    Any chart mark reads its color from --_s. Set data-series="1".."6" on the mark or a parent. */
-.fc-chart, .fc-legend { --_s: var(--fc-chart-1); }
+.fc-chart, .fc-legend, .fc-stacked-bar { --_s: var(--fc-chart-1); }
 .fc-sparkline { --_s: var(--fc-chart-5); } /* trend at a glance: one gray step below series 1 */
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="1"] { --_s: var(--fc-chart-1); }
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="2"] { --_s: var(--fc-chart-2); }
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="3"] { --_s: var(--fc-chart-3); }
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="4"] { --_s: var(--fc-chart-4); }
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="5"] { --_s: var(--fc-chart-5); }
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="6"] { --_s: var(--fc-chart-6); }
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="muted"] { --_s: var(--fc-chart-muted); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table, .fc-stacked-bar) [data-series="1"] { --_s: var(--fc-chart-1); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table, .fc-stacked-bar) [data-series="2"] { --_s: var(--fc-chart-2); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table, .fc-stacked-bar) [data-series="3"] { --_s: var(--fc-chart-3); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table, .fc-stacked-bar) [data-series="4"] { --_s: var(--fc-chart-4); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table, .fc-stacked-bar) [data-series="5"] { --_s: var(--fc-chart-5); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table, .fc-stacked-bar) [data-series="6"] { --_s: var(--fc-chart-6); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table, .fc-stacked-bar) [data-series="muted"] { --_s: var(--fc-chart-muted); }
 
 /* ================================================================== Chart card
    Title row (title, optional meta, optional drill link), optional legend, chart area, optional footer.
@@ -367,6 +367,175 @@
   background: var(--fc-surface-canvas);
 }
 
+/* ================================================================== Stacked bar [F]
+   One bar split into the shares of a total (tokens per agent, requests per source). Segments run in legend
+   order, series 1 first, each --value percent of the bar; the rest of the track is what is still to come.
+   Always beside an .fc-legend that prints each value, so color is never the only cue (components/stacked-bar.md).
+   <div class="fc-stacked-bar" role="img" aria-label="..."><i data-series="1" style="--value:40"></i>...</div> */
+.fc-stacked-bar {
+  display: flex;
+  height: var(--fc-meter-height, 8px);
+  border-radius: var(--fc-radius-full);
+  background: var(--fc-surface-fill-hover);
+  overflow: hidden;
+}
+.fc-stacked-bar > i {
+  flex: 0 0 auto;
+  width: calc(min(var(--value, 0), 100) * 1%);
+  background: var(--_s);
+  transition: width var(--fc-duration-overlay) var(--fc-ease-standard);
+}
+.fc-stacked-bar > i + i { box-shadow: inset 1px 0 0 var(--fc-surface-canvas); }
+@media (prefers-reduced-motion: reduce) { .fc-stacked-bar > i { transition: none; } }
+
+/* ================================================================== Flow map [F]
+   Who hands what to whom (components/flow-map.md): node cards on a stage the reader pans and zooms, joined by
+   SVG edges with a label at each midpoint. Edge kinds differ by dash as well as color: forward solid, return
+   dashed, escalation amber and dashed. A replay marks the current edge active, earlier ones past and the rest
+   dim, and the acting node active. Positions are the caller's; the stage is translated and scaled as a whole.
+   <div class="fc-flow-map"><div class="fc-flow-map-toolbar">legend, .fc-flow-map-zoom</div>
+     <div class="fc-flow-map-viewport" tabindex="0"><div class="fc-flow-map-stage" style="transform:...">
+       <svg class="fc-flow-map-edges">paths</svg> .fc-flow-node … .fc-flow-label …</div></div></div> */
+.fc-flow-map {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  border-radius: var(--fc-radius-lg);
+  background: var(--fc-surface-canvas);
+  box-shadow: inset 0 0 0 1px var(--fc-border-default);
+  overflow: hidden;
+}
+.fc-flow-map-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fc-space-2) var(--fc-space-4);
+  padding: var(--fc-space-2) var(--fc-space-4);
+  box-shadow: inset 0 -1px 0 var(--fc-border-default);
+}
+.fc-flow-map-toolbar > :first-child { flex: 1 1 240px; min-width: 0; }
+.fc-flow-map-toolbar > :last-child { flex: 0 0 auto; }
+.fc-flow-map-toolbar .fc-legend-item > svg { flex: 0 0 auto; overflow: visible; }
+.fc-flow-map-viewport {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: var(--fc-flow-map-min-height, 320px);
+  overflow: hidden;
+  background: var(--fc-surface-subtle);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.fc-flow-map-viewport[data-panning] { cursor: grabbing; }
+.fc-flow-map-viewport:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--fc-focus-color); }
+.fc-flow-map-stage { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+.fc-flow-map-edges { position: absolute; inset: 0; overflow: visible; pointer-events: none; }
+
+/* Zoom: minus, the scale readout, plus and Fit, joined in one ringed group. */
+.fc-flow-map-zoom {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--fc-radius-sm);
+  box-shadow: 0 0 0 1px var(--fc-border-default);
+  background: var(--fc-surface-canvas);
+}
+.fc-flow-map-zoom > .fc-button { --_r: 0; }
+.fc-flow-map-zoom > :first-child { border-radius: var(--fc-radius-sm) 0 0 var(--fc-radius-sm); }
+.fc-flow-map-zoom > :last-child { border-radius: 0 var(--fc-radius-sm) var(--fc-radius-sm) 0; }
+.fc-flow-map-zoom > * + * { box-shadow: inset 1px 0 0 var(--fc-border-default); }
+.fc-flow-map-zoom > .fc-button:focus-visible { box-shadow: var(--ds-focus-ring); position: relative; }
+.fc-flow-map-zoom > output {
+  min-width: var(--fc-space-12);
+  padding: 0 var(--fc-space-1);
+  font: 400 13px/32px var(--fc-font-sans);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--fc-text-primary);
+}
+
+/* Edges. Arrowheads are SVG markers whose paths carry .fc-flow-arrow and the same data-tone. */
+.fc-flow-edge {
+  fill: none;
+  stroke: var(--fc-text-disabled);
+  stroke-width: 1.25;
+  transition: opacity var(--fc-duration-fast) ease, stroke var(--fc-duration-fast) ease;
+}
+.fc-flow-edge[data-kind="return"] { stroke-dasharray: 4 4; }
+.fc-flow-edge[data-kind="escalate"] { stroke: var(--fc-status-warning-solid); stroke-dasharray: 6 3; }
+.fc-flow-edge[data-state="past"] { stroke-width: 1.75; opacity: 0.55; }
+.fc-flow-edge[data-state="dim"] { opacity: 0.12; }
+.fc-flow-edge[data-state="active"] { stroke: var(--fc-text-primary); stroke-width: 2.5; }
+.fc-flow-edge[data-kind="escalate"][data-state="active"] { stroke: var(--fc-status-warning-solid); }
+.fc-flow-arrow { fill: var(--fc-text-secondary); }
+.fc-flow-arrow[data-tone="active"] { fill: var(--fc-text-primary); }
+.fc-flow-arrow[data-tone="escalate"] { fill: var(--fc-status-warning-solid); }
+/* The active edge flows toward its target; reduced motion keeps it still and thick. */
+@media (prefers-reduced-motion: no-preference) {
+  .fc-flow-edge[data-state="active"] { stroke-dasharray: 8 6; animation: fc-flow-edge 700ms linear infinite; }
+}
+@keyframes fc-flow-edge { to { stroke-dashoffset: -28; } }
+
+/* Edge labels, centered on the point halfway along the edge. */
+.fc-flow-label {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 1px var(--fc-space-2);
+  border-radius: var(--fc-radius-full);
+  background: var(--fc-surface-canvas);
+  box-shadow: inset 0 0 0 1px var(--fc-border-default);
+  color: var(--fc-text-secondary);
+  font: 400 12px/16px var(--fc-font-sans);
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity var(--fc-duration-fast) ease;
+}
+.fc-flow-label[data-kind="escalate"] { color: var(--fc-status-warning-fg); box-shadow: inset 0 0 0 1px var(--fc-status-warning-solid); }
+.fc-flow-label[data-state="active"] { color: var(--fc-text-primary); box-shadow: inset 0 0 0 1px var(--fc-text-primary); }
+.fc-flow-label[data-state="dim"] { opacity: 0.35; }
+
+/* Nodes: name, tags, a two-line role, then status dot, state and tokens over a thin meter. */
+.fc-flow-node {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fc-space-1);
+  padding: var(--fc-space-2) var(--fc-space-3);
+  border: 1px solid var(--fc-border-default);
+  border-radius: var(--fc-radius-md);
+  background: var(--fc-surface-canvas);
+  color: var(--fc-text-primary);
+  transition: border-color var(--fc-duration-fast) ease;
+}
+.fc-flow-node[data-active] { border-color: var(--fc-text-primary); }
+/* People (where the flow starts and ends) are the solid ends of the map. */
+.fc-flow-node[data-kind="person"] { border-color: transparent; background: var(--fc-surface-contrast); color: var(--fc-text-inverse); }
+.fc-flow-node[data-kind="person"] :is(.fc-flow-node-role, .fc-flow-node-state, .fc-flow-node-tokens) { color: inherit; opacity: 0.75; }
+/* A script or a role inside another agent: dashed, on the fill, so it never reads as a spawned agent. */
+.fc-flow-node[data-kind="script"] { border-style: dashed; background: var(--fc-surface-fill); }
+.fc-flow-node[data-kind="script"][data-active] { border-color: var(--fc-text-primary); }
+.fc-flow-node-head { display: flex; align-items: center; justify-content: space-between; gap: var(--fc-space-2); min-width: 0; }
+.fc-flow-node-name { overflow: hidden; font: 600 13px/20px var(--fc-font-mono); text-overflow: ellipsis; white-space: nowrap; }
+.fc-flow-node-tags { display: flex; flex-wrap: wrap; gap: var(--fc-space-1); }
+.fc-flow-node-role {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: var(--fc-text-secondary);
+  font: 400 13px/18px var(--fc-font-sans);
+}
+.fc-flow-node-foot { display: flex; align-items: center; gap: var(--fc-space-2); margin-top: auto; min-width: 0; font: 400 12px/16px var(--fc-font-sans); }
+.fc-flow-node-state { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fc-flow-node-tokens { color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }
+.fc-flow-node-dot { flex: 0 0 auto; width: 8px; height: 8px; border-radius: var(--fc-radius-full); background: var(--fc-text-disabled); }
+.fc-flow-node-dot[data-state="active"] { background: var(--fc-status-info-solid); box-shadow: 0 0 0 3px var(--fc-status-info-bg); }
+.fc-flow-node-dot[data-state="done"] { background: var(--fc-text-secondary); }
+.fc-flow-node > .fc-meter { --fc-meter-height: 4px; --_c: var(--fc-chart-1); }
+@media (prefers-reduced-motion: reduce) { .fc-flow-edge, .fc-flow-label, .fc-flow-node { transition: none; } }
+
 /* ================================================================== Progress additions (C11)
    Types follow the hue allocation: success is green (the reference renders it blue). Works on the
    native <progress> and on the div form, which also takes stops:
@@ -618,7 +787,7 @@ tr[data-clickable]:hover .fc-log-open .fc-button { color: var(--fc-text-primary)
 /* Row link [F]: the cell that opens a row's record (usually the time) holds the row's one link. The link
    stretches over the whole row, so the row is the hit target (INT-04); at rest the link text carries a quiet
    underline, on row hover the row fills and the underline darkens. Keyboard focus rings the whole row.
-   Never put a second link or button in a row that has one. */
+   Never put a second link in a row that has one; the row's one own action sits above it in .fc-row-action (css/slip.css). */
 .fc-table tbody tr:has(.fc-row-link) { position: relative; cursor: pointer; }
 .fc-row-link { color: var(--fc-text-primary); text-decoration: underline; text-decoration-color: var(--fc-border-hover); text-underline-offset: 3px; outline: none; }
 .fc-row-link::before { content: ""; position: absolute; inset: 0; z-index: 1; }

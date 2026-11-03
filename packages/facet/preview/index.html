@@ -173,6 +173,26 @@
         <div class="sp-wrap"><span class="text-label-13" style="color:var(--fc-text-secondary)">Pull time</span><span class="fc-delta" data-variant="pill" data-direction="positive" data-polarity="bad">67%</span><span class="text-label-13" style="color:var(--fc-text-secondary)">Hit rate</span><span class="fc-delta" data-variant="pill" data-direction="positive" data-polarity="good">4 pts</span></div>
       </figure>
       <figure>
+        <figcaption>Game log</figcaption>
+        <div class="fc-stack" style="--fc-gap:12px">
+          <div class="fc-game-log">
+            <p class="fc-game-log-rate"><span class="fc-game-log-value">5 of 8</span><span class="fc-game-log-label">This season</span></p>
+            <ol class="fc-game-log-cells" aria-label="Last 8 games, oldest first">
+              <li data-result="hit"><span aria-hidden="true">NYJ</span><span class="fc-visually-hidden">Week 1, vs NYJ, TD</span></li>
+              <li data-result="hit"><span aria-hidden="true">MIA</span><span class="fc-visually-hidden">Week 2, at MIA, TD</span></li>
+              <li data-result="miss"><span aria-hidden="true">JAX</span><span class="fc-visually-hidden">Week 3, vs JAX, no TD</span></li>
+              <li data-result="hit"><span aria-hidden="true">NO</span><span class="fc-visually-hidden">Week 4, vs NO, TD</span></li>
+              <li data-result="miss"><span aria-hidden="true">NE</span><span class="fc-visually-hidden">Week 5, at NE, no TD</span></li>
+              <li data-result="hit"><span aria-hidden="true">ATL</span><span class="fc-visually-hidden">Week 6, vs ATL, TD</span></li>
+              <li data-result="bye"><span aria-hidden="true">Bye</span><span class="fc-visually-hidden">Week 7, bye</span></li>
+              <li data-result="hit"><span aria-hidden="true">CAR</span><span class="fc-visually-hidden">Week 8, at CAR, TD</span></li>
+              <li data-result="miss"><span aria-hidden="true">KC</span><span class="fc-visually-hidden">Week 9, vs KC, no TD</span></li>
+            </ol>
+          </div>
+          <ul class="fc-game-log-key" aria-label="Key"><li data-result="hit">TD</li><li data-result="miss">No TD</li><li data-result="bye">Bye</li></ul>
+        </div>
+      </figure>
+      <figure>
         <figcaption>Status dot</figcaption>
         <div class="fc-stack" style="--fc-gap:8px">
           <span class="fc-status"><span class="fc-status-dot" data-state="live"></span>Live, pulled 2m ago</span>
@@ -357,15 +377,16 @@
       </p>
     </div>
 
-    <div class="fc-filter-bar" role="search" aria-label="Filter picks">
+    <div class="fc-filter-bar" data-phone="scroll" role="search" aria-label="Filter picks">
       <div class="fc-filter-search">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>
         <input class="fc-input" data-size="small" type="search" name="q" placeholder="Search players…" aria-label="Search players" autocomplete="off" spellcheck="false">
       </div>
       <button type="button" class="fc-button" data-variant="secondary" data-size="small" data-shape="rounded" aria-haspopup="menu">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2.5 4.5h11M4.5 8h7M6.5 11.5h3"/></svg>
-        Add filter
+        <span class="fc-filter-add-label">Add filter</span>
       </button>
+      <div class="fc-filter-scroll">
       <div class="fc-filter-chip" data-state="readonly" role="group" aria-label="Week filter, set by the page">
         <span class="fc-filter-key">Week</span><span class="fc-filter-value">8</span>
         <button type="button" class="fc-filter-info" aria-label="About the week filter" aria-describedby="data-tip-week">
@@ -398,6 +419,7 @@
           <option value="record">Hit rate</option>
           <option value="pick">Pick</option>
         </select>
+      </div>
       </div>
     </div>
 
@@ -1058,6 +1080,15 @@
         <div class="fc-stack" style="--fc-gap:8px">
           <div class="fc-progress-row"><strong id="ch-p3">Books pulled</strong><span>3 of 3</span></div>
           <div class="fc-segments" data-type="success" role="progressbar" aria-labelledby="ch-p3" aria-valuemin="0" aria-valuemax="3" aria-valuenow="3" aria-valuetext="3 of 3 books pulled"><i data-done></i><i data-done></i><i data-done></i></div>
+        </div>
+        <div class="fc-stack" style="--fc-gap:8px" id="stacked-bar">
+          <div class="fc-progress-row"><strong id="ch-p4">Tokens so far</strong><span>112k of 214k</span></div>
+          <div class="fc-stacked-bar" role="img" aria-label="Tokens so far by agent: triage 24k, park 4k, builder 84k"><i data-series="1" style="--value:11"></i><i data-series="2" style="--value:2"></i><i data-series="3" style="--value:39"></i></div>
+          <ul class="fc-legend" role="list" aria-labelledby="ch-p4">
+            <li class="fc-legend-item" data-series="1"><span class="fc-legend-key" aria-hidden="true"></span><span class="fc-legend-name">triage</span><span class="fc-legend-value">24k</span></li>
+            <li class="fc-legend-item" data-series="2"><span class="fc-legend-key" aria-hidden="true"></span><span class="fc-legend-name">park</span><span class="fc-legend-value">4k</span></li>
+            <li class="fc-legend-item" data-series="3"><span class="fc-legend-key" aria-hidden="true"></span><span class="fc-legend-name">builder</span><span class="fc-legend-value">84k</span></li>
+          </ul>
         </div>
       </div>
     </article>
@@ -1832,6 +1863,71 @@
   </div>
 
   <div class="fc-grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));--fc-gap:48px 40px;align-items:start">
+
+    <!-- ============================================ Step list (components/step-list.md) -->
+    <div class="fc-stack" style="--fc-gap:16px" id="step-list">
+      <h3 class="text-heading-20">Step list</h3>
+      <div class="fc-card" style="max-height:280px;overflow:auto">
+        <ol class="fc-step-list" aria-label="Workflow steps">
+          <li><button class="fc-step" type="button"><span class="fc-step-index">01</span><span class="fc-step-body"><span class="fc-step-actor">principal</span><span class="fc-step-text">You leave two comments on the staging preview, then type go.</span></span><span class="fc-step-value"></span></button></li>
+          <li><button class="fc-step" type="button" aria-current="step"><span class="fc-step-index">02</span><span class="fc-step-body"><span class="fc-step-actor">triage</span><span class="fc-step-text">The session reads every open thread and files sprint.json.</span></span><span class="fc-step-value">+22k</span></button></li>
+          <li><button class="fc-step" type="button" data-state="upcoming"><span class="fc-step-index">03</span><span class="fc-step-body"><span class="fc-step-actor">merge <span class="fc-badge" data-contrast="low" data-size="sm">Not reached here</span></span><span class="fc-step-text">If CI fails, the session spawns one CI fixer with the traces.</span><span class="fc-step-note">CI is green.</span></span><span class="fc-step-value"></span></button></li>
+          <li><button class="fc-step" type="button" data-state="upcoming"><span class="fc-step-index">04</span><span class="fc-step-body"><span class="fc-step-actor">verifier</span><span class="fc-step-text">One verifier reviews the whole sprint branch once.</span></span><span class="fc-step-value">+70k</span></button></li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ============================================ Flow map (components/flow-map.md) -->
+    <div class="fc-stack" style="--fc-gap:16px" id="flow-map">
+      <h3 class="text-heading-20">Flow map</h3>
+      <div class="fc-flow-map">
+        <div class="fc-flow-map-toolbar">
+          <ul class="fc-legend" role="list">
+            <li class="fc-legend-item"><svg width="24" height="8" aria-hidden="true"><path class="fc-flow-edge" d="M0,4 H24"/></svg><span class="fc-legend-name">Hands forward</span></li>
+            <li class="fc-legend-item"><svg width="24" height="8" aria-hidden="true"><path class="fc-flow-edge" data-kind="return" d="M0,4 H24"/></svg><span class="fc-legend-name">Returns</span></li>
+          </ul>
+          <div class="fc-flow-map-zoom" role="group" aria-label="Zoom">
+            <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="Zoom out">−</button>
+            <output>100%</output>
+            <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="Zoom in">+</button>
+            <button class="fc-button" data-variant="tertiary" data-size="small" type="button">Fit</button>
+          </div>
+        </div>
+        <div class="fc-flow-map-viewport" tabindex="0" role="group" aria-label="Workflow map" style="height:260px">
+          <div class="fc-flow-map-stage" style="width:664px;height:240px">
+            <svg class="fc-flow-map-edges" width="664" height="240" aria-hidden="true">
+              <defs>
+                <marker id="pv-fa" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="fc-flow-arrow" d="M0,0 L8,4 L0,8 z"/></marker>
+                <marker id="pv-fa-on" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="fc-flow-arrow" data-tone="active" d="M0,0 L8,4 L0,8 z"/></marker>
+              </defs>
+              <path class="fc-flow-edge" data-state="past" d="M184,106 C216,106 216,106 242,106" marker-end="url(#pv-fa)"/>
+              <path class="fc-flow-edge" data-state="active" d="M416,106 C448,106 448,106 474,106" marker-end="url(#pv-fa-on)"/>
+              <path class="fc-flow-edge" data-kind="return" data-state="dim" d="M530,164 C530,224 366,224 366,170" marker-end="url(#pv-fa)"/>
+            </svg>
+            <div class="fc-flow-node" data-kind="person" style="left:16px;top:48px;width:168px;height:116px">
+              <div class="fc-flow-node-head"><span class="fc-flow-node-name">principal</span></div>
+              <p class="fc-flow-node-role">Leaves comments on the staging preview.</p>
+              <div class="fc-flow-node-foot"><span class="fc-flow-node-dot" data-state="done" aria-hidden="true"></span><span class="fc-flow-node-state">2 comments</span></div>
+            </div>
+            <div class="fc-flow-node" style="left:248px;top:48px;width:168px;height:116px">
+              <div class="fc-flow-node-head"><span class="fc-flow-node-name">builder</span></div>
+              <div class="fc-flow-node-tags"><span class="fc-badge" data-variant="inverted" data-size="sm">Lead model</span></div>
+              <div class="fc-flow-node-foot"><span class="fc-flow-node-dot" data-state="done" aria-hidden="true"></span><span class="fc-flow-node-state">Branch pushed</span><span class="fc-flow-node-tokens">88k</span></div>
+              <div class="fc-meter" aria-hidden="true"><div class="fc-meter-track"><span class="fc-meter-fill" style="--value:100"></span></div></div>
+            </div>
+            <div class="fc-flow-node" data-active style="left:480px;top:48px;width:168px;height:116px">
+              <div class="fc-flow-node-head"><span class="fc-flow-node-name">verifier</span><span class="fc-badge" data-variant="blue" data-contrast="low" data-size="sm">New</span></div>
+              <div class="fc-flow-node-tags"><span class="fc-badge" data-variant="inverted" data-size="sm">Lead model</span></div>
+              <div class="fc-flow-node-foot"><span class="fc-flow-node-dot" data-state="active" aria-hidden="true"></span><span class="fc-flow-node-state">Reviewing</span><span class="fc-flow-node-tokens">70k</span></div>
+              <div class="fc-meter" aria-hidden="true"><div class="fc-meter-track"><span class="fc-meter-fill" style="--value:80"></span></div></div>
+            </div>
+            <span class="fc-flow-label" data-state="past" style="left:213px;top:92px">Spawn</span>
+            <span class="fc-flow-label" data-state="active" style="left:445px;top:92px">Branch</span>
+            <span class="fc-flow-label" data-state="dim" style="left:448px;top:209px">Punchlist</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- ============================================ B10 list + connection rows -->
     <div class="fc-stack" style="--fc-gap:16px">
@@ -2610,6 +2706,265 @@ rating = round(100 × clamp(carat / 10, 0, 1) × clarity / 100)</pre></div>
   </div>
 
   <div class="fc-note"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span>Team colors and logos stay inside team marks and player tiles. Rows, text, charts and status keep Facet colors, so a red team never reads as a loss.</span></div>
+</section>
+
+  <!-- ============================================================ Slips -->
+<!-- Slip parts: appraisal certificate, rail slip, numbered steps, signed money, chat. CSS in css/slip.css. -->
+<section id="slips" aria-labelledby="slips-h">
+  <style>
+    /* Page-owned layout only. */
+    #slips .sl-certs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); gap: var(--fc-space-6); align-items: start; }
+    #slips .sl-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--fc-space-8); }
+    #slips .sl-rail { width: 232px; height: 34rem; border-radius: var(--fc-radius-lg); box-shadow: var(--ds-shadow-border); overflow: hidden; }
+    #slips .sl-rail > .fc-sidenav { position: relative; height: 100%; box-shadow: none; }
+    #slips .sl-steps { flex: 1 1 24rem; max-width: 40rem; display: flex; flex-direction: column; gap: var(--fc-space-6); }
+    #slips .sl-chat { width: min(100%, 30rem); display: flex; flex-direction: column; border-radius: var(--fc-radius-lg); }
+    #slips .sl-chat > * { padding: var(--fc-space-4) var(--fc-space-5); }
+    #slips .sl-chat > * + * { border-top: 1px solid var(--fc-border-default); }
+    #slips .sl-chat > footer { display: flex; flex-direction: column; gap: var(--fc-space-3); }
+    #slips .sl-money td:first-child { white-space: nowrap; }
+    #slips .sl-money { flex: 1 1 22rem; max-width: 40rem; display: flex; flex-direction: column; gap: var(--fc-space-6); }
+  </style>
+
+  <div class="sp-intro">
+    <h2 id="slips-h" class="text-heading-32">Slips and the Jeweler</h2>
+  </div>
+
+  <div class="fc-stack" style="--fc-gap:16px">
+    <h3 class="text-heading-20">Appraisal certificate</h3>
+    <div class="sl-certs">
+      <article class="fc-cert fc-card" aria-labelledby="sl-cert-a">
+        <header class="fc-cert-head">
+          <p class="fc-cert-kicker text-label-12">Appraisal certificate</p>
+          <h4 id="sl-cert-a" class="text-heading-24">Slip 1</h4>
+          <p class="fc-cert-meta text-copy-14">Suggested play · 2 leg parlay</p>
+        </header>
+        <ul class="fc-legs">
+          <li class="fc-leg">
+            <span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">James Cook</span><span class="fc-player-number" data-number="4"></span></span><span class="fc-player-meta">MIA @ BUF · <time class="fc-time">11:00 AM</time></span></span></span>
+            <span class="fc-gem" style="--rating: 92" data-live><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>92</span></span>
+            <span class="fc-price text-label-14"><span class="fc-visually-hidden">Price </span>2.60</span>
+          </li>
+          <li class="fc-leg">
+            <span class="fc-player"><span class="fc-player-avatar" data-team="was" data-size="sm"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">Deebo Samuel</span><span class="fc-player-number" data-number="1"></span></span><span class="fc-player-meta">NYG @ WAS · <time class="fc-time">2:25 PM</time></span></span></span>
+            <span class="fc-gem" style="--rating: 76; --fc-gem-delay: 200ms" data-live><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>76</span></span>
+            <span class="fc-price text-label-14"><span class="fc-visually-hidden">Price </span>2.55</span>
+          </li>
+        </ul>
+        <div class="fc-stat-strip" role="group" aria-label="Stake and payout">
+          <div class="fc-stat"><p class="fc-stat-label">Stake</p><p class="fc-stat-value">$15.00</p></div>
+          <div class="fc-stat"><p class="fc-stat-label">Pays</p><p class="fc-stat-value">$99.45</p></div>
+          <div class="fc-stat"><p class="fc-stat-label">All hit</p><p class="fc-stat-value">23%</p><p class="fc-stat-basis">49% × 47%</p></div>
+        </div>
+        <p class="fc-loseit"><span class="fc-loseit-label text-heading-16">Lose it all</span><span class="fc-loseit-value text-heading-40">77%</span></p>
+      </article>
+
+      <article class="fc-cert fc-card" aria-labelledby="sl-cert-b">
+        <header class="fc-cert-head">
+          <p class="fc-cert-kicker text-label-12">Appraisal certificate</p>
+          <h4 id="sl-cert-b" class="text-heading-24">Slip 2</h4>
+          <p class="fc-cert-meta text-copy-14">Your own play · 2 leg parlay</p>
+        </header>
+        <ul class="fc-legs">
+          <li class="fc-leg">
+            <span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">James Cook</span><span class="fc-player-number" data-number="4"></span><span class="fc-badge" data-variant="amber" data-size="sm" data-contrast="low"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><path d="M8 12h8"/></svg>Same game</span></span><span class="fc-player-meta">MIA @ BUF · <time class="fc-time">11:00 AM</time></span></span></span>
+            <span class="fc-gem" style="--rating: 92" data-live><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>92</span></span>
+            <span class="fc-price text-label-14"><span class="fc-visually-hidden">Price </span>2.60</span>
+          </li>
+          <li class="fc-leg">
+            <span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">Khalil Shakir</span><span class="fc-player-number" data-number="10"></span><span class="fc-badge" data-variant="amber" data-size="sm" data-contrast="low"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><path d="M8 12h8"/></svg>Same game</span></span><span class="fc-player-meta">MIA @ BUF · <time class="fc-time">11:00 AM</time></span></span></span>
+            <span class="fc-gem" style="--rating: 88; --fc-gem-delay: 200ms" data-live><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>88</span></span>
+            <span class="fc-price text-label-14"><span class="fc-visually-hidden">Price </span>3.40</span>
+          </li>
+        </ul>
+        <div class="fc-stat-strip" role="group" aria-label="Stake and payout">
+          <div class="fc-stat"><p class="fc-stat-label">Stake</p><p class="fc-stat-value">$10.00</p></div>
+          <div class="fc-stat"><p class="fc-stat-label">Pays</p><p class="fc-stat-value">$88.40</p></div>
+          <div class="fc-stat"><p class="fc-stat-label">All hit</p><p class="fc-stat-value"><span aria-hidden="true">–</span><span class="fc-visually-hidden">Unknown</span></p><p class="fc-stat-basis">Correlated</p></div>
+        </div>
+        <div class="fc-loseit" data-correlated>
+          <span class="fc-loseit-label text-heading-16">Lose it all</span>
+          <span class="fc-badge" data-variant="amber" data-size="lg" data-contrast="low"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><path d="M8 12h8"/></svg>Correlated</span>
+          <p class="fc-loseit-note text-copy-13">Same game legs move together, so no chance is shown.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="fc-stack" style="--fc-gap:16px">
+    <h3 class="text-heading-20">Rail slip</h3>
+    <div class="sl-rail">
+      <aside class="fc-sidenav" aria-label="Rail with a slip in progress">
+        <div class="fc-sidenav-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>Hidden Gems</div>
+        <nav class="fc-sidenav-level" aria-label="Main">
+          <ul class="fc-sidenav-list" role="list">
+            <li><a class="fc-sidenav-item" href="#slips" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg><span>Gems</span></a></li>
+            <li><a class="fc-sidenav-item" href="#slips"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg><span>Slips</span></a></li>
+          </ul>
+        </nav>
+        <section class="fc-railslip fc-card" aria-labelledby="sl-rail-h">
+          <header class="fc-railslip-head"><h4 id="sl-rail-h" class="text-heading-14">Slip 1</h4><span class="text-label-12">Suggested parlay</span></header>
+          <ul class="fc-railslip-list text-label-13">
+            <li class="fc-railslip-row"><span>James Cook</span><span>2.60</span></li>
+            <li class="fc-railslip-row"><span>Deebo Samuel</span><span>2.55</span></li>
+          </ul>
+          <hr class="fc-separator">
+          <dl class="fc-railslip-list text-label-13">
+            <div class="fc-railslip-row"><dt>$15 pays</dt><dd>$99.45</dd></div>
+            <div class="fc-railslip-row"><dt>Lose it all</dt><dd>77%</dd></div>
+          </dl>
+          <a class="fc-button" data-size="small" href="#sl-cert-a">Review slip</a>
+        </section>
+        <ul class="fc-sidenav-list" role="list" style="padding: 0 var(--fc-space-2) var(--fc-space-2)">
+          <li><a class="fc-sidenav-item" href="#sl-chat-h"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg><span>Ask the Jeweler</span></a></li>
+        </ul>
+        <div class="fc-sidenav-foot"><span class="fc-status"><span class="fc-status-dot" data-state="live" aria-hidden="true"></span><span>Odds pulled <time class="fc-timestamp" title="Sun, Nov 8, 2026, 8:43 AM MT" data-relative>2m ago</time></span></span></div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="sl-row">
+    <div class="sl-steps">
+      <h3 class="text-heading-20">Numbered steps</h3>
+      <ol class="fc-steps">
+        <li data-state="done"><div class="fc-step-body"><h4 class="text-heading-16">Open your slip in DraftKings<span class="fc-visually-hidden">, done</span></h4>
+          <p class="text-copy-14">Both legs land in your DraftKings bet slip. The link only adds the picks.</p>
+          <a class="fc-button" data-variant="secondary" href="https://sportsbook.draftkings.com/" target="_blank" rel="noopener noreferrer">Open DraftKings<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></div></li>
+        <li aria-current="step"><div class="fc-step-body"><h4 class="text-heading-16">Set the parlay and stake</h4>
+          <p class="text-copy-14">In DraftKings, put $15 on the parlay, check it and tap Place Bet. You choose singles or a parlay, and the stake, there.</p></div></li>
+        <li><div class="fc-step-body"><h4 class="text-heading-16">Mark it placed</h4>
+          <p class="text-copy-14">So History can grade it Tuesday against the closing price.</p>
+          <div class="fc-row"><button type="button" class="fc-button" data-variant="secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Placed as suggested</button><button type="button" class="fc-button" data-variant="tertiary">Placed something else</button></div></div></li>
+      </ol>
+      <div class="fc-note" data-type="info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.7 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.6 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/></svg><span>Hidden Gems never places bets or touches your money.</span></div>
+    </div>
+
+    <div class="sl-money">
+      <h3 class="text-heading-20">Signed money</h3>
+      <div class="fc-stat-strip" data-variant="cells" role="group" aria-label="Season so far">
+        <div class="fc-stat"><p class="fc-stat-label">Profit</p><p class="fc-stat-value"><span class="fc-money" data-sign="positive">+$90.20</span></p><p class="fc-stat-basis">On $60 placed</p></div>
+        <div class="fc-stat"><p class="fc-stat-label">Suggested plays</p><p class="fc-stat-value"><span class="fc-money" data-sign="positive">+$100.20</span></p><p class="fc-stat-basis">3 slips</p></div>
+        <div class="fc-stat"><p class="fc-stat-label">Your own plays</p><p class="fc-stat-value"><span class="fc-money" data-sign="negative">&minus;$10.00</span></p><p class="fc-stat-basis">1 slip</p></div>
+      </div>
+      <div class="fc-table-wrap"><table class="fc-table">
+        <caption class="fc-visually-hidden">Placed slips, newest first</caption>
+        <thead><tr><th scope="col">Week</th><th scope="col" data-grow>Slip</th><th scope="col">Result</th><th scope="col" data-align="numeric">Profit</th></tr></thead>
+        <tbody>
+          <tr><td>Week 8</td><th scope="row">Cook and McLaurin</th><td><span class="fc-signal" data-signal="go">Earned</span></td><td data-align="numeric"><span class="fc-money" data-sign="positive">+$100.20</span></td></tr>
+          <tr><td>Week 7</td><th scope="row">Kincaid single</th><td><span class="fc-signal">Void</span></td><td data-align="numeric"><span class="fc-money">$0.00</span></td></tr>
+          <tr><td>Week 6</td><th scope="row">Cook and Samuel</th><td><span class="fc-signal" data-signal="stop">Missed</span></td><td data-align="numeric"><span class="fc-money" data-sign="negative">&minus;$15.00</span></td></tr>
+        </tbody>
+      </table></div>
+      <ul class="fc-list" data-interactive data-aside="beside" role="list" aria-label="Placed slips, phone">
+        <li class="fc-list-row">
+          <div class="fc-list-row-main"><p class="fc-list-row-title"><a class="fc-row-link" href="#slips">Cook and McLaurin</a></p><p class="fc-meta"><span>Week 8</span><span>$15 parlay</span></p></div>
+          <div class="fc-list-row-aside"><span class="fc-money text-label-14" data-sign="positive">+$100.20</span><span class="fc-signal" data-signal="go">Earned</span></div>
+        </li>
+        <li class="fc-list-row">
+          <div class="fc-list-row-main"><p class="fc-list-row-title"><a class="fc-row-link" href="#slips">Cook and Samuel</a></p><p class="fc-meta"><span>Week 6</span><span>$15 parlay</span></p></div>
+          <div class="fc-list-row-aside"><span class="fc-money text-label-14" data-sign="negative">&minus;$15.00</span><span class="fc-signal" data-signal="stop">Missed</span></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="fc-stack" style="--fc-gap:16px">
+    <h3 id="sl-chat-h" class="text-heading-20">Chat</h3>
+    <div class="sl-chat fc-card">
+      <header>
+        <ul class="fc-chat-context" aria-label="Looking at">
+          <li><span class="fc-badge" data-size="sm" data-contrast="low">About James Cook</span></li>
+          <li><span class="fc-badge" data-size="sm" data-contrast="low">Slip 1</span></li>
+        </ul>
+      </header>
+      <div class="fc-chat" role="log" aria-label="Conversation with the Jeweler">
+        <div class="fc-msg text-copy-14" data-from="user"><p class="fc-visually-hidden">You</p><p>Why is Cook rated above Shakir when Shakir pays more?</p></div>
+        <div class="fc-msg text-copy-14" data-from="assistant">
+          <p class="fc-msg-by text-label-12"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12l4 6-10 13L2 9Z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>The Jeweler</p>
+          <p>Both clear the price by 10 points or more, so edge counts in full for each. The difference is clarity. Cook's notes agree with his numbers, 92. Shakir's read rests on a slot role that only started in Week 6, so his clarity is 88.</p>
+          <p>The longer price pays more when it hits, not more often. Cook is the likelier of the two, 49% to 42%.</p>
+        </div>
+      </div>
+      <footer>
+        <ul class="fc-suggest" aria-label="Suggested questions">
+          <li><button type="button" class="fc-button" data-variant="secondary" data-size="small" data-shape="rounded"><span>What could change before kickoff?</span></button></li>
+          <li><button type="button" class="fc-button" data-variant="secondary" data-size="small" data-shape="rounded"><span>Compare with McLaurin</span></button></li>
+        </ul>
+        <form class="fc-composer" onsubmit="return false"><input class="fc-input" type="text" placeholder="Ask about a gem or your slip" aria-label="Ask the Jeweler"><button type="submit" class="fc-button" data-shape="square" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 21.7a.5.5 0 0 0 .9-.1l6.5-19a.5.5 0 0 0-.6-.6l-19 6.5a.5.5 0 0 0-.1.9l7.9 3.2a2 2 0 0 1 1.1 1.1z"/><path d="m21.9 2.1-10.9 10.9"/></svg></button></form>
+      </footer>
+    </div>
+  </div>
+
+  <div class="sl-row">
+    <div class="fc-stack" style="--fc-gap:16px; flex: 1 1 26rem; min-width: 0">
+      <h3 class="text-heading-20">Editable legs</h3>
+      <ul class="fc-legs" data-editable>
+        <li class="fc-leg">
+          <span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">James Cook</span><span class="fc-player-number" data-number="4"></span></span><span class="fc-player-meta">MIA @ BUF · <time class="fc-time">11:00 AM</time></span></span></span>
+          <span class="fc-gem" style="--rating: 92" data-live><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>92</span></span>
+          <span class="fc-price text-label-14"><span class="fc-visually-hidden">Price </span>2.60</span>
+          <button type="button" class="fc-button fc-leg-action" data-variant="tertiary" data-size="tiny" data-shape="square" aria-label="Remove James Cook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        </li>
+      </ul>
+    </div>
+    <div class="fc-stack" style="--fc-gap:16px; flex: 1 1 26rem; min-width: 0">
+      <h3 class="text-heading-20">Modal and quiet text action</h3>
+      <button type="button" class="fc-link-quiet text-label-13" aria-haspopup="dialog" style="align-self: flex-start">Change this slip</button>
+      <dialog class="fc-modal" open aria-labelledby="sl-modal-h" style="position: static">
+        <div class="fc-modal-body">
+          <h4 id="sl-modal-h" class="text-heading-20">Change the suggested play?</h4>
+          <p class="text-copy-14">Hidden Gems built Slip 1 as the best way to play this week's gems. If you change it</p>
+          <ul class="text-copy-14">
+            <li>The Jeweler's appraisal no longer covers what you place</li>
+            <li>History tracks it as your own play, so you can see whether it beat the suggestion</li>
+          </ul>
+        </div>
+        <div class="fc-modal-actions">
+          <button type="button" class="fc-button" data-variant="secondary" data-size="small">Change slip</button>
+          <button type="button" class="fc-button" data-size="small">Keep suggested play</button>
+        </div>
+      </dialog>
+    </div>
+  </div>
+
+  <div class="fc-stack" style="--fc-gap:16px">
+    <h3 class="text-heading-20">Row action</h3>
+    <div class="fc-table-wrap">
+      <table class="fc-table" data-interactive>
+        <caption class="fc-visually-hidden">A board row with its link and its slip button</caption>
+        <thead><tr><th scope="col" data-grow>Pick</th><th scope="col" data-align="numeric">Price</th><th scope="col"><span class="fc-visually-hidden">Slip</span></th></tr></thead>
+        <tbody>
+          <tr>
+            <th scope="row"><span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm" role="img" aria-label="Buffalo Bills"></span><span class="fc-player-main"><span class="fc-player-line"><a class="fc-player-name fc-row-link" href="#slips">James Cook</a><span class="fc-player-number"><span aria-hidden="true">#4</span><span class="fc-visually-hidden">, number 4</span></span></span><span class="fc-player-meta">RB · MIA @ BUF</span></span></span></th>
+            <td data-align="numeric">2.60</td>
+            <td><span class="fc-row-action"><button type="button" class="fc-button" data-variant="secondary" data-size="small"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg>Add<span class="fc-visually-hidden">, James Cook</span></button></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="fc-stack" style="--fc-gap:16px; max-width: 24rem">
+    <h3 class="text-heading-20">Gem row with its slip button</h3>
+    <ul class="fc-gem-list">
+      <li class="fc-gem-item">
+        <a class="fc-gem-row" href="#slips">
+          <span class="fc-gem" data-live style="--rating: 92"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>92</span></span>
+          <span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm" role="img" aria-label="Buffalo Bills"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">James Cook</span><span class="fc-player-number"><span aria-hidden="true">#4</span><span class="fc-visually-hidden">, number 4</span></span></span><span class="fc-player-meta"><time class="text-copy-13-mono">11:00 AM</time> · MIA @ BUF</span></span></span>
+          <span class="fc-gem-row-end"><span class="fc-price text-label-14">2.60</span><span class="fc-delta" data-direction="positive">+11 pts</span></span>
+        </a>
+        <button type="button" class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" aria-label="Remove James Cook from slip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+      </li>
+      <li class="fc-gem-item">
+        <a class="fc-gem-row" href="#slips">
+          <span class="fc-gem" data-live style="--rating: 63"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>63</span></span>
+          <span class="fc-player"><span class="fc-player-avatar" data-team="cin" data-size="sm" role="img" aria-label="Cincinnati Bengals"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">Ja'Marr Chase</span><span class="fc-player-number"><span aria-hidden="true">#1</span><span class="fc-visually-hidden">, number 1</span></span></span><span class="fc-player-meta"><time class="text-copy-13-mono">2:25 PM</time> · CIN @ KC</span></span></span>
+          <span class="fc-gem-row-end"><span class="fc-price text-label-14">2.05</span><span class="fc-delta" data-direction="positive">+7 pts</span></span>
+        </a>
+        <button type="button" class="fc-button" data-variant="secondary" data-size="small" data-shape="square" aria-label="Add Ja'Marr Chase to slip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg></button>
+      </li>
+    </ul>
+  </div>
 </section>
 
 </main>

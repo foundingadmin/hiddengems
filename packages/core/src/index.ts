@@ -5,3 +5,7 @@ export * from './snapshots';
 export * from './games';
 export * from './teams';
 export * from './model';
+export * from './grades';
+export * from './log';
+export * from './slips';
+export * from './history';

@@ -1,11 +1,15 @@
 'use client';
 // The Gems page body (docs/build-brief.md, Gems): the New gems row, then All gems with its filter bar.
-// Filters and sort live in the URL (?q, ?window, ?fools, ?sort), so a view survives refresh and can be shared.
+// Filters, sort and the open gem live in the URL (?q, ?window, ?fools, ?sort, ?gem), so a view survives refresh and can be shared.
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useRef, useTransition } from 'react';
+import { useEffect, useMemo, useRef, useState, useTransition } from 'react';
+import { flushSync } from 'react-dom';
 import { markRead } from '@/app/gems-actions';
+import { SlipButton, type SlipRef } from '@/components/add-to-slip';
 import { Dropdown } from '@/components/dropdown';
-import { Edge, GemMark, Player } from '@/components/marks';
+import { useGemLink } from '@/components/gem-sheet';
+import { Edge, FoolsLabel, GemMark, Player } from '@/components/marks';
+import { SEARCH_EVENT } from '@/components/shell';
 import type { BoardRow } from '@/lib/board';
 
 const svg = (d: React.ReactNode) => (
@@ -97,11 +101,12 @@ export function NewGems({ rows, since, zone }: { rows: BoardRow[]; since: string
   );
 }
 
-export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: string; freshness: React.ReactNode }) {
+export function AllGems({ rows, zone, freshness, slip }: { rows: BoardRow[]; zone: string; freshness: React.ReactNode; slip: SlipRef | null }) {
   const params = useSearchParams();
   const router = useRouter();
   const path = usePathname();
   const search = useRef<HTMLInputElement>(null);
+  const gemLink = useGemLink();
   const q = params.get('q') ?? '';
   const win = params.get('window');
   const hideFools = params.get('fools') === 'hide';
@@ -111,7 +116,14 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
     for (const [k, v] of Object.entries(patch)) if (v === null || v === '') next.delete(k); else next.set(k, v);
     router.replace(`${path}${next.size ? `?${next}` : ''}`, { scroll: false });
   };
-  useEffect(() => { if (location.hash === '#search') search.current?.focus(); }, []);
+  // Under 768px search hides until the top bar's search button opens it (SEARCH_EVENT, or #search from another page).
+  const [searching, setSearching] = useState(false);
+  useEffect(() => {
+    const open = () => { flushSync(() => setSearching(true)); search.current?.focus(); };
+    if (location.hash === '#search') { setSearching(true); requestAnimationFrame(() => search.current?.focus()); }
+    window.addEventListener(SEARCH_EVENT, open);
+    return () => window.removeEventListener(SEARCH_EVENT, open);
+  }, []);
 
   const windows = useMemo(() => [...new Set(rows.map((r) => r.window))].sort((a, b) => WINDOW_ORDER.indexOf(a) - WINDOW_ORDER.indexOf(b)), [rows]);
   const shown = useMemo(() => {
@@ -136,8 +148,8 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
         <div><h2 id="all-h" className="text-heading-24">All gems</h2></div>
         <div className="fc-section-head-actions">{freshness}</div>
       </div>
-      <div className="fc-filter-bar" role="search" aria-label="Filter gems">
-        <label className="fc-filter-search">
+      <div className="fc-filter-bar" data-phone="scroll" role="search" aria-label="Filter gems">
+        <label className="fc-filter-search" data-open={searching || q ? '' : undefined}>
           {SEARCH}
           <span className="fc-visually-hidden">Search players</span>
           <input ref={search} id="search" className="fc-input" data-size="small" type="search" placeholder="Search players…" autoComplete="off"
@@ -145,40 +157,42 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
         </label>
         <Dropdown
           label="Add filter" triggerClass="fc-button" triggerProps={{ 'data-variant': 'secondary', 'data-size': 'small', 'data-shape': 'rounded' }}
-          trigger={<>{FILTER}Add filter</>}
+          trigger={<>{FILTER}<span className="fc-filter-add-label">Add filter</span></>}
           items={[...windows.map((w) => ({ value: `window:${w}`, label: w, group: w === windows[0] ? 'Window' : undefined })),
             { value: 'fools', label: 'Hide Fool’s Gold', group: 'Fool’s Gold' }]}
           value={win ? `window:${win}` : null}
           onSelect={(v) => (v === 'fools' ? set({ fools: 'hide' }) : set({ window: v.slice(7) }))}
         />
-        <span className="fc-filter-chip" data-state="readonly"><span className="fc-filter-key">Market</span><span className="fc-filter-value">Anytime TD</span></span>
-        {win ? (
-          <span className="fc-filter-chip">
-            <span className="fc-filter-edit"><span className="fc-filter-key">Window</span><span className="fc-filter-value">{win}</span></span>
-            <button type="button" className="fc-filter-remove" aria-label={`Remove window ${win}`} onClick={() => set({ window: null })}>{X}</button>
-          </span>
-        ) : windows.length > 1 && (
-          <button type="button" className="fc-filter-chip" data-state="suggested" onClick={() => set({ window: windows[0]! })}>
-            {PLUS}<span className="fc-filter-key">Window</span><span className="fc-filter-value">{windows[0]}</span>
-          </button>
-        )}
-        {hideFools ? (
-          <span className="fc-filter-chip">
-            <span className="fc-filter-edit"><span className="fc-filter-value">Fool&apos;s Gold hidden</span></span>
-            <button type="button" className="fc-filter-remove" aria-label="Show Fool's Gold" onClick={() => set({ fools: null })}>{X}</button>
-          </span>
-        ) : (
-          <button type="button" className="fc-filter-chip" data-state="suggested" onClick={() => set({ fools: 'hide' })}>
-            {PLUS}<span className="fc-filter-key">Hide</span><span className="fc-filter-value">Fool&apos;s Gold</span>
-          </button>
-        )}
-        <label className="fc-filter-sort">
-          {SORT}
-          <span className="fc-visually-hidden">Sort</span>
-          <select className="fc-select" data-size="small" value={sort} onChange={(e) => set({ sort: e.target.value === 'recommended' ? null : e.target.value })}>
-            {Object.entries(SORTS).map(([k, s]) => <option key={k} value={k}>{s.label}</option>)}
-          </select>
-        </label>
+        <div className="fc-filter-scroll">
+          <span className="fc-filter-chip" data-state="readonly"><span className="fc-filter-key">Market</span><span className="fc-filter-value">Anytime TD</span></span>
+          {win ? (
+            <span className="fc-filter-chip">
+              <span className="fc-filter-edit"><span className="fc-filter-key">Window</span><span className="fc-filter-value">{win}</span></span>
+              <button type="button" className="fc-filter-remove" aria-label={`Remove window ${win}`} onClick={() => set({ window: null })}>{X}</button>
+            </span>
+          ) : windows.length > 1 && (
+            <button type="button" className="fc-filter-chip" data-state="suggested" onClick={() => set({ window: windows[0]! })}>
+              {PLUS}<span className="fc-filter-key">Window</span><span className="fc-filter-value">{windows[0]}</span>
+            </button>
+          )}
+          {hideFools ? (
+            <span className="fc-filter-chip">
+              <span className="fc-filter-edit"><span className="fc-filter-value">Fool&apos;s Gold hidden</span></span>
+              <button type="button" className="fc-filter-remove" aria-label="Show Fool's Gold" onClick={() => set({ fools: null })}>{X}</button>
+            </span>
+          ) : (
+            <button type="button" className="fc-filter-chip" data-state="suggested" onClick={() => set({ fools: 'hide' })}>
+              {PLUS}<span className="fc-filter-key">Hide</span><span className="fc-filter-value">Fool&apos;s Gold</span>
+            </button>
+          )}
+          <label className="fc-filter-sort">
+            {SORT}
+            <span className="fc-visually-hidden">Sort</span>
+            <select className="fc-select" data-size="small" value={sort} onChange={(e) => set({ sort: e.target.value === 'recommended' ? null : e.target.value })}>
+              {Object.entries(SORTS).map(([k, s]) => <option key={k} value={k}>{s.label}</option>)}
+            </select>
+          </label>
+        </div>
       </div>
 
       {gems === 0 && rows.length > 0 && (
@@ -204,14 +218,16 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
                   <th scope="col" data-align="numeric">{tip('Our est.', 'Our hit chance: the v3.0 model blended with the fair price')}</th>
                   <th scope="col" data-align="numeric">{tip('Edge', 'Our estimate minus the priced chance. Above zero clears the cut')}</th>
                   <th scope="col" data-align="numeric">{tip('Clarity', 'Confidence in the read, 0 to 100: sample, consistency, books agreeing, setup')}</th>
+                  <th scope="col"><span className="fc-visually-hidden">Slip</span></th>
                 </tr>
               </thead>
               <tbody>
                 {shown.map((r, i) => (
-                  <tr key={r.key} className={r.started ? 'hg-started' : undefined}>
+                  <tr key={r.key} className={r.started ? 'hg-started' : undefined} aria-selected={gemLink.current === r.key ? true : undefined}>
                     <td><GemMark kind={r.kind} rating={r.rating} delay={(shown.length - 1 - i) * 160} /></td>
                     <th scope="row">
                       <Player name={r.name} teamId={r.teamId} number={r.number} detail={detail(r)}
+                        link={{ href: gemLink.href(r.key), onClick: (e) => gemLink.open(e, r.key), 'data-gem-link': r.key }}
                         badge={r.fresh ? <span className="fc-badge" data-variant="purple" data-size="sm" data-contrast="low">New</span> : null} />
                     </th>
                     <td><Kickoff iso={r.kickoff} zone={zone} /></td>
@@ -220,6 +236,7 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
                     <td data-align="numeric">{pct(r.hitChance)}</td>
                     <td data-align="numeric"><Edge pts={Math.round(r.gap)} /></td>
                     <td data-align="numeric">{r.clarity}</td>
+                    <td><SlipButton row={r} slip={slip} /></td>
                   </tr>
                 ))}
               </tbody>
@@ -227,15 +244,19 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
           </div>
           <ul className="fc-gem-list hg-phone-only" aria-label={SORTS[sort]?.caption}>
             {shown.map((r) => (
-              <li key={r.key} className="fc-gem-row">
-                <GemMark kind={r.kind} rating={r.rating} />
-                <Player name={r.name} teamId={r.teamId} number={r.number}
-                  detail={<><Kickoff iso={r.kickoff} zone={zone} /> · {r.matchup}</>}
-                  badge={r.fresh ? <span className="fc-badge" data-variant="purple" data-size="sm" data-contrast="low">New</span> : null} />
-                <span className="fc-gem-row-end">
-                  <span className="fc-price text-label-14">{r.price.toFixed(2)}</span>
-                  <Edge pts={Math.round(r.gap)} />
-                </span>
+              <li key={r.key} className="fc-gem-item">
+                <a className="fc-gem-row" href={gemLink.href(r.key)} onClick={(e) => gemLink.open(e, r.key)} data-gem-link={r.key}>
+                  <GemMark kind={r.kind} rating={r.rating} bare />
+                  <Player name={r.name} teamId={r.teamId} number={r.number}
+                    detail={<><Kickoff iso={r.kickoff} zone={zone} /> · {r.matchup}</>}
+                    badge={r.kind === 'fools-gold' ? <FoolsLabel />
+                      : r.fresh ? <span className="fc-badge" data-variant="purple" data-size="sm" data-contrast="low">New</span> : null} />
+                  <span className="fc-gem-row-end">
+                    <span className="fc-price text-label-14">{r.price.toFixed(2)}</span>
+                    <Edge pts={Math.round(r.gap)} />
+                  </span>
+                </a>
+                <SlipButton row={r} slip={slip} place="icon" />
               </li>
             ))}
           </ul>

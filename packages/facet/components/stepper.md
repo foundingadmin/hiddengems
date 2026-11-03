@@ -26,6 +26,7 @@ Minus disabled at `min`, plus disabled at `max`. Typed values are clamped on cha
 - Use for small ranges (about 1 to 20). Larger ranges use an input group.
 - The total line shows the formula next to the result so the number can be checked (DESIGN.md rule 9).
 - Buttons name the field they change. Focus uses `--ds-focus-ring`.
+- A numbered list of tasks is not a stepper; use steps (`steps.md`).
 
 ## Hidden Gems usage
 Max picks per week with weekly exposure; alert repeat count.

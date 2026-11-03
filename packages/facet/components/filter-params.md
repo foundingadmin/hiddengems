@@ -48,7 +48,7 @@ Not specified by the reference. Inferred: Badge/pill and Menu/Combobox tokens, `
 Implemented in `css/data.css` as `.fc-filter-bar`. Specimen: `preview/index.html#data`.
 
 ### Order
-Search, Add filter, readonly context, applied chips, suggestions, then the sort control at the end. Everything wraps; the sort stays at the right edge.
+Search, Add filter, readonly context, applied chips, suggestions, then the sort control at the end. Everything wraps; the sort stays at the right edge. On phones, the phone row below keeps it to one line.
 
 ### Parts
 | Part | Markup | Notes |
@@ -74,6 +74,22 @@ Owner request, 2026-11-03. A filter that arrives in a link and has nothing to ed
 - The remove is a link when removing is navigation (it drops the key from the URL, INT-27), a button otherwise. Its name says what you get ("Show all sources") or what goes ("Remove source filter") (CON-19).
 - States: rest, remove hover (gray circle), remove focus (focus ring, INT-02). The 24px remove target is the only control (INT-04).
 - Hidden Gems usage: Logs, `?source=` from a Data health row.
+
+### Phone row `[F]`
+Sprint review, 2026-11-03. Under 768px a bar of chips wraps to three rows; the phone wireframe (`Main`) shows one.
+```html
+<div class="fc-filter-bar" data-phone="scroll" role="search" aria-label="Filter gems">
+  <label class="fc-filter-search" data-open>…</label>
+  <button class="fc-button" data-variant="secondary" data-size="small" data-shape="rounded" aria-haspopup="menu">
+    <svg aria-hidden="true">…</svg><span class="fc-filter-add-label">Add filter</span>
+  </button>
+  <div class="fc-filter-scroll">readonly, applied and suggested chips, then .fc-filter-sort</div>
+</div>
+```
+- From 768px `.fc-filter-scroll` is `display: contents`, so the bar is unchanged.
+- Under 768px the chips are one row that scrolls sideways, with the sort first. Add filter shrinks to its icon at the row's end, outside the scroller, so its menu is not clipped; its name stays "Add filter".
+- Search hides until `data-open` is set. Open it from the top bar's search button and keep it open while it holds a query.
+- Hidden Gems usage: All gems (`apps/web/components/gems-board.tsx`).
 
 ### Accessibility
 - The remove button names the filter: `aria-label="Remove book filter"`. After removal, focus moves to the next chip or to Add filter.

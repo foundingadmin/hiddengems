@@ -21,6 +21,8 @@ Where one team sits from 1 to N on a single measure (32 once every team has play
   the rank alone.
 - Gray only. A rank is context, not a verdict, so no signal or gem hue.
 - Inside a context row (`data-context`, `description.md`) the mark turns secondary with the rest of the row.
+- Ties say so ("Tied for 2nd most TDs allowed"). A team at zero reads "No TDs allowed" with the mark at the
+  last rank. Under 3 games there is no rank and no track, only the basis ("0.0 a game over 1 game").
 
 ## Hidden Gems usage
 Gem sheet, Context: the opponent's rank in touchdowns allowed to the player's position, above its last four games

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   type MatchupGame, type MatchupScore, type TrendGame, type UsageGame,
-  clearsFair, coreSample, fairPriceFor, favoredBySpread, matchup, opportunitiesFor, priceTrail, trendCandidates, trendLines, trendScore,
+  clearsFair, coreSample, fairPriceFor, favoredBySpread, matchup, matchupTrack, opportunitiesFor, priceTrail, trendCandidates, trendLines, trendScore,
 } from '../src';
 
 const at = (h: number) => new Date(Date.UTC(2026, 10, 1, h));
@@ -133,7 +133,7 @@ describe('matchup', () => {
   it('ranks the defense by touchdowns allowed per game to the position, 1 allowing the most', () => {
     const m = matchup(games, scores, 'RB', 'mia')!;
     // Miami: 2, 1 (a fullback counts as a back), 0 over 3 games.
-    expect(m).toMatchObject({ defense: 'mia', position: 'RB', rank: 1, teams: 4, games: 3, perGame: 1 });
+    expect(m).toMatchObject({ defense: 'mia', position: 'RB', rank: 1, tied: false, teams: 4, games: 3, perGame: 1 });
     expect(m.recent).toEqual([
       { week: 1, against: 'buf', touchdowns: 2 }, { week: 2, against: 'nyj', touchdowns: 1 }, { week: 3, against: 'ne', touchdowns: 0 },
     ]);
@@ -142,11 +142,25 @@ describe('matchup', () => {
   it('shares a rank on a tie and keeps only the last weeks', () => {
     const m = matchup(games, scores, 'RB', 'buf')!;
     expect(m.rank).toBe(2);
+    expect(m.tied).toBe(true);
     expect(matchup(games, scores, 'RB', 'nyj')!.rank).toBe(2);
     expect(matchup(games, scores, 'RB', 'mia', 2)!.recent.map((w) => w.week)).toEqual([2, 3]);
   });
 
   it('is null for a defense with no game', () => {
     expect(matchup(games, scores, 'RB', 'kc')).toBeNull();
+  });
+
+  it('puts the mark on the track only from 3 games, at the last rank when none were allowed', () => {
+    expect(matchupTrack(matchup(games, scores, 'RB', 'mia')!)).toBe(0);
+    // Buffalo has 2 games: too few to rank.
+    expect(matchupTrack(matchup(games, scores, 'RB', 'buf')!)).toBeNull();
+    const more: MatchupGame[] = [...games, { gameId: 'e', week: 4, home: 'buf', away: 'ne' }];
+    const buf = matchup(more, scores, 'RB', 'buf')!;
+    expect(buf).toMatchObject({ games: 3, perGame: 0, rank: 2, tied: true });
+    expect(matchupTrack(buf)).toBe(1);
+    const third = matchup(more, [...scores, { gameId: 'e', team: 'ne', position: 'RB', touchdowns: 1 }], 'RB', 'buf')!;
+    expect(third).toMatchObject({ rank: 2, tied: false });
+    expect(matchupTrack(third)).toBeCloseTo(1 / 3);
   });
 });

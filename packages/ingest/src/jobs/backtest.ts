@@ -1,7 +1,8 @@
 // backtest: the weekly calibration check (docs/prd.md goal 2). Scores model v3.0 walk forward over every
 // completed week of the season from Week 4 (core walkForward()): each player game's chance from the weeks
 // before it, against whether he scored. Reads player_usage, player_game_stats and games; writes nothing but
-// its run: the score in the message, one log line per week, and a warning when it is above the baseline.
+// its run: the score in the message, one log line per week, and a warning when it is above the baseline. Sample
+// players score far more often than real ones, so on sample data the score stands alone, with no baseline check.
 import { BACKTEST, type GameLine, type UsageGame, seasonOf, walkForward } from '@hiddengems/core';
 import { games, playerGameStats, playerUsage } from '@hiddengems/db';
 import { and, eq } from 'drizzle-orm';
@@ -51,6 +52,9 @@ export const backtest: Job = {
     }
     const score = brier(result.brier);
     const span = weekSpan(result.weeks.map((w) => w.week));
+    if (ctx.providers.usage.id === 'sample') {
+      return { message: `Brier ${score} over ${playerGames(result.games)} in ${span} on sample data`, rowsWritten: 0, meta: { ...result } };
+    }
     // Above the baseline, the warning carries the gap, so Data health says it once (its note) instead of twice.
     if (result.aboveBaseline) ctx.log('warn', `Brier is ${brier(result.delta!)} above the ${baseline} baseline`, { brier: result.brier, baseline: result.baseline, delta: result.delta });
     const versus = result.aboveBaseline ? '' : `, ${score === baseline ? 'at' : 'under'} the ${baseline} baseline`;

@@ -2,7 +2,7 @@
 // The gem sheet's read (docs/prd.md F2.1, F2.4, F2.5, F2.7): the price chart in Overview, trend lines in Notes,
 // the core sample and game conditions in Context. Facet parts only (chart-card.md, rank track and context rows
 // in data.css); numbers come from packages/core through lib/gem.ts.
-import { type CoreSample, type Opportunity, type Trend, MATCHUP_WEEKS } from '@hiddengems/core';
+import { type CoreSample, type Opportunity, type Trend, MATCHUP_WEEKS, matchupTrack } from '@hiddengems/core';
 import { type ReactNode, useEffect, useId, useRef, useState } from 'react';
 import type { Appraisal, Conditions } from '@/lib/gem';
 import { ago } from '@/lib/format';
@@ -15,6 +15,8 @@ const ordinal = (n: number) => {
   const s = n % 100 >= 11 && n % 100 <= 13 ? 'th' : ['th', 'st', 'nd', 'rd'][n % 10] ?? 'th';
   return `${n}${s}`;
 };
+/** A pull under 6 hours old reads live. */
+const FRESH_MS = 6 * 3_600_000;
 const clockIn = (zone: string) => (iso: string) => new Intl.DateTimeFormat('en-US', { timeZone: zone, weekday: 'short', hour: 'numeric', minute: '2-digit' }).format(new Date(iso));
 
 // ---------------------------------------------------------------- Price chart (F2.7)
@@ -76,6 +78,11 @@ export function PriceChart({ appraisal: a, book, kickoff, now, zone }: { apprais
   const t0 = first?.t ?? tNow, t1 = Math.max(tKick, t0 + 3_600_000);
   const pulled = a.pulledAt ? Date.parse(a.pulledAt) : null;
   const lineEnd = last ? (started ? t1 : Math.min(t1, Math.max(last.t, pulled ?? last.t))) : t0;
+  // The record's times sit on the chart, between the first price and the Kickoff line.
+  const onChart = (t: number) => Math.min(Math.max(t, t0), t1);
+  const onRecord = rec && started && last
+    ? { decision: onChart(Date.parse(rec.decisionAt)), close: Math.max(onChart(Date.parse(rec.freezeAt)), last.t) }
+    : null;
 
   const values = [...trail.map((p) => p.price), a.fairPrice, ...(rec ? [rec.decisionPrice, rec.freezePrice] : [])];
   const yt = ticks(Math.min(...values), Math.max(...values));
@@ -90,7 +97,8 @@ export function PriceChart({ appraisal: a, book, kickoff, now, zone }: { apprais
   trail.forEach((p, i) => {
     d += i === 0 ? `M${x(p.t)} ${y(p.price)}` : `H${x(p.t)}V${y(p.price)}`;
   });
-  if (last) d += `H${x(lineEnd)}`;
+  // On record, the line ends at the close price.
+  if (last) d += onRecord ? `H${x(onRecord.close)}V${y(rec!.freezePrice)}H${x(lineEnd)}` : `H${x(lineEnd)}`;
   const wedge = last ? `${d}V${yFair}H${x(first!.t)}Z` : '';
 
   // Direct labels: open and now before kickoff; the decision and the close once the game is on record.
@@ -99,16 +107,16 @@ export function PriceChart({ appraisal: a, book, kickoff, now, zone }: { apprais
     const px = x(t);
     points.push({ x: px + (px > x1 - 96 ? -6 : 6), y: y(v) - 8, below: y(v) + 16, name, value: odds(v), anchor: px > x1 - 96 ? 'end' : 'start' });
   };
-  if (rec && started) {
-    at(Date.parse(rec.decisionAt), rec.decisionPrice, 'Decision');
-    at(Date.parse(rec.freezeAt), rec.freezePrice, 'Close');
+  if (onRecord) {
+    at(onRecord.decision, rec!.decisionPrice, 'Decision');
+    at(onRecord.close, rec!.freezePrice, 'Close');
     if (first) at(first.t, first.price, 'Open');
   } else if (last) {
     at(lineEnd, last.price, started ? 'Close' : 'Now');
     if (first && trail.length > 1) at(first.t, first.price, 'Open');
   }
-  const dots = rec && started
-    ? [[Date.parse(rec.decisionAt), rec.decisionPrice], [Date.parse(rec.freezeAt), rec.freezePrice]]
+  const dots = onRecord
+    ? [[onRecord.decision, rec!.decisionPrice], [onRecord.close, rec!.freezePrice]]
     : last ? [[first!.t, first!.price], [lineEnd, last.price]] : [];
   const labels = clear(points.map((l) => ({ ...l, width: (l.name.length + 1 + l.value.length) * SANS })));
   // The fair line's name sits in the empty future before kickoff, at the left edge after; never over a label.
@@ -131,10 +139,10 @@ export function PriceChart({ appraisal: a, book, kickoff, now, zone }: { apprais
       trail.length > 1 ? `${book} price moved from ${odds(first!.price)} at open to ${odds(last.price)} ${started ? 'at the close' : 'now'}.` : `${book} price ${started ? 'closed at' : 'is'} ${odds(last.price)}.`,
       `Our fair price is ${odds(a.fairPrice)}.`,
       rec && started ? `On record at ${odds(rec.decisionPrice)} at the decision and ${odds(rec.freezePrice)} at the close.` : '',
-      a.clv != null ? `Closing line value ${clvText(a.clv)}.` : '',
+      a.clv != null ? `Closing line value ${clvText(a.clv)} against the fair close.` : '',
     ].filter(Boolean).join(' ');
 
-  const fresh = pulled != null && tNow - pulled < 6 * 3_600_000;
+  const fresh = pulled != null && tNow - pulled < FRESH_MS;
   const rows = [
     ...trail.map((p) => ({ key: `p${p.t}`, at: p.t, what: p.t === first?.t ? 'Open' : 'Moved', price: p.price })),
     ...(rec ? [{ key: 'dec', at: Date.parse(rec.decisionAt), what: 'Decision', price: rec.decisionPrice }, { key: 'frz', at: Date.parse(rec.freezeAt), what: 'Close', price: rec.freezePrice }] : []),
@@ -152,7 +160,7 @@ export function PriceChart({ appraisal: a, book, kickoff, now, zone }: { apprais
           <p className="fc-chart-card-takeaway">
             <strong>{clvText(a.clv)}</strong>closing line value
             <span className="fc-delta" data-variant="pill" data-direction={a.clv > 0 ? 'positive' : a.clv < 0 ? 'negative' : 'neutral'}>
-              {a.clv > 0 ? 'Beat the close' : a.clv < 0 ? 'Missed the close' : 'Matched the close'}
+              {a.clv > 0 ? 'Beat the fair close' : a.clv < 0 ? 'Missed the fair close' : 'Matched the fair close'}
             </span>
           </p>
         )}
@@ -299,9 +307,11 @@ export function CoreSampleTable({ sample, team }: { sample: CoreSample; team: st
 const GROUP: Record<string, string> = { RB: 'running backs', WR: 'receivers', TE: 'tight ends', QB: 'quarterbacks' };
 
 /** The weather row shows only when the kickoff forecast matters at an open stadium (core weatherNote()). */
-export function ConditionsList({ conditions: c }: { conditions: Conditions }) {
+export function ConditionsList({ conditions: c, now }: { conditions: Conditions; now: string }) {
   const m = c.matchup;
   const w = c.weather;
+  // Under 3 games the rank means little: no rank and no track, just the games line.
+  const track = m ? matchupTrack(m) : null;
   if (!c.implied && !m && !w) return <div className="fc-empty"><strong>No game lines or matchup yet</strong></div>;
   const one = (n: number) => (Math.round(n * 10) / 10).toFixed(1);
   return (
@@ -320,13 +330,19 @@ export function ConditionsList({ conditions: c }: { conditions: Conditions }) {
           <dt>{m.defense.toUpperCase()} against {GROUP[m.position] ?? m.position}</dt>
           <dd>
             <span className="fc-factor-value">
-              {ordinal(m.rank)} most TDs allowed
+              {track == null
+                ? `${one(m.perGame)} a game over ${m.games} ${m.games === 1 ? 'game' : 'games'}`
+                : m.perGame === 0 ? 'No TDs allowed' : `${m.tied ? 'Tied for ' : ''}${ordinal(m.rank)} most TDs allowed`}
               <span className="fc-badge" data-variant="gray" data-size="sm" data-contrast="low">Context only</span>
             </span>
-            <small>{one(m.perGame)} a game over {m.games} {m.games === 1 ? 'game' : 'games'}</small>
-            <span className="fc-rank-track" aria-hidden="true" style={{ ['--at' as string]: m.teams > 1 ? (m.rank - 1) / (m.teams - 1) : 0 }}>
-              <span>1</span><span className="fc-rank-track-rail"><span className="fc-rank-track-mark" /></span><span>{m.teams}</span>
-            </span>
+            {track != null && (
+              <>
+                <small>{m.perGame === 0 ? `Over ${m.games} games` : `${one(m.perGame)} a game over ${m.games} games`}</small>
+                <span className="fc-rank-track" aria-hidden="true" style={{ ['--at' as string]: track }}>
+                  <span>1</span><span className="fc-rank-track-rail"><span className="fc-rank-track-mark" /></span><span>{m.teams}</span>
+                </span>
+              </>
+            )}
             <ol className="fc-game-log-cells" aria-label={`Last ${Math.min(MATCHUP_WEEKS, m.recent.length)} games, oldest first`}>
               {m.recent.map((w, i) => (
                 <li key={i} data-result={w.touchdowns > 0 ? 'hit' : 'miss'}>
@@ -346,7 +362,10 @@ export function ConditionsList({ conditions: c }: { conditions: Conditions }) {
               {w.note}
               <span className="fc-badge" data-variant="gray" data-size="sm" data-contrast="low">Context only</span>
             </span>
-            <small>Open-Meteo forecast, <time dateTime={w.pulledAt}>{ago(new Date(w.pulledAt)).replace(/^Just/, 'just')}</time></small>
+            <p className="fc-freshness">
+              <span className="fc-status-dot" data-state={Date.parse(now) - Date.parse(w.pulledAt) < FRESH_MS ? 'live' : 'stale'} aria-hidden="true" />
+              <span>Open-Meteo forecast, <time dateTime={w.pulledAt} data-relative="">{ago(new Date(w.pulledAt), new Date(now)).replace(/^Just/, 'just')}</time></span>
+            </p>
           </dd>
         </div>
       )}

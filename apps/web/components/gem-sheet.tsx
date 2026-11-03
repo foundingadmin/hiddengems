@@ -254,7 +254,7 @@ function Sections({ gem, zone }: { gem: GemDetail; zone: string }) {
       <section id="gem-context" className="fc-sheet-section" aria-labelledby="gem-context-h">
         <h3 id="gem-context-h" className="text-heading-20">Core sample and conditions</h3>
         {gem.sample ? <CoreSampleTable sample={gem.sample} team={gem.teamId?.toUpperCase() ?? null} /> : <div className="fc-empty"><strong>No games this season yet</strong></div>}
-        <ConditionsList conditions={gem.conditions} />
+        <ConditionsList conditions={gem.conditions} now={gem.now} />
       </section>
     </>
   );

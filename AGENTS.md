@@ -60,6 +60,12 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
   Facet lacks, do not hand-roll it in app CSS: file a DS request (what is needed, where it is used, the closest
   existing Facet part), have a design-system pass build it in `packages/facet` (tokens, CSS, component doc,
   preview), then wire it into the feature. App CSS is only layout glue between Facet parts, using `--fc-*` tokens.
+  The `facet-builder` agent (`.claude/agents/facet-builder.md`) answers DS requests; its usage notes go back to
+  the agent that asked.
+- Every change that adds or edits words people read (UI copy, docs, comments, commit and PR text) goes through
+  the `content-verifier` agent (`.claude/agents/content-verifier.md`) before it ships. It returns exact
+  rewrites. Send them back to the agent that wrote the copy while it is still running; otherwise a new
+  generator agent applies them. Ship only on `Verdict: pass`.
 - A product's accent goes through `--fc-brand-*` (`packages/facet/tokens/facet.semantic.json`); reusing Facet for another product means changing those four tokens, not hunting for hues.
 
 ## Data and jobs

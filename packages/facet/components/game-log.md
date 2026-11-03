@@ -33,6 +33,25 @@ season record that outranks them.
 
 Games the player missed are left out: they are neither a hit nor a miss.
 
+## Cloudy `[F]`
+A thin sample (under 3 games, PRD F2.2) is cloudy: `data-cloudy` on `.fc-game-log-cells` blurs and fades the
+marks, and on a `.fc-game-log-rate` it turns the value secondary and softens it. Opponents and labels stay sharp,
+and the rate's label says how many games there are ("Only 2 games match"), so the haze is never the only cue.
+Reduced transparency drops the blur and keeps the fade.
+
+## In the loupe `[F]`
+The loupe puts toggle chips (`components/toggle-chip.md`) over the log and a second rate beside the season's:
+```html
+<div class="fc-game-log">
+  <p class="fc-game-log-rate"><span class="fc-game-log-value">38%</span><span class="fc-game-log-label">3 of 8 this season</span></p>
+  <p class="fc-game-log-rate" data-cloudy><span class="fc-game-log-value">42%</span><span class="fc-game-log-label">Only 2 games match</span></p>
+  <ol class="fc-game-log-cells" data-cloudy aria-label="Last 2 matching games, oldest first">…</ol>
+</div>
+```
+- Both rates are percents here, so they compare; the season's record sits in its label as "n of m".
+- The matching rate is shrunk toward the season rate, and its value carries a tip that says so.
+- Filtered, the cells are the matching games only, with no bye: a week left out is not a bye.
+
 ## Rules
 - Gray only. A hit is a result, not a gem, so purple stays out (`DESIGN.md`, Hue allocation).
 - Shape carries the result, the label and hidden text carry it in words, so color is never the only cue.

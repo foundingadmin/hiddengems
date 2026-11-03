@@ -298,9 +298,11 @@
 
 /* ================================================================== Row links in lists
    A list row that opens a record (a past slip on the phone): its title holds an .fc-row-link (charts.css), whose
-   hit area covers the whole row, as in a table. Pair with data-interactive on the list for the hover fill.
+   hit area covers the whole row, as in a table. The row fills on hover by itself, so a list can mix link rows
+   with plain ones (the gem sheet's Notes); data-interactive still fills every row of a list that opens records.
    <li class="fc-list-row"><div class="fc-list-row-main"><p class="fc-list-row-title"><a class="fc-row-link" href="…">Cook and McLaurin</a></p>…</div>…</li> */
-.fc-list-row:has(.fc-row-link) { position: relative; cursor: pointer; }
+.fc-list-row:has(.fc-row-link) { position: relative; cursor: pointer; transition: background-color var(--fc-duration-fast) ease; }
+.fc-list-row:has(.fc-row-link):hover { background: var(--fc-surface-fill); }
 .fc-list-row:has(.fc-row-link):hover .fc-row-link { text-decoration-color: currentColor; }
 
 /* ================================================================== Chat

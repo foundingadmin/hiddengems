@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+Added, for the loupe (Hidden Gems F2.2)
+- Toggle chips (`.fc-toggle-chips`, `.fc-toggle-chip[aria-pressed]`): conditions that each turn on or off and combine (`components/toggle-chip.md`).
+- Cloudy game log (`data-cloudy` on `.fc-game-log-cells` and `.fc-game-log-rate`) for samples under 3 games (`components/game-log.md`).
+- List rows with an `.fc-row-link` fill on hover without `data-interactive`, so link rows and plain rows can share a list (`components/list.md`).
+
 Added, for the agent workflow page
 - Stacked bar (`.fc-stacked-bar`): shares of one total on a single bar, beside a legend (`components/stacked-bar.md`).
 - Step list (`.fc-step-list`, `.fc-step`): replay steps with the current one marked (`components/step-list.md`).

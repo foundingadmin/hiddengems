@@ -215,6 +215,11 @@ active roster is out; Questionable leaves it unknown). `getSplits(db, playerId, 
 returns every condition with this week's side, every side's hits, games and rate, his games tagged by side (so
 `combineSplits()` can intersect conditions without another query), and the names of the players the conditions name.
 
+The gem sheet loads them once with the gem (`apps/web/lib/gem.ts`). The loupe keeps its conditions in `?loupe=` and
+changes it with `history.replaceState`, so a toggle redraws on the client with no request. The Notes add up to two
+split lines from `splitNotes()`: QB, teammate, rest or implied points, not thin, at least 10 points from his season
+rate after shrinking, ranked by the trend lines' score. Home or away and favored or underdog stay trend lines.
+
 ## Database
 
 - **Setup and migrations on Supabase**: `pnpm db:supabase-sql [--app-password <password>]` writes one script to

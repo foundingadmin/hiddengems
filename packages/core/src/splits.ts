@@ -301,3 +301,37 @@ export function combineSplits(s: Splits, keys: readonly SplitKey[]): { keys: Spl
   const hits = games.filter((g) => g.hit).length;
   return { keys: on, hits, games: games.length, rate: splitRate(hits, games.length, s.season.rate), thin: games.length < SPLIT_MIN_GAMES };
 }
+
+/** Splits the Notes cite (docs/prd.md F2.2), at most this many, under the trend lines. */
+export const SPLIT_NOTES = 2;
+/** A cited split's shrunk rate sits at least this far from his season rate. */
+export const SPLIT_NOTE_GAP = 0.1;
+/** Home or away and favored or underdog already have trend lines (trends.ts), so the Notes cite the rest. */
+export const SPLIT_NOTE_KEYS: readonly SplitKey[] = ['qb', 'teammate', 'rest', 'implied'];
+
+export interface SplitNote {
+  key: SplitKey;
+  side: SplitSide;
+  hits: number;
+  games: number;
+  /** Shrunk, as the loupe shows it. */
+  rate: number;
+  /** abs(raw rate - 0.5) * sqrt(games), the trend lines' score. */
+  score: number;
+}
+
+/**
+ * The splits that count: this week's side of a condition, not thin, short of his whole season, and shrunk at
+ * least SPLIT_NOTE_GAP away from his season rate. Ranked like the trend lines; context only.
+ */
+export function splitNotes(s: Splits, limit = SPLIT_NOTES): SplitNote[] {
+  return s.splits
+    .filter((x) => SPLIT_NOTE_KEYS.includes(x.key) && x.current != null && !x.thin && x.games < s.season.games
+      && Math.abs(x.rate - s.season.rate) >= SPLIT_NOTE_GAP)
+    .map((x): SplitNote => ({
+      key: x.key, side: x.current!, hits: x.hits, games: x.games, rate: x.rate,
+      score: Math.abs(x.hits / x.games - 0.5) * Math.sqrt(x.games),
+    }))
+    .sort((a, b) => b.score - a.score || SPLIT_KEYS.indexOf(a.key) - SPLIT_KEYS.indexOf(b.key))
+    .slice(0, limit);
+}

@@ -194,6 +194,24 @@
         </div>
       </figure>
       <figure>
+        <figcaption>Loupe: toggle chips over a cloudy game log</figcaption>
+        <div class="fc-stack" style="--fc-gap:12px">
+          <div class="fc-toggle-chips" role="group" aria-label="Conditions this week">
+            <button type="button" class="fc-toggle-chip" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Home</button>
+            <button type="button" class="fc-toggle-chip" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Short week</button>
+            <button type="button" class="fc-toggle-chip" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>Favored</button>
+          </div>
+          <div class="fc-game-log">
+            <p class="fc-game-log-rate"><span class="fc-game-log-value">63%</span><span class="fc-game-log-label">5 of 8 this season</span></p>
+            <p class="fc-game-log-rate" data-cloudy><span class="fc-game-log-value">69%</span><span class="fc-game-log-label">Only 2 games match</span></p>
+            <ol class="fc-game-log-cells" data-cloudy aria-label="Last 2 matching games, oldest first">
+              <li data-result="hit"><span aria-hidden="true">NYJ</span><span class="fc-visually-hidden">Week 1, vs NYJ, TD</span></li>
+              <li data-result="miss"><span aria-hidden="true">JAX</span><span class="fc-visually-hidden">Week 3, vs JAX, no TD</span></li>
+            </ol>
+          </div>
+        </div>
+      </figure>
+      <figure>
         <figcaption>Game conditions, rank track and context row</figcaption>
         <dl class="fc-description" data-layout="rows">
           <div>

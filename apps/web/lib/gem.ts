@@ -2,13 +2,16 @@ import 'server-only';
 // One gem for the gem sheet (docs/build-brief.md, Gem sheet): the stored pick with its own numbers, the best
 // price on offer, the Last 10 game log from player_game_stats (player_usage where stats lag), and the read:
 // the purchase book's price over time with the gem record and its grade, trend lines, the core sample and
-// game conditions (docs/prd.md F2.1, F2.4, F2.5, F2.7).
+// game conditions (docs/prd.md F2.1, F2.4, F2.5, F2.7), and the splits behind the loupe (F2.2), loaded once so
+// toggling a condition redraws on the client.
 import {
-  type CoreSample, type GameLine, type GameLog, type GemKind, type LogGame, type Matchup, type MatchupScore, type Trend, type TrendGame, type UsageGame,
-  coreSample, fairPriceFor, favoredBySpread, findTeam, gameLog, impliedFactor, matchup, matchupPosition, newGemReason, priceTrail, trendLines,
+  type CoreSample, type GameLine, type GameLog, type GemKind, type LogGame, type Matchup, type MatchupScore, type SplitNote, type Trend, type TrendGame,
+  type UsageGame, coreSample, fairPriceFor, favoredBySpread, findTeam, gameLog, impliedFactor, matchup, matchupPosition, newGemReason, priceTrail,
+  splitNotes, trendLines,
 } from '@hiddengems/core';
 import {
-  books, gemMarks, gemRecords, games, getGameWeather, grades, isMissingTable, oddsLatest, oddsSnapshots, picks, playerGameStats, playerUsage, players,
+  type PlayerSplits, books, gemMarks, gemRecords, games, getGameWeather, getSplits, grades, isMissingTable, oddsLatest, oddsSnapshots, picks,
+  playerGameStats, playerUsage, players,
 } from '@hiddengems/db';
 import { and, desc, eq, inArray, lt, or } from 'drizzle-orm';
 import { db } from '@/lib/db';
@@ -33,6 +36,12 @@ export interface Conditions {
   matchup: Matchup | null;
   /** The kickoff forecast's line when it matters at an open stadium (core weatherNote()), else null. */
   weather: { note: string; pulledAt: string } | null;
+}
+
+/** His splits for this game (core splitsFor()), each game's opponent, and the splits the Notes cite. */
+export interface Loupe extends PlayerSplits {
+  opponents: Record<string, { opponent: string; home: boolean }>;
+  notes: SplitNote[];
 }
 
 export interface GemDetail {
@@ -64,6 +73,8 @@ export interface GemDetail {
   trends: Trend[];
   sample: CoreSample | null;
   conditions: Conditions;
+  /** Null when he has no games this season before this one. */
+  loupe: Loupe | null;
 }
 
 /** A table a pending migration adds reads as empty until the owner runs it (docs/architecture.md, Database). */
@@ -95,9 +106,10 @@ export async function gemDetail(key: string, now = new Date()): Promise<GemDetai
 
   const history = player ? await playerSeason(player.id, player.teamId, game) : null;
   const team = player?.teamId ?? history?.usage.at(-1)?.team ?? null;
-  const [appraisal, conditions] = await Promise.all([
+  const [appraisal, conditions, loupe] = await Promise.all([
     appraisalOf(pick, game.kickoffAt),
     conditionsOf(game, team, player?.position ?? history?.usage.at(-1)?.position ?? null),
+    player ? loupeOf(player.id, game.id) : null,
   ]);
   const home = team === game.homeTeamId;
   return {
@@ -114,7 +126,23 @@ export async function gemDetail(key: string, now = new Date()): Promise<GemDetai
     trends: history && team ? trendLines(history.trends, { home, favored: favoredBySpread(game.spreadLine, home) }) : [],
     sample: history ? coreSample(history.usage, history.teamUsage, player?.position ?? null) : null,
     conditions,
+    loupe,
   };
+}
+
+async function loupeOf(playerId: string, gameId: string): Promise<Loupe | null> {
+  const { db: d } = await db();
+  const splits = await getSplits(d, playerId, gameId);
+  if (!splits) return null;
+  const rows = await d.select({ id: games.id, home: games.homeTeamId, away: games.awayTeamId }).from(games)
+    .where(inArray(games.id, splits.log.map((g) => g.gameId)));
+  const opponents: Loupe['opponents'] = {};
+  for (const g of splits.log) {
+    const r = rows.find((x) => x.id === g.gameId);
+    const home = g.sides.venue ? g.sides.venue === 'home' : r?.home === splits.teamId;
+    if (r) opponents[g.gameId] = { opponent: home ? r.away : r.home, home };
+  }
+  return { ...splits, opponents, notes: splitNotes(splits) };
 }
 
 /** His regular season games before this game's week: the Last 10, the trend games and his usage with his team's. */

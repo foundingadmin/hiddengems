@@ -58,3 +58,13 @@ Implemented in `css/data.css` as `.fc-sheet`.
 - Tabs follow the APG tabs pattern: arrow keys, Home and End move selection; only the selected tab is in the tab order.
 - Motion: slides in 16px over 300ms (`--fc-duration-overlay`, standard easing) with a backdrop fade; none under reduced motion.
 - Title is the pick, not a sentence. Do not repeat the close action in the footer.
+
+### One scroll with section tabs `[F]`
+A detail sheet that reads top to bottom (the Hidden Gems gem sheet) keeps one scrolling body and uses its tabs to
+jump, not to swap panels.
+- Tabs are links in a `<nav class="fc-tabs fc-sheet-tabs" aria-label="…">` pointing at each
+  `<section class="fc-sheet-section" id="…">`. The tab for the section in view carries `aria-current="true"`.
+- Sections stack with 32px between them and a hairline above each one after the first; `scroll-margin-top`
+  leaves air when a tab jumps.
+- Open state lives in the URL (`?gem=<id>`, not a hash), so the sheet can be linked and Back closes it.
+- `data-phone="full"` takes the whole screen under 768px, with 16px side padding.

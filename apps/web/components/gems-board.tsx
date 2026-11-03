@@ -1,11 +1,12 @@
 'use client';
 // The Gems page body (docs/build-brief.md, Gems): the New gems row, then All gems with its filter bar.
-// Filters and sort live in the URL (?q, ?window, ?fools, ?sort), so a view survives refresh and can be shared.
+// Filters, sort and the open gem live in the URL (?q, ?window, ?fools, ?sort, ?gem), so a view survives refresh and can be shared.
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useTransition } from 'react';
 import { markRead } from '@/app/gems-actions';
 import { Dropdown } from '@/components/dropdown';
-import { Edge, GemMark, Player } from '@/components/marks';
+import { useGemLink } from '@/components/gem-sheet';
+import { Edge, FoolsLabel, GemMark, Player } from '@/components/marks';
 import type { BoardRow } from '@/lib/board';
 
 const svg = (d: React.ReactNode) => (
@@ -102,6 +103,7 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
   const router = useRouter();
   const path = usePathname();
   const search = useRef<HTMLInputElement>(null);
+  const gemLink = useGemLink();
   const q = params.get('q') ?? '';
   const win = params.get('window');
   const hideFools = params.get('fools') === 'hide';
@@ -208,10 +210,11 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
               </thead>
               <tbody>
                 {shown.map((r, i) => (
-                  <tr key={r.key} className={r.started ? 'hg-started' : undefined}>
+                  <tr key={r.key} className={r.started ? 'hg-started' : undefined} aria-selected={gemLink.current === r.key ? true : undefined}>
                     <td><GemMark kind={r.kind} rating={r.rating} delay={(shown.length - 1 - i) * 160} /></td>
                     <th scope="row">
                       <Player name={r.name} teamId={r.teamId} number={r.number} detail={detail(r)}
+                        link={{ href: gemLink.href(r.key), onClick: (e) => gemLink.open(e, r.key), 'data-gem-link': r.key }}
                         badge={r.fresh ? <span className="fc-badge" data-variant="purple" data-size="sm" data-contrast="low">New</span> : null} />
                     </th>
                     <td><Kickoff iso={r.kickoff} zone={zone} /></td>
@@ -227,15 +230,18 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
           </div>
           <ul className="fc-gem-list hg-phone-only" aria-label={SORTS[sort]?.caption}>
             {shown.map((r) => (
-              <li key={r.key} className="fc-gem-row">
-                <GemMark kind={r.kind} rating={r.rating} />
-                <Player name={r.name} teamId={r.teamId} number={r.number}
-                  detail={<><Kickoff iso={r.kickoff} zone={zone} /> · {r.matchup}</>}
-                  badge={r.fresh ? <span className="fc-badge" data-variant="purple" data-size="sm" data-contrast="low">New</span> : null} />
-                <span className="fc-gem-row-end">
-                  <span className="fc-price text-label-14">{r.price.toFixed(2)}</span>
-                  <Edge pts={Math.round(r.gap)} />
-                </span>
+              <li key={r.key}>
+                <a className="fc-gem-row" href={gemLink.href(r.key)} onClick={(e) => gemLink.open(e, r.key)} data-gem-link={r.key}>
+                  <GemMark kind={r.kind} rating={r.rating} bare />
+                  <Player name={r.name} teamId={r.teamId} number={r.number}
+                    detail={<><Kickoff iso={r.kickoff} zone={zone} /> · {r.matchup}</>}
+                    badge={r.kind === 'fools-gold' ? <FoolsLabel />
+                      : r.fresh ? <span className="fc-badge" data-variant="purple" data-size="sm" data-contrast="low">New</span> : null} />
+                  <span className="fc-gem-row-end">
+                    <span className="fc-price text-label-14">{r.price.toFixed(2)}</span>
+                    <Edge pts={Math.round(r.gap)} />
+                  </span>
+                </a>
               </li>
             ))}
           </ul>

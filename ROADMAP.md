@@ -31,7 +31,10 @@ thread.
    reads Lucky, matching the gem boxes (F1.2).
 8. **Dates inside a sentence.** Facet sets every `<time>` in mono (decision Nov 2), so a date inside copy, such as on
    the graded slip, reads in mono too. Recommend: keep mono for dates in tables and metadata, sans inside sentences.
-9. **PRD v1.2.** Once 1 to 8 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
+9. **Restore the stricter database rules.** Rapid build mode (Nov 3) lets migrations apply themselves and agents
+   run SQL on both databases. Recommend: at the beta, sign the Supabase connector out of the production project, and
+   apply production migrations by hand from the release PR again.
+10. **PRD v1.2.** Once 1 to 9 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
    Outlier as price source, F2.8, F3.4, the old pipeline's freeze and close commands.
 
 ## Where it stands
@@ -74,9 +77,14 @@ freezing prices this week.
 
 - [ ] Principal: run `pnpm db:supabase-sql --app-password <password>` output in the production Supabase project, then
       set `DATABASE_URL` (Production) to the `hiddengems_app` login (`docs/architecture.md`, Database).
-- [ ] Principal: after the release with gem records and grades merges, run `pnpm db:supabase-sql` output in the
-      staging Supabase project, then production (choose "Run without RLS"), before the first Week 9 kickoff Thu Nov 5.
-      Until then the jobs skip recording, so Week 9 games before it go unmeasured.
+- [x] Migrations 0005 to 0007 applied to production on Nov 3 through the Supabase connector (rapid build mode).
+- [x] Previews read production through the read-only `hiddengems_preview` login, or a sample fixture without it.
+- [ ] Principal: set the `hiddengems_preview` password and put it in Vercel's Preview `DATABASE_URL`
+      (`docs/architecture.md`, "Previews").
+- [x] 13 sample players a preview had written into production deleted on Nov 3, with their sample links.
+- [x] A scheduled Claude task checks each odds snapshot about 25 to 50 minutes after it (Sun 9:32, Tue 10:32, Sat
+      20:32 Denver) and runs a missed one from production Data health. Adding the Supabase connector to it in
+      claude.ai turns on its freeze gap check.
 - [ ] Principal: `ODDS_API_KEY`, `CRON_SECRET`, `BACKUP_GITHUB_TOKEN` and `BACKUP_GITHUB_REPO` set for Production only.
 - [ ] Data health shows today's Tue 10:07 AM opening snapshot. If it was missed, the next slot is Sat 7:47 PM; an off
       schedule pull spends credits and is the principal's call.

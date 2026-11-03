@@ -4,10 +4,10 @@
 import { gemMarks, picks } from '@hiddengems/db';
 import { and, eq, inArray, sql } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
-import { db } from '@/lib/db';
+import { db, READ_ONLY } from '@/lib/db';
 
 export async function markRead(keys: string[]): Promise<void> {
-  if (!keys.length) return;
+  if (!keys.length || READ_ONLY) return;
   const { db: d } = await db();
   const now = new Date();
   const current = await d.select({ key: picks.selectionKey, rating: picks.rating }).from(picks)

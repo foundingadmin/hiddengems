@@ -28,6 +28,7 @@ The slip in progress, visible from every desktop screen, with one way back to it
 - 12px inset and padding, 8px radius, 8px between rows. Names truncate with an ellipsis; prices and totals are tabular and never shrink.
 - Head: the slip's name, then the play in secondary text. Totals: labels secondary, values primary.
 - One full-width small primary button.
+- The leg count in "3 leg parlay" is `<span class="fc-railslip-count">`. When a gem is added it pops: render the new count as a new element with `data-pop`, and it scales down into place over `--fc-duration-pop` (220ms). Transform only; none under reduced motion (`patterns/moments.md`, Add a gem).
 
 ## States
 - Nothing on the slip: render no panel.

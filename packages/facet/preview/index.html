@@ -3022,6 +3022,69 @@ rating = round(100 × clamp(carat / 10, 0, 1) × clarity / 100)</pre></div>
 
   <div class="fc-stack" style="--fc-gap:16px">
     <div class="fc-section-head">
+      <div><h3 class="text-heading-20">Add a gem and the drawer</h3></div>
+      <div class="fc-section-head-actions"><button type="button" class="fc-button" data-variant="secondary" data-size="small" id="mo-reset-add">Reset</button></div>
+    </div>
+    <style>#moments .mo-add { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--fc-space-6); } #moments .mo-add > .fc-gem-list { flex: 0 1 24rem; } #moments .mo-add > .fc-railslip { flex: 0 0 14rem; margin: 0; }</style>
+    <div class="mo-add">
+      <ul class="fc-gem-list" aria-label="Drawer specimen">
+        <li class="fc-gem-item" id="mo-add-row">
+          <a class="fc-gem-row" href="#moments" id="mo-open"><span class="fc-gem" style="--rating: 81"><svg viewBox="0 0 24 22" aria-hidden="true"><path class="fc-gem-fill" d="M6 1h12l5 7-11 13L1 8Z"/><path class="fc-gem-cut" d="M1 8h22M8.5 1 6.5 8l5.5 13 5.5-13-2-7"/></svg><span><span class="fc-visually-hidden">Gem rating </span>81</span></span><span class="fc-player"><span class="fc-player-avatar" data-team="buf" data-size="sm" role="img" aria-label="Buffalo Bills"></span><span class="fc-player-main"><span class="fc-player-line"><span class="fc-player-name">James Cook</span></span><span class="fc-player-meta">RB · MIA @ BUF</span></span></span><span class="fc-gem-row-end"><span class="fc-price text-label-14">2.60</span></span></a>
+          <button type="button" class="fc-button" data-variant="secondary" data-size="small" data-shape="square" aria-label="Add James Cook to slip" id="mo-add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+        </li>
+      </ul>
+      <section class="fc-railslip fc-card" aria-labelledby="mo-rs-h">
+        <header class="fc-railslip-head"><h4 id="mo-rs-h" class="text-heading-14">Slip 2</h4><span class="text-label-12"><span class="fc-railslip-count" id="mo-count">2</span> leg parlay</span></header>
+      </section>
+    </div>
+    <dialog class="fc-sheet" data-motion="spring" data-phone="full" id="mo-sheet" aria-labelledby="mo-sheet-h">
+      <header class="fc-sheet-header"><div class="fc-sheet-titlebar"><div class="fc-sheet-titles"><h4 id="mo-sheet-h" class="fc-sheet-title text-heading-20">James Cook</h4></div>
+        <button type="button" class="fc-button fc-sheet-close" data-variant="tertiary" data-size="small" data-shape="square" aria-label="Close" id="mo-sheet-x"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="m4 4 8 8m0-8-8 8"/></svg></button></div></header>
+      <div class="fc-sheet-body"><dl class="fc-description" data-compact><div><dt>Price</dt><dd>2.60</dd></div><div><dt>Rating</dt><dd>81</dd></div></dl></div>
+    </dialog>
+    <script>
+    // Add: the row takes data-checked, the count pops, the glint is the Edge glint specimen below. Drawer: the
+    // spring sheet with a ripple on a stage hosted in the dialog, and data-closing before close().
+    addEventListener('DOMContentLoaded', () => {
+      const { createStage, reducedMotion } = window.FacetDots, $ = (id) => document.getElementById(id);
+      const row = $('mo-add-row'), sheet = $('mo-sheet');
+      $('mo-add').addEventListener('click', () => {
+        if (row.hasAttribute('data-checked')) return;
+        row.setAttribute('data-checked', '');
+        const old = $('mo-count'), next = old.cloneNode();
+        next.textContent = String(Number(old.textContent) + 1);
+        next.setAttribute('data-pop', '');
+        old.replaceWith(next);
+      });
+      $('mo-reset-add').addEventListener('click', () => { row.removeAttribute('data-checked'); $('mo-count').textContent = '2'; });
+      $('mo-open').addEventListener('click', (e) => {
+        e.preventDefault();
+        const at = row.getBoundingClientRect();
+        row.setAttribute('aria-selected', 'true');
+        sheet.showModal();
+        if (reducedMotion()) return;
+        const stage = createStage(sheet, { outset: 'var(--fc-space-3)' });
+        stage.ripple(sheet, { from: { x: at.left + at.width / 2, y: at.top + at.height / 2 }, duration: 760 }).then(() => stage.destroy());
+      });
+      const close = () => {
+        if (reducedMotion()) { sheet.close(); return; }
+        sheet.setAttribute('data-closing', '');
+        sheet.addEventListener('animationend', function end(e) {
+          if (e.target !== sheet || e.pseudoElement) return;
+          sheet.removeEventListener('animationend', end);
+          sheet.close();
+          sheet.removeAttribute('data-closing');
+        });
+      };
+      $('mo-sheet-x').addEventListener('click', close);
+      sheet.addEventListener('cancel', (e) => { e.preventDefault(); close(); });
+      sheet.addEventListener('close', () => row.removeAttribute('aria-selected'));
+    });
+    </script>
+  </div>
+
+  <div class="fc-stack" style="--fc-gap:16px">
+    <div class="fc-section-head">
       <div><h3 class="text-heading-20">Undo toast</h3></div>
       <div class="fc-section-head-actions"><button type="button" class="fc-button" data-variant="secondary" data-size="small" id="mo-undo">Remove a leg</button></div>
     </div>

@@ -57,7 +57,8 @@ Implemented in `css/data.css` as `.fc-sheet`.
 - The body scrolls (`overscroll-behavior: contain`); the footer stays pinned with a hairline above it. Page scroll locks while the modal is open.
 - Tabs follow the APG tabs pattern: arrow keys, Home and End move selection; only the selected tab is in the tab order.
 - Motion: slides in 16px over 300ms (`--fc-duration-overlay`, standard easing) with a backdrop fade; none under reduced motion.
-- Edge glint hook: `--fc-glint-edge` names the edge facing the page (left; right for `data-side="left"`; top for a full-screen phone sheet). `js/dots.mjs` ripples dots along it as the sheet opens (`patterns/moments.md`). The sheet's spring open uses `--fc-ease-emphasized` over `--fc-duration-sheet`, and its close `--fc-ease-exit`.
+- Edge glint hook: `--fc-glint-edge` names the edge facing the page (left; right for `data-side="left"`; top for a full-screen phone sheet). `js/dots.mjs` ripples dots along it as the sheet opens (`patterns/moments.md`), on a stage hosted in the sheet, since a modal sits above the page's stage. While the ripple plays (`data-glint`) the sheet lets its edge dots past its bounds.
+- Spring motion, `data-motion="spring"` (the gem sheet): opens from off its side, or from the bottom for a full-screen phone sheet, on `--fc-ease-emphasized` over `--fc-duration-sheet` (460ms), and closes back out on `--fc-ease-exit` over `--fc-duration-overlay` (300ms), no spring. A dialog closes at once, so set `data-closing`, wait for the sheet's own `animationend`, then call `close()`; Escape does the same from the `cancel` event. Reduced motion opens and closes at once.
 - Title is the pick, not a sentence. Do not repeat the close action in the footer.
 
 ### One scroll with section tabs `[F]`

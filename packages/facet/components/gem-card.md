@@ -21,6 +21,7 @@ Hidden Gems pieces built only from Facet tokens, promoted from the approved wire
 - `.fc-gem-row`, the phone form of a board row: rating, player with position and matchup, then price over edge (`.fc-gem-row-end`). A list of them is `.fc-gem-list`.
 - `.fc-gem-item` (CSS in `css/slip.css`): a list item holding the row link and its slip button, a small square button (`data-variant="secondary"` with a plus to add, `tertiary` with a check once on the slip). The two share the row's hairline. Never put the button inside the link. A row with no button (Fool's Gold) spans both lanes, so its name and label keep the room.
 - The button's accessible name says the action and the player: "Add James Cook to slip", "Remove James Cook from slip".
+- `data-checked` on `.fc-gem-item`: the gem is on the slip. The fill step a checked table row takes (`tr[data-checked]`), bled 8px past each side. The button's check is the second cue.
 
 ## Price chip
 - `.fc-price`: a decimal price on a quiet fill, tabular figures.

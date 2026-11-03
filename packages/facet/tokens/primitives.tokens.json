@@ -1468,6 +1468,11 @@
         "$type": "duration",
         "$value": "200ms"
       },
+      "pop": {
+        "$type": "duration",
+        "$value": "220ms",
+        "$description": "A count answering a change: the rail slip's leg count when a gem is added."
+      },
       "overlay": {
         "$type": "duration",
         "$value": "300ms"

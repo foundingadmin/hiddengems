@@ -17,6 +17,18 @@ and the `lesson` line of the last 5 files in `ops/sprint/sprints/`. Act on them 
 - Staging alias: https://hidden-gems-webapp-git-staging-founding-creative-projects.vercel.app
 - Sprint id: `yyyy-mm-dd` (add `-2` and up for a second sprint that day). Sprint branch: `sprint/<id>`.
 
+## Session size
+This session holds every report, so keep a sprint to one session and a session to one sprint:
+- At most 8 routed entries per sprint (triage step 4).
+- After a sprint closes, tell the principal to start a fresh session for the next `go`.
+- If the context gets long mid-sprint (the harness warns, or a punchlist round is still ahead with many entries),
+  commit the sprint file to the sprint branch, push it, and tell the principal to type `go` in a fresh session.
+
+## Resume
+A fresh session that finds a sprint file with entries still `building` or `ready` (or a `sprintBranch` not yet merged
+into `staging`) continues that sprint from the statuses it records instead of triaging again: builders that never
+reported are treated as failed and their entries dropped; ready entries go to Merge.
+
 ## 1. Triage
 1. `git fetch origin staging main`. List every unresolved toolbar thread (`list_toolbar_threads`), and read each one
    with its page, selector and branch. Threads on production count the same as staging threads.
@@ -49,8 +61,21 @@ When every builder has reported (or failed):
    order, and marks conflicts `dropped`. Commit the sprint file and the roadmap lines on the sprint branch.
 3. `pnpm install && pnpm check`, `node ops/sprint/lint-words.mjs origin/staging`, then push `sprint/<id>`.
 4. Checks fail: spawn one `ci-fixer` with the failure output, the sprint branch and the traces in
-   `ops/sprint/traces/`. It fixes on the sprint branch and reports. If it cannot, drop the entry whose files fail
-   (rebuild the sprint branch without it), reply on its thread, and continue.
+   `ops/sprint/traces/`. It fixes on the sprint branch and reports. If it cannot, apply the drop rule to the entry
+   whose files fail.
+
+## Drop rule
+One bad branch never holds up the sprint. Drop an entry when:
+- its builder reports `Failed`, or does not finish;
+- it conflicts on the sprint branch (`merge.mjs` drops it for you);
+- checks fail in its files and the `ci-fixer` cannot fix them in one pass;
+- its punchlist round leaves a `Verdict` item unfixed, or the verifier lists it under `Park`.
+
+To drop: `node ops/sprint/merge.mjs <id> --drop <entry-id> --reason "<one line>"` rebuilds the sprint branch
+without it. Rerun the checks and push. Never `--force`: if the sprint branch was already pushed, rebuild it under a
+new name with `--branch sprint/<id>-2` and use that one from here on. Reply on its thread in one line with why it was
+dropped. If the thread is resolved, reopen it (`change_toolbar_thread_resolve_status`). It stays open, so the next
+sprint's triage picks it up again, with the drop reason in its brief. Ship the rest.
 
 ## 5. Verify, once per sprint
 Spawn one `verifier` with the sprint branch, the routed entries and the screenshot folders. It returns one punchlist

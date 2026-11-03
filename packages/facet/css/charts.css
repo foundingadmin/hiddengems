@@ -561,6 +561,8 @@
 .fc-log-time { white-space: nowrap; color: var(--fc-text-secondary); }
 .fc-log-message { min-width: 16rem; color: var(--fc-text-primary); }
 .fc-log-id { font-family: var(--fc-font-mono); font-size: 12px; color: var(--fc-text-secondary); white-space: nowrap; }
+/* In a key/value pair the ID wraps instead of widening the page; in a table cell it stays on one line. */
+.fc-description dd .fc-log-id { white-space: normal; overflow-wrap: anywhere; }
 /* Every log row opens its full record in a sheet: the whole row is clickable, a right chevron at the end. */
 .fc-log-open { width: 32px; padding-block: 4px !important; text-align: right; }
 .fc-log-open .fc-button { color: var(--fc-text-secondary); }
@@ -570,6 +572,162 @@ tr[data-clickable] { cursor: pointer; transition: background-color var(--fc-dura
 #log-sheet-note:not(:empty) { margin-bottom: var(--fc-space-4); }
 tr[data-clickable]:hover .fc-log-open .fc-button { color: var(--fc-text-primary); }
 
+/* ================================================================== Log table [F]
+   .fc-table[data-variant="log"] inside .fc-table-wrap.text-copy-13-mono (patterns/data-ops.md, "Log table").
+   Read as history, like the vercel.com runtime log: dense mono rows, time first, square row ends, cells on
+   one baseline. Rows that need a look carry data-level ("warning" or "error"): a tint plus the level word in
+   the row, so color is never the only cue (CON-09). */
+.fc-table[data-variant="log"] { font: inherit; }
+.fc-table[data-variant="log"] thead th { font-family: var(--fc-font-sans); }
+.fc-table[data-variant="log"] td,
+.fc-table[data-variant="log"] tbody th { height: auto; padding-block: var(--fc-space-1); vertical-align: baseline; }
+.fc-table[data-variant="log"] tbody tr > * { border-radius: 0; }
+.fc-table[data-variant="log"] tbody tr:hover { background: var(--fc-surface-fill); }
+.fc-table[data-variant="log"] tbody tr[data-level="warning"] { background: var(--fc-status-warning-bg); }
+.fc-table[data-variant="log"] tbody tr[data-level="error"] { background: var(--fc-status-error-bg); }
+.fc-table[data-variant="log"] tr[data-level] .fc-level { display: inline-flex; margin-right: var(--fc-space-2); }
+.fc-log-source, .fc-log-level { white-space: nowrap; }
+/* Second line under a message (the first warning of a run, a line's data): secondary, on its own line. */
+.fc-log-detail { display: block; color: var(--fc-text-secondary); }
+/* Selection on a level row (owner request, 2026-11-03): the open row keeps its tint and takes the next
+   step of it, and every selected log row gets a 2px leading bar in primary text. The bar is the shape cue,
+   so selection never relies on a fill change alone, and a warning stays amber while it is open. */
+.fc-table[data-variant="log"] tbody tr[aria-selected="true"] { background: var(--fc-surface-fill-hover); }
+.fc-table[data-variant="log"] tbody tr[aria-selected="true"][data-level="warning"] { background: color-mix(in oklab, var(--fc-status-warning-bg), var(--fc-status-warning-border) 45%); }
+.fc-table[data-variant="log"] tbody tr[aria-selected="true"][data-level="error"] { background: color-mix(in oklab, var(--fc-status-error-bg), var(--fc-status-error-border) 45%); }
+.fc-table[data-variant="log"] tbody tr[aria-selected="true"] > :first-child { box-shadow: inset 2px 0 0 var(--fc-text-primary); }
+/* Narrow containers (owner request, 2026-11-03): under 640px of table width each row stacks, so the message
+   is never off screen. Time, source, level and numbers share the first line (numbers pushed to the end);
+   the message (.fc-log-message) takes the full second line. Header labels hide visually; the caption stays.
+   Cell order is the reading order, so the row still reads as a sentence where table semantics drop. */
+@container (max-width: 640px) {
+  .fc-table[data-variant="log"],
+  .fc-table[data-variant="log"] tbody { display: block; }
+  .fc-table[data-variant="log"] thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .fc-table[data-variant="log"] tbody tr { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--fc-space-3); padding: var(--fc-space-2); }
+  .fc-table[data-variant="log"] tbody tr + tr { border-top: 1px solid var(--fc-border-default); }
+  .fc-table[data-variant="log"] tbody tr > *,
+  .fc-table[data-variant="log"] thead + tbody tr:first-child > * { padding: 0; height: auto; border-top: 0; }
+  .fc-table[data-variant="log"] tbody tr > [data-align="numeric"] { margin-left: auto; width: auto; }
+  .fc-table[data-variant="log"] tbody tr > .fc-log-message { order: 1; flex: 1 0 100%; min-width: 0; padding-top: var(--fc-space-1); overflow-wrap: anywhere; }
+  .fc-table[data-variant="log"] tbody tr > td[colspan] { flex: 1 0 100%; }
+  .fc-table[data-variant="log"] tbody tr[aria-selected="true"] { box-shadow: inset 2px 0 0 var(--fc-text-primary); }
+  .fc-table[data-variant="log"] tbody tr[aria-selected="true"] > :first-child { box-shadow: none; }
+}
+
+/* Row link [F]: the cell that opens a row's record (usually the time) holds the row's one link. The link
+   stretches over the whole row, so the row is the hit target (INT-04); at rest the link text carries a quiet
+   underline, on row hover the row fills and the underline darkens. Keyboard focus rings the whole row.
+   Never put a second link or button in a row that has one. */
+.fc-table tbody tr:has(.fc-row-link) { position: relative; cursor: pointer; }
+.fc-row-link { color: var(--fc-text-primary); text-decoration: underline; text-decoration-color: var(--fc-border-hover); text-underline-offset: 3px; outline: none; }
+.fc-row-link::before { content: ""; position: absolute; inset: 0; z-index: 1; }
+.fc-table tbody tr:has(.fc-row-link):hover { background: var(--fc-surface-fill); }
+.fc-table tbody tr:has(.fc-row-link):hover .fc-row-link { text-decoration-color: currentColor; }
+.fc-row-link:focus-visible { box-shadow: none; }
+.fc-row-link:focus-visible::before { box-shadow: inset 0 0 0 2px var(--fc-focus-color); }
+
+/* Log data [F]: a line's structured data in mono under its message. Short data sits inline as
+   <code class="fc-log-data">; long data folds behind a summary of its keys:
+   <details class="fc-log-data"><summary>names (14)</summary><pre>{ ... }</pre></details>
+   The summary is a real control: a chevron that turns when open, primary on hover, a focus ring. */
+.fc-log-data { display: block; margin: var(--fc-space-0_5) 0 0; color: var(--fc-text-secondary); font-family: var(--fc-font-mono); overflow-wrap: anywhere; }
+.fc-log-data > summary {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--fc-space-1);
+  border-radius: var(--fc-radius-xs);
+  list-style: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+.fc-log-data > summary::-webkit-details-marker { display: none; }
+.fc-log-data > summary::before {
+  content: "";
+  flex: 0 0 auto;
+  align-self: center;
+  width: 12px;
+  height: 12px;
+  background: currentColor;
+  -webkit-mask: var(--fc-chevron-right) center / 12px 12px no-repeat;
+          mask: var(--fc-chevron-right) center / 12px 12px no-repeat;
+  transition: transform var(--fc-duration-fast) ease;
+}
+.fc-log-data[open] > summary::before { transform: rotate(90deg); }
+.fc-log-data > summary:hover { color: var(--fc-text-primary); }
+.fc-log-data > summary:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+.fc-log-data > pre {
+  margin: var(--fc-space-1) 0 0;
+  padding: var(--fc-space-2) var(--fc-space-3);
+  border-radius: var(--fc-radius-sm);
+  background: var(--fc-surface-subtle);
+  box-shadow: inset 0 0 0 1px var(--fc-border-default);
+  color: var(--fc-text-primary);
+  font: inherit;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  tab-size: 2;
+}
+
+/* ================================================================== Row detail [F]
+   One row's full record shown inline above its table (patterns/data-ops.md, "Row detail"), for a record
+   worth keeping open while reading the rest: a run and every line it logged. Header (title, time, Close)
+   stays on one line at every width; then the record; then sections such as a lines table.
+   <section class="fc-row-detail" aria-labelledby="run-h">
+     <header class="fc-row-detail-head"><div><h2 class="fc-row-detail-title" id="run-h">Odds</h2>
+       <p class="fc-row-detail-meta"><time>Nov 02 9:48:58 PM</time> · <span data-relative>Just now</span></p></div>
+       <a class="fc-button" data-variant="secondary" data-size="small" href="?" aria-label="Close run">Close</a></header>
+     <div class="fc-row-detail-body">note, description</div>
+     <div class="fc-row-detail-section"><h3 class="text-heading-14">Log lines</h3>table</div></section>
+   The ring stays neutral: the note and the status word carry any level, so the tone shows once. */
+.fc-row-detail {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-radius: var(--fc-radius-lg);
+  background: var(--fc-surface-canvas);
+  box-shadow: var(--ds-shadow-border);
+  scroll-margin-top: var(--fc-scroll-offset, 0px);
+}
+.fc-row-detail-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: var(--fc-space-4); padding: var(--fc-space-5) var(--fc-space-5) 0; }
+.fc-row-detail-title { margin: 0; font: 600 20px/28px var(--fc-font-sans); letter-spacing: -0.4px; color: var(--fc-text-primary); overflow-wrap: anywhere; }
+.fc-row-detail-meta { margin: var(--fc-space-0_5) 0 0; font: 400 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); }
+.fc-row-detail-body { display: flex; flex-direction: column; gap: var(--fc-space-5); padding: var(--fc-space-5); min-width: 0; }
+.fc-row-detail-section { display: flex; flex-direction: column; gap: var(--fc-space-3); padding: var(--fc-space-5); border-top: 1px solid var(--fc-border-default); min-width: 0; }
+.fc-row-detail-section > :is(h3, h4) { margin: 0; }
+@container (max-width: 480px) {
+  .fc-row-detail-head { padding: var(--fc-space-4) var(--fc-space-4) 0; }
+  .fc-row-detail-body, .fc-row-detail-section { padding: var(--fc-space-4); }
+}
+
+/* ================================================================== Scatter [F]
+   Spec: components/chart-card.md, "Scatter". Every item as a point on a shared x scale (log for odds) and a
+   y value. <figure class="fc-chart" data-kind="scatter" role="img" aria-label="..."> holds one <svg> that
+   covers the plot area only; the figure's padding is the axis lanes. All mark positions are percentages of
+   the plot, so the chart needs no measuring and text stays 12px at any width:
+     <circle class="fc-chart-point" data-gem cx="38.2%" cy="61%" r="4"><title>...</title></circle>
+     <circle class="fc-chart-ring" cx="38.2%" cy="61%" r="8"/>      top N, ringed in primary
+     <rect class="fc-chart-range" x="20%" width="15%" y="0" height="100%"/>   optional shaded band
+   Color: a point that is a gem takes the gem token (purple has that one job); every other point is the
+   muted gray series. The ring is the second cue for rank, the legend names both. */
+.fc-chart[data-kind="scatter"] {
+  --fc-chart-height: 280px;
+  --_gutter: var(--fc-chart-gutter, 40px);
+  padding: var(--fc-space-8) var(--fc-space-2) var(--fc-space-10) var(--_gutter);
+}
+.fc-chart[data-kind="scatter"][data-size="small"] { --fc-chart-height: 220px; }
+.fc-chart[data-kind="scatter"] > svg { overflow: visible; }
+.fc-chart[data-kind="scatter"] .fc-chart-point { stroke-width: 1; }
+.fc-chart-point[data-series="muted"] { --_s: var(--fc-chart-muted); }
+:is(.fc-chart, .fc-legend) [data-gem] { --_s: var(--fc-gem-solid); }
+.fc-chart-ring { fill: none; stroke: var(--fc-text-primary); stroke-width: 1.5; }
+.fc-chart-range { fill: var(--fc-surface-fill); }
+.fc-chart-range-label { fill: var(--fc-text-secondary); font: 400 12px/16px var(--fc-font-sans); }
+.fc-chart-axis-title { fill: var(--fc-text-secondary); font: 400 12px/16px var(--fc-font-sans); }
+/* Legend keys for a scatter: a gem dot and a ring. */
+.fc-legend-key[data-shape="ring"] { width: 12px; height: 12px; background: none; box-shadow: inset 0 0 0 1.5px var(--fc-text-primary); }
+
 @media (prefers-reduced-motion: reduce) {
-  .fc-meter-fill, .fc-progress > .fc-progress-fill, .fc-facet-group > summary svg, .fc-chart-card-drill { transition: none; }
+  .fc-meter-fill, .fc-progress > .fc-progress-fill, .fc-facet-group > summary svg, .fc-chart-card-drill, .fc-log-data > summary::before { transition: none; }
 }

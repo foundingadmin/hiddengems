@@ -54,7 +54,24 @@ When the stat itself says something needs doing, one small CTA sits under the ba
 - Labels say what was measured, not a teaser. The basis is a disclosure, so it stays even when space is tight.
 - A missing value renders `–` with `aria-label="Unknown"`.
 
+## Gem rating as the value `[F]`
+CSS in `css/components.css` (`.fc-gem[data-size="stat"]`). Specimen: `preview/index.html#batch2-forms`.
+
+When a stat's value is a gem rating, the gem mark replaces `.fc-stat-value` at the same role: number 600 24/32, the gem glyph one em tall, 8px between. So a gem rating beside plain stats reads as an equal peer (rule 7), and the purple intensity still rises with the number.
+```html
+<p class="fc-stat-figure">
+  <span class="fc-gem" data-size="stat" data-live style="--rating: 37" aria-label="Gem rating 37">
+    <svg viewBox="0 0 24 22" aria-hidden="true">…</svg><span>37</span>
+  </span>
+  <span class="fc-stat-qualifier">Gem</span>
+</p>
+```
+- Keep the qualifier ("Gem") beside it: the shape and the word both say what kind of result it is, so the purple is never the only cue.
+- `data-live` keeps the glint; reduced motion stops it (ANI-01). Fool's Gold and no-gem results use their own words at the value role, not a gem.
+- Use it in a stat only. In tables and rows the default and `lg` sizes stay.
+
 ## Hidden Gems usage
+- Rating lab, Try a prop: the Result stat shows the gem at stat size beside Carat, Edge and Clarity.
 - Track record strip on History: Return on stake `+6.2%` (41 picks, Weeks 1 to 8), Hit rate `55%` `23 of 42`, Average gap `+4.0` `pts`, Beat the closing line `29` `of 41`.
 - Slate summary above the table: picks, average gap, go verdicts, odds freshness.
 - Data health overview: Status carries "Fix all" (or "Fix" for one source) in `.fc-stat-action` while any source needs a look.

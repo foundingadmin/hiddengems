@@ -975,3 +975,77 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
 .fc-link-action[data-tone="quiet"] { font-weight: 400; color: var(--fc-text-secondary); }
 .fc-link-action[data-tone="quiet"]:is(:hover, :focus-visible) { color: var(--fc-text-primary); }
 .fc-link-action:is(:hover, :focus-visible)::after { animation: none; } }
+
+/* ------------------------------------------------------------------ Collapse [F]
+   Spec: components/collapse.md. Native <details>, so Enter and Space toggle and the content stays in the DOM.
+   <details class="fc-collapse" data-size="small">
+     <summary><span class="fc-collapse-title">Clarity</span><span class="fc-collapse-value">71 of 100</span>
+       <svg class="fc-collapse-chevron" aria-hidden="true">...</svg></summary>
+     <div class="fc-collapse-body">...</div></details>
+   A lone collapse draws no rules; .fc-collapse-group draws one between items and at its edges. The trailing
+   value (optional) states the group's current result, so a closed group still answers its question. */
+.fc-collapse { min-width: 0; }
+.fc-collapse > summary {
+  --_h: 48px;
+  display: flex;
+  align-items: center;
+  gap: var(--fc-space-3);
+  min-height: var(--_h);
+  margin-inline: calc(-1 * var(--fc-space-2));
+  padding: var(--fc-space-2);
+  border-radius: var(--fc-radius-sm);
+  list-style: none;
+  cursor: pointer;
+  color: var(--fc-text-primary);
+  transition: background-color var(--fc-duration-fast) ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.fc-collapse > summary::-webkit-details-marker { display: none; }
+.fc-collapse > summary:hover { background: var(--fc-surface-fill); }
+.fc-collapse > summary:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }
+.fc-collapse-title { flex: 1 1 auto; min-width: 0; font: 500 16px/24px var(--fc-font-sans); letter-spacing: -0.32px; }
+.fc-collapse-value { flex: 0 0 auto; font: 400 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fc-collapse-chevron { flex: 0 0 auto; width: 16px; height: 16px; color: var(--fc-text-secondary); transition: transform var(--fc-duration-fast) ease; }
+.fc-collapse[open] > summary .fc-collapse-chevron { transform: rotate(180deg); }
+.fc-collapse-body { display: flex; flex-direction: column; gap: var(--fc-space-5); padding-block: var(--fc-space-3) var(--fc-space-2); min-width: 0; }
+.fc-collapse[data-size="small"] > summary { --_h: var(--fc-control-large); padding-block: var(--fc-space-1); }
+.fc-collapse[data-size="small"] .fc-collapse-title { font: 500 14px/20px var(--fc-font-sans); letter-spacing: 0; }
+.fc-collapse[data-size="small"] .fc-collapse-value { font-size: 13px; }
+.fc-collapse-group { display: flex; flex-direction: column; border-block: 1px solid var(--fc-border-default); }
+.fc-collapse-group > .fc-collapse + .fc-collapse { border-top: 1px solid var(--fc-border-default); }
+.fc-collapse-group > .fc-collapse > summary { margin-inline: 0; border-radius: 0; }
+.fc-collapse-group > .fc-collapse > .fc-collapse-body { padding-bottom: var(--fc-space-5); }
+/* Open and close animate where the browser can size to auto; elsewhere they snap (progressive). */
+@supports (interpolate-size: allow-keywords) {
+  .fc-collapse { interpolate-size: allow-keywords; }
+  .fc-collapse::details-content {
+    height: 0;
+    overflow: clip;
+    transition: height var(--fc-duration-popover) var(--fc-ease-swift), content-visibility var(--fc-duration-popover) allow-discrete;
+  }
+  .fc-collapse[open]::details-content { height: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fc-collapse::details-content, .fc-collapse-chevron { transition: none; }
+}
+
+/* ------------------------------------------------------------------ Gem mark at stat size [F]
+   The gem rating as the value of a stat (.fc-stat-figure): number at the .fc-stat-value role, 600 24/32,
+   gem glyph one em, so a gem rating and a plain stat beside it read as equal peers (rule 7). */
+.fc-gem[data-size="stat"] { gap: var(--fc-space-2); font: 600 24px/32px var(--fc-font-sans); letter-spacing: -0.96px; font-variant-numeric: tabular-nums; }
+.fc-gem[data-size="stat"] > svg { width: 1em; height: 1em; }
+
+/* ------------------------------------------------------------------ Description, compact [F]
+   .fc-description[data-compact]: in a column narrower than 288px (desktop grids) each term sits above its
+   value; once a pair has the room (one column on a phone) the term moves left and the value right, so a
+   phone shows one line per pair instead of two. No container query needed: each pair flips on its own width.
+   A pair that must span the grid (long JSON, a sentence) takes .fc-description-wide and always stacks. */
+.fc-description[data-compact] { row-gap: var(--fc-space-4); }
+.fc-description[data-compact] > div { flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: var(--fc-space-2) var(--fc-space-4); }
+.fc-description[data-compact] > div > :is(dt, dd) { min-width: 0; flex-basis: calc((var(--fc-space-24) * 3 - 100%) * 999); }
+.fc-description[data-compact] > div > dt { flex-grow: 2; }
+.fc-description[data-compact] > div > dd { flex-grow: 3; overflow-wrap: anywhere; }
+.fc-description > .fc-description-wide { grid-column: 1 / -1; }
+.fc-description[data-compact] > .fc-description-wide { flex-direction: column; flex-wrap: nowrap; }
+.fc-description[data-compact] > .fc-description-wide > :is(dt, dd) { flex-basis: auto; }

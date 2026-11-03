@@ -60,3 +60,36 @@ Owner question, 2026-11-02. A line whose subject lives elsewhere in the app link
 - The link covers the whole row. At rest the gray in-app arrow (→, `--fc-arrow-in`) at the row's end says it opens. On hover the row fills and the arrow darkens and slides through, exactly like the action link.
 - Lines with nowhere to go have no arrow, so the arrow always means something.
 - Arriving, the record glows in the brand tint for 1.8 seconds and settles (`:target`, `fc-arrive`); reduced motion shows a focus outline instead. Deep links land clear of sticky headers through `--fc-scroll-offset`.
+
+## Source slot `[F]`
+
+Owner request, 2026-11-03. CSS in `css/lists.css` (`.fc-feed-source`). Specimen: `preview/index.html#batch2-forms`.
+
+### Purpose
+A dated history row whose record lives outside the app (a commit, a document, a pull request) names where it is recorded, so every line can be checked.
+
+### Anatomy
+```html
+<li class="fc-feed-row">
+  <span class="fc-feed-icon" title="Code"><svg aria-hidden="true">…</svg></span>
+  <span class="fc-feed-text"><strong>New gems</strong> row added: a gem joins when its rating reaches 90.</span>
+  <a class="fc-link-action fc-feed-source" data-external data-tone="quiet" data-mono
+     href="https://github.com/…/commit/8ef17cb" target="_blank" rel="noopener noreferrer">8ef17cb</a>
+</li>
+```
+- The source link takes the time lane: right-aligned, 13/20, on the first line. The day heading carries the date, so the row has no time.
+- An external action link (↗) in the quiet tone: secondary at rest, primary on hover and focus, so it never outweighs the sentence (DES-07).
+- `data-mono` sets machine labels (a commit SHA) in mono; names of documents stay sans ("Architecture", "PRD 8").
+- Under 480px of feed width the source drops under the sentence, aligned with it.
+
+### States
+Rest, hover and focus (primary, the arrow passes through; reduced motion keeps it still), narrow (under the sentence).
+
+### Rules
+- One source per row, the most specific record (the commit, not the repo). Its label is the record's own short name.
+- The link opens a new tab and says so to screen readers (`data-external` adds ", opens in a new tab", INT-27).
+- A row with a source never also links its subject (`.fc-feed-subject`); one link per row.
+- Rows stay sentences: the change in `<strong>`, then what it did.
+
+### Hidden Gems usage
+Rating lab, Update history: each change to the rating or the model, grouped by day, with its commit, document or pull request.

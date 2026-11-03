@@ -80,3 +80,53 @@ Owner feedback, 2026-11-02: "I don't know if this movement is positive or negati
 **Label the reading in place.** When the chart's shape carries the reading (a gap to a target), label it where it happens instead of in a takeaway line: the value at open inside the wedge ("+7.1 pts at open") and what is left now beside the bracket ("+2.2 pts left", edge color). Use the takeaway line only when the reading is not a point on the chart (reach at your books).
 
 **Ghosted future.** When the movement has a deadline (kickoff), the chart runs past Now to the event: a faint band marks the future, a dashed gray projection continues at the recent pace, and the zone past the target is tinted red and labelled "No value". Where the projection crosses into it, a red marker names when the edge would flip ("Flips in ~2.5d"). Projections are always dashed, gray and labelled, never drawn like data; the summary for screen readers says the same in words.
+
+## Scatter `[F]`
+
+CSS in `css/charts.css` (`.fc-chart[data-kind="scatter"]`). Specimen: `preview/index.html#batch2-charts`.
+
+### Purpose
+Shows where every item of a set sits on two measures at once, so a weighting reads as a shape: which odds a formula rewards, where the gems cluster, which ones lead.
+
+### Anatomy
+```html
+<ul class="fc-legend" role="list">
+  <li class="fc-legend-item"><span class="fc-legend-key" data-gem></span><span class="fc-legend-name">Clears the posted price</span><span class="fc-legend-value">38</span></li>
+  <li class="fc-legend-item"><span class="fc-legend-key" data-series="muted"></span><span class="fc-legend-name">Misses</span><span class="fc-legend-value">88</span></li>
+  <li class="fc-legend-item"><span class="fc-legend-key" data-shape="ring"></span><span class="fc-legend-name">Top 10</span></li>
+</ul>
+<figure class="fc-chart" data-kind="scatter" role="img" aria-label="Score against odds for 126 props, 38 clear the posted price. The top 10 are listed in the table below.">
+  <svg aria-hidden="true" focusable="false">
+    <rect class="fc-chart-range" x="23%" width="21%" y="0" height="100%"/>
+    <text class="fc-chart-range-label" x="33.5%" y="0" dy="14" text-anchor="middle">Usual range</text>
+    <line class="fc-chart-grid" x1="0" x2="100%" y1="50%" y2="50%"/>
+    <line class="fc-chart-baseline" x1="0" x2="100%" y1="100%" y2="100%"/>
+    <text class="fc-chart-tick" x="-8" y="50%" dy="4" text-anchor="end">50</text>
+    <text class="fc-chart-tick" x="18.4%" y="100%" dy="18" text-anchor="middle">2</text>
+    <text class="fc-chart-axis-title" x="100%" y="100%" dy="34" text-anchor="end">Odds, log scale</text>
+    <text class="fc-chart-axis-title" x="0" y="0" dy="-12">Score</text>
+    <circle class="fc-chart-point" data-series="muted" cx="61%" cy="72%" r="4"><title>Jake Ferguson, 9.50, 12.0</title></circle>
+    <circle class="fc-chart-point" data-gem cx="38%" cy="31%" r="4"><title>Foster Moreau, 7.00, 10.0</title></circle>
+    <circle class="fc-chart-ring" cx="38%" cy="31%" r="8"/>
+  </svg>
+</figure>
+```
+- The figure's padding is the axis lanes: `--fc-chart-gutter` (40px) on the left for y ticks, 40px below for x ticks and the x title, 32px above for the y title. The `<svg>` covers the plot only, so every mark position is a percentage of the plot. Nothing is measured and text stays 12px at any width (LAY-07).
+- Height 280 (220 with `data-size="small"`), including the lanes.
+- Points: 4px radius with a 1px canvas stroke so overlaps stay countable. A gem point (`data-gem`) takes `--fc-gem-solid`; every other point is the muted gray series. Draw gray points first so gems sit on top.
+- Top N: an 8px ring in primary text around each leading point (`.fc-chart-ring`). The ring is the shape cue for rank; color never carries it alone (CON-09).
+- Optional band (`.fc-chart-range` plus `.fc-chart-range-label`): a gray fill for a range the reader cares about, such as a usual odds range. Gray only, labelled in place.
+- Horizontal gridlines at 3 to 5 round y ticks; the zero line is the baseline. A log x axis labels round values only (1.5, 2, 3, 5, 10, 20).
+
+### States
+Filled; sparse (a filter leaves few points: the chart keeps its axes and domain, the legend counts say how many); empty (the ghost and message from "Failures"). Hover shows each point's native title (player, odds, value).
+
+### Rules
+- Purple appears only for points that are gems, through the gem token (DESIGN.md, hue allocation). Never use another series hue to mean "good".
+- The legend counts each kind and names the ring. Leave out a kind with no points rather than show it at 0.
+- A scatter of more than about 20 points is not keyboard navigable point by point. Pair it with the table of the same records (here, the top 10) and say so in the figure's `aria-label` (CON-22, DES-05).
+- One shared domain for every view of the same set (switching formulas keeps the odds axis fixed), so shapes compare (rule 5).
+- State the scale in the axis title when it is not linear ("Odds, log scale").
+
+### Hidden Gems usage
+Rating lab, Formula comparison: each Week 9 prop's score under the chosen formula against its odds, gems in purple, the top 10 ringed, above the top 10 table.

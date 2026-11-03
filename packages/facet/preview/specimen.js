@@ -56,6 +56,6 @@ if (window.FacetTeams) {
   T.mountTeams(document, T.findTeam);
 }
 if (window.FacetTips) window.FacetTips.mountTips();
-if (window.FacetForms) window.FacetForms.bindOptionHelpers();
+if (window.FacetForms) { window.FacetForms.bindOptionHelpers(); window.FacetForms.bindSliders(); }
 // Countdowns print once at load. The sample data is frozen at 6:00 PM ET on Nov 2, so the specimen counts from there.
 if (window.FacetTime) window.FacetTime.stampTimes(document, Date.parse('2026-11-02T18:00:00-05:00'));

@@ -300,3 +300,16 @@
 /* Size only: the time family comes from .fc-timestamp. */
 .fc-feed-time { font-size: 13px; line-height: 20px; color: var(--fc-text-secondary); text-align: right; white-space: nowrap; }
 .fc-feed-more { width: 100%; }
+/* Source slot [F] (owner request, 2026-11-03): a dated history row recorded outside the app (a commit, a doc,
+   a pull request) puts its source link where the time goes. The day heading already carries the date, so the
+   row has no time. The link is an external action link in the quiet tone, so it never outweighs the sentence;
+   data-mono sets machine labels (a commit SHA) in mono. Under 480px the source drops under the sentence.
+   <a class="fc-link-action fc-feed-source" data-external data-tone="quiet" data-mono href="..." target="_blank"
+      rel="noopener noreferrer">fc7eddd</a> */
+.fc-feed { container: fc-feed / inline-size; }
+.fc-feed-source { grid-column: 3; justify-self: end; font-size: 13px; line-height: 20px; white-space: nowrap; }
+.fc-feed-source[data-mono] { font-family: var(--fc-font-mono); }
+@container fc-feed (max-width: 480px) {
+  .fc-feed-row:has(> .fc-feed-source) { row-gap: var(--fc-space-1); }
+  .fc-feed-source { grid-column: 2; justify-self: start; }
+}

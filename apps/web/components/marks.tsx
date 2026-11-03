@@ -34,7 +34,7 @@ const GEM_PATHS = (
 
 /** The gem rating mark (packages/facet, .fc-gem): one 0 to 100 number, purple deepening with it.
  * Fool's Gold is the hollow dashed gem with its label, never purple. */
-export function GemMark({ kind, rating, delay, size }: { kind: string; rating: number | null; delay?: number; size?: 'lg' }) {
+export function GemMark({ kind, rating, delay, size }: { kind: string; rating: number | null; delay?: number; size?: 'lg' | 'stat' }) {
   if (kind === 'fools-gold') {
     return (
       <span className="hg-gem-cell">

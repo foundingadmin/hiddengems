@@ -315,6 +315,11 @@ th.fc-numeric > .fc-th-sort { flex-direction: row-reverse; }
 .fc-filter-chip .fc-filter-remove svg,
 .fc-filter-chip .fc-filter-info svg { width: 14px; height: 14px; color: currentColor; }
 .fc-filter-info { margin-right: -6px; }
+/* Removable chip [F]: key, value and remove, with no edit menu (a filter set by a link, such as ?source=).
+   <span class="fc-filter-chip" role="group" aria-label="Source filter"><span class="fc-filter-key">Source</span>
+   <span class="fc-filter-value">Results</span><a class="fc-filter-remove" href="?" aria-label="Show all sources">x</a></span>
+   The remove sits 4px from the pill's end, as it does on an editable chip. */
+.fc-filter-chip:has(> .fc-filter-remove):not(:has(> .fc-filter-edit)) { padding-right: 0; }
 
 /* Suggestion: the whole chip is a button that applies the value. Dashed edge, muted value [G]. */
 button.fc-filter-chip { cursor: pointer; transition: background-color var(--fc-duration-fast) ease; }

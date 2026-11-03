@@ -39,6 +39,7 @@ export interface Formula {
   /** What the owner decided on Nov 2 2026. */
   status: 'Live rating' | 'Live order' | 'Dropped';
   plain: string;
+  /** Pseudocode, one statement per line. */
   code: string;
   rewards: string;
   costs: string;
@@ -60,7 +61,7 @@ export const FORMULAS: readonly Formula[] = [
   {
     id: 'blend', name: 'Added blend', status: 'Dropped',
     plain: '60% edge plus 40% clarity, added. Props that miss the posted price are capped at 40.',
-    code: 'score = 100 × (0.6 × clamp(carat / 10) + 0.4 × clarity / 100); if not clears: score = min(score, 40)',
+    code: 'score = 100 × (0.6 × clamp(carat / 10) + 0.4 × clarity / 100)\nif not clears: score = min(score, 40)',
     rewards: 'Shorter odds and well known players with lots of games behind the read.',
     costs: 'A prop with no edge but a clean sample still scores 30 to 40, so most of its top 10 miss the posted price.',
     verdict: 'Adding clarity lets props with no edge float up.',
@@ -72,7 +73,7 @@ export const FORMULAS: readonly Formula[] = [
   {
     id: 'rating', name: 'Edge × clarity', status: 'Live rating',
     plain: 'Carat and clarity multiplied, so a gem needs both. Only props that clear the posted price are rated.',
-    code: `if not clears: no rating; rating = round(100 × clamp(carat / ${FULL_CARAT}, 0, 1) × clarity / 100)`,
+    code: `if not clears: no rating\nrating = round(100 × clamp(carat / ${FULL_CARAT}, 0, 1) × clarity / 100)`,
     rewards: 'Props where the model disagrees with the price and the read is solid.',
     costs: 'Ignores the odds, so a 6.0 and a 20.0 with the same edge rate the same.',
     verdict: 'Every top 10 pick clears the price. The number on the gem.',
@@ -90,7 +91,7 @@ export const FORMULAS: readonly Formula[] = [
   {
     id: 'order', name: 'Gate, then safest', status: 'Live order',
     plain: 'Only props that clear the posted price qualify, ranked by hit chance times clarity, so the likeliest real gem leads.',
-    code: 'if not clears: no score; score = hit chance × clarity / 100',
+    code: 'if not clears: no score\nscore = hit chance × clarity / 100',
     rewards: 'The shortest odds that still have a real edge.',
     costs: 'Some weeks the gate leaves few gems and none at your usual odds, so the board has to say so.',
     verdict: 'The order of the Gems board, paired with edge × clarity for the number.',

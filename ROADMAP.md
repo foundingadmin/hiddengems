@@ -81,6 +81,9 @@ freezing prices this week.
 - [x] Staging runs on an in-memory sample fixture, never a real database (decided Nov 3).
 - [x] 13 sample players a preview had written into production deleted on Nov 3, with their sample links.
 - [ ] Principal: remove the Preview-scoped `DATABASE_URL` in Vercel, so no preview holds production credentials.
+- [x] A scheduled Claude task checks each odds snapshot about 25 to 50 minutes after it (Sun 9:32, Tue 10:32, Sat
+      20:32 Denver) and runs a missed one from production Data health. Adding the Supabase connector to it in
+      claude.ai turns on its freeze gap check.
 - [ ] Principal: `ODDS_API_KEY`, `CRON_SECRET`, `BACKUP_GITHUB_TOKEN` and `BACKUP_GITHUB_REPO` set for Production only.
 - [ ] Data health shows today's Tue 10:07 AM opening snapshot. If it was missed, the next slot is Sat 7:47 PM; an off
       schedule pull spends credits and is the principal's call.

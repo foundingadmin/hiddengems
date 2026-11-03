@@ -247,6 +247,41 @@ export const bets = pgTable('bets', {
 }, (t) => [index().on(t.placedAt), index().on(t.status)]);
 
 /**
+ * A slip for one week (docs/prd.md F3.1): built from gems, sent to the sportsbook through its slip link, then
+ * marked placed, which writes one bet per leg so grading covers it. Current state, survives reloads.
+ */
+export const slips = pgTable('slips', {
+  id: uuid(),
+  season: smallint().notNull(),
+  week: smallint().notNull(),
+  /** draft, assessed, sent, placed (core SLIP_STATES) */
+  state: text().notNull().default('draft'),
+  /** suggested (built by the Jeweler, its appraisal covers it) or own (built or changed by Josh) */
+  play: text().notNull().default('own'),
+  /** The book it goes to; its slip link adds the picks (core buildSlipLink()). */
+  bookId: text().notNull().default('draftkings').references(() => books.id),
+  stake: numeric({ precision: 10, scale: 2 }),
+  /** The Jeweler's line on the whole slip, once it has appraised it (state assessed). */
+  appraisal: text(),
+  createdAt: createdAt(),
+  updatedAt: createdAt(),
+  sentAt: tstz(),
+  placedAt: tstz(),
+}, (t) => [index().on(t.season, t.week)]);
+
+/** The legs on a slip: a pick's selection with the posted price when it was added, and its bet once placed. */
+export const slipLegs = pgTable('slip_legs', {
+  slipId: text().notNull().references(() => slips.id, { onDelete: 'cascade' }),
+  ...selection,
+  bookId: text().notNull().references(() => books.id),
+  /** The posted price when the leg was added. */
+  priceDecimal: doublePrecision().notNull(),
+  addedAt: tstz().notNull(),
+  /** The bet written when the slip was marked placed. */
+  betId: text().references(() => bets.id),
+}, (t) => [primaryKey({ columns: [t.slipId, t.selectionKey] }), index().on(t.betId)]);
+
+/**
  * Every appraised prop as it stood at its game's kickoff freeze, written once per selection (docs/prd.md F1.1,
  * F1.3). Kind, rating, hit chance, clarity and carat are the board at the freeze; priced and fair are kept at
  * the decision price (core decisionSnapshot()) and at the freeze, the close. Never updated.

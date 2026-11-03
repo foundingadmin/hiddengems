@@ -99,6 +99,10 @@ priced chance; the opening snapshot is Tue 10:07 AM Denver.
   fair chance at the freeze) and the box (Earned, Unlucky, Lucky, Wrong read), from `core/src/grades.ts`.
 - `odds_latest` and `picks` are current state, small, and what the app reads. A selection a book
   stops listing is marked `available = false`.
+- `slips` and `slip_legs` are current state: one open slip per week (draft, assessed, sent, placed), each leg a
+  pick's selection with its price when added (`packages/db/src/slips.ts`). Marking a slip placed writes one `bets`
+  row per leg, so `pull-results` records the close and grades it; a parlay leg settles with no payout of its own.
+  In sample mode `build-picks` starts one draft from the top gems, so previews have a slip.
 
 ## Runs, logs and failures
 

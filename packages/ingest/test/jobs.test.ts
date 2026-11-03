@@ -2,7 +2,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { fairChance, gradeBox, zonedTimeToUtc } from '@hiddengems/core';
 import {
   bets, createDb, jobSettings, estimates, gemRecords, games, grades, jobLocks, oddsLatest, oddsSlots, oddsSnapshots, picks, playerGameStats, playerUsage, players,
-  providerRefs, providerUsage, runLogs, runs, seedReference, unpackBackup,
+  providerRefs, providerUsage, runLogs, runs, seedReference, slipLegs, slips, unpackBackup,
 } from '@hiddengems/db';
 import { and, count, desc, eq, inArray, sql } from 'drizzle-orm';
 import { BOOTSTRAP, grade, jobs, runJob } from '../src';
@@ -378,11 +378,13 @@ describe('gem records and grades', () => {
   });
 });
 
-describe('before the owner runs the gem grading migration', () => {
+describe('before the owner runs the gem grading and slips migrations', () => {
   it('appraises, pulls results and backs up without the new tables', async () => {
     const h = createDb('memory://');
     await h.migrate();
     await seedReference(h.db);
+    await h.db.execute(sql`drop table slip_legs`);
+    await h.db.execute(sql`drop table slips`);
     await h.db.execute(sql`drop table grades`);
     await h.db.execute(sql`drop table gem_records`);
     const go = (job: string, at: Date) => runJob(job, { db: h.db, providers: sampleProviders(), trigger: 'test', now: at, registry: jobs, force: true });
@@ -394,5 +396,38 @@ describe('before the owner runs the gem grading migration', () => {
     expect((await go('pull-results', after)).status).not.toBe('failed');
     expect((await go('backup', after)).status).toBe('succeeded');
     await h.close();
+  });
+});
+
+describe('slips', () => {
+  it('starts one sample draft from the top gems in different games', async () => {
+    const all = await db.select().from(slips);
+    expect(all).toHaveLength(1);
+    expect(all[0]).toMatchObject({ state: 'draft', play: 'own', stake: '15.00' });
+    const legs = await db.select().from(slipLegs).where(eq(slipLegs.slipId, all[0]!.id));
+    expect(legs.length).toBeGreaterThan(0);
+    expect(legs.length).toBeLessThanOrEqual(2);
+    expect(new Set(legs.map((l) => l.gameId)).size).toBe(legs.length);
+    await run('build-picks');
+    expect(await db.select().from(slips)).toHaveLength(1);
+  });
+
+  it('settles a parlay leg with no payout of its own', async () => {
+    const [game] = await db.select().from(games).where(eq(games.status, 'final')).limit(1);
+    const roster = await db.select().from(players).where(inArray(players.teamId, [game!.homeTeamId, game!.awayTeamId])).limit(2);
+    const [slip] = await db.insert(slips).values({ season: game!.season, week: game!.week!, state: 'placed', stake: '10.00' }).returning();
+    for (const p of roster) {
+      const selectionKey = `${game!.id}:anytime_td:${p.id}:yes:-`;
+      const leg = { selectionKey, gameId: game!.id, marketId: 'anytime_td', playerId: p.id, side: 'yes', line: null, bookId: 'draftkings', priceDecimal: 3 };
+      const [bet] = await db.insert(bets).values({ ...leg, placedAt: new Date(game!.kickoffAt.getTime() - 3_600_000), stake: '10.00' }).returning();
+      await db.insert(slipLegs).values({ ...leg, slipId: slip!.id, addedAt: bet!.placedAt, betId: bet!.id });
+    }
+    const r = await run('pull-results', { force: true });
+    expect(r.message).toMatch(/settled 2 bets/);
+    const legs = await db.select({ bet: bets }).from(slipLegs).innerJoin(bets, eq(bets.id, slipLegs.betId)).where(eq(slipLegs.slipId, slip!.id));
+    for (const { bet } of legs) {
+      expect(['won', 'lost']).toContain(bet.status);
+      expect(bet.payout).toBeNull();
+    }
   });
 });

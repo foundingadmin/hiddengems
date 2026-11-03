@@ -6,3 +6,4 @@ export * from './games';
 export * from './teams';
 export * from './model';
 export * from './grades';
+export * from './slips';

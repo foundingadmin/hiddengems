@@ -42,6 +42,15 @@ The lose it all chance is only computed for legs from different games (`docs/prd
 - `.fc-loseit[data-correlated]` replaces the number with a `data-size="lg"` amber badge, "Correlated", and adds one `.fc-loseit-note` line: "Same game legs move together, so no chance is shown."
 - Never show a number for correlated legs, not even an estimate.
 
+## Editable legs
+A slip you can still change (your own play, not placed) adds a remove button to each leg: `data-editable` on `.fc-legs`, then a fourth lane per leg.
+```html
+<ul class="fc-legs" data-editable>
+  <li class="fc-leg">… <button type="button" class="fc-button fc-leg-action" data-variant="tertiary" data-size="tiny" data-shape="square" aria-label="Remove James Cook"><svg aria-hidden="true">x</svg></button></li>
+</ul>
+```
+A suggested play has no remove buttons: Change this slip comes first.
+
 ## Rules
 - Lose it all is always on the slip and always at the largest size on the card (PRD section 13). It stays gray: it is information, not a verdict.
 - Stake and pays are amounts, not results, so they stay plain. Results use signed money (`money.md`).

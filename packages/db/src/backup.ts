@@ -6,13 +6,13 @@ import type { PgTable } from 'drizzle-orm/pg-core';
 import { type Db, isMissingTable } from './client';
 import {
   bets, books, estimates, games, gemMarks, gemRecords, grades, jobSettings, markets, oddsLatest, oddsSlots, oddsSnapshots, picks, playerGameStats, playerUsage,
-  players, providerRefs, providerUsage, runs, teams,
+  players, providerRefs, providerUsage, runs, slipLegs, slips, teams,
 } from './schema';
 
 /** Every table worth keeping, parents before children. Run logs and job locks are left out: they are noise. */
 export const BACKUP_TABLES: PgTable[] = [
   teams, books, markets, players, games, providerRefs, oddsSnapshots, oddsLatest, oddsSlots, estimates, picks,
-  playerGameStats, playerUsage, gemMarks, bets, gemRecords, grades, runs, providerUsage, jobSettings,
+  playerGameStats, playerUsage, gemMarks, bets, slips, slipLegs, gemRecords, grades, runs, providerUsage, jobSettings,
 ];
 
 export interface Backup {

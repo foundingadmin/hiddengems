@@ -1,4 +1,5 @@
-/* Facet slip parts [F]: the appraisal certificate, the rail slip, numbered steps, signed money and chat.
+/* Facet slip parts [F]: the appraisal certificate, the rail slip, numbered steps, signed money, chat and the
+   confirmation modal.
    Promoted from the approved wireframes (docs/wireframes/hg-wire.css, sprint 2026-11-03). Built only from
    Facet tokens and existing parts (.fc-card, .fc-player, .fc-gem, .fc-price, .fc-stat, .fc-badge,
    .fc-button, .fc-input). Docs: components/cert.md, rail-slip.md, steps.md, money.md, chat.md. */
@@ -52,6 +53,9 @@
 .fc-leg > .fc-player { grid-column: 1; min-width: 0; }
 .fc-leg > .fc-gem { grid-column: 2; justify-self: end; }
 .fc-leg > .fc-price { grid-column: 3; }
+/* An editable slip (your own play) adds a fourth lane for each leg's remove button. */
+.fc-legs[data-editable] { grid-template-columns: minmax(0, 1fr) auto auto auto; column-gap: var(--fc-space-3); }
+.fc-leg > .fc-leg-action { grid-column: 4; justify-self: end; }
 /* A flag beside the name drops under it before the name truncates. */
 .fc-leg .fc-player-line { flex-wrap: wrap; row-gap: var(--fc-space-0_5); }
 .fc-leg .fc-player-line > .fc-badge { flex: none; align-self: center; }
@@ -76,6 +80,8 @@
 .fc-loseit-note { grid-column: 1 / -1; margin: 0; color: var(--fc-text-secondary); }
 
 @container fc-cert (max-width: 28rem) {
+  .fc-legs { column-gap: var(--fc-space-3); }
+  .fc-legs[data-editable] { column-gap: var(--fc-space-2); }
   .fc-cert > .fc-stat-strip .fc-stat { padding-inline: var(--fc-space-3); }
   .fc-cert > .fc-stat-strip .fc-stat:first-child { padding-left: 0; }
   .fc-loseit { padding: var(--fc-space-4); }
@@ -248,3 +254,76 @@
 .fc-composer { display: flex; align-items: center; gap: var(--fc-space-2); width: 100%; margin: 0; }
 .fc-composer > .fc-input { flex: 1 1 auto; min-width: 0; }
 .fc-composer > .fc-button { flex: none; }
+
+/* ================================================================== Modal [G anatomy, F markup]
+   A blocking decision (components/modal.md), on the native dialog opened with showModal(): the page behind
+   is inert, Escape closes, focus returns to the trigger. Centered, 480px wide, 12px radius, modal material.
+   <dialog class="fc-modal" aria-labelledby="m-h">
+     <div class="fc-modal-body"><h2 id="m-h" class="text-heading-20">Title</h2><p class="text-copy-14">Body</p></div>
+     <div class="fc-modal-actions"><button class="fc-button" data-variant="secondary">Other</button>
+       <button class="fc-button" autofocus>Primary</button></div>
+   </dialog>
+   Under 768px the actions stack full width, the primary on top. */
+.fc-modal {
+  width: min(30rem, calc(100% - 2 * var(--fc-space-4)));
+  max-width: none;
+  max-height: calc(100% - 2 * var(--fc-space-4));
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: var(--fc-radius-lg);
+  background: var(--fc-surface-canvas);
+  box-shadow: var(--ds-shadow-modal);
+  color: var(--fc-text-primary);
+  overflow: auto;
+}
+dialog.fc-modal:not([open]) { display: none; }
+dialog.fc-modal[open] { display: flex; flex-direction: column; }
+.fc-modal::backdrop {
+  background: var(--ds-overlay-backdrop-color);
+  opacity: var(--ds-overlay-backdrop-opacity);
+}
+:root:has(dialog.fc-modal:modal) { overflow: hidden; }
+.fc-modal-body { display: flex; flex-direction: column; gap: var(--fc-space-3); padding: var(--fc-space-6); }
+.fc-modal-body > * { margin: 0; }
+.fc-modal-body > p { color: var(--fc-text-secondary); }
+.fc-modal-body > ul { display: flex; flex-direction: column; gap: var(--fc-space-2); padding-left: var(--fc-space-5); }
+.fc-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--fc-space-2);
+  padding: var(--fc-space-4) var(--fc-space-6);
+  border-top: 1px solid var(--fc-border-default);
+  background: var(--fc-surface-subtle);
+}
+@media (max-width: 767px) {
+  .fc-modal-actions { flex-direction: column-reverse; padding: var(--fc-space-4) var(--fc-space-6) var(--fc-space-6); }
+  .fc-modal-actions > .fc-button { width: 100%; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .fc-modal[open] { animation: fc-modal-in var(--fc-duration-overlay) var(--fc-ease-swift); }
+  .fc-modal[open]::backdrop { animation: fc-backdrop-in var(--fc-duration-overlay) var(--fc-ease-standard); }
+}
+@keyframes fc-modal-in { from { transform: scale(0.96); opacity: 0; } }
+
+/* ================================================================== Quiet text action
+   A deliberate second choice beside a primary button ("Change this slip"): secondary text with an underline in
+   the border color, primary on hover. A link or a button; no arrow, because it may open a dialog in place.
+   <button type="button" class="fc-link-quiet text-label-13">Change this slip</button> */
+.fc-link-quiet {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--fc-control-tiny);
+  margin: 0;
+  padding: 0 var(--fc-space-1);
+  border: 0;
+  border-radius: var(--fc-radius-sm);
+  background: none;
+  color: var(--fc-text-secondary);
+  text-decoration: underline;
+  text-decoration-color: var(--fc-border-hover);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.fc-link-quiet:hover { color: var(--fc-text-primary); text-decoration-color: currentColor; }
+.fc-link-quiet:focus-visible { outline: none; box-shadow: var(--ds-focus-ring); }

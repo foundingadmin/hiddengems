@@ -12,6 +12,8 @@ import { chunks, plural, teamId } from './shared';
 
 export const MARKETS: MarketId[] = ['anytime_td'];
 const DAY = 86_400_000;
+// Team defenses are priced like players by some books but are not on any roster.
+const isTeamDefense = (name: string) => /\b(D\/ST|Defense)$/i.test(name.trim());
 
 export const pullOdds: Job = {
   name: 'pull-odds',
@@ -54,7 +56,14 @@ export const pullOdds: Job = {
 
     const teamIds = [...new Set(matched.flatMap((m) => m.teams))];
     const roster = teamIds.length ? await db.select({ id: players.id, nameKey: players.nameKey }).from(players).where(inArray(players.teamId, teamIds)) : [];
+    // Rows the live roster provider vouches for win when a name key is shared (sample rows beside nflverse ones).
+    const rostered = new Set(roster.length
+      ? (await db.select({ id: providerRefs.internalId }).from(providerRefs).where(and(
+          eq(providerRefs.provider, ctx.providers.rosters.id), eq(providerRefs.entity, 'player'), inArray(providerRefs.internalId, roster.map((p) => p.id)),
+        ))).map((r) => r.id)
+      : []);
     const unmatched = new Set<string>();
+    const duplicated = new Set<string>();
     let written = 0, priced = 0, suspended = 0;
     const books = new Set<string>();
     const pulledAt = now;
@@ -63,9 +72,11 @@ export const pullOdds: Job = {
       const quotes = await provider.eventOdds(pctx, m.event, MARKETS);
       const rows = quotes.map((q) => {
         let playerId: string | null = null;
-        if (q.playerName) {
+        if (q.playerName && !isTeamDefense(q.playerName)) {
           const hits = roster.filter((p) => p.nameKey === nameKey(q.playerName!));
-          if (hits.length === 1) playerId = hits[0]!.id;
+          const live = hits.length > 1 ? hits.filter((p) => rostered.has(p.id)) : hits;
+          if (live.length === 1) playerId = live[0]!.id;
+          else if (hits.length > 1) duplicated.add(q.playerName);
           else unmatched.add(q.playerName);
         }
         books.add(q.bookId);
@@ -104,12 +115,13 @@ export const pullOdds: Job = {
 
     const missing = [...due].filter((id) => !matched.some((m) => m.gameId === id));
     if (missing.length) ctx.log('warn', `${plural(missing.length, 'game')} on the schedule had no odds event`, { gameIds: missing });
+    if (duplicated.size) ctx.log('warn', `${plural(duplicated.size, 'player')} matched more than one roster row. Remove the duplicate rows.`, { names: [...duplicated].slice(0, 25) });
     if (unmatched.size) ctx.log('warn', `${plural(unmatched.size, 'player')} did not match a roster. Pull rosters, or add an alias.`, { names: [...unmatched].slice(0, 25) });
     const what = [snap?.slot.split(':')[0], freezes.length ? `${plural(freezes.length, 'freeze')}` : null, manual ? 'manual' : null].filter(Boolean).join(' and ');
     return {
       message: `Pulled ${plural(priced, 'price')} across ${plural(books.size, 'book')} for ${plural(matched.length, 'game')} (${what}), ${written} new, ${suspended} suspended`,
       rowsWritten: written,
-      meta: { slots: slots.map((s) => s.slot), games: matched.map((m) => m.gameId), unmatched: unmatched.size },
+      meta: { slots: slots.map((s) => s.slot), games: matched.map((m) => m.gameId), unmatched: unmatched.size, duplicated: duplicated.size },
     };
   },
 };

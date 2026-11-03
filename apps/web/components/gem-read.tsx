@@ -319,7 +319,7 @@ export function TrendLines({ trends, loupe, labelledBy }: { trends: Trend[]; lou
   return (
     <ul className="fc-list" data-lines="1" data-aside="beside" role="list" aria-labelledby={labelledBy}>
       {trends.map((t) => line(t.kind, trendWords(t), t.rate, trendCondition(t, loupe)))}
-      {loupe?.notes.map((n) => line(`split-${n.key}`, splitWords(n, loupe), n.hits / n.games, n.key))}
+      {loupe?.notes.map((n) => line(`split-${n.key}`, splitWords(n, loupe), n.rate, n.key))}
     </ul>
   );
 }
@@ -446,7 +446,7 @@ export function useLoupe(loupe: Loupe | null) {
 
 const SIDE_NAMES: Record<SplitSide, string> = {
   usual: 'starts', other: 'out', in: 'Top teammates in', out: 'A top teammate out', home: 'Home', away: 'Away',
-  short: 'Short week', normal: 'Normal rest', bye: 'Off a bye', above: 'High implied points', below: 'Low implied points',
+  short: 'Short week', normal: 'Normal rest', bye: 'Off a bye', above: 'Implied points above average', below: 'Implied points below average',
   favorite: 'Favored', underdog: 'Underdog',
 };
 
@@ -486,12 +486,16 @@ export function LoupeView({ loupe, log }: { loupe: Loupe; log: GameLog }) {
   const shown = c != null && c.games > 0;
   useEffect(() => (shown && ref.current ? mountTips(ref.current).destroy : undefined), [shown]);
 
-  const toggle = (k: SplitKey) => {
-    const next = on.includes(k) ? on.filter((x) => x !== k) : [...on, k];
-    set(next);
-    const n = next.length ? combineSplits(loupe, next) : null;
-    setSaid(n ? `${matchWords(n.games)}${n.games ? `, ${pct(n.rate)}` : ''}` : `All ${season.games} games, ${pct(season.rate)}`);
-  };
+  // Every change of conditions after the sheet opens is announced, whether a chip or a note made it.
+  const onKey = on.join(',');
+  const before = useRef(onKey);
+  useEffect(() => {
+    if (before.current === onKey) return;
+    before.current = onKey;
+    setSaid(c ? `${matchWords(c.games)}${c.games ? `, ${pct(c.rate)}` : ''}` : `All ${season.games} games, ${pct(season.rate)}`);
+  }, [onKey, c, season]);
+
+  const toggle = (k: SplitKey) => set(on.includes(k) ? on.filter((x) => x !== k) : [...on, k]);
 
   return (
     <div className="fc-stack" ref={ref}>

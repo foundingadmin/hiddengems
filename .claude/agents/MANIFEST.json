@@ -20,7 +20,8 @@
     "decisions": "corpus/decisions.md",
     "lessons": "corpus/lessons.md",
     "amendments": "corpus/amendments.md",
-    "house_rules": "../../AGENTS.md"
+    "house_rules": "../../AGENTS.md",
+    "efficiency": "corpus/efficiency.md"
   },
   "agents": [
     {
@@ -31,7 +32,7 @@
       "lanes": [
         "all"
       ],
-      "version": "2.0",
+      "version": "2.2",
       "updated": "2026-11-03",
       "reads": "brief, README, decisions, agent reports",
       "returns": "dispatches, decisions, escalations",
@@ -87,7 +88,7 @@
       "lanes": [
         "ds"
       ],
-      "version": "1.1",
+      "version": "1.2",
       "updated": "2026-11-03",
       "reads": "brief, docs of the parts a release touched",
       "returns": "ds/curate branch: specimens, screens, changelog, version; drift report",
@@ -115,7 +116,7 @@
       "lanes": [
         "screens"
       ],
-      "version": "1.1",
+      "version": "1.2",
       "updated": "2026-11-03",
       "reads": "brief, docs/build-brief.md, DESIGN.md, docs of parts used",
       "returns": "pushed screens/ branch, DS requests",
@@ -130,7 +131,7 @@
         "data",
         "model"
       ],
-      "version": "1.1",
+      "version": "1.2",
       "updated": "2026-11-03",
       "reads": "brief, docs/architecture.md",
       "returns": "pushed data/ branch, owner steps",
@@ -144,7 +145,7 @@
       "lanes": [
         "ds"
       ],
-      "version": "1.1",
+      "version": "1.2",
       "updated": "2026-11-03",
       "reads": "brief, DESIGN.md, docs of the closest parts",
       "returns": "Facet parts and how to use them",
@@ -158,11 +159,11 @@
       "lanes": [
         "fix"
       ],
-      "version": "1.1",
+      "version": "2.1",
       "updated": "2026-11-03",
       "reads": "brief, the repo, branches, corpus",
-      "returns": "fix/hygiene branch, escalations",
-      "writes": "safe cleanups only"
+      "returns": "fix/hygiene branch, escalations, the session token row",
+      "writes": "safe cleanups, corpus/efficiency.md"
     },
     {
       "name": "content-verifier",
@@ -186,7 +187,7 @@
       "lanes": [
         "all with UI"
       ],
-      "version": "2.0",
+      "version": "2.1",
       "updated": "2026-11-03",
       "reads": "brief, DESIGN.md, docs of parts touched, screenshots",
       "returns": "exact fixes, DS requests, Verdict",
@@ -260,7 +261,9 @@
     "data-builder": [
       "L2"
     ],
-    "facet-builder": [],
+    "facet-builder": [
+      "L26"
+    ],
     "repo-hygiene": [],
     "content-verifier": [],
     "design-verifier": [

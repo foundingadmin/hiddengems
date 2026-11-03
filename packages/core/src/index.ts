@@ -8,3 +8,4 @@ export * from './model';
 export * from './grades';
 export * from './log';
 export * from './slips';
+export * from './history';

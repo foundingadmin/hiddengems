@@ -5,6 +5,7 @@ import { anytimeTdHit, fairChance, gradeTake, seasonOf } from '@hiddengems/core'
 import { bets, gemRecords, games, grades, isMissingTable, oddsSnapshots, parlayLegBets, playerGameStats } from '@hiddengems/db';
 import { type AnyColumn, and, desc, eq, inArray, isNotNull, isNull, lte, notInArray, sql } from 'drizzle-orm';
 import type { Job, JobContext } from '../runner';
+import { seedSampleHistory } from './sample-history';
 import { chunks, plural, refMap } from './shared';
 
 type StatRow = typeof playerGameStats.$inferSelect;
@@ -20,6 +21,10 @@ export const pullResults: Job = {
   provider: 'results',
   async run(ctx) {
     const { db, now } = ctx;
+    if (ctx.providers.results.sampleHistory) {
+      const seeded = await seedSampleHistory(ctx);
+      if (seeded?.records) ctx.log('info', `Sample data: recorded ${plural(seeded.records, 'prop')} for final games and placed ${plural(seeded.slips, 'slip')}`);
+    }
     // Every final game this season with no stat lines yet (the first run backfills the season), plus the
     // last 10 days again, since stat corrections land after the fact.
     const since = new Date(now.getTime() - 10 * 86_400_000);

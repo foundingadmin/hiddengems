@@ -1,0 +1,35 @@
+/* Slips, History and the graded slip: layout glue between Facet parts (stat, table, list, note), Facet tokens only. */
+.hg-history {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fc-space-8);
+  min-width: 0;
+  max-width: calc(var(--fc-space-4) * 72);
+}
+.hg-history-head { display: flex; flex-direction: column; align-items: flex-start; gap: var(--fc-space-3); min-width: 0; }
+.hg-history-part { display: flex; flex-direction: column; gap: var(--fc-space-3); min-width: 0; }
+.hg-history-part > h2 { margin: 0; }
+
+/* Past slips beside what's working; one column once the table needs the full width. */
+.hg-history-two {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, calc(var(--fc-space-4) * 20));
+  gap: var(--fc-space-8);
+  align-items: start;
+}
+@container fc-shell (max-width: 1279px) {
+  .hg-history-two { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* The results line: six peers on one row, three a row on tablets. Every strip is two a row on phones. */
+.hg-history .hg-results[data-variant="cells"] { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+@container fc-shell (max-width: 1279px) {
+  .hg-history .hg-results[data-variant="cells"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@container fc-shell (max-width: 767px) {
+  .hg-history .fc-stat-strip[data-variant="cells"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Phone lists: the result and its number stack at the row's end. */
+.hg-history-list { flex-direction: column; }
+.hg-history-aside { display: flex; flex-direction: column; align-items: flex-end; gap: var(--fc-space-1); }

@@ -1,5 +1,6 @@
 import { dataMode } from '@hiddengems/ingest';
 import { Freshness } from '@/components/freshness';
+import { SlipProvider } from '@/components/add-to-slip';
 import { GemSheet } from '@/components/gem-sheet';
 import { AllGems, NewGems } from '@/components/gems-board';
 import { Tips } from '@/components/tips';
@@ -16,7 +17,10 @@ export default async function GemsPage({ searchParams }: { searchParams: Promise
   const asked = typeof params.gem === 'string' && params.gem ? params.gem : null;
   const [{ rows, lastRead }, detail, current] = await Promise.all([board(week), asked ? gemDetail(asked) : null, getCurrentSlip(week)]);
   const fresh = rows.filter((r) => r.fresh);
-  const slip = current ? { id: current.slip.id, name: `Slip ${current.slip.number}`, keys: current.slip.legs.map((l) => l.selectionKey) } : null;
+  const slip = current ? {
+    id: current.slip.id, name: `Slip ${current.slip.number}`, suggested: current.slip.play === 'suggested',
+    keys: current.slip.legs.map((l) => l.selectionKey),
+  } : null;
   return (
     <>
       <h1 className="fc-visually-hidden">Gems{week != null ? `, week ${week}` : ''}</h1>
@@ -25,9 +29,11 @@ export default async function GemsPage({ searchParams }: { searchParams: Promise
           <span>{process.env.VERCEL_ENV === 'preview' ? 'Sample data.' : 'Sample data. Add ODDS_API_KEY to pull live odds.'}</span>
         </div>
       )}
-      <NewGems rows={fresh} since={lastRead ? clock(lastRead) : null} zone={ZONE} />
-      <AllGems rows={rows} zone={ZONE} freshness={<Freshness label="Odds updated" short />} slip={slip} />
-      <GemSheet rows={rows} detail={detail} asked={asked} zone={ZONE} slip={slip} />
+      <SlipProvider slip={slip}>
+        <NewGems rows={fresh} since={lastRead ? clock(lastRead) : null} zone={ZONE} />
+        <AllGems rows={rows} zone={ZONE} freshness={<Freshness label="Odds updated" short />} />
+        <GemSheet rows={rows} detail={detail} asked={asked} zone={ZONE} />
+      </SlipProvider>
       <Tips />
     </>
   );

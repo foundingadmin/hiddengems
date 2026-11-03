@@ -32,3 +32,32 @@ Entering, visible, auto-dismissed, preserved, action clicked. Renders above Moda
 - `Bet tracked` (with `Undo`), `Filter preset saved`, `Auto-refresh enabled`, `Bet details copied`.
 - Error: `Couldn’t refresh odds. Try again.`
 - Never toast on every background odds refresh. Use the freshness indicator.
+
+## Facet implementation `[F]`
+Implemented in `css/components.css` as `.fc-toast-region` and `.fc-toast`.
+
+```html
+<div class="fc-toast-region" role="status">
+  <div class="fc-toast">
+    <span class="fc-toast-text text-copy-14">Leg removed</span>
+    <span class="fc-toast-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+    <button type="button" class="fc-button" data-variant="secondary" data-size="small">Undo</button>
+  </div>
+</div>
+```
+- The region stays in the DOM and is a polite live region (`role="status"`), so a toast added to it is announced.
+  Bottom right on desktop, above the tab bar on phones, `--fc-z-toast`. Menu material, 12px radius.
+- Enters with opacity and a short rise (200ms, swift); still under reduced motion.
+
+### Undo toast
+- For one restorable change that already happened (`patterns/moments.md`, rule 3). The text names the change
+  (`Leg removed`), the button says `Undo`.
+- Five brand dots (`--fc-illus-2`) count `--fc-duration-undo` (5s) down, one per second, last first. They are
+  `aria-hidden`; the time is not announced.
+- `mountUndo(toast, { onExpire })` from `js/undo.mjs` runs the countdown. It holds while the pointer is over the toast
+  or focus is inside it, so Undo stays reachable by keyboard, and resumes when both leave. Reduced motion keeps the
+  countdown; only the dots' shrink is instant. The app's React wrapper is `apps/web/lib/moments/undo-toast.tsx`,
+  shown through `useMoments().undo(text)`.
+- One at a time. A new Undo replaces the old one, which then counts as expired.
+- Undo plays the change's motion in reverse.
+

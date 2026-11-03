@@ -31,7 +31,7 @@ A slip as one card the reader can check at a glance: every leg with its gem rati
 |---|---|---|
 | Card | `.fc-cert.fc-card` | 24px padding (16px in the narrow shell), 12px radius, 20px between parts. An inline-size container, so it adapts to its column, not the window |
 | Head | `.fc-cert-head` | Kicker, title, then one metadata line naming the play. A hairline closes it |
-| Legs | `.fc-legs > .fc-leg` | One shared grid (player, rating, price), so every rating and price sits in the same lane |
+| Legs | `.fc-legs > .fc-leg` | One shared grid (player, rating, price), so every rating and price sits in the same lane. Each leg holds half the 16px between legs above and below it, so a leg that closes takes its space with it |
 | Stakes | `.fc-stat-strip` | Stake, pays and all hit, always three across |
 | Lose it all | `.fc-loseit` | Label left, the chance right at `text-heading-40`, on the subtle surface |
 
@@ -50,6 +50,30 @@ A slip you can still change (your own play, not placed) adds a remove button to 
 </ul>
 ```
 A suggested play has no remove buttons: Change this slip comes first.
+
+Removing is instant with a 5 second Undo and no confirm (`patterns/moments.md`, rule 3). The × answers in the stop
+tokens (`--fc-signal-stop-fg` on `--fc-signal-stop-bg`) under the pointer and while its leg leaves (`data-leaving` on
+the leg, set for the remove moment).
+
+### Swipe to remove
+On touch, a pull slides the leg's parts left and the Remove action slides in behind them, its left edge on theirs.
+Both move only by transform; the action keeps one width, `--fc-leg-swipe-width`, which is also where an open pull
+rests. The × stays the keyboard and desktop path.
+```html
+<li class="fc-leg" data-swipe="open" style="--fc-swipe: var(--fc-leg-swipe-width)">
+  … <button type="button" class="fc-button fc-leg-action" …>x</button>
+  <button type="button" class="fc-leg-swipe text-label-13"><svg aria-hidden="true">x</svg>Remove<span class="fc-visually-hidden"> James Cook</span></button>
+</li>
+```
+| Part | Class or hook | Role |
+|---|---|---|
+| Action | `.fc-leg-swipe` | `--fc-leg-swipe-width` wide, moved in from the leg's right edge by the pull. Stop tokens. Hidden, and out of the tab order, until a pull shows it |
+| Pull | `--fc-swipe` on the leg | How far the leg has moved, a length |
+| State | `data-swipe` on the leg | `drag` follows the finger with no easing, `open` rests at the action's width, `settle` slides shut; absent at rest |
+
+Editable legs take `touch-action: pan-y pinch-zoom`, so vertical scrolling and zoom stay with the browser. The
+gesture itself (pull thresholds, the second pull, the tap on Remove) is the app's: `apps/web/lib/moments/swipe.ts`.
+Reduced motion drops the slide's easing; the leg still follows the finger.
 
 ## Rules
 - Lose it all is always on the slip and always at the largest size on the card (PRD section 13). It stays gray: it is information, not a verdict.

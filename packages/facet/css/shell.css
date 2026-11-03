@@ -104,6 +104,10 @@
 .fc-sidenav-item:hover { background: var(--fc-surface-fill); color: var(--fc-text-primary); }
 .fc-sidenav-item[aria-current="page"] { background: var(--fc-surface-fill-hover); color: var(--fc-text-primary); }
 .fc-sidenav-item:focus-visible { box-shadow: var(--ds-focus-ring); }
+/* Edge glint hook (patterns/moments.md): js/dots.mjs ripples dots along the item's bottom edge, and the item
+   takes the hover fill while data-glint is on. */
+.fc-sidenav-item { --fc-glint-edge: bottom; }
+.fc-sidenav-item[data-glint] { background: var(--fc-surface-fill); }
 /* Trailing chevron on items that drill into a section. */
 .fc-sidenav-item-end { margin-left: auto; color: var(--fc-text-secondary); }
 

@@ -41,9 +41,9 @@ These are proofs, not production code.
 
 Tested in Chromium on Nov 3 2026: every proof ran without errors, and the closest two dots ever came was 1 px.
 
-## Motion rules from Josh
+## Motion rules
 
-Keep these through any rebuild.
+Set by Josh. Keep these through any rebuild.
 
 1. Dots never touch.
 2. Dots that travel are always brand color, even on a destructive action. Destructive controls use the stop tokens.

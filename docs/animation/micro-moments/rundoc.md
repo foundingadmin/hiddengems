@@ -1,4 +1,4 @@
-# Rundoc: integrate micro moments
+# Integrate micro moments
 
 For the Claude Code session building the app. You orchestrate this and have the final say on integration: how it binds to Facet, what gets expanded or converted, and what the architecture should be. The proofs show what it should feel like, not how to build it.
 

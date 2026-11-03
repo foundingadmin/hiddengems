@@ -176,9 +176,12 @@ be explained later.
 
 ## Access
 
-The app is private. `apps/web/proxy.ts` puts every page behind HTTP Basic auth with `APP_PASSWORD`;
-on Vercel (production and preview) the app stays closed until it is set. Cron routes skip the
-password and require `Authorization: Bearer $CRON_SECRET` instead.
+The sign-in gate is off for now (owner decision, 2026-11-03). `apps/web/proxy.ts` holds it: set
+`APP_LOCK=on` in Vercel and redeploy, and every page asks for `APP_PASSWORD` again (HTTP Basic). Cron
+routes never use it; they require `Authorization: Bearer $CRON_SECRET`. With the gate off, anyone with
+the URL can open the app and press its pull buttons. What protects the data then is the database
+itself (the app login cannot drop or alter anything, history rejects edits, nightly backups) and the
+odds job, which never spends more credits than the month has left.
 
 ## Commands
 

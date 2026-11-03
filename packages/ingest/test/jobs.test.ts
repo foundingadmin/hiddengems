@@ -83,6 +83,21 @@ describe('odds pulls follow the snapshot schedule', () => {
     expect(await pulls()).toBe(before);
   });
 
+  it('pulls a paid provider off schedule once the owner confirms the credits', async () => {
+    const [before] = await db.select({ n: count() }).from(oddsSlots);
+    const r = await run('pull-odds', { providers: paid, force: true, spendCredits: true });
+    expect(r.status, r.message).toBe('succeeded');
+    expect(r.message).toMatch(/for 5 games \(manual\)/);
+    // Off schedule, so no snapshot slot is used up: Saturday's pull still runs.
+    const [after] = await db.select({ n: count() }).from(oddsSlots);
+    expect(after!.n).toBe(before!.n);
+  });
+
+  it('never spends credits from cron, even with the flag', async () => {
+    const r = await run('pull-odds', { providers: paid, spendCredits: true });
+    expect(r.status).toBe('skipped');
+  });
+
   it('pulls once at Saturday 7:47 PM Denver, then waits', async () => {
     const r = await run('pull-odds', { providers: paid, now: at(satNight, 3) });
     expect(r.status, r.message).toBe('succeeded');

@@ -1,16 +1,12 @@
-// Hidden Gems is private (docs/vercel-deployment.md, "Access"). Every page sits behind HTTP Basic auth
-// with APP_PASSWORD. Cron routes are excluded here and check CRON_SECRET themselves. In production a
-// missing APP_PASSWORD closes the app rather than leaving odds and stakes on an open URL.
+// The app's sign-in gate: HTTP Basic auth with APP_PASSWORD on every page. Off for now (owner decision,
+// 2026-11-03: the browser prompt got in the way). Set APP_LOCK=on in Vercel and redeploy to turn it back
+// on. Cron routes are excluded either way and check CRON_SECRET themselves.
 import { type NextRequest, NextResponse } from 'next/server';
 
 export function proxy(req: NextRequest) {
+  if (process.env.APP_LOCK !== 'on') return NextResponse.next();
   const password = process.env.APP_PASSWORD;
-  if (!password) {
-    if (process.env.VERCEL_ENV === 'production' || process.env.VERCEL_ENV === 'preview') {
-      return new NextResponse('Set APP_PASSWORD to open Hidden Gems.', { status: 503 });
-    }
-    return NextResponse.next();
-  }
+  if (!password) return new NextResponse('Set APP_PASSWORD to open Hidden Gems.', { status: 503 });
   const header = req.headers.get('authorization') ?? '';
   const [scheme, encoded] = header.split(' ');
   if (scheme === 'Basic' && encoded) {

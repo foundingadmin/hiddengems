@@ -17,6 +17,8 @@ export interface JobContext {
   providers: Providers;
   /** Forces work a cadence check would skip (manual pulls). */
   force: boolean;
+  /** The owner agreed to spend paid provider credits off schedule (a confirmed manual odds pull). */
+  spendCredits: boolean;
   log(level: Level, message: string, data?: Record<string, unknown>): void;
   /** A provider context with instrumented HTTP for one adapter. */
   using(provider: ProviderBase): ProviderContext;
@@ -58,6 +60,8 @@ export interface RunOptions {
   trigger: Trigger;
   now?: Date;
   force?: boolean;
+  /** See JobContext.spendCredits. Only a person confirming the cost sets it; cron never does. */
+  spendCredits?: boolean;
   registry: Record<string, Job>;
   /** Mirrors log lines to stdout as JSON (Vercel runtime logs). */
   echo?: boolean;
@@ -98,7 +102,7 @@ export async function runJob(name: string, opts: RunOptions): Promise<RunResult>
   };
 
   const ctx: JobContext = {
-    db, now, trigger: opts.trigger, providers: opts.providers, force: opts.force ?? false,
+    db, now, trigger: opts.trigger, providers: opts.providers, force: opts.force ?? false, spendCredits: opts.spendCredits ?? false,
     get runId() { if (!runId) throw new Error('runId is created before the job runs'); return runId; },
     log(level, message, data) {
       lines.push({ level, message, data, at: new Date() });
@@ -137,7 +141,7 @@ export async function runJob(name: string, opts: RunOptions): Promise<RunResult>
     await release(db, name, holder);
     if (job.then?.length) {
       result.followUps = [];
-      for (const next of job.then) result.followUps.push(await runJob(next, { ...opts, now: new Date(now.getTime() + (Date.now() - started)), force: true }));
+      for (const next of job.then) result.followUps.push(await runJob(next, { ...opts, now: new Date(now.getTime() + (Date.now() - started)), force: true, spendCredits: false }));
     }
     return result;
   } catch (err) {

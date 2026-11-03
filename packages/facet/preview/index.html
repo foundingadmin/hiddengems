@@ -1235,6 +1235,53 @@
     </div>
   </div>
 
+  <!-- Scatter, small and sparse: 220px, few points, domain kept (components/chart-card.md, "Scatter", "States") -->
+  <div class="fc-stack" style="--fc-gap:16px" id="ch-scatter-sparse">
+    <h3 class="text-heading-20">Scatter, small and sparse</h3>
+    <ul class="fc-legend" role="list">
+      <li class="fc-legend-item"><span class="fc-legend-key" data-gem style="--rating: 62"></span><span class="fc-legend-name">Clears the posted price</span><span class="fc-legend-value">2</span></li>
+      <li class="fc-legend-item"><span class="fc-legend-key" data-series="muted" data-shape="hollow"></span><span class="fc-legend-name">Misses</span><span class="fc-legend-value">2</span></li>
+      <li class="fc-legend-item"><span class="fc-legend-key" data-shape="ring"></span><span class="fc-legend-name">Top 10</span></li>
+    </ul>
+    <figure class="fc-chart" data-kind="scatter" data-size="small" role="img" aria-label="Score against odds for 4 props, 2 clear the posted price. The top 10 are ringed.">
+      <svg aria-hidden="true" focusable="false">
+        <line class="fc-chart-grid" x1="0" x2="100%" y1="50%" y2="50%"/>
+        <line class="fc-chart-baseline" x1="0" x2="100%" y1="100%" y2="100%"/>
+        <text class="fc-chart-tick" x="-8" y="0%" dy="4" text-anchor="end">100</text>
+        <text class="fc-chart-tick" x="-8" y="50%" dy="4" text-anchor="end">50</text>
+        <text class="fc-chart-tick" x="-8" y="100%" dy="4" text-anchor="end">0</text>
+        <text class="fc-chart-tick" x="18.4%" y="100%" dy="18" text-anchor="middle">2</text>
+        <text class="fc-chart-tick" x="40%" y="100%" dy="18" text-anchor="middle">5</text>
+        <text class="fc-chart-tick" x="62%" y="100%" dy="18" text-anchor="middle">10</text>
+        <text class="fc-chart-axis-title" x="100%" y="100%" dy="34" text-anchor="end">Odds, log scale</text>
+        <text class="fc-chart-axis-title" x="0" y="0" dy="-12">Score</text>
+        <circle class="fc-chart-point" data-series="muted" cx="28%" cy="78%" r="4"><title>Prop A, 3.00, 22.0</title></circle>
+        <circle class="fc-chart-point" data-series="muted" cx="70%" cy="84%" r="4"><title>Prop B, 14.00, 16.0</title></circle>
+        <circle class="fc-chart-point" data-gem style="--rating: 62" cx="44%" cy="38%" r="4"><title>Prop C, 6.00, 62.0</title></circle>
+        <circle class="fc-chart-point" data-gem style="--rating: 35" cx="54%" cy="64%" r="4"><title>Prop D, 8.00, 36.0</title></circle>
+        <circle class="fc-chart-ring" cx="44%" cy="38%" r="8"/>
+      </svg>
+    </figure>
+  </div>
+
+  <!-- Log table narrow: a 360px container stacks each row; inline log data (patterns/data-ops.md, "Log table variant", "Log data") -->
+  <div class="fc-stack" style="--fc-gap:16px" id="ch-log-narrow">
+    <h3 class="text-heading-20">Log table, narrow</h3>
+    <div style="max-width:360px">
+      <div class="fc-table-wrap text-copy-13-mono">
+        <table class="fc-table" data-variant="log">
+          <caption class="fc-visually-hidden">Newest first, 3 runs</caption>
+          <thead><tr><th scope="col">Time</th><th scope="col">Source</th><th scope="col" data-grow>Message</th><th scope="col" data-align="numeric">Ran</th></tr></thead>
+          <tbody>
+            <tr data-level="error"><td class="fc-log-time"><time datetime="2026-11-02T21:49:12-05:00">Nov 02 9:49:12 PM</time></td><td class="fc-log-source">Rosters</td><td class="fc-log-message"><span class="fc-level" data-level="error">Failed</span> Failed to read rosters: the file no longer has a gsis_id column</td><td data-align="numeric">0.2s</td></tr>
+            <tr data-level="warning" aria-selected="true"><td class="fc-log-time"><time datetime="2026-11-02T21:48:58-05:00">Nov 02 9:48:58 PM</time></td><td class="fc-log-source">Odds</td><td class="fc-log-message"><span class="fc-level" data-level="warning">Warned</span> Pulled 40 prices across 4 books for 3 games<code class="fc-log-data">{"events":5}</code></td><td data-align="numeric">0.4s</td></tr>
+            <tr><td class="fc-log-time"><time datetime="2026-11-02T21:47:21-05:00">Nov 02 9:47:21 PM</time></td><td class="fc-log-source">Backup</td><td class="fc-log-message">Backed up 216 rows from 18 tables, 6.8 KB</td><td data-align="numeric">0.1s</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
   <!-- C6: data operations view -->
   <div class="fc-stack" style="--fc-gap:16px">
     <h3 class="text-heading-20" id="ch-log-h">Pull log</h3>

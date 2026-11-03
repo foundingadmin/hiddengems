@@ -136,7 +136,7 @@ Source: https://vercel.com/docs/ai-sdk.md (2026-10-05).
 
 - **Hobby is non-commercial, personal use only** (https://vercel.com/docs/plans/hobby.md, citing fair use guidelines). A monetized Hidden Gems requires Pro. Hobby also caps cron at daily and Global Config writes at 250/month.
 - **Content policy:** the Acceptable Use Policy page (https://vercel.com/legal/acceptable-use-policy) contained no mention of gambling or betting when searched on 2026-11-02. Resolved for our purposes: Hidden Gems is a private research tool for one person, not a public or wagering service.
-- **Access (owner decision, 2026-11-02):** the app is private. Gate every deployment, production included: either Vercel Authentication set to cover all deployments (check which protection scope the Pro plan includes before relying on it), or app-level auth in `apps/web` (for example a middleware check against a single allowed account). Never expose odds or stake data on an unauthenticated URL.
+- **Access (owner decision, 2026-11-02; gate paused 2026-11-03, see `docs/architecture.md`, "Access"):** the app is private. Gate every deployment, production included: either Vercel Authentication set to cover all deployments (check which protection scope the Pro plan includes before relying on it), or app-level auth in `apps/web` (for example a middleware check against a single allowed account). Never expose odds or stake data on an unauthenticated URL.
 
 ## 5. Checklist
 
@@ -146,7 +146,7 @@ Source: https://vercel.com/docs/ai-sdk.md (2026-10-05).
 - [ ] `turbo login` + `turbo link` for Remote Cache.
 - [ ] Env vars created as Secret/Config per environment; `vercel env pull` for local; build-affecting vars listed under `web#build.env`.
 - [x] Pro plan (confirmed 2026-11-02).
-- [x] Production access gated in the app: `apps/web/proxy.ts` (HTTP Basic, `APP_PASSWORD`; closed until set). Set `APP_PASSWORD` in Production and Preview.
+- [x] App-level gate in `apps/web/proxy.ts` (HTTP Basic, `APP_PASSWORD`). Off since 2026-11-03 at the owner's request; `APP_LOCK=on` turns it back on.
 - [x] `apps/web/vercel.json` with `crons`; idempotent, locked cron handlers (`job_locks`). Set `CRON_SECRET`.
 - [ ] Marketplace Postgres (Neon or Supabase), then `DATABASE_URL=... pnpm db:migrate`. Upstash is not needed for locks (they live in Postgres, `job_locks`). `@vercel/global-config` for runtime config when needed.
 - [ ] `<Analytics />` and `<SpeedInsights />` in the root layout.

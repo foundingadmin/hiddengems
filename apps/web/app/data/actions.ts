@@ -1,16 +1,27 @@
 'use server';
-import { BOOTSTRAP, jobs, providersFor, runJob } from '@hiddengems/ingest';
+import { jobs, providersFor, runJob, type RunResult } from '@hiddengems/ingest';
 import { revalidatePath } from 'next/cache';
 import { db } from '@/lib/db';
 
-/** "Pull now": runs one job (or the whole bootstrap) immediately, ignoring cadence. */
-export async function pullNow(form: FormData): Promise<void> {
-  const name = String(form.get('job') ?? '');
-  const list = name === 'all' ? [...BOOTSTRAP] : jobs[name] ? [name] : [];
+export interface PullOutcome {
+  job: string;
+  status: RunResult['status'];
+  message: string;
+}
+
+/**
+ * "Pull now": runs one job immediately, ignoring its cadence, and returns what happened (with the jobs
+ * it set off). Data health calls it once per job, so each row can show its own progress and no single
+ * request runs every pull. `spendCredits` lets a confirmed odds pull use paid credits off schedule.
+ */
+export async function pull(job: string, spendCredits = false): Promise<PullOutcome[]> {
+  if (!jobs[job]) throw new Error(`Unknown job ${job}`);
   const handle = await db();
-  for (const job of list) {
-    await runJob(job, { db: handle.db, providers: providersFor(), trigger: 'manual', force: true, registry: jobs, echo: true });
-  }
+  const result = await runJob(job, {
+    db: handle.db, providers: providersFor(), trigger: 'manual', force: true, registry: jobs, echo: true,
+    spendCredits: job === 'pull-odds' && spendCredits === true,
+  });
   revalidatePath('/');
   revalidatePath('/data');
+  return [result, ...(result.followUps ?? [])].map(({ job: j, status, message }) => ({ job: j, status, message }));
 }

@@ -1,5 +1,5 @@
 // Rating lab: five rating formulas on the Week 9 opening props (docs/prd.md section 8). The lab is a
-// standalone page in apps/web/public; this section frames it as a Facet setting card. Behind APP_PASSWORD.
+// standalone page in apps/web/public; this section frames it as a Facet setting card.
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = { title: 'Rating lab' };

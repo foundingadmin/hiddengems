@@ -24,6 +24,16 @@ Spinning.
 - Match the size to nearby type or icon, not the container.
 - Set `aria-busy="true"` on the wrapper. Keep the trigger focusable. Respect reduced motion.
 
+## Facet CSS
+```html
+<button class="fc-button" data-variant="tertiary" data-size="small" aria-busy="true">
+  <span class="fc-spinner" aria-hidden="true"></span>Pulling
+</button>
+<span class="fc-status" aria-busy="true"><span class="fc-spinner" data-size="small" aria-hidden="true"></span>Running</span>
+```
+`.fc-spinner` is 16px (12px with `data-size="small"`), drawn in `currentColor`, slowed under reduced motion. CSS in `css/components.css`.
+
 ## Hidden Gems usage
+- Data health: the `Pull now` and `Pull everything` buttons while a pull runs, and the row's status cell (`Running`).
 - Row-level `Retry` when one book's price fetch fails. Inline spinner in the price cell at `sm`.
 - `Load more` in long lists (use LoadMoreButton's `loading`).

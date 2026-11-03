@@ -27,12 +27,13 @@ export const pullOdds: Job = {
     ));
     if (!upcoming.length) return { skipped: 'No games in the next 8 days. Pull the schedule if that looks wrong.' };
 
-    // What is due. A manual pull only bypasses the schedule for the sample provider, which costs nothing.
+    // What is due. A manual pull bypasses the schedule for the sample provider, which costs nothing, or when
+    // the owner confirmed the credits it spends (Data health shows the cost first).
     const taken = new Set((await db.select({ slot: oddsSlots.slot }).from(oddsSlots)).map((r) => r.slot));
     const freezes = dueFreezes(now, upcoming.map((g) => ({ id: g.id, kickoff: g.kickoffAt })), taken).map((g) => g.id);
     const snap = dueSnapshot(now, taken);
-    const free = provider.id === 'sample' && ctx.force;
-    const horizon = free ? 7 : snap?.horizonDays ?? 0;
+    const manual = ctx.force && (provider.id === 'sample' || ctx.spendCredits);
+    const horizon = manual ? 7 : snap?.horizonDays ?? 0;
     const due = new Set([...freezes, ...upcoming.filter((g) => g.kickoffAt.getTime() - now.getTime() <= horizon * DAY).map((g) => g.id)]);
     if (!due.size) return { skipped: 'No odds snapshot or kickoff freeze is due' };
 
@@ -104,7 +105,7 @@ export const pullOdds: Job = {
     const missing = [...due].filter((id) => !matched.some((m) => m.gameId === id));
     if (missing.length) ctx.log('warn', `${plural(missing.length, 'game')} on the schedule had no odds event`, { gameIds: missing });
     if (unmatched.size) ctx.log('warn', `${plural(unmatched.size, 'player')} did not match a roster. Pull rosters, or add an alias.`, { names: [...unmatched].slice(0, 25) });
-    const what = [snap?.slot.split(':')[0], freezes.length ? `${plural(freezes.length, 'freeze')}` : null, free ? 'manual' : null].filter(Boolean).join(' and ');
+    const what = [snap?.slot.split(':')[0], freezes.length ? `${plural(freezes.length, 'freeze')}` : null, manual ? 'manual' : null].filter(Boolean).join(' and ');
     return {
       message: `Pulled ${plural(priced, 'price')} across ${plural(books.size, 'book')} for ${plural(matched.length, 'game')} (${what}), ${written} new, ${suspended} suspended`,
       rowsWritten: written,

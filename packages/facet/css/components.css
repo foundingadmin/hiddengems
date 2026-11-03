@@ -470,6 +470,27 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
 .fc-gauge-wrap[data-state="loading"] .fc-gauge-track { stroke-dasharray: 25 100; stroke-dashoffset: 0; transform-origin: 50% 50%; transform-box: fill-box; animation: fc-spin 1s linear infinite; }
 @keyframes fc-spin { to { transform: rotate(360deg); } }
 
+/* ------------------------------------------------------------------ Spinner [G behavior, F CSS]
+   <span class="fc-spinner" aria-hidden="true"></span>. A ring in currentColor, 16px (the size a small
+   button renders [G]), 12px with data-size="small". Mount it only once the work starts, set
+   aria-busy="true" on the wrapper and name the work in words next to it ("Pulling"). In a busy
+   button it sits before the label; the button keeps focus. */
+.fc-spinner {
+  --_s: 16px;
+  display: inline-block;
+  flex: 0 0 auto;
+  width: var(--_s);
+  height: var(--_s);
+  border: 2px solid color-mix(in srgb, currentColor 24%, transparent);
+  border-top-color: currentColor;
+  border-radius: var(--fc-radius-full);
+  animation: fc-spin 800ms linear infinite;
+}
+.fc-spinner[data-size="small"] { --_s: 12px; border-width: 1.5px; }
+@media (prefers-reduced-motion: reduce) { .fc-spinner { animation-duration: 2400ms; } }
+/* A busy button keeps its own colors so the spinner and label stay readable. */
+.fc-button[aria-busy="true"] { cursor: progress; }
+
 /* ------------------------------------------------------------------ Icon tile [F, owner decision D1]
    A neutral tile that holds one icon, wherever it speeds recognition: empty states, list and
    connection row leads, entity leads, integration rows. Never decorative, never colored, one per item. */

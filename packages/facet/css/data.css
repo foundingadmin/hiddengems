@@ -786,6 +786,22 @@ dialog.fc-sheet:not([open]) { display: none; }
   background: var(--fc-text-primary);
 }
 
+/* ================================================================== Effect marker [F]
+   Whether a note adds to or costs a pick: an arrow plus a word, gray. Not an edge or a change, so never edge
+   green or red; the word carries the meaning and the arrow is decoration with empty alt text.
+   <span class="fc-effect" data-effect="add">Adds</span> <span class="fc-effect" data-effect="cost">Costs</span> */
+.fc-effect {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--fc-space-1);
+  font: 500 14px/20px var(--fc-font-sans);
+  color: var(--fc-text-primary);
+  white-space: nowrap;
+}
+.fc-effect::before { color: var(--fc-text-secondary); }
+.fc-effect[data-effect="add"]::before { content: "\2191" / ""; }
+.fc-effect[data-effect="cost"]::before { content: "\2193" / ""; }
+
 /* Context only [F]: a description row that informs but never moves the rating reads gray, value included,
    tagged with a gray "Context only" badge so the tone is never the only cue. */
 .fc-description > div[data-context] > dd { font-weight: 400; color: var(--fc-text-secondary); }

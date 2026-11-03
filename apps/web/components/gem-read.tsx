@@ -1,16 +1,16 @@
 'use client';
-// The gem sheet's read (docs/prd.md F2.1, F2.4, F2.5, F2.7): the price chart in Overview, trend lines in Notes,
+// The gem sheet's read (docs/prd.md F2.1, F2.3, F2.4, F2.5, F2.7): the price chart in Overview, adds, costs and trend lines in Notes,
 // the core sample and game conditions in Context, and the loupe (F2.2). Facet parts only (chart-card.md, rank
 // track, context rows, toggle chips and the game log in data.css); numbers come from packages/core through lib/gem.ts.
 import { mountTips } from '@foundingcreative/facet/js/tips.mjs';
 import {
-  type CoreSample, type GameLog, type LogGame, type Opportunity, type Split, type SplitKey, type SplitNote, type SplitSide, type Trend,
-  MATCHUP_WEEKS, SPLIT_KEYS, SPLIT_PRIOR_GAMES, combineSplits, gameLog, matchupTrack,
+  type CoreSample, type GameLog, type GemNote, type LogGame, type Opportunity, type Split, type SplitKey, type SplitNote, type SplitSide, type Trend,
+  MATCHUP_WEEKS, SPLIT_KEYS, SPLIT_PRIOR_GAMES, combineSplits, freshnessState, gameLog, matchupTrack,
 } from '@hiddengems/core';
 import { useSearchParams } from 'next/navigation';
 import { type MouseEvent, type ReactNode, useEffect, useId, useRef, useState } from 'react';
 import { GameLogCells, GameLogKey } from '@/components/game-log';
-import type { Appraisal, Conditions, Loupe } from '@/lib/gem';
+import type { Appraisal, Conditions, Loupe, SourcedNote } from '@/lib/gem';
 import { ago } from '@/lib/format';
 
 const pct = (p: number) => `${Math.round(p * 100)}%`;
@@ -21,8 +21,6 @@ const ordinal = (n: number) => {
   const s = n % 100 >= 11 && n % 100 <= 13 ? 'th' : ['th', 'st', 'nd', 'rd'][n % 10] ?? 'th';
   return `${n}${s}`;
 };
-/** A pull under 6 hours old reads live. */
-const FRESH_MS = 6 * 3_600_000;
 const clockIn = (zone: string) => (iso: string) => new Intl.DateTimeFormat('en-US', { timeZone: zone, weekday: 'short', hour: 'numeric', minute: '2-digit' }).format(new Date(iso));
 
 // ---------------------------------------------------------------- Price chart (F2.7)
@@ -148,7 +146,6 @@ export function PriceChart({ appraisal: a, book, kickoff, now, zone }: { apprais
       a.clv != null ? `Closing line value ${clvText(a.clv)} against the fair close.` : '',
     ].filter(Boolean).join(' ');
 
-  const fresh = pulled != null && tNow - pulled < FRESH_MS;
   const rows = [
     ...trail.map((p) => ({ key: `p${p.t}`, at: p.t, what: p.t === first?.t ? 'Open' : 'Moved', price: p.price })),
     ...(rec ? [{ key: 'dec', at: Date.parse(rec.decisionAt), what: 'Decision', price: rec.decisionPrice }, { key: 'frz', at: Date.parse(rec.freezeAt), what: 'Close', price: rec.freezePrice }] : []),
@@ -234,7 +231,7 @@ export function PriceChart({ appraisal: a, book, kickoff, now, zone }: { apprais
       <div className="fc-chart-card-footer">
         {!started && (
           <p className="fc-freshness">
-            <span className="fc-status-dot" data-state={pulled == null ? 'queued' : fresh ? 'live' : 'stale'} aria-hidden="true" />
+            <span className="fc-status-dot" data-state={freshnessState(a.pulledAt, now)} aria-hidden="true" />
             {pulled != null
               ? <span>Updated <time dateTime={a.pulledAt!} title={clock(a.pulledAt!)} data-relative="">{ago(new Date(pulled), new Date(tNow)).replace(/^Just now$/, 'just now')}</time></span>
               : <span>Not pulled yet</span>}
@@ -320,6 +317,52 @@ export function TrendLines({ trends, loupe, labelledBy }: { trends: Trend[]; lou
     <ul className="fc-list" data-lines="1" data-aside="beside" role="list" aria-labelledby={labelledBy}>
       {trends.map((t) => line(t.kind, trendWords(t), t.rate, trendCondition(t, loupe)))}
       {loupe?.notes.map((n) => line(`split-${n.key}`, splitWords(n, loupe), n.rate, n.key))}
+    </ul>
+  );
+}
+
+// ---------------------------------------------------------------- Adds and costs (F2.3)
+
+/** One note in words. Context only: no note moves clarity, the hit chance or the rating. */
+function noteWords(n: GemNote): string {
+  switch (n.kind) {
+    case 'injury': return `Listed ${n.status}`;
+    case 'blowout': return n.side === 'favorite' ? 'His team is a big favorite, so starters may sit late' : 'His team is a big underdog, so it may trail and throw';
+    case 'implied': return `His team’s implied points are ${n.effect === 'add' ? 'above' : 'below'} the league average`;
+    case 'snaps': return `His snap share is ${n.effect === 'add' ? 'up' : 'down'} over his last 3 games`;
+  }
+}
+
+function noteSource(s: SourcedNote): string {
+  if (s.note.kind === 'injury') return s.week != null ? `Week ${s.week} injury report` : 'Injury report';
+  if (s.note.kind === 'blowout') return 'Schedule spread';
+  if (s.note.kind === 'snaps') return 'Snap counts';
+  return s.model ? `Model ${s.model}` : 'Model';
+}
+
+
+export function GemNotes({ notes, now, zone, labelledBy }: { notes: SourcedNote[]; now: string; zone: string; labelledBy: string }) {
+  if (!notes.length) return <div className="fc-empty"><strong>No adds or costs</strong></div>;
+  const exact = (iso: string) => new Intl.DateTimeFormat('en-US', { timeZone: zone, month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }).format(new Date(iso));
+  return (
+    <ul className="fc-list" data-aside="beside" role="list" aria-labelledby={labelledBy}>
+      {notes.map((s) => (
+        <li key={s.note.kind} className="fc-list-row">
+          <div className="fc-list-row-main">
+            <p className="text-copy-14">{noteWords(s.note)}</p>
+            <p className="fc-freshness">
+              {s.at && <span className="fc-status-dot" data-state={freshnessState(s.at, now)} aria-hidden="true" />}
+              <span>
+                {noteSource(s)}
+                {s.at && <>, <time dateTime={s.at} title={exact(s.at)} data-relative="">{ago(new Date(s.at), new Date(now)).replace(/^Just/, 'just')}</time></>}
+              </span>
+            </p>
+          </div>
+          <div className="fc-list-row-aside">
+            <span className="fc-effect" data-effect={s.note.effect}>{s.note.effect === 'add' ? 'Adds' : 'Costs'}</span>
+          </div>
+        </li>
+      ))}
     </ul>
   );
 }
@@ -416,7 +459,7 @@ export function ConditionsList({ conditions: c, now }: { conditions: Conditions;
               <span className="fc-badge" data-variant="gray" data-size="sm" data-contrast="low">Context only</span>
             </span>
             <p className="fc-freshness">
-              <span className="fc-status-dot" data-state={Date.parse(now) - Date.parse(w.pulledAt) < FRESH_MS ? 'live' : 'stale'} aria-hidden="true" />
+              <span className="fc-status-dot" data-state={freshnessState(w.pulledAt, now)} aria-hidden="true" />
               <span>Open-Meteo forecast, <time dateTime={w.pulledAt} data-relative="">{ago(new Date(w.pulledAt), new Date(now)).replace(/^Just/, 'just')}</time></span>
             </p>
           </dd>

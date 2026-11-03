@@ -55,7 +55,7 @@ lead's model (`inherit`).
 
 | Agent | Kind | Model | Version | Updated | Job |
 |---|---|---|---|---|---|
-| `vice-principal` | lead | inherit | 2.0 | 2026-11-03 | Owns staging, dispatches every step, makes the calls, escalates |
+| `vice-principal` | lead | inherit | 2.1 | 2026-11-03 | Owns staging, dispatches every step, makes the calls, escalates |
 | `staging-keeper` | operations | sonnet | 2.0 | 2026-11-03 | PR checklist, merges into staging, keeps it green |
 | `release-manager` | operations | sonnet | 1.1 | 2026-11-03 | Release PR for the principal's review; syncs staging after ratification |
 | `corpus-steward` | operations | inherit | 1.1 | 2026-11-03 | Retrospective: lessons, decisions, amendments, versions |
@@ -64,7 +64,7 @@ lead's model (`inherit`).
 | `screen-builder` | builder | inherit | 1.1 | 2026-11-03 | Build brief screens in Facet |
 | `data-builder` | builder | inherit | 1.1 | 2026-11-03 | Jobs, providers, schema, model changes |
 | `facet-builder` | builder | inherit | 1.1 | 2026-11-03 | DS requests built into Facet |
-| `repo-hygiene` | maintainer | sonnet | 1.1 | 2026-11-03 | Stale branches, dead code, doc and corpus drift |
+| `repo-hygiene` | maintainer | sonnet | 2.0 | 2026-11-03 | Stale branches, dead code, doc and corpus drift, the token log |
 | `content-verifier` | verifier | sonnet | 2.0 | 2026-11-03 | Words against the house rules and Facet's content guide |
 | `design-verifier` | verifier | inherit | 2.0 | 2026-11-03 | UI against Facet and the encodings, with screenshots |
 | `data-safety-verifier` | verifier | inherit | 2.0 | 2026-11-03 | Migrations, history, backups, credits, secrets |
@@ -94,4 +94,5 @@ Verifiers are read only. Builders never push to another agent's branch. No agent
 | `corpus/decisions.md` | The principal's recorded decisions |
 | `corpus/lessons.md` | Lessons, with who they help and their status |
 | `corpus/amendments.md` | How directives change, and the change log |
+| `corpus/efficiency.md` | Token totals per session |
 | `../../AGENTS.md` | House rules every agent and session follows |

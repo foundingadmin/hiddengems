@@ -38,3 +38,5 @@ How a directive (an agent file in `.claude/agents/`) changes.
 | 2026-11-03 | preview-triager | 1.1 | Model `sonnet`; each task carries its tier. | Principal decision |
 | 2026-11-03 | repo-hygiene | 1.1 | Model `sonnet`; corpus drift covers the `lessons` map and old wording; tier gate. | Principal decision; L5 |
 | 2026-11-03 | corpus-steward | 1.1 | Maintains `For:` lines and the `lessons` map; keeps directives short; tier gate. | Principal decision; L5 |
+| 2026-11-03 | repo-hygiene | 2.0 | Adds a Session log row to `corpus/efficiency.md` at the end of every session: lead, agents and session totals as the harness reported them. | Principal request |
+| 2026-11-03 | vice-principal | 2.1 | Passes the session's token totals to `repo-hygiene` in step 8. | Principal request |

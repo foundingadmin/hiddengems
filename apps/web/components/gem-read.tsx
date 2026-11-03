@@ -298,10 +298,11 @@ export function CoreSampleTable({ sample, team }: { sample: CoreSample; team: st
 
 const GROUP: Record<string, string> = { RB: 'running backs', WR: 'receivers', TE: 'tight ends', QB: 'quarterbacks' };
 
-/** weather: the seam for the weather line (a separate entry); nothing renders for it until it is passed. */
-export function ConditionsList({ conditions: c, weather }: { conditions: Conditions; weather?: ReactNode }) {
+/** The weather row shows only when the kickoff forecast matters at an open stadium (core weatherNote()). */
+export function ConditionsList({ conditions: c }: { conditions: Conditions }) {
   const m = c.matchup;
-  if (!c.implied && !m && !weather) return <div className="fc-empty"><strong>No game lines or matchup yet</strong></div>;
+  const w = c.weather;
+  if (!c.implied && !m && !w) return <div className="fc-empty"><strong>No game lines or matchup yet</strong></div>;
   const one = (n: number) => (Math.round(n * 10) / 10).toFixed(1);
   return (
     <dl className="fc-description" data-layout="rows">
@@ -337,7 +338,18 @@ export function ConditionsList({ conditions: c, weather }: { conditions: Conditi
           </dd>
         </div>
       )}
-      {weather}
+      {w && (
+        <div data-context="">
+          <dt>Weather at kickoff</dt>
+          <dd>
+            <span className="fc-factor-value">
+              {w.note}
+              <span className="fc-badge" data-variant="gray" data-size="sm" data-contrast="low">Context only</span>
+            </span>
+            <small>Open-Meteo forecast, <time dateTime={w.pulledAt}>{ago(new Date(w.pulledAt)).replace(/^Just/, 'just')}</time></small>
+          </dd>
+        </div>
+      )}
     </dl>
   );
 }

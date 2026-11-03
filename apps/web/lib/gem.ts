@@ -8,7 +8,7 @@ import {
   coreSample, fairPriceFor, favoredBySpread, findTeam, gameLog, impliedFactor, matchup, matchupPosition, newGemReason, priceTrail, trendLines,
 } from '@hiddengems/core';
 import {
-  books, gemMarks, gemRecords, games, grades, isMissingTable, oddsLatest, oddsSnapshots, picks, playerGameStats, playerUsage, players,
+  books, gemMarks, gemRecords, games, getGameWeather, grades, isMissingTable, oddsLatest, oddsSnapshots, picks, playerGameStats, playerUsage, players,
 } from '@hiddengems/db';
 import { and, desc, eq, inArray, lt, or } from 'drizzle-orm';
 import { db } from '@/lib/db';
@@ -27,10 +27,12 @@ export interface Appraisal {
   clv: number | null;
 }
 
-/** Game conditions. Implied points are in the model; the matchup is context only; weather comes later. */
+/** Game conditions. Implied points are in the model; the matchup and the weather are context only. */
 export interface Conditions {
   implied: { points: number; average: number } | null;
   matchup: Matchup | null;
+  /** The kickoff forecast's line when it matters at an open stadium (core weatherNote()), else null. */
+  weather: { note: string; pulledAt: string } | null;
 }
 
 export interface GemDetail {
@@ -182,8 +184,10 @@ async function appraisalOf(pick: typeof picks.$inferSelect, kickoff: Date): Prom
 
 /** Implied team points from the schedule's lines, and the opponent's rank in touchdowns allowed to the position. */
 async function conditionsOf(game: typeof games.$inferSelect, team: string | null, position: string | null): Promise<Conditions> {
-  if (!team || game.week == null) return { implied: null, matchup: null };
   const { db: d } = await db();
+  const forecast = await getGameWeather(d, game.id);
+  const weather = forecast?.note ? { note: forecast.note, pulledAt: forecast.pulledAt.toISOString() } : null;
+  if (!team || game.week == null) return { implied: null, matchup: null, weather };
   const season = await d.select().from(games).where(and(eq(games.season, game.season), eq(games.seasonType, 'reg')));
   const lines: GameLine[] = season.filter((g) => g.week != null).map((g) => ({
     gameId: g.id, week: g.week!, homeTeam: g.homeTeamId, awayTeam: g.awayTeamId, spreadLine: g.spreadLine, totalLine: g.totalLine,
@@ -191,7 +195,7 @@ async function conditionsOf(game: typeof games.$inferSelect, team: string | null
   const own = lines.find((l) => l.gameId === game.id);
   const factor = own ? impliedFactor(own, team, lines) : null;
   const implied = factor ? { points: factor.points, average: factor.points / factor.factor } : null;
-  if (!position) return { implied, matchup: null };
+  if (!position) return { implied, matchup: null, weather };
 
   const played = season.filter((g) => g.week != null && g.week < game.week! && g.status === 'final');
   const pos = matchupPosition(position);
@@ -207,6 +211,7 @@ async function conditionsOf(game: typeof games.$inferSelect, team: string | null
   const opponent = team === game.homeTeamId ? game.awayTeamId : game.homeTeamId;
   return {
     implied,
+    weather,
     matchup: matchup(
       played.filter((g) => counted.has(g.id)).map((g) => ({ gameId: g.id, week: g.week!, home: g.homeTeamId, away: g.awayTeamId })),
       scores, position, opponent,

@@ -196,6 +196,18 @@ export const playerGameStats = pgTable('player_game_stats', {
 }, (t) => [primaryKey({ columns: [t.gameId, t.playerId] })]);
 
 /**
+ * When each prop first became a gem, and when it was last marked read, with the rating each time. Feeds
+ * the New gems row: a gem is new when it crosses 90 or jumps 15 since it was found or last read.
+ */
+export const gemMarks = pgTable('gem_marks', {
+  selectionKey: text().primaryKey(),
+  foundAt: tstz().notNull(),
+  foundRating: integer().notNull(),
+  readAt: tstz(),
+  readRating: integer(),
+});
+
+/**
  * The model's inputs: each skill player's usage per game from nflverse play by play and snap counts
  * (core UsageGame). Current state, rebuilt by pull-usage; estimates keep the history of what it produced.
  */

@@ -616,6 +616,130 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
   .fc-gem[data-live]:not([data-fools]) > svg { animation: fc-gem-glint 5.6s var(--fc-ease-standard) infinite; animation-delay: var(--fc-gem-delay, 0s); }
 }
 
+/* New gems row [F]: gem cards in a sideways strip that snaps, with a fade at the trailing edge.
+   <div class="fc-strip-wrap"><div class="fc-strip" role="list"><article class="fc-gem-card fc-card" role="listitem">
+     <div class="fc-gem-card-head">gem mark, player, price + edge</div>
+     <h3>Why it's a gem</h3><ul class="fc-why">three reasons</ul>
+     <div class="fc-gem-card-foot">found time, Mark read</div></article></div></div> */
+.fc-strip-wrap { position: relative; min-width: 0; }
+.fc-strip-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 var(--fc-space-3) auto;
+  width: var(--fc-space-16);
+  pointer-events: none;
+  background: linear-gradient(to right, transparent, var(--fc-surface-canvas));
+}
+.fc-strip {
+  display: flex;
+  gap: var(--fc-space-4);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  padding: var(--fc-space-1) var(--fc-space-1) var(--fc-space-3);
+  margin: calc(var(--fc-space-1) * -1);
+  scrollbar-width: thin;
+}
+.fc-gem-card {
+  flex: none;
+  width: min(26rem, 80%);
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--fc-space-4);
+  padding: var(--fc-space-5);
+  border-radius: var(--fc-radius-lg);
+}
+.fc-gem-card h3 { margin: 0; }
+.fc-gem-card-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: var(--fc-space-3); align-items: center; }
+.fc-gem-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fc-space-3);
+  margin-top: auto;
+  padding-top: var(--fc-space-3);
+  border-top: 1px solid var(--fc-border-default);
+  color: var(--fc-text-secondary);
+}
+@container fc-shell (max-width: 767px) {
+  .fc-gem-card { width: 18.5rem; padding: var(--fc-space-4); gap: var(--fc-space-3); }
+}
+/* Reasons list: a small gem-purple facet marks each line (purple, because these are a gem's reasons). */
+.fc-why { display: flex; flex-direction: column; gap: var(--fc-space-2); margin: 0; padding: 0; list-style: none; }
+.fc-why > li { display: grid; grid-template-columns: var(--fc-space-3) minmax(0, 1fr); gap: var(--fc-space-2); align-items: baseline; }
+.fc-why > li::before {
+  content: "";
+  width: var(--fc-space-2);
+  height: var(--fc-space-2);
+  border-radius: 1px;
+  background: var(--fc-gem-solid);
+  transform: rotate(45deg) translateY(-1px);
+}
+
+/* Price chip [F]: a decimal price on a quiet fill, tabular. */
+.fc-price {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.25rem;
+  height: var(--fc-control-tiny);
+  padding: 0 var(--fc-space-2);
+  border-radius: var(--fc-radius-xs);
+  background: var(--fc-surface-fill);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Section head [F]: heading and its line on the left, actions on the right, wrapping on narrow screens. */
+.fc-section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--fc-space-4); flex-wrap: wrap; }
+.fc-section-head > :first-child { display: flex; flex-direction: column; gap: var(--fc-space-1); min-width: 0; }
+.fc-section-head h2 { margin: 0; }
+.fc-section-head-actions { display: flex; align-items: center; gap: var(--fc-space-2); }
+
+/* Gem row [F]: the phone form of a board row. Rating, player, then price over edge.
+   <a class="fc-gem-row" href="…">gem mark<span class="fc-player">…</span><span class="fc-gem-row-end">price, edge</span></a> */
+.fc-gem-row {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr) auto;
+  gap: var(--fc-space-3);
+  align-items: center;
+  padding: var(--fc-space-3) 0;
+  border-top: 1px solid var(--fc-border-default);
+  color: inherit;
+  text-decoration: none;
+}
+.fc-gem-row-end { display: flex; flex-direction: column; align-items: flex-end; gap: var(--fc-space-1); }
+.fc-gem-list { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
+
+/* Tab bar [F]: the phone's primary navigation, pinned to the bottom. Three destinations, icon over label,
+   44px targets (INT-04), a count badge at the icon's shoulder. Hidden from 768px, where the rail shows. */
+.fc-tabbar {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  display: none;
+  grid-template-columns: repeat(3, 1fr);
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--fc-surface-canvas);
+  box-shadow: inset 0 1px 0 var(--fc-border-default);
+}
+.fc-tabbar a {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--fc-space-1);
+  min-height: 44px;
+  padding: var(--fc-space-2) 0;
+  color: var(--fc-text-secondary);
+  text-decoration: none;
+}
+.fc-tabbar a[aria-current="page"] { color: var(--fc-text-primary); }
+.fc-tabbar a:focus-visible { outline: 0; box-shadow: var(--ds-focus-ring); border-radius: var(--fc-radius-sm); }
+.fc-tabbar svg { width: 20px; height: 20px; }
+.fc-tabbar .fc-badge { position: absolute; top: var(--fc-space-1); left: calc(50% + var(--fc-space-2)); }
+@container fc-shell (max-width: 767px) { .fc-tabbar { display: grid; } }
+
 /* Range marker: where today's number sits between a low and a high (line, projection). */
 .fc-range { position: relative; display: block; height: 12px; min-width: 64px; }
 .fc-range::before { content: ""; position: absolute; left: 0; right: 0; top: 5.5px; height: 1px; background: var(--ds-gray-500); }

@@ -1,5 +1,11 @@
 # Facet changelog
 
+## Unreleased
+
+Added, for the agent workflow page
+- Stacked bar (`.fc-stacked-bar`): shares of one total on a single bar, beside a legend (`components/stacked-bar.md`).
+- Step list (`.fc-step-list`, `.fc-step`): replay steps with the current one marked (`components/step-list.md`).
+
 ## 0.2.0 (2026-11-03)
 
 Minor: batch 2 added parts, and no existing part changed its API.

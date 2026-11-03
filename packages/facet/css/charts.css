@@ -1,6 +1,6 @@
 /* Facet charts and monitoring [F]. Built only from Facet tokens; load after facet.css.
    Specs: components/chart-card.md, legend.md, metric-row.md, rank-list.md, meter.md,
-   severity.md, freshness.md, progress.md ("Facet additions"), patterns/data-ops.md.
+   severity.md, freshness.md, stacked-bar.md, progress.md ("Facet additions"), patterns/data-ops.md.
    Measurements marked [G] come from the vercel.com app captures (2026-11-01, see
    reference/inbox-review-2026-11-02/01-dashboard-monitoring.md); the rest are Facet decisions.
 
@@ -11,15 +11,15 @@
 
 /* ================================================================== Series slots
    Any chart mark reads its color from --_s. Set data-series="1".."6" on the mark or a parent. */
-.fc-chart, .fc-legend { --_s: var(--fc-chart-1); }
+.fc-chart, .fc-legend, .fc-stacked-bar { --_s: var(--fc-chart-1); }
 .fc-sparkline { --_s: var(--fc-chart-5); } /* trend at a glance: one gray step below series 1 */
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="1"] { --_s: var(--fc-chart-1); }
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="2"] { --_s: var(--fc-chart-2); }
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="3"] { --_s: var(--fc-chart-3); }
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="4"] { --_s: var(--fc-chart-4); }
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="5"] { --_s: var(--fc-chart-5); }
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="6"] { --_s: var(--fc-chart-6); }
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="muted"] { --_s: var(--fc-chart-muted); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table, .fc-stacked-bar) [data-series="1"] { --_s: var(--fc-chart-1); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table, .fc-stacked-bar) [data-series="2"] { --_s: var(--fc-chart-2); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table, .fc-stacked-bar) [data-series="3"] { --_s: var(--fc-chart-3); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table, .fc-stacked-bar) [data-series="4"] { --_s: var(--fc-chart-4); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table, .fc-stacked-bar) [data-series="5"] { --_s: var(--fc-chart-5); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table, .fc-stacked-bar) [data-series="6"] { --_s: var(--fc-chart-6); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table, .fc-stacked-bar) [data-series="muted"] { --_s: var(--fc-chart-muted); }
 
 /* ================================================================== Chart card
    Title row (title, optional meta, optional drill link), optional legend, chart area, optional footer.
@@ -366,6 +366,27 @@
   margin-left: -0.5px;
   background: var(--fc-surface-canvas);
 }
+
+/* ================================================================== Stacked bar [F]
+   One bar split into the shares of a total (tokens per agent, requests per source). Segments run in legend
+   order, series 1 first, each --value percent of the bar; the rest of the track is what is still to come.
+   Always beside an .fc-legend that prints each value, so color is never the only cue (components/stacked-bar.md).
+   <div class="fc-stacked-bar" role="img" aria-label="..."><i data-series="1" style="--value:40"></i>...</div> */
+.fc-stacked-bar {
+  display: flex;
+  height: var(--fc-meter-height, 8px);
+  border-radius: var(--fc-radius-full);
+  background: var(--fc-surface-fill-hover);
+  overflow: hidden;
+}
+.fc-stacked-bar > i {
+  flex: 0 0 auto;
+  width: calc(min(var(--value, 0), 100) * 1%);
+  background: var(--_s);
+  transition: width var(--fc-duration-overlay) var(--fc-ease-standard);
+}
+.fc-stacked-bar > i + i { box-shadow: inset 1px 0 0 var(--fc-surface-canvas); }
+@media (prefers-reduced-motion: reduce) { .fc-stacked-bar > i { transition: none; } }
 
 /* ================================================================== Progress additions (C11)
    Types follow the hue allocation: success is green (the reference renders it blue). Works on the

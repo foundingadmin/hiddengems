@@ -36,13 +36,13 @@
       "id": "e3",
       "threads": [],
       "page": "/data",
-      "status": "building",
+      "status": "ready",
       "lane": "data",
       "fileGroup": "g3",
       "size": "S",
       "branch": "fix/2026-11-03-roster-match",
       "brief": "Production pull-odds on Nov 3 logged '23 players did not match a roster' including Derrick Henry, Ja'Marr Chase, Travis Kelce, Brock Bowers, James Cook. Nearly all are in the sample provider's roster, which points to duplicate players rows sharing a name key and team. Make the odds job's roster match resolve duplicates safely and say so in the log; never delete rows.",
-      "head": "",
+      "head": "45a07eb",
       "reason": "",
       "releasedIn": ""
     }

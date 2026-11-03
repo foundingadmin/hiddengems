@@ -17,11 +17,11 @@ const CHAT = icon(<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />);
 const SEARCH = icon(<><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></>);
 const CHEVRONS = icon(<><path d="m7 15 5 5 5-5" /><path d="m7 9 5-5 5 5" /></>);
 
-const TITLES: Record<string, string> = { '/': 'Gems', '/slips': 'Slips', '/jeweler': 'Ask the Jeweler', '/data': 'Data health', '/data/usage': 'Usage', '/data/backups': 'Backups', '/data/logs': 'Logs', '/settings/rating-lab': 'Rating lab' };
+const TITLES: Record<string, string> = { '/': 'Gems', '/slips': 'Slips', '/jeweler': 'Ask the Jeweler', '/data': 'Data health', '/data/usage': 'Usage', '/data/backups': 'Backups', '/data/logs': 'Logs', '/settings/rating-lab': 'Rating lab', '/settings/agents': 'Agent workflow' };
 /** Settings sections (packages/facet/patterns/settings.md): one route each; the rail drills into them. */
 const SETTINGS = [
   { href: '/data', label: 'Data health' }, { href: '/data/usage', label: 'Usage' }, { href: '/data/backups', label: 'Backups' },
-  { href: '/data/logs', label: 'Logs' }, { href: '/settings/rating-lab', label: 'Rating lab' },
+  { href: '/data/logs', label: 'Logs' }, { href: '/settings/rating-lab', label: 'Rating lab' }, { href: '/settings/agents', label: 'Agent workflow' },
 ];
 const LEFT = icon(<path d="m15 18-6-6 6-6" />);
 const GEAR = icon(<><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" /></>);

@@ -1,9 +1,10 @@
-// pull-results: nflverse stat lines for recently finished games, then settles open anytime TD bets and
-// records the closing price (the last price before kickoff) for closing line value.
-import { seasonOf } from '@hiddengems/core';
-import { bets, games, oddsSnapshots, playerGameStats } from '@hiddengems/db';
-import { and, desc, eq, inArray, isNull, lte, sql } from 'drizzle-orm';
-import type { Job } from '../runner';
+// pull-results: nflverse stat lines for recently finished games, then settles open anytime TD bets,
+// records the closing price (the last price before kickoff) and grades every gem record and placed bet
+// on a final game: closing line value against the fair close and one of four boxes (core gradeTake()).
+import { anytimeTdHit, fairChance, gradeTake, seasonOf } from '@hiddengems/core';
+import { bets, gemRecords, games, grades, isMissingTable, oddsSnapshots, playerGameStats } from '@hiddengems/db';
+import { type AnyColumn, and, desc, eq, inArray, isNotNull, isNull, lte, notInArray, sql } from 'drizzle-orm';
+import type { Job, JobContext } from '../runner';
 import { chunks, plural, refMap } from './shared';
 
 type StatRow = typeof playerGameStats.$inferSelect;
@@ -11,7 +12,7 @@ type StatRow = typeof playerGameStats.$inferSelect;
 /** won or lost for an anytime TD bet from the player's stat line; null for any other market. */
 export function grade(bet: { marketId: string }, stat: Pick<StatRow, 'touchdowns'>): 'won' | 'lost' | null {
   if (bet.marketId !== 'anytime_td') return null;
-  return stat.touchdowns > 0 ? 'won' : 'lost';
+  return anytimeTdHit(stat.touchdowns) ? 'won' : 'lost';
 }
 
 export const pullResults: Job = {
@@ -25,7 +26,11 @@ export const pullResults: Job = {
     const withStats = new Set((await db.selectDistinct({ id: playerGameStats.gameId }).from(playerGameStats)).map((r) => r.id));
     const finals = (await db.select().from(games).where(and(eq(games.status, 'final'), eq(games.season, seasonOf(now)))))
       .filter((g) => !withStats.has(g.id) || g.kickoffAt > since);
-    if (!finals.length) return { skipped: 'Every final game already has its stats' };
+    if (!finals.length) {
+      const graded = await gradeFinals(ctx);
+      if (!graded?.gems && !graded?.bets) return { skipped: 'Every final game already has its stats' };
+      return { message: `Graded ${plural(graded.gems, 'gem record')} and ${plural(graded.bets, 'bet')}`, rowsWritten: graded.gems + graded.bets };
+    }
 
     const provider = ctx.providers.results;
     const pctx = ctx.using(provider);
@@ -35,17 +40,19 @@ export const pullResults: Job = {
     const gameRefs = await refMap(db, provider.id, 'game', [...new Set(lines.map((l) => l.gameExternalId))]);
     const playerRefs = await refMap(db, provider.id, 'player', [...new Set(lines.map((l) => l.playerExternalId))]);
     const finalIds = new Set(finals.map((g) => g.id));
-    const rows: (typeof playerGameStats.$inferInsert)[] = [];
+    // One row per player game: a provider that returns a line under two weeks must not upsert it twice in one insert.
+    const byPlayerGame = new Map<string, typeof playerGameStats.$inferInsert>();
     let unknown = 0;
     const unknownIds = new Set<string>();
     for (const l of lines) {
       const gameId = gameRefs.get(l.gameExternalId), playerId = playerRefs.get(l.playerExternalId);
       if (!gameId || !playerId || !finalIds.has(gameId)) { unknown++; unknownIds.add(l.playerExternalId); continue; }
-      rows.push({
+      byPlayerGame.set(`${gameId}|${playerId}`, {
         gameId, playerId, touchdowns: l.touchdowns, receptions: l.receptions, receivingYards: l.receivingYards, rushingYards: l.rushingYards,
         passingYards: l.passingYards, passingTds: l.passingTds, extra: l.extra ?? null, runId: ctx.runId, updatedAt: now,
       });
     }
+    const rows = [...byPlayerGame.values()];
     for (const batch of chunks(rows)) {
       await db.insert(playerGameStats).values(batch).onConflictDoUpdate({
         target: [playerGameStats.gameId, playerGameStats.playerId],
@@ -82,6 +89,58 @@ export const pullResults: Job = {
       await db.update(bets).set({ status: result, payout: payout.toFixed(2), settledAt: now }).where(eq(bets.id, bet.id));
       settled++;
     }
-    return { message: `Pulled ${plural(rows.length, 'stat line')} for ${plural(finals.length, 'final game')}, settled ${plural(settled, 'bet')}`, rowsWritten: rows.length };
+
+    const graded = await gradeFinals(ctx);
+    const gradedText = graded?.gems || graded?.bets ? `, graded ${plural(graded.gems, 'gem record')} and ${plural(graded.bets, 'bet')}` : '';
+    return {
+      message: `Pulled ${plural(rows.length, 'stat line')} for ${plural(finals.length, 'final game')}, settled ${plural(settled, 'bet')}${gradedText}`,
+      rowsWritten: rows.length + (graded?.gems ?? 0) + (graded?.bets ?? 0),
+    };
   },
 };
+
+/**
+ * Grades every gem record and placed bet whose game is final and whose player has a stat line, once each.
+ * Null until the grades migration has run.
+ */
+export async function gradeFinals(ctx: Pick<JobContext, 'db' | 'now' | 'runId' | 'log'>): Promise<{ gems: number; bets: number } | null> {
+  const { db, now } = ctx;
+  const statOn = (gameId: AnyColumn, playerId: AnyColumn) =>
+    and(eq(playerGameStats.gameId, gameId), eq(playerGameStats.playerId, playerId));
+  let records;
+  try {
+    records = await db.select({ r: gemRecords, touchdowns: playerGameStats.touchdowns }).from(gemRecords)
+      .innerJoin(games, eq(games.id, gemRecords.gameId))
+      .innerJoin(playerGameStats, statOn(gemRecords.gameId, gemRecords.playerId))
+      .leftJoin(grades, eq(grades.gemRecordId, gemRecords.id))
+      .where(and(eq(games.status, 'final'), eq(gemRecords.marketId, 'anytime_td'), isNull(grades.id)));
+  } catch (err) {
+    if (isMissingTable(err)) {
+      ctx.log('info', 'Grading starts once the database update runs (pnpm db:supabase-sql)');
+      return null;
+    }
+    throw err;
+  }
+  const placed = await db.select({ bet: bets, touchdowns: playerGameStats.touchdowns }).from(bets)
+    .innerJoin(games, eq(games.id, bets.gameId))
+    .innerJoin(playerGameStats, statOn(bets.gameId, bets.playerId))
+    .leftJoin(grades, eq(grades.betId, bets.id))
+    .where(and(eq(games.status, 'final'), eq(bets.marketId, 'anytime_td'), isNotNull(bets.closingPrice), notInArray(bets.status, ['void', 'push']), isNull(grades.id)));
+
+  const row = (subject: 'gem' | 'bet', taken: number, closePrice: number, touchdowns: number) => {
+    const hit = anytimeTdHit(touchdowns);
+    const g = gradeTake({ taken, closePrice, hit });
+    return { runId: ctx.runId, subject, taken, closePrice, closeFair: fairChance(closePrice), clv: g.clv, beatClose: g.beatClose, hit, touchdowns, box: g.box, gradedAt: now };
+  };
+  const rows: (typeof grades.$inferInsert)[] = [
+    ...records.map(({ r, touchdowns }) => ({ ...row('gem', r.decisionPrice, r.freezePrice, touchdowns), gemRecordId: r.id, selectionKey: r.selectionKey, gameId: r.gameId })),
+    ...placed.map(({ bet, touchdowns }) => ({ ...row('bet', bet.priceDecimal, bet.closingPrice!, touchdowns), betId: bet.id, selectionKey: bet.selectionKey, gameId: bet.gameId })),
+  ];
+  const out = { gems: 0, bets: 0 };
+  for (const batch of chunks(rows)) {
+    for (const g of await db.insert(grades).values(batch).onConflictDoNothing().returning({ subject: grades.subject })) {
+      if (g.subject === 'gem') out.gems++; else out.bets++;
+    }
+  }
+  return out;
+}

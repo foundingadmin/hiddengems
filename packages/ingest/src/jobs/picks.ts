@@ -2,13 +2,14 @@
 // season's usage, implied team points, the injury report and every book's price), then appraises it at
 // the purchase book's posted price (core appraise()): gem with its 0 to 100 rating, Fool's Gold, no gem,
 // or unrated without 2026 stats. Estimates are appended (history); the picks table is replaced for the
-// games it covers.
+// games it covers. Then any game whose kickoff freeze was pulled goes on record (records.ts).
 import {
   type GameLine, MODEL_V3, PURCHASE_BOOK, type UsageGame, appraise, clarityScore, impliedFactor, playerForms, readProp, recommendedScore, seasonOf,
 } from '@hiddengems/core';
 import { estimates, gemMarks, games, oddsLatest, picks, playerUsage, players } from '@hiddengems/db';
 import { and, eq, gt, inArray, lt } from 'drizzle-orm';
 import type { Job } from '../runner';
+import { recordFrozenGames } from './records';
 import { chunks, plural } from './shared';
 
 export const buildPicks: Job = {
@@ -83,10 +84,14 @@ export const buildPicks: Job = {
       for (const batch of chunks(found)) await tx.insert(gemMarks).values(batch).onConflictDoNothing();
     });
     if (noPosted) ctx.log('info', `${plural(noPosted, 'prop')} had no DraftKings price yet`);
+    // Games whose freeze was just pulled: their board goes on record for grading.
+    const recorded = await recordFrozenGames(ctx);
+    if (!recorded) ctx.log('info', 'Gem records start once the database update runs (pnpm db:supabase-sql)');
+    const onRecord = recorded?.written ? `, recorded ${plural(recorded.written, 'prop')} at the freeze` : '';
     return {
-      message: `Appraised ${plural(pickRows.length, 'prop')} for ${plural(gameIds.length, 'game')}: ${plural(counts.gem, 'gem')}, ${counts['fools-gold']} Fool's Gold, ${counts.unrated} unrated`,
-      rowsWritten: pickRows.length,
-      meta: { model: MODEL_V3, ...counts },
+      message: `Appraised ${plural(pickRows.length, 'prop')} for ${plural(gameIds.length, 'game')}: ${plural(counts.gem, 'gem')}, ${counts['fools-gold']} Fool's Gold, ${counts.unrated} unrated${onRecord}`,
+      rowsWritten: pickRows.length + (recorded?.written ?? 0),
+      meta: { model: MODEL_V3, ...counts, recorded: recorded?.written ?? null, recordedGames: recorded?.games ?? [] },
     };
   },
 };

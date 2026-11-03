@@ -33,8 +33,8 @@ providers ──> jobs (ingest) ──> Postgres ──> pages (web)
 | `pull-schedule` | nflverse | `games` (with spread and total lines), `provider_refs` | Daily 09:17 |
 | `pull-rosters` | nflverse | `players` (team, position, jersey number), `provider_refs` | Daily 09:23 |
 | `pull-odds` | The Odds API | `odds_snapshots` (history), `odds_latest` (current, with slip links), `odds_slots` | Every 5 minutes, pulls only on the snapshot schedule |
-| `build-picks` | after every odds pull | `estimates` (history), `picks` (the board: gem rating, Fool's Gold, Recommended order) | Follows `pull-odds` |
-| `pull-results` | nflverse | `player_game_stats` (backfills the season on first run); settles `bets`, records closing prices | Daily 10:41 |
+| `build-picks` | after every odds pull | `estimates` (history), `picks` (the board: gem rating, Fool's Gold, Recommended order), `gem_records` (history) once a game's freeze is pulled | Follows `pull-odds` |
+| `pull-results` | nflverse | `player_game_stats` (backfills the season on first run); settles `bets`, records closing prices, writes `grades` | Daily 10:41 |
 | `pull-usage` | nflverse | `player_usage` (inside 10 carries and targets, touchdowns, snap share per player game), injury report onto `players`; then `build-picks` | Daily 10:53 |
 
 Cron runs every job often and lets the job decide. Odds come from The Odds API free plan: 500 credits a
@@ -89,6 +89,14 @@ priced chance; the opening snapshot is Tue 10:07 AM Denver.
   selection, book and the provider's observed time), so repeated pulls cost nothing and line
   movement, closing prices and any past slate can be rebuilt.
 - `estimates` is append-only: every model output, with its inputs.
+- `gem_records` is append-only: every appraised prop (all four kinds) once per game, written when its
+  freeze is pulled. It keeps the board at the freeze, priced and fair at the decision price and at the
+  freeze, the New gems flag and the estimate behind it. The decision price is DraftKings as of the last
+  weekly snapshot before kickoff (`decisionSnapshot()`): Sunday 8:43 AM, or earlier for Thursday and
+  Saturday games.
+- `grades` holds one row per gem record or placed bet once the game is final and the player's stat line is
+  in: CLV (`taken / close fair - 1`, taken being the decision price or the bet's price, close fair the
+  fair chance at the freeze) and the box (Earned, Unlucky, Lucky, Wrong read), from `core/src/grades.ts`.
 - `odds_latest` and `picks` are current state, small, and what the app reads. A selection a book
   stops listing is marked `available = false`.
 
@@ -160,7 +168,7 @@ be explained later.
   drop or truncate. Run it again after any PR that adds a migration. If Supabase offers "Run and enable RLS",
   choose "Run without RLS": grants and the closed public API control access, and RLS without policies would block
   the app login.
-- **Safety**: history tables reject update, delete and truncate (migration 0003); `pnpm db:guard` fails CI on
+- **Safety**: history tables reject update, delete and truncate (migrations 0003 and 0005); `pnpm db:guard` fails CI on
   a migration that drops, truncates or deletes unless the line says `-- destructive-approved: <reason>`.
 - **Backups**: the `backup` job (daily 11:07 UTC) writes the whole database as gzipped JSON to a private GitHub
   repository (`BACKUP_GITHUB_REPO`, written with `BACKUP_GITHUB_TOKEN`, a fine-grained token for that one

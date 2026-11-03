@@ -33,10 +33,13 @@ The reference writes UI labels in Title Case. Facet uses sentence case everywher
 | Rank list | Top-N bars (best price share) | P1 | [rank-list.md](rank-list.md) |
 | Team mark | Team logos, players and matchups (sport kits) | P0 | [team.md](team.md) |
 | Meter | Quota and limit bars | P0 | [meter.md](meter.md) |
+| Stacked bar | Shares of one total on a single bar (tokens by agent) | P1 | [stacked-bar.md](stacked-bar.md) |
+| Flow map | Who hands what to whom, with pan, zoom and a replay | P1 | [flow-map.md](flow-map.md) |
 | Severity | Alert level glyph and word | P1 | [severity.md](severity.md) |
 | Freshness line | How old the data on a panel can be | P0 | [freshness.md](freshness.md) |
 | List | Settings collection rows (books, providers) | P0 | [list.md](list.md) |
 | Feed | Activity grouped by day | P1 | [feed.md](feed.md) |
+| Step list | Replay steps with the current one marked | P1 | [step-list.md](step-list.md) |
 | Schedule | Pull schedule row and editor | P1 | [schedule.md](schedule.md) |
 | Input group | Input with prefix or suffix | P0 | [input-group.md](input-group.md) |
 | Stepper | Minus, value, plus | P1 | [stepper.md](stepper.md) |

@@ -1,9 +1,9 @@
 // Hidden Gems schema. Column names are camelCase here and snake_case in Postgres (casing: 'snake_case').
-// History is append-only: odds_snapshots and estimates are never updated, so any past slate can be rebuilt.
+// History is append-only: odds_snapshots, estimates and gem_records are never updated, so any past slate can be rebuilt.
 // Current state lives in small tables the app reads directly (odds_latest, picks).
 import { sql } from 'drizzle-orm';
 import {
-  bigserial, boolean, doublePrecision, index, integer, jsonb, numeric, pgTable, primaryKey, smallint, text, timestamp, uniqueIndex,
+  bigint, bigserial, boolean, doublePrecision, index, integer, jsonb, numeric, pgTable, primaryKey, smallint, text, timestamp, uniqueIndex,
 } from 'drizzle-orm/pg-core';
 
 const createdAt = () => timestamp({ withTimezone: true }).notNull().defaultNow();
@@ -245,6 +245,74 @@ export const bets = pgTable('bets', {
   note: text(),
   createdAt: createdAt(),
 }, (t) => [index().on(t.placedAt), index().on(t.status)]);
+
+/**
+ * Every appraised prop as it stood at its game's kickoff freeze, written once per selection (docs/prd.md F1.1,
+ * F1.3). Kind, rating, hit chance, clarity and carat are the board at the freeze; priced and fair are kept at
+ * the decision price (core decisionSnapshot()) and at the freeze, the close. Never updated.
+ */
+export const gemRecords = pgTable('gem_records', {
+  id: bigserial({ mode: 'number' }).primaryKey(),
+  runId: text().notNull(),
+  ...selection,
+  /** The purchase book whose prices are recorded (DraftKings). */
+  bookId: text().notNull().references(() => books.id),
+  /** gem, fools-gold, none, unrated */
+  kind: text().notNull(),
+  /** 0 to 100 for a gem, otherwise null. */
+  rating: integer(),
+  hitChance: doublePrecision().notNull(),
+  clarity: integer().notNull(),
+  /** Our chance minus the fair chance at the freeze, in points. */
+  carat: doublePrecision().notNull(),
+  /** The weekly snapshot the decision price comes from ("sun:2026-11-08"); null when none was taken. */
+  decisionSlot: text(),
+  /** When the decision price was pulled. */
+  decisionAt: tstz().notNull(),
+  decisionPrice: doublePrecision().notNull(),
+  decisionPriced: doublePrecision().notNull(),
+  decisionFair: doublePrecision().notNull(),
+  /** When the freeze was pulled. */
+  freezeAt: tstz().notNull(),
+  freezePrice: doublePrecision().notNull(),
+  freezePriced: doublePrecision().notNull(),
+  freezeFair: doublePrecision().notNull(),
+  /** Whether the New gems row showed it at the freeze (core newGemReason()), and why: crossed or jumped. */
+  isNew: boolean().notNull(),
+  newReason: text(),
+  /** The estimate behind the freeze appraisal, with the model's inputs (provenance). */
+  estimateId: bigint({ mode: 'number' }).references(() => estimates.id),
+  model: text().notNull(),
+  recordedAt: tstz().notNull(),
+}, (t) => [uniqueIndex().on(t.gameId, t.selectionKey), index().on(t.kind)]);
+
+/**
+ * One grade per gem record or placed bet once its game is final and the player's stat line is in: closing
+ * line value against the fair price at the freeze, the result and the box (core gradeTake()). Written once.
+ */
+export const grades = pgTable('grades', {
+  id: bigserial({ mode: 'number' }).primaryKey(),
+  runId: text().notNull(),
+  /** gem (a gem record) or bet (a placed bet) */
+  subject: text().notNull(),
+  gemRecordId: bigint({ mode: 'number' }).references(() => gemRecords.id),
+  betId: text().references(() => bets.id),
+  selectionKey: text().notNull(),
+  gameId: text().notNull().references(() => games.id),
+  /** The price taken: the decision price for a gem, the bet's own price for a bet. */
+  taken: doublePrecision().notNull(),
+  /** The price at the freeze, and its fair chance. */
+  closePrice: doublePrecision().notNull(),
+  closeFair: doublePrecision().notNull(),
+  /** taken / close fair decimal - 1 */
+  clv: doublePrecision().notNull(),
+  beatClose: boolean().notNull(),
+  hit: boolean().notNull(),
+  touchdowns: smallint().notNull(),
+  /** earned, unlucky, lucky, wrong-read */
+  box: text().notNull(),
+  gradedAt: tstz().notNull(),
+}, (t) => [uniqueIndex().on(t.gemRecordId), uniqueIndex().on(t.betId), index().on(t.gameId)]);
 
 // ---------------------------------------------------------------- Runs, logs and providers
 

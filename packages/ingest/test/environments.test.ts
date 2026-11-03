@@ -21,6 +21,11 @@ describe('environments', () => {
     expect(p.backup.id).toBe('memory');
   });
 
+  it('stays live when VERCEL_ENV is unset (local runs, the CLI)', () => {
+    expect(dataMode(live)).toBe('live');
+    expect(providersFor(live).backup.id).toBe('github-backup');
+  });
+
   it('defaults to sample without a key', () => {
     expect(dataMode({})).toBe('sample');
   });

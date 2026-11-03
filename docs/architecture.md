@@ -184,10 +184,11 @@ be explained later.
 | Data | live: nflverse and The Odds API | sample provider: realistic, fake games, rosters, odds and results, labeled "Sample data" |
 | Odds credits | spent on the snapshot schedule | never: previews are forced to sample mode in code (`VERCEL_ENV=preview`) |
 | Crons | run (`vercel.json`) | do not run on previews; pull with Data health's buttons |
-| Backups | nightly to the private GitHub repository | kept in memory only: previews never write to the backup repository |
+| Backups | nightly to the private GitHub repository | in memory only |
 
-A release reaches real data when the principal merges `staging` into `main`: production deploys against the real
-database. A release with a migration needs its `pnpm db:supabase-sql` output run in both projects, staging first.
+Preview's `DATABASE_URL` must never be the production URL: a pull there would append sample rows to production's
+history tables, which cannot be removed. A release with a migration needs its `pnpm db:supabase-sql` output run
+in both projects, staging first.
 
 ## Access
 

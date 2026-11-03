@@ -195,6 +195,26 @@ game at an open stadium; domes, retractable roofs and neutral sites get none. `g
 forecast per game. The sheet reads it with `getGameWeather(db, gameId)` (`packages/db/src/weather.ts`), which
 returns the forecast, the stadium and the note, or null.
 
+## Splits
+
+Context for the loupe (docs/prd.md F2.2); no split moves a rating. `core/src/splits.ts` reads anytime TD splits this
+season from data the jobs already store, so there is no new pull or table. Each split is shrunk toward his season
+rate over 4 games, and under 3 games is thin:
+
+| Condition | Sides | From |
+|---|---|---|
+| Starting QB | usual, other | `player_usage`: each team game's QB with the most snaps (passing yards, then the only QB, before snap counts land); the usual starter has the most starts |
+| Teammate out | in, out | `player_usage`: the team's WR1, RB1 and TE1 by mean snap share; a game they missed after their first one for the team; unknown before snap counts land |
+| Home or away | home, away | `games`; a neutral site is neither |
+| Rest | short, normal, bye | `games` kickoffs: 5 days or fewer since the team's last game, 13 or more, or between |
+| Implied points | above, below | `games` lines through core `impliedFactor()` |
+| Favored or underdog | favorite, underdog | `games` spread; a pick'em is neither |
+
+This week's side for the QB and teammates comes from the roster and the injury report (Out, Doubtful or off the
+active roster is out; Questionable leaves it unknown). `getSplits(db, playerId, gameId)` (`packages/db/src/splits.ts`)
+returns every condition with this week's side, every side's hits, games and rate, his games tagged by side (so
+`combineSplits()` can intersect conditions without another query), and the names of the players the conditions name.
+
 ## Database
 
 - **Setup and migrations on Supabase**: `pnpm db:supabase-sql [--app-password <password>]` writes one script to

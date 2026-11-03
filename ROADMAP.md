@@ -36,6 +36,9 @@ thread.
    apply production migrations by hand from the release PR again.
 10. **PRD v1.2.** Once 1 to 9 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
    Outlier as price source, F2.8, F3.4, the old pipeline's freeze and close commands.
+10. **Clear slip.** The micro moments package animates erasing a whole slip with a 5 second Undo, but neither the app
+   nor the wireframes have a Clear slip control. Recommend: no Clear slip for now, since a slip holds a few legs and
+   Remove with Undo covers it. The Erase moment waits until you want one (sprint 2026-11-03-2, e4).
 
 ## Where it stands
 
@@ -56,6 +59,7 @@ thread.
 | Phase 2, the read | F2.1 to F2.8 | Implied points live; multi book prices and line history accumulating | Every view |
 | Phase 3, the slip | F3.1 to F3.7 | Built: slips and states, lose it all, DraftKings slip link, handoff, change dialog, history, graded slip, the Jeweler | The Jeweler's key (call 5), provenance report data (F3.7), stake range (call 6) |
 | Facet parts from the brief | build brief | Promoted: every part the brief lists | |
+| Micro moments | `docs/animation/micro-moments` | Sprint 2026-11-03-2: foundation and New gems built; Add, gem sheet, Remove, Swipe, Send building | Erase (call 10), New connection (no screen) |
 
 ## Season calendar
 

@@ -29,4 +29,12 @@ body { margin: 0; background: var(--fc-surface-canvas); color: var(--fc-text-pri
 .hg-sub { color: var(--fc-text-secondary); font-weight: 400; }
 .hg-nowrap { white-space: nowrap; }
 .hg-confirm { display: inline-flex; align-items: center; gap: var(--fc-space-2); }
-.hg-result { min-width: calc(var(--fc-space-4) * 15); }
+/* Data health tables (owner feedback 2026-11-03: less crammed). Wider gutters, and set shares for the
+   label, status and schedule columns, so the result or message column takes the rest instead of every
+   column hugging its content. Below the shares' width the table scrolls rather than squeezing. */
+.hg-roomy { min-width: calc(var(--fc-space-4) * 50); }
+.hg-roomy :is(thead th, tbody th, td) { padding-inline: var(--fc-space-3); }
+.hg-roomy .hg-w-source { width: 18%; }
+.hg-roomy .hg-w-status { width: 12%; }
+.hg-roomy .hg-w-schedule { width: 16%; }
+.hg-roomy .hg-w-run { width: 13%; }

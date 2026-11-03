@@ -103,13 +103,13 @@ export default async function DataPage() {
       <section className="hg-section" aria-labelledby="sources-h">
         <h2 id="sources-h" className="text-heading-20">Sources</h2>
         <div className="fc-table-wrap">
-          <table className="fc-table hg-sources">
+          <table className="fc-table hg-roomy">
             <thead>
               <tr>
-                <th scope="col">Source</th>
-                <th scope="col">Last run</th>
-                <th scope="col" data-grow>Result</th>
-                <th scope="col">Schedule</th>
+                <th scope="col" className="hg-w-source">Source</th>
+                <th scope="col">Result</th>
+                <th scope="col" className="hg-w-schedule">Schedule</th>
+                <th scope="col" className="hg-w-run">Last run</th>
                 <th scope="col"><span className="fc-visually-hidden">Actions</span></th>
               </tr>
             </thead>
@@ -120,6 +120,10 @@ export default async function DataPage() {
                     <span>{label}</span>
                     <span className="hg-sub text-copy-13">{provider(job, live)}</span>
                   </th>
+                  <td>
+                    <ResultCell job={job}>{last?.message ?? ''}</ResultCell>
+                  </td>
+                  <td className="hg-nowrap">{schedule(job)}</td>
                   <td className="hg-stack">
                     <RunCell job={job}>
                       {last ? (
@@ -130,10 +134,6 @@ export default async function DataPage() {
                       ) : <span className="fc-level">Never run</span>}
                     </RunCell>
                   </td>
-                  <td className="hg-result">
-                    <ResultCell job={job}>{last?.message ?? ''}</ResultCell>
-                  </td>
-                  <td className="hg-nowrap">{schedule(job)}</td>
                   <td className="fc-cell-actions">
                     {job === 'pull-odds' && !sample
                       ? <PullButton job={job} label={label} cost={upcoming.length} left={left} />
@@ -149,13 +149,13 @@ export default async function DataPage() {
       <section className="hg-section" aria-labelledby="log-h">
         <h2 id="log-h" className="text-heading-20">Pull log</h2>
         <div className="fc-table-wrap">
-          <table className="fc-table">
+          <table className="fc-table hg-roomy">
             <caption className="fc-visually-hidden">Newest first, {log.length} runs</caption>
             <thead>
               <tr>
-                <th scope="col">Status</th>
-                <th scope="col">Source</th>
-                <th scope="col" data-grow>Message</th>
+                <th scope="col" className="hg-w-status">Status</th>
+                <th scope="col" className="hg-w-source">Source</th>
+                <th scope="col">Message</th>
                 <th scope="col" data-align="numeric">Started</th>
                 <th scope="col" data-align="numeric">Ran</th>
               </tr>

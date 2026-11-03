@@ -9,7 +9,7 @@
 ## Surfaces
 
 - Dashboard, the Hidden Gem Scorecard: https://claude.ai/artifact/4hAD8AoDqByyDPCnrvZ1Pr. Read and write its store with the ArtifactData tool (load it with ToolSearch).
-- Pipeline script: store doc `pipeline/build`, field `script`.
+- Pipeline script: `ops/pipeline/hgs.py` in this repo.
 - Odds API key: store doc `pipeline/config`, field `odds_api_key`.
 - Picks data: store doc `datasets/picks`, whose `source.url` points to a `/_blob/<id>` file.
 
@@ -33,7 +33,7 @@ Lines look like `Ja'Marr Chase CIN @ ATL|2.05 49% 18th ATL 80% 70% - 71% 38%|one
 
 ## Load the pipeline
 
-1. ArtifactData get `pipeline/build`, write its `script` field to `hgs.py`.
+1. Get the pipeline from `main`: `curl -fsSL https://raw.githubusercontent.com/foundingadmin/hiddengems/main/ops/pipeline/hgs.py -o hgs.py`, or copy `ops/pipeline/hgs.py` from your clone. The store's `pipeline/build` doc is retired; never read it.
 2. ArtifactData get `datasets/picks` and note its version. Fetch the file at `source.url` with the Artifact tool (action read, url = the dashboard, path = the 32 hex id after `/_blob/`) into `picks.json`.
 3. If pandas is missing: `pip install pandas --break-system-packages`.
 

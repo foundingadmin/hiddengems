@@ -4,7 +4,7 @@ Approved wireframes, Mon Nov 2 2026. Build these screens in the Vercel app (`app
 
 **Sources, in order**
 1. `docs/prd.md`, the product spec. It wins on product decisions: what a gem is, the rating, data sources, safety rules.
-2. `docs/wireframes/`, 16 boards (8 desktop, 8 phone): the source markup, plus a PNG of each in `docs/wireframes/png/`. The live canvas is https://claude.ai/artifact/98F927ZbiXyWJsb978uKva.
+2. `docs/wireframes/`, 16 boards (8 desktop, 8 phone): the source markup, plus a PNG of each in `docs/wireframes/png/`.
 3. Facet (`packages/facet`) wins on how things look, per `AGENTS.md`.
 
 The boards are wireframes built from real Facet classes, so the markup can be lifted almost directly. Every number in them is example data.

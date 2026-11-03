@@ -1,9 +1,9 @@
 # Hidden Gems · Product Requirements Document (PRD)
 
 Version 1.1 · updated Mon Nov 2 2026, 4 AM MT, with Josh's answers and comments · owner Josh Titus · grading model Hidden Gems v3.0 plus implied team points
-Rating lab, five rating formulas on the Week 9 board: https://claude.ai/artifact/1BocBGt7apEYLd9NscUpit
-Companion lookbook with competitor research, wireframes and the color wheel: https://claude.ai/artifact/AkiGCJdL8UFkCEo55nrJKo
-Feature wireframes, 8 desktop and 8 phone screens on Facet, in the repo at docs/wireframes: https://claude.ai/artifact/98F927ZbiXyWJsb978uKva
+Rating lab, five rating formulas on the Week 9 board: `docs/archive/rating-lab.html`
+Companion lookbook with competitor research, wireframes and the color wheel: `docs/archive/lookbook.html`
+Feature wireframes, 8 desktop and 8 phone screens on Facet: `docs/wireframes`
 
 ---
 
@@ -127,7 +127,7 @@ Competitors underinvest in design, so friction is everywhere: dense data sets, a
 
 # 8. Gem rating (approved for now Nov 2 2026)
 
-The rating lab compares five formulas on the same 126 Week 9 props: https://claude.ai/artifact/1BocBGt7apEYLd9NscUpit
+The rating lab compares five formulas on the same 126 Week 9 props: `docs/archive/rating-lab.html`
 
 What the Week 9 opening lines show (one book posted, numbers will move by Sunday):
 - **Today's scorecard (edge × odds × clarity):** top 10 has middle odds of 11.25 and an average hit chance of 10%. It ranks payout, not trust. Drop.
@@ -487,9 +487,9 @@ Geist and Geist Mono, following the Vercel Geist research in the hiddengems repo
 
 # 16. References
 
-- Lookbook with competitor research, feature cards, color wheel, palettes and the Jeweler's bench: https://claude.ai/artifact/AkiGCJdL8UFkCEo55nrJKo
-- Feature wireframes, 8 desktop and 8 phone screens on Facet: https://claude.ai/artifact/98F927ZbiXyWJsb978uKva
-- Rating lab: https://claude.ai/artifact/1BocBGt7apEYLd9NscUpit
+- Lookbook with competitor research, feature cards, color wheel, palettes and the Jeweler's bench: `docs/archive/lookbook.html`
+- Feature wireframes, 8 desktop and 8 phone screens on Facet: `docs/wireframes`
+- Rating lab: `docs/archive/rating-lab.html`
 - Grading model doc: project doc claude/grading-v3-nflverse.md
 - Competitors reviewed: Outlier, Props.Cash, OddsJam, Action Network, Linemate, Rithmm, Unabated, Pikkit, RotoWire Break the Plane, FTA Prop Edge Tool, PropSignal, OddsShopper
 

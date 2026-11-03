@@ -2,6 +2,19 @@
 
 These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working here.
 
+## The repo is the source of truth
+
+- This repository is the only source of truth for Hidden Gems: product (`docs/prd.md`), build briefs,
+  wireframes, design system, model, pipeline code and scheduled task directives. Start every task by
+  reading the latest `main`. Never work from a copy kept by an earlier session, a claude.ai artifact or memory.
+- Do not create, publish, update or consult claude.ai artifacts for this project (design systems,
+  canvases, dashboards, labs, docs). Anything worth keeping is a file here, changed by pull request. If
+  something you need lives only outside the repo, bring it in first, then work from the repo copy.
+- Superseded artifacts are archived in `docs/archive/` as they were; they are history, not specs.
+- The one exception while the old pipeline runs as a shadow (`ops/directives/`): its picks data and the
+  odds API key stay in the dashboard store, because the key is a secret and this repo is public. Its
+  code is `ops/pipeline/hgs.py`, here.
+
 ## UI work must use Facet
 
 - Read `packages/facet/DESIGN.md` before designing or building any interface.

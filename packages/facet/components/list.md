@@ -34,6 +34,7 @@ A bordered, divided list of things the user owns or connects: sportsbooks, data 
 - One-line rows: `data-lines="1"` on the list or the row: 48px (`--fc-row-list-single`, proposed). Lead uses a 32px tile (`data-size="sm"`).
 - `data-interactive` on the list: whole-row hover fill for rows that open a detail sheet.
 - Narrow: the list is an inline-size container. Under 520px the aside drops under the title; lead, title and actions keep line 1.
+- `data-aside="beside"` `[F]` on the list: under 520px a short aside (a result and its amount) stays beside the title, which truncates. Used by History's past slips and the graded slip's legs on phones (LAY-02).
 
 ## States
 Default, hover (interactive lists only), and per-row state through `data-state` (see `patterns/connections.md`). Status is always `.fc-status` (dot + word), never a dot alone.

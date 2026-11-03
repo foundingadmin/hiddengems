@@ -13,7 +13,7 @@ const KEY = { ANTHROPIC_API_KEY: 'sk-test' };
 const cook: JewelerGem = {
   id: '2026-11-08-mia-buf|anytime_td|cook|yes|', player: 'James Cook', number: 4, position: 'RB', team: 'Buffalo Bills',
   matchup: 'MIA @ BUF', kickoff: 'Sun 1:00 PM', kind: 'gem', rating: 92, price: 2.6, priced: 0.3846, hitChance: 0.49,
-  edge: 10.54, clarity: 92, reasons: ['Priced like a 38% shot, we read 49%'],
+  edge: 10.54, carat: 13.04, clarity: 92, reasons: ['Priced like a 38% shot, we read 49%'],
 };
 const shakir: JewelerGem = { ...cook, id: 'shakir', player: 'Khalil Shakir', number: 10, position: 'WR', price: 3.4, priced: 0.29, hitChance: 0.42, edge: 12.6, clarity: 88, rating: 88, reasons: [] };
 const context: JewelerContext = { week: 10, gem: cook, board: [cook, shakir], slip: null };
@@ -130,7 +130,9 @@ describe('the prompt', () => {
     const p = buildJewelerPrompt(context);
     expect(p).toContain('James Cook #4, RB, Buffalo Bills. MIA @ BUF, kickoff Sun 1:00 PM.');
     expect(p).toContain('DraftKings 2.60');
-    expect(p).toContain('Priced 38%, our estimate 49%, edge +11 pts, clarity 92, gem rating 92.');
+    expect(p).toContain('Priced 38%, our estimate 49%, edge +11 pts, gap to fair +13 pts, clarity 92, gem rating 92.');
+    expect(p).toContain('The sheet shows it as Gap to fair.');
+    expect(p).not.toContain('not shown and runs larger');
     expect(p).toContain('Priced like a 38% shot, we read 49%');
     expect(p).toContain('Khalil Shakir #10');
   });
@@ -142,8 +144,8 @@ describe('the prompt', () => {
   });
 
   it("names Fool's Gold and a negative edge plainly", () => {
-    const p = buildJewelerPrompt({ week: 10, gem: { ...cook, kind: 'fools-gold', rating: null, edge: -2 }, board: [], slip: null });
-    expect(p).toContain("edge −2 pts, clarity 92, Fool's Gold");
+    const p = buildJewelerPrompt({ week: 10, gem: { ...cook, kind: 'fools-gold', rating: null, edge: -2, carat: 1.26 }, board: [], slip: null });
+    expect(p).toContain("edge −2 pts, gap to fair +1.3 pts, clarity 92, Fool's Gold");
   });
 
   const slip: JewelerSlip = {

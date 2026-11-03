@@ -50,7 +50,8 @@ export interface SlipView {
   legs: SlipLegView[];
 }
 
-export type SlipResult = { ok: true; slipId: string } | { ok: false; error: string };
+/** confirm 'change': the slip is a suggested play, so changing its legs needs the Change slip confirmation first. */
+export type SlipResult = { ok: true; slipId: string } | { ok: false; error: string } | { ok: false; confirm: 'change'; slipId: string };
 
 const NOT_READY = 'Slips start once the database update runs';
 const OPEN: SlipState[] = ['draft', 'assessed', 'sent'];
@@ -135,7 +136,10 @@ async function editable(db: Db, slipId: string): Promise<typeof slips.$inferSele
 /** A change to the legs: the appraisal no longer covers the slip, so it is a draft and your own play. */
 const legsChanged = (now: Date) => ({ state: 'draft', play: 'own', appraisal: null, updatedAt: now }) as const;
 
-/** Adds a gem to its week's open slip, starting a draft when there is none. */
+/**
+ * Adds a gem to its week's open slip, starting a draft when there is none. A suggested play is not changed here:
+ * it asks for the Change slip confirmation (changeToOwnPlay()) first.
+ */
 export function addLeg(db: Db, selectionKey: string, now = new Date()): Promise<SlipResult> {
   return guard<SlipResult>({ ok: false, error: NOT_READY }, async () => {
     const [found] = await db.select({ pick: picks, game: games }).from(picks).innerJoin(games, eq(games.id, picks.gameId))
@@ -150,6 +154,10 @@ export function addLeg(db: Db, selectionKey: string, now = new Date()): Promise<
       let slip = await openRow(t, game.season, game.week!);
       if (!slip) {
         slip = (await tx.insert(slips).values({ season: game.season, week: game.week!, bookId: pick.bookId, createdAt: now, updatedAt: now }).returning())[0]!;
+      } else if (slip.play === 'suggested') {
+        const [on] = await tx.select({ key: slipLegs.selectionKey }).from(slipLegs)
+          .where(and(eq(slipLegs.slipId, slip.id), eq(slipLegs.selectionKey, selectionKey)));
+        if (!on) return { ok: false, confirm: 'change', slipId: slip.id };
       }
       const inserted = await tx.insert(slipLegs).values({
         slipId: slip.id, selectionKey, gameId: pick.gameId, marketId: pick.marketId, playerId: pick.playerId, playerName: pick.playerName,
@@ -161,10 +169,12 @@ export function addLeg(db: Db, selectionKey: string, now = new Date()): Promise<
   });
 }
 
+/** Removes a leg; a suggested play asks for the Change slip confirmation first, as addLeg() does. */
 export function removeLeg(db: Db, slipId: string, selectionKey: string, now = new Date()): Promise<SlipResult> {
   return guard<SlipResult>({ ok: false, error: NOT_READY }, async () => {
     const slip = await editable(db, slipId);
     if (typeof slip === 'string') return { ok: false, error: slip };
+    if (slip.play === 'suggested') return { ok: false, confirm: 'change', slipId };
     const gone = await db.delete(slipLegs).where(and(eq(slipLegs.slipId, slipId), eq(slipLegs.selectionKey, selectionKey))).returning({ key: slipLegs.selectionKey });
     if (gone.length) await db.update(slips).set(legsChanged(now)).where(eq(slips.id, slipId));
     return { ok: true, slipId };
@@ -215,6 +225,9 @@ export function markPlaced(db: Db, slipId: string, as: 'slip' | 'other', now = n
     const legs = await legsOf(db, slipId);
     if (!legs.length) return { ok: false, error: 'Add a gem first' };
     return db.transaction(async (tx) => {
+      // Claims the slip first, so a double submit or a second tab writes no second set of bets.
+      const claimed = await tx.update(slips).set({ state: 'placed' }).where(and(eq(slips.id, slipId), ne(slips.state, 'placed'))).returning({ id: slips.id });
+      if (!claimed.length) return { ok: false, error: 'This slip is already placed' };
       for (const l of legs) {
         const [bet] = await tx.insert(bets).values({
           placedAt: now, selectionKey: l.selectionKey, gameId: l.gameId, marketId: l.marketId, playerId: l.playerId, playerName: l.name,
@@ -224,7 +237,7 @@ export function markPlaced(db: Db, slipId: string, as: 'slip' | 'other', now = n
         await tx.update(slipLegs).set({ betId: bet!.id }).where(and(eq(slipLegs.slipId, slipId), eq(slipLegs.selectionKey, l.selectionKey)));
       }
       await tx.update(slips).set({
-        state: 'placed', placedAt: now, updatedAt: now, stake: amount.toFixed(2), ...(as === 'other' ? { play: 'own', appraisal: null } : {}),
+        placedAt: now, updatedAt: now, stake: amount.toFixed(2), ...(as === 'other' ? { play: 'own', appraisal: null } : {}),
       }).where(eq(slips.id, slipId));
       return { ok: true, slipId };
     });

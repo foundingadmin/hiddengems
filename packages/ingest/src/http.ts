@@ -1,5 +1,6 @@
-// Instrumented HTTP for providers: timeout, one retry for transient failures, request counting,
-// failure classification, and a hook for quota headers.
+// Instrumented HTTP for providers: timeout, one retry for transient failures on reads (never on a POST, which a
+// provider may have billed even when the answer was lost), request counting, failure classification, and a hook
+// for quota headers.
 import { ours, theirs } from './errors';
 
 export interface HttpOptions {
@@ -16,7 +17,7 @@ export interface Http {
   getText(url: string): Promise<string>;
   /** Raw bytes, for compressed files. */
   getBytes(url: string): Promise<Uint8Array>;
-  /** Posts a JSON body and reads JSON back (the Anthropic Messages API). */
+  /** Posts a JSON body and reads JSON back (the Anthropic Messages API). Never retried. */
   postJson(url: string, body: unknown): Promise<unknown>;
   readonly requestCount: number;
 }
@@ -39,15 +40,16 @@ export function createHttp(opts: HttpOptions): Http {
   async function get(url: string, body?: string): Promise<Response> {
     const safe = redact(url);
     let res: Response | undefined;
-    for (let attempt = 0; attempt < 2; attempt++) {
+    const attempts = body === undefined ? 2 : 1;
+    for (let attempt = 0; attempt < attempts; attempt++) {
       try {
         res = await once(url, body);
       } catch (err) {
-        if (attempt === 0) { await sleep(750); continue; }
+        if (attempt < attempts - 1) { await sleep(750); continue; }
         const timedOut = err instanceof Error && err.name === 'TimeoutError';
         throw theirs(timedOut ? 'timeout' : 'network', `${opts.provider} did not respond${timedOut ? ' in time' : ''}`, { provider: opts.provider, url: safe });
       }
-      if (res.status >= 500 && attempt === 0) { await sleep(750); continue; }
+      if (res.status >= 500 && attempt < attempts - 1) { await sleep(750); continue; }
       break;
     }
     if (!res) throw theirs('network', `${opts.provider} did not respond`, { provider: opts.provider, url: safe });

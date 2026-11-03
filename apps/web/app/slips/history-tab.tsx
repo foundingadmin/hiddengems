@@ -83,7 +83,7 @@ function PastSlips({ slips, slipHref }: { slips: GradedSlip[]; slipHref: (id: st
           </tbody>
         </table>
       </div>
-      <ul className="fc-list hg-phone-only hg-history-list" data-interactive="" role="list" aria-labelledby="past-h">
+      <ul className="fc-list hg-phone-only hg-history-list" data-interactive="" data-aside="beside" role="list" aria-labelledby="past-h">
         {slips.map((g) => (
           <li key={g.slip.id} className="fc-list-row">
             <div className="fc-list-row-main">

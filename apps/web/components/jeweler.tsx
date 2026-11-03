@@ -191,7 +191,7 @@ export function JewelerSheet() {
 
   if (!view) return null;
   return (
-    <dialog ref={dialog} className="fc-sheet" aria-labelledby="jeweler-title" onClose={close}>
+    <dialog ref={dialog} className="fc-sheet" data-phone="full" aria-labelledby="jeweler-title" onClose={close}>
       <JewelerChat key={view.gemId ?? ''} initial={view.view} frame="sheet" onClose={() => dialog.current?.close()} />
     </dialog>
   );

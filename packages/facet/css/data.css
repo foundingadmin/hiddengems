@@ -350,6 +350,40 @@ button.fc-filter-chip:focus-visible { box-shadow: var(--ds-focus-ring); }
 }
 .fc-filter-sort > .fc-select { width: auto; padding-left: var(--fc-space-8); }
 
+/* Phone row [F]: <div class="fc-filter-bar" data-phone="scroll"> with the chips and sort in .fc-filter-scroll.
+   Wide, the wrapper is invisible and the bar wraps as above. Under 768px the chips are one row that scrolls
+   sideways, sort first; search hides until opened ([data-open], from a header search button) and Add filter
+   (.fc-filter-add-label around its text) shrinks to its icon at the row's end, outside the scroller so its
+   menu is not clipped. */
+.fc-filter-scroll { display: contents; }
+@media (max-width: 767px) {
+  .fc-filter-bar[data-phone="scroll"] { flex-wrap: wrap; }
+  .fc-filter-bar[data-phone="scroll"] > .fc-filter-search:not([data-open]) { display: none; }
+  .fc-filter-bar[data-phone="scroll"] > .fc-filter-search { flex-basis: 100%; }
+  .fc-filter-bar[data-phone="scroll"] > :not(.fc-filter-search, .fc-filter-scroll) { order: 1; flex: 0 0 auto; }
+  .fc-filter-bar[data-phone="scroll"] .fc-filter-scroll {
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    gap: var(--fc-space-2);
+    min-width: 0;
+    margin: calc(var(--fc-space-1) * -1);
+    padding: var(--fc-space-1);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .fc-filter-bar[data-phone="scroll"] .fc-filter-scroll::-webkit-scrollbar { display: none; }
+  .fc-filter-bar[data-phone="scroll"] .fc-filter-scroll > * { flex: 0 0 auto; max-width: none; }
+  .fc-filter-bar[data-phone="scroll"] .fc-filter-sort { order: -1; margin-left: 0; }
+  .fc-filter-bar[data-phone="scroll"] .fc-button:has(> .fc-filter-add-label) { width: var(--fc-control-small); padding: 0; justify-content: center; }
+  .fc-filter-bar[data-phone="scroll"] .fc-filter-add-label {
+    position: absolute;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0; border: 0;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+}
+
 /* ================================================================== Pie gauge [G geometry]
    <span class="fc-pie" style="--value:67" aria-hidden="true"></span> 4 of 6
    Ring at 10% of the box, wedge 50% of the box, filling clockwise from 12 o'clock.

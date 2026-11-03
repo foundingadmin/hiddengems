@@ -213,7 +213,7 @@ function Sections({ gem }: { gem: GemDetail }) {
           </div>
         </div>
         <p className="fc-runin text-copy-14">
-          <strong>Why two prices.</strong> {possessive(gem.book)} {gem.price.toFixed(2)} builds in its cut, a {pct(gem.priced)} shot; without the cut the fair price is {(1 / gem.fair).toFixed(2)}, a {pct(gem.fair)} shot.
+          <strong>Why two prices.</strong> Without {possessive(gem.book)} cut, the fair price is {(1 / gem.fair).toFixed(2)}, a {pct(gem.fair)} shot.
         </p>
         <dl className="fc-description" data-compact aria-label="Rating">
           <div>

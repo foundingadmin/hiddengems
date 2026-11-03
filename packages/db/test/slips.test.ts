@@ -70,17 +70,30 @@ describe('slips', () => {
     await db.update(slips).set({ play: 'suggested', state: 'assessed', appraisal: 'Both legs clear the cut.' }).where(eq(slips.id, s.id));
     expect((await changeToOwnPlay(db, s.id, now)).ok).toBe(true);
     expect(await getSlip(db, s.id)).toMatchObject({ play: 'own', state: 'draft', appraisal: null, stake: 15 });
-    await db.update(slips).set({ play: 'suggested' }).where(eq(slips.id, s.id));
-    await removeLeg(db, s.id, 'k2', now);
-    expect(await getSlip(db, s.id)).toMatchObject({ play: 'own' });
-    await addLeg(db, 'k2', now);
   });
 
-  it('marks it sent, then placed, writing one bet per leg', async () => {
+  it('asks to change a suggested play before adding or removing a leg', async () => {
+    const s = (await openSlip(db, 2026, 10))!;
+    await db.update(slips).set({ play: 'suggested', state: 'assessed', appraisal: 'Both legs clear the cut.' }).where(eq(slips.id, s.id));
+    expect(await removeLeg(db, s.id, 'k2', now)).toEqual({ ok: false, confirm: 'change', slipId: s.id });
+    await db.insert(picks).values(pick('k5', 'g2', 'p3'));
+    expect(await addLeg(db, 'k5', now)).toEqual({ ok: false, confirm: 'change', slipId: s.id });
+    expect(await addLeg(db, 'k1', now)).toEqual({ ok: true, slipId: s.id });
+    expect(await getSlip(db, s.id)).toMatchObject({ play: 'suggested', state: 'assessed', appraisal: 'Both legs clear the cut.' });
+    expect((await getSlip(db, s.id))!.legs.map((l) => l.selectionKey)).toEqual(['k1', 'k2']);
+    expect((await changeToOwnPlay(db, s.id, now)).ok).toBe(true);
+    expect(await removeLeg(db, s.id, 'k2', now)).toEqual({ ok: true, slipId: s.id });
+    expect(await getSlip(db, s.id)).toMatchObject({ play: 'own', state: 'draft' });
+    await addLeg(db, 'k2', now);
+    await db.delete(picks).where(eq(picks.selectionKey, 'k5'));
+  });
+
+  it('marks it sent, then placed once on a double submit, writing one bet per leg', async () => {
     const s = (await openSlip(db, 2026, 10))!;
     await markSent(db, s.id, now);
     expect(await getSlip(db, s.id)).toMatchObject({ state: 'sent', sentAt: now });
-    expect(await markPlaced(db, s.id, 'slip', now)).toEqual({ ok: true, slipId: s.id });
+    const twice = await Promise.all([markPlaced(db, s.id, 'slip', now), markPlaced(db, s.id, 'slip', now)]);
+    expect(twice).toEqual(expect.arrayContaining([{ ok: true, slipId: s.id }, { ok: false, error: 'This slip is already placed' }]));
     const placed = (await getSlip(db, s.id))!;
     expect(placed).toMatchObject({ state: 'placed', placedAt: now, play: 'own' });
     const written = await db.select().from(bets);

@@ -1,7 +1,10 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { zonedTimeToUtc } from '@hiddengems/core';
-import { bets, createDb, jobSettings, estimates, games, jobLocks, oddsSlots, oddsSnapshots, picks, playerUsage, players, providerUsage, runLogs, runs, seedReference, unpackBackup } from '@hiddengems/db';
-import { count, desc, eq, inArray } from 'drizzle-orm';
+import { fairChance, gradeBox, zonedTimeToUtc } from '@hiddengems/core';
+import {
+  bets, createDb, jobSettings, estimates, gemRecords, games, grades, jobLocks, oddsSlots, oddsSnapshots, picks, playerGameStats, playerUsage, players, providerUsage,
+  runLogs, runs, seedReference, unpackBackup,
+} from '@hiddengems/db';
+import { and, count, desc, eq, inArray, sql } from 'drizzle-orm';
 import { BOOTSTRAP, grade, jobs, runJob } from '../src';
 import { theirs } from '../src/errors';
 import { githubBackup, memoryBackup, sampleProviders } from '../src/providers';
@@ -237,5 +240,114 @@ describe('settlement', () => {
     const [bet] = await db.select().from(bets);
     expect(['won', 'lost']).toContain(bet!.status);
     expect(Number(bet!.payout)).toBe(bet!.status === 'won' ? 25 : 0);
+  });
+});
+
+describe('gem records and grades', () => {
+  const frozen = ['2026-11-08-mia-buf', '2026-11-08-cin-bal'];
+  const kickoff = new Date('2026-11-08T18:00:00Z');
+  const recordsOf = (ids: string[]) => db.select().from(gemRecords).where(inArray(gemRecords.gameId, ids));
+
+  it('records every appraised prop once at the freeze, at the decision price', async () => {
+    const records = await db.select().from(gemRecords);
+    expect(new Set(records.map((r) => r.gameId))).toEqual(new Set(frozen));
+    expect(records.length).toBe(new Set(records.map((r) => r.selectionKey)).size);
+    const [sat] = await db.select().from(oddsSlots).where(eq(oddsSlots.slot, 'sat:2026-11-07'));
+    for (const r of records) {
+      const [freeze] = await db.select().from(oddsSlots).where(eq(oddsSlots.slot, `freeze:${r.gameId}`));
+      expect(r.freezeAt).toEqual(freeze!.pulledAt);
+      expect(['gem', 'fools-gold', 'none', 'unrated']).toContain(r.kind);
+      // No Sunday morning pull was taken, so Saturday night is the decision price.
+      expect(r.decisionSlot).toBe('sat:2026-11-07');
+      const [snap] = await db.select().from(oddsSnapshots)
+        .where(and(eq(oddsSnapshots.selectionKey, r.selectionKey), eq(oddsSnapshots.bookId, 'draftkings'), eq(oddsSnapshots.runId, sat!.runId)));
+      expect(r.decisionPrice).toBe(snap!.priceDecimal);
+      expect(r.decisionAt).toEqual(sat!.pulledAt);
+      expect(r.decisionFair).toBeCloseTo(fairChance(r.decisionPrice), 12);
+      expect(r.freezeFair).toBeCloseTo(fairChance(r.freezePrice), 12);
+      const [e] = await db.select().from(estimates).where(eq(estimates.id, r.estimateId!));
+      expect(e!.selectionKey).toBe(r.selectionKey);
+      if (r.kind !== 'gem') expect(r).toMatchObject({ rating: null, isNew: false, newReason: null });
+    }
+  });
+
+  it('records nothing twice when the board is rebuilt', async () => {
+    const before = (await recordsOf(frozen)).length;
+    const r = await run('build-picks', { now: new Date(kickoff.getTime() - 5 * 60_000) });
+    expect(r.status, r.message).toBe('succeeded');
+    expect((await recordsOf(frozen)).length).toBe(before);
+  });
+
+  it('records a later game at its own freeze', async () => {
+    const r = await run('pull-odds', { providers: paid, now: new Date('2026-11-08T20:50:00Z') }); // ARI at NO, 4:05 PM ET
+    expect(r.message).toMatch(/for 1 game \(1 freeze\)/);
+    expect(r.followUps?.[0]?.message).toMatch(/, recorded \d+ props? at the freeze$/);
+    expect((await recordsOf(['2026-11-08-ari-no'])).length).toBeGreaterThan(0);
+  });
+
+  it('grades nothing while the game is not final', async () => {
+    const live = new Date('2026-11-08T19:30:00Z');
+    await run('pull-schedule', { now: live, force: true });
+    await run('pull-results', { now: live, force: true });
+    expect(await db.select().from(grades).where(inArray(grades.gameId, frozen))).toHaveLength(0);
+  });
+
+  it('grades every record and placed bet once the game is final, each in one box', async () => {
+    const [pick] = (await recordsOf(['2026-11-08-mia-buf'])).filter((r) => r.playerId);
+    await db.insert(bets).values({
+      placedAt: pick!.decisionAt, selectionKey: pick!.selectionKey, gameId: pick!.gameId, marketId: 'anytime_td', playerId: pick!.playerId, side: 'yes',
+      line: null, bookId: 'draftkings', priceDecimal: pick!.decisionPrice, stake: '10.00',
+    });
+    const after = new Date('2026-11-08T23:30:00Z');
+    await run('pull-schedule', { now: after, force: true });
+    const r = await run('pull-results', { now: after, force: true });
+    expect(r.message).toMatch(/graded \d+ gem records? and 1 bet$/);
+
+    const records = (await recordsOf(frozen)).filter((x) => x.playerId);
+    const all = await db.select().from(grades);
+    const gems = all.filter((g) => g.subject === 'gem');
+    expect(gems.length).toBeGreaterThan(0);
+    expect(gems).toHaveLength(records.length);
+    for (const g of gems) {
+      const rec = records.find((x) => x.id === g.gemRecordId)!;
+      const [stat] = await db.select().from(playerGameStats).where(and(eq(playerGameStats.gameId, rec.gameId), eq(playerGameStats.playerId, rec.playerId!)));
+      expect(g).toMatchObject({ taken: rec.decisionPrice, closePrice: rec.freezePrice, touchdowns: stat!.touchdowns, hit: stat!.touchdowns > 0 });
+      expect(g.clv).toBeCloseTo(rec.decisionPrice * rec.freezeFair - 1, 12);
+      expect(g.beatClose).toBe(g.clv > 0);
+      expect(g.box).toBe(gradeBox(g.beatClose, g.hit));
+    }
+    // ARI at NO is still being played.
+    expect(all.some((g) => g.gameId === '2026-11-08-ari-no')).toBe(false);
+
+    const [bet] = await db.select().from(bets).where(eq(bets.selectionKey, pick!.selectionKey));
+    const [betGrade] = all.filter((g) => g.betId === bet!.id);
+    expect(betGrade).toMatchObject({ subject: 'bet', taken: bet!.priceDecimal, closePrice: bet!.closingPrice });
+    expect(bet!.status).toBe(betGrade!.hit ? 'won' : 'lost');
+  });
+
+  it('grades each once', async () => {
+    const [before] = await db.select({ n: count() }).from(grades);
+    await run('pull-results', { now: new Date('2026-11-09T00:30:00Z'), force: true });
+    const [after] = await db.select({ n: count() }).from(grades);
+    expect(after!.n).toBe(before!.n);
+  });
+});
+
+describe('before the owner runs the gem grading migration', () => {
+  it('appraises, pulls results and backs up without the new tables', async () => {
+    const h = createDb('memory://');
+    await h.migrate();
+    await seedReference(h.db);
+    await h.db.execute(sql`drop table grades`);
+    await h.db.execute(sql`drop table gem_records`);
+    const go = (job: string, at: Date) => runJob(job, { db: h.db, providers: sampleProviders(), trigger: 'test', now: at, registry: jobs, force: true });
+    for (const job of BOOTSTRAP) expect((await go(job, now)).status).not.toBe('failed');
+    const freeze = await go('pull-odds', new Date('2026-11-08T17:45:00Z'));
+    expect(freeze.followUps?.[0]).toMatchObject({ job: 'build-picks', status: 'succeeded' });
+    const after = new Date('2026-11-08T23:30:00Z');
+    await go('pull-schedule', after);
+    expect((await go('pull-results', after)).status).not.toBe('failed');
+    expect((await go('backup', after)).status).toBe('succeeded');
+    await h.close();
   });
 });

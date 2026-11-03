@@ -23,7 +23,10 @@ thread.
    state until both exist; news notes (F2.3) wait too. To turn it on: add `ANTHROPIC_API_KEY` in Vercel, set the
    monthly cap with the SQL in `docs/architecture.md`, and confirm the Sonnet 5.5 prices in `JEWELER.price`
    (`packages/ingest/src/jeweler.ts`), which the cap counts against.
-6. **PRD v1.2.** Once 1 to 5 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
+6. **Usual stake range.** F3.1 reminds you when a stake is outside your usual range, but no range is set, so that
+   reminder is off. Recommend: give a low and high stake (for example $5 to $25) and it turns on. The other two
+   reminders are live: legs under 2.50 odds, and lines that need two or more touchdowns (read as the 2+ TD rule).
+7. **PRD v1.2.** Once 1 to 6 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
    Outlier as price source, F2.8, F3.4, the old pipeline's freeze and close commands.
 
 ## Where it stands

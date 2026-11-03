@@ -64,6 +64,9 @@ freezing prices this week.
 
 - [ ] Principal: run `pnpm db:supabase-sql --app-password <password>` output in the production Supabase project, then
       set `DATABASE_URL` (Production) to the `hiddengems_app` login (`docs/architecture.md`, Database).
+- [ ] Principal: after the release with gem records and grades merges, run `pnpm db:supabase-sql` output in the
+      staging Supabase project, then production (choose "Run without RLS"), before the first Week 9 kickoff Thu Nov 5.
+      Until then the jobs skip recording, so Week 9 games before it go unmeasured.
 - [ ] Principal: `ODDS_API_KEY`, `CRON_SECRET`, `BACKUP_GITHUB_TOKEN` and `BACKUP_GITHUB_REPO` set for Production only.
 - [ ] Data health shows today's Tue 10:07 AM opening snapshot. If it was missed, the next slot is Sat 7:47 PM; an off
       schedule pull spends credits and is the principal's call.

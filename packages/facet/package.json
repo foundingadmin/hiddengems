@@ -29,7 +29,8 @@
     "build": "node scripts/build.mjs",
     "capture": "node scripts/sync-primitives.mjs",
     "check": "node scripts/build.mjs && git diff --exit-code -- css js kits preview",
-    "lint:color": "node scripts/lint-color.mjs ../../apps"
+    "lint:color": "node scripts/lint-color.mjs ../../apps",
+    "test": "node --test scripts/dots.test.mjs"
   },
   "devDependencies": {
     "playwright": "^1.63.0"

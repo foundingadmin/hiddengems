@@ -131,6 +131,21 @@ Phase 3. Ship by Sat Nov 28. About 5.5 review hours.
 | Slip history and graded slip | screens, M | Season stats, past slips, the graded slip with took, closed and beat close per leg | M1 grade and box |
 | Provenance report (F3.7) | screens, M | Hit rate and average CLV by insight; under 15 graded gems shows cloudy | M2 notes and splits |
 
+## Micro moments
+
+The dot moments from `docs/animation/micro-moments/`, built on Facet's engine (`packages/facet/patterns/moments.md`).
+Each moment ships with its surface.
+
+| Moment | Surface | State |
+|---|---|---|
+| Foundation | Facet engine, tokens, card states, Undo toast, glint hooks; `apps/web/lib/moments` | Built |
+| Unread gems | New gems row | Built: unread tint and sheen, six dots circle the newest |
+| Unread to read | Mark read, Mark all read | Built: a cloud sweeps each card; a failure puts the shine back |
+| Add a gem, drawer | Board Add, Slips in the rail and tab bar, gem sheet | Next |
+| Remove, swipe, erase | The slip | Next |
+| Send | Send handoff | Waits on the handoff |
+| New connection | A connections screen | Waits on the screen |
+
 ## Prove it (M4)
 
 Weeks 13 to 18. The system is complete; the work is judging it and the Phase 4 list.

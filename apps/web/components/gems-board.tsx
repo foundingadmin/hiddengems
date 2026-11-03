@@ -11,6 +11,9 @@ import { useGemLink } from '@/components/gem-sheet';
 import { Edge, FoolsLabel, GemMark, Player } from '@/components/marks';
 import { SEARCH_EVENT } from '@/components/shell';
 import type { BoardRow } from '@/lib/board';
+import { readDelay, sweepRead, unsweepRead } from '@/lib/moments/mark-read';
+import { newestKey, orbitNewest } from '@/lib/moments/newest';
+import { useMoments } from '@/lib/moments/provider';
 
 const svg = (d: React.ReactNode) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{d}</svg>
@@ -45,8 +48,43 @@ function Kickoff({ iso, zone }: { iso: string; zone: string }) {
 
 export function NewGems({ rows, since, zone }: { rows: BoardRow[]; since: string | null; zone: string }) {
   const strip = useRef<HTMLDivElement>(null);
+  const wrap = useRef<HTMLDivElement>(null);
+  const cards = useRef(new Map<string, HTMLElement>());
+  const moments = useMoments();
   const [pending, start] = useTransition();
+  // Gems read here and not yet confirmed by the server, with when each card's tint fades (packages/facet
+  // patterns/moments.md: state first, the motion follows, a failure puts it back).
+  const [reading, setReading] = useState<Map<string, string>>(() => new Map());
+  const newest = useMemo(() => newestKey(rows), [rows]);
+  const orbiting = newest && !reading.has(newest) ? newest : null;
+  // Once the server has answered, read gems leave the row; forget them so a gem that turns new again shows it.
+  useEffect(() => setReading((m) => {
+    const live = new Set(rows.map((r) => r.key));
+    const next = new Map([...m].filter(([k]) => live.has(k)));
+    return next.size === m.size ? m : next;
+  }), [rows]);
+  useEffect(() => {
+    const card = orbiting ? cards.current.get(orbiting) : null;
+    if (!card || !wrap.current) return;
+    return orbitNewest(card, wrap.current);
+  }, [orbiting]);
   if (!rows.length) return null;
+  const read = (keys: string[]) => {
+    const els = keys.flatMap((k) => cards.current.get(k) ?? []);
+    setReading((m) => new Map([...m, ...keys.map((k, i) => [k, readDelay(i)] as const)]));
+    const swept = sweepRead(moments.stage(), els);
+    start(async () => {
+      try {
+        // The row keeps its cards until their clouds have passed (under a second; at once under reduced motion),
+        // so no cloud is left drawing over the table once the server's answer removes them.
+        await Promise.all([markRead(keys), swept]);
+      } catch {
+        setReading((m) => { const next = new Map(m); for (const k of keys) next.delete(k); return next; });
+        void unsweepRead(moments.stage(), els);
+        moments.announce(keys.length > 1 ? 'Couldn’t mark them read. Try again.' : 'Couldn’t mark it read. Try again.');
+      }
+    });
+  };
   const scroll = (dir: 1 | -1) => strip.current?.scrollBy({ left: dir * strip.current.clientWidth * 0.8, behavior: 'smooth' });
   return (
     <section className="hg-section" aria-labelledby="new-h">
@@ -59,17 +97,20 @@ export function NewGems({ rows, since, zone }: { rows: BoardRow[]; since: string
         </div>
         <div className="fc-section-head-actions">
           <button type="button" className="fc-button" data-variant="tertiary" data-size="small" disabled={pending}
-            onClick={() => start(() => markRead(rows.map((r) => r.key)))}>Mark all read</button>
+            onClick={() => read(rows.filter((r) => !reading.has(r.key)).map((r) => r.key))}>Mark all read</button>
           <span className="hg-desktop-only fc-section-head-actions">
             <button type="button" className="fc-button" data-variant="secondary" data-size="small" data-shape="square" aria-label="Scroll back" onClick={() => scroll(-1)}>{LEFT}</button>
             <button type="button" className="fc-button" data-variant="secondary" data-size="small" data-shape="square" aria-label="Scroll forward" onClick={() => scroll(1)}>{RIGHT}</button>
           </span>
         </div>
       </div>
-      <div className="fc-strip-wrap">
+      <div className="fc-strip-wrap" ref={wrap}>
         <div className="fc-strip" role="list" ref={strip}>
           {rows.map((r, i) => (
-            <article key={r.key} className="fc-gem-card fc-card" role="listitem" aria-label={`${r.name}, new gem`}>
+            <article key={r.key} className="fc-gem-card fc-card" role="listitem" aria-label={`${r.name}, new gem`}
+              ref={(el) => { if (el) cards.current.set(r.key, el); else cards.current.delete(r.key); }}
+              data-unread={reading.has(r.key) ? undefined : ''}
+              style={reading.has(r.key) ? { ['--fc-state-delay' as string]: reading.get(r.key) } : undefined}>
               <div className="fc-gem-card-head">
                 <GemMark kind={r.kind} rating={r.rating} size="lg" delay={i * 160} />
                 <Player name={r.name} teamId={r.teamId} number={r.number} detail={detail(r)} />
@@ -90,8 +131,8 @@ export function NewGems({ rows, since, zone }: { rows: BoardRow[]; since: string
                 <span className="text-label-13 hg-desktop-only">
                   {r.fresh?.kind === 'jumped' ? `Jumped ${r.fresh.from} to ${r.rating}` : `Found ${r.fresh?.at ?? ''}`}
                 </span>
-                <button type="button" className="fc-button" data-variant="tertiary" data-size="small" disabled={pending}
-                  onClick={() => start(() => markRead([r.key]))}>{CHECK}Mark read</button>
+                <button type="button" className="fc-button" data-variant="tertiary" data-size="small" disabled={pending || reading.has(r.key)}
+                  onClick={() => read([r.key])}>{CHECK}Mark read</button>
               </div>
             </article>
           ))}

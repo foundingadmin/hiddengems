@@ -36,7 +36,7 @@ Vercel handles dense data well because of a few disciplines applied without exce
 | Radius | 6 (controls, small surfaces), 8 (large controls), 12 (raised surfaces, menus, modals), 16 (fullscreen), full (pills) | `--fc-radius-*` |
 | Elevation | Material presets, shadows include a hairline ring so no border is needed | `.material-*`, `--ds-shadow-*` |
 | Focus | Buttons, tabs, toggles: 2px canvas gap + 2px brand ring. Inputs, selects: 1px brand ring + soft 4px brand halo. Keyboard only (`:focus-visible`) | `--ds-focus-ring`, `--ds-focus-border` |
-| Motion | Swift easing `cubic-bezier(.175,.885,.32,1.1)`, 200ms popovers, 300ms overlays, honor reduced motion | `--fc-ease-swift`, `--fc-duration-*` |
+| Motion | Swift easing `cubic-bezier(.175,.885,.32,1.1)`, 200ms popovers, 300ms overlays, honor reduced motion. Moments confirm actions with dots (`patterns/moments.md`) | `--fc-ease-*`, `--fc-duration-*`, `--fc-illus-*` |
 | Layout | 12 columns desktop, 6 tablet, 4 mobile; page max 1400 + 24 margins | `.fc-page` |
 
 ## Rules for dense data (the part that matters most)
@@ -148,6 +148,7 @@ Decorative gradients, glows, glass, textures or grid backgrounds. Gradient text.
 - **Next.js + Tailwind v4:** `@import "tailwindcss"; @import "@foundingcreative/facet/css/tailwind.css";` then `base.css`, `typography.css`, `components.css` and the layers you need (`data.css`, `charts.css`, `lists.css`, `forms.css`, `shell.css`, `settings.css`, `surfaces.css`, `slip.css`). `facet.css` imports all of them. Load fonts with the `geist` package (`geist/font/sans`, `geist/font/mono`); Facet picks up `--font-geist-sans` and `--font-geist-mono` automatically.
 - **Hero field:** `import { autoMount } from '@foundingcreative/facet/js/field.mjs'` mounts every `canvas[data-fc-field]`.
 - **Tips:** `import { mountTips } from '@foundingcreative/facet/js/tips.mjs'` wires every `.fc-has-tip` for hover, focus and tap.
+- **Moments:** `import { createStage } from '@foundingcreative/facet/js/dots.mjs'` draws the dot moments; `js/undo.mjs` counts an Undo toast down. Rules, API and how to add one: `patterns/moments.md`.
 - **Canvas or SVG charts:** `import { token } from '@foundingcreative/facet/js/tokens.mjs'` for resolved hex values per theme.
 - **Checking color use:** `node packages/facet/scripts/lint-color.mjs apps` (fails on raw colors and hue steps).
 - **Changing tokens:** edit `tokens/*.json`, run `node scripts/build.mjs`. To re-sync primitives with vercel.com, run `node scripts/sync-primitives.mjs` and review the diff like any design decision.

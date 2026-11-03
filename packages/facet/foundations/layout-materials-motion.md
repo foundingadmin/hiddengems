@@ -63,7 +63,7 @@ Restraint: do not wrap every metric in a card, and never nest cards. A surface m
 
 ## Layering
 
-`--fc-z-drawer` 200, `--fc-z-modal` 300, `--fc-z-menu` 2001, `--fc-z-toast` 5000, `--fc-z-tooltip` 99999.
+`--fc-z-drawer` 200, `--fc-z-modal` 300, `--fc-z-menu` 2001, `--fc-z-stage` 4000 (the moments canvas), `--fc-z-toast` 5000, `--fc-z-tooltip` 99999.
 
 ## Motion
 
@@ -71,7 +71,9 @@ Restraint: do not wrap every metric in a card, and never nest cards. A surface m
 - Animate only `opacity` and `transform`, and list properties explicitly (never `transition: all`).
 - Motion explains a state change, preserves continuity, or confirms an action. Nothing else: no decorative pulses, marquees, scroll reveals or bounce.
 - Honor `prefers-reduced-motion` (base.css collapses durations).
+- Moments (`patterns/moments.md`) confirm an action with dots drawn by `js/dots.mjs`. The gem sheet opens on a spring, `--fc-ease-emphasized` over `--fc-duration-sheet` (460ms), and closes with `--fc-ease-exit` and no spring; an Undo toast stays `--fc-duration-undo` (5s).
 - The one sanctioned glow and loop: the gem tier (`.fc-gem`). Each 5.6s cycle lights the filled facets left to right (one every 160ms), fires a quick flash burst the moment the last one lands, holds lit for most of the cycle, then dims and repeats. `--fc-gem-delay` sets when a row starts (cascade upward in ranked tables, 160ms per row, so the top rank lights last); the facet count sets when its sequence ends. `data-motion="once"` or `"none"` opts out. Rough never moves. Everything else stays still.
+- Named exceptions to the one-loop rule, asked for directly by the principal: the unread sheen on a gem card (`.fc-gem-card[data-unread]`, one pass every 4.2s) and the six dots circling the newest unread card (one lap every 5.2s). They are the only loops besides the gem, and both stop under reduced motion.
 - Live data: a changed odds value may briefly tint its cell (opacity fade, under 600ms). Never animate every tick, and never reorder rows under the cursor.
 
 ## Focus

@@ -1,7 +1,7 @@
 // Picks providers from the environment. DATA_MODE=sample (the default without a key) uses the sample
 // provider everywhere; DATA_MODE=live uses nflverse (free, no key) and The Odds API (ODDS_API_KEY).
-// Vercel previews (staging and task branches) are always sample, whatever their env holds: they use the staging
-// database, never spend odds credits and never write to the backup repository (docs/architecture.md, "Environments").
+// Vercel previews (staging and task branches) are always sample, whatever their env holds: they read production read
+// only or a sample fixture (apps/web/lib/db.ts), never spend odds credits and never write to the backup repository.
 import { ours } from '../errors';
 import { githubBackup, memoryBackup } from './backup';
 import { oddsApi } from './odds-api';

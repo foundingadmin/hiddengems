@@ -6,6 +6,7 @@
     { "path": "/api/cron/pull-rosters", "schedule": "23 9 * * *" },
     { "path": "/api/cron/pull-results", "schedule": "41 10 * * *" },
     { "path": "/api/cron/pull-usage", "schedule": "53 10 * * *" },
-    { "path": "/api/cron/backup", "schedule": "7 11 * * *" }
+    { "path": "/api/cron/backup", "schedule": "7 11 * * *" },
+    { "path": "/api/cron/backtest", "schedule": "37 12 * * 2" }
   ]
 }

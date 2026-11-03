@@ -10,3 +10,4 @@ export * from './log';
 export * from './slips';
 export * from './history';
 export * from './weather';
+export * from './backtest';

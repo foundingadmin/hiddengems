@@ -13,13 +13,13 @@
    Any chart mark reads its color from --_s. Set data-series="1".."6" on the mark or a parent. */
 .fc-chart, .fc-legend { --_s: var(--fc-chart-1); }
 .fc-sparkline { --_s: var(--fc-chart-5); } /* trend at a glance: one gray step below series 1 */
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline) [data-series="1"] { --_s: var(--fc-chart-1); }
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline) [data-series="2"] { --_s: var(--fc-chart-2); }
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline) [data-series="3"] { --_s: var(--fc-chart-3); }
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline) [data-series="4"] { --_s: var(--fc-chart-4); }
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline) [data-series="5"] { --_s: var(--fc-chart-5); }
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline) [data-series="6"] { --_s: var(--fc-chart-6); }
-:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline) [data-series="muted"] { --_s: var(--fc-chart-muted); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="1"] { --_s: var(--fc-chart-1); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="2"] { --_s: var(--fc-chart-2); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="3"] { --_s: var(--fc-chart-3); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="4"] { --_s: var(--fc-chart-4); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="5"] { --_s: var(--fc-chart-5); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="6"] { --_s: var(--fc-chart-6); }
+:is(.fc-chart, .fc-legend, .fc-chart-card, .fc-sparkline, .fc-table) [data-series="muted"] { --_s: var(--fc-chart-muted); }
 
 /* ================================================================== Chart card
    Title row (title, optional meta, optional drill link), optional legend, chart area, optional footer.
@@ -123,6 +123,8 @@
 .fc-chart-tip-rows [data-series="2"] { --_s: var(--fc-chart-2); }
 .fc-chart-tip-rows [data-series="3"] { --_s: var(--fc-chart-3); }
 .fc-chart-tip-rows [data-series="4"] { --_s: var(--fc-chart-4); }
+.fc-chart-tip-rows [data-series="5"] { --_s: var(--fc-chart-5); }
+.fc-chart-tip-rows [data-series="6"] { --_s: var(--fc-chart-6); }
 .fc-chart-tip-rows .fc-legend-key { border-radius: 2px; }
 .fc-chart-tip-rows > li.fc-chart-tip-rule { display: block; grid-column: 1 / -1; height: 0; margin: var(--fc-space-0_5) 0; border-top: 1px solid var(--fc-border-default); }
 .fc-chart-point { fill: var(--_s); stroke: var(--fc-surface-canvas); stroke-width: 2; }

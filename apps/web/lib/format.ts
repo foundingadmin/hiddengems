@@ -15,6 +15,26 @@ export function clock(d: Date): string {
   return new Intl.DateTimeFormat('en-US', { timeZone: ZONE, month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(d);
 }
 
+/** A run time with its day word (Facet schedule rows): "Today 6:00 PM", "Tomorrow 4:17 AM", "Tue 12:00 AM",
+ * or "Oct 31 11:00 PM" beyond a week either way. */
+export function dayTime(d: Date, now = new Date()): string {
+  const day = (x: Date) => new Intl.DateTimeFormat('en-CA', { timeZone: ZONE }).format(x);
+  const time = new Intl.DateTimeFormat('en-US', { timeZone: ZONE, hour: 'numeric', minute: '2-digit' }).format(d);
+  const days = Math.round((Date.parse(day(d)) - Date.parse(day(now))) / 86_400_000);
+  if (days === 0) return `Today ${time}`;
+  if (days === 1) return `Tomorrow ${time}`;
+  if (days === -1) return `Yesterday ${time}`;
+  if (Math.abs(days) < 7) return `${new Intl.DateTimeFormat('en-US', { timeZone: ZONE, weekday: 'short' }).format(d)} ${time}`;
+  return `${new Intl.DateTimeFormat('en-US', { timeZone: ZONE, month: 'short', day: 'numeric' }).format(d)} ${time}`;
+}
+
+/** A log timestamp to the second ("Nov 02 8:55:12 PM"), in the display zone. */
+export function stamp(d: Date): string {
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-US', { timeZone: ZONE, month: 'short', day: '2-digit', hour: 'numeric', minute: '2-digit', second: '2-digit' })
+    .formatToParts(d).map((x) => [x.type, x.value]));
+  return `${p.month} ${p.day} ${p.hour}:${p.minute}:${p.second} ${p.dayPeriod}`;
+}
+
 /** Relative time with compact units ("Just now", "4m ago", "3h ago", "2d ago"); a date after a week. */
 export function ago(d: Date, now = new Date()): string {
   const ms = now.getTime() - d.getTime();

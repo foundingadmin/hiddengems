@@ -13,6 +13,7 @@ export function githubBackup(token: string | undefined, repo: string | undefined
   return {
     id: 'github-backup',
     where: repo ?? 'an unset BACKUP_GITHUB_REPO',
+    link: (path) => `https://github.com/${repo}/blob/HEAD/${path}`,
     async put(_ctx, path, bytes, message) {
       if (!token || !repo || !/^[\w.-]+\/[\w.-]+$/.test(repo)) {
         throw ours('config', 'Add BACKUP_GITHUB_TOKEN and BACKUP_GITHUB_REPO (a private owner/name repository) to back up the database', { provider: 'github-backup' });

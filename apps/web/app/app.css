@@ -23,10 +23,35 @@ body { margin: 0; background: var(--fc-surface-canvas); color: var(--fc-text-pri
   .fc-gem-card-head { grid-template-columns: auto minmax(0, 1fr); }
 }
 .hg-lab-frame { display: block; width: 100%; height: 80vh; border: 0; border-radius: var(--fc-radius-sm); box-shadow: var(--ds-shadow-border); background: var(--fc-surface-canvas); }
-/* Data health: two-line cells (label over source, status over time), and the inline credit confirm. */
-.hg-stack > * { display: block; width: fit-content; }
-.hg-stack > .fc-level, .hg-stack > .fc-status { display: flex; }
+/* Data pages: secondary text, no-wrap cells, and the inline credit confirm. */
 .hg-sub { color: var(--fc-text-secondary); font-weight: 400; }
 .hg-nowrap { white-space: nowrap; }
 .hg-confirm { display: inline-flex; align-items: center; gap: var(--fc-space-2); }
-.hg-result { min-width: calc(var(--fc-space-4) * 15); }
+/* Pull log (owner feedback and reference 2026-11-03: read as history, like the vercel.com runtime log).
+   Dense mono rows with no row rounding, time first; warned and failed rows carry a tint plus their level
+   word, so color is never the only cue. Read only: fixes start from Data health. */
+.hg-log .fc-table { font: inherit; }
+.hg-log .fc-table thead th { font-family: var(--fc-font-sans); }
+.hg-log .fc-table td { height: auto; padding-block: var(--fc-space-1); vertical-align: baseline; }
+.hg-log .fc-table tbody tr > * { border-radius: 0; }
+.hg-log .fc-table tbody tr:hover { background: var(--fc-surface-fill); }
+.hg-log tr[data-level="error"] { background: var(--fc-status-error-bg); color: var(--fc-status-error-fg); }
+.hg-log tr[data-level="warning"] { background: var(--fc-status-warning-bg); }
+.hg-log tr[data-level] .fc-level { display: inline-flex; margin-right: var(--fc-space-2); }
+.hg-log-detail { display: block; color: var(--fc-text-secondary); }
+.hg-log tr[data-level="error"] .hg-log-detail { color: inherit; }
+.hg-log .fc-cell-actions .fc-button { margin-block: calc(-1 * var(--fc-space-1)); }
+.hg-log-end { margin: 0; padding: var(--fc-space-6) 0; text-align: center; color: var(--fc-text-secondary); }
+/* Data health overview: status, next odds pull, credits, on one hairline strip. */
+.hg-overview { margin: 0; border-radius: var(--fc-radius-md); box-shadow: inset 0 0 0 1px var(--fc-border-default); }
+.hg-overview dd { margin: 0; }
+.hg-status-value { display: inline-flex; align-items: center; gap: var(--fc-space-2); }
+/* Data health source rows: the last result sits under the name, secondary. */
+.hg-result { margin: 0; color: var(--fc-text-secondary); }
+.hg-mono { font-family: var(--fc-font-mono); }
+.hg-break { overflow-wrap: anywhere; }
+/* Usage: series keys in table row headers, and a sparkline lane. */
+.hg-key { margin-right: var(--fc-space-2); }
+.hg-spark-col { width: 25%; }
+.hg-spark { height: var(--fc-space-6); }
+.hg-tables { max-width: calc(var(--fc-space-4) * 40); }

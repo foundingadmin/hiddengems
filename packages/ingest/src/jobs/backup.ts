@@ -17,6 +17,12 @@ export const backupDatabase: Job = {
     await target.put(pctx, file, bytes, `Backup ${backup.takenAt}`);
     await target.put(pctx, 'BACKUP.md', new TextEncoder().encode(backupSummary(backup, file, bytes.length)), `Backup summary ${backup.takenAt}`);
     const rows = Object.values(backup.tables).reduce((n, t) => n + t.length, 0);
-    return { message: `Backed up ${plural(rows, 'row')} from ${Object.keys(backup.tables).length} tables to ${target.where}, ${(bytes.length / 1024).toFixed(1)} KB`, rowsWritten: 0 };
+    // The Backups page lists these from the run log, so it never calls the storage itself.
+    const tables = Object.fromEntries(Object.entries(backup.tables).map(([name, t]) => [name, t.length]));
+    return {
+      message: `Backed up ${plural(rows, 'row')} from ${Object.keys(backup.tables).length} tables to ${target.where}, ${(bytes.length / 1024).toFixed(1)} KB`,
+      rowsWritten: 0,
+      meta: { file, where: target.where, link: target.link?.(file) ?? null, bytes: bytes.length, rows, tables, takenAt: backup.takenAt },
+    };
   },
 };

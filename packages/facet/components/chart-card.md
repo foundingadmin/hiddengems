@@ -63,8 +63,16 @@ Marks read `--_s` from `data-series="1"` to `"6"` (`--fc-chart-1` to `-6`: gray-
 - Icon-only drill links and buttons are named (CON-19). Focus uses `--ds-focus-ring` (INT-02).
 - Color is never the only cue (CON-09): dashes, positions, labels and words carry every encoding.
 
+## Event marker `[F]`
+- `.fc-chart-marker`: a 1px vertical rule in `--fc-chart-axis` at a moment on a time axis. `data-dashed` for now, solid for the event that ends the axis (kickoff).
+- The axis label under it names it ("Now", "Kickoff"); the marker never carries a name of its own.
+
+## Gap below the target `[F]`
+`.fc-chart-gap[data-sign="negative"]` shades the same wedge in `--fc-edge-negative` where the line falls under the target. Draw the wedge once and clip it at the target line, the part above with the default gap, the part below with the negative one, so a line that crosses the target changes color where it crosses.
+
 ## Hidden Gems usage
 - Line movement on pick detail: one series (the book's price), open and now labelled, our fair price as the threshold.
+- Gem sheet, Overview (F2.7): the purchase book's price as a step line from its first snapshot to the kickoff marker, our fair price as the threshold, the gap shaded both ways, the future band from now. Once the game is on record the decision and close are the labelled points, and once graded the takeaway states the closing line value. Labels that would collide drop under their point or are left out; the table toggle has every price.
 - Odds pulls per hour on Data: scheduled and on demand stacked, legend totals, dashed current hour.
 - Alert preview: the gap series over 7 days with the alert level as a threshold.
 

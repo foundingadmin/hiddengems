@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { RunStatus } from '@/components/marks';
 import { Tips } from '@/components/tips';
 import {
-  DAY, OVERDUE_MS, SOURCES, isDaily, nextDaily, nextOddsPull, scheduleText, snapshotTimes, until,
+  DAY, NO_PROVIDER, SOURCES, isDaily, nextCron, overdueAfter, nextOddsPull, scheduleText, snapshotTimes, until,
 } from '@/lib/data-health';
 import { db, READ_ONLY } from '@/lib/db';
 import { clock, dayTime, duration } from '@/lib/format';
@@ -26,6 +26,11 @@ const ERROR_ICON = (
     <circle cx="12" cy="12" r="10" /><path d="m15 9-6 6" /><path d="m9 9 6 6" />
   </svg>
 );
+// The backtest's message carries its Brier and the baseline; scores get tabular figures (Facet DESIGN.md, Numbers).
+function Scores({ text }: { text: string }) {
+  return <>{text.split(/(\d\.\d{4})/).map((part, i) => (i % 2 ? <span key={i} className="fc-num">{part}</span> : part))}</>;
+}
+
 // Each pull is its own request (see pulls.tsx); a full usage pull reads a season of play by play.
 export const maxDuration = 300;
 export const metadata: Metadata = { title: 'Data health' };
@@ -85,9 +90,9 @@ export default async function DataPage() {
     } else if (last?.status === 'warned') {
       const text = firstWarning.get(last.id) ?? last.message ?? 'The last pull warned.';
       notes.set(job, { type: 'warning', text, short: `${label} warned`, fix: fixFor(job, label, text, true) });
-    } else if (!paused.has(job) && isDaily(job) && (!last || now.getTime() - last.startedAt.getTime() > OVERDUE_MS)) {
+    } else if (!paused.has(job) && overdueAfter(job) != null && (!last || now.getTime() - last.startedAt.getTime() > overdueAfter(job)!)) {
       notes.set(job, last
-        ? { type: 'warning', text: 'Missed its daily run.', short: `${label} overdue`, overdue: true, fix: { label: 'Pull now', jobs: [job] } }
+        ? { type: 'warning', text: `Missed its ${isDaily(job) ? 'daily' : 'weekly'} run.`, short: `${label} overdue`, overdue: true, fix: { label: 'Pull now', jobs: [job] } }
         : { type: 'warning', text: 'Has never run.', short: `${label} never ran`, fix: { label: 'Pull now', jobs: [job] } });
     }
   }
@@ -95,11 +100,11 @@ export default async function DataPage() {
   const fixAll = [...new Set([...notes.values()].flatMap((n) => n.fix.jobs))];
   const needs = [...notes.values()].map((n) => n.short);
 
-  const provider = (job: string, live: string) => (sample && job !== 'build-picks' && job !== 'backup' ? 'Sample' : live);
+  const provider = (job: string, live: string) => (sample && !NO_PROVIDER.has(job) && job !== 'backup' ? 'Sample' : live);
   const oddsProps = sample ? {} : { cost: upcoming.length, left };
   // The header pulls every free source, then backs up. Paid odds keep their own confirmed button, and the
   // label says so (owner feedback 2026-11-03: "everything" did not pull odds).
-  const everything = [...BOOTSTRAP.filter((job) => sample || job !== 'pull-odds'), 'backup'];
+  const everything = [...BOOTSTRAP.filter((job) => sample || job !== 'pull-odds'), 'backtest', 'backup'];
 
   return (
     <PullQueue>
@@ -147,7 +152,7 @@ export default async function DataPage() {
           <li className="fc-schedule-head" aria-hidden="true"><span>Source</span><span>Status</span><span>Next run</span><span>Last run</span></li>
           {latest.map(({ job, label, live, last }) => {
             const isPaused = paused.has(job);
-            const next = isPaused ? null : job === 'pull-odds' ? nextOdds?.at ?? null : nextDaily(job, now);
+            const next = isPaused ? null : job === 'pull-odds' ? nextOdds?.at ?? null : nextCron(job, now);
             const note = notes.get(job);
             return (
               <li key={job} className="fc-list-row fc-schedule-row" data-state={note?.type === 'error' ? 'failed' : undefined}>
@@ -159,7 +164,7 @@ export default async function DataPage() {
                       ? <span><span className="fc-has-tip" tabIndex={0} data-tip={snapshotTimes(now)}>{scheduleText(job, now)}</span></span>
                       : <span>{scheduleText(job, now)}</span>}
                   </p>
-                  <p className="hg-result text-copy-13"><ResultCell job={job}>{last?.message ?? 'Never run'}</ResultCell></p>
+                  <p className="hg-result text-copy-13"><ResultCell job={job}>{job === 'backtest' ? <Scores text={last?.message ?? 'Never run'} /> : last?.message ?? 'Never run'}</ResultCell></p>
                 </div>
                 <span className="fc-schedule-status">
                   <RunCell job={job}>

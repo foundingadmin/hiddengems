@@ -9,6 +9,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { type MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { SlipButton } from '@/components/add-to-slip';
 import { GameLog, GameLogKey } from '@/components/game-log';
+import { ConditionsList, CoreSampleTable, PriceChart, TrendLines } from '@/components/gem-read';
 import { useCrumb } from '@/components/shell';
 import { Edge, GemMark, Player } from '@/components/marks';
 import type { BoardRow } from '@/lib/board';
@@ -191,7 +192,7 @@ export function GemSheet({ rows, detail, asked, zone }: {
             </nav>
           )}
           <div className="fc-sheet-body" ref={body} onScroll={onScroll} tabIndex={-1}>
-            {gem ? <Sections gem={gem} /> : missing ? (
+            {gem ? <Sections gem={gem} zone={zone} /> : missing ? (
               <div className="fc-empty"><strong>This gem is no longer on the board</strong></div>
             ) : (
               <div className="fc-stack" aria-busy="true">
@@ -213,7 +214,7 @@ export function GemSheet({ rows, detail, asked, zone }: {
   );
 }
 
-function Sections({ gem }: { gem: GemDetail }) {
+function Sections({ gem, zone }: { gem: GemDetail; zone: string }) {
   const same = Math.round(gem.priced * 100) === Math.round(gem.hitChance * 100);
   const show = (p: number) => (same ? `${(p * 100).toFixed(1)}%` : pct(p));
   const share = Math.min(1, Math.max(0, gem.carat / FULL_CARAT));
@@ -248,11 +249,12 @@ function Sections({ gem }: { gem: GemDetail }) {
           </div>
           {gem.best && <div><dt>Best price</dt><dd>{gem.best.price.toFixed(2)} at {gem.best.book}</dd></div>}
         </dl>
+        <PriceChart appraisal={gem.appraisal} book={gem.book} kickoff={gem.kickoff} now={gem.now} zone={zone} />
       </section>
 
       <section id="gem-notes" className="fc-sheet-section" aria-labelledby="gem-notes-h">
         <h3 id="gem-notes-h" className="text-heading-20">What the numbers miss</h3>
-        <div className="fc-empty"><strong>No notes yet</strong></div>
+        <TrendLines trends={gem.trends} labelledBy="gem-notes-h" />
       </section>
 
       <section id="gem-loupe" className="fc-sheet-section" aria-labelledby="gem-loupe-h">
@@ -269,7 +271,8 @@ function Sections({ gem }: { gem: GemDetail }) {
 
       <section id="gem-context" className="fc-sheet-section" aria-labelledby="gem-context-h">
         <h3 id="gem-context-h" className="text-heading-20">Core sample and conditions</h3>
-        <div className="fc-empty"><strong>No core sample or conditions yet</strong></div>
+        {gem.sample ? <CoreSampleTable sample={gem.sample} team={gem.teamId?.toUpperCase() ?? null} /> : <div className="fc-empty"><strong>No games this season yet</strong></div>}
+        <ConditionsList conditions={gem.conditions} now={gem.now} />
       </section>
     </>
   );

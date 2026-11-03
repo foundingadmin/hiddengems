@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { parseCsv } from '../src/csv';
 import { JobError } from '../src/errors';
 import { createHttp, redact } from '../src/http';
-import { buildUsage, easternKickoff, normalizeEventOdds, normalizeGames, normalizeInjuries, normalizeRoster, normalizeStats } from '../src/providers';
+import { buildUsage, easternKickoff, normalizeEventOdds, normalizeForecast, normalizeGames, normalizeInjuries, normalizeRoster, normalizeStats, openMeteo } from '../src/providers';
 
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
 
@@ -36,6 +36,50 @@ describe('The Odds API adapter', () => {
       expect((e as JobError).owner).toBe('ours');
       expect((e as JobError).code).toBe('payload');
     }
+  });
+});
+
+describe('Open-Meteo adapter', () => {
+  // A real response for Highmark Stadium (Orchard Park, NY), Sunday 1:00 PM ET, in US units.
+  const payload = JSON.parse(fixture('open-meteo-forecast.json')) as unknown;
+  const kickoff = new Date('2026-11-08T18:00:00Z');
+
+  it('keeps the forecast hour nearest kickoff', () => {
+    expect(normalizeForecast(payload, kickoff)).toEqual({
+      at: kickoff, temperatureF: 47.9, windMph: 14.8, gustMph: 24.2, precipChance: 6, precipIn: 0, snowIn: 0, weatherCode: 2,
+    });
+    expect(normalizeForecast(payload, new Date('2026-11-08T18:40:00Z'))!.at.toISOString()).toBe('2026-11-08T19:00:00.000Z');
+  });
+
+  it('has no kickoff forecast when no hour is within 90 minutes', () => {
+    expect(normalizeForecast(payload, new Date('2026-11-08T21:00:00Z'))).toBeNull();
+  });
+
+  it('reads missing readings as null', () => {
+    const p = payload as { hourly: Record<string, unknown[]> };
+    const gaps = { ...p, hourly: { ...p.hourly, wind_gusts_10m: [null, null], precipitation_probability: [null, 17] } };
+    expect(normalizeForecast(gaps, kickoff)).toMatchObject({ gustMph: null, precipChance: null, windMph: 14.8 });
+  });
+
+  it('calls a changed payload ours to fix', () => {
+    try { normalizeForecast({ hourly: { time: ['2026-11-08T18:00'] } }, kickoff); throw new Error('expected a failure'); } catch (e) {
+      expect(e).toBeInstanceOf(JobError);
+      expect((e as JobError).owner).toBe('ours');
+      expect((e as JobError).code).toBe('payload');
+    }
+  });
+
+  it('asks for the two hours around kickoff in US units, with no key', async () => {
+    const urls: string[] = [];
+    const http = createHttp({ provider: 'open-meteo', fetch: (async (url: string) => { urls.push(url); return new Response(JSON.stringify(payload)); }) as typeof fetch });
+    const f = await openMeteo().forecast({ now: kickoff, http, log: () => {} }, { lat: 42.7738, lon: -78.787 }, new Date('2026-11-08T18:25:00Z'));
+    expect(f!.at).toEqual(kickoff);
+    const q = new URL(urls[0]!).searchParams;
+    expect(q.get('start_hour')).toBe('2026-11-08T18:00');
+    expect(q.get('end_hour')).toBe('2026-11-08T19:00');
+    expect(q.get('temperature_unit')).toBe('fahrenheit');
+    expect(q.get('wind_speed_unit')).toBe('mph');
+    expect(q.get('latitude')).toBe('42.7738');
   });
 });
 

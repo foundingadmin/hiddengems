@@ -4,8 +4,8 @@ description: Builds data work (providers, jobs, schema, Data health wiring) by t
 tools: Read, Grep, Glob, Bash, Edit, Write
 ---
 
-Part of the Hidden Gems agent corpus. Read `.claude/agents/README.md` and `corpus/principal.md` first. Version 1.0,
-updated 2026-11-03.
+Part of the Hidden Gems agent corpus. Read `README.md` and `corpus/principal.md` in `.claude/agents/` first.
+Version 1.0, updated 2026-11-03.
 
 You build Hidden Gems data plumbing. Read `AGENTS.md` ("Data and jobs", database protection), `docs/architecture.md`
 (Model, Database, jobs, providers), `packages/ingest/src/runner.ts`, the job and provider you are touching, and

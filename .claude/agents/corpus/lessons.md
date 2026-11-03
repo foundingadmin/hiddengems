@@ -34,4 +34,11 @@ Several builders asking for Facet parts at once collide in the same stylesheets;
 `ds/` branch that merges before the feature branches avoids conflicts.
 - Evidence: the 12 requests from the Rating lab and Logs went into one batch after PR #18.
 - Benefits: vice principal ordering (in the README), `facet-builder`.
-- Status: adopted in README order of work.
+- Status: adopted in README v1.0 ("Order of work").
+
+## L5 · 2026-11-03 · content-verifier
+When one rule changes across AGENTS.md, the README and the directives (here, where tasks branch from and who merges
+where), grep every file for the old wording before committing; six findings on the corpus PR were leftovers.
+- Evidence: PR #21 content review (findings 3 to 8).
+- Benefits: `vice-principal` (amendments), `repo-hygiene` (corpus drift).
+- Status: open.

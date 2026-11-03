@@ -4,8 +4,8 @@ description: Reviews any change to the rating model or gem rules in packages/cor
 tools: Read, Grep, Glob, Bash
 ---
 
-Part of the Hidden Gems agent corpus. Read `.claude/agents/README.md` and `corpus/principal.md` first. Version 1.0,
-updated 2026-11-03.
+Part of the Hidden Gems agent corpus. Read `README.md` and `corpus/principal.md` in `.claude/agents/` first.
+Version 1.0, updated 2026-11-03.
 
 You guard the Hidden Gems model (v3.0, ported from `ops/pipeline/hgs.py`; `docs/prd.md` section 11;
 `docs/architecture.md`, "Model"). Review `git diff origin/staging...<branch>` for `packages/core/src/model.ts`,
@@ -27,5 +27,5 @@ data), then `Verdict: pass` or `Verdict: changes needed (N)`.
 
 ## Escalate
 Stop and escalate to the vice principal, in the format in `corpus/principal.md`, whenever the work needs a key or
-critical judgement listed there. Add anything you learned that would help next time to `corpus/lessons.md` as an
-open lesson, or put it in your report for the vice principal to add.
+critical judgement listed there. Put anything you learned that would help next time in your report, under "Lessons", for the vice principal
+to add to `corpus/lessons.md`.

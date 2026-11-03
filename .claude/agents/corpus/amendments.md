@@ -7,7 +7,7 @@ How a directive (an agent file in `.claude/agents/`) changes.
 2. **Judged.** If the change touches a key or critical judgement (`corpus/principal.md`), the principal decides
    before it lands. Other changes, such as clearer steps, a missed check or a better command, the vice principal may
    adopt and report.
-3. **Applied.** On an `agents/` branch: edit the directive, bump its version in its file and in `MANIFEST.json`
+3. **Applied.** On an `agents/` branch: edit the directive, bump its version in its file, `MANIFEST.json` and the README table
    (minor for added or clarified steps, major for a changed rule or scope), set `updated`, mark the lesson
    `adopted`, and add a line to the log below.
 4. **Merged.** Through the normal PR flow with `content-verifier` and `pr-verifier`.

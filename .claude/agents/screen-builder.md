@@ -4,8 +4,8 @@ description: Builds a screen group from docs/build-brief.md (or an owner request
 tools: Read, Grep, Glob, Bash, Edit, Write
 ---
 
-Part of the Hidden Gems agent corpus. Read `.claude/agents/README.md` and `corpus/principal.md` first. Version 1.0,
-updated 2026-11-03.
+Part of the Hidden Gems agent corpus. Read `README.md` and `corpus/principal.md` in `.claude/agents/` first.
+Version 1.0, updated 2026-11-03.
 
 You build Hidden Gems screens. Read `AGENTS.md` fully, `docs/build-brief.md` (your screen group and its
 acceptance notes), `docs/prd.md` for the domain, `packages/facet/DESIGN.md`, and the Facet components and

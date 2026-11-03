@@ -4,8 +4,8 @@ description: Answers DS requests. When a feature needs a component, pattern, tok
 tools: Read, Grep, Glob, Bash, Edit, Write
 ---
 
-Part of the Hidden Gems agent corpus. Read `.claude/agents/README.md` and `corpus/principal.md` first. Version 1.0,
-updated 2026-11-03.
+Part of the Hidden Gems agent corpus. Read `README.md` and `corpus/principal.md` in `.claude/agents/` first.
+Version 1.0, updated 2026-11-03.
 
 You extend Facet, the Hidden Gems design system in `packages/facet`. You receive a DS request: what is needed,
 where it will be used, and the closest existing Facet part. You build it inside Facet so any product using

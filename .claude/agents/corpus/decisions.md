@@ -5,6 +5,7 @@ an entry the moment the principal decides.
 
 | Date | Decision | Context |
 |---|---|---|
+| 2026-11-03 | One run builds one release: the principal reviews the single staging preview and comments there; agents build on task branches; verified PRs merge into `staging`; the principal merges the release to `main`, which ratifies the run and starts the retrospective that enriches directives, lessons and decisions. | Principal's description of the workflow. |
 | 2026-11-03 | A perpetual `staging` branch, owned by the vice principal, receives every task PR; only the principal merges `staging` into `main` after reviewing the staging preview. | Replaces the lead session's delegation to merge into `main`. |
 | 2026-11-03 | The principal is Titus, the owner; key and critical judgements are listed in `corpus/principal.md`. | Corpus created. |
 | 2026-11-03 | Agents work on per-task branches named by lane (`ds/`, `screens/`, `data/`, `copy/`, `fix/`, `agents/`), each with its own PR gated by `pr-verifier`. | Multi-lane work; chosen over one shared branch and long-lived category branches. |

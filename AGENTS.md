@@ -5,8 +5,8 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 ## The repo is the source of truth
 
 - This repository is the only source of truth for Hidden Gems: product (`docs/prd.md`), build briefs,
-  wireframes, design system, model, pipeline code and scheduled task directives. Start every task by
-  reading the latest `main`. Never work from a copy kept by an earlier session, a claude.ai artifact or memory.
+  wireframes, design system, model, pipeline code and scheduled task directives. Start every task from
+  the latest `staging` (`main` is production). Never work from a copy kept by an earlier session, a claude.ai artifact or memory.
 - Do not create, publish, update or consult claude.ai artifacts for this project (design systems,
   canvases, dashboards, labs, docs). Anything worth keeping is a file here, changed by pull request. If
   something you need lives only outside the repo, bring it in first, then work from the repo copy.
@@ -54,7 +54,7 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 
 - Integrate approved scalability decisions as soon as they come up (tokens, slots, generators), rather than deferring them.
 - Preview reviews (Vercel toolbar comments): read every open thread with the Vercel
-  toolbar tools, turn each into a tracked task straight away, and resolve each thread once its fix is pushed. Do
+  toolbar tools, turn each into a tracked task straight away, and resolve each thread once its fix merges into `staging`. Do
   not reply on the thread unless something blocks the fix; report progress in the session instead.
 - When work (yours or a subagent's) needs a component, pattern, token or class that
   Facet lacks, do not hand-roll it in app CSS: file a DS request (what is needed, where it is used, the closest
@@ -80,31 +80,17 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
   `ds/` (Facet), `screens/` (build brief screens), `data/` (jobs, providers, Data health), `copy/` (wording), `fix/`
   (preview comments and CI), `agents/` (the agent corpus). Agents may push their own task branches and open draft
   PRs; never push to someone else's.
-- Before merge, the `pr-verifier` agent (`.claude/agents/pr-verifier.md`) checks merge state, CI, house rules, both
-  verifier verdicts and any owner step; its fix list goes to the agent that owns the branch. The vice principal merges
+- Before merge, the `pr-verifier` agent (`.claude/agents/pr-verifier.md`) checks merge state, CI, house rules, the
+  lane's verifier verdicts and any owner step; its fix list goes to the agent that owns the branch. The vice principal merges
   into `staging` only on `Merge: ready`, then tells other open branches to update from `staging`.
 - Keep a branch small enough to merge the same day; a branch that touches shared files (shell, `app.css`, Facet
-  CSS) merges first and the rest update from `main`.
+  CSS) merges first and the rest update from `staging`.
 
 ## Lanes and agents
 
 The agent corpus lives in `.claude/agents/`: start with its `README.md` (who decides, order of work, versions),
 `MANIFEST.json` and `corpus/principal.md`. The principal (Titus, the owner) makes every key and critical
-judgement; agents escalate those instead of deciding. Intake, builders and verifiers per lane:
-
-| Lane | Builder | Verifiers before merge |
-|---|---|---|
-| `fix/` preview comments, small defects | the session or any builder | content, design (if UI), PR |
-| `screens/` build brief screens | `screen-builder` | content, design, PR |
-| `ds/` Facet parts | `facet-builder` | design, content (docs), PR |
-| `data/` jobs, providers, schema, Data health | `data-builder` | data safety, content and design (if UI), PR |
-| `copy/` wording | any builder | content, PR |
-| model and gem rules (`packages/core`) | `data-builder` | model, data safety, PR |
-| `agents/` the agent corpus | the vice principal | content, PR; the principal for key changes |
-
-`preview-triager` turns Vercel toolbar comments into lane tasks and resolves them once merged. Verifiers are read
-only and return exact fixes to the builder that owns the branch; a builder still running applies them itself,
-otherwise a new builder does.
+judgement; agents escalate those instead of deciding. Lanes, builders and verifiers are in `.claude/agents/README.md`.
 
 ## Data and jobs
 

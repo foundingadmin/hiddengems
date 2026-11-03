@@ -23,8 +23,6 @@ body { margin: 0; background: var(--fc-surface-canvas); color: var(--fc-text-pri
   .fc-gem-card-head { grid-template-columns: auto minmax(0, 1fr); }
 }
 /* Rating lab: spacing between Facet parts only. */
-.hg-group-body { padding: var(--fc-space-4); --fc-gap: var(--fc-space-5); }
-.hg-grow { flex: 1 1 auto; min-width: 0; }
 .hg-wrap { flex-wrap: wrap; }
 .hg-between { justify-content: space-between; --fc-gap: var(--fc-space-3) var(--fc-space-4); }
 .hg-gap-5 { --fc-gap: var(--fc-space-5); }
@@ -35,27 +33,8 @@ body { margin: 0; background: var(--fc-surface-canvas); color: var(--fc-text-pri
 .hg-sub { color: var(--fc-text-secondary); font-weight: 400; }
 .hg-nowrap { white-space: nowrap; }
 .hg-confirm { display: inline-flex; align-items: center; gap: var(--fc-space-2); }
-/* Pull log (owner feedback and reference 2026-11-03: read as history, like the vercel.com runtime log).
-   Dense mono rows with no row rounding, time first; warned and failed rows carry a tint plus their level
-   word, so color is never the only cue. Read only: fixes start from Data health. */
-.hg-log .fc-table { font: inherit; }
-.hg-log .fc-table thead th { font-family: var(--fc-font-sans); }
-.hg-log .fc-table td { height: auto; padding-block: var(--fc-space-1); vertical-align: baseline; }
-.hg-log .fc-table tbody tr > * { border-radius: 0; }
-.hg-log .fc-table tbody tr:hover { background: var(--fc-surface-fill); }
-.hg-log tr[data-level="error"] { background: var(--fc-status-error-bg); color: var(--fc-status-error-fg); }
-.hg-log tr[data-level="warning"] { background: var(--fc-status-warning-bg); }
-.hg-log tr[data-level] .fc-level { display: inline-flex; margin-right: var(--fc-space-2); }
-.hg-log-detail { display: block; color: var(--fc-text-secondary); }
-.hg-log tr[data-level="error"] .hg-log-detail { color: inherit; }
-.hg-log .fc-cell-actions .fc-button { margin-block: calc(-1 * var(--fc-space-1)); }
-/* Logs page stack: an open run's card, then the filter and the log. */
+/* Logs page stack: an open run's record, then the filter and the log (Facet .fc-table[data-variant="log"]). */
 .hg-logs { display: flex; flex-direction: column; gap: var(--fc-space-8); min-width: 0; }
-/* Run detail (?run=<id>): a run's data folds behind its keys when long; the lines table sits in the card. */
-.hg-run-note { margin-bottom: var(--fc-space-5); }
-.hg-log-data { margin: var(--fc-space-1) 0 0; white-space: pre-wrap; }
-.hg-log summary, .hg-description-wide summary { cursor: pointer; }
-.hg-description-wide { grid-column: 1 / -1; }
 .hg-log-end { margin: 0; padding: var(--fc-space-6) 0; text-align: center; color: var(--fc-text-secondary); }
 /* Data health overview: status, next odds pull, credits, on one hairline strip. */
 .hg-overview { margin: 0; border-radius: var(--fc-radius-md); box-shadow: inset 0 0 0 1px var(--fc-border-default); }

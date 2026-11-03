@@ -127,7 +127,7 @@ export default function RatingLabPage() {
                       <span className="fc-feed-icon" title={h.actor === 'decision' ? 'You' : 'Code'}>{h.actor === 'decision' ? USER : COMMIT}</span>
                       <span className="fc-feed-text"><strong>{h.subject}</strong> {h.text}</span>
                       <a
-                        className={`fc-link-action fc-feed-time${h.source.mono ? ' hg-mono' : ''}`} data-external data-tone="quiet"
+                        className="fc-link-action fc-feed-source" data-external data-tone="quiet" data-mono={h.source.mono || undefined}
                         href={h.source.href} target="_blank" rel="noopener noreferrer"
                       >{h.source.label}</a>
                     </li>

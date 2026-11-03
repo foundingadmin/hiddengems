@@ -20,7 +20,8 @@
     "decisions": "corpus/decisions.md",
     "lessons": "corpus/lessons.md",
     "amendments": "corpus/amendments.md",
-    "house_rules": "../../AGENTS.md"
+    "house_rules": "../../AGENTS.md",
+    "efficiency": "corpus/efficiency.md"
   },
   "agents": [
     {
@@ -31,7 +32,7 @@
       "lanes": [
         "all"
       ],
-      "version": "2.0",
+      "version": "2.1",
       "updated": "2026-11-03",
       "reads": "brief, README, decisions, agent reports",
       "returns": "dispatches, decisions, escalations",
@@ -158,11 +159,11 @@
       "lanes": [
         "fix"
       ],
-      "version": "1.1",
+      "version": "2.0",
       "updated": "2026-11-03",
       "reads": "brief, the repo, branches, corpus",
-      "returns": "fix/hygiene branch, escalations",
-      "writes": "safe cleanups only"
+      "returns": "fix/hygiene branch, escalations, the session token row",
+      "writes": "safe cleanups, corpus/efficiency.md"
     },
     {
       "name": "content-verifier",

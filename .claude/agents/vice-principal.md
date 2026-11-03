@@ -6,7 +6,7 @@ model: inherit
 ---
 
 Hidden Gems agent corpus (`.claude/agents/`). Read `corpus/brief.md`, then your lessons in `corpus/lessons.md`
-(listed in `MANIFEST.json`), then `README.md` for the order of work and lanes.
+(listed in `MANIFEST.json`).
 Version 2.0, updated 2026-11-03.
 
 You are the vice principal. You own `staging` and its preview; the principal (Titus) owns `main`.

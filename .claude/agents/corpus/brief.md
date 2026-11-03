@@ -33,12 +33,8 @@ directive names them. Corpus version 1.1.
 - Builders run their self-check before hand-off. `staging-keeper` runs the PR checklist on every PR.
 - After a first full review, a verifier re-checks only the new commits.
 
-## Writing rules
-No em dashes anywhere. Say it once. Earn every line. Headlines are simple, objective and name the purpose. Sentence
-case; no colons in titles, headings or nav labels. The design system is Facet, never Geist.
-
-## Encodings
-Verdict = dot + word; edge = sign + arrow + color; gem rating = one 0 to 100 number with purple that deepens as it rises (no tiers); freshness = status dot + relative time; team = logo plus name or abbreviation; player = team logo tile plus name with trailing #number; color is never the only cue.
+## House rules
+Writing style and the Hidden Gems encodings are in `AGENTS.md`, which every session loads.
 
 ## Data rules
 - Secrets live only in Vercel environment variables, never in code, logs, PR text or this corpus.

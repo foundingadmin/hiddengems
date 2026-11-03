@@ -69,7 +69,7 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 - Every change that touches what people see goes through the `design-verifier` agent
   (`.claude/agents/design-verifier.md`), which checks the code and screenshots against Facet and the Hidden Gems
   encodings. Its fixes go back to the building agent the same way; its DS requests go to `facet-builder`.
-  Ship only on `Verdict: pass` from both verifiers.
+  Ship only on `Verdict: pass` from the verifiers the tier requires (`.claude/agents/README.md`).
 - A product's accent goes through `--fc-brand-*` (`packages/facet/tokens/facet.semantic.json`); reusing Facet for another product means changing those four tokens, not hunting for hues.
 
 ## Branches and pull requests

@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { zonedTimeToUtc } from '@hiddengems/core';
-import { bets, createDb, jobSettings, estimates, games, jobLocks, oddsSlots, oddsSnapshots, picks, playerUsage, players, providerUsage, runLogs, runs, seedReference, unpackBackup } from '@hiddengems/db';
+import { bets, createDb, oddsLatest, providerRefs, jobSettings, estimates, games, jobLocks, oddsSlots, oddsSnapshots, picks, playerUsage, players, providerUsage, runLogs, runs, seedReference, unpackBackup } from '@hiddengems/db';
 import { count, desc, eq, inArray } from 'drizzle-orm';
 import { BOOTSTRAP, grade, jobs, runJob } from '../src';
 import { theirs } from '../src/errors';
@@ -160,6 +160,51 @@ describe('failures and locks', () => {
     const r = await run('pull-odds', { providers: odd, force: true, now: new Date(now.getTime() + 40 * 60_000) });
     expect(r.status).toBe('warned');
   });
+  describe('duplicate roster rows', () => {
+    const NAME = 'Mike Gesicki';
+    let n = 0;
+    // A pull a few minutes after the last, so each test gets its own run.
+    const pull = (name: string, extra: string[] = []) => {
+      const odd: Providers = { ...providers, odds: { ...providers.odds, async eventOdds(ctx, e, m) {
+        const q = await providers.odds.eventOdds(ctx, e, m);
+        return [...q.map((x, i) => (i === 0 ? { ...x, playerName: name } : x)), ...extra.map((x) => ({ ...q[0]!, playerName: x }))];
+      } } };
+      return run('pull-odds', { providers: odd, force: true, now: new Date(now.getTime() + (90 + 10 * n++) * 60_000) });
+    };
+    const warns = async (runId: string) => (await db.select().from(runLogs).where(eq(runLogs.runId, runId))).filter((l) => l.level === 'warn');
+    const original = async () => (await db.select().from(players).where(eq(players.name, NAME)))[0]!;
+    const addDuplicate = async () => { const id = crypto.randomUUID(); await db.insert(players).values({ ...(await original()), id }); return id; };
+
+    it('matches the row the live roster provider knows', async () => {
+      const dupe = await addDuplicate();
+      const orig = await original();
+      const r = await pull(NAME);
+      expect(await warns(r.runId!)).toEqual([]);
+      const priced = await db.select().from(oddsLatest).where(eq(oddsLatest.playerName, NAME));
+      expect(priced.length).toBeGreaterThan(0);
+      expect(priced.every((p) => p.playerId === orig.id)).toBe(true);
+      await db.delete(players).where(eq(players.id, dupe));
+    });
+
+    it('leaves ambiguous duplicates unmatched and logs them as duplicates', async () => {
+      const dupe = await addDuplicate();
+      const orig = await original();
+      const refs = await db.select().from(providerRefs).where(eq(providerRefs.internalId, orig.id));
+      await db.delete(providerRefs).where(eq(providerRefs.internalId, orig.id));
+      const r = await pull(NAME);
+      const w = await warns(r.runId!);
+      expect(w.find((l) => /more than one roster row/.test(l.message))?.data).toMatchObject({ names: [NAME] });
+      expect(w.some((l) => /did not match a roster/.test(l.message))).toBe(false);
+      await db.insert(providerRefs).values(refs);
+      await db.delete(players).where(eq(players.id, dupe));
+    });
+
+    it('does not log team defenses', async () => {
+      const r = await pull('Buffalo Bills D/ST', ['Cincinnati Defense']);
+      expect(JSON.stringify(await warns(r.runId!))).not.toMatch(/D\/ST|Defense/);
+    });
+  });
+
   it('refuses to overlap a running job', async () => {
     await db.insert(jobLocks).values({ job: 'pull-schedule', holder: 'someone', lockedUntil: new Date(Date.now() + 60_000) })
       .onConflictDoUpdate({ target: jobLocks.job, set: { holder: 'someone', lockedUntil: new Date(Date.now() + 60_000) } });

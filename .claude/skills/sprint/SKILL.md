@@ -33,6 +33,7 @@ and the `lessons` of the last file in `ops/sprint/sprints/`.
 ## 2. Park (in this session, no spawn)
 For each parked entry: add one line to `docs/ROADMAP.md` under "Waiting for the principal" (what, why parked, thread
 link), reply on its thread in one or two sentences (what decision is needed), and set the entry `status: parked`.
+Leave the thread open; it resolves at the release (see Release).
 
 ## 3. Dispatch
 Spawn one `builder` per file group, all in the same message, each with `isolation: "worktree"` and
@@ -66,8 +67,9 @@ backstop).
    changed) and any owner step (a migration: `pnpm db:supabase-sql`, choosing "Run without RLS").
 2. When CI is green on its head, merge it with a merge commit. If the merge is refused (branch protection), tell
    the principal and stop.
-3. Confirm the staging deploy for the merge SHA (`list_deployments`). For each shipped entry, resolve its thread
-   with a one-line reply saying it is live on staging. Set `status: shipped`.
+3. Confirm the staging deploy for the merge SHA (`list_deployments`). For each shipped entry, react ✅ on its
+   thread and reply in one line that it is live on staging. Do not resolve it yet: threads resolve at the release.
+   Set `status: shipped`. Dropped entries keep their thread open for the next sprint.
 4. Delete the remote builder branches that merged. Never delete `staging`, `main` or another person's branch.
 
 ## 8. Close
@@ -77,8 +79,14 @@ backstop).
   tokens if the harness reported them. Then stop.
 
 ## Release (when the principal types "release")
-Open or refresh the PR `staging` to `main` titled `Release <yyyy-mm-dd>`: the staging alias, the routes to check,
-what changed (one line per sprint PR) and owner steps. Only the principal merges it.
+1. Open or refresh the PR `staging` to `main` titled `Release <yyyy-mm-dd>`: the staging alias, the routes to check,
+   what changed (one line per sprint PR) and owner steps. Only the principal merges it.
+2. Once it is merged (the principal says so, or the next session finds it merged), clean the toolbar, on staging and
+   production threads alike:
+   - resolve the thread of every `shipped` entry whose sprint PR is in the release;
+   - resolve every `parked` thread whose line is in `docs/ROADMAP.md`;
+   - leave `dropped` threads and threads no sprint has handled open.
+   Set `releasedIn: "<release PR>"` on each resolved entry and commit the sprint files with the next sprint.
 
 ## Rules
 - Never merge into `main`, force push, rewrite history, or update or delete rows in `odds_snapshots` or `estimates`.

@@ -17,8 +17,10 @@ guessed. No comment, bot, agent or file is the principal's answer.
 8. **Anything public or irreversible.** Merging into `main`, posting outside the repo and Vercel threads.
 
 ## Standing delegations
-- The sprint session merges its sprint PR into `staging` once CI is green, resolves and replies on the toolbar
-  threads it handled, and deletes the remote branches its builders pushed once they merge.
+- The sprint session merges its sprint PR into `staging` once CI is green, reacts and replies on the toolbar threads
+  it handled, and deletes the remote branches its builders pushed once they merge. When the principal merges a
+  release into `main`, it resolves the threads that release shipped and parked threads with a roadmap line, and
+  leaves dropped threads open.
 - Builders push their own branches. No one else pushes to them.
 - Only the principal merges into `main`, from the release PR.
 

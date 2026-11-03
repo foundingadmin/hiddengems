@@ -11,8 +11,8 @@ on staging, then types `go` in an open Claude session. That session runs `.claud
 | Merge | the session and `ops/sprint/merge.mjs` | One sprint branch, one CI run; `ci-fixer` only when checks fail |
 | Verify | `verifier`, once per sprint | One punchlist for content, design, data safety and the model |
 | Punchlist | the same builders, resumed | One new commit each; no second review |
-| Ship | the session | One sprint PR into staging, threads resolved, the principal told |
-| Release | the principal types `release` | The session opens the release PR to `main`; only the principal merges it |
+| Ship | the session | One sprint PR into staging, ✅ on each shipped thread, the principal told |
+| Release | the principal types `release` | The session opens the release PR to `main`; once the principal merges it, shipped and roadmapped threads resolve and dropped ones stay open |
 
 | Agent | Model | Job |
 |---|---|---|

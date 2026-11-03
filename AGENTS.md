@@ -54,8 +54,9 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 
 - Integrate approved scalability decisions as soon as they come up (tokens, slots, generators), rather than deferring them.
 - Preview reviews (Vercel toolbar comments) run as sprints: when the principal types `go`, run
-  `.claude/skills/sprint/SKILL.md`. Threads get a 👀 reaction when picked up and a one-line reply when resolved; reply
-  otherwise only to say why a comment is parked or dropped.
+  `.claude/skills/sprint/SKILL.md`. Threads get 👀 when picked up and ✅ with a one-line reply when live on staging, and
+  resolve when the principal merges the release into `main` (dropped threads stay open). Reply otherwise only to say
+  why a comment is parked or dropped.
 - When work needs a component, pattern, token or class that Facet lacks, do not hand-roll it in app CSS: the builder
   builds it in `packages/facet` in the same branch (tokens, CSS, component doc, preview specimen), then wires it into
   the feature. App CSS is only layout glue between Facet parts, using `--fc-*` tokens.

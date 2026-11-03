@@ -46,7 +46,7 @@ export function jewelerGate(i: { hasKey: boolean; capCents: number | null; usedC
 
 const monthOf = (d: Date) => d.toISOString().slice(0, 7);
 
-/** The owner's cap in cents, or null. Reads as unset until migration 0005 has run. */
+/** The owner's cap in cents, or null. Reads as unset until migration 0006 has run. */
 export async function jewelerCap(db: Db): Promise<number | null> {
   try {
     const [row] = await db.select({ cents: providerCaps.monthlyCents }).from(providerCaps).where(eq(providerCaps.provider, JEWELER.provider));
@@ -75,7 +75,7 @@ export const worstCents = (chars: number) => costCents(Math.ceil(chars / 3), JEW
 
 // ---------------------------------------------------------------- The prompt
 
-/** One prop as the app shows it. Chances are 0 to 1; edge is in points. */
+/** One prop as the app shows it. Chances are 0 to 1; edge and carat are in points. */
 export interface JewelerGem {
   id: string;
   player: string;
@@ -91,6 +91,8 @@ export interface JewelerGem {
   priced: number;
   hitChance: number;
   edge: number;
+  /** Our estimate minus the fair chance, which the gem sheet shows as Gap to fair. */
+  carat: number;
   clarity: number;
   reasons: string[];
 }
@@ -132,7 +134,11 @@ export interface JewelerSlip {
 }
 
 const pct = (p: number) => `${Math.round(p * 100)}%`;
-const pts = (n: number) => `${n > 0 ? '+' : n < 0 ? '−' : ''}${Math.abs(Math.round(n))} pts`;
+/** Points as the app prints them: whole for edge, one decimal (places 1) for the gap to fair. */
+const pts = (n: number, places = 0) => {
+  const f = 10 ** places, r = Math.round(n * f) / f;
+  return `${r > 0 ? '+' : r < 0 ? '−' : ''}${Math.abs(r)} pts`;
+};
 const standing = (g: JewelerGem) =>
   g.kind === 'gem' ? `gem rating ${g.rating}`
     : g.kind === 'fools-gold' ? "Fool's Gold (beats the fair price, not the posted price; no rating)"
@@ -142,7 +148,7 @@ const standing = (g: JewelerGem) =>
 export function describeGem(g: JewelerGem): string {
   const who = [`${g.player}${g.number != null ? ` #${g.number}` : ''}`, g.position, g.team].filter(Boolean).join(', ');
   return `${who}. ${g.matchup}, kickoff ${g.kickoff}. Anytime touchdown at DraftKings ${g.price.toFixed(2)}. ` +
-    `Priced ${pct(g.priced)}, our estimate ${pct(g.hitChance)}, edge ${pts(g.edge)}, clarity ${g.clarity}, ${standing(g)}.`;
+    `Priced ${pct(g.priced)}, our estimate ${pct(g.hitChance)}, edge ${pts(g.edge)}, gap to fair ${pts(g.carat, 1)}, clarity ${g.clarity}, ${standing(g)}.`;
 }
 
 const money = (n: number) => `$${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -178,7 +184,7 @@ How Hidden Gems reads a prop:
 - Our estimate: the model's hit chance from 2026 red zone usage, touchdown rate, snap share and implied team points, blended with the market.
 - Edge: our estimate minus priced, in points. Above zero clears the cut.
 - Clarity: confidence in the read, 0 to 100, from sample size, whether the red zone read and the hit rate agree, whether the books agree, and the injury report.
-- Gem rating: 0 to 100. The gap between our estimate and the fair chance (the price with the book's cut taken out), counted in full at 10 points, times clarity. That gap is not shown and runs larger than the edge, which is measured against the posted price. Only props that clear the posted price are gems.
+- Gem rating: 0 to 100. The gap between our estimate and the fair chance (the price with the book's cut taken out), counted in full at 10 points, times clarity. The sheet shows it as Gap to fair. It runs larger than the edge, which is measured against the posted price. Only props that clear the posted price are gems.
 - Fool's Gold: beats the fair price but not the posted price, so the cut eats it.`;
 
 export function buildJewelerPrompt(ctx: JewelerContext): string {

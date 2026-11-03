@@ -377,15 +377,16 @@
       </p>
     </div>
 
-    <div class="fc-filter-bar" role="search" aria-label="Filter picks">
+    <div class="fc-filter-bar" data-phone="scroll" role="search" aria-label="Filter picks">
       <div class="fc-filter-search">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>
         <input class="fc-input" data-size="small" type="search" name="q" placeholder="Search players…" aria-label="Search players" autocomplete="off" spellcheck="false">
       </div>
       <button type="button" class="fc-button" data-variant="secondary" data-size="small" data-shape="rounded" aria-haspopup="menu">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2.5 4.5h11M4.5 8h7M6.5 11.5h3"/></svg>
-        Add filter
+        <span class="fc-filter-add-label">Add filter</span>
       </button>
+      <div class="fc-filter-scroll">
       <div class="fc-filter-chip" data-state="readonly" role="group" aria-label="Week filter, set by the page">
         <span class="fc-filter-key">Week</span><span class="fc-filter-value">8</span>
         <button type="button" class="fc-filter-info" aria-label="About the week filter" aria-describedby="data-tip-week">
@@ -418,6 +419,7 @@
           <option value="record">Hit rate</option>
           <option value="pick">Pick</option>
         </select>
+      </div>
       </div>
     </div>
 
@@ -2853,7 +2855,7 @@ rating = round(100 × clamp(carat / 10, 0, 1) × clarity / 100)</pre></div>
           <tr><td>Week 6</td><th scope="row">Cook and Samuel</th><td><span class="fc-signal" data-signal="stop">Missed</span></td><td data-align="numeric"><span class="fc-money" data-sign="negative">&minus;$15.00</span></td></tr>
         </tbody>
       </table></div>
-      <ul class="fc-list" data-interactive role="list" aria-label="Placed slips, phone">
+      <ul class="fc-list" data-interactive data-aside="beside" role="list" aria-label="Placed slips, phone">
         <li class="fc-list-row">
           <div class="fc-list-row-main"><p class="fc-list-row-title"><a class="fc-row-link" href="#slips">Cook and McLaurin</a></p><p class="fc-meta"><span>Week 8</span><span>$15 parlay</span></p></div>
           <div class="fc-list-row-aside"><span class="fc-money text-label-14" data-sign="positive">+$100.20</span><span class="fc-signal" data-signal="go">Earned</span></div>

@@ -87,6 +87,15 @@ describe('http', () => {
     await expect(http.getJson('https://x.test')).resolves.toEqual({ ok: true });
     expect(http.requestCount).toBe(2);
   });
+  it('never retries a POST, so one ask is billed once', async () => {
+    const http = createHttp({ provider: 'p', fetch: respond(503, 200) });
+    await expect(http.postJson('https://x.test', { q: 1 })).rejects.toMatchObject({ owner: 'provider', code: 'server' });
+    expect(http.requestCount).toBe(1);
+    let calls = 0;
+    const down = (async () => { calls++; throw new TypeError('fetch failed'); }) as unknown as typeof fetch;
+    await expect(createHttp({ provider: 'p', fetch: down }).postJson('https://x.test', { q: 1 })).rejects.toMatchObject({ code: 'network' });
+    expect(calls).toBe(1);
+  });
   it('says whose move each failure is', async () => {
     expect(await fail([401])).toMatchObject({ owner: 'ours', code: 'auth' });
     expect(await fail([429])).toMatchObject({ owner: 'ours', code: 'quota' });

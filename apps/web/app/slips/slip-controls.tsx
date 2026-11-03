@@ -1,9 +1,10 @@
 'use client';
-// The slip's controls: change the suggested play (a confirmation modal), the stake, removing a leg, opening the
-// sportsbook link and marking the slip placed. Every write is a server action in ./actions.
+// The slip's controls: change the suggested play (components/change-slip-dialog.tsx), the stake, removing a leg,
+// opening the sportsbook link and marking the slip placed. Every write is a server action in ./actions.
 import { useRouter } from 'next/navigation';
-import { type ReactNode, useActionState, useEffect, useRef, useState, useTransition } from 'react';
-import { type ActionState, changeSlip, markPlaced, markSent, removeLeg, setStake } from './actions';
+import { type ReactNode, useActionState, useEffect, useState, useTransition } from 'react';
+import { ChangeSlipDialog } from '@/components/change-slip-dialog';
+import { type ActionState, markPlaced, markSent, removeLeg, setStake } from './actions';
 
 const svg = (d: ReactNode) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{d}</svg>
@@ -19,33 +20,11 @@ function Problem({ state }: { state: ActionState }) {
 
 /** "Change this slip": a quiet text link that opens the confirmation. Keep suggested play is primary and focused. */
 export function ChangeSlip({ slipId, slipName }: { slipId: string; slipName: string }) {
-  const ref = useRef<HTMLDialogElement>(null);
-  const [pending, start] = useTransition();
-  const [error, setError] = useState<ActionState>(null);
+  const [open, setOpen] = useState(false);
   return (
     <>
-      <button type="button" className="fc-link-quiet text-label-13" aria-haspopup="dialog" onClick={() => ref.current?.showModal()}>Change this slip</button>
-      <dialog ref={ref} className="fc-modal" aria-labelledby="change-h" onClose={() => setError(null)}>
-        <div className="fc-modal-body">
-          <h2 id="change-h" className="text-heading-20">Change the suggested play?</h2>
-          <p className="text-copy-14">Hidden Gems built {slipName} as the best way to play this week&apos;s gems. If you change it</p>
-          <ul className="text-copy-14">
-            <li>The Jeweler&apos;s appraisal no longer covers what you place</li>
-            <li>History tracks it as your own play, so you can see whether it beat the suggestion</li>
-          </ul>
-          <Problem state={error} />
-        </div>
-        <div className="fc-modal-actions">
-          <button
-            type="button" className="fc-button" data-variant="secondary" data-size="small" disabled={pending}
-            onClick={() => start(async () => {
-              const r = await changeSlip(slipId);
-              if (r?.ok) ref.current?.close(); else setError(r);
-            })}
-          >Change slip</button>
-          <button type="button" className="fc-button" data-size="small" autoFocus onClick={() => ref.current?.close()}>Keep suggested play</button>
-        </div>
-      </dialog>
+      <button type="button" className="fc-link-quiet text-label-13" aria-haspopup="dialog" onClick={() => setOpen(true)}>Change this slip</button>
+      {open && <ChangeSlipDialog slipId={slipId} slipName={slipName} onClose={() => setOpen(false)} />}
     </>
   );
 }

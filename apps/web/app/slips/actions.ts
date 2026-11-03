@@ -10,8 +10,11 @@ import {
 import { revalidatePath } from 'next/cache';
 import { db } from '@/lib/db';
 
-/** value: what was typed, so a form that resets after the action shows it again beside the error. */
-export type ActionState = { ok: boolean; error?: string; value?: string } | null;
+/**
+ * value: what was typed, so a form that resets after the action shows it again beside the error. confirm 'change':
+ * the slip is a suggested play, so the Change slip dialog comes first (components/change-slip-dialog.tsx).
+ */
+export type ActionState = { ok: boolean; error?: string; value?: string; confirm?: 'change'; slipId?: string } | null;
 
 const SLIP_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const SELECTION_KEY = /^[A-Za-z0-9:._-]{1,200}$/;
@@ -22,7 +25,8 @@ const invalid = (what: string): ActionState => ({ ok: false, error: `That ${what
 async function done(r: SlipResult | Promise<SlipResult>): Promise<ActionState> {
   const result = await r;
   if (result.ok) revalidatePath('/', 'layout');
-  return result.ok ? { ok: true } : { ok: false, error: result.error };
+  if (result.ok) return { ok: true };
+  return 'confirm' in result ? { ok: false, confirm: result.confirm, slipId: result.slipId } : { ok: false, error: result.error };
 }
 
 /** Adds a gem to this week's slip (its game's week), starting a draft when there is none. */

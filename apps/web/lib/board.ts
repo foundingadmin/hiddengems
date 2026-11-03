@@ -81,6 +81,8 @@ export interface BoardRow {
   priced: number;
   hitChance: number;
   gap: number;
+  /** Gap to fair: our estimate minus the fair chance, in points. */
+  carat: number;
   clarity: number;
   recommended: number;
   /** Unread and new: crossed 90 or jumped 15 since found or read. */
@@ -109,7 +111,7 @@ export async function board(week: number | null, now = new Date()): Promise<{ ro
       name: player?.name ?? pick.playerName ?? 'Unknown player', teamId: team?.id ?? null, number: player?.jerseyNumber ?? null,
       position: player?.position ?? null, matchup: `${game.awayTeamId.toUpperCase()} @ ${game.homeTeamId.toUpperCase()}`,
       kickoff: game.kickoffAt.toISOString(), started, window: windowOf(game.kickoffAt),
-      price: pick.price, priced: pick.priced, hitChance: pick.hitChance, gap: pick.gapToPosted, clarity: pick.clarity,
+      price: pick.price, priced: pick.priced, hitChance: pick.hitChance, gap: pick.gapToPosted, carat: pick.carat, clarity: pick.clarity,
       recommended: i,
       fresh: isNew ? { ...isNew, at: clock(isNew.kind === 'crossed' && !mark?.readAt ? mark!.foundAt : (mark?.readAt ?? mark!.foundAt)) } : null,
       reasons: reasons(pick, inputs as Inputs | null, team?.name ?? null),

@@ -29,6 +29,9 @@ const GEAR = icon(<><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 
 
 /** Names an open record (the gem sheet's player) as the breadcrumb's last step while it is open. */
 const CrumbContext = createContext<(label: string | null) => void>(() => {});
+/** The top bar's search button fires this on Gems, which opens and focuses the search field (gems-board.tsx). */
+export const SEARCH_EVENT = 'hg:search';
+
 export function useCrumb(label: string | null) {
   const set = useContext(CrumbContext);
   useEffect(() => {
@@ -142,7 +145,8 @@ export function Shell({ children, foot, slip, weeks, newCount }: {
             </ol>
           </nav>
           <div className="fc-topbar-actions">
-            <Link className="fc-button" data-variant="tertiary" data-size="small" data-shape="square" href={`${withWeek('/')}#search`} aria-label="Search players">{SEARCH}</Link>
+            <Link className="fc-button" data-variant="tertiary" data-size="small" data-shape="square" href={`${withWeek('/')}#search`} aria-label="Search players"
+              onClick={(e) => { if (path === '/') { e.preventDefault(); window.dispatchEvent(new Event(SEARCH_EVENT)); } }}>{SEARCH}</Link>
             {/* The phone has no rail, so Settings sits in the top bar there. */}
             <Link className="fc-button hg-phone-only" data-variant="tertiary" data-size="small" data-shape="square" href={SETTINGS[0]!.href} aria-label="Settings"
               aria-current={inSettings ? 'page' : undefined}>{GEAR}</Link>

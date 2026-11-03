@@ -132,6 +132,9 @@
   .fc-list[data-lanes] > .fc-list-row > .fc-list-row-aside { flex: 1 0 100%; }
   .fc-list[data-lanes] > .fc-list-row > .fc-list-row-aside:empty { display: none; }
   .fc-list[data-lanes] > .fc-list-row > .fc-list-row-actions { flex: 0 0 auto; }
+  /* data-aside="beside" [F]: a short aside (a result and its amount) stays beside the title, which truncates. */
+  .fc-list[data-aside="beside"] > .fc-list-row { flex-wrap: nowrap; }
+  .fc-list[data-aside="beside"] > .fc-list-row > .fc-list-row-aside { order: 0; flex-basis: auto; padding-left: 0; }
 }
 
 /* ------------------------------------------------------------------ Connection row

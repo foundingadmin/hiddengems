@@ -48,7 +48,7 @@ export function GradedSlip({ graded, back }: { graded: Graded; back: string }) {
             <h1 className="text-heading-32">{title}</h1>
             <p className="fc-page-header-description text-copy-16">
               {settled && gradedAt
-                ? <>Graded <time className="fc-time" dateTime={gradedAt.toISOString()}>{shortDate(gradedAt)}</time> against the closing prices.</>
+                ? <>Graded <time dateTime={gradedAt.toISOString()}>{shortDate(gradedAt)}</time> against the closing prices.</>
                 : 'Graded against the closing prices once its games are final.'}
             </p>
           </div>
@@ -109,7 +109,7 @@ export function GradedSlip({ graded, back }: { graded: Graded; back: string }) {
             </tbody>
           </table>
         </div>
-        <ul className="fc-list hg-phone-only hg-history-list" role="list" aria-labelledby="legs-h">
+        <ul className="fc-list hg-phone-only hg-history-list" data-aside="beside" role="list" aria-labelledby="legs-h">
           {slip.legs.map((l) => (
             <li key={l.selectionKey} className="fc-list-row">
               <div className="fc-list-row-main">

@@ -63,7 +63,7 @@ describe('backup and restore', () => {
     const src = fresh();
     await src.migrate();
     await seedReference(src.db);
-    await src.db.execute(sql`drop table provider_caps`); // as if migration 0005 had not run yet
+    await src.db.execute(sql`drop table provider_caps`); // as if migration 0006 had not run yet
     const backup = await dumpDatabase(src.db);
     expect(backup.tables.teams).toHaveLength(32);
     expect(backup.tables).not.toHaveProperty('provider_caps');

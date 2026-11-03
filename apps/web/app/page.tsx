@@ -16,7 +16,7 @@ export default async function GemsPage({ searchParams }: { searchParams: Promise
   const asked = typeof params.gem === 'string' && params.gem ? params.gem : null;
   const [{ rows, lastRead }, detail, current] = await Promise.all([board(week), asked ? gemDetail(asked) : null, getCurrentSlip(week)]);
   const fresh = rows.filter((r) => r.fresh);
-  const slip = current ? { id: current.slip.id, keys: current.slip.legs.map((l) => l.selectionKey) } : null;
+  const slip = current ? { id: current.slip.id, name: `Slip ${current.slip.number}`, keys: current.slip.legs.map((l) => l.selectionKey) } : null;
   return (
     <>
       <h1 className="fc-visually-hidden">Gems{week != null ? `, week ${week}` : ''}</h1>

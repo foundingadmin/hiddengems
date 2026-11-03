@@ -2,12 +2,14 @@
 // The Gems page body (docs/build-brief.md, Gems): the New gems row, then All gems with its filter bar.
 // Filters, sort and the open gem live in the URL (?q, ?window, ?fools, ?sort, ?gem), so a view survives refresh and can be shared.
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useRef, useTransition } from 'react';
+import { useEffect, useMemo, useRef, useState, useTransition } from 'react';
+import { flushSync } from 'react-dom';
 import { markRead } from '@/app/gems-actions';
 import { SlipButton, type SlipRef } from '@/components/add-to-slip';
 import { Dropdown } from '@/components/dropdown';
 import { useGemLink } from '@/components/gem-sheet';
 import { Edge, FoolsLabel, GemMark, Player } from '@/components/marks';
+import { SEARCH_EVENT } from '@/components/shell';
 import type { BoardRow } from '@/lib/board';
 
 const svg = (d: React.ReactNode) => (
@@ -114,7 +116,14 @@ export function AllGems({ rows, zone, freshness, slip }: { rows: BoardRow[]; zon
     for (const [k, v] of Object.entries(patch)) if (v === null || v === '') next.delete(k); else next.set(k, v);
     router.replace(`${path}${next.size ? `?${next}` : ''}`, { scroll: false });
   };
-  useEffect(() => { if (location.hash === '#search') search.current?.focus(); }, []);
+  // Under 768px search hides until the top bar's search button opens it (SEARCH_EVENT, or #search from another page).
+  const [searching, setSearching] = useState(false);
+  useEffect(() => {
+    const open = () => { flushSync(() => setSearching(true)); search.current?.focus(); };
+    if (location.hash === '#search') { setSearching(true); requestAnimationFrame(() => search.current?.focus()); }
+    window.addEventListener(SEARCH_EVENT, open);
+    return () => window.removeEventListener(SEARCH_EVENT, open);
+  }, []);
 
   const windows = useMemo(() => [...new Set(rows.map((r) => r.window))].sort((a, b) => WINDOW_ORDER.indexOf(a) - WINDOW_ORDER.indexOf(b)), [rows]);
   const shown = useMemo(() => {
@@ -139,8 +148,8 @@ export function AllGems({ rows, zone, freshness, slip }: { rows: BoardRow[]; zon
         <div><h2 id="all-h" className="text-heading-24">All gems</h2></div>
         <div className="fc-section-head-actions">{freshness}</div>
       </div>
-      <div className="fc-filter-bar" role="search" aria-label="Filter gems">
-        <label className="fc-filter-search">
+      <div className="fc-filter-bar" data-phone="scroll" role="search" aria-label="Filter gems">
+        <label className="fc-filter-search" data-open={searching || q ? '' : undefined}>
           {SEARCH}
           <span className="fc-visually-hidden">Search players</span>
           <input ref={search} id="search" className="fc-input" data-size="small" type="search" placeholder="Search players…" autoComplete="off"
@@ -148,40 +157,42 @@ export function AllGems({ rows, zone, freshness, slip }: { rows: BoardRow[]; zon
         </label>
         <Dropdown
           label="Add filter" triggerClass="fc-button" triggerProps={{ 'data-variant': 'secondary', 'data-size': 'small', 'data-shape': 'rounded' }}
-          trigger={<>{FILTER}Add filter</>}
+          trigger={<>{FILTER}<span className="fc-filter-add-label">Add filter</span></>}
           items={[...windows.map((w) => ({ value: `window:${w}`, label: w, group: w === windows[0] ? 'Window' : undefined })),
             { value: 'fools', label: 'Hide Fool’s Gold', group: 'Fool’s Gold' }]}
           value={win ? `window:${win}` : null}
           onSelect={(v) => (v === 'fools' ? set({ fools: 'hide' }) : set({ window: v.slice(7) }))}
         />
-        <span className="fc-filter-chip" data-state="readonly"><span className="fc-filter-key">Market</span><span className="fc-filter-value">Anytime TD</span></span>
-        {win ? (
-          <span className="fc-filter-chip">
-            <span className="fc-filter-edit"><span className="fc-filter-key">Window</span><span className="fc-filter-value">{win}</span></span>
-            <button type="button" className="fc-filter-remove" aria-label={`Remove window ${win}`} onClick={() => set({ window: null })}>{X}</button>
-          </span>
-        ) : windows.length > 1 && (
-          <button type="button" className="fc-filter-chip" data-state="suggested" onClick={() => set({ window: windows[0]! })}>
-            {PLUS}<span className="fc-filter-key">Window</span><span className="fc-filter-value">{windows[0]}</span>
-          </button>
-        )}
-        {hideFools ? (
-          <span className="fc-filter-chip">
-            <span className="fc-filter-edit"><span className="fc-filter-value">Fool&apos;s Gold hidden</span></span>
-            <button type="button" className="fc-filter-remove" aria-label="Show Fool's Gold" onClick={() => set({ fools: null })}>{X}</button>
-          </span>
-        ) : (
-          <button type="button" className="fc-filter-chip" data-state="suggested" onClick={() => set({ fools: 'hide' })}>
-            {PLUS}<span className="fc-filter-key">Hide</span><span className="fc-filter-value">Fool&apos;s Gold</span>
-          </button>
-        )}
-        <label className="fc-filter-sort">
-          {SORT}
-          <span className="fc-visually-hidden">Sort</span>
-          <select className="fc-select" data-size="small" value={sort} onChange={(e) => set({ sort: e.target.value === 'recommended' ? null : e.target.value })}>
-            {Object.entries(SORTS).map(([k, s]) => <option key={k} value={k}>{s.label}</option>)}
-          </select>
-        </label>
+        <div className="fc-filter-scroll">
+          <span className="fc-filter-chip" data-state="readonly"><span className="fc-filter-key">Market</span><span className="fc-filter-value">Anytime TD</span></span>
+          {win ? (
+            <span className="fc-filter-chip">
+              <span className="fc-filter-edit"><span className="fc-filter-key">Window</span><span className="fc-filter-value">{win}</span></span>
+              <button type="button" className="fc-filter-remove" aria-label={`Remove window ${win}`} onClick={() => set({ window: null })}>{X}</button>
+            </span>
+          ) : windows.length > 1 && (
+            <button type="button" className="fc-filter-chip" data-state="suggested" onClick={() => set({ window: windows[0]! })}>
+              {PLUS}<span className="fc-filter-key">Window</span><span className="fc-filter-value">{windows[0]}</span>
+            </button>
+          )}
+          {hideFools ? (
+            <span className="fc-filter-chip">
+              <span className="fc-filter-edit"><span className="fc-filter-value">Fool&apos;s Gold hidden</span></span>
+              <button type="button" className="fc-filter-remove" aria-label="Show Fool's Gold" onClick={() => set({ fools: null })}>{X}</button>
+            </span>
+          ) : (
+            <button type="button" className="fc-filter-chip" data-state="suggested" onClick={() => set({ fools: 'hide' })}>
+              {PLUS}<span className="fc-filter-key">Hide</span><span className="fc-filter-value">Fool&apos;s Gold</span>
+            </button>
+          )}
+          <label className="fc-filter-sort">
+            {SORT}
+            <span className="fc-visually-hidden">Sort</span>
+            <select className="fc-select" data-size="small" value={sort} onChange={(e) => set({ sort: e.target.value === 'recommended' ? null : e.target.value })}>
+              {Object.entries(SORTS).map(([k, s]) => <option key={k} value={k}>{s.label}</option>)}
+            </select>
+          </label>
+        </div>
       </div>
 
       {gems === 0 && rows.length > 0 && (

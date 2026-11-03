@@ -10,7 +10,7 @@ The open session is the lead. It triages, parks, dispatches, merges and ships; i
 spawned agent finishes and is idle in between.
 
 Read first: `.claude/agents/corpus/principal.md` (what is the principal's call), `.claude/agents/corpus/decisions.md`
-and the `lessons` of the last file in `ops/sprint/sprints/`.
+and the `lesson` line of the last 5 files in `ops/sprint/sprints/`. Act on them in this sprint's triage.
 
 ## Fixed values
 - Vercel team `team_Fbu8p3MDU8UTxUVh6IXItiI7`, project `prj_oFOD8W6fd9uM7PEFziLqRgJX1Gda`.
@@ -63,18 +63,18 @@ No second verify: fixes are not re-reviewed (accepted risk; CI and the principal
 backstop).
 
 ## 7. Ship to staging
-1. Open one PR `sprint/<id>` to `staging`, titled `Sprint <id>`. The body lists each entry (thread link, what
+1. Write the sprint's `lesson`: one line on what went wrong and what the next sprint should do differently (a
+   dropped entry, a CI fix, a punchlist item a check could have caught), or `none`. Commit the sprint file.
+2. Open one PR `sprint/<id>` to `staging`, titled `Sprint <id>`. The body lists each entry (thread link, what
    changed) and any owner step (a migration: `pnpm db:supabase-sql`, choosing "Run without RLS").
-2. When CI is green on its head, merge it with a merge commit. If the merge is refused (branch protection), tell
+3. When CI is green on its head, merge it with a merge commit. If the merge is refused (branch protection), tell
    the principal and stop.
-3. Confirm the staging deploy for the merge SHA (`list_deployments`). For each shipped entry, react ✅ on its
+4. Confirm the staging deploy for the merge SHA (`list_deployments`). For each shipped entry, react ✅ on its
    thread and reply in one line that it is live on staging. Do not resolve it yet: threads resolve at the release.
    Set `status: shipped`. Dropped entries keep their thread open for the next sprint.
-4. Delete the remote builder branches that merged. Never delete `staging`, `main` or another person's branch.
+5. Delete the remote builder branches that merged. Never delete `staging`, `main` or another person's branch.
 
 ## 8. Close
-- Add 0 to 3 `lessons` to the sprint file (what went wrong, one line each), commit it to `staging` through the
-  next sprint's PR (or a one-file `fix/` PR if none follows).
 - Tell the principal in one short message: shipped entries, parked entries, dropped entries, owner steps, total
   tokens if the harness reported them. Then stop.
 

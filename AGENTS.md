@@ -11,9 +11,10 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
   canvases, dashboards, labs, docs). Anything worth keeping is a file here, changed by pull request. If
   something you need lives only outside the repo, bring it in first, then work from the repo copy.
 - Superseded artifacts are archived in `docs/archive/` as they were; they are history, not specs.
-- The one exception while the old pipeline runs as a shadow (`ops/directives/`): its picks data and the
-  odds API key stay in the dashboard store, because the key is a secret and this repo is public. Its
-  code is `ops/pipeline/hgs.py`, here.
+- Secrets live only in Vercel environment variables (`ODDS_API_KEY`, `DATABASE_URL`, `CRON_SECRET`,
+  `APP_PASSWORD`, `ANTHROPIC_API_KEY`), never in the repo, an artifact or a scheduled task.
+- The one exception while the old pipeline runs as a shadow (`ops/directives/`): its picks data stays in
+  the dashboard store until the pipeline retires. Its code is `ops/pipeline/hgs.py`, here.
 
 ## UI work must use Facet
 

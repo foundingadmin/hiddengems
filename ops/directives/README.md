@@ -32,5 +32,5 @@ If the directive can't be reached, stop and say so plainly. A run without its di
 ## Rules for editing
 
 - Changes land by pull request and take effect when merged to `main`. Read every directive change before merging, because these runs drive the built in browser on Josh's computer while he is signed in to Outlier.
-- This repository is public. Never put a key, token or password here. The odds API key lives in the dashboard store, doc `pipeline/config`.
-- The pipeline script is `ops/pipeline/hgs.py`. Change it by pull request like any directive. The dashboard store keeps only the picks data and the key.
+- This repository is public. Never put a key, token or password here. The odds API key lives only in Vercel (`ODDS_API_KEY`), where the app's own odds pulls use it. These runs no longer call the odds API.
+- The pipeline script is `ops/pipeline/hgs.py`. Change it by pull request like any directive. The dashboard store keeps only the picks data.

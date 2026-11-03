@@ -22,7 +22,7 @@ Nothing open. Next review: the rating formula after Week 9 grades on Tue Nov 10 
 5. **Price snapshots.** Done. Two scheduled tasks added, Saturday 7:47 PM and Sunday 8:43 AM, plus a snapshot command in the pipeline that logs each price point without touching the frozen read or the opening price.
 6. **DraftKings link.** Decoded from the link Josh sent (section 9, F3.6).
 7. **Backtest gates.** Implied team points passed and is live in the pipeline. Market consensus waits for multi book history to accumulate (F2.6).
-8. **Odds feed route.** On Vercel the app calls the free odds feed itself, from Vercel Cron on the snapshot schedule. Until then the shadow feed runs through the built in browser on Josh's computer, same as the Outlier captures. Tested live Nov 2 2026: 1 credit per game, 497 of 500 left this month. Added to the Saturday and Sunday snapshot tasks as a shadow feed. The key is never committed to the repo, which is public.
+8. **Odds feed route.** On Vercel the app calls the free odds feed itself, from Vercel Cron on the snapshot schedule. Since Nov 3 2026 the key lives only in Vercel (`ODDS_API_KEY`) and the browser shadow feed is retired. Tested live Nov 2 2026: 1 credit per game, 497 of 500 left this month. Added to the Saturday and Sunday snapshot tasks as a shadow feed. The key is never committed to the repo, which is public.
 9. **Rating formula (approved Nov 2 2026, revisit after Week 9 grades Tue Nov 10).** A gem must beat the posted price. Its number is edge × clarity, so a big edge with a murky read can't score high. The board sorts gems by hit chance × clarity. When nothing at your usual odds has an edge, the board says so and lists the real long shot gems below. Section 8.
 10. **One rating system.** The repo's Facet design system drops its four gem tiers (rough, cut, polished, flawless) for the single 0 to 100 rating, with purple intensity rising with the number. Docs updated in [pull request 4](https://github.com/foundingadmin/hiddengems/pull/4).
 
@@ -325,7 +325,7 @@ Claude Code runs while you're elsewhere, so your review hours set the pace. Phas
 - nflverse: play by play, weekly stats, snap counts (a few days behind), injury reports, players table, schedules with spread and total lines.
 - Outlier, paid (Premium lists at $19.99 a month, Premium+ $29.99, Pro $79.99), source of truth for prices today: DraftKings price, other books' prices, mined counts, and sportsbook slip links.
 - Claude web research: news and qualitative context for the Jeweler's notes.
-- The existing pipeline in the Hidden Gem Scorecard dashboard store, doc pipeline/build, with freeze, open, snap, close and autograde, run by scheduled tasks. Price capture runs in the built in browser on Josh's computer, so the computer must be awake with the Claude app open at those times.
+- The existing pipeline in the Hidden Gem Scorecard dashboard store (code now `ops/pipeline/hgs.py` in the repo), with freeze, open, snap, close and autograde, run by scheduled tasks. Price capture runs in the built in browser on Josh's computer, so the computer must be awake with the Claude app open at those times.
 
 **Added Nov 2 2026**
 - Saturday 7:47 PM and Sunday 8:43 AM price snapshots, stored as a `snaps` list on each prop.
@@ -358,11 +358,11 @@ Slip  { id, created, book, legs[gem_id, stake], payout, lose_all,
 - Stats, injuries, schedules, spreads and totals: nflverse, already free and already used.
 - Prices: The Odds API has a free tier of 500 credits a month. Player props come through its event odds endpoint, charged per market per region. Anytime TD for about 14 games at about 6 snapshots a week is roughly 84 credits a week, around 360 a month, inside the free tier for TD props only. Yardage and reception markets would need a paid plan. Its docs describe an `includeLinks` option that returns sportsbook slip links when available.
 - **Tested Nov 2 2026 with Josh's free key:** DraftKings anytime TD prices for CIN @ ATL came back with a slip link per player in exactly the format Outlier uses (for example Ja'Marr Chase 1.80, Bijan Robinson 1.56). Only 7 DraftKings players were posted that early in the week. So the free feed covers both prices and the slip handoff.
-- Route: the cloud workspace can't call the feed (network allowlist, no setting in the Claude app), so it runs through the built in browser on Josh's computer. Shadow feed live in the Saturday 7:47 PM and Sunday 8:43 AM snapshots from Sat Nov 7 2026, about 30 credits a week. The pipeline's `feed` command stores each book's price and the DraftKings slip link per prop without touching Outlier's numbers.
+- Route: the app pulls the feed itself from Vercel Cron on the snapshot schedule (Sat 7:47 PM and Sun 8:43 AM Denver, plus the opening line and kickoff freezes), with the key in Vercel. The browser shadow feed is retired.
 
 **What you'd lose:** mined counts (Outlier only) and Outlier's own screens, which Hidden Gems replaces.
 
-**Plan:** shadow run from Week 10 (F2.8). If prices match and links work for two Sundays, cancel Outlier. The key is stored only in the scheduled tasks that use it, never in memory or the app.
+**Plan:** shadow run from Week 10 (F2.8). If prices match and links work for two Sundays, cancel Outlier. The key lives only in Vercel as `ODDS_API_KEY`, never in the repo, memory or a scheduled task.
 
 # 11. Model spec · Hidden Gems v3.0
 

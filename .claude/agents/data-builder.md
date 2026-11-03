@@ -8,7 +8,7 @@ model: inherit
 Hidden Gems agent corpus (`.claude/agents/`). Read `corpus/brief.md`, then your lessons in `corpus/lessons.md`
 (listed in `MANIFEST.json`), then `docs/architecture.md`, `packages/ingest/src/runner.ts`, and the jobs, providers
 and tests you touch.
-Version 1.1, updated 2026-11-03.
+Version 1.2, updated 2026-11-03.
 
 You build Hidden Gems data plumbing on `data/<slug>` from the latest `origin/staging`.
 
@@ -20,9 +20,10 @@ You build Hidden Gems data plumbing on `data/<slug>` from the latest `origin/sta
   `BACKUP_TABLES` when worth keeping.
 - Paid odds credits: nothing spends them off schedule without an explicit, confirmed `spendCredits`.
 - Tests run on PGlite with the sample provider and need no secrets. Add a test for each behavior you add.
+- Work in your own worktree; stop if `git status` shows changes you did not make.
 
 ## Self-check before hand-off
-- `pnpm check` green (typecheck, tests, color lint, `db:guard`).
+- `pnpm check` green (`pnpm install` first; typecheck, tests, color lint, `db:guard`).
 - No em dashes in the diff, commits or PR body (`git diff origin/staging... | grep -n "$(printf '\342\200\224')"` prints nothing).
 - A new migration is safe before the owner runs it: the app and the nightly backup both work when the new table or
   column is missing in production.

@@ -8,7 +8,7 @@ model: inherit
 Hidden Gems agent corpus (`.claude/agents/`). Read `corpus/brief.md`, then your lessons in `corpus/lessons.md`
 (listed in `MANIFEST.json`), then `packages/facet/DESIGN.md` and the docs of the Facet parts the change touches
 (`packages/facet/components/*.md`, `patterns/*.md`).
-Version 2.0, updated 2026-11-03.
+Version 2.1, updated 2026-11-03.
 
 You review interfaces, not words, and never edit product files.
 
@@ -21,7 +21,7 @@ screenshots; run the app again only if the delta leaves doubt.
 On a first review, run the app (`cd apps/web && npx next dev -p 3400`; PGlite and sample data, no env; press the Data
 health header pull to fill data) and screenshot each changed route with Playwright (`chromium.launch()`) at
 1440x1000, 1100x1000 and 390x844, dark and light (`colorScheme`), plus focused states of new controls and hovers
-that matter. Read every screenshot.
+that matter. Read every screenshot. Headless Chrome renders a `#hash` URL blank: capture the full page and crop.
 
 ## Rules, in order of authority
 1. `AGENTS.md`, "UI work must use Facet": `--fc-*` tokens, then `--ds-*`, never raw hex or px in apps; type only
@@ -35,7 +35,8 @@ that matter. Read every screenshot.
 ## Check
 Alignment, the Facet spacing scale, consistent peer sizes, no horizontal scroll at 390, contrast in both themes,
 focus rings, hit targets, loading, empty, error and disabled states where the doc requires them, reduced motion, no
-duplicated or hand-rolled Facet parts. Review a chart next to the table on the same page: same encoding, and legend
+duplicated or hand-rolled Facet parts, no `aria-label` on a span with no role (`aria-hidden` glyph plus
+`.fc-visually-hidden` text instead). Review a chart next to the table on the same page: same encoding, and legend
 keys match the marks they name, ramps included.
 
 ## Report

@@ -1,4 +1,4 @@
-import { games, providerUsage, runLogs, runs } from '@hiddengems/db';
+import { games, jobSettings, providerUsage, runLogs, runs } from '@hiddengems/db';
 import { BOOTSTRAP, dataMode } from '@hiddengems/ingest';
 import { and, desc, eq, gt, inArray, lt, or } from 'drizzle-orm';
 import type { Metadata } from 'next';
@@ -10,7 +10,8 @@ import {
 } from '@/lib/data-health';
 import { db } from '@/lib/db';
 import { clock, dayTime, duration } from '@/lib/format';
-import { PullAllButton, PullButton, PullQueue, ResultCell, RunCell } from './pulls';
+import { FixButton, PullAllButton, PullButton, PullQueue, ResultCell, RunCell } from './pulls';
+import { SourceMenu } from './source-menu';
 
 export const dynamic = 'force-dynamic';
 // Each pull is its own request (see pulls.tsx); a full usage pull reads a season of play by play.
@@ -46,18 +47,39 @@ export default async function DataPage() {
   const left = credits?.remaining ?? null;
   const total = credits && credits.remaining != null && credits.used != null ? credits.remaining + credits.used : null;
   const nextOdds = nextOddsPull(now, upcoming.map((g) => g.kickoffAt));
+  // Pausing needs the job_settings table (migration 0004); until it exists, sources read as running.
+  let pausable = true;
+  const paused = new Set<string>();
+  try {
+    for (const r of await d.select().from(jobSettings)) if (r.paused) paused.add(r.job);
+  } catch { pausable = false; }
 
-  // What needs a look, and the note that says so: one per source, with the fix as its action.
-  const notes = new Map<string, { type: 'error' | 'warning'; text: string; short: string; overdue?: boolean }>();
+  // What needs a look, the note that says so, and the fix: one per source. A warning about players or games
+  // the roster or schedule does not know is fixed by pulling those first, then the source again.
+  type Note = { type: 'error' | 'warning'; text: string; short: string; overdue?: boolean; fix: { label: string; jobs: string[] } };
+  const fixFor = (job: string, label: string, text: string, again: boolean): Note['fix'] => {
+    const verb = again ? 'Pull again' : 'Pull now';
+    if (job === 'pull-odds') return { label: 'Pull rosters, then ratings', jobs: ['pull-rosters', 'build-picks'] };
+    if (/roster/i.test(text)) return { label: `Pull rosters, then ${label.toLowerCase()}`, jobs: ['pull-rosters', job] };
+    if (/schedule/i.test(text)) return { label: `Pull schedule, then ${label.toLowerCase()}`, jobs: ['pull-schedule', job] };
+    return { label: verb, jobs: [job] };
+  };
+  const notes = new Map<string, Note>();
   for (const { job, label, last } of latest) {
-    if (last?.status === 'failed') notes.set(job, { type: 'error', text: last.message ?? 'The last pull failed.', short: `${label} failed` });
-    else if (last?.status === 'warned') notes.set(job, { type: 'warning', text: firstWarning.get(last.id) ?? last.message ?? 'The last pull warned.', short: `${label} warned` });
-    else if (isDaily(job) && (!last || now.getTime() - last.startedAt.getTime() > OVERDUE_MS)) {
+    if (last?.status === 'failed') {
+      const text = last.message ?? 'The last pull failed.';
+      notes.set(job, { type: 'error', text, short: `${label} failed`, fix: fixFor(job, label, text, true) });
+    } else if (last?.status === 'warned') {
+      const text = firstWarning.get(last.id) ?? last.message ?? 'The last pull warned.';
+      notes.set(job, { type: 'warning', text, short: `${label} warned`, fix: fixFor(job, label, text, true) });
+    } else if (!paused.has(job) && isDaily(job) && (!last || now.getTime() - last.startedAt.getTime() > OVERDUE_MS)) {
       notes.set(job, last
-        ? { type: 'warning', text: `Missed its daily run. Last ran ${dayTime(last.startedAt, now)}.`, short: `${label} overdue`, overdue: true }
-        : { type: 'warning', text: 'Has never run.', short: `${label} never ran` });
+        ? { type: 'warning', text: `Missed its daily run. Last ran ${dayTime(last.startedAt, now)}.`, short: `${label} overdue`, overdue: true, fix: { label: 'Pull now', jobs: [job] } }
+        : { type: 'warning', text: 'Has never run.', short: `${label} never ran`, fix: { label: 'Pull now', jobs: [job] } });
     }
   }
+  // "Fix all" runs every fix once, in source order.
+  const fixAll = [...new Set([...notes.values()].flatMap((n) => n.fix.jobs))];
   const needs = [...notes.values()].map((n) => n.short);
 
   const provider = (job: string, live: string) => (sample && job !== 'build-picks' && job !== 'backup' ? 'Sample' : live);
@@ -87,6 +109,7 @@ export default async function DataPage() {
             </span>
           </dd>
           <dd className="fc-stat-basis">{needs.length ? needs.join(', ') : 'Every source ran on time'}</dd>
+          {needs.length > 0 && <dd className="hg-stat-action"><FixButton jobs={fixAll} text={needs.length > 1 ? 'Fix all' : 'Fix'} /></dd>}
         </div>
         <div className="fc-stat">
           <dt className="fc-stat-label">Next odds pull</dt>
@@ -107,10 +130,11 @@ export default async function DataPage() {
 
       <section className="hg-section" aria-labelledby="sources-h">
         <h2 id="sources-h" className="text-heading-20">Sources</h2>
-        <ul className="fc-list" role="list" aria-labelledby="sources-h">
+        <ul className="fc-list hg-sources" role="list" aria-labelledby="sources-h">
           <li className="fc-schedule-head" aria-hidden="true"><span>Source</span><span>Status</span><span>Next run</span><span>Last run</span></li>
           {latest.map(({ job, label, live, last }) => {
-            const next = job === 'pull-odds' ? nextOdds?.at ?? null : nextDaily(job, now);
+            const isPaused = paused.has(job);
+            const next = isPaused ? null : job === 'pull-odds' ? nextOdds?.at ?? null : nextDaily(job, now);
             const note = notes.get(job);
             return (
               <li key={job} className="fc-list-row fc-schedule-row" data-state={note?.type === 'error' ? 'failed' : undefined}>
@@ -126,7 +150,8 @@ export default async function DataPage() {
                 </div>
                 <span className="fc-schedule-status">
                   <RunCell job={job}>
-                    {!last ? <span className="fc-level">Never run</span>
+                    {isPaused ? <span className="fc-level">Paused</span>
+                      : !last ? <span className="fc-level">Never run</span>
                       : note?.overdue ? <span className="fc-level" data-level="warning">Overdue</span>
                         : <RunStatus status={last.status} owner={last.failureOwner} />}
                   </RunCell>
@@ -138,23 +163,29 @@ export default async function DataPage() {
                       <time className="fc-timestamp" dateTime={next.toISOString()} title={clock(next)}>{dayTime(next, now)}</time>
                       <span className="fc-schedule-detail">{until(next, now)}</span>
                     </>
-                  ) : <span className="fc-value-empty">After pulls</span>}
+                  ) : <span className="fc-value-empty">{isPaused ? 'None' : 'After pulls'}</span>}
                 </p>
                 <p className="fc-schedule-last">
                   <span className="fc-schedule-label">Last run</span>
                   {last ? (
                     <>
-                      <time className="fc-timestamp" dateTime={last.startedAt.toISOString()} title={clock(last.startedAt)}>{dayTime(last.startedAt, now)}</time>
+                      <Link className="hg-run-link" href={`/data/logs?run=${last.id}`} aria-label={`Open the log for ${label}'s last run`}>
+                        <time className="fc-timestamp" dateTime={last.startedAt.toISOString()} title={clock(last.startedAt)}>{dayTime(last.startedAt, now)}</time>
+                      </Link>
                       <span className="fc-schedule-detail">Ran {duration(last.durationMs)}</span>
                     </>
                   ) : <span className="fc-value-empty">Never</span>}
                 </p>
                 <div className="fc-list-row-actions">
                   {job === 'pull-odds' ? <PullButton job={job} label={label} {...oddsProps} /> : <PullButton job={job} label={label} />}
+                  <SourceMenu job={job} label={label} paused={isPaused} canPause={pausable && job !== 'build-picks'} />
                 </div>
                 {note && (
                   <div className="fc-list-row-note">
-                    <div className="fc-note" data-type={note.type} data-size="small"><span>{note.text}</span></div>
+                    <div className="fc-note" data-type={note.type} data-size="small" data-action>
+                      <span>{note.text}</span>
+                      <FixButton className="fc-note-action" jobs={note.fix.jobs} text={note.fix.label} />
+                    </div>
                   </div>
                 )}
               </li>

@@ -53,6 +53,13 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 ## Working agreements
 
 - Integrate approved scalability decisions as soon as they come up (tokens, slots, generators), rather than deferring them.
+- Preview reviews (Vercel toolbar comments): the owner reviews fast. Read every open thread with the Vercel
+  toolbar tools, turn each into a tracked task straight away, and resolve each thread once its fix is pushed. Do
+  not reply on the thread unless something blocks the fix; report progress in the session instead.
+- Facet covers every UI need. When work (yours or a subagent's) needs a component, pattern, token or class that
+  Facet lacks, do not hand-roll it in app CSS: file a DS request (what is needed, where it is used, the closest
+  existing Facet part), have a design-system pass build it in `packages/facet` (tokens, CSS, component doc,
+  preview), then wire it into the feature. App CSS is only layout glue between Facet parts, using `--fc-*` tokens.
 - A product's accent goes through `--fc-brand-*` (`packages/facet/tokens/facet.semantic.json`); reusing Facet for another product means changing those four tokens, not hunting for hues.
 
 ## Data and jobs

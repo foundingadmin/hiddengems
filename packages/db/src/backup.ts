@@ -5,14 +5,14 @@ import { type AnyColumn, getTableColumns, getTableName } from 'drizzle-orm';
 import type { PgTable } from 'drizzle-orm/pg-core';
 import type { Db } from './client';
 import {
-  bets, books, estimates, games, gemMarks, markets, oddsLatest, oddsSlots, oddsSnapshots, picks, playerGameStats, playerUsage, players, providerRefs,
+  bets, books, estimates, games, gemMarks, jobSettings, markets, oddsLatest, oddsSlots, oddsSnapshots, picks, playerGameStats, playerUsage, players, providerRefs,
   providerUsage, runs, teams,
 } from './schema';
 
 /** Every table worth keeping, parents before children. Run logs and job locks are left out: they are noise. */
 export const BACKUP_TABLES: PgTable[] = [
   teams, books, markets, players, games, providerRefs, oddsSnapshots, oddsLatest, oddsSlots, estimates, picks,
-  playerGameStats, playerUsage, gemMarks, bets, runs, providerUsage,
+  playerGameStats, playerUsage, gemMarks, bets, runs, providerUsage, jobSettings,
 ];
 
 export interface Backup {

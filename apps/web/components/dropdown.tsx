@@ -14,7 +14,7 @@ export interface DropdownItem {
 }
 
 export function Dropdown({
-  label, trigger, triggerClass, items, value, onSelect, align, triggerProps,
+  label, trigger, triggerClass, items, value, onSelect, align, triggerProps, actions,
 }: {
   /** The menu's accessible name. */
   label: string;
@@ -25,6 +25,8 @@ export function Dropdown({
   onSelect: (value: string) => void;
   align?: 'end';
   triggerProps?: Record<string, string | undefined>;
+  /** An actions menu (menuitem rows, nothing checked) instead of a choice (menuitemradio). */
+  actions?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const id = useId();
@@ -84,7 +86,7 @@ export function Dropdown({
           <div key={it.value} style={{ display: 'contents' }}>
             {it.group && <div className="fc-dropdown-label" role="presentation">{it.group}</div>}
             <button
-              type="button" className="fc-dropdown-item" role="menuitemradio" aria-checked={value === it.value} tabIndex={-1}
+              type="button" className="fc-dropdown-item" role={actions ? 'menuitem' : 'menuitemradio'} aria-checked={actions ? undefined : value === it.value} tabIndex={-1}
               onClick={() => { onSelect(it.value); close(); }}
             >
               <span>{it.label}</span>

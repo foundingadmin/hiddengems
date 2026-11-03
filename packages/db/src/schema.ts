@@ -287,6 +287,14 @@ export const jobLocks = pgTable('job_locks', {
   lockedUntil: tstz(),
 });
 
+/** Per-source settings managed from Data health. A paused source skips its scheduled runs; Pull now still works. */
+export const jobSettings = pgTable('job_settings', {
+  job: text().primaryKey(),
+  paused: boolean().notNull().default(false),
+  pausedAt: tstz(),
+  updatedAt: createdAt(),
+});
+
 /** API quota per provider, from response headers, for the usage meters. */
 export const providerUsage = pgTable('provider_usage', {
   provider: text().primaryKey(),

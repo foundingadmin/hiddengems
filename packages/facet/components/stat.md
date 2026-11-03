@@ -71,7 +71,7 @@ When a stat's value is a gem rating, the gem mark replaces `.fc-stat-value` at t
 - Use it in a stat only. In tables and rows the default and `lg` sizes stay.
 
 ## Hidden Gems usage
-- Rating lab, Try a prop: the Result stat shows the gem at stat size beside Carat, Edge and Clarity.
+- Rating lab, Try a prop: the Rating stat shows the gem at stat size beside Carat, Edge and Clarity.
 - Track record strip on History: Return on stake `+6.2%` (41 picks, Weeks 1 to 8), Hit rate `55%` `23 of 42`, Average gap `+4.0` `pts`, Beat the closing line `29` `of 41`.
 - Slate summary above the table: picks, average gap, go verdicts, odds freshness.
 - Data health overview: Status carries "Fix all" (or "Fix" for one source) in `.fc-stat-action` while any source needs a look.

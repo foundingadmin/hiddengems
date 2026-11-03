@@ -83,7 +83,7 @@ Owner feedback, 2026-11-02: "I don't know if this movement is positive or negati
 
 ## Scatter `[F]`
 
-CSS in `css/charts.css` (`.fc-chart[data-kind="scatter"]`). Specimen: `preview/index.html#ch-scatter`.
+CSS in `css/charts.css` (`.fc-chart[data-kind="scatter"]`). Specimens: `preview/index.html#ch-scatter`, `preview/index.html#ch-scatter-sparse` (small, sparse); screen: `preview/screens.html#rating-lab`.
 
 ### Purpose
 Shows where every item of a set sits on two measures at once, so a weighting reads as a shape: which odds a formula rewards, where the gems cluster, which ones lead.

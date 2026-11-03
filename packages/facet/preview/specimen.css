@@ -19,7 +19,7 @@
 .sp-mark svg { width: 18px; height: 18px; color: var(--fc-gem-solid); }
 .sp-nav { position: sticky; top: 0; z-index: 10; background: var(--fc-surface-canvas); }
 main { padding-block: 32px 96px; display: flex; flex-direction: column; gap: 64px; }
-section { display: flex; flex-direction: column; gap: 24px; scroll-margin-top: 64px; }
+section:not([class^="fc-"]) { display: flex; flex-direction: column; gap: 24px; scroll-margin-top: 64px; }
 .sp-intro { display: flex; flex-direction: column; gap: 8px; max-width: 68ch; }
 .sp-intro p { color: var(--fc-text-secondary); }
 .sp-two { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px; align-items: start; }

@@ -5,6 +5,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { type FormEvent, type ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { dismissible } from '@foundingcreative/facet/js/sheet.mjs';
 import { ask, loadJeweler } from '@/app/jeweler/actions';
 import type { JewelerView } from '@/lib/jeweler';
 import './jeweler.css';
@@ -63,7 +64,13 @@ export function JewelerChat({ initial, frame, onClose }: { initial: JewelerView;
   const [draft, setDraft] = useState('');
   const input = useRef<HTMLInputElement>(null);
   const end = useRef<HTMLDivElement>(null);
-  useLayoutEffect(() => { if (turns.length || pending) end.current?.scrollIntoView({ block: 'nearest' }); }, [turns.length, pending, problem]);
+  const scroller = useRef<HTMLDivElement>(null);
+  // In the sheet, scroll only its body: scrollIntoView would scroll the sheet too and hide its close button.
+  useLayoutEffect(() => {
+    if (!turns.length && !pending) return;
+    const b = scroller.current;
+    if (b) b.scrollTo({ top: b.scrollHeight }); else end.current?.scrollIntoView({ block: 'nearest' });
+  }, [turns.length, pending, problem]);
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
@@ -132,6 +139,7 @@ export function JewelerChat({ initial, frame, onClose }: { initial: JewelerView;
     return (
       <>
         <header className="fc-sheet-header hg-jeweler-head">
+          <div className="fc-sheet-handle" aria-hidden="true" />
           <div className="fc-sheet-titlebar">
             <div className="fc-sheet-titles">
               <h2 className="fc-sheet-title text-heading-20" id="jeweler-title">The Jeweler</h2>
@@ -141,7 +149,7 @@ export function JewelerChat({ initial, frame, onClose }: { initial: JewelerView;
           </div>
           {chips}
         </header>
-        <div className="fc-sheet-body">{log}<div ref={end} /></div>
+        <div className="fc-sheet-body" ref={scroller}>{log}<div ref={end} /></div>
         <footer className="fc-sheet-footer hg-jeweler-foot">{foot}</footer>
       </>
     );
@@ -173,6 +181,12 @@ export function JewelerSheet() {
     loadJeweler(gemId).then((v) => { if (live) setView({ gemId, view: v }); }).catch(() => {});
     return () => { live = false; };
   }, [open, gemId]);
+
+  // A click on the dimmed page, or a drag down on phone, closes it like the close button (js/sheet.mjs).
+  useEffect(() => {
+    const d = dialog.current;
+    return d ? dismissible(d, { dismiss: () => d.close() }) : undefined;
+  }, [view]);
 
   useEffect(() => {
     const d = dialog.current;

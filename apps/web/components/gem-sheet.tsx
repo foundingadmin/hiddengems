@@ -14,6 +14,7 @@ import { useCrumb } from '@/components/shell';
 import { Edge, GemMark, Player } from '@/components/marks';
 import type { BoardRow } from '@/lib/board';
 import type { GemDetail } from '@/lib/gem';
+import { dismissible, scrollBodyTo } from '@foundingcreative/facet/js/sheet.mjs';
 import { closeSheet, keepOpen, openerOf, rippleOpen } from '@/lib/moments/drawer';
 
 const svg = (d: React.ReactNode) => (
@@ -112,6 +113,12 @@ export function GemSheet({ rows, detail, asked, zone }: {
     } else if (el.open) closeSheet(el);
   }, [key]);
 
+  // A click on the dimmed page, or a drag down on phone, closes it like the close button (js/sheet.mjs).
+  useEffect(() => {
+    const el = dialog.current;
+    return el ? dismissible(el, { dismiss: () => closeSheet(el) }) : undefined;
+  }, []);
+
   // Escape, the close button, or Back: drop ?gem= from the URL, then hand focus back to the row.
   useEffect(() => {
     const el = dialog.current;
@@ -158,7 +165,8 @@ export function GemSheet({ rows, detail, asked, zone }: {
     const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (jumping.current) clearTimeout(jumping.current);
     jumping.current = setTimeout(() => { jumping.current = null; }, smooth ? 1000 : 100);
-    document.getElementById(id)?.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+    const target = document.getElementById(id);
+    if (target && body.current) scrollBodyTo(body.current, target, smooth ? 'smooth' : 'auto');
     setActive(id);
   };
 
@@ -167,6 +175,7 @@ export function GemSheet({ rows, detail, asked, zone }: {
       {view && (
         <>
           <header className="fc-sheet-header">
+            <div className="fc-sheet-handle" aria-hidden="true" />
             <div className="fc-sheet-titlebar">
               <div className="fc-sheet-titles">
                 <h2 id="gem-sheet-title" className="fc-sheet-title">

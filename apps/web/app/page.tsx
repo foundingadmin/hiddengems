@@ -1,4 +1,5 @@
 import { dataMode } from '@hiddengems/ingest';
+import { READ_ONLY, READ_ONLY_MESSAGE } from '@/lib/db';
 import { Freshness } from '@/components/freshness';
 import { SlipProvider } from '@/components/add-to-slip';
 import { GemSheet } from '@/components/gem-sheet';
@@ -24,7 +25,9 @@ export default async function GemsPage({ searchParams }: { searchParams: Promise
   return (
     <>
       <h1 className="fc-visually-hidden">Gems{week != null ? `, week ${week}` : ''}</h1>
-      {dataMode() === 'sample' && (
+      {READ_ONLY ? (
+        <div className="fc-note" data-size="small"><span>{READ_ONLY_MESSAGE}.</span></div>
+      ) : dataMode() === 'sample' && (
         <div className="fc-note" data-size="small">
           <span>{process.env.VERCEL_ENV === 'preview' ? 'Sample data.' : 'Sample data. Add ODDS_API_KEY to pull live odds.'}</span>
         </div>

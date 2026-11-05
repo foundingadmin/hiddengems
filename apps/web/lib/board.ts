@@ -73,6 +73,7 @@ export interface BoardRow {
   teamId: string | null;
   number: number | null;
   position: string | null;
+  marketId: string;
   matchup: string;
   kickoff: string;
   started: boolean;
@@ -110,7 +111,7 @@ export async function board(week: number | null, now = new Date()): Promise<{ ro
     return {
       key: pick.selectionKey, kind: pick.kind as GemKind, rating: pick.rating,
       name: player?.name ?? pick.playerName ?? 'Unknown player', teamId: team?.id ?? null, number: player?.jerseyNumber ?? null,
-      position: player?.position ?? null, matchup: `${game.awayTeamId.toUpperCase()} @ ${game.homeTeamId.toUpperCase()}`,
+      position: player?.position ?? null, marketId: pick.marketId, matchup: `${game.awayTeamId.toUpperCase()} @ ${game.homeTeamId.toUpperCase()}`,
       kickoff: game.kickoffAt.toISOString(), started, window: windowOf(game.kickoffAt),
       price: pick.price, priced: pick.priced, hitChance: pick.hitChance, gap: pick.gapToPosted, carat: pick.carat, clarity: pick.clarity,
       recommended: i,

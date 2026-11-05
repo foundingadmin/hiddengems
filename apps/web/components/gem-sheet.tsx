@@ -3,7 +3,7 @@
 // The open gem lives in the URL (?gem=<selection key>), so it can be linked and Back closes it. The header and
 // tabs stay pinned; the body is one scroll and each tab jumps to its section. It springs in and out with the drawer
 // moment (lib/moments/drawer.ts), keeping the gem on screen while it slides out after Back.
-import { FULL_CARAT } from '@hiddengems/core';
+import { FULL_CARAT, betLabel } from '@hiddengems/core';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { type MouseEvent, useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
@@ -70,7 +70,7 @@ const kickoffLabel = (iso: string, zone: string) => new Intl.DateTimeFormat('en-
 const kickoffFull = (iso: string, zone: string) => new Intl.DateTimeFormat('en-US', { timeZone: zone, weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }).format(new Date(iso));
 
 /** What the header needs, from the board row while the sheet loads, then from the gem itself. */
-type Head = Pick<GemDetail, 'key' | 'kind' | 'rating' | 'name' | 'teamId' | 'number' | 'position' | 'matchup' | 'kickoff' | 'price' | 'gapToPosted' | 'fresh'>;
+type Head = Pick<GemDetail, 'key' | 'kind' | 'rating' | 'name' | 'teamId' | 'number' | 'position' | 'marketId' | 'matchup' | 'kickoff' | 'price' | 'gapToPosted' | 'fresh'>;
 const headOf = (r: BoardRow): Head => ({ ...r, gapToPosted: r.gap, fresh: !!r.fresh });
 
 export function GemSheet({ rows, detail, asked, zone }: {
@@ -204,7 +204,7 @@ export function GemSheet({ rows, detail, asked, zone }: {
                 <h2 id="gem-sheet-title" className="fc-sheet-title">
                   {head ? (
                     <Player name={head.name} teamId={head.teamId} number={head.number} size="lg"
-                      detail={<>{[head.position, 'Anytime TD', head.matchup].filter(Boolean).join(' · ')} · <time dateTime={head.kickoff} title={kickoffFull(head.kickoff, zone)}>{kickoffLabel(head.kickoff, zone)}</time></>} />
+                      detail={<>{[head.position, betLabel(head.marketId), head.matchup].filter(Boolean).join(' · ')} · <time dateTime={head.kickoff} title={kickoffFull(head.kickoff, zone)}>{kickoffLabel(head.kickoff, zone)}</time></>} />
                   ) : missing ? 'Gem not found' : <span className="fc-skeleton" style={{ height: 'var(--fc-space-12)', width: 'calc(var(--fc-space-32) * 2)' }}>Loading</span>}
                 </h2>
               </div>

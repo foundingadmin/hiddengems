@@ -3,6 +3,7 @@
 // run the slips update yet. The shell leaves it out on the Slips pages.
 import Link from 'next/link';
 import { Unknown, money, stakeWords } from '@/app/slips/slip-parts';
+import { SlipKind } from '@/components/slip-kind';
 import { pct } from '@/lib/format';
 import { getCurrentSlip } from '@/lib/slips';
 
@@ -11,13 +12,11 @@ export async function RailSlip() {
   if (!summary) return null;
   const { slip, pays, loseItAll } = summary;
   const n = slip.legs.length;
-  // As the certificate names it: "Suggested parlay", or for your own play "Single", "3 leg parlay".
-  const kind = slip.play === 'suggested' ? `Suggested ${n === 1 ? 'single' : 'parlay'}` : n === 1 ? 'Single' : `${n} leg parlay`;
   return (
     <section className="fc-railslip fc-card" aria-labelledby="rail-slip-h">
       <header className="fc-railslip-head">
         <h2 id="rail-slip-h" className="text-heading-14">Slip {slip.number}</h2>
-        <span className="text-label-12">{kind}</span>
+        <span className="text-label-12"><SlipKind n={n} suggested={slip.play === 'suggested'} /></span>
       </header>
       <ul className="fc-railslip-list text-label-13">
         {slip.legs.map((l) => <li key={l.selectionKey} className="fc-railslip-row"><span>{l.name}</span><span>{l.price.toFixed(2)}</span></li>)}

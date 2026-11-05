@@ -33,13 +33,15 @@
 .fc-cert-head > * { margin: 0; }
 .fc-cert-kicker, .fc-cert-meta { color: var(--fc-text-secondary); }
 
-/* Legs share one grid, so every rating mark and price sits in the same lane. */
+/* Legs share one grid, so every rating mark and price sits in the same lane. Each leg holds half the space
+   between legs above and below it, and the list takes the outer halves back, so a leg that closes takes its
+   space with it and nothing else jumps (patterns/moments.md, "Remove a leg"). */
 .fc-legs {
+  --_leg-space: var(--fc-space-4);
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto;
   column-gap: var(--fc-space-4);
-  row-gap: var(--fc-space-4);
-  margin: 0;
+  margin: calc(var(--_leg-space) / -2) 0;
   padding: 0;
   list-style: none;
 }
@@ -49,6 +51,7 @@
   grid-template-columns: subgrid;
   align-items: center;
   min-width: 0;
+  padding-block: calc(var(--_leg-space) / 2);
 }
 .fc-leg > .fc-player { grid-column: 1; min-width: 0; }
 .fc-leg > .fc-gem { grid-column: 2; justify-self: end; }
@@ -56,6 +59,52 @@
 /* An editable slip (your own play) adds a fourth lane for each leg's remove button. */
 .fc-legs[data-editable] { grid-template-columns: minmax(0, 1fr) auto auto auto; column-gap: var(--fc-space-3); }
 .fc-leg > .fc-leg-action { grid-column: 4; justify-self: end; }
+/* Remove is destructive, so it answers in the stop tokens: under the pointer, and while its leg leaves
+   (data-leaving, set for the remove moment). The dots that sweep the leg away stay brand (moments rule 2). */
+.fc-button.fc-leg-action:hover,
+.fc-leg[data-leaving] > .fc-leg-action { --_fg: var(--fc-signal-stop-fg); --_bg: var(--fc-signal-stop-bg); --_bg-hover: var(--fc-signal-stop-bg); }
+
+/* Swipe to remove, on touch. A pull slides the leg's parts left, and the Remove action (stop tokens, a fixed
+   --fc-leg-swipe-width) slides in behind them, its left edge on theirs. Both move only by transform. The app sets
+   --fc-swipe (the pull, a length) and data-swipe on the leg: "drag" while the finger moves, "open" while it rests
+   open, "settle" while it slides shut. Vertical scrolling and zoom keep working.
+   <li class="fc-leg" data-swipe="open" style="--fc-swipe: var(--fc-leg-swipe-width)">… <button class="fc-leg-swipe">x Remove</button></li> */
+.fc-legs[data-editable] > .fc-leg { position: relative; touch-action: pan-y pinch-zoom; }
+.fc-leg[data-swipe] { overflow-x: clip; }
+.fc-leg[data-swipe] > :not(.fc-leg-swipe) {
+  transform: translateX(calc(-1 * var(--fc-swipe, 0px)));
+  transition: transform var(--fc-duration-overlay) var(--fc-ease-standard);
+}
+.fc-leg-swipe {
+  position: absolute;
+  inset-block: calc(var(--_leg-space) / 2);
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fc-space-1);
+  width: var(--fc-leg-swipe-width);
+  padding: 0;
+  border: 0;
+  border-radius: var(--fc-radius-md);
+  background: var(--fc-signal-stop-bg);
+  color: var(--fc-signal-stop-fg);
+  white-space: nowrap;
+  transform: translateX(calc(var(--fc-leg-swipe-width) - var(--fc-swipe, 0px)));
+  visibility: hidden;
+  transition: transform var(--fc-duration-overlay) var(--fc-ease-standard), visibility 0s linear var(--fc-duration-overlay);
+}
+/* At rest the action is not rendered, so it never widens the page beyond the leg. */
+.fc-leg:not([data-swipe]) > .fc-leg-swipe { display: none; }
+.fc-leg-swipe > svg { flex: none; width: var(--fc-space-4); height: var(--fc-space-4); }
+.fc-leg-swipe:focus-visible { box-shadow: var(--ds-focus-ring); }
+.fc-leg:is([data-swipe="drag"], [data-swipe="open"]) > .fc-leg-swipe { visibility: visible; transition: transform var(--fc-duration-overlay) var(--fc-ease-standard); }
+/* While the finger moves, everything follows it at once. */
+.fc-leg[data-swipe="drag"] > :not(.fc-leg-swipe),
+.fc-leg[data-swipe="drag"] > .fc-leg-swipe { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .fc-leg[data-swipe] > :not(.fc-leg-swipe), .fc-leg[data-swipe] > .fc-leg-swipe { transition: none; }
+}
 /* A flag beside the name drops under it before the name truncates. */
 .fc-leg .fc-player-line { flex-wrap: wrap; row-gap: var(--fc-space-0_5); }
 .fc-leg .fc-player-line > .fc-badge { flex: none; align-self: center; }
@@ -124,6 +173,14 @@
 .fc-railslip-head > :last-child, .fc-railslip dt { color: var(--fc-text-secondary); }
 .fc-railslip > .fc-separator { margin: var(--fc-space-1) 0; }
 .fc-railslip > .fc-button { width: 100%; margin-top: var(--fc-space-1); }
+/* The leg count in the head ("<span class="fc-railslip-count">3</span> leg parlay") pops when a gem is added
+   (patterns/moments.md, Add a gem): render it with data-pop as a new element, and it scales down into place over
+   --fc-duration-pop. Transform only, so nothing shifts; none under reduced motion. */
+.fc-railslip-count { display: inline-block; font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: no-preference) {
+  .fc-railslip-count[data-pop] { animation: fc-count-pop var(--fc-duration-pop) var(--fc-ease-standard); }
+}
+@keyframes fc-count-pop { from { transform: scale(1.4); } }
 @container fc-shell (max-width: 767px) {
   .fc-railslip { display: none; }
 }
@@ -148,6 +205,12 @@
   border-top: 1px solid var(--fc-border-default);
 }
 .fc-gem-item > .fc-gem-row { border-top: 0; }
+/* data-checked, on the slip: the fill step a checked table row takes (css/data.css), bled 8px past each side so
+   the content keeps its air. The button's check and its "Remove … from slip" name are the second cue. */
+.fc-gem-item[data-checked] {
+  background: var(--fc-surface-fill);
+  box-shadow: calc(-1 * var(--fc-space-2)) 0 0 var(--fc-surface-fill), var(--fc-space-2) 0 0 var(--fc-surface-fill);
+}
 .fc-gem-item > .fc-gem-row:only-child { grid-column: 1 / -1; }
 
 /* ================================================================== Numbered steps
@@ -235,9 +298,11 @@
 
 /* ================================================================== Row links in lists
    A list row that opens a record (a past slip on the phone): its title holds an .fc-row-link (charts.css), whose
-   hit area covers the whole row, as in a table. Pair with data-interactive on the list for the hover fill.
+   hit area covers the whole row, as in a table. The row fills on hover by itself, so a list can mix link rows
+   with plain ones (the gem sheet's Notes); data-interactive still fills every row of a list that opens records.
    <li class="fc-list-row"><div class="fc-list-row-main"><p class="fc-list-row-title"><a class="fc-row-link" href="…">Cook and McLaurin</a></p>…</div>…</li> */
-.fc-list-row:has(.fc-row-link) { position: relative; cursor: pointer; }
+.fc-list-row:has(.fc-row-link) { position: relative; cursor: pointer; transition: background-color var(--fc-duration-fast) ease; }
+.fc-list-row:has(.fc-row-link):hover { background: var(--fc-surface-fill); }
 .fc-list-row:has(.fc-row-link):hover .fc-row-link { text-decoration-color: currentColor; }
 
 /* ================================================================== Chat

@@ -31,8 +31,22 @@ thread.
    reads Lucky, matching the gem boxes (F1.2).
 8. **Dates inside a sentence.** Facet sets every `<time>` in mono (decision Nov 2), so a date inside copy, such as on
    the graded slip, reads in mono too. Recommend: keep mono for dates in tables and metadata, sans inside sentences.
-9. **PRD v1.2.** Once 1 to 8 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
-   Outlier as price source, F2.8, F3.4, the old pipeline's freeze and close commands.
+9. **Restore the stricter database rules.** Rapid build mode (Nov 3) lets migrations apply themselves and agents
+   run SQL on both databases. Recommend: at the beta, sign the Supabase connector out of the production project, and
+   apply production migrations by hand from the release PR again.
+10. **Notes that cost clarity (F2.3).** Each costly note lowers clarity a notch, which moves ratings. Recommend:
+    build the notes first as context only, then decide on the clarity effect after the Dec 1 formula lock.
+11. **Backtest baseline.** The weekly backtest scores 0.1313 on full Weeks 4 to 8 data; the 0.1360 baseline was set
+    before most Week 8 snap counts landed, so a regression under 0.0047 would not warn. Recommend: move the
+    baseline to 0.1313 and record it in the PRD (section 4, goal 2).
+12. **Clear slip.** The micro moments package animates erasing a whole slip with a 5 second Undo, but neither the app
+    nor the wireframes have a Clear slip control. Recommend: no Clear slip for now, since a slip holds a few legs and
+    Remove with Undo covers it. The Erase moment waits until you want one (sprint 2026-11-03-3, e4).
+13. **Clarity in the loupe (F2.2).** The PRD has clarity redraw as conditions toggle; the loupe built Nov 3 keeps
+    the rating and clarity fixed and filters the game log and rate only, so nothing a user toggles changes a rating.
+    Recommend: keep it that way until the Dec 1 formula lock, then decide with the provenance read.
+14. **PRD v1.2.** Once 1 to 13 are settled, update the PRD so it matches the app: every gem graded (decided Nov 3),
+    Outlier as price source, F2.8, F3.4, the old pipeline's freeze and close commands.
 
 ## Where it stands
 
@@ -40,7 +54,7 @@ thread.
 |---|---|---|---|
 | Data pipeline | sections 10, 12 | Built: six jobs on Vercel Cron, snapshot schedule, credit guard, run log, Data health | First live week in production |
 | Database safety | | Built: app login, append-only history, `db:guard`, nightly backups, staging database | |
-| Model v3.0 with implied points | section 11 | Built and matched to `hgs.py` on Week 8 | A backtest that runs on every refresh (goal 2) |
+| Model v3.0 with implied points | section 11 | Built and matched to `hgs.py` on Week 8; weekly walk-forward backtest (0.1313 on Weeks 4 to 8) | Baseline call 11 |
 | Gem rating, Fool's Gold, Recommended | F0.2, section 8 | Built in `packages/core` with tests | |
 | Gems board | F0.1 | Built: table, phone list, filters, sort, Add or On slip, rows open the gem sheet (sprint 2026-11-03) | Mined by (call 2) |
 | New gems | F3.5 | Built early: row, Mark read, nav count | The optional Saturday push |
@@ -50,9 +64,10 @@ thread.
 | CLV | F1.1 | Built: CLV for every gem and placed bet, results line on History | Owner SQL before Thu Nov 5 |
 | Closed appraisal result | F1.2 | Built: the four boxes for every gem, graded slip | Within an hour of final (call 1) |
 | Provenance | F1.3 | Built: a frozen record per gem at kickoff with its new flag and estimate | Notes and splits, once they exist |
-| Phase 2, the read | F2.1 to F2.8 | Implied points live; multi book prices and line history accumulating | Every view |
+| Phase 2, the read | F2.1 to F2.8 | Built: live price line, core sample, trend lines, splits and the loupe, implied points, matchup and weather in the gem sheet; weekly backtest on Data health | Notes (F2.3, call 10), consensus (F2.6) |
 | Phase 3, the slip | F3.1 to F3.7 | Built: slips and states, lose it all, DraftKings slip link, handoff, change dialog, history, graded slip, the Jeweler | The Jeweler's key (call 5), provenance report data (F3.7), stake range (call 6) |
 | Facet parts from the brief | build brief | Promoted: every part the brief lists | |
+| Micro moments | `docs/animation/micro-moments` | Built in sprint 2026-11-03-3: 9 of 11 moments on Facet's dots engine | Erase (call 12), New connection (no screen) |
 
 ## Season calendar
 
@@ -74,9 +89,14 @@ freezing prices this week.
 
 - [ ] Principal: run `pnpm db:supabase-sql --app-password <password>` output in the production Supabase project, then
       set `DATABASE_URL` (Production) to the `hiddengems_app` login (`docs/architecture.md`, Database).
-- [ ] Principal: after the release with gem records and grades merges, run `pnpm db:supabase-sql` output in the
-      staging Supabase project, then production (choose "Run without RLS"), before the first Week 9 kickoff Thu Nov 5.
-      Until then the jobs skip recording, so Week 9 games before it go unmeasured.
+- [x] Migrations 0005 to 0007 applied to production on Nov 3 through the Supabase connector (rapid build mode).
+- [x] Previews read production through the read-only `hiddengems_preview` login, or a sample fixture without it.
+- [ ] Principal: set the `hiddengems_preview` password and put it in Vercel's Preview `DATABASE_URL`
+      (`docs/architecture.md`, "Previews").
+- [x] 13 sample players a preview had written into production deleted on Nov 3, with their sample links.
+- [x] A scheduled Claude task checks each odds snapshot about 25 to 50 minutes after it (Sun 9:32, Tue 10:32, Sat
+      20:32 Denver) and runs a missed one from production Data health. Adding the Supabase connector to it in
+      claude.ai turns on its freeze gap check.
 - [ ] Principal: `ODDS_API_KEY`, `CRON_SECRET`, `BACKUP_GITHUB_TOKEN` and `BACKUP_GITHUB_REPO` set for Production only.
 - [ ] Data health shows today's Tue 10:07 AM opening snapshot. If it was missed, the next slot is Sat 7:47 PM; an off
       schedule pull spends credits and is the principal's call.
@@ -130,6 +150,22 @@ Phase 3. Ship by Sat Nov 28. About 5.5 review hours.
 | The Jeweler (F3.3) | data and screens, L | Sheet on desktop, tab on phone; each ask carries the card and the slip; answers cite the app's numbers; no placing action exists | Call 5 |
 | Slip history and graded slip | screens, M | Season stats, past slips, the graded slip with took, closed and beat close per leg | M1 grade and box |
 | Provenance report (F3.7) | screens, M | Hit rate and average CLV by insight; under 15 graded gems shows cloudy | M2 notes and splits |
+
+## Micro moments
+
+The dot moments from `docs/animation/micro-moments/`, built on Facet's engine (`packages/facet/patterns/moments.md`).
+Each moment ships with its surface.
+
+| Moment | Surface | State |
+|---|---|---|
+| Foundation | Facet engine, tokens, card states, Undo toast, glint hooks; `apps/web/lib/moments` | Built |
+| Unread gems | New gems row | Built: unread tint and sheen, six dots circle the newest |
+| Unread to read | Mark read, Mark all read | Built: a cloud sweeps each card; a failure puts the shine back |
+| Add a gem, drawer | Board Add, Slips in the rail and tab bar, gem sheet | Built: Slips glints and the rail count pops; the sheet springs open with an edge ripple, its row stays selected |
+| Remove, swipe | The slip | Built: × or a phone swipe removes at once, the row sweeps and closes, Undo restores the leg at its added price |
+| Erase | Clear slip | Waits on call 12: the slip has no Clear control |
+| Send | Send handoff | Built: Open DraftKings dissolves the slip card into the gem; the handoff screen is unchanged |
+| New connection | A connections screen | Waits on the screen |
 
 ## Prove it (M4)
 

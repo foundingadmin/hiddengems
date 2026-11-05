@@ -27,6 +27,7 @@ body { margin: 0; background: var(--fc-surface-canvas); color: var(--fc-text-pri
 .hg-between { justify-content: space-between; --fc-gap: var(--fc-space-3) var(--fc-space-4); }
 .hg-gap-5 { --fc-gap: var(--fc-space-5); }
 .hg-gap-2 { --fc-gap: var(--fc-space-2); }
+.hg-blocks { display: flex; flex-direction: column; gap: var(--fc-space-8); min-width: 0; }
 .hg-flush { margin: 0; }
 .hg-gap-below { margin-bottom: var(--fc-space-5); }
 /* Data pages: secondary text, no-wrap cells, and the inline credit confirm. */

@@ -3,7 +3,7 @@
 // provider only on the snapshot schedule (core snapshots.ts).
 import { jobs, providersFor, runJob } from '@hiddengems/ingest';
 import { type NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/db';
+import { db, READ_ONLY } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 300;
@@ -13,6 +13,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ job:
   if (!secret || req.headers.get('authorization') !== `Bearer ${secret}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
+  // A preview reading production never runs jobs against it.
+  if (READ_ONLY) return NextResponse.json({ error: 'Previews do not run jobs' }, { status: 403 });
   const { job } = await params;
   if (!jobs[job]) return NextResponse.json({ error: `Unknown job ${job}` }, { status: 404 });
   const handle = await db();

@@ -3,7 +3,7 @@
 // from the database and runs as the ask-jeweler job (packages/ingest jeweler.ts), which refuses to call
 // Anthropic without both the key and a monthly cap.
 import { askJeweler, JEWELER, type JewelerTurn } from '@hiddengems/ingest';
-import { db } from '@/lib/db';
+import { db, READ_ONLY, READ_ONLY_MESSAGE } from '@/lib/db';
 import { jewelerContext, jewelerView, type JewelerView } from '@/lib/jeweler';
 
 export type AskResult =
@@ -15,6 +15,7 @@ export async function loadJeweler(gemId: string | null): Promise<JewelerView> {
 }
 
 export async function ask(gemId: string | null, turns: JewelerTurn[]): Promise<AskResult> {
+  if (READ_ONLY) return { ok: false, message: READ_ONLY_MESSAGE };
   const id = typeof gemId === 'string' && gemId ? gemId.slice(0, 200) : null;
   const clean = (Array.isArray(turns) ? turns : [])
     .filter((t): t is JewelerTurn => (t?.role === 'user' || t?.role === 'assistant') && typeof t.text === 'string')

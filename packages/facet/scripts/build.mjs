@@ -78,9 +78,18 @@ const deref = (val, mode) => {
   if (!t) throw new Error(`Unknown semantic reference ${val}`);
   return deref(mode === 'dark' ? (ext(t).dark || t.$value) : t.$value, mode);
 };
+// A value may also mix two references: color-mix(in srgb, {brand.fg} 55%, {color.gray.1000}). CSS keeps the mix
+// live; resolved values (js/tokens.mjs) compute it per theme.
+const SEMREF_ALL = /\{(?!color\.)([a-z-]+)\.([a-z0-9-]+)\}/g;
+const MIX = /^color-mix\(in srgb, (\{[^}]+\}) (\d+)%, (\{[^}]+\})\)$/;
 const alias = (v) =>
-  String(v).replace(SEMREF, (_, g, k) => `var(--fc-${g}-${k})`)
+  String(v).replace(SEMREF_ALL, (_, g, k) => `var(--fc-${g}-${k})`)
     .replace(/\{color\.([a-z-]+)\.(\d+)\}/g, (_, s, n) => `var(--ds-${s}-${n})`);
+const hexMix = (a, b, p) => {
+  const ch = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  const [x, y] = [ch(a), ch(b)];
+  return '#' + x.map((c, i) => Math.round(c * p + y[i] * (1 - p)).toString(16).padStart(2, '0')).join('');
+};
 const semLight = [], semDark = [];
 (function walk(node, path) {
   for (const [k, v] of Object.entries(node)) {
@@ -246,8 +255,12 @@ const semResolved = { light: {}, dark: {} };
     if (isTok(v)) {
       const key = p.join('-');
       const pick = (val, mode) => String(val).replace(/\{color\.([a-z-]+)\.(\d+)\}/, (_, s, n) => resolved[mode][`${s}-${n}`]);
-      semResolved.light[key] = pick(deref(v.$value, 'light'), 'light');
-      semResolved.dark[key] = pick(deref(ext(v).dark || v.$value, 'dark'), 'dark');
+      const solve = (val, mode) => {
+        const m = String(val).match(MIX);
+        return m ? hexMix(pick(deref(m[1], mode), mode), pick(deref(m[3], mode), mode), Number(m[2]) / 100) : pick(deref(val, mode), mode);
+      };
+      semResolved.light[key] = solve(v.$value, 'light');
+      semResolved.dark[key] = solve(ext(v).dark || v.$value, 'dark');
     } else if (v && typeof v === 'object') walk(v, p);
   }
 })(sem, []);
@@ -327,6 +340,12 @@ write('css/shadcn.css', shadcn);
 {
   const src = readFileSync(join(root, 'js/tips.mjs'), 'utf8').replace(/^export /gm, '');
   write('preview/tips.js', `// GENERATED from js/tips.mjs by scripts/build.mjs. Do not edit by hand.\n(function () {\n${src}\nwindow.FacetTips = { mountTips };\n})();\n`);
+}
+{
+  const dots = readFileSync(join(root, 'js/dots.mjs'), 'utf8').replace(/^export /gm, '');
+  write('preview/dots.js', `// GENERATED from js/dots.mjs by scripts/build.mjs. Do not edit by hand.\n(function () {\n${dots}\nwindow.FacetDots = { createStage, reducedMotion, alloc };\n})();\n`);
+  const undo = readFileSync(join(root, 'js/undo.mjs'), 'utf8').replace(/^export /gm, '');
+  write('preview/undo.js', `// GENERATED from js/undo.mjs by scripts/build.mjs. Do not edit by hand.\n(function () {\n${undo}\nwindow.FacetUndo = { mountUndo };\n})();\n`);
 }
 {
   const src = readFileSync(join(root, 'js/time.mjs'), 'utf8').replace(/^export /gm, '');

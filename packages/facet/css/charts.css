@@ -96,6 +96,11 @@
 .fc-chart-area { fill: var(--_s); fill-opacity: 0.06; stroke: none; }
 /* Gap to a target: the value left, shaded in the edge color, with a bracket at the right edge. */
 .fc-chart-gap { fill: var(--fc-edge-positive); fill-opacity: 0.12; stroke: none; }
+/* A price under the target is value the other way: the same wedge in the negative edge color. */
+.fc-chart-gap[data-sign="negative"] { fill: var(--fc-edge-negative); }
+/* Event marker [F]: a vertical rule at a moment on a time axis (now, kickoff), named by its axis label. */
+.fc-chart-marker { stroke: var(--fc-chart-axis); stroke-width: 1; shape-rendering: crispEdges; }
+.fc-chart-marker[data-dashed] { stroke-dasharray: 2 3; }
 .fc-chart-gap-bracket { stroke: var(--fc-edge-positive); stroke-width: 3; stroke-linecap: round; }
 .fc-chart-label.fc-chart-gap-label, .fc-chart-gap-label > tspan { fill: var(--fc-edge-positive); }
 /* Ghosted future: faint band, dashed gray projection, a red-tinted "no value" zone past the target. */

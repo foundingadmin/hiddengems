@@ -1,5 +1,6 @@
 // Freshness: when odds were last pulled, a status dot plus relative time with the exact time on hover,
-// linking to data health. Live within 6 hours, stale after.
+// linking to data health. Live within 6 hours, stale after (core freshnessState()).
+import { freshnessState } from '@hiddengems/core';
 import { runs } from '@hiddengems/db';
 import { and, desc, eq, inArray } from 'drizzle-orm';
 import Link from 'next/link';
@@ -11,7 +12,7 @@ export async function Freshness({ label, short }: { label: string; short?: boole
   const [last] = await d.select({ at: runs.finishedAt }).from(runs)
     .where(and(eq(runs.job, 'pull-odds'), inArray(runs.status, ['succeeded', 'warned']))).orderBy(desc(runs.startedAt)).limit(1);
   const now = new Date();
-  const state = !last?.at ? 'queued' : now.getTime() - last.at.getTime() < 6 * 3_600_000 ? 'live' : 'stale';
+  const state = freshnessState(last?.at, now);
   const when = last?.at ? ago(last.at, now) : null;
   return (
     <Link className="fc-status hg-foot-link" href="/data">

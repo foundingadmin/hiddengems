@@ -1,0 +1,27 @@
+/* The tokens the proofs read, with hex fallbacks so they run alone.
+   The app already has --fc-brand-*, --fc-control-on, --fc-signal-* and --ds-gray-*: use those.
+   New to Facet: --fc-illus-1 to 4 (brand) and --fc-illus-context-1 to 4 (gray). */
+:root {
+  --fc-brand-fg:#bf7af0;
+  --fc-brand-solid:#763da9;
+  --fc-control-on:var(--fc-brand-solid);
+  --fc-brand-bg:#2e1938;
+  --fc-brand-border:#4f2768;
+  --fc-signal-go-fg:#62c073;
+  --fc-signal-go-solid:#45a557;
+  --fc-signal-stop-fg:#ff6166;
+  --fc-signal-stop-solid:#e5484d;
+  --fc-signal-stop-bg:#3c1618;
+  --ds-gray-1000:#ededed;
+  --ds-gray-900:#a1a1a1;
+  --ds-gray-700:#8f8f8f;
+  --ds-gray-500:#454545;
+  --fc-illus-1:color-mix(in srgb,var(--fc-brand-fg) 55%,#fff);
+  --fc-illus-2:var(--fc-brand-fg);
+  --fc-illus-3:color-mix(in srgb,var(--fc-brand-fg) 30%,var(--fc-brand-solid));
+  --fc-illus-4:var(--fc-brand-solid);
+  --fc-illus-context-1:var(--ds-gray-1000);
+  --fc-illus-context-2:var(--ds-gray-900);
+  --fc-illus-context-3:var(--ds-gray-700);
+  --fc-illus-context-4:var(--ds-gray-500);
+}

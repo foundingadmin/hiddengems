@@ -570,9 +570,32 @@ dialog.fc-sheet:not([open]) { display: none; }
   .fc-sheet[data-side="left"][open] { animation-name: fc-sheet-in-left; }
   .fc-sheet[open]::backdrop { animation: fc-backdrop-in var(--fc-duration-overlay) var(--fc-ease-standard); }
 }
+/* Edge glint hook (patterns/moments.md): the edge js/dots.mjs shimmers along as the sheet opens, the one facing
+   the page. A full-screen phone sheet shimmers along its top. */
+.fc-sheet { --fc-glint-edge: left; }
+.fc-sheet[data-side="left"] { --fc-glint-edge: right; }
+@media (max-width: 767px) { .fc-sheet[data-phone="full"] { --fc-glint-edge: top; } }
 @keyframes fc-sheet-in { from { transform: translateX(var(--fc-space-4)); opacity: 0; } }
 @keyframes fc-sheet-in-left { from { transform: translateX(calc(-1 * var(--fc-space-4))); opacity: 0; } }
 @keyframes fc-backdrop-in { from { opacity: 0; } }
+/* Spring motion [F] (patterns/moments.md, Drawer). data-motion="spring" opens the sheet from off its side (from
+   the bottom for a full-screen phone sheet) on the spring over --fc-duration-sheet, and closes it back out over
+   --fc-duration-overlay on the exit easing, no spring. A dialog closes at once, so the caller sets data-closing,
+   waits for the sheet's animationend, then calls close(). Reduced motion: no slide, open and close at once.
+   While js/dots.mjs ripples dots along its leading edge (data-glint), the sheet lets them past its bounds. */
+.fc-sheet[data-motion="spring"] { --_sheet-off: translateX(calc(100% + var(--fc-space-3))); }
+.fc-sheet[data-motion="spring"][data-side="left"] { --_sheet-off: translateX(calc(-100% - var(--fc-space-3))); }
+@media (max-width: 767px) { .fc-sheet[data-motion="spring"][data-phone="full"] { --_sheet-off: translateY(100%); } }
+.fc-sheet[data-glint] { overflow: visible; }
+@media (prefers-reduced-motion: no-preference) {
+  .fc-sheet[data-motion="spring"][open] { animation: fc-sheet-spring-in var(--fc-duration-sheet) var(--fc-ease-emphasized); }
+  .fc-sheet[data-motion="spring"][open]::backdrop { animation: fc-backdrop-in var(--fc-duration-sheet) var(--fc-ease-standard); }
+  .fc-sheet[data-motion="spring"][data-closing] { animation: fc-sheet-spring-out var(--fc-duration-overlay) var(--fc-ease-exit) forwards; }
+  .fc-sheet[data-motion="spring"][data-closing]::backdrop { animation: fc-backdrop-out var(--fc-duration-overlay) var(--fc-ease-exit) forwards; }
+}
+@keyframes fc-sheet-spring-in { from { transform: var(--_sheet-off); } }
+@keyframes fc-sheet-spring-out { to { transform: var(--_sheet-off); } }
+@keyframes fc-backdrop-out { to { opacity: 0; } }
 
 /* ================================================================== Stat with basis [F]
    One reading unit: label, figure (value plus qualifier), basis (sample, window, source).
@@ -685,3 +708,111 @@ dialog.fc-sheet:not([open]) { display: none; }
 .fc-game-log-key { display: flex; flex-wrap: wrap; gap: var(--fc-space-1) var(--fc-space-4); margin: 0; padding: 0; list-style: none; font: 400 12px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
 .fc-game-log-key > li { display: inline-flex; align-items: center; gap: var(--fc-space-1_5); }
 .fc-game-log-key > li::before { width: var(--fc-space-3); height: var(--fc-space-3); }
+/* Cloudy [F]: a thin sample (under 3 games, docs/prd.md F2.2) reads as if seen through haze. The marks blur and
+   fade, a rate's value drops to secondary gray and softens; the opponents and the label stay sharp, and the label
+   says how many games there are, so the haze is never the only cue. Reduced transparency drops the blur. */
+.fc-game-log-rate[data-cloudy] .fc-game-log-value { color: var(--fc-text-secondary); filter: blur(0.5px); }
+.fc-game-log-cells[data-cloudy] > li::before { filter: blur(1.5px); opacity: 0.55; }
+@media (prefers-reduced-transparency: reduce) {
+  .fc-game-log-rate[data-cloudy] .fc-game-log-value { filter: none; }
+  .fc-game-log-cells[data-cloudy] > li::before { filter: none; opacity: 0.4; }
+}
+
+/* ================================================================== Toggle chips [F]
+   Conditions that each turn on or off, any number at once (the loupe's split conditions). A real button with
+   aria-pressed whose name never changes. Off: the suggestion chip's dashed edge and a plus, secondary text.
+   On: a checked control, so the brand edge, tint and check (DESIGN.md, Brand accent), primary text.
+   <div class="fc-toggle-chips" role="group" aria-label="Conditions this week">
+     <button type="button" class="fc-toggle-chip" aria-pressed="true"><svg aria-hidden="true">check</svg>Home</button>
+     <button type="button" class="fc-toggle-chip" aria-pressed="false"><svg aria-hidden="true">plus</svg>Short week</button>
+   </div> */
+.fc-toggle-chips { display: flex; flex-wrap: wrap; gap: var(--fc-space-2); }
+.fc-toggle-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  height: var(--fc-control-small);
+  padding: 0 12px 0 10px;
+  border: 0;
+  border-radius: var(--fc-radius-full);
+  background: var(--fc-surface-canvas);
+  outline: 1px dashed var(--fc-border-hover);
+  outline-offset: -1px;
+  color: var(--fc-text-secondary);
+  font: 500 14px/20px var(--fc-font-sans);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--fc-duration-fast) ease, color var(--fc-duration-fast) ease;
+}
+.fc-toggle-chip svg { flex: 0 0 auto; width: 16px; height: 16px; }
+.fc-toggle-chip:hover { background: var(--fc-surface-fill); color: var(--fc-text-primary); }
+.fc-toggle-chip[aria-pressed="true"] {
+  outline: 0;
+  background: color-mix(in srgb, var(--fc-control-on) 6%, var(--fc-surface-canvas));
+  box-shadow: 0 0 0 1px var(--fc-control-on);
+  color: var(--fc-text-primary);
+}
+.fc-toggle-chip[aria-pressed="true"] svg { color: var(--fc-control-on); }
+.fc-toggle-chip[aria-pressed="true"]:hover { background: color-mix(in srgb, var(--fc-control-on) 12%, var(--fc-surface-canvas)); }
+.fc-toggle-chip:focus-visible { outline: 0; box-shadow: var(--ds-focus-ring); }
+
+/* ================================================================== Rank track [F]
+   Where one team sits from 1 to N (32 once every team has played): a dot on a hairline, both ends labelled.
+   The words beside it state the rank, so the track is aria-hidden.
+   <span class="fc-rank-track" aria-hidden="true" style="--at: 0.13">
+     <span>1</span><span class="fc-rank-track-rail"><span class="fc-rank-track-mark"></span></span><span>32</span>
+   </span> */
+.fc-rank-track {
+  display: grid;
+  grid-template-columns: auto minmax(var(--fc-space-16), 1fr) auto;
+  align-items: center;
+  gap: var(--fc-space-2);
+  max-width: calc(var(--fc-space-32) * 2);
+  font: 400 12px/16px var(--fc-font-sans);
+  color: var(--fc-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.fc-rank-track-rail { position: relative; height: var(--fc-space-3); }
+.fc-rank-track-rail::before { content: ""; position: absolute; left: 0; right: 0; top: calc(50% - 0.5px); height: 1px; background: var(--fc-border-active); }
+.fc-rank-track-mark {
+  position: absolute;
+  top: calc(50% - var(--fc-space-1));
+  left: calc(var(--at, 0) * 100%);
+  width: var(--fc-space-2);
+  height: var(--fc-space-2);
+  margin-left: calc(var(--fc-space-1) * -1);
+  border-radius: var(--fc-radius-full);
+  background: var(--fc-text-primary);
+}
+
+/* ================================================================== Effect marker [F]
+   Whether a note adds to or costs a pick: an arrow plus a word, gray. Not an edge or a change, so never edge
+   green or red; the word carries the meaning and the arrow is decoration with empty alt text.
+   <span class="fc-effect" data-effect="add">Adds</span> <span class="fc-effect" data-effect="cost">Costs</span> */
+.fc-effect {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--fc-space-1);
+  font: 500 14px/20px var(--fc-font-sans);
+  color: var(--fc-text-primary);
+  white-space: nowrap;
+}
+.fc-effect::before { color: var(--fc-text-secondary); }
+.fc-effect[data-effect="add"]::before { content: "\2191" / ""; }
+.fc-effect[data-effect="cost"]::before { content: "\2193" / ""; }
+
+/* Context only [F]: a description row that informs but never moves the rating reads gray, value included,
+   tagged with a gray "Context only" badge so the tone is never the only cue. */
+.fc-description > div[data-context] > dd { font-weight: 400; color: var(--fc-text-secondary); }
+[data-context] .fc-rank-track-mark,
+[data-context] .fc-game-log-cells > li[data-result="hit"]::before { background: var(--fc-text-secondary); }
+/* A value with its tag on one line, its helper and any marks under it. */
+.fc-factor-value { display: flex; flex-wrap: wrap; align-items: center; gap: var(--fc-space-1) var(--fc-space-2); }
+.fc-description dd > :is(.fc-rank-track, .fc-game-log-cells) { margin-top: var(--fc-space-2); }
+/* A helper that carries freshness (status dot plus relative time) sits where <small> would. */
+.fc-description dd > .fc-freshness { margin-top: var(--fc-space-1); }
+
+/* Cell detail [F]: the count behind a share, before the value in the same cell, so the values keep one
+   right edge. <td data-align="numeric"><span class="fc-cell-detail">11 of 18</span>61%</td> */
+.fc-table .fc-cell-detail { margin-right: var(--fc-space-2); font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }

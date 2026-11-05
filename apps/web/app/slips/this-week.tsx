@@ -5,7 +5,8 @@ import Link from 'next/link';
 import type { Reminder } from '@hiddengems/core';
 import type { SlipSummary } from '@/lib/slips';
 import { ago, dayTime, pct } from '@/lib/format';
-import { ChangeSlip, RemoveLeg, StakeForm } from './slip-controls';
+import { EditableLegs, RemoveLeg } from './remove-leg';
+import { ChangeSlip, StakeForm } from './slip-controls';
 import { ALERT, ARROW, GEM, LINK, Leg, SHIELD, Unknown, money } from './slip-parts';
 
 export const playName = (play: string) => (play === 'suggested' ? 'Suggested play' : 'Your own play');
@@ -45,14 +46,20 @@ export function ThisWeek({ summary, sendHref, jewelerReady, now = new Date() }: 
           <h2 id="cert-h" className="text-heading-24">{name}</h2>
           <p className="fc-cert-meta text-copy-14">{playName(slip.play)} · {legsName(legs.length)}</p>
         </header>
-        <ul className="fc-legs" data-editable={editable || undefined}>
-          {legs.map((l, i) => (
-            <Leg
-              key={l.selectionKey} leg={l} index={i} sameGame={sameGame.has(l.gameId)}
-              action={editable ? <RemoveLeg slipId={slip.id} selectionKey={l.selectionKey} name={l.name} /> : undefined}
-            />
-          ))}
-        </ul>
+        {editable ? (
+          <EditableLegs>
+            {legs.map((l, i) => (
+              <Leg
+                key={l.selectionKey} leg={l} index={i} sameGame={sameGame.has(l.gameId)}
+                action={<RemoveLeg slipId={slip.id} selectionKey={l.selectionKey} name={l.name} />}
+              />
+            ))}
+          </EditableLegs>
+        ) : (
+          <ul className="fc-legs">
+            {legs.map((l, i) => <Leg key={l.selectionKey} leg={l} index={i} sameGame={sameGame.has(l.gameId)} />)}
+          </ul>
+        )}
         <div className="fc-stat-strip" role="group" aria-label="Stake and payout">
           <div className="fc-stat"><p className="fc-stat-label">Stake</p><p className="fc-stat-value">{slip.stake != null ? money(slip.stake) : <Unknown />}</p></div>
           <div className="fc-stat"><p className="fc-stat-label">Pays</p><p className="fc-stat-value">{pays != null ? money(pays) : <Unknown />}</p></div>

@@ -4,7 +4,7 @@
 import { PURCHASE_BOOK, type SlipPlay, type SlipState, seasonOf } from '@hiddengems/core';
 import { and, asc, desc, eq, gt, inArray, lte, ne, sql } from 'drizzle-orm';
 import { type Db, isMissingTable } from './client';
-import { bets, games, picks, players, slipLegs, slips } from './schema';
+import { bets, games, oddsSnapshots, picks, players, slipLegs, slips } from './schema';
 
 export interface SlipLegView {
   selectionKey: string;
@@ -52,6 +52,15 @@ export interface SlipView {
 
 /** confirm 'change': the slip is a suggested play, so changing its legs needs the Change slip confirmation first. */
 export type SlipResult = { ok: true; slipId: string } | { ok: false; error: string } | { ok: false; confirm: 'change'; slipId: string };
+
+/** What removeLeg() took off a slip, so Undo can put the same leg back (restoreLeg()). */
+export interface RemovedLeg {
+  selectionKey: string;
+  /** The posted price when the leg was first added. */
+  price: number;
+  /** When it was first added, ISO. Legs in one game sort by it. */
+  addedAt: string;
+}
 
 const NOT_READY = 'Slips start once the database update runs';
 const OPEN: SlipState[] = ['draft', 'assessed', 'sent'];
@@ -169,16 +178,63 @@ export function addLeg(db: Db, selectionKey: string, now = new Date()): Promise<
   });
 }
 
-/** Removes a leg; a suggested play asks for the Change slip confirmation first, as addLeg() does. */
-export function removeLeg(db: Db, slipId: string, selectionKey: string, now = new Date()): Promise<SlipResult> {
+/**
+ * Removes a leg; a suggested play asks for the Change slip confirmation first, as addLeg() does. removed is what
+ * Undo needs to put the same leg back (restoreLeg()); absent when the leg was already gone.
+ */
+export function removeLeg(db: Db, slipId: string, selectionKey: string, now = new Date()): Promise<SlipResult & { removed?: RemovedLeg }> {
+  return guard<SlipResult & { removed?: RemovedLeg }>({ ok: false, error: NOT_READY }, async () => {
+    const slip = await editable(db, slipId);
+    if (typeof slip === 'string') return { ok: false, error: slip };
+    if (slip.play === 'suggested') return { ok: false, confirm: 'change', slipId };
+    const [gone] = await db.delete(slipLegs).where(and(eq(slipLegs.slipId, slipId), eq(slipLegs.selectionKey, selectionKey)))
+      .returning({ key: slipLegs.selectionKey, price: slipLegs.priceDecimal, addedAt: slipLegs.addedAt });
+    if (!gone) return { ok: true, slipId };
+    await db.update(slips).set(legsChanged(now)).where(eq(slips.id, slipId));
+    return { ok: true, slipId, removed: { selectionKey: gone.key, price: gone.price, addedAt: gone.addedAt.toISOString() } };
+  });
+}
+
+/**
+ * Undo for removeLeg(): puts the same leg back on the same slip with the price and the added time it had, so it
+ * returns to its place. Those two come back from the client, so they are checked: the price stands only if
+ * odds_snapshots saw the book post it for this selection at or before the added time (read only), else the
+ * board's price now; an added time outside the slip's life takes now. Otherwise it refuses what addLeg() refuses:
+ * a pick that is not a gem, a game that has kicked off, and a game from another week than the slip's. Restoring a
+ * leg already on the slip changes nothing. The slip stays a draft of your own play, as the remove left it.
+ */
+export function restoreLeg(db: Db, slipId: string, leg: RemovedLeg, now = new Date()): Promise<SlipResult> {
   return guard<SlipResult>({ ok: false, error: NOT_READY }, async () => {
     const slip = await editable(db, slipId);
     if (typeof slip === 'string') return { ok: false, error: slip };
     if (slip.play === 'suggested') return { ok: false, confirm: 'change', slipId };
-    const gone = await db.delete(slipLegs).where(and(eq(slipLegs.slipId, slipId), eq(slipLegs.selectionKey, selectionKey))).returning({ key: slipLegs.selectionKey });
-    if (gone.length) await db.update(slips).set(legsChanged(now)).where(eq(slips.id, slipId));
+    const found = await db.select({ pick: picks, game: games }).from(picks).innerJoin(games, eq(games.id, picks.gameId))
+      .where(eq(picks.selectionKey, leg.selectionKey));
+    const hit = found.find((f) => f.pick.bookId === slip.bookId) ?? found[0];
+    if (!hit) return { ok: false, error: 'That prop is no longer on the board' };
+    const { pick, game } = hit;
+    if (pick.kind !== 'gem') return { ok: false, error: 'Only gems go on a slip' };
+    if (game.kickoffAt <= now) return { ok: false, error: 'Its game has kicked off' };
+    if (game.season !== slip.season || game.week !== slip.week) return { ok: false, error: 'Its game is in another week' };
+    const at = new Date(leg.addedAt);
+    const addedAt = Number.isNaN(at.getTime()) || at < slip.createdAt || at > now ? now : at;
+    const price = Number.isFinite(leg.price) && await posted(db, pick.selectionKey, pick.bookId, leg.price, addedAt) ? leg.price : pick.price;
+    const inserted = await db.insert(slipLegs).values({
+      slipId, selectionKey: pick.selectionKey, gameId: pick.gameId, marketId: pick.marketId, playerId: pick.playerId, playerName: pick.playerName,
+      side: pick.side, line: pick.line, bookId: pick.bookId, priceDecimal: price, addedAt,
+    }).onConflictDoNothing().returning({ key: slipLegs.selectionKey });
+    if (inserted.length) await db.update(slips).set(legsChanged(now)).where(eq(slips.id, slipId));
     return { ok: true, slipId };
   });
+}
+
+/** True when the book posted this price for the selection at or before at, per odds_snapshots (a read). */
+async function posted(db: Db, selectionKey: string, bookId: string, price: number, at: Date): Promise<boolean> {
+  const [row] = await db.select({ id: oddsSnapshots.id }).from(oddsSnapshots).where(and(
+    eq(oddsSnapshots.selectionKey, selectionKey), eq(oddsSnapshots.bookId, bookId), lte(oddsSnapshots.observedAt, at),
+    sql`abs(${oddsSnapshots.priceDecimal} - ${price}) < 1e-9`,
+  )).limit(1);
+  return Boolean(row);
 }
 
 /** Sets the stake in dollars (validated by the caller with core parseStake()). */

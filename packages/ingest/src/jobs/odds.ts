@@ -18,7 +18,8 @@ const isTeamDefense = (name: string) => /\b(D\/ST|Defense)$/i.test(name.trim());
 export const pullOdds: Job = {
   name: 'pull-odds',
   provider: 'odds',
-  then: ['build-picks'],
+  // A pull that took a snapshot or a freeze rebuilds the board, then refreshes kickoff weather (free).
+  then: ['build-picks', 'pull-weather'],
   async run(ctx) {
     const { db, now } = ctx;
     const provider = ctx.providers.odds;
@@ -55,7 +56,7 @@ export const pullOdds: Job = {
       .filter((m): m is NonNullable<typeof m> => m !== null && due.has(m.gameId));
 
     const teamIds = [...new Set(matched.flatMap((m) => m.teams))];
-    const roster = teamIds.length ? await db.select({ id: players.id, nameKey: players.nameKey }).from(players).where(inArray(players.teamId, teamIds)) : [];
+    const roster = teamIds.length ? await db.select({ id: players.id, nameKey: players.nameKey, teamId: players.teamId }).from(players).where(inArray(players.teamId, teamIds)) : [];
     // Rows the live roster provider vouches for win when a name key is shared (sample rows beside nflverse ones).
     const rostered = new Set(roster.length
       ? (await db.select({ id: providerRefs.internalId }).from(providerRefs).where(and(
@@ -73,7 +74,8 @@ export const pullOdds: Job = {
       const rows = quotes.map((q) => {
         let playerId: string | null = null;
         if (q.playerName && !isTeamDefense(q.playerName)) {
-          const hits = roster.filter((p) => p.nameKey === nameKey(q.playerName!));
+          // Only the two teams in this game: a namesake on a team in another game of the pull is someone else.
+          const hits = roster.filter((p) => p.nameKey === nameKey(q.playerName!) && p.teamId != null && m.teams.includes(p.teamId));
           const live = hits.length > 1 ? hits.filter((p) => rostered.has(p.id)) : hits;
           if (live.length === 1) playerId = live[0]!.id;
           else if (hits.length > 1) duplicated.add(q.playerName);

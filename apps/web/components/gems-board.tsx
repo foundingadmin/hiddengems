@@ -5,12 +5,15 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { flushSync } from 'react-dom';
 import { markRead } from '@/app/gems-actions';
-import { SlipButton, type SlipRef } from '@/components/add-to-slip';
+import { SlipButton, useSlip } from '@/components/add-to-slip';
 import { Dropdown } from '@/components/dropdown';
 import { useGemLink } from '@/components/gem-sheet';
 import { Edge, FoolsLabel, GemMark, Player } from '@/components/marks';
 import { SEARCH_EVENT } from '@/components/shell';
 import type { BoardRow } from '@/lib/board';
+import { readDelay, sweepRead, unsweepRead } from '@/lib/moments/mark-read';
+import { newestKey, orbitNewest } from '@/lib/moments/newest';
+import { useMoments } from '@/lib/moments/provider';
 
 const svg = (d: React.ReactNode) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{d}</svg>
@@ -45,8 +48,53 @@ function Kickoff({ iso, zone }: { iso: string; zone: string }) {
 
 export function NewGems({ rows, since, zone }: { rows: BoardRow[]; since: string | null; zone: string }) {
   const strip = useRef<HTMLDivElement>(null);
+  const wrap = useRef<HTMLDivElement>(null);
+  const cards = useRef(new Map<string, HTMLElement>());
+  const moments = useMoments();
+  const slip = useSlip();
   const [pending, start] = useTransition();
+  // Gems read here and not yet confirmed by the server, with when each card's tint fades (packages/facet
+  // patterns/moments.md: state first, the motion follows, a failure puts it back).
+  const [reading, setReading] = useState<Map<string, string>>(() => new Map());
+  const [error, setError] = useState<string | null>(null);
+  const newest = useMemo(() => newestKey(rows), [rows]);
+  const orbiting = newest && !reading.has(newest) ? newest : null;
+  // Once the server has answered, read gems leave the row; forget them so a gem that turns new again shows it.
+  useEffect(() => setReading((m) => {
+    const live = new Set(rows.map((r) => r.key));
+    const next = new Map([...m].filter(([k]) => live.has(k)));
+    return next.size === m.size ? m : next;
+  }), [rows]);
+  useEffect(() => {
+    const card = orbiting ? cards.current.get(orbiting) : null;
+    if (!card || !wrap.current) return;
+    return orbitNewest(card, wrap.current);
+  }, [orbiting]);
   if (!rows.length) return null;
+  const read = (keys: string[]) => {
+    const els = keys.flatMap((k) => cards.current.get(k) ?? []);
+    setReading((m) => new Map([...m, ...keys.map((k, i) => [k, readDelay(i)] as const)]));
+    const swept = sweepRead(moments.stage(), els);
+    const left = rows.filter((r) => !reading.has(r.key) && !keys.includes(r.key)).length;
+    // A refused or failed read puts the shine back and says why (role="alert" below speaks it).
+    const undo = (why: string) => {
+      setReading((m) => { const next = new Map(m); for (const k of keys) next.delete(k); return next; });
+      void unsweepRead(moments.stage(), els);
+      setError(why);
+    };
+    setError(null);
+    start(async () => {
+      try {
+        // The row keeps its cards until their clouds have passed (under a second; at once under reduced motion),
+        // so no cloud is left drawing over the table once the server's answer removes them.
+        const [r] = await Promise.all([markRead(keys), swept]);
+        if (!r.ok) return undo(r.error);
+        moments.announce(left ? `${left} new ${left === 1 ? 'gem' : 'gems'}` : 'No new gems');
+      } catch {
+        undo(keys.length > 1 ? 'Couldn’t mark them read. Try again.' : 'Couldn’t mark it read. Try again.');
+      }
+    });
+  };
   const scroll = (dir: 1 | -1) => strip.current?.scrollBy({ left: dir * strip.current.clientWidth * 0.8, behavior: 'smooth' });
   return (
     <section className="hg-section" aria-labelledby="new-h">
@@ -56,20 +104,25 @@ export function NewGems({ rows, since, zone }: { rows: BoardRow[]; since: string
           <p className="text-copy-14 hg-secondary">
             {rows.length} {since ? <>since your last look, {since}</> : rows.length === 1 ? 'gem' : 'gems'}. Unread ones clear at kickoff.
           </p>
+          {error && <span className="fc-helper" data-type="error" role="alert">{error}</span>}
         </div>
         <div className="fc-section-head-actions">
           <button type="button" className="fc-button" data-variant="tertiary" data-size="small" disabled={pending}
-            onClick={() => start(() => markRead(rows.map((r) => r.key)))}>Mark all read</button>
+            onClick={() => read(rows.filter((r) => !reading.has(r.key)).map((r) => r.key))}>Mark all read</button>
           <span className="hg-desktop-only fc-section-head-actions">
             <button type="button" className="fc-button" data-variant="secondary" data-size="small" data-shape="square" aria-label="Scroll back" onClick={() => scroll(-1)}>{LEFT}</button>
             <button type="button" className="fc-button" data-variant="secondary" data-size="small" data-shape="square" aria-label="Scroll forward" onClick={() => scroll(1)}>{RIGHT}</button>
           </span>
         </div>
       </div>
-      <div className="fc-strip-wrap">
+      <div className="fc-strip-wrap" ref={wrap}>
         <div className="fc-strip" role="list" ref={strip}>
           {rows.map((r, i) => (
-            <article key={r.key} className="fc-gem-card fc-card" role="listitem" aria-label={`${r.name}, new gem`}>
+            <article key={r.key} className="fc-gem-card fc-card" role="listitem"
+              aria-label={`${r.name}, new gem${slip.has(r.key) ? ', on your slip' : ''}`}
+              ref={(el) => { if (el) cards.current.set(r.key, el); else cards.current.delete(r.key); }}
+              data-unread={reading.has(r.key) ? undefined : ''} data-selected={slip.has(r.key) ? '' : undefined}
+              style={reading.has(r.key) ? { ['--fc-state-delay' as string]: reading.get(r.key) } : undefined}>
               <div className="fc-gem-card-head">
                 <GemMark kind={r.kind} rating={r.rating} size="lg" delay={i * 160} />
                 <Player name={r.name} teamId={r.teamId} number={r.number} detail={detail(r)} />
@@ -90,8 +143,8 @@ export function NewGems({ rows, since, zone }: { rows: BoardRow[]; since: string
                 <span className="text-label-13 hg-desktop-only">
                   {r.fresh?.kind === 'jumped' ? `Jumped ${r.fresh.from} to ${r.rating}` : `Found ${r.fresh?.at ?? ''}`}
                 </span>
-                <button type="button" className="fc-button" data-variant="tertiary" data-size="small" disabled={pending}
-                  onClick={() => start(() => markRead([r.key]))}>{CHECK}Mark read</button>
+                <button type="button" className="fc-button" data-variant="tertiary" data-size="small" disabled={pending || reading.has(r.key)}
+                  onClick={() => read([r.key])}>{CHECK}Mark read</button>
               </div>
             </article>
           ))}
@@ -101,12 +154,13 @@ export function NewGems({ rows, since, zone }: { rows: BoardRow[]; since: string
   );
 }
 
-export function AllGems({ rows, zone, freshness, slip }: { rows: BoardRow[]; zone: string; freshness: React.ReactNode; slip: SlipRef | null }) {
+export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: string; freshness: React.ReactNode }) {
   const params = useSearchParams();
   const router = useRouter();
   const path = usePathname();
   const search = useRef<HTMLInputElement>(null);
   const gemLink = useGemLink();
+  const slip = useSlip();
   const q = params.get('q') ?? '';
   const win = params.get('window');
   const hideFools = params.get('fools') === 'hide';
@@ -223,7 +277,8 @@ export function AllGems({ rows, zone, freshness, slip }: { rows: BoardRow[]; zon
               </thead>
               <tbody>
                 {shown.map((r, i) => (
-                  <tr key={r.key} className={r.started ? 'hg-started' : undefined} aria-selected={gemLink.current === r.key ? true : undefined}>
+                  <tr key={r.key} className={r.started ? 'hg-started' : undefined} aria-selected={gemLink.current === r.key ? true : undefined}
+                    data-checked={slip.has(r.key) ? '' : undefined}>
                     <td><GemMark kind={r.kind} rating={r.rating} delay={(shown.length - 1 - i) * 160} /></td>
                     <th scope="row">
                       <Player name={r.name} teamId={r.teamId} number={r.number} detail={detail(r)}
@@ -236,7 +291,7 @@ export function AllGems({ rows, zone, freshness, slip }: { rows: BoardRow[]; zon
                     <td data-align="numeric">{pct(r.hitChance)}</td>
                     <td data-align="numeric"><Edge pts={Math.round(r.gap)} /></td>
                     <td data-align="numeric">{r.clarity}</td>
-                    <td><SlipButton row={r} slip={slip} /></td>
+                    <td><SlipButton row={r} /></td>
                   </tr>
                 ))}
               </tbody>
@@ -244,7 +299,7 @@ export function AllGems({ rows, zone, freshness, slip }: { rows: BoardRow[]; zon
           </div>
           <ul className="fc-gem-list hg-phone-only" aria-label={SORTS[sort]?.caption}>
             {shown.map((r) => (
-              <li key={r.key} className="fc-gem-item">
+              <li key={r.key} className="fc-gem-item" data-checked={slip.has(r.key) ? '' : undefined}>
                 <a className="fc-gem-row" href={gemLink.href(r.key)} onClick={(e) => gemLink.open(e, r.key)} data-gem-link={r.key}>
                   <GemMark kind={r.kind} rating={r.rating} bare />
                   <Player name={r.name} teamId={r.teamId} number={r.number}
@@ -256,7 +311,7 @@ export function AllGems({ rows, zone, freshness, slip }: { rows: BoardRow[]; zon
                     <Edge pts={Math.round(r.gap)} />
                   </span>
                 </a>
-                <SlipButton row={r} slip={slip} place="icon" />
+                <SlipButton row={r} place="icon" />
               </li>
             ))}
           </ul>

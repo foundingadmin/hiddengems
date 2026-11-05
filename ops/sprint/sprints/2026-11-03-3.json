@@ -1,0 +1,82 @@
+{
+  "id": "2026-11-03-3",
+  "startedAt": "2026-11-03T20:00:00Z",
+  "sprintBranch": "sprint/2026-11-03-3",
+  "pr": "https://github.com/foundingadmin/hiddengems/pull/44",
+  "entries": [
+    {
+      "id": "e1",
+      "threads": [],
+      "page": "/",
+      "status": "ready",
+      "lane": "facet",
+      "fileGroup": "g1",
+      "size": "L",
+      "branch": "facet/2026-11-03-2-moments",
+      "brief": "Principal in chat: wire the micro moments package (docs/animation/micro-moments, rundoc.md) into the app for longevity and scalability. Foundation plus the two moments whose surface is New gems: illus and motion tokens, a dependency-free dot engine in packages/facet/js, Facet parts (unread and selected gem card, Undo toast with dot countdown, edge glint), the moments pattern doc and loop exceptions, an app MomentsProvider in the Shell, then Unread gems and Unread to read on NewGems with real events.",
+      "head": "ef1f973",
+      "reason": "",
+      "releasedIn": "",
+      "merged": "cbc566c2098c420934a6bd7f6e5f5a09c44545c4"
+    },
+    {
+      "id": "e2",
+      "threads": [],
+      "page": "/",
+      "status": "ready",
+      "lane": "screens",
+      "fileGroup": "g2",
+      "size": "M",
+      "branch": "screens/2026-11-03-2-board-moments",
+      "brief": "Micro moments on the board, from the e1 foundation: Add a gem (selected state, edge glint on the Slips nav item in the rail and tab bar, nothing flies) and the gem sheet drawer (spring open with dots rippling along its leading edge from the row, row stays active under the tint, close with no spring).",
+      "head": "79af7d3",
+      "reason": "",
+      "releasedIn": "",
+      "merged": "79af7d365a85a5b3ade371fe790f83089b41a9ad"
+    },
+    {
+      "id": "e3",
+      "threads": [],
+      "page": "/slips",
+      "status": "ready",
+      "lane": "screens",
+      "fileGroup": "g3",
+      "size": "L",
+      "branch": "screens/2026-11-03-2-slip-moments",
+      "brief": "Micro moments on the slip, from the e1 foundation: Remove a leg (cloud sweep from the control, row closes, totals update, 5 second Undo that restores the leg and plays the sweep in reverse), swipe to remove on phone (soft and hard pull), and the Send moment on the existing handoff. A suggested play still confirms first.",
+      "head": "6454209",
+      "reason": "",
+      "releasedIn": "",
+      "merged": "386e986caa11b88ebc68dd0d7f4c6ded27fab7fd"
+    },
+    {
+      "id": "e4",
+      "threads": [],
+      "page": "/slips",
+      "status": "parked",
+      "lane": "screens",
+      "fileGroup": "g3",
+      "size": "S",
+      "branch": "",
+      "brief": "Erase the slip: one large cloud sweeps every leg, then the empty slip and Undo show.",
+      "head": "",
+      "reason": "Needs a Clear slip control, which neither the app nor the wireframes have. Adding a control that empties a slip is product meaning (principal.md 1). ROADMAP call 12.",
+      "releasedIn": ""
+    },
+    {
+      "id": "e5",
+      "threads": [],
+      "page": "",
+      "status": "parked",
+      "lane": "screens",
+      "fileGroup": "",
+      "size": "S",
+      "branch": "",
+      "brief": "New connection: gray dots search, turn brand color, fall in line, a pulse loops into the gem.",
+      "head": "",
+      "reason": "No connections screen exists yet. Built with that screen; tracked in ROADMAP.md.",
+      "releasedIn": ""
+    }
+  ],
+  "lesson": "Another session ran and shipped its own sprint 2026-11-03-2 into staging while this one ran, so the id, sprint file, traces and roadmap call number collided, and staging moved under the builders (a READ_ONLY guard conflicted in slips/actions.ts). Next sprint: pick the id from origin/staging and the open sprint/ branches at triage, and have builders that start from another builder's branch merge origin/staging before their punchlist round."
+}

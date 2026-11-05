@@ -1,15 +1,17 @@
 'use client';
-// The slip's controls: change the suggested play (components/change-slip-dialog.tsx), the stake, removing a leg,
-// opening the sportsbook link and marking the slip placed. Every write is a server action in ./actions.
+// The slip's controls: change the suggested play (components/change-slip-dialog.tsx), the stake, opening the
+// sportsbook link and marking the slip placed. Removing a leg is ./remove-leg. Every write is a server action in
+// ./actions.
 import { useRouter } from 'next/navigation';
-import { type ReactNode, useActionState, useEffect, useState, useTransition } from 'react';
+import { type ReactNode, useActionState, useEffect, useRef, useState } from 'react';
 import { ChangeSlipDialog } from '@/components/change-slip-dialog';
-import { type ActionState, markPlaced, markSent, removeLeg, setStake } from './actions';
+import { useMoments } from '@/lib/moments/provider';
+import { sendMoment } from '@/lib/moments/send';
+import { type ActionState, markPlaced, markSent, setStake } from './actions';
 
 const svg = (d: ReactNode) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{d}</svg>
 );
-const X = svg(<><path d="M18 6 6 18" /><path d="m6 6 12 12" /></>);
 const OUT = svg(<><path d="M7 7h10v10" /><path d="M7 17 17 7" /></>);
 const CHECK = svg(<path d="M20 6 9 17l-5-5" />);
 
@@ -26,16 +28,6 @@ export function ChangeSlip({ slipId, slipName }: { slipId: string; slipName: str
       <button type="button" className="fc-link-quiet text-label-13" aria-haspopup="dialog" onClick={() => setOpen(true)}>Change this slip</button>
       {open && <ChangeSlipDialog slipId={slipId} slipName={slipName} onClose={() => setOpen(false)} />}
     </>
-  );
-}
-
-export function RemoveLeg({ slipId, selectionKey, name }: { slipId: string; selectionKey: string; name: string }) {
-  const [pending, start] = useTransition();
-  return (
-    <button
-      type="button" className="fc-button fc-leg-action" data-variant="tertiary" data-size="tiny" data-shape="square"
-      aria-label={`Remove ${name}`} disabled={pending} onClick={() => start(async () => { await removeLeg(slipId, selectionKey); })}
-    >{X}</button>
   );
 }
 
@@ -62,10 +54,27 @@ export function StakeForm({ slipId, stake }: { slipId: string; stake: number | n
   );
 }
 
-/** Opens the book's slip in a new tab; the link only adds the picks. Marks the slip sent. */
+/**
+ * Opens the book's slip in a new tab; the link only adds the picks. This is the send: it marks the slip sent, and
+ * the slip card dissolves into the Send moment (lib/moments/send.ts), which nothing waits on.
+ */
 export function OpenBook({ slipId, href, label }: { slipId: string; href: string; label: string }) {
+  const moments = useMoments();
+  const link = useRef<HTMLAnchorElement>(null);
+  const playing = useRef<AbortController | null>(null);
+  useEffect(() => () => playing.current?.abort(), []);
+  const send = () => {
+    void markSent(slipId);
+    const self = link.current;
+    if (!self || playing.current) return;
+    // The slip card beside the steps; on a phone, where the card is not shown, the button itself.
+    const card = self.closest('.hg-send')?.querySelector('.hg-send-summary');
+    const from = card && card.getBoundingClientRect().width > 0 ? card : self;
+    const stop = (playing.current = new AbortController());
+    void sendMoment(moments.stage(), from, stop.signal).finally(() => { if (playing.current === stop) playing.current = null; });
+  };
   return (
-    <a className="fc-button" data-variant="secondary" href={href} target="_blank" rel="noopener noreferrer" onClick={() => { void markSent(slipId); }}>
+    <a ref={link} className="fc-button" data-variant="secondary" href={href} target="_blank" rel="noopener noreferrer" onClick={send}>
       {label}{OUT}
     </a>
   );

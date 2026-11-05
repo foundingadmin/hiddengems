@@ -1,6 +1,6 @@
 # Hidden Gems · Product Requirements Document (PRD)
 
-Version 1.1 · updated Mon Nov 2 2026, 4 AM MT, with Josh's answers and comments · owner Josh Titus · grading model Hidden Gems v3.0 plus implied team points
+Version 1.1 · updated Mon Nov 2 2026, 4 AM MT, with Josh's answers and comments · changes since in section 18 · owner Josh Titus · grading model Hidden Gems v3.0 plus implied team points
 Rating lab, the live rating rules, a prop to try and five rating formulas on the Week 9 board: in the app at Settings, Rating lab (`apps/web/app/settings/rating-lab`)
 Companion lookbook with competitor research, wireframes and the color wheel: `docs/archive/lookbook.html`
 Feature wireframes, 8 desktop and 8 phone screens on Facet: `docs/wireframes`
@@ -525,8 +525,25 @@ Conditional splits are the qualitative edge. Josh's examples (same QB, same staf
 - Contract year or incentive games.
 - Depth chart changes announced midweek.
 - Off field factors from player social accounts, the scan your wife wants to build.
+- News coverage about the player, beyond the injury report.
+- Public events and their timing: charity events, sponsor appearances and other obligations near kickoff.
+- Press obligations: press days, media availability and team media sessions.
+- Public quotes and interviews, including what the player's own words suggest about morale or demeanor. Each note cites the quote.
+- Major life events the player has announced publicly, like a new child.
+
+Only what a player or the public record has stated. No inferring private details such as relationships or health from digital traces.
 
 **Needs paid data or a later decision**
 - Personnel grouping usage, like 12 personnel near the goal line.
 - Real time inactives timing before kickoff.
 - Market movement source: sharp money vs public money.
+
+---
+
+# 18. Change log
+
+Changes to this PRD since v1.1, newest first.
+
+| Date | Section | Change |
+|---|---|---|
+| Tue Nov 3 2026 | 17 | Added news, public events, press obligations, public quotes and announced life events to the web research splits, with a limit to what is publicly stated. |

@@ -30,8 +30,9 @@ into `staging`) continues that sprint from the statuses it records instead of tr
 reported are treated as failed and their entries dropped; ready entries go to Merge.
 
 ## 1. Triage
-1. `git fetch origin staging main`. List every unresolved toolbar thread (`list_toolbar_threads`), and read each one
-   with its page, selector and branch. Threads on production count the same as staging threads.
+1. `git fetch origin staging main`. If `main` has commits `staging` lacks (one-on-one sessions merge straight into
+   `main`), open a PR `main` to `staging` and merge it first, so the sprint builds on production. List every
+   unresolved toolbar thread (`list_toolbar_threads`), and read each one with its page, selector and branch. Threads on production count the same as staging threads.
 2. Copy `ops/sprint/template.json` to `ops/sprint/sprints/<id>.json` and fill one entry per thread (or per group of
    threads that touch the same part):
    - **Routed**: `lane` (screens, data, facet, copy), `fileGroup` (entries that touch the same files share one),

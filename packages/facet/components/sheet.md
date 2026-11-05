@@ -44,7 +44,7 @@ Implemented in `css/data.css` as `.fc-sheet`.
       </div>
       <button class="fc-button fc-sheet-close" data-variant="tertiary" data-shape="square" data-size="small" aria-label="Close">…</button>
     </div>
-    <div class="fc-sheet-badges">verdict pill, gem tier</div>
+    <div class="fc-sheet-badges">verdict pill, gem tier<span class="fc-sheet-action">primary action</span></div>
   </header>
   <div class="fc-tabs fc-sheet-tabs" role="tablist" aria-label="Pick detail">…</div>
   <div class="fc-sheet-body">tab panels</div>
@@ -60,6 +60,9 @@ Implemented in `css/data.css` as `.fc-sheet`.
 - Edge glint hook: `--fc-glint-edge` names the edge facing the page (left; right for `data-side="left"`; top for a full-screen phone sheet). `js/dots.mjs` ripples dots along it as the sheet opens (`patterns/moments.md`), on a stage hosted in the sheet, since a modal sits above the page's stage. While the ripple plays (`data-glint`) the sheet lets its edge dots past its bounds.
 - Spring motion, `data-motion="spring"` (the gem sheet): opens from off its side, or from the bottom for a full-screen phone sheet, on `--fc-ease-emphasized` over `--fc-duration-sheet` (460ms), and closes back out on `--fc-ease-exit` over `--fc-duration-overlay` (300ms), no spring. A dialog closes at once, so set `data-closing`, wait for the sheet's own `animationend`, then call `close()`; Escape does the same from the `cancel` event. Reduced motion opens and closes at once.
 - Title is the pick, not a sentence. Do not repeat the close action in the footer.
+- One action `[F]`: when a sheet has a single action, put it in the pinned header as `.fc-sheet-action`, the last
+  child of `.fc-sheet-badges` (pushed to the end), and leave the footer out. It stays in reach at any scroll. A sheet
+  with two or more actions keeps the footer.
 
 ### Leaving a sheet `[F]`
 A modal sheet never traps anyone. Every way out closes it the same way as its close button:

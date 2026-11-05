@@ -8,6 +8,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { type ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { Dropdown } from '@/components/dropdown';
 import { JewelerSheet } from '@/components/jeweler';
+import { JEWELER } from '@/lib/features';
 
 const icon = (d: ReactNode) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{d}</svg>
@@ -107,12 +108,14 @@ export function Shell({ children, foot, slip, weeks, newCount }: {
         <div className="hg-rail-spacer" />
         {/* The slip in progress; Slips shows the certificate itself. */}
         {path !== '/slips' && slip}
-        <ul className="fc-sidenav-list" role="list">
-          {/* Opens the Jeweler as a sheet over the open page (?ask=1); on /jeweler itself it is the page. */}
-          {path === '/jeweler' ? item('/jeweler', 'Ask the Jeweler', CHAT) : (
-            <li><Link className="fc-sidenav-item" href={askHref} scroll={false}>{CHAT}<span>Ask the Jeweler</span></Link></li>
-          )}
-        </ul>
+        {JEWELER && (
+          <ul className="fc-sidenav-list" role="list">
+            {/* Opens the Jeweler as a sheet over the open page (?ask=1); on /jeweler itself it is the page. */}
+            {path === '/jeweler' ? item('/jeweler', 'Ask the Jeweler', CHAT) : (
+              <li><Link className="fc-sidenav-item" href={askHref} scroll={false}>{CHAT}<span>Ask the Jeweler</span></Link></li>
+            )}
+          </ul>
+        )}
         <div className="fc-sidenav-foot">{foot}</div>
       </aside>
       <div className="fc-shell-main">
@@ -156,10 +159,10 @@ export function Shell({ children, foot, slip, weeks, newCount }: {
         <nav className="fc-tabbar" aria-label="Main">
           {tab('/', 'Gems', GEM, newCount > 0 && <span className="fc-badge" data-variant="purple" data-size="sm" data-contrast="low">{newCount}<span className="fc-visually-hidden"> unread</span></span>)}
           {tab('/slips', 'Slips', SLIP)}
-          {tab('/jeweler', 'Jeweler', CHAT)}
+          {JEWELER && tab('/jeweler', 'Jeweler', CHAT)}
         </nav>
       </div>
-      <JewelerSheet />
+      {JEWELER && <JewelerSheet />}
     </div>
   );
 }

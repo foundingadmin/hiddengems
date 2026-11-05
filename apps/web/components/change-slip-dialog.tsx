@@ -4,6 +4,7 @@
 // this slip on Slips and by Add / On slip when the slip is a suggested play.
 import { useEffect, useId, useRef, useState, useTransition } from 'react';
 import { type ActionState, changeSlip } from '@/app/slips/actions';
+import { JEWELER } from '@/lib/features';
 
 export function ChangeSlipDialog({ slipId, slipName, onClose }: { slipId: string; slipName: string; onClose: (changed: boolean) => void }) {
   const ref = useRef<HTMLDialogElement>(null);
@@ -21,7 +22,7 @@ export function ChangeSlipDialog({ slipId, slipName, onClose }: { slipId: string
         <h2 id={heading} className="text-heading-20">Change the suggested play?</h2>
         <p className="text-copy-14">Hidden Gems built {slipName} as the best way to play this week&apos;s gems. If you change it</p>
         <ul className="text-copy-14">
-          <li>The Jeweler&apos;s appraisal no longer covers what you place</li>
+          {JEWELER && <li>The Jeweler&apos;s appraisal no longer covers what you place</li>}
           <li>History tracks it as your own play, so you can see whether it beat the suggestion</li>
         </ul>
         {error && !error.ok && error.error && <p className="fc-helper" data-type="error" role="alert">{error.error}</p>}

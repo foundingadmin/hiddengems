@@ -64,7 +64,7 @@ function focusUndo() {
   requestAnimationFrame(look);
 }
 
-async function offerUndo(moments: Moments, slipId: string, removed: RemovedLeg, name: string, say: (t: string) => void, focus: boolean) {
+export async function offerUndo(moments: Moments, slipId: string, removed: RemovedLeg, name: string, say: (t: string) => void, focus: boolean) {
   const answer = moments.undo('Leg removed');
   if (focus) focusUndo();
   if ((await answer) !== 'undone') return;

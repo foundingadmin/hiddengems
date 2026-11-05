@@ -62,6 +62,7 @@
 /* Remove is destructive, so it answers in the stop tokens: under the pointer, and while its leg leaves
    (data-leaving, set for the remove moment). The dots that sweep the leg away stay brand (moments rule 2). */
 .fc-button.fc-leg-action:hover,
+.fc-button.fc-railslip-x:hover,
 .fc-leg[data-leaving] > .fc-leg-action { --_fg: var(--fc-signal-stop-fg); --_bg: var(--fc-signal-stop-bg); --_bg-hover: var(--fc-signal-stop-bg); }
 
 /* Swipe to remove, on touch. A pull slides the leg's parts left, and the Remove action (stop tokens, a fixed
@@ -172,6 +173,22 @@
 .fc-railslip-row > :last-child { font-variant-numeric: tabular-nums; }
 .fc-railslip-head > :last-child, .fc-railslip dt { color: var(--fc-text-secondary); }
 .fc-railslip > .fc-separator { margin: var(--fc-space-1) 0; }
+/* Editable (your own play, not placed). Each leg's name opens its gem; its price and a remove button share the end
+   group, so the price keeps its place. The button shows under the pointer or keyboard focus, and always on touch.
+   <li class="fc-railslip-row" data-editable><a class="fc-railslip-name" href="/?gem=…">James Cook</a>
+     <span class="fc-railslip-end"><span>2.60</span><button class="fc-button fc-railslip-x" data-variant="tertiary"
+     data-size="tiny" data-shape="square" aria-label="Remove James Cook">×</button></span></li>
+   The stake is a field above the totals: <div class="fc-railslip-row fc-railslip-stake"><dt><label>Stake</label></dt>
+   <dd><span class="fc-input-group">$<input class="fc-input"></span></dd></div> */
+.fc-railslip-row[data-editable] { align-items: center; }
+.fc-railslip-name { color: inherit; text-decoration: none; }
+.fc-railslip-name:hover { text-decoration: underline; text-underline-offset: 0.2em; }
+.fc-railslip-end { display: inline-flex; align-items: center; gap: var(--fc-space-1); }
+.fc-button.fc-railslip-x { opacity: 0; }
+.fc-railslip-row:hover .fc-railslip-x, .fc-railslip-row:focus-within .fc-railslip-x { opacity: 1; }
+@media (hover: none) { .fc-button.fc-railslip-x { opacity: 1; } }
+.fc-railslip-stake { align-items: center; }
+.fc-railslip-stake .fc-input-group { width: calc(var(--fc-space-24) + var(--fc-space-2)); }
 .fc-railslip > .fc-button { width: 100%; margin-top: var(--fc-space-1); }
 /* The leg count in the head ("<span class="fc-railslip-count">3</span> leg parlay") pops when a gem is added
    (patterns/moments.md, Add a gem): render it with data-pop as a new element, and it scales down into place over

@@ -44,8 +44,8 @@ export function useSlip(): SlipState {
   return useContext(SlipContext);
 }
 
-/** row: the table's last column. icon: the phone row, a square button. footer: the gem sheet, primary. */
-export type AddToSlipPlace = 'row' | 'icon' | 'footer';
+/** row: the table's last column. icon: the phone row, a square button. sheet: the gem sheet's header, primary. */
+export type AddToSlipPlace = 'row' | 'icon' | 'sheet';
 
 export function AddToSlip({ selectionKey, name, place = 'row' }: { selectionKey: string; name: string; place?: AddToSlipPlace }) {
   const { slip, readOnly, has, mark } = useSlip();
@@ -77,7 +77,8 @@ export function AddToSlip({ selectionKey, name, place = 'row' }: { selectionKey:
       }
     });
   };
-  const variant = place === 'footer' ? undefined : onSlip ? 'tertiary' : 'secondary';
+  // In the sheet, adding is the primary action; once on the slip it steps back to secondary.
+  const variant = place === 'sheet' ? (onSlip ? 'secondary' : undefined) : onSlip ? 'tertiary' : 'secondary';
   return (
     <span className={`fc-stack hg-gap-2 hg-end${place === 'row' ? ' fc-row-action' : ''}`}>
       {place === 'icon' ? (
@@ -89,7 +90,7 @@ export function AddToSlip({ selectionKey, name, place = 'row' }: { selectionKey:
         </button>
       ) : (
         <button type="button" className="fc-button" data-variant={variant} data-size="small" disabled={pending} onClick={() => toggle()}>
-          {onSlip ? CHECK : PLUS}{onSlip ? 'On slip' : place === 'footer' ? 'Add to slip' : 'Add'}
+          {onSlip ? CHECK : PLUS}{onSlip ? 'On slip' : place === 'sheet' ? 'Add to slip' : 'Add'}
           <span className="fc-visually-hidden">{onSlip ? `. Remove ${name} from slip` : `, ${name}`}</span>
         </button>
       )}

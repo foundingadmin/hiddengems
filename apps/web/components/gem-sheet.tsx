@@ -4,7 +4,6 @@
 // tabs stay pinned; the body is one scroll and each tab jumps to its section. It springs in and out with the drawer
 // moment (lib/moments/drawer.ts), keeping the gem on screen while it slides out after Back.
 import { FULL_CARAT, betLabel } from '@hiddengems/core';
-import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { type MouseEvent, useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { SlipButton } from '@/components/add-to-slip';
@@ -21,7 +20,6 @@ const svg = (d: React.ReactNode) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{d}</svg>
 );
 const X = svg(<><path d="M18 6 6 18" /><path d="m6 6 12 12" /></>);
-const CHAT = svg(<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />);
 
 const SECTIONS = [
   { id: 'gem-overview', tab: 'Overview' },
@@ -100,9 +98,6 @@ export function GemSheet({ rows, detail, asked, zone }: {
   const head: Head | null = gem ?? (row ? headOf(row) : null);
   const missing = key != null && asked === key && !detail;
   useCrumb(key ? (head?.name ?? null) : null);
-  // Ask the Jeweler about this gem: the sheet over this page on desktop (?ask=1 keeps ?gem=), the tab on phone.
-  const asking = new URLSearchParams(params);
-  asking.set('ask', '1');
 
   // Open on a gem in the URL, close when it leaves (Back, or a link without it).
   useEffect(() => { if (wanted && inUrl === wanted) setPending(null); }, [wanted, inUrl]);
@@ -217,6 +212,11 @@ export function GemSheet({ rows, detail, asked, zone }: {
                 <span className="fc-price text-label-14">{head.price.toFixed(2)}</span>
                 <Edge pts={pts(head.gapToPosted)} />
                 {head.fresh && <span className="fc-badge" data-variant="purple" data-size="sm" data-contrast="low">New</span>}
+                {!missing && (
+                  <span className="fc-sheet-action">
+                    <SlipButton row={{ key: head.key, name: head.name, kind: head.kind, started: Date.parse(head.kickoff) <= Date.now() }} place="sheet" />
+                  </span>
+                )}
               </div>
             )}
           </header>
@@ -237,13 +237,6 @@ export function GemSheet({ rows, detail, asked, zone }: {
               </div>
             )}
           </div>
-          <footer className="fc-sheet-footer">
-            <Link className="fc-button hg-desktop-only" data-variant="secondary" data-size="small" href={`${path}?${asking}`} scroll={false}>{CHAT}Ask the Jeweler</Link>
-            <Link className="fc-button hg-phone-only" data-variant="secondary" data-size="small" href={`/jeweler?gem=${encodeURIComponent(view)}`}>{CHAT}Ask the Jeweler</Link>
-            {head && !missing && (
-              <SlipButton row={{ key: head.key, name: head.name, kind: head.kind, started: Date.parse(head.kickoff) <= Date.now() }} place="footer" />
-            )}
-          </footer>
         </>
       )}
     </dialog>

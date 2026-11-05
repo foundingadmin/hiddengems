@@ -553,6 +553,8 @@ dialog.fc-sheet:not([open]) { display: none; }
 .fc-sheet-handle { display: none; }
 @media (max-width: 767px) {
   .fc-sheet[data-phone="full"] .fc-sheet-header { touch-action: none; }
+  /* The way out on phone gets a full 44px target (INT-04). */
+  .fc-sheet[data-phone="full"] .fc-sheet-close { min-width: calc(var(--fc-space-10) + var(--fc-space-1)); min-height: calc(var(--fc-space-10) + var(--fc-space-1)); }
   .fc-sheet[data-phone="full"] .fc-sheet-handle {
     display: block;
     align-self: center;

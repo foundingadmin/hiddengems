@@ -842,6 +842,8 @@
 
     /* Sheet: native modal dialog. Escape closes; focus returns to the row that opened it. */
     const sheet = $('#data-sheet');
+    // The easy exits (components/sheet.md, "Leaving a sheet"): outside click, and drag down on phone.
+    import('../js/sheet.mjs').then(({ dismissible }) => dismissible(sheet, { dismiss: () => sheet.close() }));
     let opener = null, current = null;
     const SIGNALS = [
       ['Setup', 'Role and snap share today'],

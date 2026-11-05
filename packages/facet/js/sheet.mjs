@@ -41,10 +41,29 @@ export function dismissible(sheet, { dismiss }) {
   const onTouchMove = (e) => {
     if (!start || e.pointerId !== start.id) return;
     start.dy = Math.max(0, e.clientY - start.y);
-    if (start.dy > 4 && !reduced()) {
-      sheet.style.transition = 'none';
-      sheet.style.transform = `translateY(${start.dy}px)`;
+    if (start.dy > 4) {
+      // A drag is not a selection (INT-25).
+      if (sheet.style.userSelect !== 'none') { sheet.style.userSelect = 'none'; getSelection()?.removeAllRanges(); }
+      if (!reduced()) {
+        sheet.style.transition = 'none';
+        sheet.style.transform = `translateY(${start.dy}px)`;
+      }
     }
+  };
+  // Back to rest: eased when motion is allowed, at once otherwise.
+  const springBack = () => {
+    sheet.style.userSelect = '';
+    if (!sheet.style.transform) { sheet.style.transition = ''; return; }
+    if (reduced()) { sheet.style.transition = ''; sheet.style.transform = ''; return; }
+    sheet.style.transition = 'transform var(--fc-duration-overlay) var(--fc-ease-emphasized)';
+    sheet.style.transform = '';
+    sheet.addEventListener('transitionend', () => { sheet.style.transition = ''; }, { once: true });
+  };
+  // The system took the touch (a gesture, a second finger): never close, just settle.
+  const onTouchCancel = (e) => {
+    if (!start || e.pointerId !== start.id) return;
+    start = null;
+    springBack();
   };
   const onTouchUp = (e) => {
     if (!start || e.pointerId !== start.id) return;
@@ -52,13 +71,11 @@ export function dismissible(sheet, { dismiss }) {
     start = null;
     const fast = dy / Math.max(1, performance.now() - t) > FLICK && dy > 24;
     if (dy > DISMISS_AT || fast) {
+      sheet.style.userSelect = '';
       dismiss();
       // The close animation starts from where the finger left the sheet; clear it once the sheet has gone.
       sheet.addEventListener('close', () => { sheet.style.transform = ''; sheet.style.transition = ''; }, { once: true });
-    } else {
-      sheet.style.transition = '';
-      sheet.style.transform = '';
-    }
+    } else springBack();
   };
 
   sheet.addEventListener('pointerdown', onDown);
@@ -66,14 +83,14 @@ export function dismissible(sheet, { dismiss }) {
   sheet.addEventListener('pointerdown', onTouchDown);
   sheet.addEventListener('pointermove', onTouchMove);
   sheet.addEventListener('pointerup', onTouchUp);
-  sheet.addEventListener('pointercancel', onTouchUp);
+  sheet.addEventListener('pointercancel', onTouchCancel);
   return () => {
     sheet.removeEventListener('pointerdown', onDown);
     sheet.removeEventListener('click', onClick);
     sheet.removeEventListener('pointerdown', onTouchDown);
     sheet.removeEventListener('pointermove', onTouchMove);
     sheet.removeEventListener('pointerup', onTouchUp);
-    sheet.removeEventListener('pointercancel', onTouchUp);
+    sheet.removeEventListener('pointercancel', onTouchCancel);
   };
 }
 

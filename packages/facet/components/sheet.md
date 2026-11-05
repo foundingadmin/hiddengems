@@ -71,7 +71,8 @@ A modal sheet never traps anyone. Every way out closes it the same way as its cl
   out of the panel does not.
 - **Drag down** on phone for `data-phone="full"`: dragging the header or the grab handle (`<div class="fc-sheet-handle"
   aria-hidden="true">`, first in the header) more than 96px, or a quick flick, closes it; a shorter drag springs back.
-  Buttons, links and tabs in the header keep their own taps.
+  Buttons, links and tabs in the header keep their own taps. Dragging never selects text, and a touch the system
+  cancels never closes the sheet. Under 768px the close button is a 44px target.
 
 Wire it once per sheet: `dismissible(dialog, { dismiss })` returns a cleanup; pass the page's own close so a close
 animation or URL state still runs.

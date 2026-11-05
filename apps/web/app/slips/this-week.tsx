@@ -4,6 +4,7 @@
 import Link from 'next/link';
 import type { Reminder } from '@hiddengems/core';
 import type { SlipSummary } from '@/lib/slips';
+import { JEWELER } from '@/lib/features';
 import { ago, dayTime, pct } from '@/lib/format';
 import { EditableLegs, RemoveLeg } from './remove-leg';
 import { ChangeSlip, StakeForm } from './slip-controls';
@@ -86,7 +87,7 @@ export function ThisWeek({ summary, sendHref, jewelerReady, now = new Date() }: 
       </article>
 
       <div className="hg-slip-side">
-        {slip.appraisal ? (
+        {!JEWELER ? null : slip.appraisal ? (
           <section className="fc-card hg-appraisal" aria-labelledby="appraisal-h">
             <h3 id="appraisal-h" className="text-heading-16 hg-appraisal-title">{GEM}The Jeweler&apos;s appraisal</h3>
             <p className="text-copy-14">{slip.appraisal}</p>

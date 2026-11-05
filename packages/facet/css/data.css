@@ -566,6 +566,9 @@ dialog.fc-sheet:not([open]) { display: none; }
   }
 }
 .fc-sheet-badges { display: flex; flex-wrap: wrap; align-items: center; gap: var(--fc-space-2); }
+/* The sheet's one action (Add to slip) rides the pinned header, at the end of the badges row, so it is in reach at
+   any scroll without a footer. */
+.fc-sheet-badges > .fc-sheet-action { margin-left: auto; }
 .fc-sheet-tabs { flex: 0 0 auto; margin-top: var(--fc-space-2); padding-inline: var(--fc-space-6); }
 .fc-sheet-body {
   flex: 1 1 auto;

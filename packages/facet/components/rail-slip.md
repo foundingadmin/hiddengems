@@ -30,6 +30,16 @@ The slip in progress, visible from every desktop screen, with one way back to it
 - One full-width small primary button.
 - The leg count in "3 leg parlay" is `<span class="fc-railslip-count">`. When a gem is added it pops: render the new count as a new element with `data-pop`, and it scales down into place over `--fc-duration-pop` (220ms). Transform only; none under reduced motion (`patterns/moments.md`, Add a gem).
 
+## Editing `[F]`
+Your own play that is not placed can be changed from the rail, the same ways as on Slips:
+- Each leg's name is a link (`.fc-railslip-name`) that opens its gem.
+- A remove button (`.fc-railslip-x`, tiny, tertiary, square) sits after the price inside `.fc-railslip-end`. It shows
+  under the pointer or keyboard focus and always on touch, keeps its lane so prices never move, and answers in the
+  stop tokens. Removing plays the remove moment and offers Undo (`patterns/moments.md`).
+- The stake is a small field (`.fc-railslip-stake`) above the totals. The pays line follows what is typed; it saves
+  on Enter or when focus leaves.
+- A suggested play shows no remove buttons and no field; a quiet "Change this slip" link opens the confirmation.
+
 ## States
 - Nothing on the slip: render no panel.
 - Same game legs: the Lose it all row reads "Correlated" instead of a number (`cert.md`).

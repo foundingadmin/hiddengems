@@ -91,8 +91,10 @@ backstop).
 ## 7. Ship to staging
 1. Write the sprint's `lesson`: one line on what went wrong and what the next sprint should do differently (a
    dropped entry, a CI fix, a punchlist item a check could have caught), or `none`. Commit the sprint file.
-2. Open one PR `sprint/<id>` to `staging`, titled `Sprint <id>`. The body lists each entry (thread link, what
-   changed) and any owner step (a migration: `pnpm db:supabase-sql`, choosing "Run without RLS").
+2. Open one PR `sprint/<id>` to `staging`, titled `Sprint <id>`. The body opens with a `Preview` section (the
+   branch preview URL and a clickable deep link per entry to check, added once the preview is ready), then lists
+   each entry (thread link, what changed) and any owner step (a migration: `pnpm db:supabase-sql`, choosing "Run
+   without RLS").
 3. When CI is green on its head, merge it with a merge commit. If the merge is refused (branch protection), tell
    the principal and stop.
 4. Confirm the staging deploy for the merge SHA (`list_deployments`). For each shipped entry, react ✅ on its
@@ -105,7 +107,8 @@ backstop).
   tokens if the harness reported them. Then stop.
 
 ## Release (when the principal types "release")
-1. Open or refresh the PR `staging` to `main` titled `Release <yyyy-mm-dd>`: the staging alias, the routes to check,
+1. Open or refresh the PR `staging` to `main` titled `Release <yyyy-mm-dd>`: a `Preview`
+   section with the staging alias and a clickable link per route to check,
    what changed (one line per sprint PR) and owner steps. Only the principal merges it.
 2. Once it is merged (the principal says so, or the next session finds it merged), clean the toolbar, on staging and
    production threads alike:

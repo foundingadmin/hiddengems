@@ -641,8 +641,9 @@
   </div>
 
   <!-- Pick detail sheet -->
-  <dialog class="fc-sheet" id="data-sheet" aria-labelledby="data-sheet-title">
+  <dialog class="fc-sheet" id="data-sheet" data-phone="full" aria-labelledby="data-sheet-title">
     <header class="fc-sheet-header">
+      <div class="fc-sheet-handle" aria-hidden="true"></div>
       <div class="fc-sheet-titlebar">
         <div class="fc-sheet-titles">
           <h3 class="fc-sheet-title text-heading-20" id="data-sheet-title">Mike Gesicki</h3>
@@ -841,6 +842,8 @@
 
     /* Sheet: native modal dialog. Escape closes; focus returns to the row that opened it. */
     const sheet = $('#data-sheet');
+    // The easy exits (components/sheet.md, "Leaving a sheet"): outside click, and drag down on phone.
+    import('../js/sheet.mjs').then(({ dismissible }) => dismissible(sheet, { dismiss: () => sheet.close() }));
     let opener = null, current = null;
     const SIGNALS = [
       ['Setup', 'Role and snap share today'],

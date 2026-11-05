@@ -47,11 +47,14 @@ export const pullResults: Job = {
     const finalIds = new Set(finals.map((g) => g.id));
     // One row per player game: a provider that returns a line under two weeks must not upsert it twice in one insert.
     const byPlayerGame = new Map<string, typeof playerGameStats.$inferInsert>();
-    let unknown = 0;
-    const unknownIds = new Set<string>();
+    // A line whose game is not a final game here is a real mismatch. A line for a player no current roster lists
+    // (released, retired, unsigned) is expected: nobody prices props on him, so it is noted, not warned.
+    let noGame = 0, offRoster = 0;
+    const noGameIds = new Set<string>(), offRosterIds = new Set<string>();
     for (const l of lines) {
       const gameId = gameRefs.get(l.gameExternalId), playerId = playerRefs.get(l.playerExternalId);
-      if (!gameId || !playerId || !finalIds.has(gameId)) { unknown++; unknownIds.add(l.playerExternalId); continue; }
+      if (!gameId || !finalIds.has(gameId)) { noGame++; noGameIds.add(l.gameExternalId); continue; }
+      if (!playerId) { offRoster++; offRosterIds.add(l.playerExternalId); continue; }
       byPlayerGame.set(`${gameId}|${playerId}`, {
         gameId, playerId, touchdowns: l.touchdowns, receptions: l.receptions, receivingYards: l.receivingYards, rushingYards: l.rushingYards,
         passingYards: l.passingYards, passingTds: l.passingTds, extra: l.extra ?? null, runId: ctx.runId, updatedAt: now,
@@ -68,7 +71,8 @@ export const pullResults: Job = {
         },
       });
     }
-    if (unknown) ctx.log('warn', `${plural(unknown, 'stat line')} did not match a final game or a rostered player`, { playerIds: [...unknownIds].slice(0, 25) });
+    if (noGame) ctx.log('warn', `${plural(noGame, 'stat line')} did not match a final game`, { gameIds: [...noGameIds].slice(0, 25) });
+    if (offRoster) ctx.log('info', `Skipped ${plural(offRoster, 'stat line')} for players on no current roster`, { playerIds: [...offRosterIds].slice(0, 25) });
 
     // Closing prices for bets whose game has kicked off.
     const started = await db.select({ bet: bets, kickoff: games.kickoffAt }).from(bets).innerJoin(games, eq(games.id, bets.gameId))

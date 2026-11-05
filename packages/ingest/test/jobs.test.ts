@@ -253,7 +253,7 @@ describe('failures and locks', () => {
       await db.delete(providerRefs).where(eq(providerRefs.internalId, orig.id));
       const r = await pull(NAME);
       const w = await warns(r.runId!);
-      expect(w.find((l) => /more than one roster row/.test(l.message))?.data).toMatchObject({ names: [NAME] });
+      expect(w.find((l) => /more than one player on that game/.test(l.message))?.data).toMatchObject({ names: [NAME] });
       expect(w.some((l) => /did not match a roster/.test(l.message))).toBe(false);
       await db.insert(providerRefs).values(refs);
       await db.delete(players).where(eq(players.id, dupe));

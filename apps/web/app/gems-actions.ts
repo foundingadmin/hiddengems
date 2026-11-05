@@ -4,13 +4,13 @@
 import { gemMarks, picks } from '@hiddengems/db';
 import { and, eq, inArray, sql } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
-import { db, READ_ONLY, READ_ONLY_MESSAGE } from '@/lib/db';
+import { db, READ_ONLY, READ_ONLY_REFUSAL } from '@/lib/db';
 
 /** Shaped like the slip actions' ActionState, so the row can put a refused read back and say why. */
 export type ReadResult = { ok: true } | { ok: false; error: string };
 
 export async function markRead(keys: string[]): Promise<ReadResult> {
-  if (READ_ONLY) return { ok: false, error: READ_ONLY_MESSAGE };
+  if (READ_ONLY) return { ok: false, error: READ_ONLY_REFUSAL };
   if (!keys.length) return { ok: true };
   const { db: d } = await db();
   const now = new Date();

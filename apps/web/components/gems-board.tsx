@@ -59,7 +59,6 @@ export function NewGems({ rows, since, zone }: { rows: BoardRow[]; since: string
   // Gems read here and not yet confirmed by the server, with when each card's tint fades (packages/facet
   // patterns/moments.md: state first, the motion follows, a failure puts it back).
   const [reading, setReading] = useState<Map<string, string>>(() => new Map());
-  const [error, setError] = useState<string | null>(null);
   const newest = useMemo(() => newestKey(rows), [rows]);
   const orbiting = newest && !reading.has(newest) ? newest : null;
   // Once the server has answered, read gems leave the row; forget them so a gem that turns new again shows it.
@@ -79,13 +78,12 @@ export function NewGems({ rows, since, zone }: { rows: BoardRow[]; since: string
     setReading((m) => new Map([...m, ...keys.map((k, i) => [k, readDelay(i)] as const)]));
     const swept = sweepRead(moments.stage(), els);
     const left = rows.filter((r) => !reading.has(r.key) && !keys.includes(r.key)).length;
-    // A refused or failed read puts the shine back and says why (role="alert" below speaks it).
+    // A refused or failed read puts the shine back and says why in a toast.
     const undo = (why: string) => {
       setReading((m) => { const next = new Map(m); for (const k of keys) next.delete(k); return next; });
       void unsweepRead(moments.stage(), els);
-      setError(why);
+      moments.toast(why);
     };
-    setError(null);
     start(async () => {
       try {
         // The row keeps its cards until their clouds have passed (under a second; at once under reduced motion),
@@ -107,7 +105,6 @@ export function NewGems({ rows, since, zone }: { rows: BoardRow[]; since: string
           <p className="text-copy-14 hg-secondary">
             {rows.length} {since ? <>since your last look, {since}</> : rows.length === 1 ? 'gem' : 'gems'}. Unread ones clear at kickoff.
           </p>
-          {error && <span className="fc-helper" data-type="error" role="alert">{error}</span>}
         </div>
         <div className="fc-section-head-actions">
           <button type="button" className="fc-button" data-variant="tertiary" data-size="small" disabled={pending}

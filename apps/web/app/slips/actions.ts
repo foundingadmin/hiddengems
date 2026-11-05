@@ -8,7 +8,7 @@ import {
   removeLeg as storeRemoveLeg, restoreLeg as storeRestoreLeg, setStake as storeSetStake,
 } from '@hiddengems/db';
 import { revalidatePath } from 'next/cache';
-import { db, READ_ONLY, READ_ONLY_MESSAGE } from '@/lib/db';
+import { db, READ_ONLY, READ_ONLY_REFUSAL } from '@/lib/db';
 
 /**
  * value: what was typed, so a form that resets after the action shows it again beside the error. confirm 'change':
@@ -25,7 +25,7 @@ const SELECTION_KEY = /^[A-Za-z0-9:._-]{1,200}$/;
 const text = (v: unknown) => (typeof v === 'string' ? v.trim() : '');
 const invalid = (what: string): ActionState => ({ ok: false, error: `That ${what} is not valid` });
 
-const readOnly = (): ActionState => ({ ok: false, error: READ_ONLY_MESSAGE });
+const readOnly = (): ActionState => ({ ok: false, error: READ_ONLY_REFUSAL });
 
 async function done(r: SlipResult | Promise<SlipResult>): Promise<ActionState> {
   const result = await r;

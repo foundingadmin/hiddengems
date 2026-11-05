@@ -13,6 +13,8 @@ const preview = process.env.VERCEL_ENV === 'preview';
 /** A preview reading production: shows real data, changes nothing. */
 export const READ_ONLY = preview && Boolean(process.env.DATABASE_URL);
 export const READ_ONLY_MESSAGE = 'Previews show production data and cannot change it';
+/** What a refused action says in its toast: an error names the cause and the way forward. */
+export const READ_ONLY_REFUSAL = 'Previews can’t save changes. Make it in the live app.';
 
 export function db(): Promise<DbHandle> {
   if (!g.__hgDb) {

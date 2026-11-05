@@ -13,7 +13,7 @@ A side panel that slides in from a screen edge to show detail while the underlyi
 - Width is not a prop. The "front apps" demo styles it as an inset floating panel: 12px margin, 16px radius, `lg:w-[512px]`, background `--ds-background-100`, 24px header and footer padding.
 
 ## States
-Closed, open, dismissed (explicit close or Escape; outside click does **not** close).
+Closed, open, dismissed (explicit close or Escape; upstream, outside click does **not** close). Facet's modal sheets also close on an outside click and, on phone, a drag down ("Leaving a sheet" below; principal decision, Nov 4 2026).
 
 ## Tokens
 `--ds-background-100`, `text-copy-14`, `--ds-gray-900` (subtitle). Inferred: `material-fullscreen` (16px radius) or `material-modal`, matching the demo's 16px corners.
@@ -60,6 +60,22 @@ Implemented in `css/data.css` as `.fc-sheet`.
 - Edge glint hook: `--fc-glint-edge` names the edge facing the page (left; right for `data-side="left"`; top for a full-screen phone sheet). `js/dots.mjs` ripples dots along it as the sheet opens (`patterns/moments.md`), on a stage hosted in the sheet, since a modal sits above the page's stage. While the ripple plays (`data-glint`) the sheet lets its edge dots past its bounds.
 - Spring motion, `data-motion="spring"` (the gem sheet): opens from off its side, or from the bottom for a full-screen phone sheet, on `--fc-ease-emphasized` over `--fc-duration-sheet` (460ms), and closes back out on `--fc-ease-exit` over `--fc-duration-overlay` (300ms), no spring. A dialog closes at once, so set `data-closing`, wait for the sheet's own `animationend`, then call `close()`; Escape does the same from the `cancel` event. Reduced motion opens and closes at once.
 - Title is the pick, not a sentence. Do not repeat the close action in the footer.
+
+### Leaving a sheet `[F]`
+A modal sheet never traps anyone. Every way out closes it the same way as its close button:
+- **Close button**, always in view: the panel is `overflow: clip`, so code cannot scroll it, and only `.fc-sheet-body`
+  scrolls. Never call `scrollIntoView()` inside a sheet (it scrolls every ancestor and can push the header out of view);
+  use `scrollBodyTo(body, target)` from `js/sheet.mjs`.
+- **Escape** (the dialog's `cancel` event) and **Back** when the open state lives in the URL.
+- **Outside click** on desktop: a press that starts and ends on the dimmed page closes it; a text selection dragged
+  out of the panel does not.
+- **Drag down** on phone for `data-phone="full"`: dragging the header or the grab handle (`<div class="fc-sheet-handle"
+  aria-hidden="true">`, first in the header) more than 96px, or a quick flick, closes it; a shorter drag springs back.
+  Buttons, links and tabs in the header keep their own taps. Dragging never selects text, and a touch the system
+  cancels never closes the sheet. Under 768px the close button is a 44px target.
+
+Wire it once per sheet: `dismissible(dialog, { dismiss })` returns a cleanup; pass the page's own close so a close
+animation or URL state still runs.
 
 ### One scroll with section tabs `[F]`
 A detail sheet that reads top to bottom (the Hidden Gems gem sheet) keeps one scrolling body and uses its tabs to

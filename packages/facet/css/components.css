@@ -365,6 +365,8 @@ a.fc-badge[data-variant="pill"]:hover, button.fc-badge[data-variant="pill"]:hove
    should take the slack with data-grow on its header; every other column then hugs its content too. */
 .fc-table :is(th, td)[data-align="numeric"] { width: 1%; }
 .fc-table:has(thead th[data-grow]) thead th:not([data-grow]) { width: 1%; white-space: nowrap; }
+/* A short label that must read as one unit (a bet, a status) keeps to one line in a hugging column. */
+.fc-table :is(th, td)[data-nowrap] { white-space: nowrap; }
 /* Short row labels never wrap; the table scrolls inside .fc-table-wrap instead (Vercel design.md). */
 .fc-table tbody th[scope="row"] { white-space: nowrap; }
 .fc-table tfoot td { font-weight: 500; color: var(--ds-gray-1000); border-top: 1px solid var(--ds-gray-400); }

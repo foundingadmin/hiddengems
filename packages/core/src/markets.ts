@@ -17,6 +17,12 @@ export function marketById(id: string): Market | undefined {
   return byId.get(id);
 }
 
+/** How a row names the bet, short: the prop is the gem, so every gem shows it. */
+const BETS: Record<MarketId, string> = { anytime_td: 'Anytime TD' };
+export function betLabel(id: string): string {
+  return BETS[id as MarketId] ?? marketById(id)?.label ?? id;
+}
+
 /** The sportsbooks Hidden Gems compares. Ids are ours; adapters map provider keys onto them. */
 export const BOOKS = [
   { id: 'draftkings', name: 'DraftKings' },

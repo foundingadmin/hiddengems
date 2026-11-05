@@ -76,14 +76,19 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 
 ## Branches and pull requests
 
-- `main` is production and only the principal merges into it, from a release PR (`staging` to `main`) after
-  reviewing the staging preview.
+- `main` is production. Two ways in: a sprint (batch Vercel preview comments) ships to `staging` and the principal
+  merges the release PR (`staging` to `main`); a one-on-one session with the principal opens its PR straight into
+  `main` and merges it itself once CI is green.
 - Builders branch from the latest `staging` and push their branch, with no PR. Prefix by kind: `screens/`, `data/`,
   `facet/`, `copy/`. Never push to someone else's branch, force push or rewrite history.
 - The sprint session merges every ready branch into one `sprint/<id>` branch, and merges one sprint PR into
   `staging` once CI is green.
-- Work outside a sprint (tooling, docs, the agent workflow) goes on a `fix/` or `agents/` branch with one PR into
-  `staging`; changes to the agent workflow are the principal's call.
+- Work outside a sprint (one-on-one sessions, tooling, docs, the agent workflow) goes on its own branch with one PR
+  into `main`; changes to the agent workflow are the principal's call. Staging then trails `main` until the next
+  sprint brings it up to date.
+- Every PR body opens with a `Preview` section: the branch preview URL (from the Vercel bot comment or
+  `list_deployments`) and one clickable link per route to check, deep links included (a sheet open, a tab
+  selected). A release PR links the staging alias the same way. Add it as soon as the preview is ready.
 
 ## Agents
 

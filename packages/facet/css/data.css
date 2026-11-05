@@ -529,7 +529,9 @@ button.fc-entity:hover { background: var(--fc-surface-fill); }
   background: var(--fc-surface-canvas);
   box-shadow: var(--ds-shadow-modal);
   color: var(--fc-text-primary);
-  overflow: hidden;
+  /* clip, not hidden: a hidden box can still be scrolled by code (scrollIntoView, focus), which pushed the
+     header and its close button out of view. Only .fc-sheet-body scrolls. */
+  overflow: clip;
 }
 dialog.fc-sheet:not([open]) { display: none; }
 .fc-sheet[data-side="left"] { inset: var(--fc-space-3) auto var(--fc-space-3) var(--fc-space-3); }
@@ -546,6 +548,23 @@ dialog.fc-sheet:not([open]) { display: none; }
 .fc-sheet-title { margin: 0; overflow-wrap: anywhere; }
 .fc-sheet-subtitle { margin: 0; color: var(--fc-text-secondary); }
 .fc-sheet-close { flex: 0 0 auto; margin: -4px -8px 0 0; }
+/* Phone grab handle [F]: <div class="fc-sheet-handle" aria-hidden="true"> first in .fc-sheet-header of a
+   data-phone="full" sheet. Shows under 768px; dragging it or the header down closes the sheet (js/sheet.mjs). */
+.fc-sheet-handle { display: none; }
+@media (max-width: 767px) {
+  .fc-sheet[data-phone="full"] .fc-sheet-header { touch-action: none; }
+  /* The way out on phone gets a full 44px target (INT-04). */
+  .fc-sheet[data-phone="full"] .fc-sheet-close { min-width: calc(var(--fc-space-10) + var(--fc-space-1)); min-height: calc(var(--fc-space-10) + var(--fc-space-1)); }
+  .fc-sheet[data-phone="full"] .fc-sheet-handle {
+    display: block;
+    align-self: center;
+    width: var(--fc-space-10);
+    height: var(--fc-space-1);
+    margin: calc(-1 * var(--fc-space-3)) 0 var(--fc-space-1);
+    border-radius: var(--fc-radius-full);
+    background: var(--fc-border-active);
+  }
+}
 .fc-sheet-badges { display: flex; flex-wrap: wrap; align-items: center; gap: var(--fc-space-2); }
 .fc-sheet-tabs { flex: 0 0 auto; margin-top: var(--fc-space-2); padding-inline: var(--fc-space-6); }
 .fc-sheet-body {

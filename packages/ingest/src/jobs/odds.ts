@@ -117,7 +117,7 @@ export const pullOdds: Job = {
 
     const missing = [...due].filter((id) => !matched.some((m) => m.gameId === id));
     if (missing.length) ctx.log('warn', `${plural(missing.length, 'game')} on the schedule had no odds event`, { gameIds: missing });
-    if (duplicated.size) ctx.log('warn', `${plural(duplicated.size, 'player')} matched more than one roster row. Remove the duplicate rows.`, { names: [...duplicated].slice(0, 25) });
+    if (duplicated.size) ctx.log('warn', `${plural(duplicated.size, 'player')} matched more than one player on that game's teams. Add an alias.`, { names: [...duplicated].slice(0, 25) });
     if (unmatched.size) ctx.log('warn', `${plural(unmatched.size, 'player')} did not match a roster. Pull rosters, or add an alias.`, { names: [...unmatched].slice(0, 25) });
     const what = [snap?.slot.split(':')[0], freezes.length ? `${plural(freezes.length, 'freeze')}` : null, manual ? 'manual' : null].filter(Boolean).join(' and ');
     return {

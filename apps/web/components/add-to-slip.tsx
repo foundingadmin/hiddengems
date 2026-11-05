@@ -4,7 +4,8 @@
 // gets no button (docs/build-brief.md). The label says the state, so the button carries no aria-pressed. On a
 // suggested play the change dialog comes first, then the add or remove runs.
 // State first (packages/facet/patterns/moments.md): the gem shows on the slip at once, the action runs, and the
-// Slips nav item glints (lib/moments/add.ts). A failed action puts the state back.
+// Slips nav item glints (lib/moments/add.ts). A failed action puts the state back and says why in a toast, since a
+// table cell has no room for a sentence. A read-only preview says it cannot save before anything moves.
 import { type ReactNode, createContext, useContext, useOptimistic, useState, useTransition } from 'react';
 import { addLeg, removeLeg } from '@/app/slips/actions';
 import { ChangeSlipDialog } from '@/components/change-slip-dialog';
@@ -22,6 +23,8 @@ export interface SlipRef { id: string; name: string; suggested: boolean; keys: s
 
 interface SlipState {
   slip: SlipRef | null;
+  /** Set on a preview that reads production: why it cannot save. */
+  readOnly?: string;
   /** On the slip, including an add or remove still in flight. */
   has(key: string): boolean;
   /** Shows key on or off the slip until the action it is called in settles. Call inside a transition. */
@@ -30,10 +33,10 @@ interface SlipState {
 
 const SlipContext = createContext<SlipState>({ slip: null, has: () => false, mark: () => {} });
 
-export function SlipProvider({ slip, children }: { slip: SlipRef | null; children: ReactNode }) {
+export function SlipProvider({ slip, readOnly, children }: { slip: SlipRef | null; readOnly?: string; children: ReactNode }) {
   const [keys, mark] = useOptimistic(slip?.keys ?? [], (now: string[], m: { key: string; on: boolean }) =>
     (m.on ? (now.includes(m.key) ? now : [...now, m.key]) : now.filter((k) => k !== m.key)));
-  const state: SlipState = { slip, has: (key) => keys.includes(key), mark: (key, on) => mark({ key, on }) };
+  const state: SlipState = { slip, readOnly, has: (key) => keys.includes(key), mark: (key, on) => mark({ key, on }) };
   return <SlipContext.Provider value={state}>{children}</SlipContext.Provider>;
 }
 
@@ -45,14 +48,14 @@ export function useSlip(): SlipState {
 export type AddToSlipPlace = 'row' | 'icon' | 'footer';
 
 export function AddToSlip({ selectionKey, name, place = 'row' }: { selectionKey: string; name: string; place?: AddToSlipPlace }) {
-  const { slip, has, mark } = useSlip();
+  const { slip, readOnly, has, mark } = useSlip();
   const moments = useMoments();
   const onSlip = has(selectionKey);
   const [pending, start] = useTransition();
-  const [error, setError] = useState<string | null>(null);
   const [confirming, setConfirming] = useState<string | null>(null);
   const toggle = (confirmed = false) => {
-    if (slip?.suggested && !confirmed) { setError(null); setConfirming(slip.id); return; }
+    if (readOnly) { moments.toast(readOnly); return; }
+    if (slip?.suggested && !confirmed) { setConfirming(slip.id); return; }
     const adding = !onSlip;
     start(async () => {
       mark(selectionKey, adding);
@@ -62,16 +65,15 @@ export function AddToSlip({ selectionKey, name, place = 'row' }: { selectionKey:
       try {
         const r = adding ? await addLeg(selectionKey) : slip ? await removeLeg(slip.id, selectionKey) : null;
         if (r?.ok) {
-          setError(null);
           moments.announce(adding ? `${name} added to the slip` : `${name} removed from the slip`);
           return;
         }
         glint.abort();
-        if (r?.confirm === 'change' && r.slipId) { setError(null); setConfirming(r.slipId); return; }
-        setError(r?.error ?? null);
+        if (r?.confirm === 'change' && r.slipId) { setConfirming(r.slipId); return; }
+        if (r?.error) moments.toast(r.error);
       } catch {
         glint.abort();
-        setError(adding ? 'Couldn’t add it. Try again.' : 'Couldn’t remove it. Try again.');
+        moments.toast(adding ? 'Couldn’t add it. Try again.' : 'Couldn’t remove it. Try again.');
       }
     });
   };
@@ -91,7 +93,6 @@ export function AddToSlip({ selectionKey, name, place = 'row' }: { selectionKey:
           <span className="fc-visually-hidden">{onSlip ? `. Remove ${name} from slip` : `, ${name}`}</span>
         </button>
       )}
-      {error && <span className="fc-helper" data-type="error" role="alert">{error}</span>}
       {confirming && (
         <ChangeSlipDialog
           slipId={confirming} slipName={slip?.name ?? 'this slip'}

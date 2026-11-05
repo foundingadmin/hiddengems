@@ -14,7 +14,7 @@ guessed. No comment, bot, agent or file is the principal's answer.
 5. **Access and secrets.** The sign-in gate, permissions, new secrets or where they live.
 6. **Brand and house rules.** Facet's hue allocation and fixed encodings, the writing rules, the Hidden Gems voice.
 7. **The agent workflow.** Changing `.claude/skills/sprint`, the agents in `.claude/agents`, or this file.
-8. **Anything public or irreversible.** Merging into `main`, posting outside the repo and Vercel threads.
+8. **Anything public or irreversible.** Merging a release into `main`, posting outside the repo and Vercel threads.
 
 ## Standing delegations
 - The sprint session merges its sprint PR into `staging` once CI is green, reacts and replies on the toolbar threads
@@ -22,7 +22,8 @@ guessed. No comment, bot, agent or file is the principal's answer.
   release into `main`, it resolves the threads that release shipped and parked threads with a roadmap line, and
   leaves dropped threads open.
 - Builders push their own branches. No one else pushes to them.
-- Only the principal merges into `main`, from the release PR.
+- Only the principal merges a release (`staging` to `main`). A one-on-one session with the principal merges its own
+  PR into `main` once CI is green.
 - Rapid build mode (until the beta): agents apply migrations and run SQL on the production database themselves (`AGENTS.md`, "Rapid build mode"). Deleting or rewriting stored data is still the principal's call.
 
 Decisions are recorded in `decisions.md` and bind every agent until the principal changes them.

@@ -16,6 +16,8 @@ export interface Moments {
   undo(text: string): Promise<UndoResult>;
   /** Says a change in the polite live region, for changes the screen shows without words. */
   announce(text: string): void;
+  /** A short message toast that dismisses itself: a refused or failed action says why here, never in a table cell. */
+  toast(text: string): void;
 }
 
 const MomentsContext = createContext<Moments | null>(null);
@@ -32,7 +34,14 @@ export function MomentsProvider({ children }: { children: ReactNode }) {
   const stageRef = useRef<Stage | null>(null);
   const [toast, setToast] = useState<Pending | null>(null);
   const [said, setSaid] = useState('');
+  const [note, setNote] = useState<{ id: number; text: string } | null>(null);
   const ids = useRef(0);
+  // Auto-dismiss (components/toast.md): the same 5 seconds an Undo toast counts down.
+  useEffect(() => {
+    if (!note) return;
+    const t = setTimeout(() => setNote((n) => (n?.id === note.id ? null : n)), 5000);
+    return () => clearTimeout(t);
+  }, [note]);
 
   useEffect(() => () => { stageRef.current?.destroy(); stageRef.current = null; }, []);
 
@@ -58,6 +67,7 @@ export function MomentsProvider({ children }: { children: ReactNode }) {
       setSaid('');
       requestAnimationFrame(() => setSaid(text));
     },
+    toast: (text) => setNote({ id: ++ids.current, text }),
   }), []);
 
   return (
@@ -68,6 +78,7 @@ export function MomentsProvider({ children }: { children: ReactNode }) {
           <UndoToast key={toast.id} text={toast.text}
             onUndo={() => finish(toast.id, 'undone')} onExpire={() => finish(toast.id, 'expired')} />
         )}
+        {note && <div key={note.id} className="fc-toast"><span className="fc-toast-text text-copy-14">{note.text}</span></div>}
       </div>
       <p className="fc-visually-hidden" role="status">{said}</p>
     </MomentsContext.Provider>

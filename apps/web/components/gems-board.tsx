@@ -4,6 +4,7 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { flushSync } from 'react-dom';
+import { betLabel } from '@hiddengems/core';
 import { markRead } from '@/app/gems-actions';
 import { SlipButton, useSlip } from '@/components/add-to-slip';
 import { Dropdown } from '@/components/dropdown';
@@ -41,6 +42,8 @@ const kickoffTime = (iso: string, zone: string) => new Intl.DateTimeFormat('en-U
 const kickoffFull = (iso: string, zone: string) => new Intl.DateTimeFormat('en-US', { timeZone: zone, weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }).format(new Date(iso));
 const pct = (p: number) => `${Math.round(p * 100)}%`;
 const detail = (r: BoardRow) => [r.position, r.matchup].filter(Boolean).join(' · ');
+/** The prop is the gem: every card and row names its bet. */
+const bet = (r: BoardRow) => betLabel(r.marketId);
 
 function Kickoff({ iso, zone }: { iso: string; zone: string }) {
   return <time className="text-copy-13-mono" dateTime={iso} title={kickoffFull(iso, zone)}>{kickoffTime(iso, zone)}</time>;
@@ -56,7 +59,6 @@ export function NewGems({ rows, since, zone }: { rows: BoardRow[]; since: string
   // Gems read here and not yet confirmed by the server, with when each card's tint fades (packages/facet
   // patterns/moments.md: state first, the motion follows, a failure puts it back).
   const [reading, setReading] = useState<Map<string, string>>(() => new Map());
-  const [error, setError] = useState<string | null>(null);
   const newest = useMemo(() => newestKey(rows), [rows]);
   const orbiting = newest && !reading.has(newest) ? newest : null;
   // Once the server has answered, read gems leave the row; forget them so a gem that turns new again shows it.
@@ -76,13 +78,12 @@ export function NewGems({ rows, since, zone }: { rows: BoardRow[]; since: string
     setReading((m) => new Map([...m, ...keys.map((k, i) => [k, readDelay(i)] as const)]));
     const swept = sweepRead(moments.stage(), els);
     const left = rows.filter((r) => !reading.has(r.key) && !keys.includes(r.key)).length;
-    // A refused or failed read puts the shine back and says why (role="alert" below speaks it).
+    // A refused or failed read puts the shine back and says why in a toast.
     const undo = (why: string) => {
       setReading((m) => { const next = new Map(m); for (const k of keys) next.delete(k); return next; });
       void unsweepRead(moments.stage(), els);
-      setError(why);
+      moments.toast(why);
     };
-    setError(null);
     start(async () => {
       try {
         // The row keeps its cards until their clouds have passed (under a second; at once under reduced motion),
@@ -104,7 +105,6 @@ export function NewGems({ rows, since, zone }: { rows: BoardRow[]; since: string
           <p className="text-copy-14 hg-secondary">
             {rows.length} {since ? <>since your last look, {since}</> : rows.length === 1 ? 'gem' : 'gems'}. Unread ones clear at kickoff.
           </p>
-          {error && <span className="fc-helper" data-type="error" role="alert">{error}</span>}
         </div>
         <div className="fc-section-head-actions">
           <button type="button" className="fc-button" data-variant="tertiary" data-size="small" disabled={pending}
@@ -125,7 +125,7 @@ export function NewGems({ rows, since, zone }: { rows: BoardRow[]; since: string
               style={reading.has(r.key) ? { ['--fc-state-delay' as string]: reading.get(r.key) } : undefined}>
               <div className="fc-gem-card-head">
                 <GemMark kind={r.kind} rating={r.rating} size="lg" delay={i * 160} />
-                <Player name={r.name} teamId={r.teamId} number={r.number} detail={detail(r)} />
+                <Player name={r.name} teamId={r.teamId} number={r.number} detail={[bet(r), r.position, r.matchup].filter(Boolean).join(' · ')} />
                 <span className="fc-stack hg-end hg-desktop-only" style={{ ['--fc-gap' as string]: 'var(--fc-space-1)' }}>
                   <span className="fc-price text-label-14">{r.price.toFixed(2)}</span>
                   <Edge pts={Math.round(r.gap)} />
@@ -266,6 +266,7 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
                 <tr>
                   <th scope="col">{tip('Rating', 'Edge over the fair price times clarity, 0 to 100. Only props that clear the posted price get one')}</th>
                   <th scope="col" data-grow>Pick<span className="fc-th-count">{shown.length === rows.length ? rows.length : `${shown.length} of ${rows.length}`}</span></th>
+                  <th scope="col">Bet</th>
                   <th scope="col">Kickoff</th>
                   <th scope="col" data-align="numeric">Price</th>
                   <th scope="col" data-align="numeric">{tip('Priced', 'The chance the DraftKings price implies, cut included')}</th>
@@ -285,6 +286,7 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
                         link={{ href: gemLink.href(r.key), onClick: (e) => gemLink.open(e, r.key), 'data-gem-link': r.key }}
                         badge={r.fresh ? <span className="fc-badge" data-variant="purple" data-size="sm" data-contrast="low">New</span> : null} />
                     </th>
+                    <td data-nowrap>{bet(r)}</td>
                     <td><Kickoff iso={r.kickoff} zone={zone} /></td>
                     <td data-align="numeric">{r.price.toFixed(2)}</td>
                     <td data-align="numeric">{pct(r.priced)}</td>
@@ -303,7 +305,7 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
                 <a className="fc-gem-row" href={gemLink.href(r.key)} onClick={(e) => gemLink.open(e, r.key)} data-gem-link={r.key}>
                   <GemMark kind={r.kind} rating={r.rating} bare />
                   <Player name={r.name} teamId={r.teamId} number={r.number}
-                    detail={<><Kickoff iso={r.kickoff} zone={zone} /> · {r.matchup}</>}
+                    detail={<>{bet(r)} · <Kickoff iso={r.kickoff} zone={zone} /> · {r.matchup}</>}
                     badge={r.kind === 'fools-gold' ? <FoolsLabel />
                       : r.fresh ? <span className="fc-badge" data-variant="purple" data-size="sm" data-contrast="low">New</span> : null} />
                   <span className="fc-gem-row-end">

@@ -84,6 +84,9 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
   `staging` once CI is green.
 - Work outside a sprint (tooling, docs, the agent workflow) goes on a `fix/` or `agents/` branch with one PR into
   `staging`; changes to the agent workflow are the principal's call.
+- Every PR body opens with a `Preview` section: the branch preview URL (from the Vercel bot comment or
+  `list_deployments`) and one clickable link per route to check, deep links included (a sheet open, a tab
+  selected). A release PR links the staging alias the same way. Add it as soon as the preview is ready.
 
 ## Agents
 

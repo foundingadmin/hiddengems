@@ -6,7 +6,7 @@
 import { FULL_CARAT } from '@hiddengems/core';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { type MouseEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { type MouseEvent, useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { SlipButton } from '@/components/add-to-slip';
 import { GameLog, GameLogKey } from '@/components/game-log';
 import { ConditionsList, CoreSampleTable, GemNotes, LoupeView, PriceChart, TrendLines, scrollTopFor } from '@/components/gem-read';
@@ -33,6 +33,14 @@ const SECTIONS = [
 /** Set when this tab opened the sheet itself, so closing can go Back instead of stacking history. */
 let pushed = false;
 
+// The gem a click asked for. The sheet opens on it at once, with the board row's header and a loading body, while
+// the push to ?gem= renders on the server; it clears once the URL catches up.
+let pending: string | null = null;
+const listeners = new Set<() => void>();
+const setPending = (k: string | null) => { pending = k; listeners.forEach((l) => l()); };
+const subscribe = (l: () => void) => { listeners.add(l); return () => { listeners.delete(l); }; };
+const usePending = () => useSyncExternalStore(subscribe, () => pending, () => null);
+
 /** Links that open a gem: a real href (new tab works) that pushes ?gem= so Back closes the sheet. */
 export function useGemLink() {
   const params = useSearchParams();
@@ -48,6 +56,7 @@ export function useGemLink() {
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
     e.preventDefault();
     pushed = true;
+    setPending(key);
     router.push(href(key), { scroll: false });
   }, [href, router]);
   return { href, open, current: params.get('gem') };
@@ -70,7 +79,11 @@ export function GemSheet({ rows, detail, asked, zone }: {
   const params = useSearchParams();
   const router = useRouter();
   const path = usePathname();
-  const key = params.get('gem');
+  const inUrl = params.get('gem');
+  const wanted = usePending();
+  const key = wanted ?? inUrl;
+  // Closed before its push landed: take the entry back off once it does.
+  const abandoned = useRef<string | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const body = useRef<HTMLDivElement>(null);
   const last = useRef<string | null>(null);
@@ -92,9 +105,15 @@ export function GemSheet({ rows, detail, asked, zone }: {
   asking.set('ask', '1');
 
   // Open on a gem in the URL, close when it leaves (Back, or a link without it).
+  useEffect(() => { if (wanted && inUrl === wanted) setPending(null); }, [wanted, inUrl]);
   useEffect(() => {
     const el = dialog.current;
     if (!el) return;
+    if (key && key === abandoned.current) {
+      abandoned.current = null;
+      router.back();
+      return;
+    }
     if (key) {
       last.current = key;
       keepOpen(el);
@@ -111,7 +130,7 @@ export function GemSheet({ rows, detail, asked, zone }: {
       body.current?.scrollTo({ top: loupe ? scrollTopFor(body.current, loupe) : 0 });
       setActive(loupe ? 'gem-loupe' : SECTIONS[0].id);
     } else if (el.open) closeSheet(el);
-  }, [key]);
+  }, [key, router]);
 
   // A click on the dimmed page, or a drag down on phone, closes it like the close button (js/sheet.mjs).
   useEffect(() => {
@@ -129,6 +148,10 @@ export function GemSheet({ rows, detail, asked, zone }: {
       setShown(null);
       const back = pushed;
       pushed = false;
+      if (pending) {
+        if (!new URLSearchParams(location.search).has('gem')) abandoned.current = pending;
+        setPending(null);
+      }
       if (new URLSearchParams(location.search).has('gem')) {
         if (back) router.back(); else {
           const next = new URLSearchParams(location.search);

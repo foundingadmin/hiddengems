@@ -141,13 +141,19 @@ What the Week 9 opening lines show (one book posted, numbers will move by Sunday
 Week 8 pilot check, 8 real bets: clear reads hit 4 of 5, hazy or cloudy reads 1 of 3. Directional only, but it supports multiplying clarity instead of adding it.
 
 ```
-if gap_to_posted <= 0:  no gem (Fool's Gold if it looks tempting)
+if price < 2.50 or price > 5.00:  no gem           # the pilot's range, no long shots (Nov 6 2026)
+if gap_to_posted < 1:   no gem (Fool's Gold if it looks tempting)
 rating      = round(100 * clamp(carat_pp / 10, 0, 1) * clarity / 100)
 board_order = hit_chance * clarity / 100          # likeliest real gem first
 if no_2026_stats:       rating = None             # market stands
 ```
 
 Empty state: when nothing clears at your usual odds, the board says so.
+
+Nov 6 2026, back to how the Week 8 pilot picked: a gem must be priced 2.50 to 5.00 and beat the posted price by a
+point or more (`GEM_RULES` in `packages/core/src/gems.ts`). Long shots no longer reach the board. Leaning the model
+on hit rate instead of the red zone read was tested the same night and made the walk forward Brier worse (0.1309
+at 80% red zone, 0.1320 at 50%, 0.1343 at 20%, Weeks 4 to 8), so the blend stays.
 
 Display: one violet gem with brightness keyed to the rating, the number beside it, the breakdown inside the expanded card.
 

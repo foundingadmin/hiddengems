@@ -4,6 +4,7 @@
 // Spend is guarded: no call happens unless ANTHROPIC_API_KEY is set AND the owner has set a monthly cap
 // (provider_caps, in US cents), and the month's spend (provider_usage, in cents) leaves room for the
 // largest answer. Each ask runs as the ask-jeweler job through runJob, so it lands in the pull log.
+import { whyNoRating } from '@hiddengems/core';
 import { type Db, providerCaps, providerUsage } from '@hiddengems/db';
 import { eq } from 'drizzle-orm';
 import type { FailureOwner } from './errors';
@@ -142,7 +143,7 @@ const pts = (n: number, places = 0) => {
 const standing = (g: JewelerGem) =>
   g.kind === 'gem' ? `gem rating ${g.rating}`
     : g.kind === 'fools-gold' ? "Fool's Gold (beats the fair price, not the posted price; no rating)"
-      : g.kind === 'unrated' ? 'no rating (no 2026 stats yet, so the market stands)' : 'not a gem (does not clear the posted price)';
+      : g.kind === 'unrated' ? 'no rating (no 2026 stats yet, so the market stands)' : `not a gem (${whyNoRating(g.kind, g.price).toLowerCase()})`;
 
 /** One line per prop, with every number the app shows for it, formatted the way the app prints it. */
 export function describeGem(g: JewelerGem): string {
@@ -182,7 +183,7 @@ Rules:
 How Hidden Gems reads a prop:
 - Price: DraftKings decimal odds. Priced: the chance that price implies, the book's cut included.
 - Our estimate: the model's hit chance from 2026 red zone usage, touchdown rate, snap share and implied team points, blended with the market.
-- Edge: our estimate minus priced, in points. Above zero clears the cut.
+- Edge: our estimate minus priced, in points. A gem is priced 2.50 to 5.00 and clears the cut by a point or more.
 - Clarity: confidence in the read, 0 to 100, from sample size, whether the red zone read and the hit rate agree, whether the books agree, and the injury report.
 - Gem rating: 0 to 100. The gap between our estimate and the fair chance (the price with the book's cut taken out), counted in full at 10 points, times clarity. The sheet shows it as Gap to fair. It runs larger than the edge, which is measured against the posted price. Only props that clear the posted price are gems.
 - Fool's Gold: beats the fair price but not the posted price, so the cut eats it.`;

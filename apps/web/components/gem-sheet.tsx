@@ -3,7 +3,7 @@
 // The open gem lives in the URL (?gem=<selection key>), so it can be linked and Back closes it. The header and
 // tabs stay pinned; the body is one scroll and each tab jumps to its section. It springs in and out with the drawer
 // moment (lib/moments/drawer.ts), keeping the gem on screen while it slides out after Back.
-import { FULL_CARAT, betLabel } from '@hiddengems/core';
+import { FULL_CARAT, betLabel, whyNoRating } from '@hiddengems/core';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { type MouseEvent, useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { SlipButton } from '@/components/add-to-slip';
@@ -257,7 +257,7 @@ function Sections({ gem, zone }: { gem: GemDetail; zone: string }) {
           <div className="fc-stat">
             <p className="fc-stat-label">Edge</p>
             <p className="fc-stat-value"><Edge pts={pts(gem.gapToPosted)} /></p>
-            {gem.gapToPosted > 0 && <p className="fc-stat-detail">Clears the cut</p>}
+            {gem.kind === 'gem' && <p className="fc-stat-detail">Clears the cut</p>}
           </div>
         </div>
         <p className="fc-runin text-copy-14">
@@ -269,7 +269,7 @@ function Sections({ gem, zone }: { gem: GemDetail; zone: string }) {
             {gem.rating != null ? (
               <dd>{gem.rating}<small>Gap to fair, as a share of {FULL_CARAT} pts, times clarity</small></dd>
             ) : (
-              <dd>None<small>{gem.kind === 'unrated' ? 'No 2026 stats, so the market stands' : 'Does not clear the posted price'}</small></dd>
+              <dd>None<small>{whyNoRating(gem.kind, gem.price)}</small></dd>
             )}
           </div>
           <div>

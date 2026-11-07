@@ -26,9 +26,20 @@ export interface GemInput {
 }
 
 /**
- * gem         clears the cut: our chance beats the posted price
- * fools-gold  looks good against the fair price, but the book's cut eats it
- * none        beats neither price
+ * The way the Week 8 pilot picked (Nov 1 2026): only props in the usual price range, and only edges big enough
+ * to mean something. Josh bets 2.5 or more and skips long shots; an edge under a point is inside the model's error.
+ */
+export const GEM_RULES = { minPrice: 2.5, maxPrice: 5, minGap: 1 } as const;
+
+/** Whether a posted price sits in the range gems come from. */
+export function inGemRange(price: number): boolean {
+  return price >= GEM_RULES.minPrice && price <= GEM_RULES.maxPrice;
+}
+
+/**
+ * gem         in range and clears the cut: our chance beats the posted price by a point or more
+ * fools-gold  in range and looks good against the fair price, but the book's cut eats it
+ * none        out of range, or beats neither price
  * unrated     no 2026 stats, so no read
  */
 export type GemKind = 'gem' | 'fools-gold' | 'none' | 'unrated';
@@ -39,7 +50,7 @@ export interface GemRead {
   rating: number | null;
   /** Carat: our chance minus the market's fair chance, in points. */
   carat: number;
-  /** Our chance minus the posted price's implied chance, in points. Above zero clears the cut. */
+  /** Our chance minus the posted price's implied chance, in points. A point or more clears the cut for a gem. */
   gapToPosted: number;
   /** Fair chance behind the posted price. */
   fair: number;
@@ -64,8 +75,16 @@ export function appraise({ hitChance, price, clarity, hasStats }: GemInput): Gem
   const gapToPosted = (hitChance - priced) * 100;
   const base = { carat, gapToPosted, fair, priced };
   if (!hasStats) return { kind: 'unrated', rating: null, ...base };
-  if (gapToPosted > 0) return { kind: 'gem', rating: gemRating(carat, clarity), ...base };
+  if (!inGemRange(price)) return { kind: 'none', rating: null, ...base };
+  if (gapToPosted >= GEM_RULES.minGap) return { kind: 'gem', rating: gemRating(carat, clarity), ...base };
   return { kind: carat > 0 ? 'fools-gold' : 'none', rating: null, ...base };
+}
+
+/** Why a prop has no rating, in one line. */
+export function whyNoRating(kind: string, price: number): string {
+  if (kind === 'unrated') return 'No 2026 stats, so the market stands';
+  if (!inGemRange(price)) return `Outside the ${GEM_RULES.minPrice.toFixed(2)} to ${GEM_RULES.maxPrice.toFixed(2)} range`;
+  return `Does not clear the posted price by ${GEM_RULES.minGap} pt`;
 }
 
 export interface Rankable {

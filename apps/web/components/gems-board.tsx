@@ -271,7 +271,7 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
                   <th scope="col" data-align="numeric">Price</th>
                   <th scope="col" data-align="numeric">{tip('Priced', 'The chance the DraftKings price implies, cut included')}</th>
                   <th scope="col" data-align="numeric">{tip('Our est.', 'Our hit chance: the v3.0 model blended with the fair price')}</th>
-                  <th scope="col" data-align="numeric">{tip('Edge', 'Our estimate minus the priced chance. Above zero clears the cut')}</th>
+                  <th scope="col" data-align="numeric">{tip('Edge', 'Our estimate minus the priced chance. A gem clears the cut by a point or more')}</th>
                   <th scope="col" data-align="numeric">{tip('Clarity', 'Confidence in the read, 0 to 100: sample, consistency, books agreeing, setup')}</th>
                   <th scope="col"><span className="fc-visually-hidden">Slip</span></th>
                 </tr>

@@ -483,7 +483,12 @@ describe('before the owner runs the gem grading and slips migrations', () => {
 
 describe('slips', () => {
   it('starts one sample draft from the top gems in different games', async () => {
+    // Gems are rare under the pilot's rules (2.50 to 5.00, a point of edge), so a sample week can have none.
     const all = await db.select().from(slips);
+    if (!all.length) {
+      expect(await db.select().from(picks).where(eq(picks.kind, 'gem'))).toHaveLength(0);
+      return;
+    }
     expect(all).toHaveLength(1);
     expect(all[0]).toMatchObject({ state: 'draft', play: 'own', stake: '15.00' });
     const legs = await db.select().from(slipLegs).where(eq(slipLegs.slipId, all[0]!.id));

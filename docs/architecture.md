@@ -139,10 +139,10 @@ network and 5xx errors, request counting, quota headers into `provider_usage`, k
 | Sample | Everything, deterministic, built around today's date | none |
 | Anthropic Messages API | The Jeweler's answers (`claude-sonnet-5-5`) | `ANTHROPIC_API_KEY` |
 
-The free plan also reads The Odds API's historical endpoints (tested Nov 7 2026: a historical event list cost 1
-credit). Historical event odds cost 10 credits per market per game, so a small backtest can fit the free plan's
-monthly remainder. Before asking the owner to upgrade, price the run with `node ops/backtest/fetch-odds.mjs --dry`
-and compare it with the credits left. `ops/backtest/` has the replay (experiments/backtest/README.md).
+Historical odds need a paid plan. Tested Nov 7 2026 on the free key: the historical event list works (1 credit), but
+historical event odds return 401 `HISTORICAL_UNAVAILABLE_ON_FREE_USAGE_PLAN`, so no backtest prices come from the free
+plan. On a paid plan they cost 10 credits per market per game; price a run with
+`node ops/backtest/fetch-odds.mjs --dry` (experiments/backtest/README.md).
 
 `DATA_MODE=sample` (the default when `ODDS_API_KEY` is unset) runs the whole pipeline on sample data:
 local development, tests, CI and previews need no secrets. Adapters validate payloads with zod, so

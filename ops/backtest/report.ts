@@ -1,5 +1,6 @@
 // Writes experiments/backtest/README.md from the replay's ledgers: method, guard, spend, results and calibration.
 import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { modsSection } from './mods/report';
 import { LEDGER_DIR, ODDS_DIR, OUT_DIR, SUMMARY_PATH } from './paths';
 import type { Ledger, Pick } from './replay';
 
@@ -50,6 +51,8 @@ export function writeReadme() {
 
   const L: string[] = [];
   L.push('# Weeks 1 to 8 backtest', '');
+  L.push(...modsSection());
+  L.push('## MOD0 to MOD3', '', 'The first backtest (Nov 7 2026), Sunday games and four markets only.', '');
   L.push('## Method', '');
   L.push('- Each 2026 Sunday of Weeks 1 to 8 is replayed from the Saturday 7:47 PM Mountain board before it. Thursday, Saturday and Monday games are skipped. Segments by Mountain kickoff: AM before noon, PM noon to 4 PM, SNF 4 PM on.');
   L.push('- Board: The Odds API historical event odds at that moment, DraftKings plus FanDuel, BetMGM, Caesars and Fanatics, for anytime TD and the receptions, receiving yards and rushing yards ladders, over sides only. Close: the same at 20 minutes before each kickoff, for CLV (taken over the close fair price, core `closingLineValue`).');

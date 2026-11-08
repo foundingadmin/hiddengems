@@ -1,5 +1,77 @@
 # Weeks 1 to 8 backtest
 
+## MOD4, MOD5 and MOD6
+
+Three MODs kept apart by what each may read, tailored on Weeks 2 to 6, frozen, then run once on sealed Weeks 7 and 8 with MOD2 (main today) alongside as the control. Every game counts (Thursday, Sunday, Monday) across ten bet types. Edge is the MOD's chance minus DraftKings' implied chance with the vig in, and a gem needs edge above zero. Each MOD keeps one bet per player and stat, and every gem logs its line position (MAIN or ALT) and the DraftKings main line. Passing means more hits than the book expected and a positive flat $1 ROI.
+
+### Sealed Weeks 7 and 8
+
+| MOD | Gems | Hits | Book expected | z | Flat ROI | Raw CLV | Verdict |
+|---|---|---|---|---|---|---|---|
+| MOD4 | 9 | 3 of 8 | 2.2 | 0.61 | +25.3% | +4.79% | pass |
+| MOD5 | 24 | 12 of 23 | 11.3 | 0.3 | +8.6% | +3.10% | pass |
+| MOD6 | 11 | 5 of 11 | 5.5 | -0.28 | -9.4% | -1.19% | fail |
+| MOD2 control | 306 | 75 of 303 | 85.8 | -1.39 | -10.9% | +3.27% | fail |
+
+Raw CLV is the price taken over DraftKings' price at the close, minus one, so above zero means the line moved toward the pick. MOD2 reads only its four markets. Gem overlap (shared game, player and stat, as a share of the smaller MOD) is MOD4 and MOD5 11%, MOD4 and MOD6 0%, MOD5 and MOD6 0%, MOD2 and MOD4 44%, MOD2 and MOD5 54%, MOD2 and MOD6 0%.
+
+### By market, sealed
+
+| MOD | Market | Gems | Hits | Book expected | z | Flat ROI | Raw CLV |
+|---|---|---|---|---|---|---|---|
+| MOD4 | reception_yds | 2 | 0 of 2 | 0.5 | -0.86 | -100.0% | +4.54% |
+| MOD4 | rush_yds | 3 | 1 of 2 | 0.5 | 0.72 | +84.5% | +11.67% |
+| MOD4 | pass_attempts | 4 | 2 of 4 | 1.2 | 0.93 | +58.3% | -0.24% |
+| MOD5 | receptions | 10 | 6 of 10 | 4.4 | 0.99 | +37.8% | +1.66% |
+| MOD5 | reception_yds | 4 | 3 of 4 | 2.1 | 0.89 | +41.5% | +2.00% |
+| MOD5 | rush_yds | 6 | 2 of 5 | 2.6 | -0.58 | -23.6% | +1.76% |
+| MOD5 | rush_attempts | 4 | 1 of 4 | 2.1 | -1.09 | -57.0% | +14.60% |
+| MOD6 | receptions | 3 | 1 of 3 | 1.3 | -0.34 | -24.7% | -1.72% |
+| MOD6 | reception_yds | 5 | 2 of 5 | 2.6 | -0.58 | -23.6% | 0.00% |
+| MOD6 | rush_yds | 1 | 1 of 1 | 0.5 | 0.95 | +91.0% | n/a |
+| MOD6 | rush_attempts | 1 | 0 of 1 | 0.5 | -1 | -100.0% | 0.00% |
+| MOD6 | pass_completions | 1 | 1 of 1 | 0.5 | 0.99 | +98.0% | -1.98% |
+| MOD2 | anytime_td | 14 | 6 of 13 | 3.3 | 1.73 | +85.0% | -0.68% |
+| MOD2 | receptions | 74 | 13 of 74 | 20.7 | -2.02 | -37.9% | +4.11% |
+| MOD2 | reception_yds | 154 | 42 of 154 | 44 | -0.35 | -2.2% | +3.68% |
+| MOD2 | rush_yds | 64 | 14 of 62 | 17.8 | -1.08 | -20.3% | +2.18% |
+
+### The cards
+
+**MOD4** · Market only. DraftKings against the vig-free median of the other books at the same line. No player stats. Frozen after 3 of 15 runs, sha256 `add227a57f93677a`. Weeks 2 to 6 at the freeze had 37 gems (7.4 a week), 11 hits against 9.2 expected, ROI +20.6%, raw CLV +6.71%. Card `experiments/mods/MOD4-card.json`, log `experiments/mods/MOD4-log.md`.
+
+**MOD5** · Football only. Projects each stat from recency weighted games, the 2025 season, the defense against the position and team implied points. No other books. Frozen after 8 of 15 runs, sha256 `a16234236541c07f`. Weeks 2 to 6 at the freeze had 36 gems (7.2 a week), 16 hits against 17.7 expected, ROI -9.9%, raw CLV +1.55%. Card `experiments/mods/MOD5-card.json`, log `experiments/mods/MOD5-log.md`.
+
+**MOD6** · News only. Backs whoever inherits the work when a starter is Out or Doubtful (injury report plus depth chart), on DraftKings' own vig-free chance shifted for the event. No projections, no other books. Frozen after 5 of 15 runs, sha256 `db16b86ec26fe548`. Weeks 2 to 6 at the freeze had 37 gems (7.4 a week), 22 hits against 18.7 expected, ROI +17.4%, raw CLV +0.10%. Card `experiments/mods/MOD6-card.json`, log `experiments/mods/MOD6-log.md`.
+
+### Tailoring and the seal
+
+- Every run wrote its line in the MOD's log before it ran, and `ops/backtest/mods/harness.ts` refuses a run without a pending line or past 15. A count-only mode sizes a card by gems a week without reading outcomes or closes, and is not a run.
+- Weeks 7 and 8 open only through `--sealed`, which checks each card is frozen and its sha256 matches the hash given, then runs once and refuses a second time. The cards and their hashes were committed before the unseal.
+- The guard from the first backtest holds for every input. Box scores are stamped at kickoff, each team's injury report at its final report (Wednesday for Thursday games, Friday for Sunday, Saturday for Monday) and depth charts at their snapshot. Spreads and totals come from the Saturday (or Wednesday) board itself, so MOD5's game script carries no closing line.
+- MOD5 run 8 ran at a 26 point edge floor while its log line says 22. The note sits under it in the log.
+- The first backtest's MOD2 Sunday results for Weeks 7 and 8 were published before this brief. MOD4, MOD5 and MOD6 never saw those weeks.
+- Samples are small (a few dozen sealed gems per MOD). A z between minus 2 and plus 2 is noise, so a pass or fail here is a direction, not a verdict.
+
+### The history buy
+
+- 32,847 credits on the 100K plan (cap 36,000, dry run upper bound 32,907), 67,153 left this month.
+- Weeks 2 to 8, 105 games (91 Sunday, 7 Thursday, 7 Monday), board and close for each. Sunday games added 15 keys (pass yards, rush plus receiving yards, pass plus rush yards, rush attempts, pass completions and pass attempts, main and alt, plus main receptions, receiving yards and rushing yards). Thursday and Monday games took all 19. Spreads and totals for every game at each board.
+- DraftKings posted every key at every board and close except pass plus rush yards main (Week 2 Browns at Buccaneers, Week 7 Rams at Raiders) and its alt ladder (Week 7 Rams at Raiders).
+- Stored in `foundingadmin/hiddengems-backups` at `capsules/2026/wkNN/{sat,close}/odds/<gameId>.json.gz` (240 files, 4 MB), each holding the merged event and the original responses. A Thursday game's Wednesday board sits under `sat` as its board.
+
+### Run it again, 0 credits
+
+```
+git clone https://github.com/foundingadmin/hiddengems-backups /tmp/backups   # private
+packages/ingest/node_modules/.bin/tsx ops/backtest/capsule-io.ts import /tmp/backups
+packages/ingest/node_modules/.bin/tsx ops/backtest/mods/harness.ts --mod MOD4 --count
+```
+
+## MOD0 to MOD3
+
+The first backtest (Nov 7 2026), Sunday games and four markets only.
+
 ## Method
 
 - Each 2026 Sunday of Weeks 1 to 8 is replayed from the Saturday 7:47 PM Mountain board before it. Thursday, Saturday and Monday games are skipped. Segments by Mountain kickoff: AM before noon, PM noon to 4 PM, SNF 4 PM on.

@@ -1,0 +1,60 @@
+{
+  "run": "MOD1q-WK7PM-back",
+  "mod": "MOD1q",
+  "week": 7,
+  "segment": "PM",
+  "kind": "back",
+  "board_at": "2026-10-25T01:47:00.000Z",
+  "locked_at": "2026-10-25T01:47:00.000Z",
+  "picks": [
+    {
+      "selection_key": "2026-10-25-gb-det:receiving_yds:00-0040667:over:89.5",
+      "game_id": "2026-10-25-gb-det",
+      "player": "Matthew Golden",
+      "market": "receiving_yds",
+      "line": 89.5,
+      "side": "over",
+      "book": "draftkings",
+      "lock_price": 2.56,
+      "implied": 0.3906,
+      "reads": [],
+      "close_price": 2.59,
+      "clv": -0.0866,
+      "stat_value": 39,
+      "hit": false,
+      "mod_chance": 0.6667,
+      "edge": 0.276,
+      "gem_level": 2,
+      "rating": null,
+      "clarity": null
+    },
+    {
+      "selection_key": "2026-10-25-gb-det:anytime_td:00-0039065:yes:-",
+      "game_id": "2026-10-25-gb-det",
+      "player": "Sam LaPorta",
+      "market": "anytime_td",
+      "line": null,
+      "side": "yes",
+      "book": "draftkings",
+      "lock_price": 2.5,
+      "implied": 0.4,
+      "reads": [],
+      "close_price": 2.5,
+      "clv": -0.075,
+      "stat_value": 0,
+      "hit": false,
+      "mod_chance": 0.6,
+      "edge": 0.2,
+      "gem_level": 1,
+      "rating": null,
+      "clarity": null
+    }
+  ],
+  "result": {
+    "book_expected_hits": 0.791,
+    "hits": 0,
+    "pass": false,
+    "flat_roi": -1,
+    "clv_avg": -0.0808
+  }
+}

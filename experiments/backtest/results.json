@@ -1,0 +1,1206 @@
+{
+  "audit": [
+    {
+      "week": 1,
+      "inputs": 2,
+      "selections": 0,
+      "unmatched": 0
+    },
+    {
+      "week": 2,
+      "inputs": 16121,
+      "selections": 4137,
+      "unmatched": 29
+    },
+    {
+      "week": 3,
+      "inputs": 17351,
+      "selections": 4073,
+      "unmatched": 32
+    },
+    {
+      "week": 4,
+      "inputs": 19543,
+      "selections": 4297,
+      "unmatched": 32
+    },
+    {
+      "week": 5,
+      "inputs": 19108,
+      "selections": 3677,
+      "unmatched": 29
+    },
+    {
+      "week": 6,
+      "inputs": 20111,
+      "selections": 3583,
+      "unmatched": 54
+    },
+    {
+      "week": 7,
+      "inputs": 22183,
+      "selections": 4036,
+      "unmatched": 42
+    },
+    {
+      "week": 8,
+      "inputs": 23665,
+      "selections": 4142,
+      "unmatched": 54
+    }
+  ],
+  "ledgers": [
+    {
+      "run": "MOD0-WK1AM-back",
+      "mod": "MOD0",
+      "week": 1,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-09-13T01:47:00.000Z",
+      "locked_at": "2026-09-13T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0,
+        "hits": 0,
+        "pass": null,
+        "flat_roi": null,
+        "clv_avg": null
+      }
+    },
+    {
+      "run": "MOD0-WK1PM-back",
+      "mod": "MOD0",
+      "week": 1,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-09-13T01:47:00.000Z",
+      "locked_at": "2026-09-13T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0,
+        "hits": 0,
+        "pass": null,
+        "flat_roi": null,
+        "clv_avg": null
+      }
+    },
+    {
+      "run": "MOD0-WK1SNF-back",
+      "mod": "MOD0",
+      "week": 1,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-09-13T01:47:00.000Z",
+      "locked_at": "2026-09-13T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0,
+        "hits": 0,
+        "pass": null,
+        "flat_roi": null,
+        "clv_avg": null
+      }
+    },
+    {
+      "run": "MOD1q-WK1AM-back",
+      "mod": "MOD1q",
+      "week": 1,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-09-13T01:47:00.000Z",
+      "locked_at": "2026-09-13T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0,
+        "hits": 0,
+        "pass": null,
+        "flat_roi": null,
+        "clv_avg": null
+      }
+    },
+    {
+      "run": "MOD1q-WK1PM-back",
+      "mod": "MOD1q",
+      "week": 1,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-09-13T01:47:00.000Z",
+      "locked_at": "2026-09-13T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0,
+        "hits": 0,
+        "pass": null,
+        "flat_roi": null,
+        "clv_avg": null
+      }
+    },
+    {
+      "run": "MOD1q-WK1SNF-back",
+      "mod": "MOD1q",
+      "week": 1,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-09-13T01:47:00.000Z",
+      "locked_at": "2026-09-13T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0,
+        "hits": 0,
+        "pass": null,
+        "flat_roi": null,
+        "clv_avg": null
+      }
+    },
+    {
+      "run": "MOD2-WK1AM-back",
+      "mod": "MOD2",
+      "week": 1,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-09-13T01:47:00.000Z",
+      "locked_at": "2026-09-13T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0,
+        "hits": 0,
+        "pass": null,
+        "flat_roi": null,
+        "clv_avg": null
+      }
+    },
+    {
+      "run": "MOD2-WK1PM-back",
+      "mod": "MOD2",
+      "week": 1,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-09-13T01:47:00.000Z",
+      "locked_at": "2026-09-13T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0,
+        "hits": 0,
+        "pass": null,
+        "flat_roi": null,
+        "clv_avg": null
+      }
+    },
+    {
+      "run": "MOD2-WK1SNF-back",
+      "mod": "MOD2",
+      "week": 1,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-09-13T01:47:00.000Z",
+      "locked_at": "2026-09-13T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0,
+        "hits": 0,
+        "pass": null,
+        "flat_roi": null,
+        "clv_avg": null
+      }
+    },
+    {
+      "run": "MOD0-WK2AM-back",
+      "mod": "MOD0",
+      "week": 2,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-09-20T01:47:00.000Z",
+      "locked_at": "2026-09-20T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 4.894,
+        "hits": 2,
+        "pass": false,
+        "flat_roi": -0.7346,
+        "clv_avg": -0.1267
+      }
+    },
+    {
+      "run": "MOD0-WK2PM-back",
+      "mod": "MOD0",
+      "week": 2,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-09-20T01:47:00.000Z",
+      "locked_at": "2026-09-20T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 3.556,
+        "hits": 4,
+        "pass": true,
+        "flat_roi": -0.1533,
+        "clv_avg": -0.1133
+      }
+    },
+    {
+      "run": "MOD0-WK2SNF-back",
+      "mod": "MOD0",
+      "week": 2,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-09-20T01:47:00.000Z",
+      "locked_at": "2026-09-20T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0.438,
+        "hits": 0,
+        "pass": false,
+        "flat_roi": -1,
+        "clv_avg": -0.1186
+      }
+    },
+    {
+      "run": "MOD1q-WK2AM-back",
+      "mod": "MOD1q",
+      "week": 2,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-09-20T01:47:00.000Z",
+      "locked_at": "2026-09-20T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0,
+        "hits": 0,
+        "pass": null,
+        "flat_roi": null,
+        "clv_avg": null
+      }
+    },
+    {
+      "run": "MOD1q-WK2PM-back",
+      "mod": "MOD1q",
+      "week": 2,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-09-20T01:47:00.000Z",
+      "locked_at": "2026-09-20T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0,
+        "hits": 0,
+        "pass": null,
+        "flat_roi": null,
+        "clv_avg": null
+      }
+    },
+    {
+      "run": "MOD1q-WK2SNF-back",
+      "mod": "MOD1q",
+      "week": 2,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-09-20T01:47:00.000Z",
+      "locked_at": "2026-09-20T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0,
+        "hits": 0,
+        "pass": null,
+        "flat_roi": null,
+        "clv_avg": null
+      }
+    },
+    {
+      "run": "MOD2-WK2AM-back",
+      "mod": "MOD2",
+      "week": 2,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-09-20T01:47:00.000Z",
+      "locked_at": "2026-09-20T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 30.734,
+        "hits": 22,
+        "pass": false,
+        "flat_roi": -0.2664,
+        "clv_avg": -0.0999
+      }
+    },
+    {
+      "run": "MOD2-WK2PM-back",
+      "mod": "MOD2",
+      "week": 2,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-09-20T01:47:00.000Z",
+      "locked_at": "2026-09-20T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 17.661,
+        "hits": 11,
+        "pass": false,
+        "flat_roi": -0.3651,
+        "clv_avg": -0.067
+      }
+    },
+    {
+      "run": "MOD2-WK2SNF-back",
+      "mod": "MOD2",
+      "week": 2,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-09-20T01:47:00.000Z",
+      "locked_at": "2026-09-20T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 3.31,
+        "hits": 5,
+        "pass": true,
+        "flat_roi": 0.41,
+        "clv_avg": -0.0865
+      }
+    },
+    {
+      "run": "MOD0-WK3AM-back",
+      "mod": "MOD0",
+      "week": 3,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-09-27T01:47:00.000Z",
+      "locked_at": "2026-09-27T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 4.406,
+        "hits": 3,
+        "pass": false,
+        "flat_roi": 0.0333,
+        "clv_avg": -0.0997
+      }
+    },
+    {
+      "run": "MOD0-WK3PM-back",
+      "mod": "MOD0",
+      "week": 3,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-09-27T01:47:00.000Z",
+      "locked_at": "2026-09-27T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 2.328,
+        "hits": 4,
+        "pass": true,
+        "flat_roi": 0.6923,
+        "clv_avg": -0.1456
+      }
+    },
+    {
+      "run": "MOD0-WK3SNF-back",
+      "mod": "MOD0",
+      "week": 3,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-09-27T01:47:00.000Z",
+      "locked_at": "2026-09-27T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0.402,
+        "hits": 1,
+        "pass": true,
+        "flat_roi": 3.6,
+        "clv_avg": -0.2633
+      }
+    },
+    {
+      "run": "MOD1q-WK3AM-back",
+      "mod": "MOD1q",
+      "week": 3,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-09-27T01:47:00.000Z",
+      "locked_at": "2026-09-27T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0,
+        "hits": 0,
+        "pass": null,
+        "flat_roi": null,
+        "clv_avg": null
+      }
+    },
+    {
+      "run": "MOD1q-WK3PM-back",
+      "mod": "MOD1q",
+      "week": 3,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-09-27T01:47:00.000Z",
+      "locked_at": "2026-09-27T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0,
+        "hits": 0,
+        "pass": null,
+        "flat_roi": null,
+        "clv_avg": null
+      }
+    },
+    {
+      "run": "MOD1q-WK3SNF-back",
+      "mod": "MOD1q",
+      "week": 3,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-09-27T01:47:00.000Z",
+      "locked_at": "2026-09-27T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0,
+        "hits": 0,
+        "pass": null,
+        "flat_roi": null,
+        "clv_avg": null
+      }
+    },
+    {
+      "run": "MOD2-WK3AM-back",
+      "mod": "MOD2",
+      "week": 3,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-09-27T01:47:00.000Z",
+      "locked_at": "2026-09-27T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 27.53,
+        "hits": 15,
+        "pass": false,
+        "flat_roi": -0.5005,
+        "clv_avg": -0.0596
+      }
+    },
+    {
+      "run": "MOD2-WK3PM-back",
+      "mod": "MOD2",
+      "week": 3,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-09-27T01:47:00.000Z",
+      "locked_at": "2026-09-27T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 10.587,
+        "hits": 10,
+        "pass": false,
+        "flat_roi": -0.0816,
+        "clv_avg": -0.0726
+      }
+    },
+    {
+      "run": "MOD2-WK3SNF-back",
+      "mod": "MOD2",
+      "week": 3,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-09-27T01:47:00.000Z",
+      "locked_at": "2026-09-27T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 2.423,
+        "hits": 4,
+        "pass": true,
+        "flat_roi": 0.745,
+        "clv_avg": -0.0683
+      }
+    },
+    {
+      "run": "MOD0-WK4AM-back",
+      "mod": "MOD0",
+      "week": 4,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-10-04T01:47:00.000Z",
+      "locked_at": "2026-10-04T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 3.399,
+        "hits": 3,
+        "pass": false,
+        "flat_roi": 0.2674,
+        "clv_avg": -0.1488
+      }
+    },
+    {
+      "run": "MOD0-WK4PM-back",
+      "mod": "MOD0",
+      "week": 4,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-10-04T01:47:00.000Z",
+      "locked_at": "2026-10-04T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 1.609,
+        "hits": 1,
+        "pass": false,
+        "flat_roi": -0.745,
+        "clv_avg": -0.1591
+      }
+    },
+    {
+      "run": "MOD0-WK4SNF-back",
+      "mod": "MOD0",
+      "week": 4,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-10-04T01:47:00.000Z",
+      "locked_at": "2026-10-04T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0.79,
+        "hits": 1,
+        "pass": true,
+        "flat_roi": -0.3125,
+        "clv_avg": -0.0779
+      }
+    },
+    {
+      "run": "MOD1q-WK4AM-back",
+      "mod": "MOD1q",
+      "week": 4,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-10-04T01:47:00.000Z",
+      "locked_at": "2026-10-04T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 18.156,
+        "hits": 11,
+        "pass": false,
+        "flat_roi": -0.4157,
+        "clv_avg": -0.0968
+      }
+    },
+    {
+      "run": "MOD1q-WK4PM-back",
+      "mod": "MOD1q",
+      "week": 4,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-10-04T01:47:00.000Z",
+      "locked_at": "2026-10-04T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 8.121,
+        "hits": 6,
+        "pass": false,
+        "flat_roi": -0.3296,
+        "clv_avg": -0.1126
+      }
+    },
+    {
+      "run": "MOD1q-WK4SNF-back",
+      "mod": "MOD1q",
+      "week": 4,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-10-04T01:47:00.000Z",
+      "locked_at": "2026-10-04T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 2.343,
+        "hits": 2,
+        "pass": false,
+        "flat_roi": -0.1914,
+        "clv_avg": -0.0504
+      }
+    },
+    {
+      "run": "MOD2-WK4AM-back",
+      "mod": "MOD2",
+      "week": 4,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-10-04T01:47:00.000Z",
+      "locked_at": "2026-10-04T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 18.643,
+        "hits": 17,
+        "pass": false,
+        "flat_roi": -0.0429,
+        "clv_avg": -0.085
+      }
+    },
+    {
+      "run": "MOD2-WK4PM-back",
+      "mod": "MOD2",
+      "week": 4,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-10-04T01:47:00.000Z",
+      "locked_at": "2026-10-04T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 10.061,
+        "hits": 7,
+        "pass": false,
+        "flat_roi": -0.3211,
+        "clv_avg": -0.1059
+      }
+    },
+    {
+      "run": "MOD2-WK4SNF-back",
+      "mod": "MOD2",
+      "week": 4,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-10-04T01:47:00.000Z",
+      "locked_at": "2026-10-04T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 1.813,
+        "hits": 2,
+        "pass": true,
+        "flat_roi": 0.3217,
+        "clv_avg": -0.0385
+      }
+    },
+    {
+      "run": "MOD0-WK5AM-back",
+      "mod": "MOD0",
+      "week": 5,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-10-11T01:47:00.000Z",
+      "locked_at": "2026-10-11T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 5.593,
+        "hits": 3,
+        "pass": false,
+        "flat_roi": -0.4803,
+        "clv_avg": -0.1761
+      }
+    },
+    {
+      "run": "MOD0-WK5PM-back",
+      "mod": "MOD0",
+      "week": 5,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-10-11T01:47:00.000Z",
+      "locked_at": "2026-10-11T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 2.074,
+        "hits": 1,
+        "pass": false,
+        "flat_roi": -0.7917,
+        "clv_avg": -0.1283
+      }
+    },
+    {
+      "run": "MOD0-WK5SNF-back",
+      "mod": "MOD0",
+      "week": 5,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-10-11T01:47:00.000Z",
+      "locked_at": "2026-10-11T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 1.02,
+        "hits": 0,
+        "pass": false,
+        "flat_roi": -1,
+        "clv_avg": -0.2089
+      }
+    },
+    {
+      "run": "MOD1q-WK5AM-back",
+      "mod": "MOD1q",
+      "week": 5,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-10-11T01:47:00.000Z",
+      "locked_at": "2026-10-11T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 6.381,
+        "hits": 7,
+        "pass": true,
+        "flat_roi": 0.0267,
+        "clv_avg": -0.1238
+      }
+    },
+    {
+      "run": "MOD1q-WK5PM-back",
+      "mod": "MOD1q",
+      "week": 5,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-10-11T01:47:00.000Z",
+      "locked_at": "2026-10-11T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 2.359,
+        "hits": 0,
+        "pass": false,
+        "flat_roi": -1,
+        "clv_avg": -0.1068
+      }
+    },
+    {
+      "run": "MOD1q-WK5SNF-back",
+      "mod": "MOD1q",
+      "week": 5,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-10-11T01:47:00.000Z",
+      "locked_at": "2026-10-11T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 1.47,
+        "hits": 0,
+        "pass": false,
+        "flat_roi": -1,
+        "clv_avg": -0.0692
+      }
+    },
+    {
+      "run": "MOD2-WK5AM-back",
+      "mod": "MOD2",
+      "week": 5,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-10-11T01:47:00.000Z",
+      "locked_at": "2026-10-11T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 19.192,
+        "hits": 20,
+        "pass": true,
+        "flat_roi": 0.0587,
+        "clv_avg": -0.097
+      }
+    },
+    {
+      "run": "MOD2-WK5PM-back",
+      "mod": "MOD2",
+      "week": 5,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-10-11T01:47:00.000Z",
+      "locked_at": "2026-10-11T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 6.321,
+        "hits": 2,
+        "pass": false,
+        "flat_roi": -0.7471,
+        "clv_avg": -0.0893
+      }
+    },
+    {
+      "run": "MOD2-WK5SNF-back",
+      "mod": "MOD2",
+      "week": 5,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-10-11T01:47:00.000Z",
+      "locked_at": "2026-10-11T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 2.847,
+        "hits": 2,
+        "pass": false,
+        "flat_roi": -0.166,
+        "clv_avg": -0.0809
+      }
+    },
+    {
+      "run": "MOD0-WK6AM-back",
+      "mod": "MOD0",
+      "week": 6,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-10-18T01:47:00.000Z",
+      "locked_at": "2026-10-18T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 6.488,
+        "hits": 4,
+        "pass": false,
+        "flat_roi": -0.1591,
+        "clv_avg": -0.149
+      }
+    },
+    {
+      "run": "MOD0-WK6PM-back",
+      "mod": "MOD0",
+      "week": 6,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-10-18T01:47:00.000Z",
+      "locked_at": "2026-10-18T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 2.082,
+        "hits": 2,
+        "pass": false,
+        "flat_roi": -0.4167,
+        "clv_avg": -0.1674
+      }
+    },
+    {
+      "run": "MOD0-WK6SNF-back",
+      "mod": "MOD0",
+      "week": 6,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-10-18T01:47:00.000Z",
+      "locked_at": "2026-10-18T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0.775,
+        "hits": 1,
+        "pass": true,
+        "flat_roi": 0.125,
+        "clv_avg": -0.0814
+      }
+    },
+    {
+      "run": "MOD1q-WK6AM-back",
+      "mod": "MOD1q",
+      "week": 6,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-10-18T01:47:00.000Z",
+      "locked_at": "2026-10-18T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 9.969,
+        "hits": 6,
+        "pass": false,
+        "flat_roi": -0.4152,
+        "clv_avg": -0.0853
+      }
+    },
+    {
+      "run": "MOD1q-WK6PM-back",
+      "mod": "MOD1q",
+      "week": 6,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-10-18T01:47:00.000Z",
+      "locked_at": "2026-10-18T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 6.837,
+        "hits": 2,
+        "pass": false,
+        "flat_roi": -0.7683,
+        "clv_avg": -0.0675
+      }
+    },
+    {
+      "run": "MOD1q-WK6SNF-back",
+      "mod": "MOD1q",
+      "week": 6,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-10-18T01:47:00.000Z",
+      "locked_at": "2026-10-18T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 1.663,
+        "hits": 2,
+        "pass": true,
+        "flat_roi": 0.172,
+        "clv_avg": -0.051
+      }
+    },
+    {
+      "run": "MOD2-WK6AM-back",
+      "mod": "MOD2",
+      "week": 6,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-10-18T01:47:00.000Z",
+      "locked_at": "2026-10-18T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 22.595,
+        "hits": 16,
+        "pass": false,
+        "flat_roi": -0.2832,
+        "clv_avg": -0.0766
+      }
+    },
+    {
+      "run": "MOD2-WK6PM-back",
+      "mod": "MOD2",
+      "week": 6,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-10-18T01:47:00.000Z",
+      "locked_at": "2026-10-18T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 12.9,
+        "hits": 10,
+        "pass": false,
+        "flat_roi": -0.2209,
+        "clv_avg": -0.061
+      }
+    },
+    {
+      "run": "MOD2-WK6SNF-back",
+      "mod": "MOD2",
+      "week": 6,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-10-18T01:47:00.000Z",
+      "locked_at": "2026-10-18T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 3.439,
+        "hits": 4,
+        "pass": true,
+        "flat_roi": 0.2142,
+        "clv_avg": -0.0457
+      }
+    },
+    {
+      "run": "MOD0-WK7AM-back",
+      "mod": "MOD0",
+      "week": 7,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-10-25T01:47:00.000Z",
+      "locked_at": "2026-10-25T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 3.956,
+        "hits": 3,
+        "pass": false,
+        "flat_roi": -0.4268,
+        "clv_avg": -0.1386
+      }
+    },
+    {
+      "run": "MOD0-WK7PM-back",
+      "mod": "MOD0",
+      "week": 7,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-10-25T01:47:00.000Z",
+      "locked_at": "2026-10-25T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 2.717,
+        "hits": 2,
+        "pass": false,
+        "flat_roi": -0.4529,
+        "clv_avg": -0.1226
+      }
+    },
+    {
+      "run": "MOD0-WK7SNF-back",
+      "mod": "MOD0",
+      "week": 7,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-10-25T01:47:00.000Z",
+      "locked_at": "2026-10-25T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 1.296,
+        "hits": 0,
+        "pass": false,
+        "flat_roi": -1,
+        "clv_avg": -0.0649
+      }
+    },
+    {
+      "run": "MOD1q-WK7AM-back",
+      "mod": "MOD1q",
+      "week": 7,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-10-25T01:47:00.000Z",
+      "locked_at": "2026-10-25T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 9.75,
+        "hits": 13,
+        "pass": true,
+        "flat_roi": 0.4326,
+        "clv_avg": -0.0596
+      }
+    },
+    {
+      "run": "MOD1q-WK7PM-back",
+      "mod": "MOD1q",
+      "week": 7,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-10-25T01:47:00.000Z",
+      "locked_at": "2026-10-25T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0.791,
+        "hits": 0,
+        "pass": false,
+        "flat_roi": -1,
+        "clv_avg": -0.0808
+      }
+    },
+    {
+      "run": "MOD1q-WK7SNF-back",
+      "mod": "MOD1q",
+      "week": 7,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-10-25T01:47:00.000Z",
+      "locked_at": "2026-10-25T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 1.82,
+        "hits": 2,
+        "pass": true,
+        "flat_roi": -0.0333,
+        "clv_avg": -0.0624
+      }
+    },
+    {
+      "run": "MOD2-WK7AM-back",
+      "mod": "MOD2",
+      "week": 7,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-10-25T01:47:00.000Z",
+      "locked_at": "2026-10-25T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 26.725,
+        "hits": 30,
+        "pass": true,
+        "flat_roi": 0.1446,
+        "clv_avg": -0.075
+      }
+    },
+    {
+      "run": "MOD2-WK7PM-back",
+      "mod": "MOD2",
+      "week": 7,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-10-25T01:47:00.000Z",
+      "locked_at": "2026-10-25T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 11.181,
+        "hits": 7,
+        "pass": false,
+        "flat_roi": -0.3445,
+        "clv_avg": -0.0418
+      }
+    },
+    {
+      "run": "MOD2-WK7SNF-back",
+      "mod": "MOD2",
+      "week": 7,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-10-25T01:47:00.000Z",
+      "locked_at": "2026-10-25T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 2.733,
+        "hits": 5,
+        "pass": true,
+        "flat_roi": 0.8056,
+        "clv_avg": -0.0588
+      }
+    },
+    {
+      "run": "MOD0-WK8AM-back",
+      "mod": "MOD0",
+      "week": 8,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-11-01T01:47:00.000Z",
+      "locked_at": "2026-11-01T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 4.405,
+        "hits": 7,
+        "pass": true,
+        "flat_roi": 0.815,
+        "clv_avg": -0.1746
+      }
+    },
+    {
+      "run": "MOD0-WK8PM-back",
+      "mod": "MOD0",
+      "week": 8,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-11-01T01:47:00.000Z",
+      "locked_at": "2026-11-01T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 1.104,
+        "hits": 3,
+        "pass": true,
+        "flat_roi": 2,
+        "clv_avg": -0.2037
+      }
+    },
+    {
+      "run": "MOD0-WK8SNF-back",
+      "mod": "MOD0",
+      "week": 8,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-11-01T01:47:00.000Z",
+      "locked_at": "2026-11-01T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0.635,
+        "hits": 0,
+        "pass": false,
+        "flat_roi": -1,
+        "clv_avg": -0.2088
+      }
+    },
+    {
+      "run": "MOD1q-WK8AM-back",
+      "mod": "MOD1q",
+      "week": 8,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-11-01T01:47:00.000Z",
+      "locked_at": "2026-11-01T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 6.502,
+        "hits": 7,
+        "pass": true,
+        "flat_roi": 0.0335,
+        "clv_avg": -0.0532
+      }
+    },
+    {
+      "run": "MOD1q-WK8PM-back",
+      "mod": "MOD1q",
+      "week": 8,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-11-01T01:47:00.000Z",
+      "locked_at": "2026-11-01T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 1.885,
+        "hits": 1,
+        "pass": false,
+        "flat_roi": -0.42,
+        "clv_avg": -0.103
+      }
+    },
+    {
+      "run": "MOD1q-WK8SNF-back",
+      "mod": "MOD1q",
+      "week": 8,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-11-01T01:47:00.000Z",
+      "locked_at": "2026-11-01T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 0.74,
+        "hits": 1,
+        "pass": true,
+        "flat_roi": 0.45,
+        "clv_avg": -0.1183
+      }
+    },
+    {
+      "run": "MOD2-WK8AM-back",
+      "mod": "MOD2",
+      "week": 8,
+      "segment": "AM",
+      "kind": "back",
+      "board_at": "2026-11-01T01:47:00.000Z",
+      "locked_at": "2026-11-01T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 24.879,
+        "hits": 25,
+        "pass": true,
+        "flat_roi": 0.0543,
+        "clv_avg": -0.0438
+      }
+    },
+    {
+      "run": "MOD2-WK8PM-back",
+      "mod": "MOD2",
+      "week": 8,
+      "segment": "PM",
+      "kind": "back",
+      "board_at": "2026-11-01T01:47:00.000Z",
+      "locked_at": "2026-11-01T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 6.972,
+        "hits": 3,
+        "pass": false,
+        "flat_roi": -0.5342,
+        "clv_avg": -0.0506
+      }
+    },
+    {
+      "run": "MOD2-WK8SNF-back",
+      "mod": "MOD2",
+      "week": 8,
+      "segment": "SNF",
+      "kind": "back",
+      "board_at": "2026-11-01T01:47:00.000Z",
+      "locked_at": "2026-11-01T01:47:00.000Z",
+      "result": {
+        "book_expected_hits": 2.302,
+        "hits": 2,
+        "pass": false,
+        "flat_roi": -0.2337,
+        "clv_avg": -0.0368
+      }
+    }
+  ]
+}

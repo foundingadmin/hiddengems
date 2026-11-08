@@ -43,6 +43,17 @@ correctly stay in, like counting a game with snaps and no stat line as a zero.
 run, the way the MOD4 to MOD6 cards were. Warm-up weeks are picked and learned from but not graded: 2025 Weeks 1 to 8
 and 2025 Week 18, when starters rested.
 
+Later MODs may also set, in their own rules file:
+
+- `startWeights`: starting trust shares adding to 1, the same for the shared set and every bet type (MOD7 starts at 10% each).
+- `vetoAsFilter`: a seed whose chances have only ever sat at or below fair (every line it has spoken on so far, the
+  current board included) may push a line down but never up, so it can block a pick but never lead one, and it is
+  left out of the two heaviest seeds the top seeds check counts.
+- `capByLines`: a seed's push away from fair is scaled by its graded lines spoken in that bet type / (those lines +
+  `poolingLines`), so a seed with nothing graded yet stands at fair.
+
+Both switches are off when left out, so MOD7's rules rerun exactly as they ran.
+
 A pass needs all four: profit above the luck band (2 standard deviations of $1 flat betting at the gems' own odds),
 a profit in both 2025 and 2026, more than half its gems beating the closing price, and its two heaviest seeds
 earning at least half the profit.

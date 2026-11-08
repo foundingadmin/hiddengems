@@ -137,7 +137,9 @@ export function buildReport(dir: string) {
   const seasons = ([2025, 2026] as const).map((season) => ({ season, ...money(counted.filter((s) => s.season === season), stake) }));
   const closed = graded.filter((s) => s.result.close !== null);
   const beat = closed.filter((s) => s.gem.line.price > s.result.close!).length;
-  const top = heaviest.slice(0, 2);
+  // vetoAsFilter: a seed that only ever sat at or below fair, as of the last board, is not one of the two that count.
+  const filters = rules.vetoAsFilter ? weeks.at(-1)!.picks.filters ?? [] : [];
+  const top = heaviest.filter((s) => !filters.includes(s)).slice(0, 2);
   const topProfit = round(graded.filter((s) => s.leader && top.includes(s.leader)).reduce((t, s) => t + s.profit!, 0));
   const topShare = total.profit > 0 ? round(topProfit / total.profit) : null;
   const checks = [
@@ -154,6 +156,7 @@ export function buildReport(dir: string) {
     {
       id: 'top_seeds', label: 'Its two heaviest seeds earn at least half the profit',
       pass: topShare !== null && topShare >= rules.pass.topSeedsShare, value: topShare, bar: rules.pass.topSeedsShare, seeds: top, profit: topProfit,
+      ...(rules.vetoAsFilter ? { filters } : {}),
     },
   ];
 

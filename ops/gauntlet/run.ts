@@ -7,6 +7,7 @@
 //
 // Run (after Josh freezes the rules and records the hash):
 //   packages/ingest/node_modules/.bin/tsx ops/gauntlet/run.ts --hash <sha256 of the frozen rules.json>
+// A batch MOD's rules live in ops/gauntlet/rules/, run with --rules ops/gauntlet/rules/MOD8.json --hash <its sha256>.
 import { createHash } from 'node:crypto';
 import { closeSync, fsyncSync, mkdirSync, openSync, readFileSync, writeSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -14,7 +15,9 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import {
   BET_TYPES, type BetType, type Pick, type Reveal, type Rules, SEED_IDS, type Seed, type SeedId, type WeekRef, type WeekWorld,
 } from './contract';
-import { type Gem, type LearnerState, type SeedChances, type WeekScores, learn, pick, score, startState } from './learner';
+import {
+  type Gem, type LearnerState, type SeedChances, type WeekScores, filterSeeds, learn, noSides, noteSides, pick, score, startState,
+} from './learner';
 import { writeReport } from './report';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -40,7 +43,8 @@ export const sha256 = (bytes: Buffer | string) => createHash('sha256').update(by
 // The ledger's files. Every type report.ts reads is here.
 
 export interface RunFile {
-  mod: 'MOD7';
+  /** rules.mod, or MOD7 for the rules that predate it. */
+  mod: string;
   hash: string;
   rules: Rules;
   seeds: { id: SeedId; name: string }[];
@@ -54,6 +58,8 @@ export interface PicksFile {
   board: Record<BetType, number>;
   /** The weights the blend read this Saturday. */
   weights: LearnerState['weights'];
+  /** vetoAsFilter only: the seeds that have only ever sat at or below fair, as of this Saturday's board. */
+  filters?: SeedId[];
   gems: Gem[];
 }
 
@@ -89,6 +95,18 @@ export function readRules(rulesPath: string, hash: string): Rules {
   }
   if (!(rules.maxStep > 0 && rules.maxStep < 1)) throw new Error('Refusing to run: rules.maxStep must be between 0 and 1');
   if (!Array.isArray(rules.warmup)) throw new Error('Refusing to run: rules.warmup is not a list');
+  for (const k of ['vetoAsFilter', 'capByLines'] as const) {
+    if (rules[k] !== undefined && typeof rules[k] !== 'boolean') throw new Error(`Refusing to run: rules.${k} must be true or false`);
+  }
+  if (rules.mod !== undefined && !/^MOD\d+$/.test(rules.mod)) throw new Error('Refusing to run: rules.mod must look like MOD8');
+  if (rules.startWeights !== undefined) {
+    const w = rules.startWeights;
+    const keys = Object.keys(w).sort();
+    if (keys.join() !== [...SEED_IDS].sort().join()) throw new Error('Refusing to run: rules.startWeights must name exactly the ten seeds');
+    if (SEED_IDS.some((s) => !(typeof w[s] === 'number' && w[s] > 0))) throw new Error('Refusing to run: every start weight must be above 0');
+    const total = SEED_IDS.reduce((t, s) => t + w[s], 0);
+    if (Math.abs(total - 1) > 1e-6) throw new Error(`Refusing to run: rules.startWeights add to ${total}, not 1`);
+  }
   return rules;
 }
 
@@ -128,11 +146,12 @@ export async function runGauntlet(opts: RunOptions): Promise<{ dir: string; repo
     if ((e as NodeJS.ErrnoException).code === 'EEXIST') throw new Error(`Refusing to run: ${dir} exists, so this hash has already run`);
     throw e;
   }
-  const run: RunFile = { mod: 'MOD7', hash: opts.hash, rules, seeds: opts.seeds.map((s) => ({ id: s.id, name: s.name })), weeks };
+  const run: RunFile = { mod: rules.mod ?? 'MOD7', hash: opts.hash, rules, seeds: opts.seeds.map((s) => ({ id: s.id, name: s.name })), weeks };
   writeOnce(join(dir, 'run.json'), run);
 
   const seeds = [...opts.seeds].sort((a, b) => SEED_IDS.indexOf(a.id) - SEED_IDS.indexOf(b.id));
-  let state = startState();
+  let state = startState(rules.startWeights);
+  let sides = noSides();
   for (const ref of weeks) {
     const id = weekId(ref);
     const warmup = isWarmup(ref, rules);
@@ -141,9 +160,15 @@ export async function runGauntlet(opts: RunOptions): Promise<{ dir: string; repo
 
     // Saturday. Every seed reads the same world; the blend reads this week's weights.
     const chances = Object.fromEntries(seeds.map((s) => [s.id, s.read(world)])) as SeedChances;
-    const gems = pick(world.lines, chances, state.weights, rules);
+    // The switches read only what Saturday knows: lines graded before this week, and the chances on this board.
+    sides = noteSides(sides, world.lines, chances);
+    const filters = rules.vetoAsFilter ? filterSeeds(sides) : undefined;
+    const gems = pick(world.lines, chances, state.weights, rules, { spoken: state.spoken, filters });
     const board = Object.fromEntries(BET_TYPES.map((b) => [b, world.lines.filter((l) => l.betType === b).length])) as Record<BetType, number>;
-    writeOnce(join(dir, `${id}-picks.json`), { ref, warmup, board, weights: state.weights, gems } satisfies PicksFile);
+    const picksFile: PicksFile = filters
+      ? { ref, warmup, board, weights: state.weights, filters, gems }
+      : { ref, warmup, board, weights: state.weights, gems };
+    writeOnce(join(dir, `${id}-picks.json`), picksFile);
 
     // Monday. Only now does the week's outcome exist.
     const picks: Pick[] = gems.map(({ key, line, chance, edge, contributions }) => ({ key, line, chance, edge, contributions }));
@@ -174,11 +199,14 @@ export async function runGauntlet(opts: RunOptions): Promise<{ dir: string; repo
 
 async function main() {
   const args = process.argv.slice(2);
-  const at = args.indexOf('--hash');
-  const hash = at >= 0 ? args[at + 1] : undefined;
-  if (!hash) throw new Error('Usage: tsx ops/gauntlet/run.ts --hash <sha256 of the frozen rules.json>');
+  const flag = (name: string) => { const at = args.indexOf(name); return at >= 0 ? args[at + 1] : undefined; };
+  const hash = flag('--hash');
+  const rulesPath = flag('--rules') ?? RULES_PATH;
+  if (!hash) throw new Error('Usage: tsx ops/gauntlet/run.ts [--rules <rules file>] --hash <sha256 of the frozen rules file>');
   // Check the gate before loading anything, so a wrong hash costs nothing.
-  readRules(RULES_PATH, hash);
+  const rules = readRules(rulesPath, hash);
+  // MOD7's recorded picks sit at the top of experiments/gauntlet/ledger; every later MOD records into its own folder.
+  if (rules.mod && rules.mod !== 'MOD7') process.env.GAUNTLET_LEDGER_DIR ??= join(OUT_ROOT, 'ledger', rules.mod);
   const world = (await import(pathToFileURL(join(HERE, 'world.ts')).href)) as Partial<WorldSource> & { recordPicks?: (ref: WeekRef, picks: Pick[]) => string };
   if (typeof world.openWeek !== 'function' || typeof world.reveal !== 'function' || typeof world.recordPicks !== 'function') throw new Error('world.ts must export openWeek, recordPicks and reveal');
   const { openWeek, recordPicks, reveal } = world as Required<typeof world>;
@@ -186,7 +214,7 @@ async function main() {
   const seeds = (mod.SEEDS ?? mod.seeds ?? mod.default) as Seed[] | undefined;
   if (!Array.isArray(seeds)) throw new Error('seeds/index.ts must export the ten seeds as SEEDS');
   // reveal answers only once the week's picks are in experiments/gauntlet/ledger, so they are recorded there first.
-  await runGauntlet({ hash, seeds, world: { openWeek, reveal: (ref, picks) => { recordPicks(ref, picks); return reveal(ref, picks); } } });
+  await runGauntlet({ hash, seeds, rulesPath, world: { openWeek, reveal: (ref, picks) => { recordPicks(ref, picks); return reveal(ref, picks); } } });
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

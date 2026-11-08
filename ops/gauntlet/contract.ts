@@ -108,6 +108,20 @@ export interface Pick { key: string; line: Line; chance: number; edge: number; c
 /** The frozen rules (ops/gauntlet/rules.json), hashed before the first run. */
 export interface Rules {
   frozen: boolean;
+  /** The MOD these rules are, e.g. "MOD8". Left out for MOD7, whose rules.json predates the field. */
+  mod?: string;
+  /** Where the seeded batch generator drew these rules from (ops/gauntlet/batch.ts). */
+  generator?: { seed: number; draw: number };
+  /** Starting trust shares, adding to 1, the same for the shared set and every bet type. Left out: 10% each. */
+  startWeights?: Record<SeedId, number>;
+  /**
+   * A seed whose chances have only ever sat at or below fair (every line it has spoken on so far, this Saturday's
+   * board included) can push a line down but never up, so it can block a pick but never lead one, and it is left out
+   * of the two heaviest seeds the top seeds check counts. Off or left out: every seed blends the same way.
+   */
+  vetoAsFilter?: boolean;
+  /** A seed's push away from fair is scaled by its graded lines spoken in that bet type / (those lines + poolingLines). */
+  capByLines?: boolean;
   picksPerWeek: number;
   minPrice: number;
   maxPrice: number;

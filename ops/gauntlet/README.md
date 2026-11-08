@@ -118,3 +118,4 @@ and on beating the close, and the gain shows in both seasons. It joins at the we
 
 | Run | Rules sha256 | Date | Verdict |
 |---|---|---|---|
+| 1 | `dccf34716c357b2b6893b0c6fee2f7349361e19210371db9ea2791a109dc8569` | Nov 8 2026 | Fail, 1 of 4 checks (beat the close only) |

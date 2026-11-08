@@ -7,7 +7,8 @@ name: Backtest
 # published. The ledger, results and README are committed back to the branch.
 # Modes in run.json: test and probe check the key, full buys what the cache lacks and replays, replay never buys
 # (it fails if the cache is gone) and is the one to use for a new MOD, history buys history-plan.json (every game in
-# Weeks 2 to 8, the WK9 Coach markets) and hands the whole cache to the session encrypted. Every full or replay run also archives the
+# Weeks 2 to 8, the WK9 Coach markets) and hands the whole cache to the session encrypted, seasons-probe and seasons
+# buy season-plan.json (2025, 2026 Week 1, early snapshots) the same way. Every full or replay run also archives the
 # cache to the private backup repository (BACKUP_GITHUB_REPO), and a run whose Actions cache was evicted restores
 # from that archive, so odds paid for once are never bought again.
 on:
@@ -25,7 +26,7 @@ concurrency:
 jobs:
   replay:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 150
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -90,10 +91,29 @@ jobs:
           [ "$n" -gt 0 ] || { echo "::error::The first buy's cache is gone. Nothing bought."; exit 1; }
           max=$(node -p "require('./experiments/backtest/run.json').maxCredits")
           packages/ingest/node_modules/.bin/tsx ops/backtest/fetch-history.ts --max-credits "$max"
+      - name: Probe one 2025 game (seasons buy)
+        if: steps.run.outputs.mode == 'seasons-probe'
+        env:
+          ODDS_API_KEY_HISTORICAL: ${{ secrets.ODDS_API_KEY_HISTORICAL }}
+        run: |
+          packages/ingest/node_modules/.bin/tsx ops/backtest/season-plan.ts
+          packages/ingest/node_modules/.bin/tsx ops/backtest/fetch-seasons.ts --probe
+          git config user.name "github-actions[bot]"
+          git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
+          git add experiments/backtest/season-probe.json
+          git commit -m "Record the 2025 probe" && git push || echo "Nothing new to commit"
+      - name: Buy the seasons (2025, 2026 Week 1, early snapshots)
+        if: steps.run.outputs.mode == 'seasons'
+        env:
+          ODDS_API_KEY_HISTORICAL: ${{ secrets.ODDS_API_KEY_HISTORICAL }}
+        run: |
+          max=$(node -p "require('./experiments/backtest/run.json').maxCredits")
+          floor=$(node -p "require('./experiments/backtest/run.json').floor")
+          packages/ingest/node_modules/.bin/tsx ops/backtest/fetch-seasons.ts --max-credits "$max" --floor "$floor"
       - name: Hand the odds to the session, encrypted
         # The raw odds are paid data and this repository is public. They leave the runner only encrypted to the
         # session's public key (experiments/backtest/transfer.pub), on a throwaway branch that is never merged.
-        if: always() && steps.run.outputs.mode == 'history'
+        if: always() && (steps.run.outputs.mode == 'history' || steps.run.outputs.mode == 'seasons')
         env:
           TOKEN: ${{ github.token }}
         run: |
@@ -112,11 +132,11 @@ jobs:
           git push -q "https://x-access-token:$TOKEN@github.com/${{ github.repository }}.git" "HEAD:refs/heads/transfer/backtest-odds-${{ github.run_id }}"
           echo "Pushed transfer/backtest-odds-${{ github.run_id }} ($(du -sh $out --exclude=.git | cut -f1))"
       - name: Commit the history spend
-        if: always() && steps.run.outputs.mode == 'history'
+        if: always() && (steps.run.outputs.mode == 'history' || steps.run.outputs.mode == 'seasons')
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
-          git add experiments/backtest/history-spend.json || true
+          git add experiments/backtest/history-spend.json experiments/backtest/seasons-spend.json 2>/dev/null || true
           git commit -m "Record the history buy spend" && git push || echo "Nothing new to commit"
       - name: Refuse to replay without the cache
         if: steps.run.outputs.mode == 'replay'

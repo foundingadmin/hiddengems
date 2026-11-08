@@ -17,3 +17,6 @@ next-env.d.ts
 
 # Sprint screenshots (builders write them, the verifier reads them)
 .sprint/
+
+# Backtest raw provider responses (paid odds and nflverse downloads), never committed
+experiments/backtest/cache/

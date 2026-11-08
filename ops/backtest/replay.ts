@@ -21,7 +21,8 @@ import type { PlanWeek, Segment } from './plan';
 import { writeReadme } from './report';
 
 export const MODS = ['MOD0', 'MOD1q', 'MOD2'] as const;
-export type Mod = (typeof MODS)[number];
+/** MOD1 and MOD3 are MOD1q and MOD2 after the read (apply-reads.ts). */
+export type Mod = (typeof MODS)[number] | 'MOD1' | 'MOD3';
 const SEGMENTS: Segment[] = ['AM', 'PM', 'SNF'];
 
 /** MOD1q: DraftKings price floor, hit rate bands for GEM1 to GEM5, and games needed before the week. */
@@ -110,7 +111,7 @@ export function replayWeek(season: Season, w: PlanWeek): { ledgers: Ledger[]; un
   }
   const inputs = capsule(boardAt, stamps) + [...board.values()].reduce((n, b) => n + b.quotes.length + 1, 0);
 
-  const picks: Record<Mod, (Pick & { segment: Segment })[]> = { MOD0: [], MOD1q: [], MOD2: [] };
+  const picks: Record<(typeof MODS)[number], (Pick & { segment: Segment })[]> = { MOD0: [], MOD1q: [], MOD2: [] };
   let unmatched = 0, selections = 0;
   for (const g of w.games) {
     const snap = board.get(g.gameId);
@@ -204,5 +205,5 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     console.log(`Week ${w.week}: ${r.inputs} inputs passed the guard, ${r.selections} DraftKings selections, ${r.unmatched} unmatched names, picks ${MODS.map((m) => `${m} ${r.ledgers.filter((l) => l.mod === m).reduce((s, l) => s + l.picks.length, 0)}`).join(', ')}`);
   }
   writeFileSync(SUMMARY_PATH, `${JSON.stringify({ audit, ledgers: all.map(({ picks: _p, ...l }) => l) }, null, 2)}\n`);
-  writeReadme(all, audit);
+  writeReadme();
 }

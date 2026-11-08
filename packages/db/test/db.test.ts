@@ -17,7 +17,7 @@ describe('database', () => {
     const [m] = await handle.db.select({ n: count() }).from(markets);
     expect(t?.n).toBe(32);
     expect(b?.n).toBe(5);
-    expect(m?.n).toBe(1); // anytime TD only this season
+    expect(m?.n).toBe(4); // anytime TD and three stat ladders
   });
   it('seeds idempotently', async () => {
     await seedReference(handle.db);

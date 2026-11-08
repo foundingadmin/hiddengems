@@ -45,6 +45,10 @@ export const players = pgTable('players', {
   /** Latest injury report game status (Out, Doubtful, Questionable), null when not listed. */
   injuryStatus: text(),
   injuryWeek: smallint(),
+  /** Last practice of the report week as nflverse spells it ("Limited Participation in Practice"). */
+  practiceStatus: text(),
+  /** The injury listed ("Ribs"), or why he missed practice ("Not injury related - resting player"). */
+  injuryDetail: text(),
   updatedAt: createdAt(),
 }, (t) => [index().on(t.nameKey), index().on(t.teamId)]);
 
@@ -168,6 +172,8 @@ export const picks = pgTable('picks', {
   gapToPosted: doublePrecision().notNull(),
   /** gem, fools-gold, none, unrated */
   kind: text().notNull(),
+  /** Why he cannot be a gem whatever the numbers say: out, doubtful, new-team (core availability.ts). */
+  block: text(),
   /** 0 to 100 for a gem, otherwise null. */
   rating: integer(),
   /** Hit chance times clarity, the Recommended sort. Null outside gems. */

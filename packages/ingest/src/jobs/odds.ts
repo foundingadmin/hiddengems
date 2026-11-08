@@ -1,16 +1,15 @@
 // pull-odds: anytime TD prices, only on the snapshot schedule (core snapshots.ts): the opening line,
-// Saturday 7:47 PM, Sunday 8:43 AM (Denver), and a freeze just before each kickoff. Cron calls it every
-// 5 minutes; outside those times it returns without calling the provider, so the free plan's 500 credits
-// a month hold (about 1 credit per game per pull). History is append-only (odds_snapshots); odds_latest
+// Saturday 7:47 PM, Sunday 8:43 AM (Denver), and a freeze just before each kickoff. The Sunday morning pull
+// and a confirmed manual pull add the stat ladders (marketsFor). Cron calls it every 5 minutes; outside
+// those times it returns without calling the provider, so the free plan's 500 credits a month hold. History is append-only (odds_snapshots); odds_latest
 // holds the current price and marks what a book stopped offering.
-import { type MarketId, dueFreezes, dueSnapshot, gameId, nameKey, selectionKey } from '@hiddengems/core';
+import { type MarketId, dueFreezes, dueSnapshot, gameId, marketsFor, nameKey, selectionKey } from '@hiddengems/core';
 import { games, oddsLatest, oddsSlots, oddsSnapshots, players, providerRefs, providerUsage } from '@hiddengems/db';
 import { and, eq, gt, inArray, lt, or, sql } from 'drizzle-orm';
 import { ours } from '../errors';
 import type { Job } from '../runner';
 import { chunks, plural, teamId } from './shared';
 
-export const MARKETS: MarketId[] = ['anytime_td'];
 const DAY = 86_400_000;
 // Team defenses are priced like players by some books but are not on any roster.
 const isTeamDefense = (name: string) => /\b(D\/ST|Defense)$/i.test(name.trim());
@@ -40,10 +39,17 @@ export const pullOdds: Job = {
     const due = new Set([...freezes, ...upcoming.filter((g) => g.kickoffAt.getTime() - now.getTime() <= horizon * DAY).map((g) => g.id)]);
     if (!due.size) return { skipped: 'No odds snapshot or kickoff freeze is due' };
 
+    // Snapshot games carry the snapshot's markets; a game due only for its freeze carries anytime TD.
+    const snapGames = new Set(upcoming.filter((g) => g.kickoffAt.getTime() - now.getTime() <= horizon * DAY).map((g) => g.id));
+    const wide = marketsFor({ snapshot: snap?.slot.split(':')[0] ?? null, manual }) as MarketId[];
+    const narrow = marketsFor({ snapshot: null, manual: false }) as MarketId[];
+    const marketsOf = (id: string) => (snapGames.has(id) ? wide : narrow);
+
     // Never start a pull the month's credits cannot finish.
+    const need = [...due].reduce((n, id) => n + marketsOf(id).length, 0);
     const [usage] = await db.select().from(providerUsage).where(eq(providerUsage.provider, provider.id));
-    if (usage?.remaining != null && usage.remaining < due.size) {
-      throw ours('quota', `${usage.remaining} odds credits left this month, ${due.size} needed for this pull`, { provider: provider.id });
+    if (usage?.remaining != null && usage.remaining < need) {
+      throw ours('quota', `${usage.remaining} odds credits left this month, ${need} needed for this pull`, { provider: provider.id });
     }
 
     const pctx = ctx.using(provider);
@@ -70,7 +76,8 @@ export const pullOdds: Job = {
     const pulledAt = now;
 
     for (const m of matched) {
-      const quotes = await provider.eventOdds(pctx, m.event, MARKETS);
+      const markets = marketsOf(m.gameId);
+      const quotes = await provider.eventOdds(pctx, m.event, markets);
       const rows = quotes.map((q) => {
         let playerId: string | null = null;
         if (q.playerName && !isTeamDefense(q.playerName)) {
@@ -99,9 +106,9 @@ export const pullOdds: Job = {
           set: { priceDecimal: sql`excluded.price_decimal`, observedAt: sql`excluded.observed_at`, pulledAt: sql`excluded.pulled_at`, playerId: sql`excluded.player_id`, link: sql`excluded.link`, available: true },
         });
       }
-      // Whatever this game's books no longer list is suspended.
+      // Whatever this game's books no longer list, in the markets this pull asked for, is suspended.
       const gone = await db.update(oddsLatest).set({ available: false })
-        .where(and(eq(oddsLatest.gameId, m.gameId), inArray(oddsLatest.marketId, MARKETS), lt(oddsLatest.pulledAt, pulledAt), eq(oddsLatest.available, true)))
+        .where(and(eq(oddsLatest.gameId, m.gameId), inArray(oddsLatest.marketId, markets), lt(oddsLatest.pulledAt, pulledAt), eq(oddsLatest.available, true)))
         .returning({ key: oddsLatest.selectionKey });
       suspended += gone.length;
       await db.insert(providerRefs).values({ provider: provider.id, entity: 'game', externalId: m.event.externalId, internalId: m.gameId })

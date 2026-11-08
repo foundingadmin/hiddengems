@@ -4,12 +4,12 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import { flushSync } from 'react-dom';
-import { betLabel } from '@hiddengems/core';
+import { MARKETS, betLabel } from '@hiddengems/core';
 import { markRead } from '@/app/gems-actions';
 import { SlipButton, useSlip } from '@/components/add-to-slip';
 import { Dropdown } from '@/components/dropdown';
 import { useGemLink } from '@/components/gem-sheet';
-import { Edge, FoolsLabel, GemMark, Player } from '@/components/marks';
+import { Edge, FoolsLabel, GemMark, InjuryTag, Player } from '@/components/marks';
 import { SEARCH_EVENT } from '@/components/shell';
 import type { BoardRow } from '@/lib/board';
 import { readDelay, sweepRead, unsweepRead } from '@/lib/moments/mark-read';
@@ -43,7 +43,7 @@ const kickoffFull = (iso: string, zone: string) => new Intl.DateTimeFormat('en-U
 const pct = (p: number) => `${Math.round(p * 100)}%`;
 const detail = (r: BoardRow) => [r.position, r.matchup].filter(Boolean).join(' · ');
 /** The prop is the gem: every card and row names its bet. */
-const bet = (r: BoardRow) => betLabel(r.marketId);
+const bet = (r: BoardRow) => betLabel(r.marketId, r.line);
 
 function Kickoff({ iso, zone }: { iso: string; zone: string }) {
   return <time className="text-copy-13-mono" dateTime={iso} title={kickoffFull(iso, zone)}>{kickoffTime(iso, zone)}</time>;
@@ -133,6 +133,7 @@ export function NewGems({ rows, since, zone }: { rows: BoardRow[]; since: string
               </div>
               <div className="fc-stack" style={{ ['--fc-gap' as string]: 'var(--fc-space-2)' }}>
                 <h3 className="text-heading-14">Why it&apos;s a gem</h3>
+                <InjuryTag line={r.injury} />
                 <ul className="fc-why text-copy-14">{r.reasons.map((t) => <li key={t}>{t}</li>)}</ul>
               </div>
               <div className="fc-gem-card-foot">
@@ -163,6 +164,7 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
   const slip = useSlip();
   const q = params.get('q') ?? '';
   const win = params.get('window');
+  const market = params.get('market');
   const hideFools = params.get('fools') === 'hide';
   const sort = (params.get('sort') ?? 'recommended') as SortKey;
   const set = (patch: Record<string, string | null>) => {
@@ -179,11 +181,13 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
     return () => window.removeEventListener(SEARCH_EVENT, open);
   }, []);
 
+  const markets = useMemo(() => MARKETS.filter((m) => rows.some((r) => r.marketId === m.id)), [rows]);
+  const marketName = markets.find((m) => m.id === market)?.label ?? null;
   const windows = useMemo(() => [...new Set(rows.map((r) => r.window))].sort((a, b) => WINDOW_ORDER.indexOf(a) - WINDOW_ORDER.indexOf(b)), [rows]);
   const shown = useMemo(() => {
     const needle = q.trim().toLowerCase();
     const out = rows.filter((r) => (!needle || `${r.name} ${r.matchup}`.toLowerCase().includes(needle))
-      && (!win || r.window === win) && (!hideFools || r.kind !== 'fools-gold'));
+      && (!win || r.window === win) && (!market || r.marketId === market) && (!hideFools || r.kind !== 'fools-gold'));
     const by: Record<SortKey, (a: BoardRow, b: BoardRow) => number> = {
       recommended: (a, b) => a.recommended - b.recommended,
       rating: (a, b) => (b.rating ?? -1) - (a.rating ?? -1) || a.recommended - b.recommended,
@@ -192,7 +196,7 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
       price: (a, b) => b.price - a.price,
     };
     return out.sort(by[sort] ?? by.recommended);
-  }, [rows, q, win, hideFools, sort]);
+  }, [rows, q, win, market, hideFools, sort]);
   const gems = rows.filter((r) => r.kind === 'gem').length;
   const tip = (text: string, tipText: string) => <span className="fc-has-tip" tabIndex={0} data-tip={tipText}>{text}</span>;
 
@@ -212,13 +216,19 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
         <Dropdown
           label="Add filter" triggerClass="fc-button" triggerProps={{ 'data-variant': 'secondary', 'data-size': 'small', 'data-shape': 'rounded' }}
           trigger={<>{FILTER}<span className="fc-filter-add-label">Add filter</span></>}
-          items={[...windows.map((w) => ({ value: `window:${w}`, label: w, group: w === windows[0] ? 'Window' : undefined })),
+          items={[...markets.map((m, i) => ({ value: `market:${m.id}`, label: m.label, group: i === 0 ? 'Market' : undefined })),
+            ...windows.map((w) => ({ value: `window:${w}`, label: w, group: w === windows[0] ? 'Window' : undefined })),
             { value: 'fools', label: 'Hide Fool’s Gold', group: 'Fool’s Gold' }]}
-          value={win ? `window:${win}` : null}
-          onSelect={(v) => (v === 'fools' ? set({ fools: 'hide' }) : set({ window: v.slice(7) }))}
+          value={win ? `window:${win}` : market ? `market:${market}` : null}
+          onSelect={(v) => (v === 'fools' ? set({ fools: 'hide' }) : v.startsWith('market:') ? set({ market: v.slice(7) }) : set({ window: v.slice(7) }))}
         />
         <div className="fc-filter-scroll">
-          <span className="fc-filter-chip" data-state="readonly"><span className="fc-filter-key">Market</span><span className="fc-filter-value">Anytime TD</span></span>
+          {marketName && (
+            <span className="fc-filter-chip">
+              <span className="fc-filter-edit"><span className="fc-filter-key">Market</span><span className="fc-filter-value">{marketName}</span></span>
+              <button type="button" className="fc-filter-remove" aria-label={`Remove market ${marketName}`} onClick={() => set({ market: null })}>{X}</button>
+            </span>
+          )}
           {win ? (
             <span className="fc-filter-chip">
               <span className="fc-filter-edit"><span className="fc-filter-key">Window</span><span className="fc-filter-value">{win}</span></span>
@@ -286,7 +296,9 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
                         link={{ href: gemLink.href(r.key), onClick: (e) => gemLink.open(e, r.key), 'data-gem-link': r.key }}
                         badge={r.fresh ? <span className="fc-badge" data-variant="purple" data-size="sm" data-contrast="low">New</span> : null} />
                     </th>
-                    <td data-nowrap>{bet(r)}</td>
+                    <td data-nowrap>
+                      {r.injury ? <span className="fc-stack" style={{ ['--fc-gap' as string]: 'var(--fc-space-1)' }}>{bet(r)}<InjuryTag line={r.injury} /></span> : bet(r)}
+                    </td>
                     <td><Kickoff iso={r.kickoff} zone={zone} /></td>
                     <td data-align="numeric">{r.price.toFixed(2)}</td>
                     <td data-align="numeric">{pct(r.priced)}</td>
@@ -305,7 +317,7 @@ export function AllGems({ rows, zone, freshness }: { rows: BoardRow[]; zone: str
                 <a className="fc-gem-row" href={gemLink.href(r.key)} onClick={(e) => gemLink.open(e, r.key)} data-gem-link={r.key}>
                   <GemMark kind={r.kind} rating={r.rating} bare />
                   <Player name={r.name} teamId={r.teamId} number={r.number}
-                    detail={<>{bet(r)} · <Kickoff iso={r.kickoff} zone={zone} /> · {r.matchup}</>}
+                    detail={<>{bet(r)} · <Kickoff iso={r.kickoff} zone={zone} /> · {r.matchup}{r.injury && <><br /><InjuryTag line={r.injury} /></>}</>}
                     badge={r.kind === 'fools-gold' ? <FoolsLabel />
                       : r.fresh ? <span className="fc-badge" data-variant="purple" data-size="sm" data-contrast="low">New</span> : null} />
                   <span className="fc-gem-row-end">

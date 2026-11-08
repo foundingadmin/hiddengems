@@ -18,3 +18,5 @@ export * from './matchup';
 export * from './splits';
 export * from './notes';
 export * from './freshness';
+export * from './stat-model';
+export * from './availability';

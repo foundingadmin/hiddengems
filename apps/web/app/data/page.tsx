@@ -1,3 +1,4 @@
+import { marketsFor } from '@hiddengems/core';
 import { games, jobSettings, providerUsage, runLogs, runs } from '@hiddengems/db';
 import { BOOTSTRAP, dataMode } from '@hiddengems/ingest';
 import { and, desc, eq, gt, inArray, lt, or } from 'drizzle-orm';
@@ -56,7 +57,7 @@ export default async function DataPage() {
   const firstWarning = new Map<string, string>();
   for (const w of warnings) if (!firstWarning.has(w.runId)) firstWarning.set(w.runId, w.message);
 
-  // A manual odds pull covers every game in the next 7 days, one credit each.
+  // A manual odds pull covers every game in the next 7 days.
   const upcoming = await d.select({ kickoffAt: games.kickoffAt }).from(games).where(and(
     gt(games.kickoffAt, now), lt(games.kickoffAt, new Date(now.getTime() + 7 * DAY)),
     or(eq(games.status, 'scheduled'), eq(games.status, 'in_progress')),
@@ -101,7 +102,8 @@ export default async function DataPage() {
   const needs = [...notes.values()].map((n) => n.short);
 
   const provider = (job: string, live: string) => (sample && !NO_PROVIDER.has(job) && job !== 'backup' ? 'Sample' : live);
-  const oddsProps = sample ? {} : { cost: upcoming.length, left };
+  // A manual pull carries every market: one credit per market per game.
+  const oddsProps = sample ? {} : { cost: upcoming.length * marketsFor({ snapshot: null, manual: true }).length, left };
   // The header pulls every free source, then backs up. Paid odds keep their own confirmed button, and the
   // label says so (owner feedback 2026-11-03: "everything" did not pull odds).
   const everything = [...BOOTSTRAP.filter((job) => sample || job !== 'pull-odds'), 'backtest', 'backup'];

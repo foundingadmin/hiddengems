@@ -1,6 +1,7 @@
 // Grading (docs/prd.md F1.1 and F1.2). Every gem record and every placed bet is graded once its game is
 // final: closing line value against the fair price at the kickoff freeze, and one of four boxes.
 import { fairChance } from './gems';
+import { STAT_MARKETS, isStatMarket } from './markets';
 import { impliedFromDecimal } from './odds';
 
 /** The fair price at the close as decimal odds: the posted price with the assumed cut taken out. */
@@ -46,3 +47,18 @@ export function gradeTake({ taken, closePrice, hit }: { taken: number; closePric
 
 /** Anytime TD hits when the player scored at least once. */
 export const anytimeTdHit = (touchdowns: number): boolean => touchdowns > 0;
+
+/** A box score line, as much of it as grading reads. A missing stat counts as zero (he played, none recorded). */
+export interface BoxLine {
+  touchdowns: number;
+  receptions: number | null;
+  receivingYards: number | null;
+  rushingYards: number | null;
+}
+
+/** Whether a prop hit, from the player's box score: anytime TD, or a stat ladder's over. Null for a market we cannot grade. */
+export function propHit(prop: { marketId: string; side: string; line: number | null }, box: BoxLine): boolean | null {
+  if (prop.marketId === 'anytime_td') return anytimeTdHit(box.touchdowns);
+  if (isStatMarket(prop.marketId) && prop.side === 'over' && prop.line != null) return (box[STAT_MARKETS[prop.marketId].stat] ?? 0) > prop.line;
+  return null;
+}

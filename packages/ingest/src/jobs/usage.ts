@@ -3,7 +3,7 @@
 // players. Then picks are rebuilt, so fresh stats reach the board without waiting for the next odds pull.
 import { seasonOf } from '@hiddengems/core';
 import { playerUsage, players } from '@hiddengems/db';
-import { inArray, isNotNull, sql } from 'drizzle-orm';
+import { inArray, isNotNull, or, sql } from 'drizzle-orm';
 import type { Job } from '../runner';
 import { chunks, plural, refMap, teamId } from './shared';
 
@@ -49,16 +49,23 @@ export const pullUsage: Job = {
     let listed = 0;
     if (report) {
       const refs = await refMap(db, provider.id, 'player', [...new Set(report.statuses.map((s) => s.playerExternalId))]);
-      const byStatus = new Map<string, string[]>();
+      // One update per distinct entry (status, practice, injury), so a week's report is a few dozen statements.
+      const byEntry = new Map<string, { status: string | null; practice: string | null; injury: string | null; ids: string[] }>();
       for (const s of report.statuses) {
         const id = refs.get(s.playerExternalId);
-        if (id) byStatus.set(s.status, [...(byStatus.get(s.status) ?? []), id]);
+        if (!id) continue;
+        const entry = { status: s.status, practice: s.practice ?? null, injury: s.injury ?? null };
+        const key = JSON.stringify(entry);
+        byEntry.set(key, { ...entry, ids: [...(byEntry.get(key)?.ids ?? []), id] });
       }
       await db.transaction(async (tx) => {
-        await tx.update(players).set({ injuryStatus: null, injuryWeek: null }).where(isNotNull(players.injuryStatus));
-        for (const [status, ids] of byStatus) {
-          for (const batch of chunks(ids)) await tx.update(players).set({ injuryStatus: status, injuryWeek: report.week }).where(inArray(players.id, batch));
-          listed += ids.length;
+        await tx.update(players).set({ injuryStatus: null, injuryWeek: null, practiceStatus: null, injuryDetail: null })
+          .where(or(isNotNull(players.injuryStatus), isNotNull(players.practiceStatus)));
+        for (const e of byEntry.values()) {
+          for (const batch of chunks(e.ids)) {
+            await tx.update(players).set({ injuryStatus: e.status, practiceStatus: e.practice, injuryDetail: e.injury, injuryWeek: report.week }).where(inArray(players.id, batch));
+          }
+          if (e.status) listed += e.ids.length;
         }
       });
     }

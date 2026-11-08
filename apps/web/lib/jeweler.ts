@@ -1,7 +1,7 @@
 import 'server-only';
 // What the Jeweler is looking at (a gem from ?gem=, else the week's board), its suggested questions, and
 // whether it may answer (packages/ingest jeweler.ts holds the guard and the prompt).
-import { findTeam, seasonOf } from '@hiddengems/core';
+import { betLabel, findTeam, injuryLine, seasonOf } from '@hiddengems/core';
 import { estimates, games, picks, players } from '@hiddengems/db';
 import { type JewelerContext, type JewelerGem, type JewelerSlip, type JewelerStatus, jewelerStatus } from '@hiddengems/ingest';
 import { and, eq } from 'drizzle-orm';
@@ -29,7 +29,7 @@ const teamName = (id: string | null) => { const t = id ? findTeam(id) : null; re
 const fromRow = (r: BoardRow): JewelerGem => ({
   id: r.key, player: r.name, number: r.number, position: r.position, team: teamName(r.teamId), matchup: r.matchup,
   kickoff: kickoff(new Date(r.kickoff)), kind: r.kind, rating: r.rating, price: r.price, priced: r.priced, hitChance: r.hitChance,
-  edge: r.gap, carat: r.carat, clarity: r.clarity, reasons: r.reasons,
+  edge: r.gap, carat: r.carat, clarity: r.clarity, reasons: r.reasons, bet: betLabel(r.marketId, r.line), injury: r.injury,
 });
 
 async function gemById(id: string): Promise<{ gem: JewelerGem; week: number | null } | null> {
@@ -50,6 +50,8 @@ async function gemById(id: string): Promise<{ gem: JewelerGem; week: number | nu
       team, matchup: `${game.awayTeamId.toUpperCase()} @ ${game.homeTeamId.toUpperCase()}`, kickoff: kickoff(game.kickoffAt), kind: pick.kind,
       rating: pick.rating, price: pick.price, priced: pick.priced, hitChance: pick.hitChance, edge: pick.gapToPosted, carat: pick.carat, clarity: pick.clarity,
       reasons: reasons(pick, inputs as Parameters<typeof reasons>[1], player?.teamId ? findTeam(player.teamId)?.name ?? null : null),
+      bet: betLabel(pick.marketId, pick.line),
+      injury: player ? injuryLine({ status: player.injuryStatus, practice: player.practiceStatus, injury: player.injuryDetail }) : null,
     },
   };
 }

@@ -1,7 +1,7 @@
 // The sample provider: a deterministic week of games, players, prices and results built around the
 // current date, so every job runs end to end with no API keys (local dev, CI, previews).
 // Prices drift in 15-minute steps, so repeated pulls build real-looking line history.
-import { type BookId, seasonOf } from '@hiddengems/core';
+import { type BookId, type MarketId, seasonOf } from '@hiddengems/core';
 import { memoryBackup } from './backup';
 import { easternKickoff } from './nflverse';
 import type { InjuryReport, OddsEvent, OddsQuote, Providers, RosterPlayer, ScheduleGame, StatLine, UsageLine } from './types';
@@ -101,6 +101,16 @@ export function sampleProviders({ history = false }: { history?: boolean } = {})
               const price = round2(1 / Math.min(0.95, p.td * (1 + margin) * (1 + drift + stale)));
               quotes.push({ bookId, marketId: 'anytime_td', playerName: p.name, side: 'yes', line: null, priceDecimal: price, observedAt, link: null });
             }
+            // Two plus-money rungs per stat ladder, priced off a rough chance the way a book hangs them.
+            const rungs: [MarketId, number, number][] = [
+              ...(p.rec != null ? [['receptions', p.rec + 1, 0.34], ['receptions', p.rec + 2, 0.21], ['receiving_yds', 69.5, 0.33], ['receiving_yds', 89.5, 0.2]] as [MarketId, number, number][] : []),
+              ...(p.position === 'RB' ? [['rushing_yds', 79.5, 0.34], ['rushing_yds', 99.5, 0.22]] as [MarketId, number, number][] : []),
+            ];
+            for (const [marketId, line, chance] of rungs) {
+              if (!markets.includes(marketId)) continue;
+              const price = round2(1 / Math.min(0.95, chance * (1 + margin) * (1 + drift + stale)));
+              quotes.push({ bookId, marketId, playerName: p.name, side: 'over', line, priceDecimal: price, observedAt, link: null });
+            }
           }
         }
         return quotes;
@@ -125,7 +135,10 @@ export function sampleProviders({ history = false }: { history?: boolean } = {})
         }));
       },
       async injuries(ctx): Promise<InjuryReport> {
-        return { week: sundays(ctx.now).week, statuses: [{ playerExternalId: 'flowers', status: 'Questionable' }] };
+        return { week: sundays(ctx.now).week, statuses: [
+          { playerExternalId: 'flowers', status: 'Questionable', practice: 'Limited Participation in Practice', injury: 'Ankle' },
+          { playerExternalId: 'mcbride', status: null, practice: 'Limited Participation in Practice', injury: 'Ribs' },
+        ] };
       },
     },
     results: {

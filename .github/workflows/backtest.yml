@@ -6,7 +6,8 @@ name: Backtest
 # Raw odds stay in the Actions cache, readable by this repo's workflows only, so nothing paid is bought twice or
 # published. The ledger, results and README are committed back to the branch.
 # Modes in run.json: test and probe check the key, full buys what the cache lacks and replays, replay never buys
-# (it fails if the cache is gone) and is the one to use for a new MOD. Every full or replay run also archives the
+# (it fails if the cache is gone) and is the one to use for a new MOD, history buys history-plan.json (every game in
+# Weeks 2 to 8, the WK9 Coach markets) and hands the whole cache to the session encrypted. Every full or replay run also archives the
 # cache to the private backup repository (BACKUP_GITHUB_REPO), and a run whose Actions cache was evicted restores
 # from that archive, so odds paid for once are never bought again.
 on:
@@ -79,6 +80,44 @@ jobs:
         run: |
           max=$(node -p "require('./experiments/backtest/run.json').maxCredits")
           node ops/backtest/fetch-odds.mjs --max-credits "$max"
+      - name: Buy the history (Weeks 2 to 8, every game, the brief's markets)
+        if: steps.run.outputs.mode == 'history'
+        env:
+          ODDS_API_KEY_HISTORICAL: ${{ secrets.ODDS_API_KEY_HISTORICAL }}
+        run: |
+          n=$(ls experiments/backtest/cache/odds/wk*/board/*.json 2>/dev/null | wc -l)
+          echo "$n first buy boards restored"
+          [ "$n" -gt 0 ] || { echo "::error::The first buy's cache is gone. Nothing bought."; exit 1; }
+          max=$(node -p "require('./experiments/backtest/run.json').maxCredits")
+          packages/ingest/node_modules/.bin/tsx ops/backtest/fetch-history.ts --max-credits "$max"
+      - name: Hand the odds to the session, encrypted
+        # The raw odds are paid data and this repository is public. They leave the runner only encrypted to the
+        # session's public key (experiments/backtest/transfer.pub), on a throwaway branch that is never merged.
+        if: always() && steps.run.outputs.mode == 'history'
+        env:
+          TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          out=/tmp/transfer; mkdir -p $out
+          tar --sort=name --mtime=@0 --owner=0 --group=0 --numeric-owner -cf - experiments/backtest/cache/odds experiments/backtest/cache/wayback 2>/dev/null | gzip -n > /tmp/odds.tgz
+          openssl rand -hex 32 > /tmp/k.txt
+          openssl enc -aes-256-cbc -pbkdf2 -salt -in /tmp/odds.tgz -pass file:/tmp/k.txt | split -b 90m - $out/odds.tgz.enc.
+          openssl pkeyutl -encrypt -pubin -inkey experiments/backtest/transfer.pub -pkeyopt rsa_padding_mode:oaep -in /tmp/k.txt -out $out/key.enc
+          sha256sum /tmp/odds.tgz | cut -d' ' -f1 > $out/odds.tgz.sha256
+          rm /tmp/k.txt
+          cd $out && git init -q && git checkout -q --orphan "transfer/backtest-odds-${{ github.run_id }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
+          git add . && git commit -qm "Encrypted backtest odds for the session"
+          git push -q "https://x-access-token:$TOKEN@github.com/${{ github.repository }}.git" "HEAD:refs/heads/transfer/backtest-odds-${{ github.run_id }}"
+          echo "Pushed transfer/backtest-odds-${{ github.run_id }} ($(du -sh $out --exclude=.git | cut -f1))"
+      - name: Commit the history spend
+        if: always() && steps.run.outputs.mode == 'history'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
+          git add experiments/backtest/history-spend.json || true
+          git commit -m "Record the history buy spend" && git push || echo "Nothing new to commit"
       - name: Refuse to replay without the cache
         if: steps.run.outputs.mode == 'replay'
         run: |

@@ -9,7 +9,8 @@ import type {
   InjuryReport, ProviderContext, ResultsProvider, RosterProvider, ScheduleGame, ScheduleProvider, StatLine, UsageLine, UsageProvider,
 } from './types';
 
-const BASE = 'https://github.com/nflverse/nflverse-data/releases/download';
+export const NFLVERSE_BASE = 'https://github.com/nflverse/nflverse-data/releases/download';
+const BASE = NFLVERSE_BASE;
 export const NFLVERSE_URLS = {
   games: `${BASE}/schedules/games.csv`,
   roster: (season: number) => `${BASE}/rosters/roster_${season}.csv`,

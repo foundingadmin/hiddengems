@@ -85,6 +85,10 @@ export function sampleProviders({ history = false }: { history?: boolean } = {})
         return scheduleFor(ctx.now).filter((g) => g.status === 'scheduled')
           .map((g) => ({ externalId: g.externalId, kickoff: g.kickoff, awayTeam: g.awayTeam, homeTeam: g.homeTeam }));
       },
+      async rawEventOdds(ctx, event, marketKeys) {
+        const quotes = await this.eventOdds(ctx, event, ['anytime_td', 'receptions', 'receiving_yds', 'rushing_yds']);
+        return { id: event.externalId, home_team: event.homeTeam, away_team: event.awayTeam, markets: marketKeys, quotes };
+      },
       async eventOdds(ctx, event, markets): Promise<OddsQuote[]> {
         const bucketMs = 15 * 60_000;
         const bucket = Math.floor(ctx.now.getTime() / bucketMs);

@@ -62,10 +62,10 @@ export function normalizeEventOdds(payload: unknown): OddsQuote[] {
   return quotes;
 }
 
-export function oddsApi(apiKey: string): OddsProvider {
+export function oddsApi(apiKey: string, id = 'odds-api'): OddsProvider {
   const key = encodeURIComponent(apiKey);
   return {
-    id: 'odds-api',
+    id,
     async events(ctx: ProviderContext): Promise<OddsEvent[]> {
       const data = parse(z.array(Event), await ctx.http.getJson(`${BASE}/events?apiKey=${key}&dateFormat=iso`), 'event list');
       return data.map((e) => ({ externalId: e.id, kickoff: new Date(e.commence_time), awayTeam: e.away_team, homeTeam: e.home_team }));
@@ -77,6 +77,11 @@ export function oddsApi(apiKey: string): OddsProvider {
         bookmakers: Object.values(BOOK_KEYS).join(','),
       });
       return normalizeEventOdds(await ctx.http.getJson(`${BASE}/events/${event.externalId}/odds?apiKey=${key}&${params}`));
+    },
+    async rawEventOdds(ctx, event, marketKeys) {
+      // Every US book (no bookmakers filter), billed per market returned.
+      const params = new URLSearchParams({ regions: 'us', oddsFormat: 'decimal', dateFormat: 'iso', markets: marketKeys.join(',') });
+      return ctx.http.getJson(`${BASE}/events/${event.externalId}/odds?apiKey=${key}&${params}`);
     },
     usage(res) {
       const num = (h: string) => { const v = res.headers.get(h); return v == null ? null : Number(v); };

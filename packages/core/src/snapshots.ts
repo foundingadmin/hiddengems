@@ -29,7 +29,7 @@ export const SNAPSHOT_GRACE_MINUTES = 90;
 /** Each game's freeze pull happens within this many minutes before its kickoff. */
 export const FREEZE_LEAD_MINUTES = 20;
 
-const parts = (d: Date, zone: string) => Object.fromEntries(
+export const wallParts = (d: Date, zone: string) => Object.fromEntries(
   new Intl.DateTimeFormat('en-US', { timeZone: zone, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', weekday: 'short' })
     .formatToParts(d).map((p) => [p.type, p.value]),
 ) as Record<string, string>;
@@ -37,12 +37,12 @@ const parts = (d: Date, zone: string) => Object.fromEntries(
 /** A wall-clock date and time in a time zone ("2026-11-07", "19:47") as a real instant. */
 export function zonedTimeToUtc(date: string, time: string, zone: string): Date {
   const guess = new Date(`${date}T${time}:00Z`);
-  const p = parts(guess, zone);
+  const p = wallParts(guess, zone);
   const shown = Date.UTC(+p.year!, +p.month! - 1, +p.day!, +p.hour!, +p.minute!, +p.second!);
   return new Date(guess.getTime() + (guess.getTime() - shown));
 }
 
-const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+export const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export interface DueSnapshot {
   /** Stable id for this occurrence ("sat:2026-11-07"), recorded once pulled. */
@@ -53,7 +53,7 @@ export interface DueSnapshot {
 
 /** The weekly snapshot due now, if any: its time has passed within the grace window and it was not taken. */
 export function dueSnapshot(now: Date, taken: ReadonlySet<string>): DueSnapshot | null {
-  const p = parts(now, SNAPSHOT_ZONE);
+  const p = wallParts(now, SNAPSHOT_ZONE);
   const today = `${p.year}-${p.month}-${p.day}`;
   const weekday = WEEKDAYS.indexOf(p.weekday!);
   for (const s of SNAPSHOTS) {

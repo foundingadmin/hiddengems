@@ -8,6 +8,7 @@ import { and, count, desc, eq, inArray, sql } from 'drizzle-orm';
 import { BOOTSTRAP, grade, jobs, runJob } from '../src';
 import { theirs } from '../src/errors';
 import { teamId } from '../src/jobs/shared';
+import { latestRows, seasonRows } from '../src/jobs/capsule';
 import { githubBackup, memoryBackup, sampleProviders } from '../src/providers';
 import type { Providers } from '../src/providers';
 
@@ -356,6 +357,41 @@ describe('backup', () => {
     const r = await run('backup', { force: true, providers: { ...providers, backup: githubBackup(undefined, undefined) } });
     expect(r).toMatchObject({ status: 'failed', failureOwner: 'ours' });
     expect(r.message).toMatch(/BACKUP_GITHUB_TOKEN/);
+  });
+});
+
+describe('capsule', () => {
+  const saturday = new Date('2026-11-08T03:00:00Z'); // 8 PM Denver
+  it('saves the Saturday board once, with a manifest', async () => {
+    const store = memoryBackup();
+    const r = await run('capsule', { now: saturday, providers: { ...providers, backup: store } });
+    expect(r.status, r.message).toBe('succeeded');
+    const paths = [...store.files.keys()];
+    expect(paths.some((p) => /^capsules\/2026\/wk\d\d\/sat\/odds\/.+\.json\.gz$/.test(p))).toBe(true);
+    const manifest = JSON.parse(new TextDecoder().decode(store.files.get(paths.find((p) => p.endsWith('sat/manifest.json'))!)!));
+    expect(manifest.files.length).toBe(paths.length - 1);
+    expect(manifest.markets).toContain('player_pass_yds');
+    const again = await run('capsule', { now: new Date(saturday.getTime() + 5 * 60_000), providers: { ...providers, backup: store } });
+    expect(again.status).toBe('skipped');
+  });
+
+  it('waits for the paid plan instead of spending free credits', async () => {
+    await db.insert(providerUsage).values({ provider: 'odds-api', used: 120, remaining: 380 })
+      .onConflictDoUpdate({ target: providerUsage.provider, set: { used: 120, remaining: 380 } });
+    const r = await run('capsule', { now: saturday, force: true, providers: { ...paid, backup: memoryBackup() } });
+    expect(r.status).toBe('skipped');
+    expect(r.message).toMatch(/paid odds plan/);
+    await db.delete(providerUsage).where(eq(providerUsage.provider, 'odds-api'));
+  });
+
+  it('keeps only the week just finished and this week so far, quotes and all', () => {
+    const csv = 'play_id,desc,week,season\n1,"Smith, 12 yd pass",7,2026\n2,"Jones run",8,2026\n3,"Thursday, kick",9,2026\n4,x,8,2025\n';
+    expect(seasonRows(csv, 2026, 8)).toBe('play_id,desc,week,season\n2,"Jones run",8,2026\n3,"Thursday, kick",9,2026\n');
+    expect(seasonRows(csv, 2026, null).split('\n').filter(Boolean)).toHaveLength(4);
+  });
+
+  it('keeps only the latest depth chart', () => {
+    expect(latestRows('dt,team\n2026-11-06,ari\n2026-11-07,ari\n2026-11-07,buf\n')).toBe('dt,team\n2026-11-07,ari\n2026-11-07,buf\n');
   });
 });
 

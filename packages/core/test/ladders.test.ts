@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  appraise, availabilityBlock, betLabel, injuryLine, injuryLevel, marketsFor, practicePenalty, propHit, readStatProp, slipReminders, statChance, whyNoRating,
+  CAPSULE_CLOSE_MARKETS, CAPSULE_MARKETS, appraise, availabilityBlock, betLabel, capsulePath, dueCapsules, injuryLine, injuryLevel, marketsFor, practicePenalty, propHit, readStatProp, slipReminders, statChance, whyNoRating,
 } from '../src';
 
 describe('stat ladders', () => {
@@ -81,5 +81,29 @@ describe('availability', () => {
     expect(practicePenalty('Did Not Participate In Practice')).toBeGreaterThan(0);
     expect(practicePenalty('Full Participation in Practice')).toBe(0);
     expect(practicePenalty(null)).toBe(0);
+  });
+});
+
+describe('time capsules', () => {
+  const games = [{ id: 'g1', kickoff: new Date('2026-11-08T18:00:00Z') }];
+  it('captures the Saturday board from 7:47 PM Denver until Sunday morning, once', () => {
+    expect(dueCapsules(new Date('2026-11-08T02:40:00Z'), games, new Set()).board).toBeNull(); // 7:40 PM
+    expect(dueCapsules(new Date('2026-11-08T02:50:00Z'), games, new Set()).board).toEqual({ slot: 'capsule-sat:2026-11-07', saturday: '2026-11-07' });
+    expect(dueCapsules(new Date('2026-11-08T16:00:00Z'), games, new Set()).board?.slot).toBe('capsule-sat:2026-11-07'); // 9 AM Sunday
+    expect(dueCapsules(new Date('2026-11-08T17:40:00Z'), games, new Set()).board).toBeNull(); // 10:40 AM Sunday
+    expect(dueCapsules(new Date('2026-11-08T02:50:00Z'), games, new Set(['capsule-sat:2026-11-07'])).board).toBeNull();
+  });
+  it('captures each close inside its lead, once', () => {
+    expect(dueCapsules(new Date('2026-11-08T17:30:00Z'), games, new Set()).closes).toHaveLength(0);
+    expect(dueCapsules(new Date('2026-11-08T17:40:00Z'), games, new Set()).closes).toHaveLength(1);
+    expect(dueCapsules(new Date('2026-11-08T17:40:00Z'), games, new Set(['capsule-close:g1'])).closes).toHaveLength(0);
+  });
+  it('asks for every player prop and game market', () => {
+    expect(CAPSULE_MARKETS).toContain('player_anytime_td');
+    expect(CAPSULE_MARKETS).toContain('player_pass_yds_alternate');
+    expect(CAPSULE_MARKETS).toContain('team_totals');
+    expect(new Set(CAPSULE_MARKETS).size).toBe(CAPSULE_MARKETS.length);
+    expect(CAPSULE_CLOSE_MARKETS.every((m) => CAPSULE_MARKETS.includes(m))).toBe(true);
+    expect(capsulePath(2026, 9, 'sat', 'manifest.json')).toBe('capsules/2026/wk09/sat/manifest.json');
   });
 });

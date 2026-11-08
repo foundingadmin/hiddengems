@@ -24,7 +24,9 @@ export function providersFor(env: Record<string, string | undefined> = process.e
   if (dataMode(env) === 'sample') return { ...sampleProviders({ history: true }), ...(backup ? { backup } : {}) };
   if (!env.ODDS_API_KEY) throw ours('config', 'Add ODDS_API_KEY to pull live odds, or set DATA_MODE=sample');
   const stats = nflverse();
-  return { schedule: stats, rosters: stats, odds: oddsApi(env.ODDS_API_KEY), results: stats, usage: stats, weather: openMeteo(), backup: backup ?? githubBackup(undefined, undefined) };
+  // Two keys: the free one carries live pulls, the paid one (when set) carries capsules, so each plan's spend stays legible.
+  const capsuleOdds = env.ODDS_API_KEY_PAID ? oddsApi(env.ODDS_API_KEY_PAID, 'odds-api-paid') : undefined;
+  return { schedule: stats, rosters: stats, odds: oddsApi(env.ODDS_API_KEY), ...(capsuleOdds ? { capsuleOdds } : {}), results: stats, usage: stats, weather: openMeteo(), backup: backup ?? githubBackup(undefined, undefined) };
 }
 
 export * from './types';

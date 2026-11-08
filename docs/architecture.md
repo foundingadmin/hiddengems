@@ -256,6 +256,28 @@ rate after shrinking, ranked by the trend lines' score. Home or away and favored
   `packages/db/drizzle`. Apply with `pnpm db:migrate`, which also upserts reference data (teams,
   books, markets). Production migrations run explicitly, never on a request.
 
+## Time capsules
+
+Since Nov 7 2026, every NFL week is saved as it stood, so future MODs backtest on our own record instead of buying
+history or trusting files that get rewritten. Rules live in `packages/core/src/capsules.ts`, the job in
+`packages/ingest/src/jobs/capsule.ts` (cron every 5 minutes, most calls find nothing due).
+
+- **Saturday board** (7:47 PM Denver, retried until Sunday 10:30 AM). Raw Odds API responses for every NFL player
+  prop and game market (standard and alternate, 66 keys) across every US book, one file per game. The nflverse files
+  that change week to week (schedule, weekly rosters, latest depth chart, injuries, snap counts, player and team
+  weekly stats, PFR advanced stats, Next Gen Stats, FTN charting, play by play). Season-long files keep only the week
+  just finished and this week so far, so the capsules together rebuild the season without repeating it (play by play
+  drops from about 8 MB to about 1 MB a week). The app's games and forecasts.
+- **Close**, each game within 25 minutes of kickoff. Raw odds for the markets we grade closing line value on
+  (anytime TD, volume and yardage props main and alt, game lines), `CAPSULE_CLOSE_MARKETS`.
+- **Where**. The private backup repository, `capsules/<season>/wk<nn>/{sat,close}/`, with a `manifest.json` per
+  capture (time, files, sha256, source, credits left). Never this public repository.
+- **Cost**. Billed per market returned, about 40 to 60 credits a game per capture. Capsules use the paid key
+  (`ODDS_API_KEY_PAID`) when it is set, while live pulls stay on the free `ODDS_API_KEY`. The job skips while its
+  key's plan is under 5,000 credits a month, so it never spends the free plan.
+- **News** is the reading half. The Saturday session saves team and player news to
+  `experiments/capsules/<season>-wk<nn>/news.md`, each item with outlet, URL and capture time.
+
 ## Environments
 
 | | Production | Staging and every preview |

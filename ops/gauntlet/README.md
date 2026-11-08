@@ -44,3 +44,21 @@ and 2025 Week 18, when starters rested.
 A pass needs all four: profit above the luck band (2 standard deviations of $1 flat betting at the gems' own odds),
 a profit in both 2025 and 2026, more than half its gems beating the closing price, and its two heaviest seeds
 earning at least half the profit.
+
+## Running it
+
+`learner.ts` holds blend, pick, score, reweight and pool. `run.ts` walks the 26 weeks and `report.ts` writes the report.
+Each seed is scored on the sum of its log loss gain over fair across the lines it spoke on, so a silent line counts 0,
+exactly what the blend got from it. The run needs `world.ts` to export `openWeek` and `reveal`, and `seeds/index.ts` to
+export the ten seeds as `SEEDS`.
+
+Once the rules are frozen and hashed, the one real run is:
+
+```bash
+packages/ingest/node_modules/.bin/tsx ops/gauntlet/run.ts --hash <sha256 of the frozen rules.json>
+```
+
+It refuses unfrozen rules, a hash that does not match, and any hash that already has a folder in
+`experiments/gauntlet/`, even from a run that stopped partway. Per week it writes `<season>-wNN-picks.json` before
+reveal, then `<season>-wNN-results.json` with the results, the scores and the new weights, and at the end
+`report.json`. The report can be rebuilt from the ledger with `tsx ops/gauntlet/report.ts <ledger folder>`.

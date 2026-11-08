@@ -2,6 +2,7 @@
 // Buys the backtest's historical odds from The Odds API (paid plan), once. No dependencies, Node 22+.
 //
 //   node ops/backtest/fetch-odds.mjs --dry            credit estimate, no key, no calls
+//   node ops/backtest/fetch-odds.mjs --test           checks the key: plan credits (free) and historical access (1 credit)
 //   node ops/backtest/fetch-odds.mjs [--max-credits N] buys what the cache lacks, stops before N credits
 //
 // Reads experiments/backtest/plan.json (ops/backtest/plan.ts). Per bought week: one historical event list at the
@@ -46,6 +47,33 @@ if (dry) process.exit(0);
 const key = process.env.ODDS_API_KEY_HISTORICAL;
 if (!key) { console.error('Set ODDS_API_KEY_HISTORICAL (the paid key). Nothing bought.'); process.exit(1); }
 if (process.env.ODDS_API_KEY && process.env.ODDS_API_KEY === key) { console.error('That is the production key. Use the paid historical key. Nothing bought.'); process.exit(1); }
+
+// Key test: the sports list is free and shows the plan's credits; one historical event list (1 credit) shows
+// whether the plan includes history. Writes experiments/backtest/key-test.json (status codes only, never the key).
+if (args.includes('--test')) {
+  const head = (r) => ({ status: r.status, used: r.headers.get('x-requests-used'), remaining: r.headers.get('x-requests-remaining'), last: r.headers.get('x-requests-last') });
+  const sports = await fetch(`https://api.the-odds-api.com/v4/sports/?apiKey=${encodeURIComponent(key)}`);
+  const at = weeks[0].boardAt.replace('.000Z', 'Z');
+  const hist = await fetch(`${BASE}/events?date=${at}&dateFormat=iso&apiKey=${encodeURIComponent(key)}`);
+  const histBody = await hist.text();
+  let events = null;
+  if (hist.ok) {
+    const body = JSON.parse(histBody);
+    events = body.data.length;
+    mkdirSync(dirname(eventsPath(weeks[0].week)), { recursive: true });
+    writeFileSync(eventsPath(weeks[0].week), histBody);
+  }
+  const out = {
+    at: new Date().toISOString(),
+    key: sports.ok ? 'valid' : `rejected (HTTP ${sports.status})`,
+    credits: head(sports),
+    historical: hist.ok ? `available, week ${weeks[0].week} board lists ${events} events` : `not available (HTTP ${hist.status}): ${histBody.slice(0, 160).replace(/apiKey=[^&\s"]+/g, 'apiKey=***')}`,
+    historicalHeaders: head(hist),
+  };
+  writeFileSync(join(ROOT, 'experiments/backtest/key-test.json'), `${JSON.stringify(out, null, 2)}\n`);
+  console.log(JSON.stringify(out, null, 2));
+  process.exit(0);
+}
 
 let spent = 0;
 let remaining = null;

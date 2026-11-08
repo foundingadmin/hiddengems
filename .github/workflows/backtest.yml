@@ -44,14 +44,30 @@ jobs:
           for u in schedules/games.csv rosters/roster_2026.csv weekly_rosters/roster_weekly_2026.csv stats_player/stats_player_week_2026.csv pbp/play_by_play_2026.csv.gz snap_counts/snap_counts_2026.csv injuries/injuries_2026.csv depth_charts/depth_charts_2026.csv; do
             curl -sSfL -o "$d/$(basename $u)" "$b/$u"
           done
-      - name: Buy what the cache lacks
+      - name: Read the run request
+        id: run
+        run: echo "mode=$(node -p "require('./experiments/backtest/run.json').mode")" >> "$GITHUB_OUTPUT"
+      - name: Test the key
+        if: steps.run.outputs.mode == 'test'
         env:
           ODDS_API_KEY_HISTORICAL: ${{ secrets.ODDS_API_KEY_HISTORICAL }}
         run: |
-          max=$(node -e "console.log(require('./experiments/backtest/run.json').maxCredits)")
+          node ops/backtest/fetch-odds.mjs --test
+          git config user.name "github-actions[bot]"
+          git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
+          git add experiments/backtest/key-test.json
+          git commit -m "Record the Odds API key test" && git push || echo "Nothing new to commit"
+      - name: Buy what the cache lacks
+        if: steps.run.outputs.mode == 'full'
+        env:
+          ODDS_API_KEY_HISTORICAL: ${{ secrets.ODDS_API_KEY_HISTORICAL }}
+        run: |
+          max=$(node -p "require('./experiments/backtest/run.json').maxCredits")
           node ops/backtest/fetch-odds.mjs --max-credits "$max"
-      - run: packages/ingest/node_modules/.bin/tsx ops/backtest/replay.ts
+      - if: steps.run.outputs.mode == 'full'
+        run: packages/ingest/node_modules/.bin/tsx ops/backtest/replay.ts
       - name: Saturday capsules
+        if: steps.run.outputs.mode == 'full'
         run: packages/ingest/node_modules/.bin/tsx ops/backtest/capsules.ts
       - name: Keep bought odds and captures
         if: always()
@@ -62,6 +78,7 @@ jobs:
             experiments/backtest/cache/wayback
           key: backtest-odds-${{ github.run_id }}
       - name: Commit the ledger
+        if: steps.run.outputs.mode == 'full'
         run: |
           cp experiments/backtest/cache/odds/spend.json experiments/backtest/spend.json
           git config user.name "github-actions[bot]"

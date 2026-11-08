@@ -5,6 +5,8 @@ import { SEED_IDS, type BetType, type GameLog, type Line, type Quote, type WeekW
 import {
   SEEDS, booksDisagree, coolingOff, followTheMove, gameScript, hiddenGems, hotHand, ladderMath, matchup, nextManUp, usage,
 } from '../../../ops/gauntlet/seeds';
+import { ONE_MORE_STEP } from '../../../ops/gauntlet/seeds/follow-the-move';
+import { ladderCurve, logit, phi, sigmoid } from '../../../ops/gauntlet/seeds/shared';
 
 const G = '2025_06_BUF_KC';
 
@@ -151,6 +153,12 @@ describe('gauntlet seeds', () => {
       expect(c).toBeCloseTo((1 / 1.6) / (1 / 1.6 + 1 / 2.4), 10);
       expect(c).toBeGreaterThan(0.55);
     });
+    it('reads rush plus receiving yards like any other bet type', () => {
+      const rr = (book: string, side: 'over' | 'under', price: number): Quote => ({ ...q(book, side, price), betType: 'rush_reception_yds', line: 89.5 });
+      const lines = [line('rb1', 'rush_reception_yds', 89.5, 0.5)];
+      const board = [rr('fanduel', 'over', 1.8), rr('fanduel', 'under', 2.0), rr('betmgm', 'over', 1.7), rr('betmgm', 'under', 2.1)];
+      expect(read(booksDisagree, world({ lines, board }), `2025|${G}|rb1|rush_reception_yds|89.5`)).toBeDefined();
+    });
     it('cuts a one-sided price by that book\'s own hold', () => {
       const other = (book: string, side: 'over' | 'under', price: number): Quote => ({ ...q(book, side, price), playerId: 'x', line: 70.5 });
       const board = [q('fanduel', 'over', 1.6), q('fanduel', 'under', 2.4), q('betmgm', 'over', 1.6), other('betmgm', 'over', 1.9), other('betmgm', 'under', 1.9)];
@@ -162,17 +170,64 @@ describe('gauntlet seeds', () => {
   });
 
   describe('follow the move', () => {
-    const early = (price: number): Quote[] => [{ book: 'draftkings', gameId: G, playerId: 'rb1', betType: 'rush_yds', alt: true, side: 'over', line: 59.5, price }];
-    const w = (e: Quote[] | null) => world({ early: e });
-    const now = world().lines[0]!.price;
-    it('silent with no early quote or no move, speaks on a move', () => {
-      expect(read(followTheMove, w(null))).toBeUndefined();
-      expect(read(followTheMove, w(early(now)))).toBeUndefined();
-      expect(read(followTheMove, w(early(2.2)))).toBeDefined();
+    const rung = (at: number, fair: number, playerId = 'rb1') => line(playerId, 'rush_yds', at, fair, { alt: true });
+    // A three rung ladder around a 59.5 main line.
+    const ladder = (main = 59.5) => [rung(40, 0.8), line('rb1', 'rush_yds', main, 0.55), rung(80, 0.3)];
+    const dk = (side: 'over' | 'under', at: number, price: number, o: Partial<Quote> = {}): Quote =>
+      ({ book: 'draftkings', gameId: G, playerId: 'rb1', betType: 'rush_yds', alt: false, side, line: at, price, ...o });
+    const mainAt = (at: number, over = 1.87, under = 1.95) => [dk('over', at, over), dk('under', at, under)];
+    const w = (early: Quote[] | null, lines = ladder()) => world({ lines, early });
+    const keys = (lines: Line[]) => lines.map((l) => l.key);
+    // The unshifted board curve is exactly what ladder math reads.
+    const curve = (lines: Line[]) => ladderMath.read(world({ lines }));
+
+    it('silent only with no early main line for that player and stat', () => {
+      expect(followTheMove.read(w(null)).size).toBe(0);
+      expect(followTheMove.read(w([dk('over', 59.5, 1.9, { alt: true })])).size).toBe(0);
+      expect(followTheMove.read(w([dk('over', 59.5, 1.9, { book: 'fanduel' })])).size).toBe(0);
+      expect(followTheMove.read(w([dk('over', 59.5, 1.9, { betType: 'reception_yds' })])).size).toBe(0);
+      const c = followTheMove.read(w(mainAt(59.5)));
+      expect([...c.keys()].sort()).toEqual(keys(ladder()).sort());
     });
-    it('carries the move on past fair, either way', () => {
-      expect(read(followTheMove, w(early(2.2)))!).toBeGreaterThan(0.55);
-      expect(read(followTheMove, w(early(1.5)))!).toBeLessThan(0.55);
+
+    it('a line that rose carries the whole curve up, one that fell carries it down', () => {
+      const up = followTheMove.read(w(mainAt(55.5))), down = followTheMove.read(w(mainAt(63.5))), base = curve(ladder());
+      for (const k of keys(ladder())) {
+        expect(up.get(k)!).toBeGreaterThan(base.get(k)!);
+        expect(down.get(k)!).toBeLessThan(base.get(k)!);
+      }
+    });
+
+    it('carries a yards move one more step: the curve read ONE_MORE_STEP of the move further along', () => {
+      const moved = 59.5 - 55.5, shift = ONE_MORE_STEP * moved;
+      const { mx, mz, slope } = ladderCurve(ladder());
+      const c = followTheMove.read(w(mainAt(55.5)));
+      for (const l of ladder()) expect(c.get(l.key)!).toBeCloseTo(phi(mz + slope * (Math.log(l.line - shift) - mx)), 10);
+    });
+
+    it('with the point held, carries the price move in log odds', () => {
+      // Board main: fair 0.55. Early two-way chance below it, so the over firmed and the curve moves up.
+      const firmed = followTheMove.read(w(mainAt(59.5, 2.0, 1.8))), drifted = followTheMove.read(w(mainAt(59.5, 1.6, 2.4)));
+      const base = curve(ladder());
+      const early = (1 / 2.0) / (1 / 2.0 + 1 / 1.8), step = ONE_MORE_STEP * (logit(0.55) - logit(early));
+      for (const k of keys(ladder())) {
+        expect(firmed.get(k)!).toBeCloseTo(sigmoid(logit(base.get(k)!) + step), 10);
+        expect(drifted.get(k)!).toBeLessThan(base.get(k)!);
+      }
+    });
+
+    it('speaks with no move, reading the board curve as it stands', () => {
+      const c = followTheMove.read(w(mainAt(59.5, 1 / 0.55, 1 / 0.45)));
+      const base = curve(ladder());
+      for (const k of keys(ladder())) expect(c.get(k)!).toBeCloseTo(base.get(k)!, 10);
+    });
+
+    it('a ladder too short to fit borrows the board\'s slope for its bet type', () => {
+      const other = [rung(30, 0.8, 'rb2'), line('rb2', 'rush_yds', 49.5, 0.5), rung(70, 0.25, 'rb2')];
+      const lone = [line('rb1', 'rush_yds', 59.5, 0.55)];
+      const c = followTheMove.read(w(mainAt(55.5), [...lone, ...other]));
+      expect(c.get(KEY)!).toBeGreaterThan(0.55);
+      expect(followTheMove.read(w(mainAt(55.5), lone)).size).toBe(0);
     });
   });
 

@@ -55,11 +55,11 @@ Two things the guard cannot see. nflverse stores the closing spread and total, n
 | MOD1 | 1 | 0 | 0 | 0 | 0.00 | n/a | n/a | n/a |
 | MOD1 | 2 | 0 | 0 | 0 | 0.00 | n/a | n/a | n/a |
 | MOD1 | 3 | 0 | 0 | 0 | 0.00 | n/a | n/a | n/a |
-| MOD1 | 4 | 0 | 0 | 0 | 0.00 | n/a | n/a | n/a |
-| MOD1 | 5 | 0 | 0 | 0 | 0.00 | n/a | n/a | n/a |
-| MOD1 | 6 | 0 | 0 | 0 | 0.00 | n/a | n/a | n/a |
-| MOD1 | 7 | 0 | 0 | 0 | 0.00 | n/a | n/a | n/a |
-| MOD1 | 8 | 0 | 0 | 0 | 0.00 | n/a | n/a | n/a |
+| MOD1 | 4 | 96 | 93 | 19 | 28.62 | fail | -37.6% | -9.8% |
+| MOD1 | 5 | 32 | 32 | 7 | 9.84 | fail | -32.6% | -11.0% |
+| MOD1 | 6 | 62 | 61 | 10 | 18.47 | fail | -50.0% | -7.6% |
+| MOD1 | 7 | 39 | 39 | 15 | 12.36 | pass | +28.7% | -6.1% |
+| MOD1 | 8 | 31 | 31 | 9 | 9.13 | fail | -2.7% | -6.7% |
 | MOD2 | 1 | 0 | 0 | 0 | 0.00 | n/a | n/a | n/a |
 | MOD2 | 2 | 172 | 172 | 38 | 51.71 | fail | -25.2% | -8.8% |
 | MOD2 | 3 | 147 | 142 | 29 | 40.54 | fail | -31.8% | -6.4% |
@@ -69,13 +69,13 @@ Two things the guard cannot see. nflverse stores the closing spread and total, n
 | MOD2 | 7 | 144 | 144 | 42 | 40.64 | pass | +5.0% | -6.5% |
 | MOD2 | 8 | 120 | 120 | 30 | 34.15 | fail | -8.3% | -4.5% |
 | MOD3 | 1 | 0 | 0 | 0 | 0.00 | n/a | n/a | n/a |
-| MOD3 | 2 | 0 | 0 | 0 | 0.00 | n/a | n/a | n/a |
-| MOD3 | 3 | 0 | 0 | 0 | 0.00 | n/a | n/a | n/a |
-| MOD3 | 4 | 0 | 0 | 0 | 0.00 | n/a | n/a | n/a |
-| MOD3 | 5 | 0 | 0 | 0 | 0.00 | n/a | n/a | n/a |
-| MOD3 | 6 | 0 | 0 | 0 | 0.00 | n/a | n/a | n/a |
-| MOD3 | 7 | 0 | 0 | 0 | 0.00 | n/a | n/a | n/a |
-| MOD3 | 8 | 0 | 0 | 0 | 0.00 | n/a | n/a | n/a |
+| MOD3 | 2 | 172 | 172 | 38 | 51.71 | fail | -25.2% | -8.8% |
+| MOD3 | 3 | 147 | 142 | 29 | 40.54 | fail | -31.8% | -6.4% |
+| MOD3 | 4 | 106 | 103 | 26 | 30.52 | fail | -11.6% | -8.9% |
+| MOD3 | 5 | 98 | 98 | 24 | 28.36 | fail | -13.7% | -9.4% |
+| MOD3 | 6 | 137 | 135 | 30 | 38.93 | fail | -21.9% | -6.9% |
+| MOD3 | 7 | 144 | 144 | 42 | 40.64 | pass | +5.0% | -6.5% |
+| MOD3 | 8 | 120 | 120 | 30 | 34.15 | fail | -8.3% | -4.5% |
 
 ### Totals
 
@@ -83,9 +83,21 @@ Two things the guard cannot see. nflverse stores the closing spread and total, n
 |---|---|---|---|---|---|---|---|---|---|
 | MOD0 | 350 | 338 | 45 | 53.97 | 2 of 7 | -7.8% | -14.8% | 0.1126 | 0.1105 |
 | MOD1q | 261 | 257 | 60 | 78.79 | 1 of 5 | -25.9% | -8.5% | 0.3826 | 0.1804 |
-| MOD1 | 0 | 0 | 0 | 0.00 | 0 of 0 | n/a | n/a | n/a | n/a |
+| MOD1 | 260 | 256 | 60 | 78.42 | 1 of 5 | -25.6% | -8.5% | 0.3819 | 0.1806 |
 | MOD2 | 924 | 914 | 219 | 264.85 | 1 of 7 | -16.0% | -7.3% | 0.1993 | 0.1846 |
-| MOD3 | 0 | 0 | 0 | 0.00 | 0 of 0 | n/a | n/a | n/a | n/a |
+| MOD3 | 924 | 914 | 219 | 264.85 | 1 of 7 | -16.0% | -7.3% | 0.1993 | 0.1846 |
+
+### Price movement
+
+Core's CLV prices the close with the assumed cut taken out, so an unmoved price scores about the cut below zero. Raw movement compares the lock price with the closing DraftKings price.
+
+| MOD | With a close | Closed shorter | Closed longer | Raw price CLV |
+|---|---|---|---|---|
+| MOD0 | 339 | 109 | 166 | -1.4% |
+| MOD1q | 257 | 129 | 117 | +0.2% |
+| MOD1 | 256 | 129 | 116 | +0.2% |
+| MOD2 | 913 | 508 | 381 | +1.4% |
+| MOD3 | 913 | 508 | 381 | +1.4% |
 
 ### Kill rule
 
@@ -95,11 +107,18 @@ A MOD is retired and its slot opens when hits fall 2 or more standard deviations
 |---|---|---|---|---|---|---|---|
 | MOD0 | all | 338 | 45 | 53.97 | 6.54 | -1.37 | stays |
 | MOD1q | all | 257 | 60 | 78.79 | 7.28 | -2.58 | retired |
-| MOD1 | all | 0 | 0 | 0.00 | 0.00 | n/a | no picks |
+| MOD1 | all | 256 | 60 | 78.42 | 7.27 | -2.54 | retired |
 | MOD2 | all | 914 | 219 | 264.85 | 13.60 | -3.37 | in sample, not judged |
 | MOD2 | 7 and 8 | 264 | 72 | 74.79 | 7.26 | -0.38 | stays |
-| MOD3 | all | 0 | 0 | 0.00 | 0.00 | n/a | no picks |
-| MOD3 | 7 and 8 | 0 | 0 | 0.00 | 0.00 | n/a | no picks |
+| MOD3 | all | 914 | 219 | 264.85 | 13.60 | -3.37 | in sample, not judged |
+| MOD3 | 7 and 8 | 264 | 72 | 74.79 | 7.26 | -0.38 | stays |
+
+### The read
+
+| Verdict | Graded picks | Hits | Book expected | Hits over expected |
+|---|---|---|---|---|
+| keep | 1071 | 259 | 314.21 | 0.82 |
+| downgrade | 99 | 20 | 29.06 | 0.69 |
 
 ### By level
 
@@ -113,11 +132,21 @@ A MOD is retired and its slot opens when hits fall 2 or more standard deviations
 | MOD1q | GEM3 | 4 | 0.0% | 71.4% | 25.4% | -100.0% |
 | MOD1q | GEM4 | 18 | 27.8% | 75.0% | 34.0% | -20.3% |
 | MOD1q | GEM5 | 29 | 34.5% | 90.0% | 33.0% | +24.1% |
+| MOD1 | GEM1 | 74 | 20.3% | 61.2% | 30.5% | -39.0% |
+| MOD1 | GEM2 | 132 | 22.7% | 66.7% | 29.9% | -28.1% |
+| MOD1 | GEM3 | 5 | 0.0% | 72.1% | 26.9% | -100.0% |
+| MOD1 | GEM4 | 17 | 29.4% | 75.3% | 33.9% | -15.6% |
+| MOD1 | GEM5 | 28 | 35.7% | 90.3% | 33.0% | +28.6% |
 | MOD2 | GEM1 | 107 | 19.6% | 30.2% | 27.8% | -22.8% |
 | MOD2 | GEM2 | 455 | 25.3% | 32.7% | 28.6% | -11.7% |
 | MOD2 | GEM3 | 277 | 22.7% | 40.7% | 29.9% | -22.5% |
 | MOD2 | GEM4 | 71 | 26.8% | 39.0% | 29.3% | -7.4% |
 | MOD2 | GEM5 | 4 | 25.0% | 42.1% | 31.3% | -24.3% |
+| MOD3 | GEM1 | 156 | 21.2% | 31.3% | 27.9% | -19.6% |
+| MOD3 | GEM2 | 424 | 25.2% | 33.1% | 28.8% | -12.4% |
+| MOD3 | GEM3 | 260 | 22.7% | 40.4% | 29.8% | -22.2% |
+| MOD3 | GEM4 | 70 | 27.1% | 39.0% | 29.4% | -6.1% |
+| MOD3 | GEM5 | 4 | 25.0% | 42.1% | 31.3% | -24.3% |
 
 ## Calibration
 
@@ -134,11 +163,19 @@ Each MOD's stated chance against what hit, in bins of its chance.
 | MOD1q | 60 to 70% | 206 | 64.7% | 21.8% | 30.1% |
 | MOD1q | 70 to 80% | 22 | 74.4% | 22.7% | 32.5% |
 | MOD1q | 80 to 100% | 29 | 90.0% | 34.5% | 33.0% |
+| MOD1 | 60 to 70% | 206 | 64.7% | 21.8% | 30.1% |
+| MOD1 | 70 to 80% | 21 | 74.3% | 23.8% | 32.3% |
+| MOD1 | 80 to 100% | 29 | 90.0% | 34.5% | 33.0% |
 | MOD2 | 20 to 30% | 297 | 26.4% | 21.9% | 23.3% |
 | MOD2 | 30 to 40% | 357 | 34.8% | 22.7% | 29.8% |
 | MOD2 | 40 to 50% | 198 | 44.2% | 28.3% | 33.5% |
 | MOD2 | 50 to 60% | 58 | 52.8% | 24.1% | 36.7% |
 | MOD2 | 60 to 70% | 4 | 63.6% | 75.0% | 37.6% |
+| MOD3 | 20 to 30% | 297 | 26.4% | 21.9% | 23.3% |
+| MOD3 | 30 to 40% | 357 | 34.8% | 22.7% | 29.8% |
+| MOD3 | 40 to 50% | 198 | 44.2% | 28.3% | 33.5% |
+| MOD3 | 50 to 60% | 58 | 52.8% | 24.1% | 36.7% |
+| MOD3 | 60 to 70% | 4 | 63.6% | 75.0% | 37.6% |
 
 ## Run it
 

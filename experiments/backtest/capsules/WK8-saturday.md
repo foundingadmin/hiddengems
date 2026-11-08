@@ -13,7 +13,7 @@ Board 2026-11-01T01:47:00.000Z. Everything below is dated before it. Nothing her
 
 ## Players
 
-### Tyler Allgeier, ARI
+**Tyler Allgeier, ARI**
 
 Picks to read
 - `2026-11-01-ari-dal:rushing_yds:00-0037263:over:19.5` MOD2 GEM3 · 20+ rushing yards at 2.70 · its chance 40%
@@ -23,7 +23,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · no game status · Toe · Limited Participation in Practice
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · RB 2 behind Jeremiyah Love
 
-### Austin Hooper, ATL
+**Austin Hooper, ATL**
 
 Picks to read
 - `2026-11-01-atl-tb:receptions:00-0032392:over:1.5` MOD2 GEM2 · 2+ receptions at 3.40 · its chance 31%
@@ -31,7 +31,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · TE 3 behind Kyle Pitts Sr., Charlie Woerner
 
-### Jahan Dotson, ATL
+**Jahan Dotson, ATL**
 
 Picks to read
 - `2026-11-01-atl-tb:receiving_yds:00-0037741:over:39.5` MOD2 GEM2 · 40+ receiving yards at 3.08 · its chance 34%
@@ -40,7 +40,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · PR 3 behind Zachariah Branch, Olamide Zaccheaus; WR 2 behind Drake London
 
-### Josh Cuevas, BAL
+**Josh Cuevas, BAL**
 
 Picks to read
 - `2026-11-01-bal-buf:receiving_yds:00-0040887:over:19.5` MOD2 GEM4 · 20+ receiving yards at 3.15 · its chance 37%
@@ -49,7 +49,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · TE 3 behind Mark Andrews, Matthew Hibner
 
-### Justice Hill, BAL
+**Justice Hill, BAL**
 
 Picks to read
 - `2026-11-01-bal-buf:rushing_yds:00-0034975:over:19.5` MOD2 GEM2 · 20+ rushing yards at 3.71 · its chance 29%
@@ -57,7 +57,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · KR 3 behind LaJohntay Wester, Rasheen Ali; RB 2 behind Derrick Henry
 
-### Lamar Jackson, BAL
+**Lamar Jackson, BAL**
 
 Picks to read
 - `2026-11-01-bal-buf:rushing_yds:00-0034796:over:39.5` MOD2 GEM2 · 40+ rushing yards at 3.36 · its chance 31%
@@ -66,7 +66,7 @@ Injury report (nflverse, 2026-10-30T20:00:00.000Z) · no game status · Ankle ·
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · QB 1
 - ESPN, https://web.archive.org/web/20261028180216/https://www.espn.com/nfl/injuries, captured 2026-10-28T18:02:16.000Z · Lamar Jackson · QB · Nov 1 · Questionable · Oct 28: Jackson (ankle) was spotted on the field for the start of Wednesday's practice, Jamison Hensley of ESPN.com reports.
 
-### Rashod Bateman, BAL
+**Rashod Bateman, BAL**
 
 Picks to read
 - `2026-11-01-bal-buf:receiving_yds:00-0036550:over:39.5` MOD2 GEM2 · 40+ receiving yards at 2.85 · its chance 36%
@@ -75,7 +75,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · WR 2 behind Zay Flowers
 
-### Zay Flowers, BAL
+**Zay Flowers, BAL**
 
 Picks to read
 - `2026-11-01-bal-buf:receiving_yds:00-0039064:over:109.5` MOD2 GEM2 · 110+ receiving yards at 3.03 · its chance 34%
@@ -85,7 +85,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · WR 1
 
-### Dalton Kincaid, BUF
+**Dalton Kincaid, BUF**
 
 Picks to read
 - `2026-11-01-bal-buf:receptions:00-0038933:over:5.5` MOD2 GEM2 · 6+ receptions at 4.15 · its chance 26%
@@ -93,7 +93,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · Questionable · Chest · Limited Participation in Practice
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · TE 1
 
-### James Cook, BUF
+**James Cook, BUF**
 
 Picks to read
 - `2026-11-01-bal-buf:rushing_yds:00-0037248:over:109.5` MOD2 GEM2 · 110+ rushing yards at 3.09 · its chance 34%
@@ -102,7 +102,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · RB 1
 
-### Josh Allen, BUF
+**Josh Allen, BUF**
 
 Picks to read
 - `2026-11-01-bal-buf:rushing_yds:00-0034857:over:59.5` MOD2 GEM2 · 60+ rushing yards at 4.56 · its chance 23%
@@ -110,7 +110,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · QB 1
 
-### Keon Coleman, BUF
+**Keon Coleman, BUF**
 
 Picks to read
 - `2026-11-01-bal-buf:receiving_yds:00-0039901:over:39.5` MOD2 GEM3 · 40+ receiving yards at 2.55 · its chance 42%
@@ -122,7 +122,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · WR 3 behind DJ Moore, Khalil Shakir
 
-### Ty Johnson, BUF
+**Ty Johnson, BUF**
 
 Picks to read
 - `2026-11-01-bal-buf:receiving_yds:00-0035537:over:24.5` MOD2 GEM4 · 25+ receiving yards at 2.86 · its chance 43%
@@ -132,7 +132,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · KR 4 behind Greg Dortch, Ray Davis, Khalil Shakir; RB 2 behind James Cook III
 
-### Joe Burrow, CIN
+**Joe Burrow, CIN**
 
 Picks to read
 - `2026-11-01-ten-cin:rushing_yds:00-0036442:over:9.5` MOD1q GEM2 · 10+ rushing yards at 2.60 · its chance 67%
@@ -141,7 +141,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · QB 1
 
-### Mike Gesicki, CIN
+**Mike Gesicki, CIN**
 
 Picks to read
 - `2026-11-01-ten-cin:anytime_td:00-0034829:yes:-` MOD1q GEM5 · Anytime TD at 3.30 · its chance 83%
@@ -150,7 +150,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · TE 1
 
-### Tee Higgins, CIN
+**Tee Higgins, CIN**
 
 Picks to read
 - `2026-11-01-ten-cin:receiving_yds:00-0036410:over:89.5` MOD1q GEM2 · 90+ receiving yards at 2.74 · its chance 67%
@@ -161,7 +161,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · WR 2 behind Ja'Marr Chase
 
-### Dylan Sampson, CLE
+**Dylan Sampson, CLE**
 
 Picks to read
 - `2026-11-01-cle-pit:rushing_yds:00-0040162:over:24.5` MOD2 GEM3 · 25+ rushing yards at 4.55 · its chance 27%
@@ -170,7 +170,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · no game status · Knee · Full Participation in Practice
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · KR 3 behind Jaleel McLaughlin, Malachi Corley; RB 2 behind Quinshon Judkins
 
-### Jerry Jeudy, CLE
+**Jerry Jeudy, CLE**
 
 Picks to read
 - `2026-11-01-cle-pit:receptions:00-0036407:over:3.5` MOD2 GEM2 · 4+ receptions at 4.07 · its chance 27%
@@ -178,7 +178,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · WR 3 behind Denzel Boston, KC Concepcion
 
-### Quinshon Judkins, CLE
+**Quinshon Judkins, CLE**
 
 Picks to read
 - `2026-11-01-cle-pit:receptions:00-0040784:over:2.5` MOD2 GEM3 · 3+ receptions at 2.72 · its chance 40%
@@ -186,7 +186,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · RB 1
 
-### George Pickens, DAL
+**George Pickens, DAL**
 
 Picks to read
 - `2026-11-01-ari-dal:receptions:00-0037247:over:5.5` MOD2 GEM2 · 6+ receptions at 3.15 · its chance 35%
@@ -194,7 +194,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · Questionable · Shoulder · Limited Participation in Practice
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · WR 2 behind CeeDee Lamb
 
-### J.K. Dobbins, DEN
+**J.K. Dobbins, DEN**
 
 Picks to read
 - `2026-11-01-kc-den:rushing_yds:00-0036158:over:39.5` MOD2 GEM2 · 40+ rushing yards at 2.69 · its chance 39%
@@ -202,7 +202,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · RB 1
 
-### Amon-Ra St. Brown, DET
+**Amon-Ra St. Brown, DET**
 
 Picks to read
 - `2026-11-01-min-det:receiving_yds:00-0036963:over:109.5` MOD2 GEM2 · 110+ receiving yards at 4.04 · its chance 27%
@@ -213,7 +213,7 @@ Depth chart (nflverse, 2026-10-31T13:34:51Z) · PR 2 behind DeAndre Carter; WR 1
 - ESPN, https://web.archive.org/web/20261028180216/https://www.espn.com/nfl/injuries, captured 2026-10-28T18:02:16.000Z · Amon-Ra St. Brown's Week 8 fantasy outlook
 - ESPN, https://web.archive.org/web/20261028180216/https://www.espn.com/nfl/injuries, captured 2026-10-28T18:02:16.000Z · Amon-Ra St. Brown's Week 8 fantasy outlook
 
-### Isaac TeSlaa, DET
+**Isaac TeSlaa, DET**
 
 Picks to read
 - `2026-11-01-min-det:receiving_yds:00-0040669:over:39.5` MOD2 GEM2 · 40+ receiving yards at 4.12 · its chance 27%
@@ -222,7 +222,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · WR 3 behind Amon-Ra St. Brown, Jameson Williams
 
-### Jahmyr Gibbs, DET
+**Jahmyr Gibbs, DET**
 
 Picks to read
 - `2026-11-01-min-det:receiving_yds:00-0039139:over:39.5` MOD2 GEM3 · 40+ receiving yards at 3.03 · its chance 38%
@@ -233,7 +233,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · no game status · Shoulder · Full Participation in Practice
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · RB 1
 
-### Sam LaPorta, DET
+**Sam LaPorta, DET**
 
 Picks to read
 - `2026-11-01-min-det:anytime_td:00-0039065:yes:-` MOD2 GEM3 · Anytime TD at 3.50 · its chance 34%
@@ -243,7 +243,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · TE 1
 
-### Jonathan Taylor, IND
+**Jonathan Taylor, IND**
 
 Picks to read
 - `2026-11-01-ind-jax:rushing_yds:00-0036223:over:59.5` MOD1q GEM5 · 60+ rushing yards at 2.52 · its chance 86%
@@ -259,7 +259,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · RB 1
 
-### Tyler Warren, IND
+**Tyler Warren, IND**
 
 Picks to read
 - `2026-11-01-ind-jax:anytime_td:00-0040128:yes:-` MOD1q GEM1 · Anytime TD at 4.10 · its chance 60%
@@ -271,7 +271,7 @@ Injury report (nflverse, 2026-10-30T20:00:00.000Z) · no game status · Groin ·
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · TE 1
 - ESPN, https://web.archive.org/web/20261028180216/https://www.espn.com/nfl/injuries, captured 2026-10-28T18:02:16.000Z · Tyler Warren · TE · Nov 1 · Questionable ·
 
-### Brenton Strange, JAX
+**Brenton Strange, JAX**
 
 Picks to read
 - `2026-11-01-ind-jax:receptions:00-0038935:over:5.5` MOD2 GEM3 · 6+ receptions at 3.75 · its chance 30%
@@ -279,7 +279,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · no game status · Eye · Full Participation in Practice
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · TE 1
 
-### Brian Thomas Jr, JAX
+**Brian Thomas Jr, JAX**
 
 Picks to read
 - `2026-11-01-ind-jax:anytime_td:00-0039893:yes:-` MOD2 GEM1 · Anytime TD at 4.10 · its chance 26%
@@ -287,7 +287,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · WR 4 behind Parker Washington, Jakobi Meyers, Josh Cameron
 
-### Chris Rodriguez Jr., JAX
+**Chris Rodriguez Jr., JAX**
 
 Picks to read
 - `2026-11-01-ind-jax:anytime_td:00-0038611:yes:-` MOD2 GEM2 · Anytime TD at 3.75 · its chance 29%
@@ -295,7 +295,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · RB 2 behind Bhayshul Tuten
 
-### Cyrus Allen, KC
+**Cyrus Allen, KC**
 
 Picks to read
 - `2026-11-01-kc-den:receiving_yds:00-0040890:over:14.5` MOD2 GEM2 · 15+ receiving yards at 3.82 · its chance 27%
@@ -303,7 +303,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · WR 4 behind Rashee Rice, Xavier Worthy, Jalen Royals
 
-### Emmett Johnson, KC
+**Emmett Johnson, KC**
 
 Picks to read
 - `2026-11-01-kc-den:receiving_yds:00-0041013:over:14.5` MOD1q GEM2 · 15+ receiving yards at 3.48 · its chance 67%
@@ -312,7 +312,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · KR 3 behind Nikko Remigio, Brashard Smith; RB 2 behind Kenneth Walker III
 
-### Kenneth Walker III, KC
+**Kenneth Walker III, KC**
 
 Picks to read
 - `2026-11-01-kc-den:rushing_yds:00-0038134:over:109.5` MOD1q GEM2 · 110+ rushing yards at 3.02 · its chance 67%
@@ -322,7 +322,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · RB 1
 
-### Noah Gray, KC
+**Noah Gray, KC**
 
 Picks to read
 - `2026-11-01-kc-den:receiving_yds:00-0036637:over:24.5` MOD2 GEM5 · 25+ receiving yards at 2.91 · its chance 41%
@@ -332,7 +332,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · TE 2 behind Travis Kelce
 
-### Xavier Worthy, KC
+**Xavier Worthy, KC**
 
 Picks to read
 - `2026-11-01-kc-den:receptions:00-0039894:over:4.5` MOD2 GEM2 · 5+ receptions at 3.77 · its chance 28%
@@ -341,7 +341,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · WR 2 behind Rashee Rice
 
-### Keaton Mitchell, LAC
+**Keaton Mitchell, LAC**
 
 Picks to read
 - `2026-11-01-lac-lar:receptions:00-0038454:over:2.5` MOD2 GEM3 · 3+ receptions at 3.88 · its chance 30%
@@ -350,7 +350,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · KR 1; RB 2 behind Omarion Hampton
 
-### Tre Harris, LAC
+**Tre Harris, LAC**
 
 Picks to read
 - `2026-11-01-lac-lar:receiving_yds:00-0040727:over:49.5` MOD1q GEM1 · 50+ receiving yards at 2.84 · its chance 60%
@@ -361,7 +361,7 @@ Injury report (nflverse, 2026-10-30T20:00:00.000Z) · no game status · Hamstrin
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · WR 3 behind Ladd McConkey, Quentin Johnston
 - ESPN, https://web.archive.org/web/20261028180216/https://www.espn.com/nfl/injuries, captured 2026-10-28T18:02:16.000Z · Tre' Harris · WR · Nov 1 · Questionable ·
 
-### Blake Corum, LAR
+**Blake Corum, LAR**
 
 Picks to read
 - `2026-11-01-lac-lar:receptions:00-0039738:over:1.5` MOD2 GEM2 · 2+ receptions at 2.81 · its chance 37%
@@ -369,7 +369,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · RB 2 behind Kyren Williams
 
-### Kyren Williams, LAR
+**Kyren Williams, LAR**
 
 Picks to read
 - `2026-11-01-lac-lar:receptions:00-0037840:over:4.5` MOD2 GEM3 · 5+ receptions at 3.65 · its chance 31%
@@ -378,7 +378,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · PR 2 behind Alex Bachman; RB 1
 
-### Ashton Jeanty, LV
+**Ashton Jeanty, LV**
 
 Picks to read
 - `2026-11-01-lv-nyj:receiving_yds:00-0040122:over:39.5` MOD2 GEM5 · 40+ receiving yards at 3.03 · its chance 43%
@@ -389,7 +389,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · RB 1
 
-### Michael Mayer, LV
+**Michael Mayer, LV**
 
 Picks to read
 - `2026-11-01-lv-nyj:receptions:00-0039066:over:4.5` MOD2 GEM4 · 5+ receptions at 4.14 · its chance 30%
@@ -399,7 +399,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · TE 2 behind Brock Bowers
 
-### Tre Tucker, LV
+**Tre Tucker, LV**
 
 Picks to read
 - `2026-11-01-lv-nyj:receiving_yds:00-0038563:over:69.5` MOD2 GEM4 · 70+ receiving yards at 3.41 · its chance 34%
@@ -409,7 +409,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · WR 1
 
-### Caleb Douglas, MIA
+**Caleb Douglas, MIA**
 
 Picks to read
 - `2026-11-01-ne-mia:receiving_yds:00-0041523:over:49.5` MOD1q GEM2 · 50+ receiving yards at 2.51 · its chance 67%
@@ -422,7 +422,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · WR 2 behind Malik Washington
 
-### Greg Dulcich, MIA
+**Greg Dulcich, MIA**
 
 Picks to read
 - `2026-11-01-ne-mia:receiving_yds:00-0037252:over:49.5` MOD2 GEM2 · 50+ receiving yards at 3.81 · its chance 28%
@@ -430,7 +430,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · no game status · Ankle · Full Participation in Practice
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · TE 1
 
-### Malik Willis, MIA
+**Malik Willis, MIA**
 
 Picks to read
 - `2026-11-01-ne-mia:rushing_yds:00-0038128:over:49.5` MOD2 GEM2 · 50+ rushing yards at 3.95 · its chance 27%
@@ -438,7 +438,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · no game status · Groin · Full Participation in Practice
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · QB 1
 
-### Ollie Gordon II, MIA
+**Ollie Gordon II, MIA**
 
 Picks to read
 - `2026-11-01-ne-mia:rushing_yds:00-0040198:over:79.5` MOD2 GEM2 · 80+ rushing yards at 2.85 · its chance 36%
@@ -447,7 +447,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · RB 1
 
-### Aaron Jones, MIN
+**Aaron Jones, MIN**
 
 Picks to read
 - `2026-11-01-min-det:rushing_yds:00-0033293:over:39.5` MOD1q GEM5 · 40+ rushing yards at 2.91 · its chance 83%
@@ -460,7 +460,7 @@ Injury report (nflverse, 2026-10-30T20:00:00.000Z) · no game status · Knee · 
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · RB 2 behind Jordan Mason
 - ESPN, https://web.archive.org/web/20261028180216/https://www.espn.com/nfl/injuries, captured 2026-10-28T18:02:16.000Z · Aaron Jones Sr. · RB · Nov 1 · Questionable · Oct 26: The left knee injury that forced Jones out of Sunday's 16-10 win over the Colts isn't considered significant, and the running back is viewed as day-to-day, Adam Schefter of ESPN reports.
 
-### Jordan Mason, MIN
+**Jordan Mason, MIN**
 
 Picks to read
 - `2026-11-01-min-det:rushing_yds:00-0037525:over:59.5` MOD2 GEM2 · 60+ rushing yards at 2.59 · its chance 44%
@@ -468,7 +468,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · RB 1
 
-### Adonai Mitchell, NYJ
+**Adonai Mitchell, NYJ**
 
 Picks to read
 - `2026-11-01-lv-nyj:receiving_yds:00-0039890:over:39.5` MOD1q GEM2 · 40+ receiving yards at 2.90 · its chance 67%
@@ -482,7 +482,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · WR 3 behind Garrett Wilson, Omar Cooper Jr.
 
-### Omar Cooper Jr., NYJ
+**Omar Cooper Jr., NYJ**
 
 Picks to read
 - `2026-11-01-lv-nyj:anytime_td:00-0041511:yes:-` MOD1q GEM2 · Anytime TD at 3.90 · its chance 67%
@@ -500,7 +500,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · WR 2 behind Garrett Wilson
 
-### Saquon Barkley, PHI
+**Saquon Barkley, PHI**
 
 Picks to read
 - `2026-11-01-phi-was:rushing_yds:00-0034844:over:59.5` MOD1q GEM1 · 60+ rushing yards at 2.53 · its chance 60%
@@ -509,7 +509,7 @@ Injury report (nflverse, 2026-10-30T20:00:00.000Z) · no game status · Hamstrin
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · RB 1
 - ESPN, https://web.archive.org/web/20261028180216/https://www.espn.com/nfl/injuries, captured 2026-10-28T18:02:16.000Z · Saquon Barkley · RB · Nov 1 · Questionable · Oct 27: Barkley said after Monday's 38-21 loss to the Cowboys that his "hamstring came out great," and noted that the back issue that kept him out for the entire fourth quarter isn't anything that he expects to prevent him from playing Sunday against the Commanders, Tim McManus of ESPN.com reports.
 
-### Jaylen Warren, PIT
+**Jaylen Warren, PIT**
 
 Picks to read
 - `2026-11-01-cle-pit:receiving_yds:00-0037228:over:29.5` MOD1q GEM3 · 30+ receiving yards at 2.65 · its chance 71%
@@ -521,7 +521,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · RB 1
 
-### Rico Dowdle, PIT
+**Rico Dowdle, PIT**
 
 Picks to read
 - `2026-11-01-cle-pit:receptions:00-0036139:over:3.5` MOD2 GEM2 · 4+ receptions at 3.61 · its chance 29%
@@ -530,7 +530,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · RB 2 behind Jaylen Warren
 
-### Kenny Gainwell, TB
+**Kenny Gainwell, TB**
 
 Picks to read
 - `2026-11-01-atl-tb:rushing_yds:00-0036919:over:29.5` MOD2 GEM2 · 30+ rushing yards at 4.98 · its chance 22%
@@ -538,7 +538,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · Questionable · Hip · Full Participation in Practice
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · KR 3 behind Kameron Johnson, Tez Johnson; RB 2 behind Bucky Irving
 
-### Sean Tucker, TB
+**Sean Tucker, TB**
 
 Picks to read
 - `2026-11-01-atl-tb:rushing_yds:00-0038951:over:14.5` MOD2 GEM3 · 15+ rushing yards at 2.68 · its chance 41%
@@ -548,7 +548,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · RB 3 behind Bucky Irving, Kenny Gainwell
 
-### Chig Okonkwo, WAS
+**Chig Okonkwo, WAS**
 
 Picks to read
 - `2026-11-01-phi-was:receiving_yds:00-0037809:over:49.5` MOD2 GEM2 · 50+ receiving yards at 3.14 · its chance 35%
@@ -557,7 +557,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · TE 1
 
-### Jayden Daniels, WAS
+**Jayden Daniels, WAS**
 
 Picks to read
 - `2026-11-01-phi-was:rushing_yds:00-0039910:over:59.5` MOD2 GEM3 · 60+ rushing yards at 4.39 · its chance 29%
@@ -566,7 +566,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · no game status · Elbow · Full Participation in Practice
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · QB 1
 
-### Rachaad White, WAS
+**Rachaad White, WAS**
 
 Picks to read
 - `2026-11-01-phi-was:receptions:00-0037256:over:3.5` MOD2 GEM2 · 4+ receptions at 3.76 · its chance 28%
@@ -575,7 +575,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · not listed
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · KR 1; RB 1
 
-### Stefon Diggs, WAS
+**Stefon Diggs, WAS**
 
 Picks to read
 - `2026-11-01-phi-was:anytime_td:00-0031588:yes:-` MOD1q GEM1 · Anytime TD at 2.90 · its chance 60%
@@ -583,7 +583,7 @@ Picks to read
 Injury report (nflverse, 2026-10-30T20:00:00.000Z) · no game status · Hand · Full Participation in Practice
 Depth chart (nflverse, 2026-10-31T13:34:51Z) · WR 1
 
-### Treylon Burks, WAS
+**Treylon Burks, WAS**
 
 Picks to read
 - `2026-11-01-phi-was:receiving_yds:00-0037742:over:29.5` MOD2 GEM2 · 30+ receiving yards at 2.54 · its chance 41%

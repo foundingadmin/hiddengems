@@ -1,0 +1,156 @@
+{
+  "run": "MOD1-WK7SNF-back",
+  "mod": "MOD1",
+  "week": 7,
+  "segment": "SNF",
+  "kind": "back",
+  "board_at": "2026-10-25T01:47:00.000Z",
+  "locked_at": "2026-10-25T01:47:00.000Z",
+  "picks": [
+    {
+      "selection_key": "2026-10-25-kc-sea:rushing_yds:00-0038134:over:99.5",
+      "game_id": "2026-10-25-kc-sea",
+      "player": "Kenneth Walker III",
+      "market": "rushing_yds",
+      "line": 99.5,
+      "side": "over",
+      "book": "draftkings",
+      "lock_price": 3,
+      "implied": 0.3333,
+      "reads": [
+        "keep · Not on injury report, RB1 (nflverse injury report and depth chart)"
+      ],
+      "close_price": 2.9,
+      "clv": -0.0472,
+      "stat_value": 36,
+      "hit": false,
+      "mod_chance": 0.8,
+      "edge": 0.4667,
+      "gem_level": 5,
+      "rating": null,
+      "clarity": null
+    },
+    {
+      "selection_key": "2026-10-25-kc-sea:rushing_yds:00-0038134:over:109.5",
+      "game_id": "2026-10-25-kc-sea",
+      "player": "Kenneth Walker III",
+      "market": "rushing_yds",
+      "line": 109.5,
+      "side": "over",
+      "book": "draftkings",
+      "lock_price": 3.98,
+      "implied": 0.2513,
+      "reads": [
+        "keep · Not on injury report, RB1 (nflverse injury report and depth chart)"
+      ],
+      "close_price": 3.68,
+      "clv": -0.0124,
+      "stat_value": 36,
+      "hit": false,
+      "mod_chance": 0.8,
+      "edge": 0.5487,
+      "gem_level": 5,
+      "rating": null,
+      "clarity": null
+    },
+    {
+      "selection_key": "2026-10-25-kc-sea:receiving_yds:00-0038543:over:109.5",
+      "game_id": "2026-10-25-kc-sea",
+      "player": "Jaxon Smith-Njigba",
+      "market": "receiving_yds",
+      "line": 109.5,
+      "side": "over",
+      "book": "draftkings",
+      "lock_price": 2.59,
+      "implied": 0.3861,
+      "reads": [
+        "keep · Not on injury report, WR1 (nflverse injury report and depth chart)"
+      ],
+      "close_price": 2.64,
+      "clv": -0.0939,
+      "stat_value": 150,
+      "hit": true,
+      "mod_chance": 0.6667,
+      "edge": 0.2806,
+      "gem_level": 2,
+      "rating": null,
+      "clarity": null
+    },
+    {
+      "selection_key": "2026-10-25-kc-sea:receiving_yds:00-0038543:over:119.5",
+      "game_id": "2026-10-25-kc-sea",
+      "player": "Jaxon Smith-Njigba",
+      "market": "receiving_yds",
+      "line": 119.5,
+      "side": "over",
+      "book": "draftkings",
+      "lock_price": 3.21,
+      "implied": 0.3115,
+      "reads": [
+        "keep · Not on injury report, WR1 (nflverse injury report and depth chart)"
+      ],
+      "close_price": 3.3,
+      "clv": -0.108,
+      "stat_value": 150,
+      "hit": true,
+      "mod_chance": 0.6667,
+      "edge": 0.3551,
+      "gem_level": 2,
+      "rating": null,
+      "clarity": null
+    },
+    {
+      "selection_key": "2026-10-25-kc-sea:rushing_yds:00-0038134:over:119.5",
+      "game_id": "2026-10-25-kc-sea",
+      "player": "Kenneth Walker III",
+      "market": "rushing_yds",
+      "line": 119.5,
+      "side": "over",
+      "book": "draftkings",
+      "lock_price": 5.31,
+      "implied": 0.1883,
+      "reads": [
+        "keep · Not on injury report, RB1 (nflverse injury report and depth chart)"
+      ],
+      "close_price": 4.86,
+      "clv": -0.0151,
+      "stat_value": 36,
+      "hit": false,
+      "mod_chance": 0.6,
+      "edge": 0.4117,
+      "gem_level": 1,
+      "rating": null,
+      "clarity": null
+    },
+    {
+      "selection_key": "2026-10-25-kc-sea:rushing_yds:00-0041013:over:14.5",
+      "game_id": "2026-10-25-kc-sea",
+      "player": "Emmett Johnson",
+      "market": "rushing_yds",
+      "line": 14.5,
+      "side": "over",
+      "book": "draftkings",
+      "lock_price": 2.86,
+      "implied": 0.3497,
+      "reads": [
+        "keep · Not on injury report, RB2 behind Kenneth Walker III (nflverse injury report and depth chart)"
+      ],
+      "close_price": 2.92,
+      "clv": -0.0981,
+      "stat_value": 0,
+      "hit": false,
+      "mod_chance": 0.6,
+      "edge": 0.2503,
+      "gem_level": 1,
+      "rating": null,
+      "clarity": null
+    }
+  ],
+  "result": {
+    "book_expected_hits": 1.82,
+    "hits": 2,
+    "pass": true,
+    "flat_roi": -0.0333,
+    "clv_avg": -0.0624
+  }
+}

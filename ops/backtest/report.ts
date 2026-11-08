@@ -44,7 +44,7 @@ export function writeReadme() {
   const picksOf = (mod: string, week?: number) => ledgers.filter((l) => l.mod === mod && (week === undefined || l.week === week)).flatMap((l) => l.picks);
   const weeks = [...new Set(ledgers.map((l) => l.week))].sort((a, b) => a - b);
   const weekOfPick = new Map<Pick, number>(ledgers.flatMap((l) => l.picks.map((p) => [p, l.week] as [Pick, number])));
-  const spendPath = `${ODDS_DIR}/spend.json`;
+  const spendPath = existsSync(`${ODDS_DIR}/spend.json`) ? `${ODDS_DIR}/spend.json` : `${OUT_DIR}/spend.json`;
   const spend = existsSync(spendPath) ? (JSON.parse(readFileSync(spendPath, 'utf8')) as { spent: number; remaining: string | null }[]) : [];
   const spent = spend.reduce((s, r) => s + r.spent, 0);
 
@@ -82,6 +82,15 @@ export function writeReadme() {
     const scored = weeks.filter((wk) => totals(picksOf(mod, wk)).graded).length;
     L.push(`| ${mod} | ${t.picks} | ${t.graded} | ${t.hits} | ${f2(t.expected)} | ${passed} of ${scored} | ${pct(t.roi)} | ${pct(t.clv)} | ${t.brierMod?.toFixed(4) ?? 'n/a'} | ${t.brierBook?.toFixed(4) ?? 'n/a'} |`);
   }
+  L.push('', '### Price movement', '');
+  L.push('Core\'s CLV prices the close with the assumed cut taken out, so an unmoved price scores about the cut below zero. Raw movement compares the lock price with the closing DraftKings price.', '');
+  L.push('| MOD | With a close | Closed shorter | Closed longer | Raw price CLV |', '|---|---|---|---|---|');
+  for (const mod of MOD_LIST) {
+    const ps = picksOf(mod).filter((p) => p.close_price);
+    if (!ps.length) continue;
+    const raw = ps.reduce((s, p) => s + p.lock_price / p.close_price! - 1, 0) / ps.length;
+    L.push(`| ${mod} | ${ps.length} | ${ps.filter((p) => p.close_price! < p.lock_price).length} | ${ps.filter((p) => p.close_price! > p.lock_price).length} | ${pct(raw)} |`);
+  }
   L.push('', '### Kill rule', '');
   L.push(`A MOD is retired and its slot opens when hits fall ${-KILL_Z} or more standard deviations below the book's expected hits across all back trials. MOD2 and MOD3 are judged on Weeks 7 and 8 only, since the stat model was fit on Weeks 4 to 6.`, '');
   L.push('| MOD | Weeks judged | Graded | Hits | Book expected | SD | z | Verdict |', '|---|---|---|---|---|---|---|---|');
@@ -94,6 +103,14 @@ export function writeReadme() {
       const verdict = k.z === null ? 'no picks' : !judged ? 'in sample, not judged' : k.z <= KILL_Z ? 'retired' : 'stays';
       L.push(`| ${mod} | ${label} | ${ps.filter((p) => p.hit !== null).length} | ${k.hits} | ${f2(k.expected)} | ${f2(k.sd)} | ${k.z === null ? 'n/a' : k.z.toFixed(2)} | ${verdict} |`);
     }
+  }
+  L.push('', '### The read', '');
+  const reads = picksOf('MOD1').concat(picksOf('MOD3')).filter((p) => p.hit !== null);
+  L.push('| Verdict | Graded picks | Hits | Book expected | Hits over expected |', '|---|---|---|---|---|');
+  for (const v of ['keep', 'downgrade']) {
+    const g = reads.filter((p) => p.reads[0]?.startsWith(v));
+    const e = g.reduce((s, p) => s + p.implied, 0), h = g.filter((p) => p.hit).length;
+    if (g.length) L.push(`| ${v} | ${g.length} | ${h} | ${f2(e)} | ${f2(h / e)} |`);
   }
   L.push('', '### By level', '');
   L.push('| MOD | Level | Graded | Hit rate | Mean MOD chance | Mean book chance | ROI |', '|---|---|---|---|---|---|---|');

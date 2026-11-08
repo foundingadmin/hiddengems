@@ -117,7 +117,7 @@ export async function buildCapsule(w: PlanWeek, depthRows: Record<string, string
   L.push('', '## Players', '');
   for (const s of [...screened.values()].sort((a, b) => a.team.localeCompare(b.team) || a.name.localeCompare(b.name))) {
     const team = findTeam(s.team)?.abbr ?? s.team.toUpperCase();
-    L.push(`### ${s.name}, ${team}`, '');
+    L.push(`**${s.name}, ${team}**`, '');
     L.push('Picks to read');
     for (const p of s.picks) L.push(`- \`${p.key}\` ${p.mod} GEM${p.level} · ${p.label} at ${p.price.toFixed(2)} · its chance ${(p.chance * 100).toFixed(0)}%`);
     const inj = injuries.get(s.pid);
@@ -146,7 +146,7 @@ async function main() {
   for (const w of plan.filter((x) => x.buy)) {
     const md = await buildCapsule(w, depthRows, season);
     writeFileSync(`${CAPSULE_DIR}/WK${w.week}-saturday.md`, md);
-    console.log(`Week ${w.week}: capsule with ${(md.match(/^### /gm) ?? []).length} players`);
+    console.log(`Week ${w.week}: capsule with ${(md.match(/^\*\*/gm) ?? []).length} players`);
   }
 }
 

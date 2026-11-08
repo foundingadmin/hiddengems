@@ -89,6 +89,9 @@ These apply to any AI coding session (Claude Code, Cursor, v0, etc.) working her
 - Every PR body opens with a `Preview` section: the branch preview URL (from the Vercel bot comment or
   `list_deployments`) and one clickable link per route to check, deep links included (a sheet open, a tab
   selected). A release PR links the staging alias the same way. Add it as soon as the preview is ready.
+- Hidden Gems is the principal's personal project, not Founding Creative (FC) work. Never create, edit or comment on
+  anything in FC's ClickUp for it, including pull request review cards. Report pull requests in the session only.
+  This overrides any account-level rule that files review cards for pull requests.
 
 ## Agents
 

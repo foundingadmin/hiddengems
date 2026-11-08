@@ -1,0 +1,2222 @@
+{
+  "mod": "MOD11",
+  "hash": "e59b4df61b07f5afeb72d37626427262dd4b18cd6777a4aa359aa10fbb1a054a",
+  "rules": {
+    "frozen": true,
+    "mod": "MOD11",
+    "generator": {
+      "seed": 20261108,
+      "draw": 4
+    },
+    "picksPerWeek": 10,
+    "minPrice": 1.69,
+    "maxPrice": 6.54,
+    "perPlayer": 1,
+    "maxStep": 0.118,
+    "poolingLines": 3986,
+    "vetoAsFilter": true,
+    "capByLines": false,
+    "startWeights": {
+      "books_disagree": 0.057559,
+      "usage": 0.089019,
+      "next_man_up": 0.14168,
+      "game_script": 0.312669,
+      "matchup": 0.103325,
+      "follow_the_move": 0.017932,
+      "ladder_math": 0.003156,
+      "hot_hand": 0.193538,
+      "cooling_off": 0.011614,
+      "hidden_gems": 0.069508
+    },
+    "warmup": [
+      {
+        "season": 2025,
+        "week": 1
+      },
+      {
+        "season": 2025,
+        "week": 2
+      },
+      {
+        "season": 2025,
+        "week": 3
+      },
+      {
+        "season": 2025,
+        "week": 4
+      },
+      {
+        "season": 2025,
+        "week": 5
+      },
+      {
+        "season": 2025,
+        "week": 6
+      },
+      {
+        "season": 2025,
+        "week": 7
+      },
+      {
+        "season": 2025,
+        "week": 8
+      },
+      {
+        "season": 2025,
+        "week": 18
+      }
+    ],
+    "stake": 1,
+    "purse": 100,
+    "pass": {
+      "luckBandSd": 2.5,
+      "beatCloseShare": 0.5,
+      "bothSeasons": true,
+      "topSeedsShare": 0.5
+    }
+  },
+  "seeds": [
+    {
+      "id": "books_disagree",
+      "name": "Books disagree"
+    },
+    {
+      "id": "usage",
+      "name": "Usage is destiny"
+    },
+    {
+      "id": "next_man_up",
+      "name": "Next man up"
+    },
+    {
+      "id": "game_script",
+      "name": "Game script"
+    },
+    {
+      "id": "matchup",
+      "name": "Matchup"
+    },
+    {
+      "id": "follow_the_move",
+      "name": "Follow the move"
+    },
+    {
+      "id": "ladder_math",
+      "name": "Ladder math"
+    },
+    {
+      "id": "hot_hand",
+      "name": "Hot hand"
+    },
+    {
+      "id": "cooling_off",
+      "name": "Cooling off"
+    },
+    {
+      "id": "hidden_gems",
+      "name": "Hidden gems"
+    }
+  ],
+  "weeks": {
+    "from": {
+      "season": 2025,
+      "week": 1
+    },
+    "to": {
+      "season": 2026,
+      "week": 8
+    },
+    "total": 26,
+    "graded": 17
+  },
+  "verdict": {
+    "pass": false,
+    "checks": [
+      {
+        "id": "luck_band",
+        "label": "Profit above the luck band",
+        "pass": false,
+        "value": -17.73,
+        "bar": 37.66049
+      },
+      {
+        "id": "both_seasons",
+        "label": "A profit in 2025 and in 2026",
+        "pass": false,
+        "value": [
+          {
+            "season": 2025,
+            "profit": -8.22
+          },
+          {
+            "season": 2026,
+            "profit": -9.51
+          }
+        ],
+        "bar": 0
+      },
+      {
+        "id": "beat_close",
+        "label": "More than half its gems beat the closing price",
+        "pass": false,
+        "value": 0.485437,
+        "bar": 0.5,
+        "beat": 50,
+        "priced": 103
+      },
+      {
+        "id": "top_seeds",
+        "label": "Its two heaviest seeds earn at least half the profit",
+        "pass": false,
+        "value": null,
+        "bar": 0.5,
+        "seeds": [
+          "books_disagree",
+          "hidden_gems"
+        ],
+        "profit": 0,
+        "filters": []
+      }
+    ]
+  },
+  "tiles": {
+    "profit": -17.73,
+    "roi": -0.107455,
+    "wagered": 165,
+    "returned": 147.27,
+    "purseStart": 100,
+    "purseEnd": 82.27,
+    "gems": 170,
+    "graded": 165,
+    "refunds": 5,
+    "hits": 71,
+    "hitShare": 0.430303,
+    "breakEvenShare": 0.468342,
+    "beatClose": 0.485437,
+    "luckBand": 37.66049,
+    "seasons": [
+      {
+        "season": 2025,
+        "gems": 90,
+        "wagered": 90,
+        "returned": 81.78,
+        "profit": -8.22,
+        "hits": 40,
+        "hitShare": 0.444444,
+        "roi": -0.091333
+      },
+      {
+        "season": 2026,
+        "gems": 75,
+        "wagered": 75,
+        "returned": 65.49,
+        "profit": -9.51,
+        "hits": 31,
+        "hitShare": 0.413333,
+        "roi": -0.1268
+      }
+    ],
+    "warmup": {
+      "weeks": 9,
+      "gems": 90,
+      "wagered": 90,
+      "returned": 89.78,
+      "profit": -0.22,
+      "hits": 43,
+      "hitShare": 0.477778,
+      "roi": -0.002444
+    }
+  },
+  "weekly": [
+    {
+      "season": 2025,
+      "week": 1,
+      "warmup": true,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 11.35,
+      "profit": 1.35,
+      "hits": 5,
+      "breakEvenShare": 0.491357,
+      "runningProfit": 0,
+      "purse": 100,
+      "luckBand": 0,
+      "boardLines": {
+        "rush_yds": 842,
+        "reception_yds": 1679,
+        "pass_yds": 790,
+        "rush_reception_yds": 521
+      },
+      "linesGraded": {
+        "rush_yds": 833,
+        "reception_yds": 1679,
+        "pass_yds": 790,
+        "rush_reception_yds": 521
+      },
+      "sharedWeights": {
+        "books_disagree": 0.057559,
+        "usage": 0.089019,
+        "next_man_up": 0.14168,
+        "game_script": 0.312669,
+        "matchup": 0.103325,
+        "follow_the_move": 0.017932,
+        "ladder_math": 0.003156,
+        "hot_hand": 0.193538,
+        "cooling_off": 0.011614,
+        "hidden_gems": 0.069508
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.060877,
+        "usage": 0.089599,
+        "next_man_up": 0.14168,
+        "game_script": 0.298721,
+        "matchup": 0.103325,
+        "follow_the_move": 0.020048,
+        "ladder_math": 0.003528,
+        "hot_hand": 0.193538,
+        "cooling_off": 0.011614,
+        "hidden_gems": 0.077069
+      }
+    },
+    {
+      "season": 2025,
+      "week": 2,
+      "warmup": true,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 12.14,
+      "profit": 2.14,
+      "hits": 6,
+      "breakEvenShare": 0.454692,
+      "runningProfit": 0,
+      "purse": 100,
+      "luckBand": 0,
+      "boardLines": {
+        "rush_yds": 886,
+        "reception_yds": 1917,
+        "pass_yds": 751,
+        "rush_reception_yds": 528
+      },
+      "linesGraded": {
+        "rush_yds": 886,
+        "reception_yds": 1917,
+        "pass_yds": 751,
+        "rush_reception_yds": 528
+      },
+      "sharedWeights": {
+        "books_disagree": 0.060877,
+        "usage": 0.089599,
+        "next_man_up": 0.14168,
+        "game_script": 0.298721,
+        "matchup": 0.103325,
+        "follow_the_move": 0.020048,
+        "ladder_math": 0.003528,
+        "hot_hand": 0.193538,
+        "cooling_off": 0.011614,
+        "hidden_gems": 0.077069
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.068061,
+        "usage": 0.086384,
+        "next_man_up": 0.158398,
+        "game_script": 0.275708,
+        "matchup": 0.103325,
+        "follow_the_move": 0.021804,
+        "ladder_math": 0.003692,
+        "hot_hand": 0.193538,
+        "cooling_off": 0.011614,
+        "hidden_gems": 0.077476
+      }
+    },
+    {
+      "season": 2025,
+      "week": 3,
+      "warmup": true,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 10.2,
+      "profit": 0.2,
+      "hits": 5,
+      "breakEvenShare": 0.511981,
+      "runningProfit": 0,
+      "purse": 100,
+      "luckBand": 0,
+      "boardLines": {
+        "rush_yds": 860,
+        "reception_yds": 1840,
+        "pass_yds": 803,
+        "rush_reception_yds": 518
+      },
+      "linesGraded": {
+        "rush_yds": 860,
+        "reception_yds": 1830,
+        "pass_yds": 803,
+        "rush_reception_yds": 518
+      },
+      "sharedWeights": {
+        "books_disagree": 0.068061,
+        "usage": 0.086384,
+        "next_man_up": 0.158398,
+        "game_script": 0.275708,
+        "matchup": 0.103325,
+        "follow_the_move": 0.021804,
+        "ladder_math": 0.003692,
+        "hot_hand": 0.193538,
+        "cooling_off": 0.011614,
+        "hidden_gems": 0.077476
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.072287,
+        "usage": 0.084531,
+        "next_man_up": 0.161617,
+        "game_script": 0.258274,
+        "matchup": 0.103325,
+        "follow_the_move": 0.024069,
+        "ladder_math": 0.004128,
+        "hot_hand": 0.193538,
+        "cooling_off": 0.011614,
+        "hidden_gems": 0.086618
+      }
+    },
+    {
+      "season": 2025,
+      "week": 4,
+      "warmup": true,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 7.61,
+      "profit": -2.39,
+      "hits": 4,
+      "breakEvenShare": 0.502498,
+      "runningProfit": 0,
+      "purse": 100,
+      "luckBand": 0,
+      "boardLines": {
+        "rush_yds": 834,
+        "reception_yds": 1856,
+        "pass_yds": 778,
+        "rush_reception_yds": 527
+      },
+      "linesGraded": {
+        "rush_yds": 822,
+        "reception_yds": 1847,
+        "pass_yds": 778,
+        "rush_reception_yds": 511
+      },
+      "sharedWeights": {
+        "books_disagree": 0.072287,
+        "usage": 0.084531,
+        "next_man_up": 0.161617,
+        "game_script": 0.258274,
+        "matchup": 0.103325,
+        "follow_the_move": 0.024069,
+        "ladder_math": 0.004128,
+        "hot_hand": 0.193538,
+        "cooling_off": 0.011614,
+        "hidden_gems": 0.086618
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.080817,
+        "usage": 0.083072,
+        "next_man_up": 0.164468,
+        "game_script": 0.244804,
+        "matchup": 0.09433,
+        "follow_the_move": 0.026173,
+        "ladder_math": 0.004345,
+        "hot_hand": 0.193538,
+        "cooling_off": 0.011614,
+        "hidden_gems": 0.096839
+      }
+    },
+    {
+      "season": 2025,
+      "week": 5,
+      "warmup": true,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 16.07,
+      "profit": 6.07,
+      "hits": 7,
+      "breakEvenShare": 0.476551,
+      "runningProfit": 0,
+      "purse": 100,
+      "luckBand": 0,
+      "boardLines": {
+        "rush_yds": 805,
+        "reception_yds": 1678,
+        "pass_yds": 643,
+        "rush_reception_yds": 502
+      },
+      "linesGraded": {
+        "rush_yds": 805,
+        "reception_yds": 1678,
+        "pass_yds": 643,
+        "rush_reception_yds": 502
+      },
+      "sharedWeights": {
+        "books_disagree": 0.080817,
+        "usage": 0.083072,
+        "next_man_up": 0.164468,
+        "game_script": 0.244804,
+        "matchup": 0.09433,
+        "follow_the_move": 0.026173,
+        "ladder_math": 0.004345,
+        "hot_hand": 0.193538,
+        "cooling_off": 0.011614,
+        "hidden_gems": 0.096839
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.087298,
+        "usage": 0.078693,
+        "next_man_up": 0.183875,
+        "game_script": 0.225392,
+        "matchup": 0.084343,
+        "follow_the_move": 0.028968,
+        "ladder_math": 0.004462,
+        "hot_hand": 0.193626,
+        "cooling_off": 0.011311,
+        "hidden_gems": 0.102031
+      }
+    },
+    {
+      "season": 2025,
+      "week": 6,
+      "warmup": true,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 11.44,
+      "profit": 1.44,
+      "hits": 5,
+      "breakEvenShare": 0.465955,
+      "runningProfit": 0,
+      "purse": 100,
+      "luckBand": 0,
+      "boardLines": {
+        "rush_yds": 842,
+        "reception_yds": 1677,
+        "pass_yds": 689,
+        "rush_reception_yds": 657
+      },
+      "linesGraded": {
+        "rush_yds": 842,
+        "reception_yds": 1652,
+        "pass_yds": 689,
+        "rush_reception_yds": 657
+      },
+      "sharedWeights": {
+        "books_disagree": 0.087298,
+        "usage": 0.078693,
+        "next_man_up": 0.183875,
+        "game_script": 0.225392,
+        "matchup": 0.084343,
+        "follow_the_move": 0.028968,
+        "ladder_math": 0.004462,
+        "hot_hand": 0.193626,
+        "cooling_off": 0.011311,
+        "hidden_gems": 0.102031
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.095015,
+        "usage": 0.079327,
+        "next_man_up": 0.195204,
+        "game_script": 0.221169,
+        "matchup": 0.075985,
+        "follow_the_move": 0.032305,
+        "ladder_math": 0.004989,
+        "hot_hand": 0.179625,
+        "cooling_off": 0.010796,
+        "hidden_gems": 0.105585
+      }
+    },
+    {
+      "season": 2025,
+      "week": 7,
+      "warmup": true,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 5.88,
+      "profit": -4.12,
+      "hits": 3,
+      "breakEvenShare": 0.443263,
+      "runningProfit": 0,
+      "purse": 100,
+      "luckBand": 0,
+      "boardLines": {
+        "rush_yds": 815,
+        "reception_yds": 1563,
+        "pass_yds": 720,
+        "rush_reception_yds": 503
+      },
+      "linesGraded": {
+        "rush_yds": 815,
+        "reception_yds": 1563,
+        "pass_yds": 720,
+        "rush_reception_yds": 503
+      },
+      "sharedWeights": {
+        "books_disagree": 0.095015,
+        "usage": 0.079327,
+        "next_man_up": 0.195204,
+        "game_script": 0.221169,
+        "matchup": 0.075985,
+        "follow_the_move": 0.032305,
+        "ladder_math": 0.004989,
+        "hot_hand": 0.179625,
+        "cooling_off": 0.010796,
+        "hidden_gems": 0.105585
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.103517,
+        "usage": 0.07579,
+        "next_man_up": 0.191736,
+        "game_script": 0.223169,
+        "matchup": 0.068523,
+        "follow_the_move": 0.036117,
+        "ladder_math": 0.005301,
+        "hot_hand": 0.166802,
+        "cooling_off": 0.011183,
+        "hidden_gems": 0.117863
+      }
+    },
+    {
+      "season": 2025,
+      "week": 8,
+      "warmup": true,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 7.55,
+      "profit": -2.45,
+      "hits": 4,
+      "breakEvenShare": 0.475069,
+      "runningProfit": 0,
+      "purse": 100,
+      "luckBand": 0,
+      "boardLines": {
+        "rush_yds": 665,
+        "reception_yds": 1531,
+        "pass_yds": 607,
+        "rush_reception_yds": 454
+      },
+      "linesGraded": {
+        "rush_yds": 665,
+        "reception_yds": 1514,
+        "pass_yds": 607,
+        "rush_reception_yds": 454
+      },
+      "sharedWeights": {
+        "books_disagree": 0.103517,
+        "usage": 0.07579,
+        "next_man_up": 0.191736,
+        "game_script": 0.223169,
+        "matchup": 0.068523,
+        "follow_the_move": 0.036117,
+        "ladder_math": 0.005301,
+        "hot_hand": 0.166802,
+        "cooling_off": 0.011183,
+        "hidden_gems": 0.117863
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.115732,
+        "usage": 0.072098,
+        "next_man_up": 0.187513,
+        "game_script": 0.224211,
+        "matchup": 0.063356,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.005609,
+        "hot_hand": 0.14977,
+        "cooling_off": 0.011533,
+        "hidden_gems": 0.130999
+      }
+    },
+    {
+      "season": 2025,
+      "week": 9,
+      "warmup": false,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 7.51,
+      "profit": -2.49,
+      "hits": 4,
+      "breakEvenShare": 0.52497,
+      "runningProfit": -2.49,
+      "purse": 97.51,
+      "luckBand": 7.537407,
+      "boardLines": {
+        "rush_yds": 781,
+        "reception_yds": 1782,
+        "pass_yds": 719,
+        "rush_reception_yds": 557
+      },
+      "linesGraded": {
+        "rush_yds": 781,
+        "reception_yds": 1782,
+        "pass_yds": 719,
+        "rush_reception_yds": 557
+      },
+      "sharedWeights": {
+        "books_disagree": 0.115732,
+        "usage": 0.072098,
+        "next_man_up": 0.187513,
+        "game_script": 0.224211,
+        "matchup": 0.063356,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.005609,
+        "hot_hand": 0.14977,
+        "cooling_off": 0.011533,
+        "hidden_gems": 0.130999
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.128373,
+        "usage": 0.069422,
+        "next_man_up": 0.19153,
+        "game_script": 0.222452,
+        "matchup": 0.05915,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.005894,
+        "hot_hand": 0.132097,
+        "cooling_off": 0.01043,
+        "hidden_gems": 0.141473
+      }
+    },
+    {
+      "season": 2025,
+      "week": 10,
+      "warmup": false,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 1.88,
+      "profit": -8.12,
+      "hits": 1,
+      "breakEvenShare": 0.495164,
+      "runningProfit": -10.61,
+      "purse": 89.39,
+      "luckBand": 11.090537,
+      "boardLines": {
+        "rush_yds": 805,
+        "reception_yds": 1621,
+        "pass_yds": 677,
+        "rush_reception_yds": 460
+      },
+      "linesGraded": {
+        "rush_yds": 805,
+        "reception_yds": 1613,
+        "pass_yds": 677,
+        "rush_reception_yds": 460
+      },
+      "sharedWeights": {
+        "books_disagree": 0.128373,
+        "usage": 0.069422,
+        "next_man_up": 0.19153,
+        "game_script": 0.222452,
+        "matchup": 0.05915,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.005894,
+        "hot_hand": 0.132097,
+        "cooling_off": 0.01043,
+        "hidden_gems": 0.141473
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.142839,
+        "usage": 0.065016,
+        "next_man_up": 0.196244,
+        "game_script": 0.214864,
+        "matchup": 0.05217,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.006212,
+        "hot_hand": 0.119835,
+        "cooling_off": 0.010381,
+        "hidden_gems": 0.153262
+      }
+    },
+    {
+      "season": 2025,
+      "week": 11,
+      "warmup": false,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 10.3,
+      "profit": 0.3,
+      "hits": 5,
+      "breakEvenShare": 0.502392,
+      "runningProfit": -10.31,
+      "purse": 89.69,
+      "luckBand": 13.688499,
+      "boardLines": {
+        "rush_yds": 763,
+        "reception_yds": 1760,
+        "pass_yds": 721,
+        "rush_reception_yds": 532
+      },
+      "linesGraded": {
+        "rush_yds": 763,
+        "reception_yds": 1749,
+        "pass_yds": 721,
+        "rush_reception_yds": 532
+      },
+      "sharedWeights": {
+        "books_disagree": 0.142839,
+        "usage": 0.065016,
+        "next_man_up": 0.196244,
+        "game_script": 0.214864,
+        "matchup": 0.05217,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.006212,
+        "hot_hand": 0.119835,
+        "cooling_off": 0.010381,
+        "hidden_gems": 0.153262
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.15102,
+        "usage": 0.062995,
+        "next_man_up": 0.201703,
+        "game_script": 0.201857,
+        "matchup": 0.046014,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.00675,
+        "hot_hand": 0.109051,
+        "cooling_off": 0.010364,
+        "hidden_gems": 0.171067
+      }
+    },
+    {
+      "season": 2025,
+      "week": 12,
+      "warmup": false,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 12.91,
+      "profit": 2.91,
+      "hits": 6,
+      "breakEvenShare": 0.511513,
+      "runningProfit": -7.4,
+      "purse": 92.6,
+      "luckBand": 15.87057,
+      "boardLines": {
+        "rush_yds": 773,
+        "reception_yds": 1743,
+        "pass_yds": 665,
+        "rush_reception_yds": 519
+      },
+      "linesGraded": {
+        "rush_yds": 773,
+        "reception_yds": 1724,
+        "pass_yds": 665,
+        "rush_reception_yds": 519
+      },
+      "sharedWeights": {
+        "books_disagree": 0.15102,
+        "usage": 0.062995,
+        "next_man_up": 0.201703,
+        "game_script": 0.201857,
+        "matchup": 0.046014,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.00675,
+        "hot_hand": 0.109051,
+        "cooling_off": 0.010364,
+        "hidden_gems": 0.171067
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.168067,
+        "usage": 0.059007,
+        "next_man_up": 0.206703,
+        "game_script": 0.18315,
+        "matchup": 0.040585,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.007314,
+        "hot_hand": 0.105349,
+        "cooling_off": 0.010316,
+        "hidden_gems": 0.180331
+      }
+    },
+    {
+      "season": 2025,
+      "week": 13,
+      "warmup": false,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 12.51,
+      "profit": 2.51,
+      "hits": 6,
+      "breakEvenShare": 0.493256,
+      "runningProfit": -4.89,
+      "purse": 95.11,
+      "luckBand": 17.860571,
+      "boardLines": {
+        "rush_yds": 1071,
+        "reception_yds": 1806,
+        "pass_yds": 755,
+        "rush_reception_yds": 539
+      },
+      "linesGraded": {
+        "rush_yds": 1071,
+        "reception_yds": 1806,
+        "pass_yds": 755,
+        "rush_reception_yds": 539
+      },
+      "sharedWeights": {
+        "books_disagree": 0.168067,
+        "usage": 0.059007,
+        "next_man_up": 0.206703,
+        "game_script": 0.18315,
+        "matchup": 0.040585,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.007314,
+        "hot_hand": 0.105349,
+        "cooling_off": 0.010316,
+        "hidden_gems": 0.180331
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.176082,
+        "usage": 0.056654,
+        "next_man_up": 0.210527,
+        "game_script": 0.170504,
+        "matchup": 0.036598,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.007876,
+        "hot_hand": 0.092918,
+        "cooling_off": 0.010206,
+        "hidden_gems": 0.199456
+      }
+    },
+    {
+      "season": 2025,
+      "week": 14,
+      "warmup": false,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 14.85,
+      "profit": 4.85,
+      "hits": 7,
+      "breakEvenShare": 0.507727,
+      "runningProfit": -0.04,
+      "purse": 99.96,
+      "luckBand": 19.605484,
+      "boardLines": {
+        "rush_yds": 999,
+        "reception_yds": 1773,
+        "pass_yds": 667,
+        "rush_reception_yds": 554
+      },
+      "linesGraded": {
+        "rush_yds": 999,
+        "reception_yds": 1762,
+        "pass_yds": 667,
+        "rush_reception_yds": 554
+      },
+      "sharedWeights": {
+        "books_disagree": 0.176082,
+        "usage": 0.056654,
+        "next_man_up": 0.210527,
+        "game_script": 0.170504,
+        "matchup": 0.036598,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.007876,
+        "hot_hand": 0.092918,
+        "cooling_off": 0.010206,
+        "hidden_gems": 0.199456
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.186854,
+        "usage": 0.050344,
+        "next_man_up": 0.211298,
+        "game_script": 0.161321,
+        "matchup": 0.033574,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.008132,
+        "hot_hand": 0.081954,
+        "cooling_off": 0.00995,
+        "hidden_gems": 0.217395
+      }
+    },
+    {
+      "season": 2025,
+      "week": 15,
+      "warmup": false,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 12.32,
+      "profit": 2.32,
+      "hits": 6,
+      "breakEvenShare": 0.51184,
+      "runningProfit": 2.28,
+      "purse": 102.28,
+      "luckBand": 21.108351,
+      "boardLines": {
+        "rush_yds": 1036,
+        "reception_yds": 1895,
+        "pass_yds": 746,
+        "rush_reception_yds": 573
+      },
+      "linesGraded": {
+        "rush_yds": 1036,
+        "reception_yds": 1863,
+        "pass_yds": 746,
+        "rush_reception_yds": 573
+      },
+      "sharedWeights": {
+        "books_disagree": 0.186854,
+        "usage": 0.050344,
+        "next_man_up": 0.211298,
+        "game_script": 0.161321,
+        "matchup": 0.033574,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.008132,
+        "hot_hand": 0.081954,
+        "cooling_off": 0.00995,
+        "hidden_gems": 0.217395
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.202603,
+        "usage": 0.045945,
+        "next_man_up": 0.210971,
+        "game_script": 0.15184,
+        "matchup": 0.02968,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.008352,
+        "hot_hand": 0.072283,
+        "cooling_off": 0.00965,
+        "hidden_gems": 0.229498
+      }
+    },
+    {
+      "season": 2025,
+      "week": 16,
+      "warmup": false,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 7.63,
+      "profit": -2.37,
+      "hits": 4,
+      "breakEvenShare": 0.526975,
+      "runningProfit": -0.09,
+      "purse": 99.91,
+      "luckBand": 22.398382,
+      "boardLines": {
+        "rush_yds": 1043,
+        "reception_yds": 1850,
+        "pass_yds": 759,
+        "rush_reception_yds": 527
+      },
+      "linesGraded": {
+        "rush_yds": 1043,
+        "reception_yds": 1841,
+        "pass_yds": 759,
+        "rush_reception_yds": 527
+      },
+      "sharedWeights": {
+        "books_disagree": 0.202603,
+        "usage": 0.045945,
+        "next_man_up": 0.210971,
+        "game_script": 0.15184,
+        "matchup": 0.02968,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.008352,
+        "hot_hand": 0.072283,
+        "cooling_off": 0.00965,
+        "hidden_gems": 0.229498
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.221336,
+        "usage": 0.043571,
+        "next_man_up": 0.212233,
+        "game_script": 0.13524,
+        "matchup": 0.026178,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.008883,
+        "hot_hand": 0.066465,
+        "cooling_off": 0.009429,
+        "hidden_gems": 0.237486
+      }
+    },
+    {
+      "season": 2025,
+      "week": 17,
+      "warmup": false,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 1.87,
+      "profit": -8.13,
+      "hits": 1,
+      "breakEvenShare": 0.471512,
+      "runningProfit": -8.22,
+      "purse": 91.78,
+      "luckBand": 24.202273,
+      "boardLines": {
+        "rush_yds": 911,
+        "reception_yds": 1594,
+        "pass_yds": 712,
+        "rush_reception_yds": 422
+      },
+      "linesGraded": {
+        "rush_yds": 896,
+        "reception_yds": 1585,
+        "pass_yds": 712,
+        "rush_reception_yds": 422
+      },
+      "sharedWeights": {
+        "books_disagree": 0.221336,
+        "usage": 0.043571,
+        "next_man_up": 0.212233,
+        "game_script": 0.13524,
+        "matchup": 0.026178,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.008883,
+        "hot_hand": 0.066465,
+        "cooling_off": 0.009429,
+        "hidden_gems": 0.237486
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.232985,
+        "usage": 0.040754,
+        "next_man_up": 0.21718,
+        "game_script": 0.130462,
+        "matchup": 0.023089,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.009872,
+        "hot_hand": 0.060218,
+        "cooling_off": 0.010202,
+        "hidden_gems": 0.236059
+      }
+    },
+    {
+      "season": 2025,
+      "week": 18,
+      "warmup": true,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 7.54,
+      "profit": -2.46,
+      "hits": 4,
+      "breakEvenShare": 0.500441,
+      "runningProfit": -8.22,
+      "purse": 91.78,
+      "luckBand": 24.202273,
+      "boardLines": {
+        "rush_yds": 606,
+        "reception_yds": 856,
+        "pass_yds": 548,
+        "rush_reception_yds": 208
+      },
+      "linesGraded": {
+        "rush_yds": 606,
+        "reception_yds": 843,
+        "pass_yds": 548,
+        "rush_reception_yds": 208
+      },
+      "sharedWeights": {
+        "books_disagree": 0.232985,
+        "usage": 0.040754,
+        "next_man_up": 0.21718,
+        "game_script": 0.130462,
+        "matchup": 0.023089,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.009872,
+        "hot_hand": 0.060218,
+        "cooling_off": 0.010202,
+        "hidden_gems": 0.236059
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.250148,
+        "usage": 0.037983,
+        "next_man_up": 0.21472,
+        "game_script": 0.117896,
+        "matchup": 0.020364,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.01004,
+        "hot_hand": 0.053113,
+        "cooling_off": 0.009798,
+        "hidden_gems": 0.24676
+      }
+    },
+    {
+      "season": 2026,
+      "week": 1,
+      "warmup": false,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 3.61,
+      "profit": -6.39,
+      "hits": 2,
+      "breakEvenShare": 0.415208,
+      "runningProfit": -14.61,
+      "purse": 85.39,
+      "luckBand": 26.747663,
+      "boardLines": {
+        "rush_yds": 1116,
+        "reception_yds": 2159,
+        "pass_yds": 793,
+        "rush_reception_yds": 677
+      },
+      "linesGraded": {
+        "rush_yds": 1116,
+        "reception_yds": 2151,
+        "pass_yds": 793,
+        "rush_reception_yds": 677
+      },
+      "sharedWeights": {
+        "books_disagree": 0.250148,
+        "usage": 0.037983,
+        "next_man_up": 0.21472,
+        "game_script": 0.117896,
+        "matchup": 0.020364,
+        "follow_the_move": 0.039178,
+        "ladder_math": 0.01004,
+        "hot_hand": 0.053113,
+        "cooling_off": 0.009798,
+        "hidden_gems": 0.24676
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.247901,
+        "usage": 0.033501,
+        "next_man_up": 0.21472,
+        "game_script": 0.106062,
+        "matchup": 0.020364,
+        "follow_the_move": 0.037036,
+        "ladder_math": 0.010408,
+        "hot_hand": 0.053113,
+        "cooling_off": 0.009798,
+        "hidden_gems": 0.267097
+      }
+    },
+    {
+      "season": 2026,
+      "week": 2,
+      "warmup": false,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 5.63,
+      "profit": -4.37,
+      "hits": 3,
+      "breakEvenShare": 0.406979,
+      "runningProfit": -18.98,
+      "purse": 81.02,
+      "luckBand": 29.108633,
+      "boardLines": {
+        "rush_yds": 1194,
+        "reception_yds": 2117,
+        "pass_yds": 803,
+        "rush_reception_yds": 690
+      },
+      "linesGraded": {
+        "rush_yds": 1194,
+        "reception_yds": 2097,
+        "pass_yds": 803,
+        "rush_reception_yds": 690
+      },
+      "sharedWeights": {
+        "books_disagree": 0.247901,
+        "usage": 0.033501,
+        "next_man_up": 0.21472,
+        "game_script": 0.106062,
+        "matchup": 0.020364,
+        "follow_the_move": 0.037036,
+        "ladder_math": 0.010408,
+        "hot_hand": 0.053113,
+        "cooling_off": 0.009798,
+        "hidden_gems": 0.267097
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.273825,
+        "usage": 0.029548,
+        "next_man_up": 0.203797,
+        "game_script": 0.096545,
+        "matchup": 0.020364,
+        "follow_the_move": 0.03803,
+        "ladder_math": 0.011092,
+        "hot_hand": 0.053113,
+        "cooling_off": 0.009798,
+        "hidden_gems": 0.263888
+      }
+    },
+    {
+      "season": 2026,
+      "week": 3,
+      "warmup": false,
+      "gems": 10,
+      "graded": 7,
+      "refunds": 3,
+      "wagered": 7,
+      "returned": 5.75,
+      "profit": -1.25,
+      "hits": 3,
+      "breakEvenShare": 0.408686,
+      "runningProfit": -20.23,
+      "purse": 79.77,
+      "luckBand": 30.463092,
+      "boardLines": {
+        "rush_yds": 1178,
+        "reception_yds": 2087,
+        "pass_yds": 789,
+        "rush_reception_yds": 622
+      },
+      "linesGraded": {
+        "rush_yds": 1148,
+        "reception_yds": 2048,
+        "pass_yds": 770,
+        "rush_reception_yds": 613
+      },
+      "sharedWeights": {
+        "books_disagree": 0.273825,
+        "usage": 0.029548,
+        "next_man_up": 0.203797,
+        "game_script": 0.096545,
+        "matchup": 0.020364,
+        "follow_the_move": 0.03803,
+        "ladder_math": 0.011092,
+        "hot_hand": 0.053113,
+        "cooling_off": 0.009798,
+        "hidden_gems": 0.263888
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.293539,
+        "usage": 0.026103,
+        "next_man_up": 0.210783,
+        "game_script": 0.085153,
+        "matchup": 0.020364,
+        "follow_the_move": 0.0379,
+        "ladder_math": 0.010217,
+        "hot_hand": 0.053113,
+        "cooling_off": 0.009798,
+        "hidden_gems": 0.25303
+      }
+    },
+    {
+      "season": 2026,
+      "week": 4,
+      "warmup": false,
+      "gems": 10,
+      "graded": 9,
+      "refunds": 1,
+      "wagered": 9,
+      "returned": 10.19,
+      "profit": 1.19,
+      "hits": 5,
+      "breakEvenShare": 0.430419,
+      "runningProfit": -19.04,
+      "purse": 80.96,
+      "luckBand": 31.859065,
+      "boardLines": {
+        "rush_yds": 1215,
+        "reception_yds": 2251,
+        "pass_yds": 819,
+        "rush_reception_yds": 685
+      },
+      "linesGraded": {
+        "rush_yds": 1215,
+        "reception_yds": 2206,
+        "pass_yds": 819,
+        "rush_reception_yds": 685
+      },
+      "sharedWeights": {
+        "books_disagree": 0.293539,
+        "usage": 0.026103,
+        "next_man_up": 0.210783,
+        "game_script": 0.085153,
+        "matchup": 0.020364,
+        "follow_the_move": 0.0379,
+        "ladder_math": 0.010217,
+        "hot_hand": 0.053113,
+        "cooling_off": 0.009798,
+        "hidden_gems": 0.25303
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.3134,
+        "usage": 0.023667,
+        "next_man_up": 0.197899,
+        "game_script": 0.075105,
+        "matchup": 0.017961,
+        "follow_the_move": 0.036803,
+        "ladder_math": 0.010251,
+        "hot_hand": 0.053113,
+        "cooling_off": 0.009798,
+        "hidden_gems": 0.262003
+      }
+    },
+    {
+      "season": 2026,
+      "week": 5,
+      "warmup": false,
+      "gems": 10,
+      "graded": 9,
+      "refunds": 1,
+      "wagered": 9,
+      "returned": 10.47,
+      "profit": 1.47,
+      "hits": 4,
+      "breakEvenShare": 0.371823,
+      "runningProfit": -17.57,
+      "purse": 82.43,
+      "luckBand": 33.784242,
+      "boardLines": {
+        "rush_yds": 1103,
+        "reception_yds": 1927,
+        "pass_yds": 761,
+        "rush_reception_yds": 565
+      },
+      "linesGraded": {
+        "rush_yds": 1103,
+        "reception_yds": 1901,
+        "pass_yds": 761,
+        "rush_reception_yds": 565
+      },
+      "sharedWeights": {
+        "books_disagree": 0.3134,
+        "usage": 0.023667,
+        "next_man_up": 0.197899,
+        "game_script": 0.075105,
+        "matchup": 0.017961,
+        "follow_the_move": 0.036803,
+        "ladder_math": 0.010251,
+        "hot_hand": 0.053113,
+        "cooling_off": 0.009798,
+        "hidden_gems": 0.262003
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.334408,
+        "usage": 0.0217,
+        "next_man_up": 0.191354,
+        "game_script": 0.066982,
+        "matchup": 0.015842,
+        "follow_the_move": 0.036507,
+        "ladder_math": 0.010681,
+        "hot_hand": 0.046845,
+        "cooling_off": 0.009228,
+        "hidden_gems": 0.266452
+      }
+    },
+    {
+      "season": 2026,
+      "week": 6,
+      "warmup": false,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 10.37,
+      "profit": 0.37,
+      "hits": 5,
+      "breakEvenShare": 0.460484,
+      "runningProfit": -17.2,
+      "purse": 82.8,
+      "luckBand": 34.956223,
+      "boardLines": {
+        "rush_yds": 1005,
+        "reception_yds": 1916,
+        "pass_yds": 700,
+        "rush_reception_yds": 542
+      },
+      "linesGraded": {
+        "rush_yds": 992,
+        "reception_yds": 1880,
+        "pass_yds": 700,
+        "rush_reception_yds": 529
+      },
+      "sharedWeights": {
+        "books_disagree": 0.334408,
+        "usage": 0.0217,
+        "next_man_up": 0.191354,
+        "game_script": 0.066982,
+        "matchup": 0.015842,
+        "follow_the_move": 0.036507,
+        "ladder_math": 0.010681,
+        "hot_hand": 0.046845,
+        "cooling_off": 0.009228,
+        "hidden_gems": 0.266452
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.344897,
+        "usage": 0.019155,
+        "next_man_up": 0.183136,
+        "game_script": 0.059078,
+        "matchup": 0.013972,
+        "follow_the_move": 0.036748,
+        "ladder_math": 0.010487,
+        "hot_hand": 0.042513,
+        "cooling_off": 0.008603,
+        "hidden_gems": 0.28141
+      }
+    },
+    {
+      "season": 2026,
+      "week": 7,
+      "warmup": false,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 11.59,
+      "profit": 1.59,
+      "hits": 6,
+      "breakEvenShare": 0.485624,
+      "runningProfit": -15.61,
+      "purse": 84.39,
+      "luckBand": 35.960916,
+      "boardLines": {
+        "rush_yds": 1036,
+        "reception_yds": 2391,
+        "pass_yds": 717,
+        "rush_reception_yds": 597
+      },
+      "linesGraded": {
+        "rush_yds": 1018,
+        "reception_yds": 2371,
+        "pass_yds": 717,
+        "rush_reception_yds": 589
+      },
+      "sharedWeights": {
+        "books_disagree": 0.344897,
+        "usage": 0.019155,
+        "next_man_up": 0.183136,
+        "game_script": 0.059078,
+        "matchup": 0.013972,
+        "follow_the_move": 0.036748,
+        "ladder_math": 0.010487,
+        "hot_hand": 0.042513,
+        "cooling_off": 0.008603,
+        "hidden_gems": 0.28141
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.359218,
+        "usage": 0.017555,
+        "next_man_up": 0.176997,
+        "game_script": 0.052664,
+        "matchup": 0.012324,
+        "follow_the_move": 0.039193,
+        "ladder_math": 0.010398,
+        "hot_hand": 0.037496,
+        "cooling_off": 0.0081,
+        "hidden_gems": 0.286055
+      }
+    },
+    {
+      "season": 2026,
+      "week": 8,
+      "warmup": false,
+      "gems": 10,
+      "graded": 10,
+      "refunds": 0,
+      "wagered": 10,
+      "returned": 7.88,
+      "profit": -2.12,
+      "hits": 3,
+      "breakEvenShare": 0.405907,
+      "runningProfit": -17.73,
+      "purse": 82.27,
+      "luckBand": 37.66049,
+      "boardLines": {
+        "rush_yds": 1135,
+        "reception_yds": 2392,
+        "pass_yds": 745,
+        "rush_reception_yds": 619
+      },
+      "linesGraded": {
+        "rush_yds": 1135,
+        "reception_yds": 2392,
+        "pass_yds": 745,
+        "rush_reception_yds": 619
+      },
+      "sharedWeights": {
+        "books_disagree": 0.359218,
+        "usage": 0.017555,
+        "next_man_up": 0.176997,
+        "game_script": 0.052664,
+        "matchup": 0.012324,
+        "follow_the_move": 0.039193,
+        "ladder_math": 0.010398,
+        "hot_hand": 0.037496,
+        "cooling_off": 0.0081,
+        "hidden_gems": 0.286055
+      },
+      "sharedWeightsAfter": {
+        "books_disagree": 0.376199,
+        "usage": 0.015483,
+        "next_man_up": 0.167973,
+        "game_script": 0.04645,
+        "matchup": 0.01087,
+        "follow_the_move": 0.03912,
+        "ladder_math": 0.010123,
+        "hot_hand": 0.033742,
+        "cooling_off": 0.007488,
+        "hidden_gems": 0.292551
+      }
+    }
+  ],
+  "finalWeights": {
+    "shared": {
+      "books_disagree": 0.376199,
+      "usage": 0.015483,
+      "next_man_up": 0.167973,
+      "game_script": 0.04645,
+      "matchup": 0.01087,
+      "follow_the_move": 0.03912,
+      "ladder_math": 0.010123,
+      "hot_hand": 0.033742,
+      "cooling_off": 0.007488,
+      "hidden_gems": 0.292551
+    },
+    "byBetType": [
+      {
+        "betType": "rush_yds",
+        "lines": 24222,
+        "ownShare": 0.858693,
+        "seeds": [
+          {
+            "seed": "books_disagree",
+            "weight": 0.283619,
+            "own": 0.268384,
+            "lines": 10854
+          },
+          {
+            "seed": "usage",
+            "weight": 0.040363,
+            "own": 0.044457,
+            "lines": 24081
+          },
+          {
+            "seed": "next_man_up",
+            "weight": 0.250609,
+            "own": 0.264208,
+            "lines": 696
+          },
+          {
+            "seed": "game_script",
+            "weight": 0.080535,
+            "own": 0.086145,
+            "lines": 24081
+          },
+          {
+            "seed": "matchup",
+            "weight": 0.01435,
+            "own": 0.014923,
+            "lines": 18173
+          },
+          {
+            "seed": "follow_the_move",
+            "weight": 0.028013,
+            "own": 0.026185,
+            "lines": 8500
+          },
+          {
+            "seed": "ladder_math",
+            "weight": 0.010972,
+            "own": 0.011111,
+            "lines": 24166
+          },
+          {
+            "seed": "hot_hand",
+            "weight": 0.051924,
+            "own": 0.054916,
+            "lines": 14663
+          },
+          {
+            "seed": "cooling_off",
+            "weight": 0.00658,
+            "own": 0.00643,
+            "lines": 8065
+          },
+          {
+            "seed": "hidden_gems",
+            "weight": 0.233035,
+            "own": 0.223241,
+            "lines": 24093
+          }
+        ]
+      },
+      {
+        "betType": "reception_yds",
+        "lines": 47294,
+        "ownShare": 0.92227,
+        "seeds": [
+          {
+            "seed": "books_disagree",
+            "weight": 0.30594,
+            "own": 0.300018,
+            "lines": 20237
+          },
+          {
+            "seed": "usage",
+            "weight": 0.015683,
+            "own": 0.0157,
+            "lines": 46977
+          },
+          {
+            "seed": "next_man_up",
+            "weight": 0.197355,
+            "own": 0.199832,
+            "lines": 1033
+          },
+          {
+            "seed": "game_script",
+            "weight": 0.084503,
+            "own": 0.08771,
+            "lines": 46977
+          },
+          {
+            "seed": "matchup",
+            "weight": 0.011557,
+            "own": 0.011615,
+            "lines": 35564
+          },
+          {
+            "seed": "follow_the_move",
+            "weight": 0.038501,
+            "own": 0.038449,
+            "lines": 14951
+          },
+          {
+            "seed": "ladder_math",
+            "weight": 0.008461,
+            "own": 0.008321,
+            "lines": 47259
+          },
+          {
+            "seed": "hot_hand",
+            "weight": 0.029855,
+            "own": 0.029527,
+            "lines": 29622
+          },
+          {
+            "seed": "cooling_off",
+            "weight": 0.006984,
+            "own": 0.006942,
+            "lines": 16241
+          },
+          {
+            "seed": "hidden_gems",
+            "weight": 0.301161,
+            "own": 0.301886,
+            "lines": 46987
+          }
+        ]
+      },
+      {
+        "betType": "pass_yds",
+        "lines": 18858,
+        "ownShare": 0.825512,
+        "seeds": [
+          {
+            "seed": "books_disagree",
+            "weight": 0.338285,
+            "own": 0.330271,
+            "lines": 3336
+          },
+          {
+            "seed": "usage",
+            "weight": 0.01423,
+            "own": 0.013964,
+            "lines": 18773
+          },
+          {
+            "seed": "next_man_up",
+            "weight": 0.119244,
+            "own": 0.108944,
+            "lines": 651
+          },
+          {
+            "seed": "game_script",
+            "weight": 0.053588,
+            "own": 0.055097,
+            "lines": 18773
+          },
+          {
+            "seed": "matchup",
+            "weight": 0.020019,
+            "own": 0.021952,
+            "lines": 14108
+          },
+          {
+            "seed": "follow_the_move",
+            "weight": 0.041961,
+            "own": 0.042561,
+            "lines": 9325
+          },
+          {
+            "seed": "ladder_math",
+            "weight": 0.010918,
+            "own": 0.011086,
+            "lines": 18858
+          },
+          {
+            "seed": "hot_hand",
+            "weight": 0.054812,
+            "own": 0.059265,
+            "lines": 10831
+          },
+          {
+            "seed": "cooling_off",
+            "weight": 0.016255,
+            "own": 0.018108,
+            "lines": 6085
+          },
+          {
+            "seed": "hidden_gems",
+            "weight": 0.330689,
+            "own": 0.338751,
+            "lines": 18794
+          }
+        ]
+      },
+      {
+        "betType": "rush_reception_yds",
+        "lines": 14052,
+        "ownShare": 0.779022,
+        "seeds": [
+          {
+            "seed": "books_disagree",
+            "weight": 0.196715,
+            "own": 0.145802,
+            "lines": 699
+          },
+          {
+            "seed": "usage",
+            "weight": 0.061297,
+            "own": 0.074293,
+            "lines": 13957
+          },
+          {
+            "seed": "next_man_up",
+            "weight": 0.17671,
+            "own": 0.179188,
+            "lines": 408
+          },
+          {
+            "seed": "game_script",
+            "weight": 0.171768,
+            "own": 0.207316,
+            "lines": 13957
+          },
+          {
+            "seed": "matchup",
+            "weight": 0.025128,
+            "own": 0.029173,
+            "lines": 10505
+          },
+          {
+            "seed": "follow_the_move",
+            "weight": 0.037014,
+            "own": 0.036416,
+            "lines": 3197
+          },
+          {
+            "seed": "ladder_math",
+            "weight": 0.013128,
+            "own": 0.013981,
+            "lines": 14043
+          },
+          {
+            "seed": "hot_hand",
+            "weight": 0.08497,
+            "own": 0.099501,
+            "lines": 8900
+          },
+          {
+            "seed": "cooling_off",
+            "weight": 0.008404,
+            "own": 0.008663,
+            "lines": 5001
+          },
+          {
+            "seed": "hidden_gems",
+            "weight": 0.224866,
+            "own": 0.205666,
+            "lines": 13957
+          }
+        ]
+      }
+    ]
+  },
+  "bySeed": [
+    {
+      "seed": "books_disagree",
+      "finalWeight": 0.376199,
+      "gems": 0,
+      "wagered": 0,
+      "returned": 0,
+      "profit": 0,
+      "hits": 0,
+      "hitShare": null,
+      "roi": null
+    },
+    {
+      "seed": "hidden_gems",
+      "finalWeight": 0.292551,
+      "gems": 0,
+      "wagered": 0,
+      "returned": 0,
+      "profit": 0,
+      "hits": 0,
+      "hitShare": null,
+      "roi": null
+    },
+    {
+      "seed": "next_man_up",
+      "finalWeight": 0.167973,
+      "gems": 24,
+      "wagered": 24,
+      "returned": 14.55,
+      "profit": -9.45,
+      "hits": 5,
+      "hitShare": 0.208333,
+      "roi": -0.39375
+    },
+    {
+      "seed": "game_script",
+      "finalWeight": 0.04645,
+      "gems": 136,
+      "wagered": 136,
+      "returned": 130.85,
+      "profit": -5.15,
+      "hits": 65,
+      "hitShare": 0.477941,
+      "roi": -0.037868
+    },
+    {
+      "seed": "follow_the_move",
+      "finalWeight": 0.03912,
+      "gems": 0,
+      "wagered": 0,
+      "returned": 0,
+      "profit": 0,
+      "hits": 0,
+      "hitShare": null,
+      "roi": null
+    },
+    {
+      "seed": "hot_hand",
+      "finalWeight": 0.033742,
+      "gems": 4,
+      "wagered": 4,
+      "returned": 0,
+      "profit": -4,
+      "hits": 0,
+      "hitShare": 0,
+      "roi": -1
+    },
+    {
+      "seed": "usage",
+      "finalWeight": 0.015483,
+      "gems": 1,
+      "wagered": 1,
+      "returned": 1.87,
+      "profit": 0.87,
+      "hits": 1,
+      "hitShare": 1,
+      "roi": 0.87
+    },
+    {
+      "seed": "matchup",
+      "finalWeight": 0.01087,
+      "gems": 0,
+      "wagered": 0,
+      "returned": 0,
+      "profit": 0,
+      "hits": 0,
+      "hitShare": null,
+      "roi": null
+    },
+    {
+      "seed": "ladder_math",
+      "finalWeight": 0.010123,
+      "gems": 0,
+      "wagered": 0,
+      "returned": 0,
+      "profit": 0,
+      "hits": 0,
+      "hitShare": null,
+      "roi": null
+    },
+    {
+      "seed": "cooling_off",
+      "finalWeight": 0.007488,
+      "gems": 0,
+      "wagered": 0,
+      "returned": 0,
+      "profit": 0,
+      "hits": 0,
+      "hitShare": null,
+      "roi": null
+    },
+    {
+      "seed": "none",
+      "finalWeight": null,
+      "gems": 0,
+      "wagered": 0,
+      "returned": 0,
+      "profit": 0,
+      "hits": 0,
+      "hitShare": null,
+      "roi": null
+    }
+  ],
+  "byBetType": [
+    {
+      "betType": "rush_yds",
+      "main": {
+        "gems": 54,
+        "wagered": 54,
+        "returned": 49.33,
+        "profit": -4.67,
+        "hits": 26,
+        "hitShare": 0.481481,
+        "roi": -0.086481
+      },
+      "alt": {
+        "gems": 15,
+        "wagered": 15,
+        "returned": 16.3,
+        "profit": 1.3,
+        "hits": 6,
+        "hitShare": 0.4,
+        "roi": 0.086667
+      },
+      "total": {
+        "gems": 69,
+        "wagered": 69,
+        "returned": 65.63,
+        "profit": -3.37,
+        "hits": 32,
+        "hitShare": 0.463768,
+        "roi": -0.048841
+      }
+    },
+    {
+      "betType": "reception_yds",
+      "main": {
+        "gems": 57,
+        "wagered": 57,
+        "returned": 53.28,
+        "profit": -3.72,
+        "hits": 28,
+        "hitShare": 0.491228,
+        "roi": -0.065263
+      },
+      "alt": {
+        "gems": 18,
+        "wagered": 18,
+        "returned": 15.63,
+        "profit": -2.37,
+        "hits": 6,
+        "hitShare": 0.333333,
+        "roi": -0.131667
+      },
+      "total": {
+        "gems": 75,
+        "wagered": 75,
+        "returned": 68.91,
+        "profit": -6.09,
+        "hits": 34,
+        "hitShare": 0.453333,
+        "roi": -0.0812
+      }
+    },
+    {
+      "betType": "pass_yds",
+      "main": {
+        "gems": 0,
+        "wagered": 0,
+        "returned": 0,
+        "profit": 0,
+        "hits": 0,
+        "hitShare": null,
+        "roi": null
+      },
+      "alt": {
+        "gems": 2,
+        "wagered": 2,
+        "returned": 3.53,
+        "profit": 1.53,
+        "hits": 1,
+        "hitShare": 0.5,
+        "roi": 0.765
+      },
+      "total": {
+        "gems": 2,
+        "wagered": 2,
+        "returned": 3.53,
+        "profit": 1.53,
+        "hits": 1,
+        "hitShare": 0.5,
+        "roi": 0.765
+      }
+    },
+    {
+      "betType": "rush_reception_yds",
+      "main": {
+        "gems": 3,
+        "wagered": 3,
+        "returned": 3.74,
+        "profit": 0.74,
+        "hits": 2,
+        "hitShare": 0.666667,
+        "roi": 0.246667
+      },
+      "alt": {
+        "gems": 16,
+        "wagered": 16,
+        "returned": 5.46,
+        "profit": -10.54,
+        "hits": 2,
+        "hitShare": 0.125,
+        "roi": -0.65875
+      },
+      "total": {
+        "gems": 19,
+        "wagered": 19,
+        "returned": 9.2,
+        "profit": -9.8,
+        "hits": 4,
+        "hitShare": 0.210526,
+        "roi": -0.515789
+      }
+    }
+  ],
+  "sampleGem": {
+    "season": 2025,
+    "week": 11,
+    "key": "2025|2025-11-16-det-phi|00-0038555|rush_yds|15",
+    "player": "Tank Bigsby",
+    "team": "phi",
+    "opponent": "det",
+    "position": "RB",
+    "betType": "rush_yds",
+    "alt": true,
+    "line": 15,
+    "price": 2.82,
+    "fair": 0.335803,
+    "breakEven": 0.35461,
+    "chance": 0.639355,
+    "edge": 0.284746,
+    "fairLogOdds": -0.682052,
+    "chanceLogOdds": 0.572568,
+    "outcome": {
+      "value": 34,
+      "hit": true
+    },
+    "close": 2.7,
+    "profit": 1.82,
+    "stake": 1,
+    "leader": "game_script",
+    "seeds": [
+      {
+        "seed": "books_disagree",
+        "weight": 0.119464,
+        "chance": null,
+        "silent": true,
+        "push": 0,
+        "share": 0
+      },
+      {
+        "seed": "usage",
+        "weight": 0.084034,
+        "chance": 0.887137,
+        "silent": false,
+        "push": 0.230578,
+        "share": 0.183783
+      },
+      {
+        "seed": "next_man_up",
+        "weight": 0.190962,
+        "chance": null,
+        "silent": true,
+        "push": 0,
+        "share": 0
+      },
+      {
+        "seed": "game_script",
+        "weight": 0.230721,
+        "chance": 0.902073,
+        "silent": false,
+        "push": 0.669673,
+        "share": 0.533766
+      },
+      {
+        "seed": "matchup",
+        "weight": 0.059352,
+        "chance": 0.808264,
+        "silent": false,
+        "push": 0.125875,
+        "share": 0.100329
+      },
+      {
+        "seed": "follow_the_move",
+        "weight": 0.032215,
+        "chance": null,
+        "silent": true,
+        "push": 0,
+        "share": 0
+      },
+      {
+        "seed": "ladder_math",
+        "weight": 0.006456,
+        "chance": 0.311362,
+        "silent": false,
+        "push": -0.000721,
+        "share": -0.000575
+      },
+      {
+        "seed": "hot_hand",
+        "weight": 0.133589,
+        "chance": 0.692844,
+        "silent": false,
+        "push": 0.199782,
+        "share": 0.159237
+      },
+      {
+        "seed": "cooling_off",
+        "weight": 0.010855,
+        "chance": 0.692123,
+        "silent": false,
+        "push": 0.016198,
+        "share": 0.01291
+      },
+      {
+        "seed": "hidden_gems",
+        "weight": 0.132353,
+        "chance": 0.358461,
+        "silent": false,
+        "push": 0.013235,
+        "share": 0.010549
+      }
+    ]
+  }
+}

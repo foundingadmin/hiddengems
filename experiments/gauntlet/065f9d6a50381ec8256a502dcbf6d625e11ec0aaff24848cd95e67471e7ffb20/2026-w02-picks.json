@@ -1,0 +1,123 @@
+{
+  "ref": {
+    "season": 2026,
+    "week": 2
+  },
+  "warmup": false,
+  "board": {
+    "rush_yds": 1194,
+    "reception_yds": 2117,
+    "pass_yds": 803,
+    "rush_reception_yds": 690
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.08548884835763797,
+      "usage": 0.0011722452055007576,
+      "next_man_up": 0.23816356248514492,
+      "game_script": 0.002150813228465188,
+      "matchup": 0.0006795398300107672,
+      "follow_the_move": 0.23676368048605662,
+      "ladder_math": 0.17925015840159833,
+      "hot_hand": 0.0033036581606226936,
+      "cooling_off": 0.0450456683853156,
+      "hidden_gems": 0.2079818254596472
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.07940213032006388,
+        "usage": 0.00639319800303784,
+        "next_man_up": 0.2844764337773112,
+        "game_script": 0.005303303322072179,
+        "matchup": 0.0008324696883709872,
+        "follow_the_move": 0.22146337203704042,
+        "ladder_math": 0.1795716051214338,
+        "hot_hand": 0.008144941622334001,
+        "cooling_off": 0.036295331620111,
+        "hidden_gems": 0.17811721448822482
+      },
+      "reception_yds": {
+        "books_disagree": 0.06929151835565554,
+        "usage": 0.0009813586746816665,
+        "next_man_up": 0.3005617760670137,
+        "game_script": 0.004397172429094822,
+        "matchup": 0.0006917760725857581,
+        "follow_the_move": 0.21526843425388598,
+        "ladder_math": 0.14071149616355413,
+        "hot_hand": 0.0031793330874828663,
+        "cooling_off": 0.03182602930649129,
+        "hidden_gems": 0.23309110558955431
+      },
+      "pass_yds": {
+        "books_disagree": 0.06461176327866006,
+        "usage": 0.0009282428428744507,
+        "next_man_up": 0.14277817183442035,
+        "game_script": 0.002077461223138357,
+        "matchup": 0.0016095235324486284,
+        "follow_the_move": 0.2426645043512593,
+        "ladder_math": 0.16906380602177606,
+        "hot_hand": 0.006053672985463001,
+        "cooling_off": 0.12310237088261834,
+        "hidden_gems": 0.2471104830473415
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.0630312291702823,
+        "usage": 0.01875187280567691,
+        "next_man_up": 0.3070757821676627,
+        "game_script": 0.027327598831963017,
+        "matchup": 0.002877968729412293,
+        "follow_the_move": 0.18445538511076923,
+        "ladder_math": 0.2147835243551381,
+        "hot_hand": 0.01682334082940925,
+        "cooling_off": 0.037560057074728384,
+        "hidden_gems": 0.1273132409249578
+      }
+    }
+  },
+  "gems": [
+    {
+      "key": "2026|2026-09-20-car-atl|00-0033662|pass_yds|250",
+      "line": {
+        "key": "2026|2026-09-20-car-atl|00-0033662|pass_yds|250",
+        "gameId": "2026-09-20-car-atl",
+        "playerId": "00-0033662",
+        "player": "Cooper Rush",
+        "team": "atl",
+        "opponent": "car",
+        "position": "QB",
+        "betType": "pass_yds",
+        "alt": true,
+        "line": 250,
+        "price": 6.42,
+        "fair": 0.14719626168224295
+      },
+      "chance": 0.16017604553569156,
+      "edge": 0.004412805660302166,
+      "contributions": {
+        "books_disagree": 0.006326023851566446,
+        "usage": -0.0021260702944932894,
+        "next_man_up": 0.08095409347093667,
+        "game_script": -0.004773875605018439,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": -0.0005483706899045575,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.020012029566180766
+      },
+      "seedChances": {
+        "books_disagree": 0.1780952380952381,
+        "usage": 0.010092285214689979,
+        "next_man_up": 0.9300974510316251,
+        "game_script": 0.01,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.1466946521480848,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.16019705454876537
+      },
+      "rank": 1
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "frozen": true,
+  "mod": "MOD14",
+  "generator": {
+    "seed": 20261108,
+    "draw": 7
+  },
+  "picksPerWeek": 6,
+  "minPrice": 1.99,
+  "maxPrice": 6.96,
+  "perPlayer": 1,
+  "maxStep": 0.234,
+  "poolingLines": 3165,
+  "vetoAsFilter": false,
+  "capByLines": true,
+  "startWeights": {
+    "books_disagree": 0.019491,
+    "usage": 0.035544,
+    "next_man_up": 0.349757,
+    "game_script": 0.073086,
+    "matchup": 0.030505,
+    "follow_the_move": 0.125196,
+    "ladder_math": 0.056746,
+    "hot_hand": 0.094171,
+    "cooling_off": 0.155782,
+    "hidden_gems": 0.059722
+  },
+  "warmup": [
+    {
+      "season": 2025,
+      "week": 1
+    },
+    {
+      "season": 2025,
+      "week": 2
+    },
+    {
+      "season": 2025,
+      "week": 3
+    },
+    {
+      "season": 2025,
+      "week": 4
+    },
+    {
+      "season": 2025,
+      "week": 5
+    },
+    {
+      "season": 2025,
+      "week": 6
+    },
+    {
+      "season": 2025,
+      "week": 7
+    },
+    {
+      "season": 2025,
+      "week": 8
+    },
+    {
+      "season": 2025,
+      "week": 18
+    }
+  ],
+  "stake": 1,
+  "purse": 100,
+  "pass": {
+    "luckBandSd": 2.5,
+    "beatCloseShare": 0.5,
+    "bothSeasons": true,
+    "topSeedsShare": 0.5
+  }
+}

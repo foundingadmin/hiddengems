@@ -1,0 +1,387 @@
+{
+  "ref": {
+    "season": 2025,
+    "week": 13
+  },
+  "warmup": false,
+  "board": {
+    "rush_yds": 1071,
+    "reception_yds": 1806,
+    "pass_yds": 755,
+    "rush_reception_yds": 539
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.07883659673888553,
+      "usage": 0.04695923820157942,
+      "next_man_up": 0.11117621427863125,
+      "game_script": 0.007268905474413879,
+      "matchup": 0.006178220819376149,
+      "follow_the_move": 0.17920616876391204,
+      "ladder_math": 0.12818307489511285,
+      "hot_hand": 0.04781584502747046,
+      "cooling_off": 0.0013157295500954046,
+      "hidden_gems": 0.39306000625052306
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.064896966593324,
+        "usage": 0.1210580070151003,
+        "next_man_up": 0.10632110601149028,
+        "game_script": 0.012395257342636391,
+        "matchup": 0.007705528166895417,
+        "follow_the_move": 0.1439265028214989,
+        "ladder_math": 0.14641966926300912,
+        "hot_hand": 0.05768852291245676,
+        "cooling_off": 0.00136096044025995,
+        "hidden_gems": 0.33822747943332904
+      },
+      "reception_yds": {
+        "books_disagree": 0.0697732038670363,
+        "usage": 0.04297413790907127,
+        "next_man_up": 0.1418743097331789,
+        "game_script": 0.011262042903678502,
+        "matchup": 0.007002447644884516,
+        "follow_the_move": 0.16682593563204068,
+        "ladder_math": 0.10358983943094695,
+        "hot_hand": 0.04337922573185423,
+        "cooling_off": 0.0009580901147353167,
+        "hidden_gems": 0.41236076703257335
+      },
+      "pass_yds": {
+        "books_disagree": 0.06406296812828176,
+        "usage": 0.04512635506503433,
+        "next_man_up": 0.07754866328841487,
+        "game_script": 0.006932652802877258,
+        "matchup": 0.00924218601618547,
+        "follow_the_move": 0.1514107354711781,
+        "ladder_math": 0.1365008869822926,
+        "hot_hand": 0.06434831637310216,
+        "cooling_off": 0.0024956887444612134,
+        "hidden_gems": 0.4423315471281722
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.06390427378272161,
+        "usage": 0.1853768623992632,
+        "next_man_up": 0.121467476962829,
+        "game_script": 0.02999959985899596,
+        "matchup": 0.011416230546364967,
+        "follow_the_move": 0.11213070175127361,
+        "ladder_math": 0.13254456997887928,
+        "hot_hand": 0.07631336491394877,
+        "cooling_off": 0.001150180698059897,
+        "hidden_gems": 0.2656967391076636
+      }
+    }
+  },
+  "gems": [
+    {
+      "key": "2025|2025-11-30-hou-ind|00-0035710|rush_yds|7.5",
+      "line": {
+        "key": "2025|2025-11-30-hou-ind|00-0035710|rush_yds|7.5",
+        "gameId": "2025-11-30-hou-ind",
+        "playerId": "00-0035710",
+        "player": "Daniel Jones",
+        "team": "ind",
+        "opponent": "hou",
+        "position": "QB",
+        "betType": "rush_yds",
+        "alt": false,
+        "line": 7.5,
+        "price": 1.93,
+        "fair": 0.48941798941798953
+      },
+      "chance": 0.5594471316158465,
+      "edge": 0.04131241658993967,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.18600026916407172,
+        "next_man_up": 0,
+        "game_script": 0.02045951075370555,
+        "matchup": 0.013928911810735259,
+        "follow_the_move": 0,
+        "ladder_math": 0.017061115845854683,
+        "hot_hand": 0.0699625111634796,
+        "cooling_off": 0.0009299642684548183,
+        "hidden_gems": -0.027089345297100602
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.8672093623667817,
+        "next_man_up": null,
+        "game_script": 0.8827825784271879,
+        "matchup": 0.9148440994943573,
+        "follow_the_move": null,
+        "ladder_math": 0.5257325196487981,
+        "hot_hand": 0.8421785567215565,
+        "cooling_off": 0.7640733495096886,
+        "hidden_gems": 0.46447636179592283
+      },
+      "rank": 1
+    },
+    {
+      "key": "2025|2025-11-30-ari-tb|00-0037256|rush_yds|15.5",
+      "line": {
+        "key": "2025|2025-11-30-ari-tb|00-0037256|rush_yds|15.5",
+        "gameId": "2025-11-30-ari-tb",
+        "playerId": "00-0037256",
+        "player": "Rachaad White",
+        "team": "tb",
+        "opponent": "ari",
+        "position": "RB",
+        "betType": "rush_yds",
+        "alt": false,
+        "line": 15.5,
+        "price": 1.88,
+        "fair": 0.5026455026455027
+      },
+      "chance": 0.5721210637054824,
+      "edge": 0.04020617008846117,
+      "contributions": {
+        "books_disagree": -0.003358218258027545,
+        "usage": 0.19266059797753174,
+        "next_man_up": 0,
+        "game_script": 0.021386127465224836,
+        "matchup": 0.013726357342197097,
+        "follow_the_move": 0,
+        "ladder_math": 0.010269479769211186,
+        "hot_hand": 0.0707785883492016,
+        "cooling_off": 0.0015546256964655513,
+        "hidden_gems": -0.02708934529710054
+      },
+      "seedChances": {
+        "books_disagree": 0.4812868632707775,
+        "usage": 0.8806009520554309,
+        "next_man_up": null,
+        "game_script": 0.8970922252984574,
+        "matchup": 0.9162186140801319,
+        "follow_the_move": null,
+        "ladder_math": 0.524499095738176,
+        "hot_hand": 0.8516334821651931,
+        "cooling_off": 0.8855270593206939,
+        "hidden_gems": 0.4776604101421896
+      },
+      "rank": 2
+    },
+    {
+      "key": "2025|2025-11-30-atl-nyj|00-0029604|rush_yds|0.5",
+      "line": {
+        "key": "2025|2025-11-30-atl-nyj|00-0029604|rush_yds|0.5",
+        "gameId": "2025-11-30-atl-nyj",
+        "playerId": "00-0029604",
+        "player": "Kirk Cousins",
+        "team": "atl",
+        "opponent": "nyj",
+        "position": "QB",
+        "betType": "rush_yds",
+        "alt": false,
+        "line": 0.5,
+        "price": 2.08,
+        "fair": 0.4554973821989528
+      },
+      "chance": 0.5106333689857153,
+      "edge": 0.029864138216484593,
+      "contributions": {
+        "books_disagree": -0.002543997426798599,
+        "usage": 0.04629295400689561,
+        "next_man_up": 0,
+        "game_script": 0.0047399523622659945,
+        "matchup": 0.0027540195664082228,
+        "follow_the_move": 0,
+        "ladder_math": 0.028600907673843743,
+        "hot_hand": 0.11303770458891563,
+        "cooling_off": 0.0010517843654492673,
+        "hidden_gems": 0.02708934529710059
+      },
+      "seedChances": {
+        "books_disagree": 0.4394905781895996,
+        "usage": 0.5742202484661009,
+        "next_man_up": null,
+        "game_script": 0.5742194565526086,
+        "matchup": 0.5742780814770801,
+        "follow_the_move": null,
+        "ladder_math": 0.5162912714916292,
+        "hot_hand": 0.9305671137285749,
+        "cooling_off": 0.7682537569473524,
+        "hidden_gems": 0.480389369894629
+      },
+      "rank": 3
+    },
+    {
+      "key": "2025|2025-11-30-ari-tb|00-0039361|rush_reception_yds|80",
+      "line": {
+        "key": "2025|2025-11-30-ari-tb|00-0039361|rush_reception_yds|80",
+        "gameId": "2025-11-30-ari-tb",
+        "playerId": "00-0039361",
+        "player": "Bucky Irving",
+        "team": "tb",
+        "opponent": "ari",
+        "position": "RB",
+        "betType": "rush_reception_yds",
+        "alt": true,
+        "line": 80,
+        "price": 2.99,
+        "fair": 0.3151974308703637
+      },
+      "chance": 0.36379916629162495,
+      "edge": 0.029351005756507897,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.12044839536598055,
+        "next_man_up": 0,
+        "game_script": 0.02267759796091814,
+        "matchup": 0.006807344075909143,
+        "follow_the_move": 0,
+        "ladder_math": -0.016219935148285857,
+        "hot_hand": 0.06351024179984446,
+        "cooling_off": 0.0005922609541521095,
+        "hidden_gems": 0.019203148953345045
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.5307281634696478,
+        "next_man_up": null,
+        "game_script": 0.567088278438568,
+        "matchup": 0.5305548822562661,
+        "follow_the_move": null,
+        "ladder_math": 0.2799245939156675,
+        "hot_hand": 0.634409887781637,
+        "cooling_off": 0.5684065902300541,
+        "hidden_gems": 0.33716998291242495
+      },
+      "rank": 4
+    },
+    {
+      "key": "2025|2025-11-30-lar-car|00-0036555|rush_yds|18.5",
+      "line": {
+        "key": "2025|2025-11-30-lar-car|00-0036555|rush_yds|18.5",
+        "gameId": "2025-11-30-lar-car",
+        "playerId": "00-0036555",
+        "player": "Chuba Hubbard",
+        "team": "car",
+        "opponent": "lar",
+        "position": "RB",
+        "betType": "rush_yds",
+        "alt": false,
+        "line": 18.5,
+        "price": 1.93,
+        "fair": 0.4907651715039578
+      },
+      "chance": 0.5441317595451892,
+      "edge": 0.02599704451928242,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.20367566347505825,
+        "next_man_up": 0,
+        "game_script": 0.014642536720124274,
+        "matchup": 0.010234426799299534,
+        "follow_the_move": 0,
+        "ladder_math": -0.004560416392057903,
+        "hot_hand": -0.037150439522812405,
+        "cooling_off": 0,
+        "hidden_gems": 0.027089345297100456
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.8873788852455241,
+        "next_man_up": null,
+        "game_script": 0.8081996886517305,
+        "matchup": 0.8505198415773046,
+        "follow_the_move": null,
+        "ladder_math": 0.4810598517449452,
+        "hot_hand": 0.2791652934111878,
+        "cooling_off": null,
+        "hidden_gems": 0.5157588999412759
+      },
+      "rank": 5
+    },
+    {
+      "key": "2025|2025-11-30-hou-ind|00-0034791|rush_yds|18.5",
+      "line": {
+        "key": "2025|2025-11-30-hou-ind|00-0034791|rush_yds|18.5",
+        "gameId": "2025-11-30-hou-ind",
+        "playerId": "00-0034791",
+        "player": "Nick Chubb",
+        "team": "hou",
+        "opponent": "ind",
+        "position": "RB",
+        "betType": "rush_yds",
+        "alt": false,
+        "line": 18.5,
+        "price": 1.92,
+        "fair": 0.49340369393139843
+      },
+      "chance": 0.5425277644839576,
+      "edge": 0.021694431150624194,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.15192764783427737,
+        "next_man_up": 0,
+        "game_script": 0.013623793211178164,
+        "matchup": 0.007121757520203698,
+        "follow_the_move": 0,
+        "ladder_math": -0.004201085717209984,
+        "hot_hand": 0.0013483644275503483,
+        "cooling_off": 0,
+        "hidden_gems": 0.027089345297100564
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.8236027456440337,
+        "next_man_up": null,
+        "game_script": 0.7935188871721458,
+        "matchup": 0.7701585256878795,
+        "follow_the_move": null,
+        "ladder_math": 0.4844603277763887,
+        "hot_hand": 0.5016754344831286,
+        "cooling_off": null,
+        "hidden_gems": 0.5183950052173041
+      },
+      "rank": 6
+    },
+    {
+      "key": "2025|2025-11-27-cin-bal|00-0035644|reception_yds|12.5",
+      "line": {
+        "key": "2025|2025-11-27-cin-bal|00-0035644|reception_yds|12.5",
+        "gameId": "2025-11-27-cin-bal",
+        "playerId": "00-0035644",
+        "player": "Noah Fant",
+        "team": "cin",
+        "opponent": "bal",
+        "position": "TE",
+        "betType": "reception_yds",
+        "alt": false,
+        "line": 12.5,
+        "price": 1.91,
+        "fair": 0.4960422163588391
+      },
+      "chance": 0.5420602005189258,
+      "edge": 0.018499991094842017,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.06796522852507954,
+        "next_man_up": 0,
+        "game_script": 0.019321843220041456,
+        "matchup": 0.0035095911553613486,
+        "follow_the_move": 0,
+        "ladder_math": 0.013488946261917273,
+        "hot_hand": 0.04325771077130456,
+        "cooling_off": 0,
+        "hidden_gems": 0.03692747832897258
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.851982568649565,
+        "next_man_up": null,
+        "game_script": 0.8698924051032192,
+        "matchup": 0.6374284587657475,
+        "follow_the_move": null,
+        "ladder_math": 0.5323240165048303,
+        "hot_hand": 0.7634271123849418,
+        "cooling_off": null,
+        "hidden_gems": 0.5210297200169707
+      },
+      "rank": 7
+    }
+  ]
+}

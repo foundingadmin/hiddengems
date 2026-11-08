@@ -1,0 +1,123 @@
+{
+  "ref": {
+    "season": 2025,
+    "week": 18
+  },
+  "warmup": true,
+  "board": {
+    "rush_yds": 606,
+    "reception_yds": 856,
+    "pass_yds": 548,
+    "rush_reception_yds": 208
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.25457176741866877,
+      "usage": 0.000114686613181426,
+      "next_man_up": 0.010823631660673707,
+      "game_script": 0.00020181926551827314,
+      "matchup": 0.00008804499062094751,
+      "follow_the_move": 0.5105820667259978,
+      "ladder_math": 0.10267396369724802,
+      "hot_hand": 0.00014829273480649363,
+      "cooling_off": 0.0020651294993092443,
+      "hidden_gems": 0.11873059739397533
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.23378044481881516,
+        "usage": 0.0021463589746022406,
+        "next_man_up": 0.015164794486559247,
+        "game_script": 0.0009568467045630435,
+        "matchup": 0.00011383059845535234,
+        "follow_the_move": 0.5015025740591326,
+        "ladder_math": 0.11771378168936014,
+        "hot_hand": 0.000529441723424899,
+        "cooling_off": 0.0016065066569880078,
+        "hidden_gems": 0.12648542028809914
+      },
+      "reception_yds": {
+        "books_disagree": 0.2064946528673533,
+        "usage": 0.00012000357638070046,
+        "next_man_up": 0.018536569005605165,
+        "game_script": 0.0005818300904231578,
+        "matchup": 0.00010304024906137512,
+        "follow_the_move": 0.5004220314494005,
+        "ladder_math": 0.09054222585104761,
+        "hot_hand": 0.000139406340702217,
+        "cooling_off": 0.0014381402606812048,
+        "hidden_gems": 0.18162210030934495
+      },
+      "pass_yds": {
+        "books_disagree": 0.23842442340453757,
+        "usage": 0.00012236041083486693,
+        "next_man_up": 0.007189396793589941,
+        "game_script": 0.00021868961880526708,
+        "matchup": 0.0002068396884448512,
+        "follow_the_move": 0.43640711835552565,
+        "ladder_math": 0.11350491572414093,
+        "hot_hand": 0.0003568463855948933,
+        "cooling_off": 0.009834742994415543,
+        "hidden_gems": 0.19373466662411054
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.26140956142703603,
+        "usage": 0.005110090168969928,
+        "next_man_up": 0.02633816919248136,
+        "game_script": 0.006850098849090661,
+        "matchup": 0.00034436815663801116,
+        "follow_the_move": 0.38156510601167365,
+        "ladder_math": 0.2327621837999165,
+        "hot_hand": 0.0009352451250187512,
+        "cooling_off": 0.002101861396679415,
+        "hidden_gems": 0.08258331587249562
+      }
+    }
+  },
+  "gems": [
+    {
+      "key": "2025|2026-01-03-car-tb|00-0037256|rush_yds|30",
+      "line": {
+        "key": "2025|2026-01-03-car-tb|00-0037256|rush_yds|30",
+        "gameId": "2026-01-03-car-tb",
+        "playerId": "00-0037256",
+        "player": "Rachaad White",
+        "team": "tb",
+        "opponent": "car",
+        "position": "RB",
+        "betType": "rush_yds",
+        "alt": true,
+        "line": 30,
+        "price": 6.25,
+        "fair": 0.15159050131926124
+      },
+      "chance": 0.16208926989985997,
+      "edge": 0.002089269899859969,
+      "contributions": {
+        "books_disagree": 0.06254195798665137,
+        "usage": 0.0033572784637361766,
+        "next_man_up": 0,
+        "game_script": 0.001672740910972914,
+        "matchup": 0.0002504619176519385,
+        "follow_the_move": 0,
+        "ladder_math": -0.0006808262017419728,
+        "hot_hand": -0.0003738867802969089,
+        "cooling_off": 0,
+        "hidden_gems": 0.012648542028809925
+      },
+      "seedChances": {
+        "books_disagree": 0.1892859958997004,
+        "usage": 0.46058027709642857,
+        "next_man_up": null,
+        "game_script": 0.5064996499120507,
+        "matchup": 0.6173046371881736,
+        "follow_the_move": null,
+        "ladder_math": 0.15084814744158098,
+        "hot_hand": 0.08103467609777894,
+        "cooling_off": null,
+        "hidden_gems": 0.16490435781725377
+      },
+      "rank": 1
+    }
+  ]
+}

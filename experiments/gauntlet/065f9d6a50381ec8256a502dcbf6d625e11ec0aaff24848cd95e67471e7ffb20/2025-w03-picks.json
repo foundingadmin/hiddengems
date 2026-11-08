@@ -1,0 +1,78 @@
+{
+  "ref": {
+    "season": 2025,
+    "week": 3
+  },
+  "warmup": true,
+  "board": {
+    "rush_yds": 860,
+    "reception_yds": 1840,
+    "pass_yds": 803,
+    "rush_reception_yds": 518
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.020730627295388313,
+      "usage": 0.02331762333549204,
+      "next_man_up": 0.37800133729795304,
+      "game_script": 0.04288364901600001,
+      "matchup": 0.030505000000000008,
+      "follow_the_move": 0.1391699758334848,
+      "ladder_math": 0.06331834317368344,
+      "hot_hand": 0.09417100000000003,
+      "cooling_off": 0.15578200000000003,
+      "hidden_gems": 0.0521204440479984
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.018857887635652937,
+        "usage": 0.027696850780797613,
+        "next_man_up": 0.36806030211875945,
+        "game_script": 0.05065059322576973,
+        "matchup": 0.030505,
+        "follow_the_move": 0.14019878967367716,
+        "ladder_math": 0.06403837990362447,
+        "hot_hand": 0.094171,
+        "cooling_off": 0.155782,
+        "hidden_gems": 0.05003919666171856
+      },
+      "reception_yds": {
+        "books_disagree": 0.020655330992955637,
+        "usage": 0.022363292342408747,
+        "next_man_up": 0.37837347383400977,
+        "game_script": 0.04461633837145512,
+        "matchup": 0.030504999999999997,
+        "follow_the_move": 0.13866449259650446,
+        "ladder_math": 0.05801433275067107,
+        "hot_hand": 0.09417099999999999,
+        "cooling_off": 0.155782,
+        "hidden_gems": 0.0568547391119951
+      },
+      "pass_yds": {
+        "books_disagree": 0.020834546663634466,
+        "usage": 0.02422584637347929,
+        "next_man_up": 0.3687526072137742,
+        "game_script": 0.04300455399928278,
+        "matchup": 0.030505000000000004,
+        "follow_the_move": 0.13423539060273615,
+        "ladder_math": 0.06833999086369132,
+        "hot_hand": 0.09417100000000002,
+        "cooling_off": 0.15578200000000003,
+        "hidden_gems": 0.060149064283401825
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.02155739729375985,
+        "usage": 0.027754668606574925,
+        "next_man_up": 0.37097041422591864,
+        "game_script": 0.04940450702037989,
+        "matchup": 0.030505000000000004,
+        "follow_the_move": 0.13314277707599884,
+        "ladder_math": 0.06498644279814457,
+        "hot_hand": 0.09417100000000002,
+        "cooling_off": 0.15578200000000003,
+        "hidden_gems": 0.05172579297922326
+      }
+    }
+  },
+  "gems": []
+}

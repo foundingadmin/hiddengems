@@ -1,0 +1,211 @@
+{
+  "ref": {
+    "season": 2026,
+    "week": 4
+  },
+  "warmup": false,
+  "board": {
+    "rush_yds": 1215,
+    "reception_yds": 2251,
+    "pass_yds": 819,
+    "rush_reception_yds": 685
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.11673756477819217,
+      "usage": 0.0007134091563947587,
+      "next_man_up": 0.2276328398233871,
+      "game_script": 0.0013246335814908446,
+      "matchup": 0.0006795398300107671,
+      "follow_the_move": 0.24673084580850638,
+      "ladder_math": 0.17132437124294714,
+      "hot_hand": 0.0033036581606226928,
+      "cooling_off": 0.045045668385315596,
+      "hidden_gems": 0.18650746923313244
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.0928706315192913,
+        "usage": 0.00398708131200543,
+        "next_man_up": 0.3167460521332123,
+        "game_script": 0.0031876004536692875,
+        "matchup": 0.0008356191715979958,
+        "follow_the_move": 0.20271211945288303,
+        "ladder_math": 0.19772229219739107,
+        "hot_hand": 0.008244644461422089,
+        "cooling_off": 0.03611512456853725,
+        "hidden_gems": 0.13757883472999038
+      },
+      "reception_yds": {
+        "books_disagree": 0.08901191614842925,
+        "usage": 0.0005920247170167184,
+        "next_man_up": 0.27120778499897813,
+        "game_script": 0.0027417969490241166,
+        "matchup": 0.0006919008470664735,
+        "follow_the_move": 0.23888425488643253,
+        "ladder_math": 0.12598102686827972,
+        "hot_hand": 0.0031780653293172504,
+        "cooling_off": 0.03169122700985536,
+        "hidden_gems": 0.2360200022456005
+      },
+      "pass_yds": {
+        "books_disagree": 0.06909832646287295,
+        "usage": 0.0005526933405208911,
+        "next_man_up": 0.12405704652743586,
+        "game_script": 0.0012289407007009243,
+        "matchup": 0.0016282244513844738,
+        "follow_the_move": 0.23094623153266736,
+        "ladder_math": 0.14550137621675918,
+        "hot_hand": 0.0061089726688627185,
+        "cooling_off": 0.12467200276108559,
+        "hidden_gems": 0.29620618533771
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.06931477650659756,
+        "usage": 0.011789402593343382,
+        "next_man_up": 0.3067794012075182,
+        "game_script": 0.017226196116563546,
+        "matchup": 0.002943234707541288,
+        "follow_the_move": 0.1867283555887129,
+        "ladder_math": 0.23709236210478304,
+        "hot_hand": 0.017224707147697818,
+        "cooling_off": 0.03733782757974133,
+        "hidden_gems": 0.11356373644750091
+      }
+    }
+  },
+  "gems": [
+    {
+      "key": "2026|2026-10-04-lar-phi|00-0031381|reception_yds|120",
+      "line": {
+        "key": "2026|2026-10-04-lar-phi|00-0031381|reception_yds|120",
+        "gameId": "2026-10-04-lar-phi",
+        "playerId": "00-0031381",
+        "player": "Davante Adams",
+        "team": "lar",
+        "opponent": "phi",
+        "position": "WR",
+        "betType": "reception_yds",
+        "alt": true,
+        "line": 120,
+        "price": 6.72,
+        "fair": 0.14098818947103908
+      },
+      "chance": 0.15465551013242784,
+      "edge": 0.005845986322904034,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.00022530134502105653,
+        "next_man_up": 0.12780168918143978,
+        "game_script": 0.000858384716187873,
+        "matchup": 0.0003594350404457628,
+        "follow_the_move": 0,
+        "ladder_math": 0.0010237890919959187,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": -0.02170614898069594
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.1988817945235972,
+        "next_man_up": 0.6296623511113115,
+        "game_script": 0.18744763420559443,
+        "matchup": 0.227697731945542,
+        "follow_the_move": null,
+        "ladder_math": 0.14206111254312137,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.12930626565726022
+      },
+      "rank": 1
+    },
+    {
+      "key": "2026|2026-10-04-dal-hou|00-0038618|reception_yds|60",
+      "line": {
+        "key": "2026|2026-10-04-dal-hou|00-0038618|reception_yds|60",
+        "gameId": "2026-10-04-dal-hou",
+        "playerId": "00-0038618",
+        "player": "Xavier Hutchinson",
+        "team": "hou",
+        "opponent": "dal",
+        "position": "WR",
+        "betType": "reception_yds",
+        "alt": true,
+        "line": 60,
+        "price": 5.33,
+        "fair": 0.17773641507472512
+      },
+      "chance": 0.19110949109437272,
+      "edge": 0.0034922303063802396,
+      "contributions": {
+        "books_disagree": -0.004207333298914799,
+        "usage": -0.00014025480467422247,
+        "next_man_up": 0.11817817051654021,
+        "game_script": -0.00039243194432084585,
+        "matchup": -0.00040686805086368724,
+        "follow_the_move": -0.02870066048312763,
+        "ladder_math": -0.01709445396750419,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.021706148980695988
+      },
+      "seedChances": {
+        "books_disagree": 0.1695237277677457,
+        "usage": 0.1431507238352445,
+        "next_man_up": 0.6525059718993643,
+        "game_script": 0.15611893373963662,
+        "matchup": 0.10021773628109122,
+        "follow_the_move": 0.15468378392703397,
+        "ladder_math": 0.15719972150503153,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.19282470233448765
+      },
+      "rank": 2
+    },
+    {
+      "key": "2026|2026-10-04-lar-phi|00-0030061|reception_yds|50",
+      "line": {
+        "key": "2026|2026-10-04-lar-phi|00-0030061|reception_yds|50",
+        "gameId": "2026-10-04-lar-phi",
+        "playerId": "00-0030061",
+        "player": "Zach Ertz",
+        "team": "phi",
+        "opponent": "lar",
+        "position": "TE",
+        "betType": "reception_yds",
+        "alt": true,
+        "line": 50,
+        "price": 5.36,
+        "fair": 0.1763059701492537
+      },
+      "chance": 0.1899424720094016,
+      "edge": 0.0033753078302971307,
+      "contributions": {
+        "books_disagree": -0.008944471135652065,
+        "usage": 0.000010801659368010648,
+        "next_man_up": 0.09550421696477532,
+        "game_script": -0.00022085562199015567,
+        "matchup": -0.0015914750287448227,
+        "follow_the_move": 0,
+        "ladder_math": -0.01527020021346146,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.021706148980696036
+      },
+      "seedChances": {
+        "books_disagree": 0.15932203389830507,
+        "usage": 0.17920560207304015,
+        "next_man_up": 0.5511899085004428,
+        "game_script": 0.16394450079244097,
+        "matchup": 0.01574892694670711,
+        "follow_the_move": null,
+        "ladder_math": 0.15798522405339976,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.19130107645211228
+      },
+      "rank": 3
+    }
+  ]
+}

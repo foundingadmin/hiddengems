@@ -1,0 +1,226 @@
+{
+  "mod": "MOD10",
+  "hash": "f925d4da4295ac904d9e53a356358d6aab4439f6cbc79f0bc50d2257b571a291",
+  "rules": {
+    "frozen": true,
+    "mod": "MOD10",
+    "generator": {
+      "seed": 20261108,
+      "draw": 3
+    },
+    "picksPerWeek": 10,
+    "minPrice": 1.52,
+    "maxPrice": 3.4,
+    "perPlayer": 1,
+    "maxStep": 0.321,
+    "poolingLines": 2313,
+    "vetoAsFilter": true,
+    "capByLines": true,
+    "startWeights": {
+      "books_disagree": 0.174445,
+      "usage": 0.279549,
+      "next_man_up": 0.047027,
+      "game_script": 0.168161,
+      "matchup": 0.01715,
+      "follow_the_move": 0.211448,
+      "ladder_math": 0.016275,
+      "hot_hand": 0.019765,
+      "cooling_off": 0.054182,
+      "hidden_gems": 0.011998
+    },
+    "warmup": [
+      {
+        "season": 2025,
+        "week": 1
+      },
+      {
+        "season": 2025,
+        "week": 2
+      },
+      {
+        "season": 2025,
+        "week": 3
+      },
+      {
+        "season": 2025,
+        "week": 4
+      },
+      {
+        "season": 2025,
+        "week": 5
+      },
+      {
+        "season": 2025,
+        "week": 6
+      },
+      {
+        "season": 2025,
+        "week": 7
+      },
+      {
+        "season": 2025,
+        "week": 8
+      },
+      {
+        "season": 2025,
+        "week": 18
+      }
+    ],
+    "stake": 1,
+    "purse": 100,
+    "pass": {
+      "luckBandSd": 2.5,
+      "beatCloseShare": 0.5,
+      "bothSeasons": true,
+      "topSeedsShare": 0.5
+    }
+  },
+  "seeds": [
+    {
+      "id": "books_disagree",
+      "name": "Books disagree"
+    },
+    {
+      "id": "usage",
+      "name": "Usage is destiny"
+    },
+    {
+      "id": "next_man_up",
+      "name": "Next man up"
+    },
+    {
+      "id": "game_script",
+      "name": "Game script"
+    },
+    {
+      "id": "matchup",
+      "name": "Matchup"
+    },
+    {
+      "id": "follow_the_move",
+      "name": "Follow the move"
+    },
+    {
+      "id": "ladder_math",
+      "name": "Ladder math"
+    },
+    {
+      "id": "hot_hand",
+      "name": "Hot hand"
+    },
+    {
+      "id": "cooling_off",
+      "name": "Cooling off"
+    },
+    {
+      "id": "hidden_gems",
+      "name": "Hidden gems"
+    }
+  ],
+  "weeks": [
+    {
+      "season": 2025,
+      "week": 1
+    },
+    {
+      "season": 2025,
+      "week": 2
+    },
+    {
+      "season": 2025,
+      "week": 3
+    },
+    {
+      "season": 2025,
+      "week": 4
+    },
+    {
+      "season": 2025,
+      "week": 5
+    },
+    {
+      "season": 2025,
+      "week": 6
+    },
+    {
+      "season": 2025,
+      "week": 7
+    },
+    {
+      "season": 2025,
+      "week": 8
+    },
+    {
+      "season": 2025,
+      "week": 9
+    },
+    {
+      "season": 2025,
+      "week": 10
+    },
+    {
+      "season": 2025,
+      "week": 11
+    },
+    {
+      "season": 2025,
+      "week": 12
+    },
+    {
+      "season": 2025,
+      "week": 13
+    },
+    {
+      "season": 2025,
+      "week": 14
+    },
+    {
+      "season": 2025,
+      "week": 15
+    },
+    {
+      "season": 2025,
+      "week": 16
+    },
+    {
+      "season": 2025,
+      "week": 17
+    },
+    {
+      "season": 2025,
+      "week": 18
+    },
+    {
+      "season": 2026,
+      "week": 1
+    },
+    {
+      "season": 2026,
+      "week": 2
+    },
+    {
+      "season": 2026,
+      "week": 3
+    },
+    {
+      "season": 2026,
+      "week": 4
+    },
+    {
+      "season": 2026,
+      "week": 5
+    },
+    {
+      "season": 2026,
+      "week": 6
+    },
+    {
+      "season": 2026,
+      "week": 7
+    },
+    {
+      "season": 2026,
+      "week": 8
+    }
+  ]
+}

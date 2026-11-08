@@ -127,6 +127,20 @@ and on beating the close, and the gain shows in both seasons. It joins at the we
 
 ## Runs
 
+Runs 2 to 9 are the random rules batch (`batch.ts`, seed 20261108, rules in `rules/`), each run with
+`run.ts --rules ops/gauntlet/rules/MODn.json --hash <its sha256>`. Run 1 is MOD7 (`rules.json`).
+
 | Run | Rules sha256 | Date | Verdict |
 |---|---|---|---|
 | 1 | `dccf34716c357b2b6893b0c6fee2f7349361e19210371db9ea2791a109dc8569` | Nov 8 2026 | Fail, 1 of 4 checks (beat the close only) |
+| 2, MOD8 | `d531e89a35e163797501b7b9d126a6cfacfce83e8b6f533ea78d940b8af70618` | Nov 8 2026 | Fail, 0 of 4 checks |
+| 3, MOD9 | `b14a0bd48346c7969227fa5bf86211d2aebd50498cb331e08e13867eee8c5284` | Nov 8 2026 | Fail, 0 of 4 checks |
+| 4, MOD10 | `f925d4da4295ac904d9e53a356358d6aab4439f6cbc79f0bc50d2257b571a291` | Nov 8 2026 | Fail, 0 of 4 checks |
+| 5, MOD11 | `e59b4df61b07f5afeb72d37626427262dd4b18cd6777a4aa359aa10fbb1a054a` | Nov 8 2026 | Fail, 0 of 4 checks |
+| 6, MOD12 | `45f38d6a177929a2ec874117bd76011bf1a7905583dc17abd49d78267aec5eea` | Nov 8 2026 | Fail, 1 of 4 checks (beat the close only) |
+| 7, MOD13 | `1791eeeb0e4db4ceeea4d0f20ca2d5d0b19e382afa031afd6198c8b3eb5de707` | Nov 8 2026 | Fail, 0 of 4 checks |
+| 8, MOD14 | `065f9d6a50381ec8256a502dcbf6d625e11ec0aaff24848cd95e67471e7ffb20` | Nov 8 2026 | Fail, 1 of 4 checks (beat the close only) |
+| 9, MOD15 | `b3a4104312d4c4dd1fcc70184ba115490151eb2c4925605fd5869b7f611e5ba0` | Nov 8 2026 | Fail, 1 of 4 checks (beat the close only) |
+
+In runs 2 to 9 `vetoAsFilter` never named a filter seed: each of the ten seeds put some line above fair on the first
+board it spoke on, in every bet type, so MODs with it on blended exactly as they would with it off.

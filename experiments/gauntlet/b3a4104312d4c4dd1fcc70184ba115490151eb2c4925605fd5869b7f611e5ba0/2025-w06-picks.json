@@ -1,0 +1,475 @@
+{
+  "ref": {
+    "season": 2025,
+    "week": 6
+  },
+  "warmup": true,
+  "board": {
+    "rush_yds": 842,
+    "reception_yds": 1677,
+    "pass_yds": 689,
+    "rush_reception_yds": 657
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.11663215457894019,
+      "usage": 0.24658672428916484,
+      "next_man_up": 0.06969580453203172,
+      "game_script": 0.06921442505643553,
+      "matchup": 0.09362410630300592,
+      "follow_the_move": 0.003918463512470659,
+      "ladder_math": 0.0502886965245996,
+      "hot_hand": 0.06359967518771532,
+      "cooling_off": 0.14027901612211713,
+      "hidden_gems": 0.14616093389351928
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.07028584993267455,
+        "usage": 0.35341161890630163,
+        "next_man_up": 0.044108108374980456,
+        "game_script": 0.07142653684001278,
+        "matchup": 0.10863353848350973,
+        "follow_the_move": 0.00235653623445509,
+        "ladder_math": 0.03487373552011345,
+        "hot_hand": 0.06601153001725048,
+        "cooling_off": 0.14559873861312,
+        "hidden_gems": 0.10329380707758187
+      },
+      "reception_yds": {
+        "books_disagree": 0.12254044954302043,
+        "usage": 0.2043499545587583,
+        "next_man_up": 0.06248820703532111,
+        "game_script": 0.11955748918902133,
+        "matchup": 0.0923386474634118,
+        "follow_the_move": 0.00363249197547638,
+        "ladder_math": 0.057516675799195366,
+        "hot_hand": 0.05527548150949743,
+        "cooling_off": 0.12096555950258145,
+        "hidden_gems": 0.16133504342371646
+      },
+      "pass_yds": {
+        "books_disagree": 0.12202947709115589,
+        "usage": 0.203924040999432,
+        "next_man_up": 0.06054632180432596,
+        "game_script": 0.0773836430801431,
+        "matchup": 0.11052704029555473,
+        "follow_the_move": 0.00327048239201496,
+        "ladder_math": 0.06062612877169746,
+        "hot_hand": 0.06374233553212304,
+        "cooling_off": 0.14059367579127563,
+        "hidden_gems": 0.15735685424227722
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.07657346537345476,
+        "usage": 0.3067732888808377,
+        "next_man_up": 0.04567611951748372,
+        "game_script": 0.10791972683948188,
+        "matchup": 0.12781174528680012,
+        "follow_the_move": 0.0019537889631885525,
+        "ladder_math": 0.03870190699543697,
+        "hot_hand": 0.05720571320652028,
+        "cooling_off": 0.14659143435904354,
+        "hidden_gems": 0.09079281057775235
+      }
+    }
+  },
+  "gems": [
+    {
+      "key": "2025|2025-10-12-sf-tb|00-0037746|rush_yds|15",
+      "line": {
+        "key": "2025|2025-10-12-sf-tb|00-0037746|rush_yds|15",
+        "gameId": "2025-10-12-sf-tb",
+        "playerId": "00-0037746",
+        "player": "Brian Robinson Jr.",
+        "team": "sf",
+        "opponent": "tb",
+        "position": "RB",
+        "betType": "rush_yds",
+        "alt": true,
+        "line": 15,
+        "price": 1.8,
+        "fair": 0.5247648442092887
+      },
+      "chance": 0.7382059744104472,
+      "edge": 0.18265041885489164,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.6786397395996526,
+        "next_man_up": 0,
+        "game_script": 0.12734246519070644,
+        "matchup": 0.1273187668122355,
+        "follow_the_move": 0,
+        "ladder_math": 0.0022960357236076335,
+        "hot_hand": -0.008402037061361084,
+        "cooling_off": 0,
+        "hidden_gems": 0.010329380707758212
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.8828182864924153,
+        "next_man_up": null,
+        "game_script": 0.8678390525885812,
+        "matchup": 0.7809383291944992,
+        "follow_the_move": null,
+        "ladder_math": 0.541151462910155,
+        "hot_hand": 0.49296525022434434,
+        "cooling_off": null,
+        "hidden_gems": 0.5496212477441474
+      },
+      "rank": 1
+    },
+    {
+      "key": "2025|2025-10-09-phi-nyg|00-0040715|reception_yds|13.5",
+      "line": {
+        "key": "2025|2025-10-09-phi-nyg|00-0040715|reception_yds|13.5",
+        "gameId": "2025-10-09-phi-nyg",
+        "playerId": "00-0040715",
+        "player": "Cam Skattebo",
+        "team": "nyg",
+        "opponent": "phi",
+        "position": "RB",
+        "betType": "reception_yds",
+        "alt": false,
+        "line": 13.5,
+        "price": 1.9,
+        "fair": 0.4973544973544974
+      },
+      "chance": 0.689548127432726,
+      "edge": 0.1632323379590418,
+      "contributions": {
+        "books_disagree": 0.004930277421083838,
+        "usage": 0.2623204900112615,
+        "next_man_up": 0,
+        "game_script": 0.13016838327996447,
+        "matchup": 0.15693148685829716,
+        "follow_the_move": 0,
+        "ladder_math": 0.006762225405634858,
+        "hot_hand": 0.08903861250262206,
+        "cooling_off": 0.1423047352127894,
+        "hidden_gems": 0.016133504342371686
+      },
+      "seedChances": {
+        "books_disagree": 0.5074123989218329,
+        "usage": 0.7812730463288305,
+        "next_man_up": null,
+        "game_script": 0.7461473815619014,
+        "matchup": 0.8440845860503539,
+        "follow_the_move": null,
+        "ladder_math": 0.5267214447017325,
+        "hot_hand": 0.8320510277484738,
+        "cooling_off": 0.7623895225224449,
+        "hidden_gems": 0.5223395898578106
+      },
+      "rank": 2
+    },
+    {
+      "key": "2025|2025-10-12-cle-pit|00-0023459|rush_yds|0.5",
+      "line": {
+        "key": "2025|2025-10-12-cle-pit|00-0023459|rush_yds|0.5",
+        "gameId": "2025-10-12-cle-pit",
+        "playerId": "00-0023459",
+        "player": "Aaron Rodgers",
+        "team": "pit",
+        "opponent": "cle",
+        "position": "QB",
+        "betType": "rush_yds",
+        "alt": false,
+        "line": 0.5,
+        "price": 1.96,
+        "fair": 0.48284960422163586
+      },
+      "chance": 0.669511302289939,
+      "edge": 0.15930722065728598,
+      "contributions": {
+        "books_disagree": 0.002556130780599049,
+        "usage": 0.27999107504020687,
+        "next_man_up": 0,
+        "game_script": 0.05658835368327723,
+        "matchup": 0.06160185289604023,
+        "follow_the_move": 0,
+        "ladder_math": 0.0009532396452230019,
+        "hot_hand": 0.18614035075150187,
+        "cooling_off": 0.19710246981846716,
+        "hidden_gems": -0.010329380707758204
+      },
+      "seedChances": {
+        "books_disagree": 0.49193548387096786,
+        "usage": 0.6734044436306071,
+        "next_man_up": null,
+        "game_script": 0.6734060889974949,
+        "matchup": 0.6220909122222814,
+        "follow_the_move": null,
+        "ladder_math": 0.4896778470395447,
+        "hot_hand": 0.9399803647895543,
+        "cooling_off": 0.7833181821088443,
+        "hidden_gems": 0.45794248699351237
+      },
+      "rank": 3
+    },
+    {
+      "key": "2025|2025-10-12-lar-bal|00-0030564|reception_yds|10.5",
+      "line": {
+        "key": "2025|2025-10-12-lar-bal|00-0030564|reception_yds|10.5",
+        "gameId": "2025-10-12-lar-bal",
+        "playerId": "00-0030564",
+        "player": "DeAndre Hopkins",
+        "team": "bal",
+        "opponent": "lar",
+        "position": "WR",
+        "betType": "reception_yds",
+        "alt": false,
+        "line": 10.5,
+        "price": 1.87,
+        "fair": 0.5052910052910053
+      },
+      "chance": 0.6620527422063553,
+      "edge": 0.12729338391758538,
+      "contributions": {
+        "books_disagree": 0.0023087262097154894,
+        "usage": 0.30258468819389067,
+        "next_man_up": 0,
+        "game_script": 0.1742933638149941,
+        "matchup": 0.14219885018256803,
+        "follow_the_move": 0,
+        "ladder_math": 0,
+        "hot_hand": 0.01377143855787988,
+        "cooling_off": 0,
+        "hidden_gems": 0.016133504342371645
+      },
+      "seedChances": {
+        "books_disagree": 0.51,
+        "usage": 0.8178551463704988,
+        "next_man_up": null,
+        "game_script": 0.8144192755412937,
+        "matchup": 0.8265162910243611,
+        "follow_the_move": null,
+        "ladder_math": null,
+        "hot_hand": 0.5671682008820762,
+        "cooling_off": null,
+        "hidden_gems": 0.5302541985837348
+      },
+      "rank": 4
+    },
+    {
+      "key": "2025|2025-10-12-ne-no|00-0031236|reception_yds|13.5",
+      "line": {
+        "key": "2025|2025-10-12-ne-no|00-0031236|reception_yds|13.5",
+        "gameId": "2025-10-12-ne-no",
+        "playerId": "00-0031236",
+        "player": "Brandin Cooks",
+        "team": "no",
+        "opponent": "ne",
+        "position": "WR",
+        "betType": "reception_yds",
+        "alt": false,
+        "line": 13.5,
+        "price": 1.85,
+        "fair": 0.5105820105820106
+      },
+      "chance": 0.6519168434843087,
+      "edge": 0.11137630294376821,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.25458556558608336,
+        "next_man_up": 0,
+        "game_script": 0.14869568149614937,
+        "matchup": 0.1175596000786529,
+        "follow_the_move": 0,
+        "ladder_math": 0.0066439166934070416,
+        "hot_hand": 0.0415229743671721,
+        "cooling_off": 0,
+        "hidden_gems": 0.01613350434237168
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.7838365436420225,
+        "next_man_up": null,
+        "game_script": 0.7834780912794035,
+        "matchup": 0.7884270044282632,
+        "follow_the_move": null,
+        "ladder_math": 0.5393800787703501,
+        "hot_hand": 0.6885898494626195,
+        "cooling_off": null,
+        "hidden_gems": 0.5355236382040772
+      },
+      "rank": 5
+    },
+    {
+      "key": "2025|2025-10-12-lar-bal|00-0037840|reception_yds|12.5",
+      "line": {
+        "key": "2025|2025-10-12-lar-bal|00-0037840|reception_yds|12.5",
+        "gameId": "2025-10-12-lar-bal",
+        "playerId": "00-0037840",
+        "player": "Kyren Williams",
+        "team": "lar",
+        "opponent": "bal",
+        "position": "RB",
+        "betType": "reception_yds",
+        "alt": false,
+        "line": 12.5,
+        "price": 1.87,
+        "fair": 0.5065963060686015
+      },
+      "chance": 0.6349220016510574,
+      "edge": 0.10016264336228742,
+      "contributions": {
+        "books_disagree": 0.00006973223288558563,
+        "usage": 0.14549974192171664,
+        "next_man_up": 0,
+        "game_script": 0.08226964584497919,
+        "matchup": 0.09793310500761576,
+        "follow_the_move": 0,
+        "ladder_math": 0.008334738743943967,
+        "hot_hand": 0.08660763159316985,
+        "cooling_off": 0.12242328826765476,
+        "hidden_gems": -0.016133504342371614
+      },
+      "seedChances": {
+        "books_disagree": 0.5067385444743935,
+        "usage": 0.6766457395986334,
+        "next_man_up": null,
+        "game_script": 0.671395754102312,
+        "matchup": 0.7478113008481726,
+        "follow_the_move": null,
+        "ladder_math": 0.5427197689506765,
+        "hot_hand": 0.83106908294676,
+        "cooling_off": 0.7385484140250701,
+        "hidden_gems": 0.48160499478269586
+      },
+      "rank": 6
+    },
+    {
+      "key": "2025|2025-10-13-buf-atl|00-0036988|reception_yds|15",
+      "line": {
+        "key": "2025|2025-10-13-buf-atl|00-0036988|reception_yds|15",
+        "gameId": "2025-10-13-buf-atl",
+        "playerId": "00-0036988",
+        "player": "Joshua Palmer",
+        "team": "buf",
+        "opponent": "atl",
+        "position": "WR",
+        "betType": "reception_yds",
+        "alt": true,
+        "line": 15,
+        "price": 1.67,
+        "fair": 0.5658682634730539
+      },
+      "chance": 0.6970836708031382,
+      "edge": 0.09828127559355726,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.2867776890987848,
+        "next_man_up": 0,
+        "game_script": 0.17974508768186576,
+        "matchup": 0.09211074259229228,
+        "follow_the_move": 0,
+        "ladder_math": 0.011039005539587702,
+        "hot_hand": -0.017370480255155266,
+        "cooling_off": 0,
+        "hidden_gems": 0.01613350434237159
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.8413595582004932,
+        "next_man_up": null,
+        "game_script": 0.8542626909376102,
+        "matchup": 0.7794639267316993,
+        "follow_the_move": null,
+        "ladder_math": 0.6122880835793774,
+        "hot_hand": 0.4876925802015688,
+        "cooling_off": null,
+        "hidden_gems": 0.5902534619790267
+      },
+      "rank": 7
+    },
+    {
+      "key": "2025|2025-10-12-cin-gb|00-0038619|reception_yds|15",
+      "line": {
+        "key": "2025|2025-10-12-cin-gb|00-0038619|reception_yds|15",
+        "gameId": "2025-10-12-cin-gb",
+        "playerId": "00-0038619",
+        "player": "Andrei Iosivas",
+        "team": "cin",
+        "opponent": "gb",
+        "position": "WR",
+        "betType": "reception_yds",
+        "alt": true,
+        "line": 15,
+        "price": 2.08,
+        "fair": 0.4531218118751274
+      },
+      "chance": 0.577010898179246,
+      "edge": 0.09624166741001527,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.20295445436657825,
+        "next_man_up": 0,
+        "game_script": 0.10696884566976286,
+        "matchup": 0.07641372575582064,
+        "follow_the_move": 0,
+        "ladder_math": 0.001873608386136739,
+        "hot_hand": 0.03997001959286588,
+        "cooling_off": 0.05426567826448868,
+        "hidden_gems": 0.016133504342371624
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.6910656284023824,
+        "next_man_up": null,
+        "game_script": 0.6696585768434985,
+        "matchup": 0.6546342658662943,
+        "follow_the_move": null,
+        "ladder_math": 0.46120561735130566,
+        "hot_hand": 0.6306579994712986,
+        "cooling_off": 0.5647688516992416,
+        "hidden_gems": 0.4779979435655143
+      },
+      "rank": 8
+    },
+    {
+      "key": "2025|2025-10-12-lar-bal|00-0026498|pass_yds|320",
+      "line": {
+        "key": "2025|2025-10-12-lar-bal|00-0026498|pass_yds|320",
+        "gameId": "2025-10-12-lar-bal",
+        "playerId": "00-0026498",
+        "player": "Matthew Stafford",
+        "team": "lar",
+        "opponent": "bal",
+        "position": "QB",
+        "betType": "pass_yds",
+        "alt": true,
+        "line": 320,
+        "price": 5.25,
+        "fair": 0.17999999999999997
+      },
+      "chance": 0.2808492536298403,
+      "edge": 0.09037306315364985,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.13735998277933936,
+        "next_man_up": 0,
+        "game_script": 0.047402658001799526,
+        "matchup": 0.1675570725659788,
+        "follow_the_move": -0.0005022496025098717,
+        "ladder_math": -0.003829432379892527,
+        "hot_hand": 0.09028557881717937,
+        "cooling_off": 0.1535566291453298,
+        "hidden_gems": -0.015735685424227736
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.30095309251759544,
+        "next_man_up": null,
+        "game_script": 0.28827420419671534,
+        "matchup": 0.499908783649422,
+        "follow_the_move": 0.15843511385478704,
+        "ladder_math": 0.17086457632519458,
+        "hot_hand": 0.47503756449580736,
+        "cooling_off": 0.39552508762910343,
+        "hidden_gems": 0.16570921221459492
+      },
+      "rank": 9
+    }
+  ]
+}

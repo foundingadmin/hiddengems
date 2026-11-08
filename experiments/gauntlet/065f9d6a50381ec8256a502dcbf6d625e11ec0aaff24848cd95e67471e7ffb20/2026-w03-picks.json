@@ -1,0 +1,123 @@
+{
+  "ref": {
+    "season": 2026,
+    "week": 3
+  },
+  "warmup": false,
+  "board": {
+    "rush_yds": 1178,
+    "reception_yds": 2087,
+    "pass_yds": 789,
+    "rush_reception_yds": 622
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.10049546684714716,
+      "usage": 0.0008979398274135803,
+      "next_man_up": 0.20918381764147514,
+      "game_script": 0.0017292866599097191,
+      "matchup": 0.0006795398300107672,
+      "follow_the_move": 0.24313959502864926,
+      "ladder_math": 0.19739639996032224,
+      "hot_hand": 0.0033036581606226936,
+      "cooling_off": 0.0450456683853156,
+      "hidden_gems": 0.19812862765913386
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.08081462177435242,
+        "usage": 0.004941499577760169,
+        "next_man_up": 0.3131047620667415,
+        "game_script": 0.004138684701692918,
+        "matchup": 0.0008341640831034691,
+        "follow_the_move": 0.20677403444156722,
+        "ladder_math": 0.19137199639556168,
+        "hot_hand": 0.008198580887314245,
+        "cooling_off": 0.03619838178519072,
+        "hidden_gems": 0.15362327428671563
+      },
+      "reception_yds": {
+        "books_disagree": 0.08189679153939225,
+        "usage": 0.0007509254049503282,
+        "next_man_up": 0.28716073188387514,
+        "game_script": 0.0035706560005254896,
+        "matchup": 0.0006918426300502964,
+        "follow_the_move": 0.23706252185304427,
+        "ladder_math": 0.14636864407334776,
+        "hot_hand": 0.003178656837269942,
+        "cooling_off": 0.031754122783405773,
+        "hidden_gems": 0.20756510699413877
+      },
+      "pass_yds": {
+        "books_disagree": 0.07029473707987074,
+        "usage": 0.0007174260001387938,
+        "next_man_up": 0.12167612404313827,
+        "game_script": 0.0016055114124550152,
+        "matchup": 0.0016194899429453798,
+        "follow_the_move": 0.22818905132766343,
+        "ladder_math": 0.1713327994449595,
+        "hot_hand": 0.006083144229469388,
+        "cooling_off": 0.12393888569150327,
+        "hidden_gems": 0.27454283082785613
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.06615026931719445,
+        "usage": 0.01458516303357354,
+        "next_man_up": 0.3014721551337459,
+        "game_script": 0.02222119842816849,
+        "matchup": 0.002914086005476188,
+        "follow_the_move": 0.1731332763783097,
+        "ladder_math": 0.2403169024929548,
+        "hot_hand": 0.017045451315392104,
+        "cooling_off": 0.03743707839195857,
+        "hidden_gems": 0.12472441950322632
+      }
+    }
+  },
+  "gems": [
+    {
+      "key": "2026|2026-09-27-hou-ind|00-0038618|reception_yds|80",
+      "line": {
+        "key": "2026|2026-09-27-hou-ind|00-0038618|reception_yds|80",
+        "gameId": "2026-09-27-hou-ind",
+        "playerId": "00-0038618",
+        "player": "Xavier Hutchinson",
+        "team": "hou",
+        "opponent": "ind",
+        "position": "WR",
+        "betType": "reception_yds",
+        "alt": true,
+        "line": 80,
+        "price": 6.74,
+        "fair": 0.14056982689100633
+      },
+      "chance": 0.15330360984484145,
+      "edge": 0.004935657322586273,
+      "contributions": {
+        "books_disagree": 0.0053749097491720505,
+        "usage": -0.0007078192845748982,
+        "next_man_up": 0.09368233425031001,
+        "game_script": -0.0035903929920448716,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": -0.012113463385527485,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.018997814003915512
+      },
+      "seedChances": {
+        "books_disagree": 0.15057222701397274,
+        "usage": 0.055177266496802824,
+        "next_man_up": 0.4646527021336577,
+        "game_script": 0.051700381015804986,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.13000371813562872,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.1530904176813071
+      },
+      "rank": 1
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "ref": {
+    "season": 2025,
+    "week": 11
+  },
+  "warmup": false,
+  "board": {
+    "rush_yds": 763,
+    "reception_yds": 1760,
+    "pass_yds": 721,
+    "rush_reception_yds": 532
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.04935599517417522,
+      "usage": 0.007103162193042468,
+      "next_man_up": 0.3211133352668449,
+      "game_script": 0.014218221943667505,
+      "matchup": 0.0054942514927023055,
+      "follow_the_move": 0.26838490047585734,
+      "ladder_math": 0.10989402459433494,
+      "hot_hand": 0.023574299100827388,
+      "cooling_off": 0.08142172970891091,
+      "hidden_gems": 0.11944008004963705
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.04000924391652404,
+        "usage": 0.014867079964308602,
+        "next_man_up": 0.3301912100034944,
+        "game_script": 0.018779076402273002,
+        "matchup": 0.006188807638245722,
+        "follow_the_move": 0.24837012272818015,
+        "ladder_math": 0.12616948324660865,
+        "hot_hand": 0.030387497331975405,
+        "cooling_off": 0.08604268824739222,
+        "hidden_gems": 0.09899479052099786
+      },
+      "reception_yds": {
+        "books_disagree": 0.04073171740462895,
+        "usage": 0.006509750532327895,
+        "next_man_up": 0.39734870765008545,
+        "game_script": 0.020260978484699602,
+        "matchup": 0.005791295071835664,
+        "follow_the_move": 0.24535554124464806,
+        "ladder_math": 0.08254259607645323,
+        "hot_hand": 0.021873434960240752,
+        "cooling_off": 0.05977769058360598,
+        "hidden_gems": 0.11980828799147444
+      },
+      "pass_yds": {
+        "books_disagree": 0.044410197252738565,
+        "usage": 0.0071344153789326716,
+        "next_man_up": 0.24160284039112517,
+        "game_script": 0.013708137892058344,
+        "matchup": 0.008444354852694954,
+        "follow_the_move": 0.24962516745567664,
+        "ladder_math": 0.14299052515159172,
+        "hot_hand": 0.030884526748358537,
+        "cooling_off": 0.11183397641970204,
+        "hidden_gems": 0.14936585845712136
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.039337593599892,
+        "usage": 0.024381126192660533,
+        "next_man_up": 0.3874164997496096,
+        "game_script": 0.03824052720903455,
+        "matchup": 0.009033877112547417,
+        "follow_the_move": 0.19347995223751452,
+        "ladder_math": 0.11464292605292695,
+        "hot_hand": 0.03101637208035399,
+        "cooling_off": 0.0762303056416267,
+        "hidden_gems": 0.08622082012383367
+      }
+    }
+  },
+  "gems": [
+    {
+      "key": "2025|2025-11-16-det-phi|00-0038555|rush_yds|15",
+      "line": {
+        "key": "2025|2025-11-16-det-phi|00-0038555|rush_yds|15",
+        "gameId": "2025-11-16-det-phi",
+        "playerId": "00-0038555",
+        "player": "Tank Bigsby",
+        "team": "phi",
+        "opponent": "det",
+        "position": "RB",
+        "betType": "rush_yds",
+        "alt": true,
+        "line": 15,
+        "price": 2.82,
+        "fair": 0.3358034394356182
+      },
+      "chance": 0.3707172208854127,
+      "edge": 0.016107291807398505,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.029249131991212554,
+        "next_man_up": 0,
+        "game_script": 0.039081743332660186,
+        "matchup": 0.008343848168118399,
+        "follow_the_move": 0,
+        "ladder_math": -0.010128351938597626,
+        "hot_hand": 0.02602876841717034,
+        "cooling_off": 0.05323484977308182,
+        "hidden_gems": 0.0071009928784756485
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.8871367663450157,
+        "next_man_up": null,
+        "game_script": 0.9020733731341669,
+        "matchup": 0.8082640524527906,
+        "follow_the_move": null,
+        "ladder_math": 0.3113617038675771,
+        "hot_hand": 0.6928438886334548,
+        "cooling_off": 0.692123284447845,
+        "hidden_gems": 0.3584605322928099
+      },
+      "rank": 1
+    }
+  ]
+}

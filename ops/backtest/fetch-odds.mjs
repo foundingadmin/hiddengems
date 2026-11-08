@@ -3,6 +3,7 @@
 //
 //   node ops/backtest/fetch-odds.mjs --dry            credit estimate, no key, no calls
 //   node ops/backtest/fetch-odds.mjs --test           checks the key: plan credits (free) and historical access (1 credit)
+//   node ops/backtest/fetch-odds.mjs --probe          one game's historical board, every market (about 41 credits)
 //   node ops/backtest/fetch-odds.mjs [--max-credits N] buys what the cache lacks, stops before N credits
 //
 // Reads experiments/backtest/plan.json (ops/backtest/plan.ts). Per bought week: one historical event list at the
@@ -71,6 +72,37 @@ if (args.includes('--test')) {
     historicalHeaders: head(hist),
   };
   writeFileSync(join(ROOT, 'experiments/backtest/key-test.json'), `${JSON.stringify(out, null, 2)}\n`);
+  console.log(JSON.stringify(out, null, 2));
+  process.exit(0);
+}
+
+// Probe: the last bought week's event list and its first Sunday game's board, to confirm historical player props
+// come back with every book and market before paying for the full run. Cached, so the full run reuses it.
+if (args.includes('--probe')) {
+  const w = weeks.at(-1);
+  const at = w.boardAt.replace('.000Z', 'Z');
+  const head = (r) => ({ status: r.status, used: r.headers.get('x-requests-used'), remaining: r.headers.get('x-requests-remaining'), last: r.headers.get('x-requests-last') });
+  const listRes = await fetch(`${BASE}/events?date=${at}&dateFormat=iso&apiKey=${encodeURIComponent(key)}`);
+  const list = await listRes.json();
+  mkdirSync(dirname(eventsPath(w.week)), { recursive: true });
+  writeFileSync(eventsPath(w.week), JSON.stringify(list));
+  const e = list.data.filter((x) => sundayMt(x.commence_time) === w.sunday).sort((a, b) => a.commence_time.localeCompare(b.commence_time))[0];
+  const q = `regions=us&oddsFormat=decimal&dateFormat=iso&markets=${MARKETS.join(',')}&bookmakers=${BOOKMAKERS.join(',')}&date=${at}`;
+  const res = await fetch(`${BASE}/events/${e.id}/odds?${q}&apiKey=${encodeURIComponent(key)}`);
+  const text = await res.text();
+  const out = { at: new Date().toISOString(), week: w.week, board: at, game: `${e.away_team} at ${e.home_team}, ${e.commence_time}`, list: head(listRes), odds: head(res) };
+  if (res.ok) {
+    const body = JSON.parse(text);
+    mkdirSync(dirname(oddsPath(w.week, 'board', e.id)), { recursive: true });
+    writeFileSync(oddsPath(w.week, 'board', e.id), text);
+    out.snapshot = body.timestamp;
+    out.books = Object.fromEntries(body.data.bookmakers.map((b) => [b.key, Object.fromEntries(b.markets.map((m) => [m.key, m.outcomes.length]))]));
+    const dk = body.data.bookmakers.find((b) => b.key === 'draftkings');
+    out.sampleDraftKings = dk ? dk.markets.map((m) => ({ market: m.key, outcomes: m.outcomes.slice(0, 3).map((o) => `${o.description} ${o.name}${o.point != null ? ` ${o.point}` : ''} @ ${o.price}`) })) : 'no DraftKings';
+  } else out.error = text.slice(0, 200);
+  const path = join(ROOT, 'experiments/backtest/key-test.json');
+  const prev = existsSync(path) ? JSON.parse(readFileSync(path, 'utf8')) : {};
+  writeFileSync(path, `${JSON.stringify({ ...prev, probe: out }, null, 2)}\n`);
   console.log(JSON.stringify(out, null, 2));
   process.exit(0);
 }

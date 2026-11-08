@@ -48,11 +48,11 @@ jobs:
         id: run
         run: echo "mode=$(node -p "require('./experiments/backtest/run.json').mode")" >> "$GITHUB_OUTPUT"
       - name: Test the key
-        if: steps.run.outputs.mode == 'test'
+        if: steps.run.outputs.mode == 'test' || steps.run.outputs.mode == 'probe'
         env:
           ODDS_API_KEY_HISTORICAL: ${{ secrets.ODDS_API_KEY_HISTORICAL }}
         run: |
-          node ops/backtest/fetch-odds.mjs --test
+          node ops/backtest/fetch-odds.mjs --${{ steps.run.outputs.mode }}
           git config user.name "github-actions[bot]"
           git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
           git add experiments/backtest/key-test.json

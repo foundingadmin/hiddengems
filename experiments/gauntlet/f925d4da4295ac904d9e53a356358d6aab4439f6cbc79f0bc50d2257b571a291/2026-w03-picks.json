@@ -1,0 +1,124 @@
+{
+  "ref": {
+    "season": 2026,
+    "week": 3
+  },
+  "warmup": false,
+  "board": {
+    "rush_yds": 1178,
+    "reception_yds": 2087,
+    "pass_yds": 789,
+    "rush_reception_yds": 622
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.5142843019711277,
+      "usage": 0.0006506692636203769,
+      "next_man_up": 0.006243179033892615,
+      "game_script": 0.00035449222943435414,
+      "matchup": 0.00005276783497674556,
+      "follow_the_move": 0.42953953721984584,
+      "ladder_math": 0.025910455484860494,
+      "hot_hand": 0.00011861559436355076,
+      "cooling_off": 0.003129209717292105,
+      "hidden_gems": 0.01971677165058605
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.5650764443633398,
+        "usage": 0.01112946414069348,
+        "next_man_up": 0.019932480330832295,
+        "game_script": 0.0018222747919476425,
+        "matchup": 0.00008006221673896513,
+        "follow_the_move": 0.3358903032209217,
+        "ladder_math": 0.04067352304365641,
+        "hot_hand": 0.0005182858771398977,
+        "cooling_off": 0.0038759691183277547,
+        "hidden_gems": 0.021001192896402093
+      },
+      "reception_yds": {
+        "books_disagree": 0.5026632330504167,
+        "usage": 0.0006677639202279251,
+        "next_man_up": 0.012898409759268316,
+        "game_script": 0.0012135159591304405,
+        "matchup": 0.000060510769750980474,
+        "follow_the_move": 0.43133084299508345,
+        "ladder_math": 0.024295250177635713,
+        "hot_hand": 0.00011200673945579434,
+        "cooling_off": 0.0024391657288806916,
+        "hidden_gems": 0.02431930090014998
+      },
+      "pass_yds": {
+        "books_disagree": 0.43358899295714937,
+        "usage": 0.000689594304740573,
+        "next_man_up": 0.004350503362975544,
+        "game_script": 0.00037364215800480687,
+        "matchup": 0.0001312890189897237,
+        "follow_the_move": 0.4763835689337554,
+        "ladder_math": 0.0313005406639315,
+        "hot_hand": 0.00029758214183837304,
+        "cooling_off": 0.015336206585200273,
+        "hidden_gems": 0.03754807987341441
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.4795844953758253,
+        "usage": 0.06906725190180493,
+        "next_man_up": 0.022180481783756128,
+        "game_script": 0.03310623446618917,
+        "matchup": 0.0006127722509087177,
+        "follow_the_move": 0.2897734629711235,
+        "ladder_math": 0.07809018024019275,
+        "hot_hand": 0.0014767351522194188,
+        "cooling_off": 0.006456827146354055,
+        "hidden_gems": 0.019651558711625945
+      }
+    }
+  },
+  "filters": [],
+  "gems": [
+    {
+      "key": "2026|2026-09-27-ten-nyg|00-0040170|reception_yds|25",
+      "line": {
+        "key": "2026|2026-09-27-ten-nyg|00-0040170|reception_yds|25",
+        "gameId": "2026-09-27-ten-nyg",
+        "playerId": "00-0040170",
+        "player": "Elic Ayomanor",
+        "team": "ten",
+        "opponent": "nyg",
+        "position": "WR",
+        "betType": "reception_yds",
+        "alt": true,
+        "line": 25,
+        "price": 3.1,
+        "fair": 0.30483017579791777
+      },
+      "chance": 0.3243489254408673,
+      "edge": 0.0017682802795769836,
+      "contributions": {
+        "books_disagree": 0.08989989015158942,
+        "usage": 0.0008021705322945271,
+        "next_man_up": 0,
+        "game_script": 0.0011952371570218604,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": -0.0036306932851915036,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.0022778274573317285
+      },
+      "seedChances": {
+        "books_disagree": 0.35068027210884356,
+        "usage": 0.6125803345403675,
+        "next_man_up": null,
+        "game_script": 0.5565543955307587,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.2721241981916092,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.3264245138020427
+      },
+      "rank": 1
+    }
+  ]
+}

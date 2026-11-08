@@ -1,0 +1,167 @@
+{
+  "ref": {
+    "season": 2025,
+    "week": 9
+  },
+  "warmup": false,
+  "board": {
+    "rush_yds": 781,
+    "reception_yds": 1782,
+    "pass_yds": 719,
+    "rush_reception_yds": 557
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.03595395625470416,
+      "usage": 0.009477805575443747,
+      "next_man_up": 0.31791696859047225,
+      "game_script": 0.016751822275929584,
+      "matchup": 0.008414517143921675,
+      "follow_the_move": 0.26838490047585734,
+      "ladder_math": 0.09770230829118667,
+      "hot_hand": 0.03997111966042117,
+      "cooling_off": 0.1095435361593579,
+      "hidden_gems": 0.09588306557270557
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.02966685905076273,
+        "usage": 0.020401163887551033,
+        "next_man_up": 0.3157062202977944,
+        "game_script": 0.02526398281801593,
+        "matchup": 0.008629175630677135,
+        "follow_the_move": 0.24964754490973862,
+        "ladder_math": 0.10766795654034772,
+        "hot_hand": 0.05098054573750492,
+        "cooling_off": 0.10581273323849205,
+        "hidden_gems": 0.08622381788911557
+      },
+      "reception_yds": {
+        "books_disagree": 0.031144238675557982,
+        "usage": 0.009086445317966412,
+        "next_man_up": 0.3735760401015463,
+        "game_script": 0.024699420632690233,
+        "matchup": 0.009264025601320464,
+        "follow_the_move": 0.24621586837710574,
+        "ladder_math": 0.08054177443937907,
+        "hot_hand": 0.03710718814929698,
+        "cooling_off": 0.08370613049942023,
+        "hidden_gems": 0.10465886820571656
+      },
+      "pass_yds": {
+        "books_disagree": 0.03386936198404425,
+        "usage": 0.009554003343710298,
+        "next_man_up": 0.26919273181424813,
+        "game_script": 0.014545916547290705,
+        "matchup": 0.011990833759789817,
+        "follow_the_move": 0.2509161309037966,
+        "ladder_math": 0.12266839881493508,
+        "hot_hand": 0.04579517857200644,
+        "cooling_off": 0.12202961220452342,
+        "hidden_gems": 0.11943783205565536
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.030225323585392927,
+        "usage": 0.02941199782964937,
+        "next_man_up": 0.32659667372173146,
+        "game_script": 0.054699529785323074,
+        "matchup": 0.010820810652691608,
+        "follow_the_move": 0.1997672683956107,
+        "ladder_math": 0.10603091558509409,
+        "hot_hand": 0.048901564638827374,
+        "cooling_off": 0.1163372415416275,
+        "hidden_gems": 0.0772086742640518
+      }
+    }
+  },
+  "gems": [
+    {
+      "key": "2025|2025-11-02-kc-buf|00-0033857|reception_yds|15",
+      "line": {
+        "key": "2025|2025-11-02-kc-buf|00-0033857|reception_yds|15",
+        "gameId": "2025-11-02-kc-buf",
+        "playerId": "00-0033857",
+        "player": "JuJu Smith-Schuster",
+        "team": "kc",
+        "opponent": "buf",
+        "position": "WR",
+        "betType": "reception_yds",
+        "alt": true,
+        "line": 15,
+        "price": 2.18,
+        "fair": 0.43348623853211
+      },
+      "chance": 0.47362667341418946,
+      "edge": 0.01491107708391426,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.008241945265367005,
+        "next_man_up": 0,
+        "game_script": 0.024215516825453236,
+        "matchup": 0.005869755219704311,
+        "follow_the_move": 0,
+        "ladder_math": -0.0012838568681504306,
+        "hot_hand": 0.030794762860840576,
+        "cooling_off": 0.08573212797899324,
+        "hidden_gems": 0.008479765475859503
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.7009589524719071,
+        "next_man_up": null,
+        "game_script": 0.7195836108703076,
+        "matchup": 0.6477488972593018,
+        "follow_the_move": null,
+        "ladder_math": 0.4286708785993239,
+        "hot_hand": 0.7342014783637263,
+        "cooling_off": 0.8482995123978838,
+        "hidden_gems": 0.4581875471868717
+      },
+      "rank": 1
+    },
+    {
+      "key": "2025|2025-11-02-sf-nyg|00-0036972|pass_yds|310",
+      "line": {
+        "key": "2025|2025-11-02-sf-nyg|00-0036972|pass_yds|310",
+        "gameId": "2025-11-02-sf-nyg",
+        "playerId": "00-0036972",
+        "player": "Mac Jones",
+        "team": "sf",
+        "opponent": "nyg",
+        "position": "QB",
+        "betType": "pass_yds",
+        "alt": true,
+        "line": 310,
+        "price": 5.69,
+        "fair": 0.16608084358523723
+      },
+      "chance": 0.17626949837298878,
+      "edge": 0.0005225739441662991,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": -0.001579938459738851,
+        "next_man_up": 0.07076562547377407,
+        "game_script": -0.0018186892517916876,
+        "matchup": -0.0011356645144537964,
+        "follow_the_move": 0,
+        "ladder_math": -0.004320982355090357,
+        "hot_hand": 0.0022252456535697316,
+        "cooling_off": 0,
+        "hidden_gems": 0.007696836363006851
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.1334707521129074,
+        "next_man_up": 0.8979562044229242,
+        "game_script": 0.14088781944770515,
+        "matchup": 0.1423234530383926,
+        "follow_the_move": null,
+        "ladder_math": 0.15866808752468498,
+        "hot_hand": 0.1829381654257143,
+        "cooling_off": null,
+        "hidden_gems": 0.1803967509182266
+      },
+      "rank": 2
+    }
+  ]
+}

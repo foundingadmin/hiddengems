@@ -1,0 +1,167 @@
+{
+  "ref": {
+    "season": 2026,
+    "week": 3
+  },
+  "warmup": false,
+  "board": {
+    "rush_yds": 1178,
+    "reception_yds": 2087,
+    "pass_yds": 789,
+    "rush_reception_yds": 622
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.009338046990911897,
+      "usage": 0.0020471420994256934,
+      "next_man_up": 0.1351235981678603,
+      "game_script": 0.0000600015619115013,
+      "matchup": 0.000009300856119125147,
+      "follow_the_move": 0.17854705967073126,
+      "ladder_math": 0.150421897171469,
+      "hot_hand": 0.0006522524135054563,
+      "cooling_off": 0.10757421081913535,
+      "hidden_gems": 0.4162264902489304
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.007791543975333032,
+        "usage": 0.020625387069004658,
+        "next_man_up": 0.23381401066277566,
+        "game_script": 0.00022992221128782708,
+        "matchup": 0.000014472311908014128,
+        "follow_the_move": 0.13889192577389087,
+        "ladder_math": 0.159256810151233,
+        "hot_hand": 0.002435079023043249,
+        "cooling_off": 0.09585154804769533,
+        "hidden_gems": 0.34108930077382826
+      },
+      "reception_yds": {
+        "books_disagree": 0.007577953145464333,
+        "usage": 0.0015227156160691887,
+        "next_man_up": 0.2025954832679225,
+        "game_script": 0.00017923622318635573,
+        "matchup": 0.000011029585904297874,
+        "follow_the_move": 0.20016300561968334,
+        "ladder_math": 0.10587565808610566,
+        "hot_hand": 0.0005435217648271159,
+        "cooling_off": 0.06283810590713772,
+        "hidden_gems": 0.4186932907836996
+      },
+      "pass_yds": {
+        "books_disagree": 0.004054170224274661,
+        "usage": 0.0010940344543931891,
+        "next_man_up": 0.04447702487199641,
+        "game_script": 0.000049683234495123384,
+        "matchup": 0.0000318769113154,
+        "follow_the_move": 0.13768619321123554,
+        "ladder_math": 0.08416387497520113,
+        "hot_hand": 0.0010765678269399135,
+        "cooling_off": 0.30284441126321665,
+        "hidden_gems": 0.42452216302693196
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.005546460789056958,
+        "usage": 0.08318576665294615,
+        "next_man_up": 0.21400989536497614,
+        "game_script": 0.0023839842645095766,
+        "matchup": 0.00009742957137237548,
+        "follow_the_move": 0.10070039815254686,
+        "ladder_math": 0.2379966541723939,
+        "hot_hand": 0.006717661963453229,
+        "cooling_off": 0.09571288992024182,
+        "hidden_gems": 0.253648859148503
+      }
+    }
+  },
+  "gems": [
+    {
+      "key": "2026|2026-09-27-hou-ind|00-0038618|reception_yds|60",
+      "line": {
+        "key": "2026|2026-09-27-hou-ind|00-0038618|reception_yds|60",
+        "gameId": "2026-09-27-hou-ind",
+        "playerId": "00-0038618",
+        "player": "Xavier Hutchinson",
+        "team": "hou",
+        "opponent": "ind",
+        "position": "WR",
+        "betType": "reception_yds",
+        "alt": true,
+        "line": 60,
+        "price": 3.36,
+        "fair": 0.28197637894207817
+      },
+      "chance": 0.34665111987770253,
+      "edge": 0.04903207225865491,
+      "contributions": {
+        "books_disagree": -0.00007934420275409935,
+        "usage": -0.0015347270093041703,
+        "next_man_up": 0.28726037218749734,
+        "game_script": -0.00019134629825067612,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": -0.026437525076039532,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.04186932907836995
+      },
+      "seedChances": {
+        "books_disagree": 0.27986132955856136,
+        "usage": 0.12536608250576164,
+        "next_man_up": 0.6185084151501641,
+        "game_script": 0.1189675125829738,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.23426509259473371,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.3026565959450827
+      },
+      "rank": 1
+    },
+    {
+      "key": "2026|2026-09-27-bal-dal|00-0036550|reception_yds|90",
+      "line": {
+        "key": "2026|2026-09-27-bal-dal|00-0036550|reception_yds|90",
+        "gameId": "2026-09-27-bal-dal",
+        "playerId": "00-0036550",
+        "player": "Rashod Bateman",
+        "team": "bal",
+        "opponent": "dal",
+        "position": "WR",
+        "betType": "reception_yds",
+        "alt": true,
+        "line": 90,
+        "price": 5.53,
+        "fair": 0.17132742011670574
+      },
+      "chance": 0.20799555638071446,
+      "edge": 0.027163729979267803,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": -0.0024294764275254134,
+        "next_man_up": 0.21502890911967912,
+        "game_script": -0.00023340401214394244,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": -0.015036988324940853,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.041869329078369995
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.0402432365788026,
+        "next_man_up": 0.3740507159026432,
+        "game_script": 0.05322853193905082,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.15209366378774458,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.18599470642099475
+      },
+      "rank": 2
+    }
+  ]
+}

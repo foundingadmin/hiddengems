@@ -1,0 +1,475 @@
+{
+  "ref": {
+    "season": 2026,
+    "week": 3
+  },
+  "warmup": false,
+  "board": {
+    "rush_yds": 1178,
+    "reception_yds": 2087,
+    "pass_yds": 789,
+    "rush_reception_yds": 622
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.44053819253299875,
+      "usage": 0.00986332776578192,
+      "next_man_up": 0.029743721628275665,
+      "game_script": 0.003450159206364988,
+      "matchup": 0.0021167656558285417,
+      "follow_the_move": 0.005526908918687106,
+      "ladder_math": 0.11552174560736021,
+      "hot_hand": 0.00165556496565495,
+      "cooling_off": 0.03723054176178493,
+      "hidden_gems": 0.35435307195726284
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.3674349760091366,
+        "usage": 0.07446512512233501,
+        "next_man_up": 0.06671980362924909,
+        "game_script": 0.012193916894063704,
+        "matchup": 0.003959705867696852,
+        "follow_the_move": 0.002593112873386484,
+        "ladder_math": 0.12266142560533234,
+        "hot_hand": 0.006770347652818497,
+        "cooling_off": 0.046795235814314974,
+        "hidden_gems": 0.2964063505316664
+      },
+      "reception_yds": {
+        "books_disagree": 0.41197745502661887,
+        "usage": 0.008480773672148636,
+        "next_man_up": 0.052162295990934686,
+        "game_script": 0.010093214781458363,
+        "matchup": 0.00268883631342572,
+        "follow_the_move": 0.005305474251111029,
+        "ladder_math": 0.09888839508917285,
+        "hot_hand": 0.0013064318665886073,
+        "cooling_off": 0.025008877455502943,
+        "hidden_gems": 0.3840882455530383
+      },
+      "pass_yds": {
+        "books_disagree": 0.3034203964470792,
+        "usage": 0.00703099512046732,
+        "next_man_up": 0.013364747929241576,
+        "game_script": 0.003608116407504165,
+        "matchup": 0.005859483759646965,
+        "follow_the_move": 0.005276708201265781,
+        "ladder_math": 0.10390580022825777,
+        "hot_hand": 0.0035240934982892973,
+        "cooling_off": 0.13156421380104347,
+        "hidden_gems": 0.4224454446072045
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.19379653499537897,
+        "usage": 0.2506581175091352,
+        "next_man_up": 0.03397934778972976,
+        "game_script": 0.09327622332421312,
+        "matchup": 0.01597476250819364,
+        "follow_the_move": 0.0020142651642854003,
+        "ladder_math": 0.1574231183612765,
+        "hot_hand": 0.012215308867612053,
+        "cooling_off": 0.0425958134166939,
+        "hidden_gems": 0.1980665080634815
+      }
+    }
+  },
+  "gems": [
+    {
+      "key": "2026|2026-09-27-lv-no|00-0033906|rush_reception_yds|70",
+      "line": {
+        "key": "2026|2026-09-27-lv-no|00-0033906|rush_reception_yds|70",
+        "gameId": "2026-09-27-lv-no",
+        "playerId": "00-0033906",
+        "player": "Alvin Kamara",
+        "team": "no",
+        "opponent": "lv",
+        "position": "RB",
+        "betType": "rush_reception_yds",
+        "alt": true,
+        "line": 70,
+        "price": 4.77,
+        "fair": 0.19755434329279487
+      },
+      "chance": 0.23556128967522524,
+      "edge": 0.02591768380520426,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.14421563463719536,
+        "next_man_up": 0,
+        "game_script": 0.06356106821539109,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": -0.0031036403921073583,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.019806650806348212
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.3044274583734512,
+        "next_man_up": null,
+        "game_script": 0.3273440930789083,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.19444757264924822,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.21388738285599646
+      },
+      "rank": 1
+    },
+    {
+      "key": "2026|2026-09-27-lv-no|00-0036973|rush_reception_yds|80",
+      "line": {
+        "key": "2026|2026-09-27-lv-no|00-0036973|rush_reception_yds|80",
+        "gameId": "2026-09-27-lv-no",
+        "playerId": "00-0036973",
+        "player": "Travis Etienne Jr.",
+        "team": "no",
+        "opponent": "lv",
+        "position": "RB",
+        "betType": "rush_reception_yds",
+        "alt": true,
+        "line": 80,
+        "price": 4.49,
+        "fair": 0.21046181402528844
+      },
+      "chance": 0.24844013988022876,
+      "edge": 0.025722990659738793,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.17114984905022188,
+        "next_man_up": 0,
+        "game_script": 0.07448912896055147,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": -0.010637287480329683,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": -0.019806650806348167
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.34539528985667417,
+        "next_man_up": null,
+        "game_script": 0.3720207459699006,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.199453213627168,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.1943256968716751
+      },
+      "rank": 2
+    },
+    {
+      "key": "2026|2026-09-27-ten-nyg|00-0035250|rush_reception_yds|22.5",
+      "line": {
+        "key": "2026|2026-09-27-ten-nyg|00-0035250|rush_reception_yds|22.5",
+        "gameId": "2026-09-27-ten-nyg",
+        "playerId": "00-0035250",
+        "player": "Devin Singletary",
+        "team": "nyg",
+        "opponent": "ten",
+        "position": "RB",
+        "betType": "rush_reception_yds",
+        "alt": false,
+        "line": 22.5,
+        "price": 1.88,
+        "fair": 0.5013262599469495
+      },
+      "chance": 0.5566831297413829,
+      "edge": 0.02476823612436163,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.15014786948593492,
+        "next_man_up": 0,
+        "game_script": 0.046432787633301616,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": 0.006019033432639525,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.01980665080634812
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.6466439493446197,
+        "next_man_up": null,
+        "game_script": 0.6231884591777399,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.5108832310946368,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.5263019620060485
+      },
+      "rank": 3
+    },
+    {
+      "key": "2026|2026-09-27-car-cle|00-0040466|rush_yds|9.5",
+      "line": {
+        "key": "2026|2026-09-27-car-cle|00-0040466|rush_yds|9.5",
+        "gameId": "2026-09-27-car-cle",
+        "playerId": "00-0040466",
+        "player": "Raheim Sanders",
+        "team": "cle",
+        "opponent": "car",
+        "position": "RB",
+        "betType": "rush_yds",
+        "alt": false,
+        "line": 9.5,
+        "price": 1.94,
+        "fair": 0.48677248677248675
+      },
+      "chance": 0.5324383323101374,
+      "edge": 0.016974414784364122,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.12417657966794063,
+        "next_man_up": 0,
+        "game_script": 0.018385290282070022,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": 0.010655729933728647,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.029640635053166678
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.8340570778534818,
+        "next_man_up": null,
+        "game_script": 0.8107391881494038,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.5084863534116175,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.511767226407752
+      },
+      "rank": 4
+    },
+    {
+      "key": "2026|2026-09-27-hou-ind|00-0040583|rush_reception_yds|70",
+      "line": {
+        "key": "2026|2026-09-27-hou-ind|00-0040583|rush_reception_yds|70",
+        "gameId": "2026-09-27-hou-ind",
+        "playerId": "00-0040583",
+        "player": "Woody Marks",
+        "team": "hou",
+        "opponent": "ind",
+        "position": "RB",
+        "betType": "rush_reception_yds",
+        "alt": true,
+        "line": 70,
+        "price": 5.33,
+        "fair": 0.17681807097605767
+      },
+      "chance": 0.20397661534629588,
+      "edge": 0.016359354558303396,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.11666002492071906,
+        "next_man_up": 0,
+        "game_script": 0.04380265010087267,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": -0.0038366565416359387,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.019806650806348167
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.2549011698075375,
+        "next_man_up": null,
+        "game_script": 0.25569712152054264,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.1732985929749674,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.19184658788241926
+      },
+      "rank": 5
+    },
+    {
+      "key": "2026|2026-09-27-sea-was|00-0038797|rush_yds|50",
+      "line": {
+        "key": "2026|2026-09-27-sea-was|00-0038797|rush_yds|50",
+        "gameId": "2026-09-27-sea-was",
+        "playerId": "00-0038797",
+        "player": "Emanuel Wilson",
+        "team": "sea",
+        "opponent": "was",
+        "position": "RB",
+        "betType": "rush_yds",
+        "alt": true,
+        "line": 50,
+        "price": 4.47,
+        "fair": 0.21140939597315433
+      },
+      "chance": 0.2399163365856304,
+      "edge": 0.016202690053191915,
+      "contributions": {
+        "books_disagree": 0.11290672728953183,
+        "usage": 0.02239975689546954,
+        "next_man_up": 0,
+        "game_script": 0.007188212381344091,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": -0.008822789520620595,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.029640635053166667
+      },
+      "seedChances": {
+        "books_disagree": 0.2671428571428572,
+        "usage": 0.26587713624705805,
+        "next_man_up": null,
+        "game_script": 0.3258623815376308,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.1996667022356582,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.22856164904479698
+      },
+      "rank": 6
+    },
+    {
+      "key": "2026|2026-09-27-cin-pit|00-0036252|reception_yds|50",
+      "line": {
+        "key": "2026|2026-09-27-cin-pit|00-0036252|reception_yds|50",
+        "gameId": "2026-09-27-cin-pit",
+        "playerId": "00-0036252",
+        "player": "Michael Pittman Jr.",
+        "team": "pit",
+        "opponent": "cin",
+        "position": "WR",
+        "betType": "reception_yds",
+        "alt": true,
+        "line": 50,
+        "price": 4.93,
+        "fair": 0.19212510770844596
+      },
+      "chance": 0.2190396718528355,
+      "edge": 0.016199915260543374,
+      "contributions": {
+        "books_disagree": 0.12300718849309784,
+        "usage": 0.007160636761634927,
+        "next_man_up": 0,
+        "game_script": 0.007735648187992838,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": -0.011323339112570247,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.03840882455530386
+      },
+      "seedChances": {
+        "books_disagree": 0.24274602402944645,
+        "usage": 0.3561938036633351,
+        "next_man_up": null,
+        "game_script": 0.33853271267392426,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.17497556102811102,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.20812569921219648
+      },
+      "rank": 7
+    },
+    {
+      "key": "2026|2026-09-27-ten-nyg|00-0031503|rush_yds|5.5",
+      "line": {
+        "key": "2026|2026-09-27-ten-nyg|00-0031503|rush_yds|5.5",
+        "gameId": "2026-09-27-ten-nyg",
+        "playerId": "00-0031503",
+        "player": "Jameis Winston",
+        "team": "nyg",
+        "opponent": "ten",
+        "position": "QB",
+        "betType": "rush_yds",
+        "alt": false,
+        "line": 5.5,
+        "price": 1.89,
+        "fair": 0.5
+      },
+      "chance": 0.5446145638511346,
+      "edge": 0.015514034750605421,
+      "contributions": {
+        "books_disagree": 0.01469935916402205,
+        "usage": 0.10014497613756562,
+        "next_man_up": 0,
+        "game_script": 0.015665479349207853,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": 0.018783699699311658,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.029640635053166664
+      },
+      "seedChances": {
+        "books_disagree": 0.51,
+        "usage": 0.7932876077210523,
+        "next_man_up": null,
+        "game_script": 0.7832481222289134,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.5382089942152171,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.52497918747894
+      },
+      "rank": 8
+    },
+    {
+      "key": "2026|2026-09-27-min-tb|00-0036919|rush_reception_yds|50",
+      "line": {
+        "key": "2026|2026-09-27-min-tb|00-0036919|rush_reception_yds|50",
+        "gameId": "2026-09-27-min-tb",
+        "playerId": "00-0036919",
+        "player": "Kenny Gainwell",
+        "team": "tb",
+        "opponent": "min",
+        "position": "RB",
+        "betType": "rush_reception_yds",
+        "alt": true,
+        "line": 50,
+        "price": 3.87,
+        "fair": 0.2434560894865626
+      },
+      "chance": 0.2731891779329794,
+      "edge": 0.014791245116441976,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.1111544178258786,
+        "next_man_up": 0,
+        "game_script": 0.03098489620203845,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": -0.006623696371118518,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.019806650806348167
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.3339499517473577,
+        "next_man_up": null,
+        "game_script": 0.30967488295343526,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.23579023570821317,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.2623434177725511
+      },
+      "rank": 9
+    }
+  ]
+}

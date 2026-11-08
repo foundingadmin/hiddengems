@@ -1,0 +1,167 @@
+{
+  "ref": {
+    "season": 2025,
+    "week": 17
+  },
+  "warmup": false,
+  "board": {
+    "rush_yds": 911,
+    "reception_yds": 1594,
+    "pass_yds": 712,
+    "rush_reception_yds": 422
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.2504114994766635,
+      "usage": 0.00015918853518001125,
+      "next_man_up": 0.011483087098312634,
+      "game_script": 0.0002540245275071006,
+      "matchup": 0.0001336039311395258,
+      "follow_the_move": 0.5105820667259978,
+      "ladder_math": 0.08815501007119943,
+      "hot_hand": 0.000225026911694224,
+      "cooling_off": 0.0018934749008627269,
+      "hidden_gems": 0.136703017821443
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.23316914852683726,
+        "usage": 0.0027806526030343245,
+        "next_man_up": 0.012686449010394429,
+        "game_script": 0.001376360851228227,
+        "matchup": 0.00017233214722402266,
+        "follow_the_move": 0.5015954314473349,
+        "ladder_math": 0.10775548835250226,
+        "hot_hand": 0.0006313426004311586,
+        "cooling_off": 0.001409954483063935,
+        "hidden_gems": 0.13842283997794957
+      },
+      "reception_yds": {
+        "books_disagree": 0.21480033493240416,
+        "usage": 0.00017617252776986684,
+        "next_man_up": 0.02080387392052863,
+        "game_script": 0.0007748044974510768,
+        "matchup": 0.00015624703040813457,
+        "follow_the_move": 0.5004718015671996,
+        "ladder_math": 0.08221335238842738,
+        "hot_hand": 0.00021160830309587979,
+        "cooling_off": 0.0017068564446206967,
+        "hidden_gems": 0.17868494838809468
+      },
+      "pass_yds": {
+        "books_disagree": 0.21955284314812923,
+        "usage": 0.000182651062844529,
+        "next_man_up": 0.008442689612110836,
+        "game_script": 0.0002868044613446524,
+        "matchup": 0.0003011086181658941,
+        "follow_the_move": 0.4372505556655244,
+        "ladder_math": 0.10726592010585927,
+        "hot_hand": 0.0005378982382096462,
+        "cooling_off": 0.01004064792583692,
+        "hidden_gems": 0.2161388811619746
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.2633044362176322,
+        "usage": 0.007661445196226482,
+        "next_man_up": 0.026318842853692372,
+        "game_script": 0.008284400189310209,
+        "matchup": 0.0005179851473725038,
+        "follow_the_move": 0.38308314279952704,
+        "ladder_math": 0.2143872563785518,
+        "hot_hand": 0.0012674774329384446,
+        "cooling_off": 0.0018484573524229345,
+        "hidden_gems": 0.09332655643232601
+      }
+    }
+  },
+  "gems": [
+    {
+      "key": "2025|2025-12-27-hou-lac|00-0040583|rush_yds|80",
+      "line": {
+        "key": "2025|2025-12-27-hou-lac|00-0040583|rush_yds|80",
+        "gameId": "2025-12-27-hou-lac",
+        "playerId": "00-0040583",
+        "player": "Woody Marks",
+        "team": "hou",
+        "opponent": "lac",
+        "position": "RB",
+        "betType": "rush_yds",
+        "alt": true,
+        "line": 80,
+        "price": 6.06,
+        "fair": 0.15634333881937007
+      },
+      "chance": 0.16533389246027738,
+      "edge": 0.0003173908101123668,
+      "contributions": {
+        "books_disagree": 0.060232820871477334,
+        "usage": 0.0002081172580095308,
+        "next_man_up": 0,
+        "game_script": -0.0002632006493638187,
+        "matchup": -0.0000498111018949637,
+        "follow_the_move": 0,
+        "ladder_math": -0.00687559020487657,
+        "hot_hand": 0.00037317063088669,
+        "cooling_off": -0.0008414110312890052,
+        "hidden_gems": 0.01384228399779497
+      },
+      "seedChances": {
+        "books_disagree": 0.19350900168903096,
+        "usage": 0.1664711379603489,
+        "next_man_up": null,
+        "game_script": 0.13274298886241312,
+        "matchup": 0.12188148824858716,
+        "follow_the_move": null,
+        "ladder_math": 0.14811046736478128,
+        "hot_hand": 0.2507499688654956,
+        "cooling_off": 0.09258642369833742,
+        "hidden_gems": 0.1699909881563405
+      },
+      "rank": 1
+    },
+    {
+      "key": "2025|2025-12-27-hou-lac|00-0038544|reception_yds|70",
+      "line": {
+        "key": "2025|2025-12-27-hou-lac|00-0038544|reception_yds|70",
+        "gameId": "2025-12-27-hou-lac",
+        "playerId": "00-0038544",
+        "player": "Quentin Johnston",
+        "team": "lac",
+        "opponent": "hou",
+        "position": "WR",
+        "betType": "reception_yds",
+        "alt": true,
+        "line": 70,
+        "price": 6.43,
+        "fair": 0.14734691030254785
+      },
+      "chance": 0.15572278351878535,
+      "edge": 0.00020178818441521362,
+      "contributions": {
+        "books_disagree": 0.05973236523924834,
+        "usage": 0.000039784331031355685,
+        "next_man_up": 0,
+        "game_script": 0.00006582168813481416,
+        "matchup": -0.00007905607656623225,
+        "follow_the_move": 0,
+        "ladder_math": -0.012364957573905672,
+        "hot_hand": -0.00010292106958395641,
+        "cooling_off": 0,
+        "hidden_gems": 0.017868494838809444
+      },
+      "seedChances": {
+        "books_disagree": 0.1858083784376212,
+        "usage": 0.178032159544198,
+        "next_man_up": null,
+        "game_script": 0.1583428151009298,
+        "matchup": 0.09435940911816493,
+        "follow_the_move": null,
+        "ladder_math": 0.1294349693315036,
+        "hot_hand": 0.0960471128230793,
+        "cooling_off": null,
+        "hidden_gems": 0.16035850691967984
+      },
+      "rank": 2
+    }
+  ]
+}

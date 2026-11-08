@@ -1,0 +1,78 @@
+{
+  "ref": {
+    "season": 2025,
+    "week": 1
+  },
+  "warmup": true,
+  "board": {
+    "rush_yds": 842,
+    "reception_yds": 1679,
+    "pass_yds": 790,
+    "rush_reception_yds": 521
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.030265,
+      "usage": 0.232317,
+      "next_man_up": 0.123624,
+      "game_script": 0.044166,
+      "matchup": 0.041686,
+      "follow_the_move": 0.081969,
+      "ladder_math": 0.060504,
+      "hot_hand": 0.202709,
+      "cooling_off": 0.002694,
+      "hidden_gems": 0.180066
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.030265,
+        "usage": 0.232317,
+        "next_man_up": 0.123624,
+        "game_script": 0.044166,
+        "matchup": 0.041686,
+        "follow_the_move": 0.081969,
+        "ladder_math": 0.060504,
+        "hot_hand": 0.202709,
+        "cooling_off": 0.002694,
+        "hidden_gems": 0.180066
+      },
+      "reception_yds": {
+        "books_disagree": 0.030265,
+        "usage": 0.232317,
+        "next_man_up": 0.123624,
+        "game_script": 0.044166,
+        "matchup": 0.041686,
+        "follow_the_move": 0.081969,
+        "ladder_math": 0.060504,
+        "hot_hand": 0.202709,
+        "cooling_off": 0.002694,
+        "hidden_gems": 0.180066
+      },
+      "pass_yds": {
+        "books_disagree": 0.030265,
+        "usage": 0.232317,
+        "next_man_up": 0.123624,
+        "game_script": 0.044166,
+        "matchup": 0.041686,
+        "follow_the_move": 0.081969,
+        "ladder_math": 0.060504,
+        "hot_hand": 0.202709,
+        "cooling_off": 0.002694,
+        "hidden_gems": 0.180066
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.030265,
+        "usage": 0.232317,
+        "next_man_up": 0.123624,
+        "game_script": 0.044166,
+        "matchup": 0.041686,
+        "follow_the_move": 0.081969,
+        "ladder_math": 0.060504,
+        "hot_hand": 0.202709,
+        "cooling_off": 0.002694,
+        "hidden_gems": 0.180066
+      }
+    }
+  },
+  "gems": []
+}

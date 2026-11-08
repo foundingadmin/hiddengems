@@ -1,0 +1,465 @@
+{
+  "ref": {
+    "season": 2026,
+    "week": 2
+  },
+  "warmup": false,
+  "gems": [
+    {
+      "key": "2026|2026-09-20-car-atl|00-0033662|pass_yds|220",
+      "outcome": {
+        "value": 86,
+        "hit": false
+      },
+      "close": 3.38
+    },
+    {
+      "key": "2026|2026-09-20-lv-lac|00-0039066|reception_yds|70",
+      "outcome": {
+        "value": 23,
+        "hit": false
+      },
+      "close": 4.12
+    },
+    {
+      "key": "2026|2026-09-20-no-bal|00-0033906|rush_reception_yds|40",
+      "outcome": {
+        "value": 22,
+        "hit": false
+      },
+      "close": 1.97
+    },
+    {
+      "key": "2026|2026-09-20-pit-ne|00-0039739|reception_yds|25",
+      "outcome": {
+        "value": 28,
+        "hit": true
+      },
+      "close": 1.6
+    },
+    {
+      "key": "2026|2026-09-20-pit-ne|00-0036139|rush_reception_yds|80",
+      "outcome": {
+        "value": 44,
+        "hit": false
+      },
+      "close": 4.64
+    },
+    {
+      "key": "2026|2026-09-20-cle-tb|00-0040466|rush_yds|25",
+      "outcome": {
+        "value": 4,
+        "hit": false
+      },
+      "close": 5.69
+    },
+    {
+      "key": "2026|2026-09-20-no-bal|00-0036973|rush_reception_yds|100",
+      "outcome": {
+        "value": 31,
+        "hit": false
+      },
+      "close": 7.9
+    },
+    {
+      "key": "2026|2026-09-20-ind-kc|00-0041013|rush_reception_yds|60",
+      "outcome": {
+        "value": 35,
+        "hit": false
+      },
+      "close": 6.12
+    }
+  ],
+  "scores": {
+    "shared": {
+      "books_disagree": {
+        "gain": 2.1333513074269854,
+        "lines": 1730
+      },
+      "usage": {
+        "gain": -150.3937465013603,
+        "lines": 4774
+      },
+      "next_man_up": {
+        "gain": -49.464211478034265,
+        "lines": 42
+      },
+      "game_script": {
+        "gain": -133.76434964884876,
+        "lines": 4774
+      },
+      "matchup": {
+        "gain": 0,
+        "lines": 0
+      },
+      "follow_the_move": {
+        "gain": -8.440831854737382,
+        "lines": 2809
+      },
+      "ladder_math": {
+        "gain": -1.576172563719518,
+        "lines": 4784
+      },
+      "hot_hand": {
+        "gain": 0,
+        "lines": 0
+      },
+      "cooling_off": {
+        "gain": 0,
+        "lines": 0
+      },
+      "hidden_gems": {
+        "gain": -11.044692215259905,
+        "lines": 4784
+      }
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": {
+          "gain": 1.1018481602354124,
+          "lines": 573
+        },
+        "usage": {
+          "gain": -24.187722107025603,
+          "lines": 1194
+        },
+        "next_man_up": {
+          "gain": 1.9942107747709552,
+          "lines": 7
+        },
+        "game_script": {
+          "gain": -16.642124120588324,
+          "lines": 1194
+        },
+        "matchup": {
+          "gain": 0,
+          "lines": 0
+        },
+        "follow_the_move": {
+          "gain": -0.5976808552654759,
+          "lines": 708
+        },
+        "ladder_math": {
+          "gain": 1.4370637037462244,
+          "lines": 1194
+        },
+        "hot_hand": {
+          "gain": 0,
+          "lines": 0
+        },
+        "cooling_off": {
+          "gain": 0,
+          "lines": 0
+        },
+        "hidden_gems": {
+          "gain": -1.3260586514762114,
+          "lines": 1194
+        }
+      },
+      "reception_yds": {
+        "books_disagree": {
+          "gain": 0.5491462989590379,
+          "lines": 1009
+        },
+        "usage": {
+          "gain": -61.548898172249785,
+          "lines": 2087
+        },
+        "next_man_up": {
+          "gain": -4.124878660734849,
+          "lines": 14
+        },
+        "game_script": {
+          "gain": -53.07394663263684,
+          "lines": 2087
+        },
+        "matchup": {
+          "gain": 0,
+          "lines": 0
+        },
+        "follow_the_move": {
+          "gain": -1.7954555384681847,
+          "lines": 1202
+        },
+        "ladder_math": {
+          "gain": -2.6051105136454975,
+          "lines": 2097
+        },
+        "hot_hand": {
+          "gain": 0,
+          "lines": 0
+        },
+        "cooling_off": {
+          "gain": 0,
+          "lines": 0
+        },
+        "hidden_gems": {
+          "gain": -10.949868538028595,
+          "lines": 2097
+        }
+      },
+      "pass_yds": {
+        "books_disagree": {
+          "gain": 0.48235684823253316,
+          "lines": 148
+        },
+        "usage": {
+          "gain": -49.6166723705971,
+          "lines": 803
+        },
+        "next_man_up": {
+          "gain": -47.33354359207037,
+          "lines": 21
+        },
+        "game_script": {
+          "gain": -50.463736888605084,
+          "lines": 803
+        },
+        "matchup": {
+          "gain": 0,
+          "lines": 0
+        },
+        "follow_the_move": {
+          "gain": -6.382239588082406,
+          "lines": 729
+        },
+        "ladder_math": {
+          "gain": -1.5546482922017022,
+          "lines": 803
+        },
+        "hot_hand": {
+          "gain": 0,
+          "lines": 0
+        },
+        "cooling_off": {
+          "gain": 0,
+          "lines": 0
+        },
+        "hidden_gems": {
+          "gain": 0.8687901234608522,
+          "lines": 803
+        }
+      },
+      "rush_reception_yds": {
+        "books_disagree": {
+          "gain": 0,
+          "lines": 0
+        },
+        "usage": {
+          "gain": -15.040453851487745,
+          "lines": 690
+        },
+        "next_man_up": {
+          "gain": 0,
+          "lines": 0
+        },
+        "game_script": {
+          "gain": -13.584542007018584,
+          "lines": 690
+        },
+        "matchup": {
+          "gain": 0,
+          "lines": 0
+        },
+        "follow_the_move": {
+          "gain": 0.3345441270786835,
+          "lines": 170
+        },
+        "ladder_math": {
+          "gain": 1.1465225383814435,
+          "lines": 690
+        },
+        "hot_hand": {
+          "gain": 0,
+          "lines": 0
+        },
+        "cooling_off": {
+          "gain": 0,
+          "lines": 0
+        },
+        "hidden_gems": {
+          "gain": 0.3624448507840424,
+          "lines": 690
+        }
+      }
+    },
+    "graded": {
+      "rush_yds": 1194,
+      "reception_yds": 2097,
+      "pass_yds": 803,
+      "rush_reception_yds": 690
+    }
+  },
+  "state": {
+    "weights": {
+      "shared": {
+        "books_disagree": 0.009338046990911897,
+        "usage": 0.0020471420994256934,
+        "next_man_up": 0.1351235981678603,
+        "game_script": 0.0000600015619115013,
+        "matchup": 0.000009300856119125147,
+        "follow_the_move": 0.17854705967073126,
+        "ladder_math": 0.150421897171469,
+        "hot_hand": 0.0006522524135054563,
+        "cooling_off": 0.10757421081913535,
+        "hidden_gems": 0.4162264902489304
+      },
+      "byBetType": {
+        "rush_yds": {
+          "books_disagree": 0.007791543975333032,
+          "usage": 0.020625387069004658,
+          "next_man_up": 0.23381401066277566,
+          "game_script": 0.00022992221128782708,
+          "matchup": 0.000014472311908014128,
+          "follow_the_move": 0.13889192577389087,
+          "ladder_math": 0.159256810151233,
+          "hot_hand": 0.002435079023043249,
+          "cooling_off": 0.09585154804769533,
+          "hidden_gems": 0.34108930077382826
+        },
+        "reception_yds": {
+          "books_disagree": 0.007577953145464333,
+          "usage": 0.0015227156160691887,
+          "next_man_up": 0.2025954832679225,
+          "game_script": 0.00017923622318635573,
+          "matchup": 0.000011029585904297874,
+          "follow_the_move": 0.20016300561968334,
+          "ladder_math": 0.10587565808610566,
+          "hot_hand": 0.0005435217648271159,
+          "cooling_off": 0.06283810590713772,
+          "hidden_gems": 0.4186932907836996
+        },
+        "pass_yds": {
+          "books_disagree": 0.004054170224274661,
+          "usage": 0.0010940344543931891,
+          "next_man_up": 0.04447702487199641,
+          "game_script": 0.000049683234495123384,
+          "matchup": 0.0000318769113154,
+          "follow_the_move": 0.13768619321123554,
+          "ladder_math": 0.08416387497520113,
+          "hot_hand": 0.0010765678269399135,
+          "cooling_off": 0.30284441126321665,
+          "hidden_gems": 0.42452216302693196
+        },
+        "rush_reception_yds": {
+          "books_disagree": 0.005546460789056958,
+          "usage": 0.08318576665294615,
+          "next_man_up": 0.21400989536497614,
+          "game_script": 0.0023839842645095766,
+          "matchup": 0.00009742957137237548,
+          "follow_the_move": 0.10070039815254686,
+          "ladder_math": 0.2379966541723939,
+          "hot_hand": 0.006717661963453229,
+          "cooling_off": 0.09571288992024182,
+          "hidden_gems": 0.253648859148503
+        }
+      }
+    },
+    "own": {
+      "rush_yds": {
+        "books_disagree": 0.007668603527782616,
+        "usage": 0.02210227895233954,
+        "next_man_up": 0.24165948096502327,
+        "game_script": 0.00024343018409612058,
+        "matchup": 0.000014883420766366558,
+        "follow_the_move": 0.1357395103826254,
+        "ladder_math": 0.15995914835869823,
+        "hot_hand": 0.0025768061965911974,
+        "cooling_off": 0.09491964594787047,
+        "hidden_gems": 0.3351162120642069
+      },
+      "reception_yds": {
+        "books_disagree": 0.007506520765373116,
+        "usage": 0.0015014320737251744,
+        "next_man_up": 0.20533379029308732,
+        "game_script": 0.0001840752922316014,
+        "matchup": 0.000011099745392332481,
+        "follow_the_move": 0.20104027615332581,
+        "ladder_math": 0.10406777500634251,
+        "hot_hand": 0.0005391089949943909,
+        "cooling_off": 0.06102251723376118,
+        "hidden_gems": 0.41879340444176644
+      },
+      "pass_yds": {
+        "books_disagree": 0.003538526318426889,
+        "usage": 0.0010010224159820984,
+        "next_man_up": 0.035630990952143525,
+        "game_script": 0.000048676287723693774,
+        "matchup": 0.000034080067405932885,
+        "follow_the_move": 0.13369865570647504,
+        "ladder_math": 0.07769787531851809,
+        "hot_hand": 0.0011179759949873304,
+        "cooling_off": 0.32190047432063434,
+        "hidden_gems": 0.425331722617703
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.005038594286703637,
+        "usage": 0.09405393297278242,
+        "next_man_up": 0.2245763722187804,
+        "game_script": 0.002695271652917279,
+        "matchup": 0.00010923402997881928,
+        "follow_the_move": 0.09027317598210502,
+        "ladder_math": 0.24972691247714848,
+        "hot_hand": 0.007530097226553773,
+        "cooling_off": 0.09412411750745471,
+        "hidden_gems": 0.23187229164557546
+      }
+    },
+    "lines": {
+      "rush_yds": 17611,
+      "reception_yds": 34496,
+      "pass_yds": 14346,
+      "rush_reception_yds": 10452
+    },
+    "spoken": {
+      "rush_yds": {
+        "books_disagree": 7647,
+        "usage": 17470,
+        "next_man_up": 489,
+        "game_script": 17470,
+        "matchup": 12710,
+        "follow_the_move": 4566,
+        "ladder_math": 17557,
+        "hot_hand": 11165,
+        "cooling_off": 6109,
+        "hidden_gems": 17482
+      },
+      "reception_yds": {
+        "books_disagree": 14021,
+        "usage": 34179,
+        "next_man_up": 769,
+        "game_script": 34179,
+        "matchup": 24814,
+        "follow_the_move": 7311,
+        "ladder_math": 34462,
+        "hot_hand": 21988,
+        "cooling_off": 11922,
+        "hidden_gems": 34189
+      },
+      "pass_yds": {
+        "books_disagree": 2540,
+        "usage": 14261,
+        "next_man_up": 496,
+        "game_script": 14261,
+        "matchup": 10366,
+        "follow_the_move": 5313,
+        "ladder_math": 14346,
+        "hot_hand": 8381,
+        "cooling_off": 4730,
+        "hidden_gems": 14282
+      },
+      "rush_reception_yds": {
+        "books_disagree": 694,
+        "usage": 10357,
+        "next_man_up": 308,
+        "game_script": 10357,
+        "matchup": 7518,
+        "follow_the_move": 1496,
+        "ladder_math": 10443,
+        "hot_hand": 6807,
+        "cooling_off": 3827,
+        "hidden_gems": 10357
+      }
+    }
+  }
+}

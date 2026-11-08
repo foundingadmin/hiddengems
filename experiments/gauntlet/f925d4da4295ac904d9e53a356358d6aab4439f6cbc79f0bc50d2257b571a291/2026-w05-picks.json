@@ -1,0 +1,256 @@
+{
+  "ref": {
+    "season": 2026,
+    "week": 5
+  },
+  "warmup": false,
+  "board": {
+    "rush_yds": 1103,
+    "reception_yds": 1927,
+    "pass_yds": 761,
+    "rush_reception_yds": 565
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.6155204036069324,
+      "usage": 0.00031623984678490636,
+      "next_man_up": 0.004959882976238023,
+      "game_script": 0.00016343545195064411,
+      "matchup": 0.00003582935994921024,
+      "follow_the_move": 0.3410803366919939,
+      "ladder_math": 0.018052557318832707,
+      "hot_hand": 0.00011861559436355077,
+      "cooling_off": 0.0031292097172921055,
+      "hidden_gems": 0.016623489435662712
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.665055047958936,
+        "usage": 0.005790557594710771,
+        "next_man_up": 0.02308417862347187,
+        "game_script": 0.0008495667352989434,
+        "matchup": 0.00005462032065552391,
+        "follow_the_move": 0.24815005656818112,
+        "ladder_math": 0.03628831238229874,
+        "hot_hand": 0.0005238513950162272,
+        "cooling_off": 0.003886367946999504,
+        "hidden_gems": 0.016317440474431195
+      },
+      "reception_yds": {
+        "books_disagree": 0.5824750353394689,
+        "usage": 0.00030883688431799296,
+        "next_man_up": 0.008945425248000455,
+        "game_script": 0.0005963118597389586,
+        "matchup": 0.00004112333251883039,
+        "follow_the_move": 0.35919109654416065,
+        "ladder_math": 0.017739762370432722,
+        "hot_hand": 0.0001119608323491698,
+        "cooling_off": 0.0024343724744676698,
+        "hidden_gems": 0.028156075114544675
+      },
+      "pass_yds": {
+        "books_disagree": 0.4413315480267041,
+        "usage": 0.00033390403472914815,
+        "next_man_up": 0.003317857343177927,
+        "game_script": 0.00017441551996562118,
+        "matchup": 0.00008989377533186012,
+        "follow_the_move": 0.4791889831618551,
+        "ladder_math": 0.02333152704813641,
+        "hot_hand": 0.0003000947530377831,
+        "cooling_off": 0.015507587424101379,
+        "hidden_gems": 0.036424188912960544
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.46981294448597744,
+        "usage": 0.04335033944883246,
+        "next_man_up": 0.02861410041727942,
+        "game_script": 0.01731346710086566,
+        "matchup": 0.00042383901621812544,
+        "follow_the_move": 0.3323440043965884,
+        "ladder_math": 0.08023412500261506,
+        "hot_hand": 0.0015044754392744136,
+        "cooling_off": 0.006524795435417732,
+        "hidden_gems": 0.019877909256931194
+      }
+    }
+  },
+  "filters": [],
+  "gems": [
+    {
+      "key": "2026|2026-10-11-ind-pit|00-0037228|reception_yds|25",
+      "line": {
+        "key": "2026|2026-10-11-ind-pit|00-0037228|reception_yds|25",
+        "gameId": "2026-10-11-ind-pit",
+        "playerId": "00-0037228",
+        "player": "Jaylen Warren",
+        "team": "pit",
+        "opponent": "ind",
+        "position": "RB",
+        "betType": "reception_yds",
+        "alt": true,
+        "line": 25,
+        "price": 2.52,
+        "fair": 0.374989501973629
+      },
+      "chance": 0.4118468407642641,
+      "edge": 0.015021443938867285,
+      "contributions": {
+        "books_disagree": 0.15720199728027126,
+        "usage": 0.00005414729227617211,
+        "next_man_up": 0,
+        "game_script": 0.00009249852624862663,
+        "matchup": 0.00003600069493224115,
+        "follow_the_move": 0,
+        "ladder_math": -0.0014704917129066298,
+        "hot_hand": 0.000056374258629391625,
+        "cooling_off": 0.0012198499860137924,
+        "hidden_gems": -0.002655815083983805
+      },
+      "seedChances": {
+        "books_disagree": 0.4496793569073748,
+        "usage": 0.4194595718319851,
+        "next_man_up": null,
+        "game_script": 0.41425148118920146,
+        "matchup": 0.6081403076295248,
+        "follow_the_move": null,
+        "ladder_math": 0.354637725331392,
+        "hot_hand": 0.511401566696232,
+        "cooling_off": 0.5218464908345153,
+        "hidden_gems": 0.351860669931671
+      },
+      "rank": 1
+    },
+    {
+      "key": "2026|2026-10-11-det-ari|00-0033307|reception_yds|25",
+      "line": {
+        "key": "2026|2026-10-11-det-ari|00-0033307|reception_yds|25",
+        "gameId": "2026-10-11-det-ari",
+        "playerId": "00-0033307",
+        "player": "Kendrick Bourne",
+        "team": "ari",
+        "opponent": "det",
+        "position": "WR",
+        "betType": "reception_yds",
+        "alt": true,
+        "line": 25,
+        "price": 1.58,
+        "fair": 0.5980845221351551
+      },
+      "chance": 0.641746078261945,
+      "edge": 0.008834685856881741,
+      "contributions": {
+        "books_disagree": 0.08115071254030974,
+        "usage": -0.00015780505542446925,
+        "next_man_up": 0,
+        "game_script": -0.00020043257857381102,
+        "matchup": -2.4717250725983487e-7,
+        "follow_the_move": 0.10277840409754987,
+        "ladder_math": -0.0005717771837314973,
+        "hot_hand": -0.0001942474654220373,
+        "cooling_off": 0,
+        "hidden_gems": 0.0026558150839838066
+      },
+      "seedChances": {
+        "books_disagree": 0.6357471264367817,
+        "usage": 0.46400569701921446,
+        "next_man_up": null,
+        "game_script": 0.5102838641554073,
+        "matchup": 0.5965150385001342,
+        "follow_the_move": 0.679516655424393,
+        "ladder_math": 0.5898470899453954,
+        "hot_hand": 0.17946510185465253,
+        "cooling_off": null,
+        "hidden_gems": 0.6218693549989652
+      },
+      "rank": 2
+    },
+    {
+      "key": "2026|2026-10-11-chi-gb|00-0036275|reception_yds|15",
+      "line": {
+        "key": "2026|2026-10-11-chi-gb|00-0036275|reception_yds|15",
+        "gameId": "2026-10-11-chi-gb",
+        "playerId": "00-0036275",
+        "player": "D'Andre Swift",
+        "team": "chi",
+        "opponent": "gb",
+        "position": "RB",
+        "betType": "reception_yds",
+        "alt": true,
+        "line": 15,
+        "price": 1.58,
+        "fair": 0.5978333668207086
+      },
+      "chance": 0.6338503952088441,
+      "edge": 0.0009390028037808973,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": -0.00012749839738181442,
+        "next_man_up": 0,
+        "game_script": -0.00021987243717765963,
+        "matchup": -0.00002331751553065228,
+        "follow_the_move": 0.15403882400352586,
+        "ladder_math": 0.0023336263555423747,
+        "hot_hand": -0.000016113776523736442,
+        "cooling_off": -0.0010044335911136499,
+        "hidden_gems": -0.0026558150839837993
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.4896929598511398,
+        "next_man_up": null,
+        "game_script": 0.5013836011779127,
+        "matchup": 0.44544135465794665,
+        "follow_the_move": 0.716485279351013,
+        "ladder_math": 0.6308470436714774,
+        "hot_hand": 0.5590684776392457,
+        "cooling_off": 0.47596627011990555,
+        "hidden_gems": 0.5735733731942173
+      },
+      "rank": 3
+    },
+    {
+      "key": "2026|2026-10-11-ind-pit|00-0030279|reception_yds|25",
+      "line": {
+        "key": "2026|2026-10-11-ind-pit|00-0030279|reception_yds|25",
+        "gameId": "2026-10-11-ind-pit",
+        "playerId": "00-0030279",
+        "player": "Keenan Allen",
+        "team": "ind",
+        "opponent": "pit",
+        "position": "WR",
+        "betType": "reception_yds",
+        "alt": true,
+        "line": 25,
+        "price": 1.64,
+        "fair": 0.577707703198404
+      },
+      "chance": 0.6099106491158991,
+      "edge": 0.0001545515549234988,
+      "contributions": {
+        "books_disagree": 0.10745682401219403,
+        "usage": 0.00021206348150524572,
+        "next_man_up": 0,
+        "game_script": 0.00038502007724975696,
+        "matchup": 0.000025612998846513314,
+        "follow_the_move": 0.023709263364494196,
+        "ladder_math": -0.0008782633887391809,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.0026558150839838066
+      },
+      "seedChances": {
+        "books_disagree": 0.6282051282051283,
+        "usage": 0.7391098108360218,
+        "next_man_up": null,
+        "game_script": 0.7306449781540124,
+        "matchup": 0.7289932311472763,
+        "follow_the_move": 0.5974969057097315,
+        "ladder_math": 0.5648585952841905,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.6018957414550895
+      },
+      "rank": 4
+    }
+  ]
+}

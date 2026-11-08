@@ -264,8 +264,9 @@ history or trusting files that get rewritten. Rules live in `packages/core/src/c
 - **Close**, each game within 25 minutes of kickoff. Raw odds only, for closing line value.
 - **Where**. The private backup repository, `capsules/<season>/wk<nn>/{sat,close}/`, with a `manifest.json` per
   capture (time, files, sha256, source, credits left). Never this public repository.
-- **Cost**. Billed per market returned, about 40 to 60 credits a game per capture. The job skips while the month's
-  plan is under 5,000 credits, so it never runs on the free plan.
+- **Cost**. Billed per market returned, about 40 to 60 credits a game per capture. Capsules use the paid key
+  (`ODDS_API_KEY_PAID`) when it is set, while live pulls stay on the free `ODDS_API_KEY`. The job skips while its
+  key's plan is under 5,000 credits a month, so it never spends the free plan.
 - **News** is the reading half. The Saturday session saves team and player news to
   `experiments/capsules/<season>-wk<nn>/news.md`, each item with outlet, URL and capture time.
 

@@ -62,10 +62,10 @@ export function normalizeEventOdds(payload: unknown): OddsQuote[] {
   return quotes;
 }
 
-export function oddsApi(apiKey: string): OddsProvider {
+export function oddsApi(apiKey: string, id = 'odds-api'): OddsProvider {
   const key = encodeURIComponent(apiKey);
   return {
-    id: 'odds-api',
+    id,
     async events(ctx: ProviderContext): Promise<OddsEvent[]> {
       const data = parse(z.array(Event), await ctx.http.getJson(`${BASE}/events?apiKey=${key}&dateFormat=iso`), 'event list');
       return data.map((e) => ({ externalId: e.id, kickoff: new Date(e.commence_time), awayTeam: e.away_team, homeTeam: e.home_team }));

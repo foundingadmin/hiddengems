@@ -53,7 +53,7 @@ export const capsule: Job = {
   provider: 'odds',
   async run(ctx) {
     const { db, now } = ctx;
-    const odds = ctx.providers.odds;
+    const odds = ctx.providers.capsuleOdds ?? ctx.providers.odds;
     const store = ctx.providers.backup;
     const upcoming = await db.select().from(games).where(and(gt(games.kickoffAt, now), lt(games.kickoffAt, new Date(now.getTime() + CAPSULE_RULES.horizonDays * DAY)))).orderBy(asc(games.kickoffAt));
     if (!upcoming.length) return { skipped: 'No games in the next 4 days' };
@@ -65,7 +65,7 @@ export const capsule: Job = {
 
     const pctx = ctx.using(odds);
     const events = await odds.events(pctx); // free, and refreshes the quota from its headers
-    if (odds.id === 'odds-api') {
+    if (odds.id.startsWith('odds-api')) {
       const [usage] = await db.select().from(providerUsage).where(eq(providerUsage.provider, odds.id));
       const plan = (usage?.used ?? 0) + (usage?.remaining ?? 0);
       if (plan < CAPSULE_RULES.minPlanCredits) return { skipped: `Capsules wait for the paid odds plan (${plan} credits this month)` };

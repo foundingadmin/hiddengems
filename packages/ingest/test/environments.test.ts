@@ -11,6 +11,14 @@ describe('environments', () => {
     const p = providersFor({ ...live, VERCEL_ENV: 'production' });
     expect(p.odds.id).toBe('odds-api');
     expect(p.backup.id).toBe('github-backup');
+    expect(p.capsuleOdds).toBeUndefined();
+  });
+
+  it('gives capsules the paid key and leaves live pulls on the free one', () => {
+    const p = providersFor({ ...live, ODDS_API_KEY_PAID: 'paid', VERCEL_ENV: 'production' });
+    expect(p.odds.id).toBe('odds-api');
+    expect(p.capsuleOdds?.id).toBe('odds-api-paid');
+    expect(providersFor({ ...live, ODDS_API_KEY_PAID: 'paid', VERCEL_ENV: 'preview' }).capsuleOdds).toBeUndefined();
   });
 
   it('keeps every preview on sample data with a local backup, even with live keys set', () => {

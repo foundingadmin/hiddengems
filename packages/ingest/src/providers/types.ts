@@ -148,6 +148,8 @@ export interface Providers {
   schedule: ScheduleProvider;
   rosters: RosterProvider;
   odds: OddsProvider;
+  /** The paid odds key (ODDS_API_KEY_PAID), for capsules only. Live pulls stay on odds. */
+  capsuleOdds?: OddsProvider;
   results: ResultsProvider;
   usage: UsageProvider;
   weather: WeatherProvider;

@@ -110,7 +110,7 @@ export async function runJob(name: string, opts: RunOptions): Promise<RunResult>
 
   const lines: { level: Level; message: string; data?: Record<string, unknown>; at: Date }[] = [];
   const https: Http[] = [];
-  const providerId = job.providerId ?? (job.provider ? opts.providers[job.provider].id : null);
+  const providerId = job.providerId ?? (job.provider ? opts.providers[job.provider]?.id ?? null : null);
   let runId: string | null = null;
   const ensureRun = async () => {
     if (runId) return runId;

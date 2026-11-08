@@ -72,7 +72,10 @@ async function main() {
 
   const max = arg('--max-credits'), floor = arg('--floor');
   if (!(max > 0) || !(floor >= 0)) throw new Error('Pass --max-credits and --floor. Nothing bought.');
-  let spent = 0;
+  // The cap counts every earlier run of this buy (the spend log rides along in the cache).
+  const priorLog = `${ODDS_DIR}/seasons-spend.json`;
+  const prior = existsSync(priorLog) ? (JSON.parse(readFileSync(priorLog, 'utf8')) as { spent: number }[]).reduce((a, r) => a + r.spent, 0) : 0;
+  let spent = prior;
   let remaining: number | null = null;
   let firstRemaining: number | null = null;
   const gaps: { job: string; status: number; note: string }[] = [];
@@ -113,7 +116,17 @@ async function main() {
         }
       } else {
         const g = games.get(`${j.season}|${j.gameId}`)!;
-        const ids = listFor(j.season, g.week, g.boardAt);
+        let ids = listFor(j.season, g.week, g.boardAt);
+        if (!ids) {
+          // A board this plan does not buy (2026 Weeks 2 to 8 were bought by the history buy): its event list, 1 credit.
+          const listJob: Job = { priority: j.priority, season: j.season, week: g.week, kind: 'events', at: g.boardAt, markets: [], cost: 1 };
+          const r = await call(`${BASE}/events?date=${iso(g.boardAt)}&dateFormat=iso`, 1, `${note} event list`);
+          if (!r.ok) throw new Error(`${note} event list: HTTP ${r.status} ${r.text}`);
+          if (new Date(r.body.timestamp) > new Date(g.boardAt)) throw new Error(`Guard: ${note} event list ${r.body.timestamp} is after ${g.boardAt}`);
+          mkdirSync(dirname(jobFile(listJob)), { recursive: true });
+          writeFileSync(jobFile(listJob), JSON.stringify(r.body));
+          ids = listFor(j.season, g.week, g.boardAt);
+        }
         const eventId = ids?.get(j.gameId!);
         if (!eventId) { gaps.push({ job: note, status: 0, note: 'not in the board event list' }); reached[j.priority]!.done++; continue; }
         const file = jobFile(j, eventId);
@@ -137,13 +150,13 @@ async function main() {
     if (!(err instanceof Stop)) throw err;
     console.log(err.message);
   } finally {
-    const entry = { at: new Date().toISOString(), spent, firstRemaining, remaining, floor, max, reached, gaps };
+    const entry = { at: new Date().toISOString(), spent: spent - prior, firstRemaining, remaining, floor, max, reached, gaps };
     const log = `${ODDS_DIR}/seasons-spend.json`;
     const runs = existsSync(log) ? JSON.parse(readFileSync(log, 'utf8')) : [];
     mkdirSync(dirname(log), { recursive: true });
     writeFileSync(log, JSON.stringify([...runs, entry], null, 2));
     writeFileSync(`${OUT_DIR}/seasons-spend.json`, `${JSON.stringify([...runs, entry], null, 2)}\n`);
-    console.log(`Spent ${spent} credits this run. Remaining ${remaining ?? 'unknown'} (started at ${firstRemaining ?? 'unknown'}). Reached ${JSON.stringify(reached)}. ${gaps.length} gaps.`);
+    console.log(`Spent ${spent - prior} credits this run (${spent} across runs). Remaining ${remaining ?? 'unknown'} (started at ${firstRemaining ?? 'unknown'}). Reached ${JSON.stringify(reached)}. ${gaps.length} gaps.`);
   }
 }
 

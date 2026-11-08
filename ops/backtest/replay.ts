@@ -102,6 +102,7 @@ export function replayWeek(season: Season, w: PlanWeek): { ledgers: Ledger[]; un
   if (w.buy && !board.size) throw new Error(`Week ${w.week} has no cached board. Run node ops/backtest/fetch-odds.mjs first.`);
   // The board itself may be stamped at the board; every price on it must be no later.
   for (const s of board.values()) {
+    if (!w.games.some((g) => g.gameId === s.gameId)) continue;
     const late = [s.timestamp, ...s.quotes.map((q) => q.observedAt)].find((t) => t.getTime() > boardAt.getTime());
     if (late) throw new Error(`Time capsule broken: week ${w.week} board ${s.gameId} carries a price stamped ${late.toISOString()}, after the board at ${w.boardAt}`);
   }

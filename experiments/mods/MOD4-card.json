@@ -1,0 +1,50 @@
+{
+  "mod": "MOD4",
+  "frozen": true,
+  "frozenAt": "2026-11-08",
+  "about": "Market only. A gem when DraftKings' price beats the vig-free consensus of the other books at the same line. No player stats.",
+  "tailoring": {
+    "weeks": [
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "runs": 3,
+    "final": {
+      "gems": 37,
+      "graded": 36,
+      "hits": 11,
+      "expected": 9.2,
+      "z": 0.68,
+      "roi": 0.206,
+      "rawClv": 0.0671,
+      "perWeek": 7.4,
+      "mainShare": 0
+    }
+  },
+  "params": {
+    "margin": 0.025,
+    "minBooks": 2,
+    "minPrice": 1.5,
+    "maxPrice": 5,
+    "markets": [
+      "anytime_td",
+      "receptions",
+      "reception_yds",
+      "rush_yds",
+      "pass_yds",
+      "rush_reception_yds",
+      "pass_rush_yds",
+      "rush_attempts",
+      "pass_completions",
+      "pass_attempts"
+    ],
+    "hold": {
+      "td": 0.1,
+      "main": 0.045,
+      "alt": 0.09
+    }
+  }
+}

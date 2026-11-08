@@ -1,0 +1,62 @@
+{
+  "mod": "MOD5",
+  "frozen": true,
+  "frozenAt": "2026-11-08",
+  "about": "Football only. Projects each stat from recency weighted usage, the defense against the position and team implied points. No other books.",
+  "tailoring": {
+    "weeks": [
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "runs": 8,
+    "final": {
+      "gems": 36,
+      "graded": 35,
+      "hits": 16,
+      "expected": 17.7,
+      "z": -0.57,
+      "roi": -0.099,
+      "rawClv": 0.0155,
+      "perWeek": 7.2,
+      "mainShare": 1
+    }
+  },
+  "params": {
+    "halfLife": 2,
+    "matchupWeight": 0.5,
+    "scriptWeight": 0.5,
+    "trendWeight": 0.5,
+    "minEdge": 0.26,
+    "minGames": 2,
+    "minPrice": 1.5,
+    "maxPrice": 3.5,
+    "markets": [
+      "anytime_td",
+      "receptions",
+      "reception_yds",
+      "rush_yds",
+      "pass_yds",
+      "rush_reception_yds",
+      "pass_rush_yds",
+      "rush_attempts",
+      "pass_completions",
+      "pass_attempts"
+    ],
+    "shape": "lognormal",
+    "shrinkGames": 0,
+    "perPlayer": 1,
+    "priorGames": 4,
+    "skip": [
+      "QB|rush_yds",
+      "QB|rush_attempts"
+    ],
+    "blockInjured": true,
+    "calibration": 1,
+    "skipQbOut": true,
+    "mainOnly": true,
+    "needHistory": true
+  }
+}

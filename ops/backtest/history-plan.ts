@@ -63,7 +63,7 @@ export function buildHistoryPlan(gamesCsv: string): { games: HistoryGame[]; boar
     if (!(boardAt < g.kickoff)) throw new Error(`${g.externalId} board is not before kickoff`);
     return {
       gameId: gameId(g.kickoff, away, home), nflverseId: g.externalId, week: g.week!, day,
-      segment: day === 'thu' ? 'TNF' : day === 'mon' ? 'MNF' : segmentOf(g.kickoff),
+      segment: (day === 'thu' ? 'TNF' : day === 'mon' ? 'MNF' : segmentOf(g.kickoff)) as HistoryGame['segment'],
       kickoff: g.kickoff.toISOString(), boardAt: boardAt.toISOString(),
       closeAt: new Date(g.kickoff.getTime() - FREEZE_LEAD_MINUTES * 60_000).toISOString(), away, home,
       buy: day === 'sun' ? NEW_MARKETS : [...NEW_MARKETS, ...FIRST_MARKETS],

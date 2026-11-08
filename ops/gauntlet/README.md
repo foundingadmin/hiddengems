@@ -65,3 +65,21 @@ BACKUPS_DIR=/tmp/backups packages/ingest/node_modules/.bin/tsx --test ops/gauntl
   above its point. `overHits` in `world.ts` applies the rule.
 - `reveal` refuses until `recordPicks` has written the week's picks to `experiments/gauntlet/ledger/<season>-wkNN-picks.json`.
   Picks are recorded once.
+
+## Running it
+
+`learner.ts` holds blend, pick, score, reweight and pool. `run.ts` walks the 26 weeks and `report.ts` writes the report.
+Each seed is scored on the sum of its log loss gain over fair across the lines it spoke on, so a silent line counts 0,
+exactly what the blend got from it. The run needs `world.ts` to export `openWeek`, `recordPicks` and `reveal`, and `seeds/index.ts` to
+export the ten seeds as `SEEDS`.
+
+Once the rules are frozen and hashed, the one real run is:
+
+```bash
+packages/ingest/node_modules/.bin/tsx ops/gauntlet/run.ts --hash <sha256 of the frozen rules.json>
+```
+
+It refuses unfrozen rules, a hash that does not match, and any hash that already has a folder in
+`experiments/gauntlet/`, even from a run that stopped partway. Per week it writes `<season>-wNN-picks.json` before
+reveal, then `<season>-wNN-results.json` with the results, the scores and the new weights, and at the end
+`report.json`. The report can be rebuilt from the ledger with `tsx ops/gauntlet/report.ts <ledger folder>`.

@@ -148,14 +148,21 @@ export function buildUsage(pbpText: string, snapsText: string, rosterText: strin
   return { lines: [...out.values()], unmatchedSnaps: [...unmatched] };
 }
 
-/** The latest week's injury report: game statuses only (Out, Doubtful, Questionable). */
+/** The latest week's injury report: everyone on it, with game status (Out, Doubtful, Questionable), last practice and injury. */
 export function normalizeInjuries(text: string): InjuryReport | null {
   const rows = parseCsv(text);
   need(rows, ['week', 'gsis_id', 'report_status'], 'injuries');
   const week = Math.max(...rows.map((r) => Number(r.week)).filter(Number.isFinite));
   if (!Number.isFinite(week)) return null;
-  const statuses = rows.filter((r) => Number(r.week) === week && r.gsis_id && r.report_status && r.report_status !== 'NA')
-    .map((r) => ({ playerExternalId: r.gsis_id!, status: r.report_status! }));
+  const value = (v: string | undefined) => (v && v !== 'NA' ? v : null);
+  const statuses = rows.filter((r) => Number(r.week) === week && r.gsis_id)
+    .map((r) => ({
+      playerExternalId: r.gsis_id!,
+      status: value(r.report_status),
+      practice: value(r.practice_status),
+      injury: value(r.report_primary_injury) ?? value(r.practice_primary_injury),
+    }))
+    .filter((s) => s.status || s.practice);
   return { week, statuses };
 }
 

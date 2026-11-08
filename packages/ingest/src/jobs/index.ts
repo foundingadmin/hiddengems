@@ -18,5 +18,4 @@ export const jobs: Record<string, Job> = Object.fromEntries(
 export const BOOTSTRAP = ['pull-schedule', 'pull-rosters', 'pull-results', 'pull-usage', 'pull-odds'] as const;
 
 export { pullOdds, buildPicks, pullResults, pullRosters, pullSchedule, pullUsage, pullWeather, backupDatabase, backtest };
-export { MARKETS } from './odds';
 export { grade } from './results';

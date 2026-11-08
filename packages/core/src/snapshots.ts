@@ -12,6 +12,18 @@ export const SNAPSHOTS = [
   { id: 'sun', weekday: 0, time: '08:43', horizonDays: 4 },
 ] as const;
 
+/**
+ * The markets each pull carries. Every stat ladder costs one more credit per game, so on the free plan they ride
+ * the Sunday morning pull only (about 45 credits a week on a full slate, beside about 60 for anytime TD), and a
+ * manual pull the owner confirms. Kickoff freezes stay anytime TD only.
+ */
+export const LADDER_SNAPSHOTS: readonly string[] = ['sun'];
+export const TD_MARKETS = ['anytime_td'] as const;
+export const LADDER_MARKETS = ['receptions', 'receiving_yds', 'rushing_yds'] as const;
+export function marketsFor(pull: { snapshot: string | null; manual: boolean }): string[] {
+  return pull.manual || (pull.snapshot && LADDER_SNAPSHOTS.includes(pull.snapshot)) ? [...TD_MARKETS, ...LADDER_MARKETS] : [...TD_MARKETS];
+}
+
 /** A snapshot runs if cron reaches it within this long; later it is skipped, never pulled late. */
 export const SNAPSHOT_GRACE_MINUTES = 90;
 /** Each game's freeze pull happens within this many minutes before its kickoff. */

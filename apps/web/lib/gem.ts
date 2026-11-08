@@ -6,8 +6,8 @@ import 'server-only';
 // toggling a condition redraws on the client, and the notes that add to or cost it (F2.3, context only).
 import {
   type CoreSample, type GameLine, type GameLog, type GemKind, type GemNote, type LogGame, type Matchup, type MatchupScore, type SplitNote, type Trend, type TrendGame,
-  type UsageGame, coreSample, fairPriceFor, favoredBySpread, findTeam, gameLog, impliedFactor, matchup, matchupPosition, newGemReason, priceTrail,
-  gemNotes, readEstimateInputs, splitNotes, trendLines,
+  type UsageGame, STAT_MARKETS, coreSample, fairPriceFor, favoredBySpread, findTeam, gameLog, impliedFactor, injuryLine, isStatMarket, matchup, matchupPosition,
+  newGemReason, priceTrail, gemNotes, readEstimateInputs, splitNotes, statNeeded, trendLines,
 } from '@hiddengems/core';
 import {
   type PlayerSplits, books, estimates, gemMarks, gemRecords, games, getGameWeather, getSplits, grades, isMissingTable, oddsLatest, oddsSnapshots, picks,
@@ -63,6 +63,12 @@ export interface GemDetail {
   number: number | null;
   position: string | null;
   marketId: string;
+  /** The stat line for a ladder rung; null for anytime TD. */
+  line: number | null;
+  /** Why he cannot be a gem whatever the numbers say (core availabilityBlock()), or null. */
+  block: string | null;
+  /** The injury report line, or null when he is not listed or practiced in full. */
+  injury: string | null;
   matchup: string;
   kickoff: string;
   /** When the server read it, so the chart's now matches the page. */
@@ -116,20 +122,23 @@ export async function gemDetail(key: string, now = new Date()): Promise<GemDetai
     .where(and(eq(oddsLatest.selectionKey, key), eq(oddsLatest.available, true)))
     .orderBy(desc(oddsLatest.priceDecimal)).limit(1);
 
-  const history = player ? await playerSeason(player.id, player.teamId, game) : null;
+  const ladder = isStatMarket(pick.marketId) && pick.line != null ? { stat: STAT_MARKETS[pick.marketId].stat, need: statNeeded(pick.line) } : null;
+  const history = player ? await playerSeason(player.id, player.teamId, game, ladder) : null;
   const team = player?.teamId ?? history?.usage.at(-1)?.team ?? null;
   const position = player?.position ?? history?.usage.at(-1)?.position ?? null;
+  // The splits, trends, core sample and matchup rank are touchdown reads; a stat ladder shows its own game log.
   const [appraisal, conditions, loupe, notes] = await Promise.all([
     appraisalOf(pick, game.kickoffAt),
-    conditionsOf(game, team, position),
-    player ? loupeOf(player.id, game.id) : null,
+    conditionsOf(game, team, ladder ? null : position),
+    player && !ladder ? loupeOf(player.id, game.id) : null,
     notesOf(pick, game, team, position, player ?? null),
   ]);
   const home = team === game.homeTeamId;
   return {
     key, kind: pick.kind as GemKind, rating: pick.rating,
     name: player?.name ?? pick.playerName ?? 'Unknown player', teamId: team && findTeam(team) ? team : null,
-    number: player?.jerseyNumber ?? null, position: player?.position ?? null, marketId: pick.marketId,
+    number: player?.jerseyNumber ?? null, position: player?.position ?? null, marketId: pick.marketId, line: pick.line, block: pick.block,
+    injury: player ? injuryLine({ status: player.injuryStatus, practice: player.practiceStatus, injury: player.injuryDetail }) : null,
     matchup: `${game.awayTeamId.toUpperCase()} @ ${game.homeTeamId.toUpperCase()}`, kickoff: game.kickoffAt.toISOString(), now: now.toISOString(),
     fresh: pick.kind === 'gem' && game.kickoffAt > now && !!mark && !!newGemReason(pick.rating, mark),
     price: pick.price, book: row.book, priced: pick.priced, fair: pick.fair, hitChance: pick.hitChance,
@@ -137,8 +146,8 @@ export async function gemDetail(key: string, now = new Date()): Promise<GemDetai
     best: best ?? null,
     log: history?.log ?? gameLog([], []),
     appraisal,
-    trends: history && team ? trendLines(history.trends, { home, favored: favoredBySpread(game.spreadLine, home) }) : [],
-    sample: history ? coreSample(history.usage, history.teamUsage, player?.position ?? null) : null,
+    trends: history && team && !ladder ? trendLines(history.trends, { home, favored: favoredBySpread(game.spreadLine, home) }) : [],
+    sample: history && !ladder ? coreSample(history.usage, history.teamUsage, player?.position ?? null) : null,
     conditions,
     loupe,
     notes,
@@ -193,8 +202,14 @@ async function loupeOf(playerId: string, gameId: string): Promise<Loupe | null> 
   return { ...splits, opponents, notes: splitNotes(splits) };
 }
 
-/** His regular season games before this game's week: the Last 10, the trend games and his usage with his team's. */
-async function playerSeason(playerId: string, team: string | null, game: typeof games.$inferSelect) {
+/**
+ * His regular season games before this game's week: the Last 10, the trend games and his usage with his team's.
+ * For a stat ladder the Last 10 marks the games he reached the line instead of the games he scored.
+ */
+async function playerSeason(
+  playerId: string, team: string | null, game: typeof games.$inferSelect,
+  ladder: { stat: 'receptions' | 'receivingYards' | 'rushingYards'; need: number } | null,
+) {
   const { db: d } = await db();
   if (game.week == null) return null;
   const before = and(eq(games.season, game.season), eq(games.seasonType, 'reg'), lt(games.week, game.week));
@@ -203,18 +218,22 @@ async function playerSeason(playerId: string, team: string | null, game: typeof 
     eq(playerGameStats.playerId, playerId), eq(playerUsage.playerId, playerId),
     ...(team ? [eq(games.awayTeamId, team), eq(games.homeTeamId, team)] : []),
   );
-  const rows = await d.select({ game: games, statTds: playerGameStats.touchdowns, usage: playerUsage })
+  const rows = await d.select({ game: games, statTds: playerGameStats.touchdowns, box: playerGameStats, usage: playerUsage })
     .from(games)
     .leftJoin(playerGameStats, and(eq(playerGameStats.gameId, games.id), eq(playerGameStats.playerId, playerId)))
     .leftJoin(playerUsage, and(eq(playerUsage.gameId, games.id), eq(playerUsage.playerId, playerId)))
     .where(and(before, mine));
-  const sides = rows.map(({ game: g, statTds, usage }) => {
+  const sides = rows.map(({ game: g, statTds, box, usage }) => {
     const side = usage?.teamId ?? team;
     const home = side === g.homeTeamId;
-    return { g, home, touchdowns: statTds ?? usage?.touchdowns ?? null, usage };
+    // A game he played with no box score line counts as zero of the stat.
+    const played = Boolean(box?.playerId || usage);
+    const value = ladder && played ? Number(box?.[ladder.stat] ?? 0) : null;
+    return { g, home, touchdowns: statTds ?? usage?.touchdowns ?? null, value, usage };
   });
-  const log = gameLog(league.map((l) => l.week!).filter((w) => w != null), sides.map(({ g, home, touchdowns }): LogGame => ({
-    week: g.week!, opponent: home ? g.awayTeamId : g.homeTeamId, home, touchdowns,
+  const log = gameLog(league.map((l) => l.week!).filter((w) => w != null), sides.map(({ g, home, touchdowns, value }): LogGame => ({
+    week: g.week!, opponent: home ? g.awayTeamId : g.homeTeamId, home,
+    touchdowns: ladder ? (value == null ? null : value >= ladder.need ? 1 : 0) : touchdowns,
   })));
   const trends = sides.filter((s) => s.touchdowns != null).map(({ g, home, touchdowns, usage }): TrendGame => ({
     week: g.week!, home, favored: favoredBySpread(g.spreadLine, home), touchdowns: touchdowns!,

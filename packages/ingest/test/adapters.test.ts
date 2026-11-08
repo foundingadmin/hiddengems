@@ -207,7 +207,20 @@ describe('nflverse usage (hgs.py game_logs)', () => {
 
   it('reads the latest injury report week only', () => {
     const r = normalizeInjuries(['week,gsis_id,report_status', '8,00-1,Out', '9,00-1,Questionable', '9,00-2,NA', '9,00-3,'].join('\n'));
-    expect(r).toEqual({ week: 9, statuses: [{ playerExternalId: '00-1', status: 'Questionable' }] });
+    expect(r).toEqual({ week: 9, statuses: [{ playerExternalId: '00-1', status: 'Questionable', practice: null, injury: null }] });
+  });
+
+  it('keeps practice status and the injury, even without a game status', () => {
+    const r = normalizeInjuries([
+      'week,gsis_id,report_status,report_primary_injury,practice_primary_injury,practice_status',
+      '9,00-1,,NA,Ribs,Limited Participation in Practice',
+      '9,00-2,Out,Hamstring,Hamstring,Did Not Participate In Practice',
+      '9,00-3,,NA,NA,NA',
+    ].join('\n'));
+    expect(r?.statuses).toEqual([
+      { playerExternalId: '00-1', status: null, practice: 'Limited Participation in Practice', injury: 'Ribs' },
+      { playerExternalId: '00-2', status: 'Out', practice: 'Did Not Participate In Practice', injury: 'Hamstring' },
+    ]);
   });
 
   it('keeps one row per player from the roster', () => {

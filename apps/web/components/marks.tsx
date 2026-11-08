@@ -1,6 +1,6 @@
 // Facet encodings as React: player tile and number, gem rating, edge, run status.
 // Markup mirrors packages/facet (css/teams.css, css/components.css); see packages/facet/patterns/hidden-gems.md.
-import { findTeam } from '@hiddengems/core';
+import { findTeam, injuryLevel } from '@hiddengems/core';
 import type { AnchorHTMLAttributes, CSSProperties, ReactNode } from 'react';
 import { points } from '@/lib/format';
 
@@ -68,6 +68,12 @@ export function Edge({ pts }: { pts: number }) {
 }
 
 /** Run status as dot plus word. A provider outage reads amber "Provider down", never red. */
+/** The injury report on a gem: status dot and the report's words, red for Out or Doubtful, amber otherwise. */
+export function InjuryTag({ line }: { line: string | null }) {
+  if (!line) return null;
+  return <span className="fc-level" data-level={injuryLevel(line)}>{line}</span>;
+}
+
 export function RunStatus({ status, owner }: { status: string; owner: string | null }) {
   if (status === 'failed' && owner === 'provider') return <span className="fc-level" data-level="warning">Provider down</span>;
   const map: Record<string, [string, string]> = {

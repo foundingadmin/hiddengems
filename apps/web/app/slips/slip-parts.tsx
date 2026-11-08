@@ -1,5 +1,6 @@
 // The slip's shared marks: one leg (player, rating, price), the rating mark and Unknown. Markup per
 // packages/facet/components/cert.md.
+import { betLabel } from '@hiddengems/core';
 import type { CSSProperties, ReactNode } from 'react';
 import type { SlipLegView } from '@hiddengems/db';
 import { Player } from '@/components/marks';
@@ -47,7 +48,7 @@ export function Leg({ leg, index, sameGame, showRating = true, showMatchup = tru
   leg: SlipLegView; index: number; sameGame?: boolean; showRating?: boolean; showMatchup?: boolean; action?: ReactNode;
 }) {
   const time = <time className="fc-time" dateTime={leg.kickoffAt.toISOString()}>{legTime(leg.kickoffAt)}</time>;
-  const detail = showMatchup ? <>{leg.awayTeamId.toUpperCase()} @ {leg.homeTeamId.toUpperCase()} · {time}</> : <>Anytime TD · {time}</>;
+  const detail = showMatchup ? <>{leg.awayTeamId.toUpperCase()} @ {leg.homeTeamId.toUpperCase()} · {time}</> : <>{betLabel(leg.marketId, leg.line)} · {time}</>;
   const flag = sameGame && <span className="fc-badge" data-variant="amber" data-size="sm" data-contrast="low">{LINK}Same game</span>;
   return (
     <li className="fc-leg">

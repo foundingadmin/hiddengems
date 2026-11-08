@@ -82,10 +82,16 @@ export interface UsageLine {
   touchdowns: number;
 }
 
-/** The latest injury report: its week and each listed player's game status (Out, Doubtful, Questionable). */
+/** The latest injury report: its week and each listed player's game status, last practice and injury. */
 export interface InjuryReport {
   week: number;
-  statuses: { playerExternalId: string; status: string }[];
+  statuses: {
+    playerExternalId: string;
+    /** Out, Doubtful, Questionable; null when he practiced on the report without a game status. */
+    status: string | null;
+    practice?: string | null;
+    injury?: string | null;
+  }[];
 }
 
 /** What every adapter shares: its id, request headers (keys) and an optional quota reader. */

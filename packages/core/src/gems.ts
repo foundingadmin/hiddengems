@@ -1,5 +1,6 @@
 // The gem rating, Fool's Gold and the Recommended order (docs/prd.md section 8, approved Nov 2 2026,
 // to revisit after Week 9 grades). Market math from section 11.4, clarity from section 11.7.
+import type { Block } from './availability';
 import { impliedFromDecimal } from './odds';
 
 /** The book's cut assumed on a one-sided price: 5% plus 1% per point of decimal odds, at most 35% (section 11.4). */
@@ -23,6 +24,8 @@ export interface GemInput {
   clarity: number;
   /** Whether the player has 2026 stats. Without them there is no read and the market stands. */
   hasStats: boolean;
+  /** Why he cannot be a gem whatever the numbers say (availability.ts): Out, Doubtful, or stats from another team. */
+  block?: Block | null;
 }
 
 /**
@@ -68,20 +71,24 @@ export function gemRating(carat: number, clarity: number): number {
   return Math.round(100 * clamp(carat / FULL_CARAT, 0, 1) * clamp(clarity, 0, 100) / 100);
 }
 
-export function appraise({ hitChance, price, clarity, hasStats }: GemInput): GemRead {
+export function appraise({ hitChance, price, clarity, hasStats, block }: GemInput): GemRead {
   const priced = impliedFromDecimal(price);
   const fair = fairChance(price);
   const carat = (hitChance - fair) * 100;
   const gapToPosted = (hitChance - priced) * 100;
   const base = { carat, gapToPosted, fair, priced };
+  if (block) return { kind: 'none', rating: null, ...base };
   if (!hasStats) return { kind: 'unrated', rating: null, ...base };
   if (!inGemRange(price)) return { kind: 'none', rating: null, ...base };
   if (gapToPosted >= GEM_RULES.minGap) return { kind: 'gem', rating: gemRating(carat, clarity), ...base };
   return { kind: carat > 0 ? 'fools-gold' : 'none', rating: null, ...base };
 }
 
+const BLOCKS: Record<Block, string> = { out: 'Ruled out on the injury report', doubtful: 'Doubtful on the injury report', 'new-team': 'New team, so his stats are from another offense' };
+
 /** Why a prop has no rating, in one line. */
-export function whyNoRating(kind: string, price: number): string {
+export function whyNoRating(kind: string, price: number, block?: string | null): string {
+  if (block && block in BLOCKS) return BLOCKS[block as Block];
   if (kind === 'unrated') return 'No 2026 stats, so the market stands';
   if (!inGemRange(price)) return `Outside the ${GEM_RULES.minPrice.toFixed(2)} to ${GEM_RULES.maxPrice.toFixed(2)} range`;
   return `Does not clear the posted price by ${GEM_RULES.minGap} pt`;

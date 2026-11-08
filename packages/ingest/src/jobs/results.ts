@@ -1,7 +1,7 @@
-// pull-results: nflverse stat lines for recently finished games, then settles open anytime TD bets,
+// pull-results: nflverse stat lines for recently finished games, then settles open bets (anytime TD and stat ladders),
 // records the closing price (the last price before kickoff) and grades every gem record and placed bet
 // on a final game: closing line value against the fair close and one of four boxes (core gradeTake()).
-import { anytimeTdHit, fairChance, gradeTake, seasonOf } from '@hiddengems/core';
+import { fairChance, gradeTake, propHit, seasonOf } from '@hiddengems/core';
 import { bets, gemRecords, games, grades, isMissingTable, oddsSnapshots, parlayLegBets, playerGameStats } from '@hiddengems/db';
 import { type AnyColumn, and, desc, eq, inArray, isNotNull, isNull, lte, notInArray, sql } from 'drizzle-orm';
 import type { Job, JobContext } from '../runner';
@@ -10,10 +10,11 @@ import { chunks, plural, refMap } from './shared';
 
 type StatRow = typeof playerGameStats.$inferSelect;
 
-/** won or lost for an anytime TD bet from the player's stat line; null for any other market. */
-export function grade(bet: { marketId: string }, stat: Pick<StatRow, 'touchdowns'>): 'won' | 'lost' | null {
-  if (bet.marketId !== 'anytime_td') return null;
-  return anytimeTdHit(stat.touchdowns) ? 'won' : 'lost';
+/** won or lost for a bet from the player's stat line; null for a market we cannot grade. */
+export function grade(bet: { marketId: string; side?: string; line?: number | null }, stat: Pick<StatRow, 'touchdowns'> & Partial<Pick<StatRow, 'receptions' | 'receivingYards' | 'rushingYards'>>): 'won' | 'lost' | null {
+  const hit = propHit({ marketId: bet.marketId, side: bet.side ?? 'yes', line: bet.line ?? null },
+    { touchdowns: stat.touchdowns, receptions: stat.receptions ?? null, receivingYards: stat.receivingYards ?? null, rushingYards: stat.rushingYards ?? null });
+  return hit == null ? null : hit ? 'won' : 'lost';
 }
 
 export const pullResults: Job = {
@@ -120,11 +121,11 @@ export async function gradeFinals(ctx: Pick<JobContext, 'db' | 'now' | 'runId' |
     and(eq(playerGameStats.gameId, gameId), eq(playerGameStats.playerId, playerId));
   let records;
   try {
-    records = await db.select({ r: gemRecords, touchdowns: playerGameStats.touchdowns }).from(gemRecords)
+    records = await db.select({ r: gemRecords, box: playerGameStats }).from(gemRecords)
       .innerJoin(games, eq(games.id, gemRecords.gameId))
       .innerJoin(playerGameStats, statOn(gemRecords.gameId, gemRecords.playerId))
       .leftJoin(grades, eq(grades.gemRecordId, gemRecords.id))
-      .where(and(eq(games.status, 'final'), eq(gemRecords.marketId, 'anytime_td'), isNull(grades.id)));
+      .where(and(eq(games.status, 'final'), isNull(grades.id)));
   } catch (err) {
     if (isMissingTable(err)) {
       ctx.log('info', 'Grading starts once the database update runs (pnpm db:supabase-sql)');
@@ -132,21 +133,25 @@ export async function gradeFinals(ctx: Pick<JobContext, 'db' | 'now' | 'runId' |
     }
     throw err;
   }
-  const placed = await db.select({ bet: bets, touchdowns: playerGameStats.touchdowns }).from(bets)
+  const placed = await db.select({ bet: bets, box: playerGameStats }).from(bets)
     .innerJoin(games, eq(games.id, bets.gameId))
     .innerJoin(playerGameStats, statOn(bets.gameId, bets.playerId))
     .leftJoin(grades, eq(grades.betId, bets.id))
-    .where(and(eq(games.status, 'final'), eq(bets.marketId, 'anytime_td'), isNotNull(bets.closingPrice), notInArray(bets.status, ['void', 'push']), isNull(grades.id)));
+    .where(and(eq(games.status, 'final'), isNotNull(bets.closingPrice), notInArray(bets.status, ['void', 'push']), isNull(grades.id)));
 
-  const row = (subject: 'gem' | 'bet', taken: number, closePrice: number, touchdowns: number) => {
-    const hit = anytimeTdHit(touchdowns);
+  const row = (subject: 'gem' | 'bet', taken: number, closePrice: number, hit: boolean, touchdowns: number) => {
     const g = gradeTake({ taken, closePrice, hit });
     return { runId: ctx.runId, subject, taken, closePrice, closeFair: fairChance(closePrice), clv: g.clv, beatClose: g.beatClose, hit, touchdowns, box: g.box, gradedAt: now };
   };
-  const rows: (typeof grades.$inferInsert)[] = [
-    ...records.map(({ r, touchdowns }) => ({ ...row('gem', r.decisionPrice, r.freezePrice, touchdowns), gemRecordId: r.id, selectionKey: r.selectionKey, gameId: r.gameId })),
-    ...placed.map(({ bet, touchdowns }) => ({ ...row('bet', bet.priceDecimal, bet.closingPrice!, touchdowns), betId: bet.id, selectionKey: bet.selectionKey, gameId: bet.gameId })),
-  ];
+  const rows: (typeof grades.$inferInsert)[] = [];
+  for (const { r, box } of records) {
+    const hit = propHit(r, box);
+    if (hit != null) rows.push({ ...row('gem', r.decisionPrice, r.freezePrice, hit, box.touchdowns), gemRecordId: r.id, selectionKey: r.selectionKey, gameId: r.gameId });
+  }
+  for (const { bet, box } of placed) {
+    const hit = propHit(bet, box);
+    if (hit != null) rows.push({ ...row('bet', bet.priceDecimal, bet.closingPrice!, hit, box.touchdowns), betId: bet.id, selectionKey: bet.selectionKey, gameId: bet.gameId });
+  }
   const out = { gems: 0, bets: 0 };
   for (const batch of chunks(rows)) {
     for (const g of await db.insert(grades).values(batch).onConflictDoNothing().returning({ subject: grades.subject })) {

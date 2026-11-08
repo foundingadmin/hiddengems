@@ -96,6 +96,10 @@ export interface JewelerGem {
   carat: number;
   clarity: number;
   reasons: string[];
+  /** The bet as the app names it ("Anytime TD", "5+ receptions"). */
+  bet?: string;
+  /** The injury report line, when he is listed. */
+  injury?: string | null;
 }
 
 /** What the Jeweler is looking at: the gem in context, else the week's board. */
@@ -148,7 +152,7 @@ const standing = (g: JewelerGem) =>
 /** One line per prop, with every number the app shows for it, formatted the way the app prints it. */
 export function describeGem(g: JewelerGem): string {
   const who = [`${g.player}${g.number != null ? ` #${g.number}` : ''}`, g.position, g.team].filter(Boolean).join(', ');
-  return `${who}. ${g.matchup}, kickoff ${g.kickoff}. Anytime touchdown at DraftKings ${g.price.toFixed(2)}. ` +
+  return `${who}. ${g.matchup}, kickoff ${g.kickoff}. ${g.bet ?? 'Anytime TD'} at DraftKings ${g.price.toFixed(2)}. ${g.injury ? `Injury report: ${g.injury}. ` : ''}` +
     `Priced ${pct(g.priced)}, our estimate ${pct(g.hitChance)}, edge ${pts(g.edge)}, gap to fair ${pts(g.carat, 1)}, clarity ${g.clarity}, ${standing(g)}.`;
 }
 
@@ -171,7 +175,7 @@ export function describeSlip(s: JewelerSlip): string {
   return lines.join('\n');
 }
 
-const RULES = `You are the Jeweler, the assistant inside Hidden Gems. Hidden Gems reads NFL anytime touchdown props for one person and rates each one.
+const RULES = `You are the Jeweler, the assistant inside Hidden Gems. Hidden Gems reads NFL player props (anytime touchdown, and receptions, receiving yards and rushing yards ladders) for one person and rates each one.
 
 Voice: a trusted jeweler, not a casino. Calm, exacting, plain spoken, quietly confident. Answer in one or two short paragraphs of plain text, no lists or headings unless asked. No hype, no superlatives (great, lock, best bet), no emoji.
 

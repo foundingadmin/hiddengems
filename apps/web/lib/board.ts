@@ -1,7 +1,7 @@
 import 'server-only';
 // The Gems board for one week: every gem and Fool's Gold in Recommended order, which gems are new, and
 // the reasons behind each, written from the model's stored inputs (estimates.inputs).
-import { type GemKind, compareRecommended, findTeam, newGemReason, seasonOf } from '@hiddengems/core';
+import { type GemKind, STAT_MARKETS, compareRecommended, findTeam, injuryLine, isStatMarket, newGemReason, seasonOf, statNeeded } from '@hiddengems/core';
 import { estimates, gemMarks, games, picks, players } from '@hiddengems/db';
 import { and, asc, eq, gt, inArray, isNotNull, max } from 'drizzle-orm';
 import { db } from '@/lib/db';
@@ -32,7 +32,12 @@ export async function resolveWeek(param: string | string[] | undefined, now = ne
 type Inputs = {
   statsChance?: number | null; impliedPoints?: number | null; impliedFactor?: number | null; injury?: string | null;
   form?: { games: number; tdGames: number; rzCarriesPerGame: number; rzTargetsPerGame: number; snapRecent: number } | null;
+  /** Stat ladders only (core StatRead). */
+  stat?: { hits: number; games: number; last5: number; last5Games: number; average: number } | null;
 };
+
+/** The prop as reasons() needs it. */
+type ReasonProp = { priced: number; hitChance: number; marketId?: string; line?: number | null };
 
 /** Kickoff windows in the display zone: Thursday, Sunday morning, afternoon and night, Monday, other days. */
 export function windowOf(d: Date): string {
@@ -43,12 +48,24 @@ export function windowOf(d: Date): string {
   return hour < 12 ? 'Morning' : hour < 16 ? 'Afternoon' : 'Night';
 }
 
-/** Three plain reasons, each with its number: the price against our read, his usage, and his record or team total. */
-export function reasons(p: { priced: number; hitChance: number }, inputs: Inputs | null, team: string | null): string[] {
+/**
+ * Three plain reasons, each with its number: the price against our read, then for anytime TD his usage and his
+ * record or team total, for a stat ladder how often he reached the line this season and lately, and his average.
+ */
+export function reasons(p: ReasonProp, inputs: Inputs | null, team: string | null): string[] {
   // When both round to the same whole percent, one decimal shows the gap the edge column reports.
   const same = Math.round(p.priced * 100) === Math.round(p.hitChance * 100);
   const show = (x: number) => (same ? `${(x * 100).toFixed(1)}%` : pct(x));
   const out = [`Priced like a ${show(p.priced)} shot, we read ${show(p.hitChance)}`];
+  const st = inputs?.stat;
+  if (p.marketId && isStatMarket(p.marketId) && p.line != null) {
+    if (st) {
+      const { unit } = STAT_MARKETS[p.marketId];
+      out.push(`Reached ${statNeeded(p.line)}+ in ${st.hits} of ${st.games} games this season, ${st.last5} of his last ${st.last5Games}`);
+      out.push(`Averages ${st.average.toFixed(p.marketId === 'receptions' ? 1 : 0)} ${unit} a game, recent games weighted more`);
+    }
+    return out;
+  }
   const f = inputs?.form;
   if (f) {
     const rz = f.rzCarriesPerGame + f.rzTargetsPerGame;
@@ -74,6 +91,10 @@ export interface BoardRow {
   number: number | null;
   position: string | null;
   marketId: string;
+  /** The stat line for a ladder rung; null for anytime TD. */
+  line: number | null;
+  /** The injury report line ("Questionable · Ribs · Limited in practice"); null when he is not listed. */
+  injury: string | null;
   matchup: string;
   kickoff: string;
   started: boolean;
@@ -111,7 +132,9 @@ export async function board(week: number | null, now = new Date()): Promise<{ ro
     return {
       key: pick.selectionKey, kind: pick.kind as GemKind, rating: pick.rating,
       name: player?.name ?? pick.playerName ?? 'Unknown player', teamId: team?.id ?? null, number: player?.jerseyNumber ?? null,
-      position: player?.position ?? null, marketId: pick.marketId, matchup: `${game.awayTeamId.toUpperCase()} @ ${game.homeTeamId.toUpperCase()}`,
+      position: player?.position ?? null, marketId: pick.marketId, line: pick.line,
+      injury: player ? injuryLine({ status: player.injuryStatus, practice: player.practiceStatus, injury: player.injuryDetail }) : null,
+      matchup: `${game.awayTeamId.toUpperCase()} @ ${game.homeTeamId.toUpperCase()}`,
       kickoff: game.kickoffAt.toISOString(), started, window: windowOf(game.kickoffAt),
       price: pick.price, priced: pick.priced, hitChance: pick.hitChance, gap: pick.gapToPosted, carat: pick.carat, clarity: pick.clarity,
       recommended: i,

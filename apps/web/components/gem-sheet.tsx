@@ -10,7 +10,7 @@ import { SlipButton } from '@/components/add-to-slip';
 import { GameLog, GameLogKey } from '@/components/game-log';
 import { ConditionsList, CoreSampleTable, GemNotes, LoupeView, PriceChart, TrendLines, scrollTopFor } from '@/components/gem-read';
 import { useCrumb } from '@/components/shell';
-import { Edge, GemMark, Player } from '@/components/marks';
+import { Edge, GemMark, InjuryTag, Player } from '@/components/marks';
 import type { BoardRow } from '@/lib/board';
 import type { GemDetail } from '@/lib/gem';
 import { dismissible, scrollBodyTo } from '@foundingcreative/facet/js/sheet.mjs';
@@ -68,7 +68,7 @@ const kickoffLabel = (iso: string, zone: string) => new Intl.DateTimeFormat('en-
 const kickoffFull = (iso: string, zone: string) => new Intl.DateTimeFormat('en-US', { timeZone: zone, weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }).format(new Date(iso));
 
 /** What the header needs, from the board row while the sheet loads, then from the gem itself. */
-type Head = Pick<GemDetail, 'key' | 'kind' | 'rating' | 'name' | 'teamId' | 'number' | 'position' | 'marketId' | 'matchup' | 'kickoff' | 'price' | 'gapToPosted' | 'fresh'>;
+type Head = Pick<GemDetail, 'key' | 'kind' | 'rating' | 'name' | 'teamId' | 'number' | 'position' | 'marketId' | 'line' | 'injury' | 'matchup' | 'kickoff' | 'price' | 'gapToPosted' | 'fresh'>;
 const headOf = (r: BoardRow): Head => ({ ...r, gapToPosted: r.gap, fresh: !!r.fresh });
 
 export function GemSheet({ rows, detail, asked, zone }: {
@@ -199,7 +199,7 @@ export function GemSheet({ rows, detail, asked, zone }: {
                 <h2 id="gem-sheet-title" className="fc-sheet-title">
                   {head ? (
                     <Player name={head.name} teamId={head.teamId} number={head.number} size="lg"
-                      detail={<>{[head.position, betLabel(head.marketId), head.matchup].filter(Boolean).join(' · ')} · <time dateTime={head.kickoff} title={kickoffFull(head.kickoff, zone)}>{kickoffLabel(head.kickoff, zone)}</time></>} />
+                      detail={<>{[head.position, betLabel(head.marketId, head.line), head.matchup].filter(Boolean).join(' · ')} · <time dateTime={head.kickoff} title={kickoffFull(head.kickoff, zone)}>{kickoffLabel(head.kickoff, zone)}</time></>} />
                   ) : missing ? 'Gem not found' : <span className="fc-skeleton" style={{ height: 'var(--fc-space-12)', width: 'calc(var(--fc-space-32) * 2)' }}>Loading</span>}
                 </h2>
               </div>
@@ -212,6 +212,7 @@ export function GemSheet({ rows, detail, asked, zone }: {
                 <span className="fc-price text-label-14">{head.price.toFixed(2)}</span>
                 <Edge pts={pts(head.gapToPosted)} />
                 {head.fresh && <span className="fc-badge" data-variant="purple" data-size="sm" data-contrast="low">New</span>}
+                <InjuryTag line={head.injury} />
                 {!missing && (
                   <span className="fc-sheet-action">
                     <SlipButton row={{ key: head.key, name: head.name, kind: head.kind, started: Date.parse(head.kickoff) <= Date.now() }} place="sheet" />
@@ -243,6 +244,9 @@ export function GemSheet({ rows, detail, asked, zone }: {
   );
 }
 
+/** A stat ladder's filled cell ("5+ receptions"); undefined for anytime TD. */
+const ladderHit = (gem: GemDetail) => (gem.line != null && gem.marketId !== 'anytime_td' ? betLabel(gem.marketId, gem.line) : undefined);
+
 function Sections({ gem, zone }: { gem: GemDetail; zone: string }) {
   const same = Math.round(gem.priced * 100) === Math.round(gem.hitChance * 100);
   const show = (p: number) => (same ? `${(p * 100).toFixed(1)}%` : pct(p));
@@ -269,7 +273,7 @@ function Sections({ gem, zone }: { gem: GemDetail; zone: string }) {
             {gem.rating != null ? (
               <dd>{gem.rating}<small>Gap to fair, as a share of {FULL_CARAT} pts, times clarity</small></dd>
             ) : (
-              <dd>None<small>{whyNoRating(gem.kind, gem.price)}</small></dd>
+              <dd>None<small>{whyNoRating(gem.kind, gem.price, gem.block)}</small></dd>
             )}
           </div>
           <div>
@@ -298,8 +302,8 @@ function Sections({ gem, zone }: { gem: GemDetail; zone: string }) {
         <h3 id="gem-loupe-h" className="text-heading-20">The loupe</h3>
         {gem.loupe ? <LoupeView loupe={gem.loupe} log={gem.log} /> : gem.log.season.games ? (
           <>
-            <GameLog log={gem.log} />
-            <GameLogKey />
+            <GameLog log={gem.log} hit={ladderHit(gem)} />
+            <GameLogKey hit={ladderHit(gem)} />
           </>
         ) : (
           <div className="fc-empty"><strong>No games this season yet</strong></div>
@@ -308,7 +312,8 @@ function Sections({ gem, zone }: { gem: GemDetail; zone: string }) {
 
       <section id="gem-context" className="fc-sheet-section" aria-labelledby="gem-context-h">
         <h3 id="gem-context-h" className="text-heading-20">Core sample and conditions</h3>
-        {gem.sample ? <CoreSampleTable sample={gem.sample} team={gem.teamId?.toUpperCase() ?? null} /> : <div className="fc-empty"><strong>No games this season yet</strong></div>}
+        {gem.sample ? <CoreSampleTable sample={gem.sample} team={gem.teamId?.toUpperCase() ?? null} />
+          : ladderHit(gem) ? null : <div className="fc-empty"><strong>No games this season yet</strong></div>}
         <ConditionsList conditions={gem.conditions} now={gem.now} />
       </section>
     </>

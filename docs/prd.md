@@ -150,6 +150,16 @@ if no_2026_stats:       rating = None             # market stands
 
 Empty state: when nothing clears at your usual odds, the board says so.
 
+Nov 7 2026, injuries and stat ladders. The full injury report (game status, last practice, the injury) comes from
+nflverse with the daily usage pull and shows on every gem. Out, Doubtful, or stats from another team (a trade or
+waiver claim) means no gem (`availabilityBlock` in `packages/core/src/availability.ts`); a limited or missed last
+practice costs clarity. Receptions, receiving yards and rushing yards join anytime TD as alternate ladders, over side
+only (`packages/core/src/markets.ts`), read by the stat model (`packages/core/src/stat-model.ts`, a smoothed and
+recency weighted hit rate, recalibrated: fit on Weeks 4 to 6 of 2026, Brier 0.1750 against 0.1776 raw on Weeks 7
+and later, where the plain hit rate ran 3 to 5 points hot). On the free odds plan the ladders ride the Sunday 8:43
+AM pull and confirmed manual pulls only (`LADDER_SNAPSHOTS`), about 45 credits a week on a full slate. Game day
+inactives are not in the nflverse report, so a late scratch still needs a look before kickoff.
+
 Nov 6 2026, back to how the Week 8 pilot picked: a gem must be priced 2.50 to 5.00 and beat the posted price by a
 point or more (`GEM_RULES` in `packages/core/src/gems.ts`). Long shots no longer reach the board. Leaning the model
 on hit rate instead of the red zone read was tested the same night and made the walk forward Brier worse (0.1309

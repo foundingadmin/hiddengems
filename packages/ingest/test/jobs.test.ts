@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { STADIUMS, fairChance, gemNotes, gradeBox, readEstimateInputs, weatherNote, zonedTimeToUtc } from '@hiddengems/core';
+import { STADIUMS, fairChance, gemNotes, gradeBox, propHit, readEstimateInputs, weatherNote, zonedTimeToUtc } from '@hiddengems/core';
 import {
   bets, createDb, gameWeather, getGameWeather, jobSettings, estimates, gemRecords, games, grades, jobLocks, oddsLatest, oddsSlots, oddsSnapshots, picks, playerGameStats, playerUsage, players,
   providerRefs, providerUsage, runLogs, runs, seedReference, slipLegs, slips, unpackBackup,
@@ -165,6 +165,14 @@ describe('odds pulls follow the snapshot schedule', () => {
     expect(slot).toMatchObject({ games: 5 });
   });
 
+  it('keeps the stat ladders a Saturday pull did not ask for', async () => {
+    // The manual pull above priced every market; Saturday night priced anytime TD only, so the ladders stand.
+    const ladders = await db.select().from(oddsLatest).where(inArray(oddsLatest.marketId, ['receptions', 'receiving_yds', 'rushing_yds']));
+    expect(ladders.length).toBeGreaterThan(0);
+    expect(ladders.every((l) => l.available)).toBe(true);
+    expect(ladders.every((l) => l.side === 'over' && l.line != null)).toBe(true);
+  });
+
   it('freezes each game just before kickoff, once', async () => {
     const kickoff = new Date('2026-11-08T18:00:00Z'); // 1:00 PM ET: MIA at BUF and CIN at BAL
     const r = await run('pull-odds', { providers: paid, now: at(kickoff, -15) });
@@ -177,7 +185,8 @@ describe('odds pulls follow the snapshot schedule', () => {
     const sunMorning = zonedTimeToUtc('2026-11-08', '08:43', 'America/Denver');
     const r = await run('pull-odds', { providers: paid, now: at(sunMorning, 2) });
     expect(r).toMatchObject({ status: 'failed', failureOwner: 'ours' });
-    expect(r.message).toMatch(/1 odds credits left this month/);
+    // Sunday morning carries the ladders: four markets a game.
+    expect(r.message).toMatch(/1 odds credits left this month, \d+ needed/);
     await db.delete(providerUsage);
   });
 
@@ -301,9 +310,10 @@ describe('model inputs', () => {
     expect(flowers).toMatchObject({ injuryStatus: 'Questionable' });
   });
 
-  it('reads every prop with the v3.0 model', async () => {
+  it('reads every anytime TD prop with the v3.0 model and every stat ladder with the stat model', async () => {
     const all = await db.select().from(picks);
-    expect(all.every((p) => p.model === 'hg-v3.0')).toBe(true);
+    expect(all.filter((p) => p.marketId === 'anytime_td').every((p) => p.model === 'hg-v3.0')).toBe(true);
+    expect(all.filter((p) => p.marketId !== 'anytime_td').every((p) => p.model === 'hg-stat-1.0')).toBe(true);
     const [e] = await db.select().from(estimates).where(eq(estimates.model, 'hg-v3.0')).limit(1);
     expect(e!.inputs).toHaveProperty('statsWeight');
   });
@@ -386,10 +396,15 @@ describe('gem records and grades', () => {
       expect(['gem', 'fools-gold', 'none', 'unrated']).toContain(r.kind);
       // No Sunday morning pull was taken, so Saturday night is the decision price.
       expect(r.decisionSlot).toBe('sat:2026-11-07');
-      const [snap] = await db.select().from(oddsSnapshots)
-        .where(and(eq(oddsSnapshots.selectionKey, r.selectionKey), eq(oddsSnapshots.bookId, 'draftkings'), eq(oddsSnapshots.runId, sat!.runId)));
-      expect(r.decisionPrice).toBe(snap!.priceDecimal);
-      expect(r.decisionAt).toEqual(sat!.pulledAt);
+      if (r.marketId === 'anytime_td') {
+        const [snap] = await db.select().from(oddsSnapshots)
+          .where(and(eq(oddsSnapshots.selectionKey, r.selectionKey), eq(oddsSnapshots.bookId, 'draftkings'), eq(oddsSnapshots.runId, sat!.runId)));
+        expect(r.decisionPrice).toBe(snap!.priceDecimal);
+        expect(r.decisionAt).toEqual(sat!.pulledAt);
+      } else {
+        // Saturday night carries anytime TD only, so a stat ladder's decision price is its last price before it.
+        expect(r.decisionAt.getTime()).toBeLessThanOrEqual(sat!.pulledAt.getTime());
+      }
       expect(r.decisionFair).toBeCloseTo(fairChance(r.decisionPrice), 12);
       expect(r.freezeFair).toBeCloseTo(fairChance(r.freezePrice), 12);
       const [e] = await db.select().from(estimates).where(eq(estimates.id, r.estimateId!));
@@ -420,7 +435,7 @@ describe('gem records and grades', () => {
   });
 
   it('grades every record and placed bet once the game is final, each in one box', async () => {
-    const [pick] = (await recordsOf(['2026-11-08-mia-buf'])).filter((r) => r.playerId);
+    const [pick] = (await recordsOf(['2026-11-08-mia-buf'])).filter((r) => r.playerId && r.marketId === 'anytime_td');
     await db.insert(bets).values({
       placedAt: pick!.decisionAt, selectionKey: pick!.selectionKey, gameId: pick!.gameId, marketId: 'anytime_td', playerId: pick!.playerId, side: 'yes',
       line: null, bookId: 'draftkings', priceDecimal: pick!.decisionPrice, stake: '10.00',
@@ -438,7 +453,7 @@ describe('gem records and grades', () => {
     for (const g of gems) {
       const rec = records.find((x) => x.id === g.gemRecordId)!;
       const [stat] = await db.select().from(playerGameStats).where(and(eq(playerGameStats.gameId, rec.gameId), eq(playerGameStats.playerId, rec.playerId!)));
-      expect(g).toMatchObject({ taken: rec.decisionPrice, closePrice: rec.freezePrice, touchdowns: stat!.touchdowns, hit: stat!.touchdowns > 0 });
+      expect(g).toMatchObject({ taken: rec.decisionPrice, closePrice: rec.freezePrice, touchdowns: stat!.touchdowns, hit: propHit(rec, stat!) });
       expect(g.clv).toBeCloseTo(rec.decisionPrice * rec.freezeFair - 1, 12);
       expect(g.beatClose).toBe(g.clv > 0);
       expect(g.box).toBe(gradeBox(g.beatClose, g.hit));

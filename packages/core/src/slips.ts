@@ -139,7 +139,7 @@ export function slipReminders(legs: readonly ReminderLeg[], stake: number | null
   const out: Reminder[] = [];
   legs.forEach((l, leg) => {
     if (l.price < SHORT_PRICE) out.push({ kind: 'short-price', leg });
-    if (touchdownsNeeded(l) >= 2) out.push({ kind: 'multi-td', leg });
+    if (l.marketId === 'anytime_td' && touchdownsNeeded(l) >= 2) out.push({ kind: 'multi-td', leg });
   });
   if (usualStake && stake != null) {
     if (stake < usualStake.min) out.push({ kind: 'stake', side: 'below' });

@@ -131,6 +131,7 @@ export function writeReadme() {
   }
   L.push('', '## Run it', '');
   L.push('```sh', 'packages/ingest/node_modules/.bin/tsx ops/backtest/plan.ts        # plan.json from nflverse games.csv', 'node ops/backtest/fetch-odds.mjs --dry                               # credit estimate', 'ODDS_API_KEY_HISTORICAL=... node ops/backtest/fetch-odds.mjs        # buys only what the cache lacks', 'packages/ingest/node_modules/.bin/tsx ops/backtest/replay.ts      # MOD0, MOD1q, MOD2 ledgers and results.json', 'packages/ingest/node_modules/.bin/tsx ops/backtest/capsules.ts    # Saturday capsules for screened players', '# the capsule-reader subagent writes experiments/backtest/reads/WK{n}.json, one per week', 'packages/ingest/node_modules/.bin/tsx ops/backtest/apply-reads.ts # MOD1 and MOD3 ledgers, this README', '```', '');
+  L.push('To test a new MOD without spending credits, add it to `replay.ts` and set `experiments/backtest/run.json` to `{ "mode": "replay" }` on a `data/backtest-*` branch. The run reuses the cached odds and fails rather than buy if the cache is gone. A weekly run keeps the cache from expiring.', '');
   L.push('nflverse files go in `experiments/backtest/cache/nflverse/` (games, roster_2026, roster_weekly_2026, depth_charts_2026, stats_player_week_2026, play_by_play_2026.csv.gz, snap_counts_2026, injuries_2026), from the nflverse-data releases.', '');
   writeFileSync(`${OUT_DIR}/README.md`, L.join('\n'));
 }

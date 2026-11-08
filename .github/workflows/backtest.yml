@@ -5,10 +5,15 @@ name: Backtest
 # experiments/backtest/run.json changes on a data/backtest-* branch, so a push spends credits only when asked.
 # Raw odds stay in the Actions cache, readable by this repo's workflows only, so nothing paid is bought twice or
 # published. The ledger, results and README are committed back to the branch.
+# Modes in run.json: test and probe check the key, full buys what the cache lacks and replays, replay never buys
+# (it fails if the cache is gone) and is the one to use for a new MOD. A weekly run touches the cache so GitHub's
+# 7 day eviction never drops what was paid for.
 on:
   push:
     branches: ['data/backtest-*']
     paths: ['experiments/backtest/run.json']
+  schedule:
+    - cron: '17 9 * * 1'
 
 permissions:
   contents: write
@@ -18,7 +23,29 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  keepalive:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/cache/restore@v4
+        id: restore
+        with:
+          path: |
+            experiments/backtest/cache/odds
+            experiments/backtest/cache/wayback
+          key: backtest-odds-${{ github.run_id }}
+          restore-keys: backtest-odds-
+      - if: steps.restore.outputs.cache-matched-key == ''
+        run: echo "::error::No backtest odds cache to keep. Rebuying would cost about 7,300 credits." && exit 1
+      - uses: actions/cache/save@v4
+        with:
+          path: |
+            experiments/backtest/cache/odds
+            experiments/backtest/cache/wayback
+          key: backtest-odds-${{ github.run_id }}
+
   replay:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -64,8 +91,17 @@ jobs:
         run: |
           max=$(node -p "require('./experiments/backtest/run.json').maxCredits")
           node ops/backtest/fetch-odds.mjs --max-credits "$max"
-      - if: steps.run.outputs.mode == 'full'
+      - name: Refuse to replay without the cache
+        if: steps.run.outputs.mode == 'replay'
+        run: |
+          n=$(ls experiments/backtest/cache/odds/wk*/board/*.json 2>/dev/null | wc -l)
+          echo "$n cached boards"
+          [ "$n" -gt 0 ] || { echo "::error::The odds cache is gone. Replay buys nothing; use mode full to rebuy."; exit 1; }
+      - if: steps.run.outputs.mode == 'full' || steps.run.outputs.mode == 'replay'
         run: packages/ingest/node_modules/.bin/tsx ops/backtest/replay.ts
+      - name: Apply the committed reads
+        if: steps.run.outputs.mode == 'replay'
+        run: packages/ingest/node_modules/.bin/tsx ops/backtest/apply-reads.ts
       - name: Saturday capsules
         if: steps.run.outputs.mode == 'full'
         run: packages/ingest/node_modules/.bin/tsx ops/backtest/capsules.ts
@@ -78,10 +114,10 @@ jobs:
             experiments/backtest/cache/wayback
           key: backtest-odds-${{ github.run_id }}
       - name: Commit the ledger
-        if: steps.run.outputs.mode == 'full'
+        if: steps.run.outputs.mode == 'full' || steps.run.outputs.mode == 'replay'
         run: |
-          cp experiments/backtest/cache/odds/spend.json experiments/backtest/spend.json
+          cp experiments/backtest/cache/odds/spend.json experiments/backtest/spend.json || true
           git config user.name "github-actions[bot]"
           git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
           git add experiments/ledger experiments/backtest/capsules experiments/backtest/README.md experiments/backtest/results.json experiments/backtest/spend.json
-          git commit -m "Record the Weeks 1 to 8 backtest" && git push || echo "Nothing new to commit"
+          git commit -m "Record the Weeks 1 to 8 backtest (${{ steps.run.outputs.mode }})" && git push || echo "Nothing new to commit"

@@ -19,6 +19,8 @@ The weights are the only thing that ever changes. The types every build codes ag
 | Cooling off | The same as hot hand | The projection using the season average when the last 3 ran above it | Fewer than 4 games on record |
 | Hidden gems | Season fantasy points so far, last season early | Fair nudged down for the top 24 at his position, up for everyone else | No fantasy history |
 
+A one-sided price from a book with no two-way quotes on that board doesn't count toward books disagree's 2 books, since its cut can't be measured.
+
 Seeds hand over raw chances. Nothing in a seed is tuned on any week. Settings MOD4, MOD5 and MOD6 learned on 2026
 Weeks 2 to 6 (edge floors, margins, shift sizes, the 9% alt cut) stay out. Fixes that make a seed read football
 correctly stay in, like counting a game with snaps and no stat line as a zero.

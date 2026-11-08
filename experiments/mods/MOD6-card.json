@@ -1,0 +1,65 @@
+{
+  "mod": "MOD6",
+  "frozen": true,
+  "frozenAt": "2026-11-08",
+  "about": "News only. Backs the player who inherits work after a Saturday event: a starter Out or Doubtful, a depth chart promotion, an outdoor team indoors. No projections, no other books.",
+  "tailoring": {
+    "weeks": [
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "runs": 5,
+    "final": {
+      "gems": 37,
+      "graded": 36,
+      "hits": 22,
+      "expected": 18.7,
+      "z": 1.11,
+      "roi": 0.174,
+      "rawClv": 0.001,
+      "perWeek": 7.4,
+      "mainShare": 1
+    }
+  },
+  "params": {
+    "shift": {
+      "out": 0.35,
+      "doubtful": 0.2,
+      "promoted": 0.05,
+      "dome": 0.05
+    },
+    "reach": 1,
+    "minPrice": 1.5,
+    "maxPrice": 5,
+    "stats": {
+      "QB": [
+        "pass_attempts",
+        "pass_completions",
+        "pass_yds"
+      ],
+      "RB": [
+        "rush_attempts",
+        "rush_yds",
+        "rush_reception_yds",
+        "anytime_td"
+      ],
+      "WR": [
+        "receptions",
+        "reception_yds"
+      ],
+      "TE": [
+        "receptions",
+        "reception_yds"
+      ]
+    },
+    "hold": {
+      "td": 0.1,
+      "main": 0.045,
+      "alt": 0.09
+    },
+    "perPlayer": 1
+  }
+}

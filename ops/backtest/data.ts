@@ -108,16 +108,21 @@ export function capsule(boardAt: Date, stamps: Iterable<Stamp>): number {
 
 export interface Snapshot { eventId: string; gameId: string; timestamp: Date; quotes: OddsQuote[] }
 
-/** One kind of cached snapshot for a week (board or close), keyed by our game id. */
+/** One kind of cached snapshot for a week (board or close), keyed by our game id. The history buy's files (board2,
+ * close2) merge in: they hold Thursday and Monday games and markets core does not read, so Sunday replays are unchanged. */
 export function loadOdds(week: number, kind: 'board' | 'close'): Map<string, Snapshot> {
-  const dir = `${ODDS_DIR}/wk${week}/${kind}`;
   const out = new Map<string, Snapshot>();
-  if (!existsSync(dir)) return out;
-  for (const f of readdirSync(dir).filter((x) => x.endsWith('.json'))) {
-    const body = JSON.parse(readFileSync(`${dir}/${f}`, 'utf8'));
-    const e = body.data;
-    const id = gameId(new Date(e.commence_time), teamId(e.away_team), teamId(e.home_team));
-    out.set(id, { eventId: e.id, gameId: id, timestamp: new Date(body.timestamp), quotes: normalizeEventOdds(e) });
+  for (const sub of [kind, `${kind}2`]) {
+    const dir = `${ODDS_DIR}/wk${week}/${sub}`;
+    if (!existsSync(dir)) continue;
+    for (const f of readdirSync(dir).filter((x) => x.endsWith('.json'))) {
+      const body = JSON.parse(readFileSync(`${dir}/${f}`, 'utf8'));
+      const e = body.data;
+      const id = gameId(new Date(e.commence_time), teamId(e.away_team), teamId(e.home_team));
+      const prev = out.get(id);
+      const ts = new Date(body.timestamp);
+      out.set(id, { eventId: e.id, gameId: id, timestamp: prev && prev.timestamp > ts ? prev.timestamp : ts, quotes: [...(prev?.quotes ?? []), ...normalizeEventOdds(e)] });
+    }
   }
   return out;
 }

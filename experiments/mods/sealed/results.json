@@ -1,0 +1,457 @@
+{
+  "at": "2026-11-08T07:17:56.533Z",
+  "weeks": [
+    7,
+    8
+  ],
+  "seal": {
+    "MOD4": "add227a57f93677af8bfd59d00a80199ca090973f3f4278fe295d6b014783c09",
+    "MOD5": "a16234236541c07f270259a2763d80b617d63a69b3c17c224084937ed4b1c694",
+    "MOD6": "db16b86ec26fe548139327f2366ef56a1182ab9edc8f3aa83bbdcc2ed2c236c8"
+  },
+  "cards": {
+    "MOD4": {
+      "sha256": "add227a57f93677af8bfd59d00a80199ca090973f3f4278fe295d6b014783c09",
+      "params": {
+        "margin": 0.025,
+        "minBooks": 2,
+        "minPrice": 1.5,
+        "maxPrice": 5,
+        "markets": [
+          "anytime_td",
+          "receptions",
+          "reception_yds",
+          "rush_yds",
+          "pass_yds",
+          "rush_reception_yds",
+          "pass_rush_yds",
+          "rush_attempts",
+          "pass_completions",
+          "pass_attempts"
+        ],
+        "hold": {
+          "td": 0.1,
+          "main": 0.045,
+          "alt": 0.09
+        }
+      }
+    },
+    "MOD5": {
+      "sha256": "a16234236541c07f270259a2763d80b617d63a69b3c17c224084937ed4b1c694",
+      "params": {
+        "halfLife": 2,
+        "matchupWeight": 0.5,
+        "scriptWeight": 0.5,
+        "trendWeight": 0.5,
+        "minEdge": 0.26,
+        "minGames": 2,
+        "minPrice": 1.5,
+        "maxPrice": 3.5,
+        "markets": [
+          "anytime_td",
+          "receptions",
+          "reception_yds",
+          "rush_yds",
+          "pass_yds",
+          "rush_reception_yds",
+          "pass_rush_yds",
+          "rush_attempts",
+          "pass_completions",
+          "pass_attempts"
+        ],
+        "shape": "lognormal",
+        "shrinkGames": 0,
+        "perPlayer": 1,
+        "priorGames": 4,
+        "skip": [
+          "QB|rush_yds",
+          "QB|rush_attempts"
+        ],
+        "blockInjured": true,
+        "calibration": 1,
+        "skipQbOut": true,
+        "mainOnly": true,
+        "needHistory": true
+      }
+    },
+    "MOD6": {
+      "sha256": "db16b86ec26fe548139327f2366ef56a1182ab9edc8f3aa83bbdcc2ed2c236c8",
+      "params": {
+        "shift": {
+          "out": 0.35,
+          "doubtful": 0.2,
+          "promoted": 0.05,
+          "dome": 0.05
+        },
+        "reach": 1,
+        "minPrice": 1.5,
+        "maxPrice": 5,
+        "stats": {
+          "QB": [
+            "pass_attempts",
+            "pass_completions",
+            "pass_yds"
+          ],
+          "RB": [
+            "rush_attempts",
+            "rush_yds",
+            "rush_reception_yds",
+            "anytime_td"
+          ],
+          "WR": [
+            "receptions",
+            "reception_yds"
+          ],
+          "TE": [
+            "receptions",
+            "reception_yds"
+          ]
+        },
+        "hold": {
+          "td": 0.1,
+          "main": 0.045,
+          "alt": 0.09
+        },
+        "perPlayer": 1
+      }
+    }
+  },
+  "summary": {
+    "MOD4": {
+      "gems": 9,
+      "graded": 8,
+      "hits": 3,
+      "expected": 2.2,
+      "z": 0.61,
+      "roi": 0.253,
+      "rawClv": 0.0479,
+      "perWeek": 4.5,
+      "mainShare": 0
+    },
+    "MOD5": {
+      "gems": 24,
+      "graded": 23,
+      "hits": 12,
+      "expected": 11.3,
+      "z": 0.3,
+      "roi": 0.086,
+      "rawClv": 0.031,
+      "perWeek": 12,
+      "mainShare": 1
+    },
+    "MOD6": {
+      "gems": 11,
+      "graded": 11,
+      "hits": 5,
+      "expected": 5.5,
+      "z": -0.28,
+      "roi": -0.094,
+      "rawClv": -0.0119,
+      "perWeek": 5.5,
+      "mainShare": 1
+    },
+    "MOD2": {
+      "gems": 306,
+      "graded": 303,
+      "hits": 75,
+      "expected": 85.8,
+      "z": -1.39,
+      "roi": -0.109,
+      "rawClv": 0.0327,
+      "perWeek": 153,
+      "mainShare": 0.05
+    }
+  },
+  "byWeek": {
+    "MOD4": {
+      "7": {
+        "gems": 3,
+        "graded": 3,
+        "hits": 0,
+        "expected": 0.9,
+        "z": -1.15,
+        "roi": -1,
+        "rawClv": 0.1176,
+        "perWeek": 3,
+        "mainShare": 0
+      },
+      "8": {
+        "gems": 6,
+        "graded": 5,
+        "hits": 3,
+        "expected": 1.3,
+        "z": 1.72,
+        "roi": 1.004,
+        "rawClv": 0.0131,
+        "perWeek": 6,
+        "mainShare": 0
+      }
+    },
+    "MOD5": {
+      "7": {
+        "gems": 11,
+        "graded": 11,
+        "hits": 6,
+        "expected": 5.3,
+        "z": 0.43,
+        "roi": 0.22,
+        "rawClv": 0.0206,
+        "perWeek": 11,
+        "mainShare": 1
+      },
+      "8": {
+        "gems": 13,
+        "graded": 12,
+        "hits": 6,
+        "expected": 6,
+        "z": 0.01,
+        "roi": -0.037,
+        "rawClv": 0.0403,
+        "perWeek": 13,
+        "mainShare": 1
+      }
+    },
+    "MOD6": {
+      "7": {
+        "gems": 8,
+        "graded": 8,
+        "hits": 3,
+        "expected": 3.9,
+        "z": -0.63,
+        "roi": -0.231,
+        "rawClv": -0.0143,
+        "perWeek": 8,
+        "mainShare": 1
+      },
+      "8": {
+        "gems": 3,
+        "graded": 3,
+        "hits": 2,
+        "expected": 1.6,
+        "z": 0.49,
+        "roi": 0.273,
+        "rawClv": 0,
+        "perWeek": 3,
+        "mainShare": 1
+      }
+    },
+    "MOD2": {
+      "7": {
+        "gems": 158,
+        "graded": 158,
+        "hits": 43,
+        "expected": 44.3,
+        "z": -0.24,
+        "roi": -0.023,
+        "rawClv": 0.0212,
+        "perWeek": 158,
+        "mainShare": 0.04
+      },
+      "8": {
+        "gems": 148,
+        "graded": 145,
+        "hits": 32,
+        "expected": 41.5,
+        "z": -1.75,
+        "roi": -0.202,
+        "rawClv": 0.0449,
+        "perWeek": 148,
+        "mainShare": 0.05
+      }
+    }
+  },
+  "byMarket": {
+    "MOD4": {
+      "reception_yds": {
+        "gems": 2,
+        "graded": 2,
+        "hits": 0,
+        "expected": 0.5,
+        "z": -0.86,
+        "roi": -1,
+        "rawClv": 0.0454,
+        "perWeek": 1,
+        "mainShare": 0
+      },
+      "rush_yds": {
+        "gems": 3,
+        "graded": 2,
+        "hits": 1,
+        "expected": 0.5,
+        "z": 0.72,
+        "roi": 0.845,
+        "rawClv": 0.1167,
+        "perWeek": 1.5,
+        "mainShare": 0
+      },
+      "pass_attempts": {
+        "gems": 4,
+        "graded": 4,
+        "hits": 2,
+        "expected": 1.2,
+        "z": 0.93,
+        "roi": 0.583,
+        "rawClv": -0.0024,
+        "perWeek": 2,
+        "mainShare": 0
+      }
+    },
+    "MOD5": {
+      "receptions": {
+        "gems": 10,
+        "graded": 10,
+        "hits": 6,
+        "expected": 4.4,
+        "z": 0.99,
+        "roi": 0.378,
+        "rawClv": 0.0166,
+        "perWeek": 5,
+        "mainShare": 1
+      },
+      "reception_yds": {
+        "gems": 4,
+        "graded": 4,
+        "hits": 3,
+        "expected": 2.1,
+        "z": 0.89,
+        "roi": 0.415,
+        "rawClv": 0.02,
+        "perWeek": 2,
+        "mainShare": 1
+      },
+      "rush_yds": {
+        "gems": 6,
+        "graded": 5,
+        "hits": 2,
+        "expected": 2.6,
+        "z": -0.58,
+        "roi": -0.236,
+        "rawClv": 0.0176,
+        "perWeek": 3,
+        "mainShare": 1
+      },
+      "rush_attempts": {
+        "gems": 4,
+        "graded": 4,
+        "hits": 1,
+        "expected": 2.1,
+        "z": -1.09,
+        "roi": -0.57,
+        "rawClv": 0.146,
+        "perWeek": 2,
+        "mainShare": 1
+      }
+    },
+    "MOD6": {
+      "receptions": {
+        "gems": 3,
+        "graded": 3,
+        "hits": 1,
+        "expected": 1.3,
+        "z": -0.34,
+        "roi": -0.247,
+        "rawClv": -0.0172,
+        "perWeek": 1.5,
+        "mainShare": 1
+      },
+      "reception_yds": {
+        "gems": 5,
+        "graded": 5,
+        "hits": 2,
+        "expected": 2.6,
+        "z": -0.58,
+        "roi": -0.236,
+        "rawClv": 0,
+        "perWeek": 2.5,
+        "mainShare": 1
+      },
+      "rush_yds": {
+        "gems": 1,
+        "graded": 1,
+        "hits": 1,
+        "expected": 0.5,
+        "z": 0.95,
+        "roi": 0.91,
+        "rawClv": null,
+        "perWeek": 0.5,
+        "mainShare": 1
+      },
+      "rush_attempts": {
+        "gems": 1,
+        "graded": 1,
+        "hits": 0,
+        "expected": 0.5,
+        "z": -1,
+        "roi": -1,
+        "rawClv": 0,
+        "perWeek": 0.5,
+        "mainShare": 1
+      },
+      "pass_completions": {
+        "gems": 1,
+        "graded": 1,
+        "hits": 1,
+        "expected": 0.5,
+        "z": 0.99,
+        "roi": 0.98,
+        "rawClv": -0.0198,
+        "perWeek": 0.5,
+        "mainShare": 1
+      }
+    },
+    "MOD2": {
+      "anytime_td": {
+        "gems": 14,
+        "graded": 13,
+        "hits": 6,
+        "expected": 3.3,
+        "z": 1.73,
+        "roi": 0.85,
+        "rawClv": -0.0068,
+        "perWeek": 7,
+        "mainShare": 1
+      },
+      "receptions": {
+        "gems": 74,
+        "graded": 74,
+        "hits": 13,
+        "expected": 20.7,
+        "z": -2.02,
+        "roi": -0.379,
+        "rawClv": 0.0411,
+        "perWeek": 37,
+        "mainShare": 0
+      },
+      "reception_yds": {
+        "gems": 154,
+        "graded": 154,
+        "hits": 42,
+        "expected": 44,
+        "z": -0.35,
+        "roi": -0.022,
+        "rawClv": 0.0368,
+        "perWeek": 77,
+        "mainShare": 0
+      },
+      "rush_yds": {
+        "gems": 64,
+        "graded": 62,
+        "hits": 14,
+        "expected": 17.8,
+        "z": -1.08,
+        "roi": -0.203,
+        "rawClv": 0.0218,
+        "perWeek": 32,
+        "mainShare": 0
+      }
+    }
+  },
+  "overlap": {
+    "MOD4 MOD5": 0.11,
+    "MOD4 MOD6": 0,
+    "MOD5 MOD6": 0,
+    "MOD2 MOD4": 0.44,
+    "MOD2 MOD5": 0.54,
+    "MOD2 MOD6": 0
+  }
+}

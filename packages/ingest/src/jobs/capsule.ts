@@ -4,7 +4,7 @@
 // kickoff. Files go to the private backup repository. Cron calls it every 5 minutes; most calls find nothing due.
 import { createHash } from 'node:crypto';
 import { gzipSync } from 'node:zlib';
-import { CAPSULE_MARKETS, CAPSULE_RULES, capsulePath, dueCapsules, gameId } from '@hiddengems/core';
+import { CAPSULE_CLOSE_MARKETS, CAPSULE_MARKETS, CAPSULE_RULES, capsulePath, dueCapsules, gameId } from '@hiddengems/core';
 import { gameWeather, games, oddsSlots, providerUsage } from '@hiddengems/db';
 import { and, asc, eq, gt, inArray, lt } from 'drizzle-orm';
 import { ours } from '../errors';
@@ -69,7 +69,7 @@ export const capsule: Job = {
       const [usage] = await db.select().from(providerUsage).where(eq(providerUsage.provider, odds.id));
       const plan = (usage?.used ?? 0) + (usage?.remaining ?? 0);
       if (plan < CAPSULE_RULES.minPlanCredits) return { skipped: `Capsules wait for the paid odds plan (${plan} credits this month)` };
-      const need = (board ? upcoming.length : due.closes.length) * CAPSULE_MARKETS.length;
+      const need = (board ? upcoming.length * CAPSULE_MARKETS.length : 0) + due.closes.length * CAPSULE_CLOSE_MARKETS.length;
       if (usage?.remaining != null && usage.remaining < need) {
         throw ours('quota', `${usage.remaining} odds credits left this month, up to ${need} needed for this capsule`, { provider: odds.id });
       }
@@ -93,7 +93,7 @@ export const capsule: Job = {
       for (const g of list) {
         const event = byGame.get(g.id);
         if (!event) { missing.push(g.id); continue; }
-        const raw = await odds.rawEventOdds(pctx, event, CAPSULE_MARKETS);
+        const raw = await odds.rawEventOdds(pctx, event, kind === 'sat' ? CAPSULE_MARKETS : CAPSULE_CLOSE_MARKETS);
         await put(capsulePath(g.season, g.week, kind, `odds/${g.id}.json.gz`), gz(JSON.stringify({ capturedAt, gameId: g.id, kickoff: g.kickoffAt, raw })), `${odds.id} event ${event.externalId}`);
       }
     };
@@ -128,7 +128,7 @@ export const capsule: Job = {
     const kinds = [board ? 'sat' : null, due.closes.length ? 'close' : null].filter(Boolean) as ('sat' | 'close')[];
     for (const kind of kinds) {
       const mine = files.filter((f) => f.path.includes(`/${kind}/`));
-      const manifest = { capturedAt, kind, slot: kind === 'sat' ? board!.slot : due.closes.map((g) => `capsule-close:${g.id}`), markets: CAPSULE_MARKETS, missing, failed, creditsRemaining: usage?.remaining ?? null, files: mine };
+      const manifest = { capturedAt, kind, slot: kind === 'sat' ? board!.slot : due.closes.map((g) => `capsule-close:${g.id}`), markets: kind === 'sat' ? CAPSULE_MARKETS : CAPSULE_CLOSE_MARKETS, missing, failed, creditsRemaining: usage?.remaining ?? null, files: mine };
       const name = kind === 'sat' ? 'manifest.json' : `manifest-${now.toISOString().slice(0, 16).replace(':', '')}.json`;
       await store.put(spctx, capsulePath(week.season, week.week, kind, name), new TextEncoder().encode(JSON.stringify(manifest, null, 2)), `Capsule manifest ${kind}`);
     }

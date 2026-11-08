@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  CAPSULE_MARKETS, appraise, availabilityBlock, betLabel, capsulePath, dueCapsules, injuryLine, injuryLevel, marketsFor, practicePenalty, propHit, readStatProp, slipReminders, statChance, whyNoRating,
+  CAPSULE_CLOSE_MARKETS, CAPSULE_MARKETS, appraise, availabilityBlock, betLabel, capsulePath, dueCapsules, injuryLine, injuryLevel, marketsFor, practicePenalty, propHit, readStatProp, slipReminders, statChance, whyNoRating,
 } from '../src';
 
 describe('stat ladders', () => {
@@ -103,6 +103,7 @@ describe('time capsules', () => {
     expect(CAPSULE_MARKETS).toContain('player_pass_yds_alternate');
     expect(CAPSULE_MARKETS).toContain('team_totals');
     expect(new Set(CAPSULE_MARKETS).size).toBe(CAPSULE_MARKETS.length);
+    expect(CAPSULE_CLOSE_MARKETS.every((m) => CAPSULE_MARKETS.includes(m))).toBe(true);
     expect(capsulePath(2026, 9, 'sat', 'manifest.json')).toBe('capsules/2026/wk09/sat/manifest.json');
   });
 });

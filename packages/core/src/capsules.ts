@@ -33,6 +33,13 @@ export const CAPSULE_GAME_MARKETS = ['h2h', 'spreads', 'totals', 'alternate_spre
 
 export const CAPSULE_MARKETS: readonly string[] = [...CAPSULE_PLAYER_MARKETS, ...CAPSULE_GAME_MARKETS];
 
+/** The close carries only what we grade closing line value on: volume and yardage props (main and alt), anytime TD
+ * and the game lines. The Saturday board carries everything. */
+const CLOSE_STATS = ['receptions', 'reception_yds', 'rush_yds', 'rush_attempts', 'rush_reception_yds', 'pass_yds', 'pass_attempts', 'pass_completions', 'pass_rush_yds'];
+export const CAPSULE_CLOSE_MARKETS: readonly string[] = [
+  'player_anytime_td', ...CLOSE_STATS.flatMap((s) => [`player_${s}`, `player_${s}_alternate`]), 'h2h', 'spreads', 'totals', 'team_totals',
+];
+
 export const CAPSULE_RULES = {
   /** The Saturday board, Denver wall time. Retried every cron tick until it lands or the window closes. */
   board: { weekday: 6, time: '19:47' },

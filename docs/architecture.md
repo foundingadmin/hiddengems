@@ -261,7 +261,8 @@ history or trusting files that get rewritten. Rules live in `packages/core/src/c
   prop and game market (standard and alternate, 66 keys) across every US book, one file per game. The nflverse files
   that change week to week (schedule, weekly rosters, latest depth chart, injuries, snap counts, player and team
   weekly stats, PFR advanced stats, Next Gen Stats, FTN charting, play by play). The app's games and forecasts.
-- **Close**, each game within 25 minutes of kickoff. Raw odds only, for closing line value.
+- **Close**, each game within 25 minutes of kickoff. Raw odds for the markets we grade closing line value on
+  (anytime TD, volume and yardage props main and alt, game lines), `CAPSULE_CLOSE_MARKETS`.
 - **Where**. The private backup repository, `capsules/<season>/wk<nn>/{sat,close}/`, with a `manifest.json` per
   capture (time, files, sha256, source, credits left). Never this public repository.
 - **Cost**. Billed per market returned, about 40 to 60 credits a game per capture. Capsules use the paid key

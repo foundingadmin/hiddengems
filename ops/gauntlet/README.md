@@ -13,7 +13,7 @@ The weights are the only thing that ever changes. The types every build codes ag
 | Next man up | Final injury report and depth chart | The backup's projection with the missing starter's recent volume added | No starter out or doubtful at his position |
 | Game script | Spread and total on the board | The projection shifted by implied team points and run or pass lean | Never, for players with a projection |
 | Matchup | Yards the opponent allowed his position recently, against league average | The projection scaled by that ratio | Fewer than 3 opponent games on record |
-| Follow the move | The same line 3 days before the board | The fair chance carried on in the direction it moved | No early quote for that line |
+| Follow the move | DraftKings' main line 3 days before the board against its main line now, in yards, or in log odds when the point held | DraftKings' ladder curve shifted one more step the way the main line moved | No early main line for that player and stat |
 | Ladder math | DraftKings' full alt ladder for the player | That rung's chance on one smooth curve fit through the ladder | Fewer than 3 rungs posted |
 | Hot hand | Last 3 games against season average | The projection using the last 3 games | Fewer than 4 games on record |
 | Cooling off | The same as hot hand | The projection using the season average when the last 3 ran above it | Fewer than 4 games on record |

@@ -1,5 +1,5 @@
 // Math and football reads every seed shares. Pure: nothing here reads a clock, a file or the network.
-import type { GameLog, WeekWorld } from '../contract';
+import type { GameLog, Line, WeekWorld } from '../contract';
 
 /** The book every line on the board is posted by. */
 export const DK = 'draftkings';
@@ -38,6 +38,21 @@ export function invPhi(p: number): number {
   if (p > 1 - lo) return -invPhi(1 - p);
   const q = p - 0.5, r = q * q;
   return (((((a[0]! * r + a[1]!) * r + a[2]!) * r + a[3]!) * r + a[4]!) * r + a[5]!) * q / (((((b[0]! * r + b[1]!) * r + b[2]!) * r + b[3]!) * r + b[4]!) * r + 1);
+}
+
+/**
+ * DraftKings' ladder for one player and bet type as one smooth curve: a straight line in normal score against log
+ * yards, the lognormal shape yards take. One point per threshold (the main line's where a threshold is posted on both).
+ * `mx` and `mz` are the rungs' mean log yards and mean normal score, `slope` the least squares fit (NaN under 2 rungs).
+ */
+export function ladderCurve(lines: Line[]): { mx: number; mz: number; slope: number; rungs: number } {
+  const rungs = new Map<number, Line>();
+  for (const l of lines) if (l.line > 0 && (!rungs.has(l.line) || !l.alt)) rungs.set(l.line, l);
+  const pts = [...rungs.values()].map((l) => ({ x: Math.log(l.line), z: invPhi(clamp(l.fair)) }));
+  const mx = pts.reduce((a, p) => a + p.x, 0) / pts.length, mz = pts.reduce((a, p) => a + p.z, 0) / pts.length;
+  const sxx = pts.reduce((a, p) => a + (p.x - mx) ** 2, 0);
+  const slope = sxx > 0 ? pts.reduce((a, p) => a + (p.x - mx) * (p.z - mz), 0) / sxx : NaN;
+  return { mx, mz, slope, rungs: pts.length };
 }
 
 /** QB, RB, WR or TE from any depth chart or roster spelling (LWR, SWR, FB, ...). */

@@ -7,9 +7,9 @@ retired: 2026-11-06
 hypothesis: The v3.0 red zone model alone finds anytime TD props that beat the posted DraftKings price, at any price.
 ---
 
-# MOD0 · app rules Nov 2 to Nov 6 2026
+# MOD0 · retired app rules
 
-The board as the app picked it before pull request 51. Kept as the back trial baseline.
+The board as the app picked it from Nov 2 to Nov 6 2026, before pull request 51. Kept as the back trial baseline.
 
 ## Source
 

@@ -6,9 +6,9 @@ created: 2026-11-07
 hypothesis: The app's models alone, held to the pilot's price range and a 1 point edge, beat the book with no read.
 ---
 
-# MOD2 · app as shipped Nov 7 2026
+# MOD2 · app as shipped
 
-The Gems board exactly as the app builds it after pull requests 51 and 52.
+The Gems board exactly as the app builds it from Nov 7 2026, after pull requests 51 and 52.
 
 ## Source
 

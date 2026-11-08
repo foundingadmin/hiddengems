@@ -1,0 +1,128 @@
+name: Backtest
+
+# Runs the Weeks 1 to 8 replay and Saturday capsules (ops/backtest) where The Odds API and the Wayback Machine are
+# reachable. It fires only when
+# experiments/backtest/run.json changes on a data/backtest-* branch, so a push spends credits only when asked.
+# Raw odds stay in the Actions cache, readable by this repo's workflows only, so nothing paid is bought twice or
+# published. The ledger, results and README are committed back to the branch.
+# Modes in run.json: test and probe check the key, full buys what the cache lacks and replays, replay never buys
+# (it fails if the cache is gone) and is the one to use for a new MOD. Every full or replay run also archives the
+# cache to the private backup repository (BACKUP_GITHUB_REPO), and a run whose Actions cache was evicted restores
+# from that archive, so odds paid for once are never bought again.
+on:
+  push:
+    branches: ['data/backtest-*']
+    paths: ['experiments/backtest/run.json']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: backtest
+  cancel-in-progress: false
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Restore bought odds
+        id: cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            experiments/backtest/cache/odds
+            experiments/backtest/cache/wayback
+          key: backtest-odds-${{ github.run_id }}
+          restore-keys: backtest-odds-
+      - name: Restore from the private archive
+        if: steps.cache.outputs.cache-matched-key == ''
+        env:
+          TOKEN: ${{ secrets.BACKUP_GITHUB_TOKEN }}
+          REPO: ${{ secrets.BACKUP_GITHUB_REPO }}
+        run: |
+          [ -n "$TOKEN" ] && [ -n "$REPO" ] || { echo "No private archive configured"; exit 0; }
+          curl -sSfL -H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.github.raw" \
+            "https://api.github.com/repos/$REPO/contents/hiddengems-backtest/cache.tar.gz" -o /tmp/cache.tgz \
+            && tar xzf /tmp/cache.tgz && echo "Restored the cache from the private archive" || echo "No archive yet"
+      - name: nflverse 2026
+        run: |
+          d=experiments/backtest/cache/nflverse; mkdir -p $d
+          b=https://github.com/nflverse/nflverse-data/releases/download
+          for u in schedules/games.csv rosters/roster_2026.csv weekly_rosters/roster_weekly_2026.csv stats_player/stats_player_week_2026.csv pbp/play_by_play_2026.csv.gz snap_counts/snap_counts_2026.csv injuries/injuries_2026.csv depth_charts/depth_charts_2026.csv; do
+            curl -sSfL -o "$d/$(basename $u)" "$b/$u"
+          done
+      - name: Read the run request
+        id: run
+        run: echo "mode=$(node -p "require('./experiments/backtest/run.json').mode")" >> "$GITHUB_OUTPUT"
+      - name: Test the key
+        if: steps.run.outputs.mode == 'test' || steps.run.outputs.mode == 'probe'
+        env:
+          ODDS_API_KEY_HISTORICAL: ${{ secrets.ODDS_API_KEY_HISTORICAL }}
+        run: |
+          node ops/backtest/fetch-odds.mjs --${{ steps.run.outputs.mode }}
+          git config user.name "github-actions[bot]"
+          git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
+          git add experiments/backtest/key-test.json
+          git commit -m "Record the Odds API key test" && git push || echo "Nothing new to commit"
+      - name: Buy what the cache lacks
+        if: steps.run.outputs.mode == 'full'
+        env:
+          ODDS_API_KEY_HISTORICAL: ${{ secrets.ODDS_API_KEY_HISTORICAL }}
+        run: |
+          max=$(node -p "require('./experiments/backtest/run.json').maxCredits")
+          node ops/backtest/fetch-odds.mjs --max-credits "$max"
+      - name: Refuse to replay without the cache
+        if: steps.run.outputs.mode == 'replay'
+        run: |
+          n=$(ls experiments/backtest/cache/odds/wk*/board/*.json 2>/dev/null | wc -l)
+          echo "$n cached boards"
+          [ "$n" -gt 0 ] || { echo "::error::The odds cache is gone. Replay buys nothing; use mode full to rebuy."; exit 1; }
+      - if: steps.run.outputs.mode == 'full' || steps.run.outputs.mode == 'replay'
+        run: packages/ingest/node_modules/.bin/tsx ops/backtest/replay.ts
+      - name: Apply the committed reads
+        if: steps.run.outputs.mode == 'replay'
+        run: packages/ingest/node_modules/.bin/tsx ops/backtest/apply-reads.ts
+      - name: Saturday capsules
+        if: steps.run.outputs.mode == 'full'
+        run: packages/ingest/node_modules/.bin/tsx ops/backtest/capsules.ts
+      - name: Archive the cache privately
+        if: success() && (steps.run.outputs.mode == 'full' || steps.run.outputs.mode == 'replay')
+        env:
+          TOKEN: ${{ secrets.BACKUP_GITHUB_TOKEN }}
+          REPO: ${{ secrets.BACKUP_GITHUB_REPO }}
+        run: |
+          [ -n "$TOKEN" ] && [ -n "$REPO" ] || { echo "::warning::Add BACKUP_GITHUB_TOKEN and BACKUP_GITHUB_REPO to GitHub Actions secrets to archive the odds"; exit 0; }
+          tar --sort=name --mtime=@0 --owner=0 --group=0 --numeric-owner -cf - experiments/backtest/cache/odds experiments/backtest/cache/wayback | gzip -n > /tmp/cache.tgz
+          url="https://api.github.com/repos/$REPO/contents/hiddengems-backtest/cache.tar.gz"
+          auth=(-H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.github+json")
+          old=$(curl -sS "${auth[@]}" "$url" | jq -r '.sha // empty')
+          new=$(git hash-object /tmp/cache.tgz)
+          [ "$old" = "$new" ] && { echo "Archive already current"; exit 0; }
+          jq -n --rawfile c <(base64 -w0 /tmp/cache.tgz) --arg sha "$old" \
+            '{message: "Archive the backtest odds cache", content: $c} + (if $sha == "" then {} else {sha: $sha} end)' > /tmp/put.json
+          curl -sSf -X PUT "${auth[@]}" "$url" --data @/tmp/put.json -o /dev/null
+          echo "Archived $(du -h /tmp/cache.tgz | cut -f1) to $REPO"
+      - name: Keep bought odds and captures
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            experiments/backtest/cache/odds
+            experiments/backtest/cache/wayback
+          key: backtest-odds-${{ github.run_id }}
+      - name: Commit the ledger
+        if: steps.run.outputs.mode == 'full' || steps.run.outputs.mode == 'replay'
+        run: |
+          cp experiments/backtest/cache/odds/spend.json experiments/backtest/spend.json || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
+          git add experiments/ledger experiments/backtest/capsules experiments/backtest/README.md experiments/backtest/results.json experiments/backtest/spend.json
+          git commit -m "Record the Weeks 1 to 8 backtest (${{ steps.run.outputs.mode }})" && git push || echo "Nothing new to commit"

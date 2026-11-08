@@ -1,0 +1,60 @@
+{
+  "run": "MOD1q-WK8SNF-back",
+  "mod": "MOD1q",
+  "week": 8,
+  "segment": "SNF",
+  "kind": "back",
+  "board_at": "2026-11-01T01:47:00.000Z",
+  "locked_at": "2026-11-01T01:47:00.000Z",
+  "picks": [
+    {
+      "selection_key": "2026-11-01-phi-was:anytime_td:00-0031588:yes:-",
+      "game_id": "2026-11-01-phi-was",
+      "player": "Stefon Diggs",
+      "market": "anytime_td",
+      "line": null,
+      "side": "yes",
+      "book": "draftkings",
+      "lock_price": 2.9,
+      "implied": 0.3448,
+      "reads": [],
+      "close_price": 2.9,
+      "clv": -0.079,
+      "stat_value": 1,
+      "hit": true,
+      "mod_chance": 0.6,
+      "edge": 0.2552,
+      "gem_level": 1,
+      "rating": null,
+      "clarity": null
+    },
+    {
+      "selection_key": "2026-11-01-phi-was:rushing_yds:00-0034844:over:59.5",
+      "game_id": "2026-11-01-phi-was",
+      "player": "Saquon Barkley",
+      "market": "rushing_yds",
+      "line": 59.5,
+      "side": "over",
+      "book": "draftkings",
+      "lock_price": 2.53,
+      "implied": 0.3953,
+      "reads": [],
+      "close_price": 2.77,
+      "clv": -0.1576,
+      "stat_value": 30,
+      "hit": false,
+      "mod_chance": 0.6,
+      "edge": 0.2047,
+      "gem_level": 1,
+      "rating": null,
+      "clarity": null
+    }
+  ],
+  "result": {
+    "book_expected_hits": 0.74,
+    "hits": 1,
+    "pass": true,
+    "flat_roi": 0.45,
+    "clv_avg": -0.1183
+  }
+}

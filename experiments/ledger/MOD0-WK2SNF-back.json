@@ -1,0 +1,60 @@
+{
+  "run": "MOD0-WK2SNF-back",
+  "mod": "MOD0",
+  "week": 2,
+  "segment": "SNF",
+  "kind": "back",
+  "board_at": "2026-09-20T01:47:00.000Z",
+  "locked_at": "2026-09-20T01:47:00.000Z",
+  "picks": [
+    {
+      "selection_key": "2026-09-20-ind-kc:anytime_td:00-0033873:yes:-",
+      "game_id": "2026-09-20-ind-kc",
+      "player": "Patrick Mahomes",
+      "market": "anytime_td",
+      "line": null,
+      "side": "yes",
+      "book": "draftkings",
+      "lock_price": 4.2,
+      "implied": 0.2381,
+      "reads": [],
+      "close_price": 4.2,
+      "clv": -0.092,
+      "stat_value": 0,
+      "hit": false,
+      "mod_chance": 0.2691,
+      "edge": 0.031,
+      "gem_level": 2,
+      "rating": 23,
+      "clarity": 43
+    },
+    {
+      "selection_key": "2026-09-20-ind-kc:anytime_td:00-0030279:yes:-",
+      "game_id": "2026-09-20-ind-kc",
+      "player": "Keenan Allen",
+      "market": "anytime_td",
+      "line": null,
+      "side": "yes",
+      "book": "draftkings",
+      "lock_price": 5,
+      "implied": 0.2,
+      "reads": [],
+      "close_price": 5.25,
+      "clv": -0.1452,
+      "stat_value": 0,
+      "hit": false,
+      "mod_chance": 0.2225,
+      "edge": 0.0225,
+      "gem_level": 1,
+      "rating": 15,
+      "clarity": 35
+    }
+  ],
+  "result": {
+    "book_expected_hits": 0.438,
+    "hits": 0,
+    "pass": false,
+    "flat_roi": -1,
+    "clv_avg": -0.1186
+  }
+}

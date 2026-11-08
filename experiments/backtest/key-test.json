@@ -1,0 +1,101 @@
+{
+  "at": "2026-11-08T03:23:40.569Z",
+  "key": "valid",
+  "credits": {
+    "status": 200,
+    "used": "78",
+    "remaining": "422",
+    "last": "0"
+  },
+  "historical": "available, week 2 board lists 29 events",
+  "historicalHeaders": {
+    "status": 200,
+    "used": "79",
+    "remaining": "421",
+    "last": "1"
+  },
+  "probe": {
+    "at": "2026-11-08T03:25:58.098Z",
+    "week": 8,
+    "board": "2026-11-01T01:47:00Z",
+    "game": "Arizona Cardinals at Dallas Cowboys, 2026-11-01T18:00:00Z",
+    "list": {
+      "status": 200,
+      "used": "1",
+      "remaining": "19999",
+      "last": "1"
+    },
+    "odds": {
+      "status": 200,
+      "used": "41",
+      "remaining": "19959",
+      "last": "40"
+    },
+    "snapshot": "2026-11-01T01:45:36Z",
+    "books": {
+      "draftkings": {
+        "player_anytime_td": 28,
+        "player_reception_yds_alternate": 156,
+        "player_receptions_alternate": 83,
+        "player_rush_yds_alternate": 83
+      },
+      "williamhill_us": {
+        "player_anytime_td": 25,
+        "player_reception_yds_alternate": 88,
+        "player_receptions_alternate": 54,
+        "player_rush_yds_alternate": 44
+      },
+      "fanduel": {
+        "player_anytime_td": 27,
+        "player_reception_yds_alternate": 108,
+        "player_receptions_alternate": 76,
+        "player_rush_yds_alternate": 60
+      },
+      "betmgm": {
+        "player_anytime_td": 25,
+        "player_reception_yds_alternate": 53,
+        "player_rush_yds_alternate": 29
+      },
+      "fanatics": {
+        "player_anytime_td": 27,
+        "player_reception_yds_alternate": 93,
+        "player_receptions_alternate": 62,
+        "player_rush_yds_alternate": 43
+      }
+    },
+    "sampleDraftKings": [
+      {
+        "market": "player_anytime_td",
+        "outcomes": [
+          "Javonte Williams Yes @ 1.42",
+          "CeeDee Lamb Yes @ 1.71",
+          "Trey McBride Yes @ 1.91"
+        ]
+      },
+      {
+        "market": "player_reception_yds_alternate",
+        "outcomes": [
+          "CeeDee Lamb Over 24.5 @ 1.04",
+          "CeeDee Lamb Over 29.5 @ 1.06",
+          "CeeDee Lamb Over 39.5 @ 1.11"
+        ]
+      },
+      {
+        "market": "player_receptions_alternate",
+        "outcomes": [
+          "Trey McBride Over 3.5 @ 1.03",
+          "Trey McBride Over 4.5 @ 1.1",
+          "Trey McBride Over 5.5 @ 1.23"
+        ]
+      },
+      {
+        "market": "player_rush_yds_alternate",
+        "outcomes": [
+          "Javonte Williams Over 39.5 @ 1.1",
+          "Javonte Williams Over 49.5 @ 1.21",
+          "Javonte Williams Over 59.5 @ 1.39"
+        ]
+      }
+    ]
+  }
+}

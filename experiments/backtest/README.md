@@ -4,7 +4,7 @@
 
 Three MODs kept apart by what each may read, tailored on Weeks 2 to 6, frozen, then run once on sealed Weeks 7 and 8 with MOD2 (main today) alongside as the control. Every game counts (Thursday, Sunday, Monday) across ten bet types. Edge is the MOD's chance minus DraftKings' implied chance with the vig in, and a gem needs edge above zero. Each MOD keeps one bet per player and stat, and every gem logs its line position (MAIN or ALT) and the DraftKings main line. Passing means more hits than the book expected and a positive flat $1 ROI.
 
-### Sealed Weeks 7 and 8
+### Sealed weeks 7 and 8
 
 | MOD | Gems | Hits | Book expected | z | Flat ROI | Raw CLV | Verdict |
 |---|---|---|---|---|---|---|---|

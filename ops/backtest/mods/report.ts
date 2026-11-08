@@ -24,7 +24,7 @@ export function modsSection(): string[] {
   L.push('## MOD4, MOD5 and MOD6', '');
   L.push('Three MODs kept apart by what each may read, tailored on Weeks 2 to 6, frozen, then run once on sealed Weeks 7 and 8 with MOD2 (main today) alongside as the control. Every game counts (Thursday, Sunday, Monday) across ten bet types. Edge is the MOD\'s chance minus DraftKings\' implied chance with the vig in, and a gem needs edge above zero. Each MOD keeps one bet per player and stat, and every gem logs its line position (MAIN or ALT) and the DraftKings main line. Passing means more hits than the book expected and a positive flat $1 ROI.', '');
 
-  L.push('### Sealed Weeks 7 and 8', '');
+  L.push('### Sealed weeks 7 and 8', '');
   L.push('| MOD | Gems | Hits | Book expected | z | Flat ROI | Raw CLV | Verdict |', '|---|---|---|---|---|---|---|---|');
   for (const m of [...mods, 'MOD2']) L.push(`${row(m === 'MOD2' ? 'MOD2 control' : m, r.summary[m])} ${pass(r.summary[m])} |`);
   L.push('');

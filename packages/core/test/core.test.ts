@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  SNAPSHOT_GRACE_MINUTES, americanToDecimal, anytimeTdHit, appraise, clarityScore, closingLineValue, compareRecommended, decimalToAmerican,
+  SNAPSHOT_GRACE_MINUTES, americanToDecimal, anytimeTdHit, appraise, whyNoRating, clarityScore, closingLineValue, compareRecommended, decimalToAmerican,
   decisionSnapshot, dueFreezes, dueSnapshot, fairChance, fairDecimal, findTeam, gameId, gemRating, gradeBox, gradeTake, houseCut, impliedFromDecimal,
   nameKey, newGemReason, priceAsOf, recommendedScore, selectionKey, zonedTimeToUtc,
   type Rankable,
@@ -54,6 +54,22 @@ describe('gem rating', () => {
 
   it('is no gem when it beats neither price', () => {
     expect(appraise({ hitChance: 0.2, price: 3.2, clarity: 90, hasStats: true })).toMatchObject({ kind: 'none', rating: null });
+  });
+
+  it('picks only in the 2.50 to 5.00 range, like the Week 8 pilot', () => {
+    // 20% at 8.00 is 7.5 pts over the posted 12.5%, but long shots are not gems
+    expect(appraise({ hitChance: 0.2, price: 8, clarity: 90, hasStats: true })).toMatchObject({ kind: 'none', rating: null });
+    expect(appraise({ hitChance: 0.7, price: 2, clarity: 90, hasStats: true })).toMatchObject({ kind: 'none', rating: null });
+    expect(appraise({ hitChance: 0.45, price: 2.5, clarity: 90, hasStats: true }).kind).toBe('gem');
+    expect(appraise({ hitChance: 0.25, price: 5, clarity: 90, hasStats: true }).kind).toBe('gem');
+    expect(whyNoRating('none', 8)).toBe('Outside the 2.50 to 5.00 range');
+  });
+
+  it('needs an edge of a point or more to call it a gem', () => {
+    // posted 3.20 is 31.25% implied: +0.75 pts is inside the model's error, +1.25 pts clears
+    expect(appraise({ hitChance: 0.32, price: 3.2, clarity: 90, hasStats: true }).kind).toBe('fools-gold');
+    expect(appraise({ hitChance: 0.325, price: 3.2, clarity: 90, hasStats: true }).kind).toBe('gem');
+    expect(whyNoRating('fools-gold', 3.2)).toBe('Does not clear the posted price by 1 pt');
   });
 
   it('gives no rating without 2026 stats, however good the price', () => {

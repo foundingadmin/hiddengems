@@ -179,12 +179,14 @@ async function main() {
   if (!hash) throw new Error('Usage: tsx ops/gauntlet/run.ts --hash <sha256 of the frozen rules.json>');
   // Check the gate before loading anything, so a wrong hash costs nothing.
   readRules(RULES_PATH, hash);
-  const world = (await import(pathToFileURL(join(HERE, 'world.ts')).href)) as Partial<WorldSource>;
-  if (typeof world.openWeek !== 'function' || typeof world.reveal !== 'function') throw new Error('world.ts must export openWeek and reveal');
+  const world = (await import(pathToFileURL(join(HERE, 'world.ts')).href)) as Partial<WorldSource> & { recordPicks?: (ref: WeekRef, picks: Pick[]) => string };
+  if (typeof world.openWeek !== 'function' || typeof world.reveal !== 'function' || typeof world.recordPicks !== 'function') throw new Error('world.ts must export openWeek, recordPicks and reveal');
+  const { openWeek, recordPicks, reveal } = world as Required<typeof world>;
   const mod = (await import(pathToFileURL(join(HERE, 'seeds', 'index.ts')).href)) as Record<string, unknown>;
   const seeds = (mod.SEEDS ?? mod.seeds ?? mod.default) as Seed[] | undefined;
   if (!Array.isArray(seeds)) throw new Error('seeds/index.ts must export the ten seeds as SEEDS');
-  await runGauntlet({ hash, seeds, world: { openWeek: world.openWeek.bind(world), reveal: world.reveal.bind(world) } });
+  // reveal answers only once the week's picks are in experiments/gauntlet/ledger, so they are recorded there first.
+  await runGauntlet({ hash, seeds, world: { openWeek, reveal: (ref, picks) => { recordPicks(ref, picks); return reveal(ref, picks); } } });
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

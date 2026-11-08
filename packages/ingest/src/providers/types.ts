@@ -113,6 +113,8 @@ export interface RosterProvider extends ProviderBase {
 export interface OddsProvider extends ProviderBase {
   events(ctx: ProviderContext): Promise<OddsEvent[]>;
   eventOdds(ctx: ProviderContext, event: OddsEvent, markets: readonly MarketId[]): Promise<OddsQuote[]>;
+  /** The provider's own response for any market keys across every US book, untouched, for time capsules. */
+  rawEventOdds(ctx: ProviderContext, event: OddsEvent, marketKeys: readonly string[]): Promise<unknown>;
 }
 export interface ResultsProvider extends ProviderBase {
   /** Stat lines for one week of games. */

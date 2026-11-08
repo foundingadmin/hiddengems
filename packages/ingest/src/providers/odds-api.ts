@@ -78,6 +78,11 @@ export function oddsApi(apiKey: string): OddsProvider {
       });
       return normalizeEventOdds(await ctx.http.getJson(`${BASE}/events/${event.externalId}/odds?apiKey=${key}&${params}`));
     },
+    async rawEventOdds(ctx, event, marketKeys) {
+      // Every US book (no bookmakers filter), billed per market returned.
+      const params = new URLSearchParams({ regions: 'us', oddsFormat: 'decimal', dateFormat: 'iso', markets: marketKeys.join(',') });
+      return ctx.http.getJson(`${BASE}/events/${event.externalId}/odds?apiKey=${key}&${params}`);
+    },
     usage(res) {
       const num = (h: string) => { const v = res.headers.get(h); return v == null ? null : Number(v); };
       const used = num('x-requests-used'), remaining = num('x-requests-remaining');

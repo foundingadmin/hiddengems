@@ -2,6 +2,7 @@ export * from './odds';
 export * from './markets';
 export * from './gems';
 export * from './snapshots';
+export * from './capsules';
 export * from './games';
 export * from './teams';
 export * from './model';

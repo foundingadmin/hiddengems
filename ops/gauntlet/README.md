@@ -83,3 +83,36 @@ It refuses unfrozen rules, a hash that does not match, and any hash that already
 `experiments/gauntlet/`, even from a run that stopped partway. Per week it writes `<season>-wNN-picks.json` before
 reveal, then `<season>-wNN-results.json` with the results, the scores and the new weights, and at the end
 `report.json`. The report can be rebuilt from the ledger with `tsx ops/gauntlet/report.ts <ledger folder>`.
+
+## Freezing and running
+
+The principal approves the run. The session that runs it then:
+
+1. Restores the owned data and runs `world.test.ts` against it (every week opens, every wall holds).
+2. Opens one 2025 week and one 2026 week without `reveal` and checks that each seed speaks on a sensible share of lines.
+   Follow the move is expected to be mostly silent in 2025.
+3. Sets `"frozen": true` in `rules.json`, commits it, and records `sha256sum ops/gauntlet/rules.json` under Runs below.
+4. Runs `run.ts --hash <that sha256>` once, commits the ledger and `report.json`, and merges one pull request into `main`.
+5. Fills the report in Figma from `report.json`, on a copy of the blank template. The template itself stays blank.
+
+Any change to a seed, the rules or the learner after a run means a new run with a new hash, from 2025 Week 1.
+
+## Figma
+
+All in the Hidden Gems file, page "MOD7 experiment":
+
+- [Seeds plate](https://www.figma.com/design/HBngz0dAGz4gy30QhPL8As/Hidden-Gems?node-id=57-2): the ten seeds and the frozen rules.
+- [Blank report](https://www.figma.com/design/HBngz0dAGz4gy30QhPL8As/Hidden-Gems?node-id=57-175): the template each run fills on its own copy.
+- [Example report](https://www.figma.com/design/HBngz0dAGz4gy30QhPL8As/Hidden-Gems?node-id=51-20): made-up numbers, for layout only.
+
+## Adding a seed
+
+A new seed starts from a football reason written down before any run, never from a MOD's losses. It gets one rerun of
+the whole gauntlet from 2025 Week 1 with every seed at an equal start, compared week for week with the last run. It
+joins live only if all three hold: its weight grows in the bet types it targets, the run beats the last one on money
+and on beating the close, and the gain shows in both seasons. It joins at the weights it earned in that run.
+
+## Runs
+
+| Run | Rules sha256 | Date | Verdict |
+|---|---|---|---|

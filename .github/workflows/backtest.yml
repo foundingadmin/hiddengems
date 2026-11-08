@@ -6,14 +6,13 @@ name: Backtest
 # Raw odds stay in the Actions cache, readable by this repo's workflows only, so nothing paid is bought twice or
 # published. The ledger, results and README are committed back to the branch.
 # Modes in run.json: test and probe check the key, full buys what the cache lacks and replays, replay never buys
-# (it fails if the cache is gone) and is the one to use for a new MOD. A weekly run touches the cache so GitHub's
-# 7 day eviction never drops what was paid for.
+# (it fails if the cache is gone) and is the one to use for a new MOD. Every full or replay run also archives the
+# cache to the private backup repository (BACKUP_GITHUB_REPO), and a run whose Actions cache was evicted restores
+# from that archive, so odds paid for once are never bought again.
 on:
   push:
     branches: ['data/backtest-*']
     paths: ['experiments/backtest/run.json']
-  schedule:
-    - cron: '17 9 * * 1'
 
 permissions:
   contents: write
@@ -23,29 +22,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  keepalive:
-    if: github.event_name == 'schedule'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/cache/restore@v4
-        id: restore
-        with:
-          path: |
-            experiments/backtest/cache/odds
-            experiments/backtest/cache/wayback
-          key: backtest-odds-${{ github.run_id }}
-          restore-keys: backtest-odds-
-      - if: steps.restore.outputs.cache-matched-key == ''
-        run: echo "::error::No backtest odds cache to keep. Rebuying would cost about 7,300 credits." && exit 1
-      - uses: actions/cache/save@v4
-        with:
-          path: |
-            experiments/backtest/cache/odds
-            experiments/backtest/cache/wayback
-          key: backtest-odds-${{ github.run_id }}
-
   replay:
-    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -57,6 +34,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Restore bought odds
+        id: cache
         uses: actions/cache/restore@v4
         with:
           path: |
@@ -64,6 +42,16 @@ jobs:
             experiments/backtest/cache/wayback
           key: backtest-odds-${{ github.run_id }}
           restore-keys: backtest-odds-
+      - name: Restore from the private archive
+        if: steps.cache.outputs.cache-matched-key == ''
+        env:
+          TOKEN: ${{ secrets.BACKUP_GITHUB_TOKEN }}
+          REPO: ${{ secrets.BACKUP_GITHUB_REPO }}
+        run: |
+          [ -n "$TOKEN" ] && [ -n "$REPO" ] || { echo "No private archive configured"; exit 0; }
+          curl -sSfL -H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.github.raw" \
+            "https://api.github.com/repos/$REPO/contents/hiddengems-backtest/cache.tar.gz" -o /tmp/cache.tgz \
+            && tar xzf /tmp/cache.tgz && echo "Restored the cache from the private archive" || echo "No archive yet"
       - name: nflverse 2026
         run: |
           d=experiments/backtest/cache/nflverse; mkdir -p $d
@@ -105,6 +93,23 @@ jobs:
       - name: Saturday capsules
         if: steps.run.outputs.mode == 'full'
         run: packages/ingest/node_modules/.bin/tsx ops/backtest/capsules.ts
+      - name: Archive the cache privately
+        if: success() && (steps.run.outputs.mode == 'full' || steps.run.outputs.mode == 'replay')
+        env:
+          TOKEN: ${{ secrets.BACKUP_GITHUB_TOKEN }}
+          REPO: ${{ secrets.BACKUP_GITHUB_REPO }}
+        run: |
+          [ -n "$TOKEN" ] && [ -n "$REPO" ] || { echo "::warning::Add BACKUP_GITHUB_TOKEN and BACKUP_GITHUB_REPO to GitHub Actions secrets to archive the odds"; exit 0; }
+          tar --sort=name --mtime=@0 --owner=0 --group=0 --numeric-owner -cf - experiments/backtest/cache/odds experiments/backtest/cache/wayback | gzip -n > /tmp/cache.tgz
+          url="https://api.github.com/repos/$REPO/contents/hiddengems-backtest/cache.tar.gz"
+          auth=(-H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.github+json")
+          old=$(curl -sS "${auth[@]}" "$url" | jq -r '.sha // empty')
+          new=$(git hash-object /tmp/cache.tgz)
+          [ "$old" = "$new" ] && { echo "Archive already current"; exit 0; }
+          jq -n --rawfile c <(base64 -w0 /tmp/cache.tgz) --arg sha "$old" \
+            '{message: "Archive the backtest odds cache", content: $c} + (if $sha == "" then {} else {sha: $sha} end)' > /tmp/put.json
+          curl -sSf -X PUT "${auth[@]}" "$url" --data @/tmp/put.json -o /dev/null
+          echo "Archived $(du -h /tmp/cache.tgz | cut -f1) to $REPO"
       - name: Keep bought odds and captures
         if: always()
         uses: actions/cache/save@v4

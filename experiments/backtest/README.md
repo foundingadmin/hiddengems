@@ -189,6 +189,6 @@ packages/ingest/node_modules/.bin/tsx ops/backtest/capsules.ts    # Saturday cap
 packages/ingest/node_modules/.bin/tsx ops/backtest/apply-reads.ts # MOD1 and MOD3 ledgers, this README
 ```
 
-To test a new MOD without spending credits, add it to `replay.ts` and set `experiments/backtest/run.json` to `{ "mode": "replay" }` on a `data/backtest-*` branch. The run reuses the cached odds and fails rather than buy if the cache is gone. A weekly run keeps the cache from expiring.
+To test a new MOD without spending credits, add it to `replay.ts` and set `experiments/backtest/run.json` to `{ "mode": "replay" }` on a `data/backtest-*` branch. The run reuses the cached odds and fails rather than buy if the cache is gone. Each run also archives the cache to the private backup repository and restores from it when GitHub expires its own cache.
 
 nflverse files go in `experiments/backtest/cache/nflverse/` (games, roster_2026, roster_weekly_2026, depth_charts_2026, stats_player_week_2026, play_by_play_2026.csv.gz, snap_counts_2026, injuries_2026), from the nflverse-data releases.

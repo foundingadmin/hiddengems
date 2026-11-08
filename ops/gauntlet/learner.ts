@@ -16,9 +16,11 @@ export const logit = (p: number) => { const q = clampChance(p); return Math.log(
 export const inverseLogit = (x: number) => 1 / (1 + Math.exp(-x));
 
 export const evenSet = (): SeedSet => Object.fromEntries(SEED_IDS.map((s) => [s, 1 / SEED_IDS.length])) as SeedSet;
-export const startWeights = (): Weights => ({
-  shared: evenSet(),
-  byBetType: Object.fromEntries(BET_TYPES.map((b) => [b, evenSet()])) as Record<BetType, SeedSet>,
+/** The rules' starting set (renormalized to 1), or 10% each when the rules give none. */
+export const startSet = (start?: Record<SeedId, number>): SeedSet => (start ? normalize({ ...start }) : evenSet());
+export const startWeights = (start?: Record<SeedId, number>): Weights => ({
+  shared: startSet(start),
+  byBetType: Object.fromEntries(BET_TYPES.map((b) => [b, startSet(start)])) as Record<BetType, SeedSet>,
 });
 
 export function normalize(set: SeedSet): SeedSet {
@@ -37,11 +39,19 @@ export interface Blend {
   seedChances: Record<SeedId, number | null>;
 }
 
+/** The two switches' effect on one line's blend. Left out, every seed pushes its full weight both ways. */
+export interface BlendOptions {
+  /** capByLines: each seed's push is multiplied by its share, lines spoken / (lines spoken + poolingLines). */
+  scale?: Record<SeedId, number>;
+  /** vetoAsFilter: these seeds may push the line down, never up. */
+  filters?: ReadonlySet<SeedId>;
+}
+
 /**
  * The MOD's chance: the weighted average of every seed's chance in log odds, silent seeds at DraftKings' fair chance.
  * Since each set adds to 1, logit(chance) = logit(fair) + the sum of the contributions.
  */
-export function blend(line: Line, chances: SeedChances, weights: SeedSet): Blend {
+export function blend(line: Line, chances: SeedChances, weights: SeedSet, opts: BlendOptions = {}): Blend {
   const base = logit(line.fair);
   let x = base;
   const contributions = {} as Record<SeedId, number>;
@@ -50,26 +60,71 @@ export function blend(line: Line, chances: SeedChances, weights: SeedSet): Blend
     const p = chances[s].get(line.key);
     const spoke = p !== undefined && Number.isFinite(p);
     seedChances[s] = spoke ? p : null;
-    contributions[s] = spoke ? weights[s] * (logit(p) - base) : 0;
-    x += contributions[s];
+    let push = spoke ? weights[s] * (logit(p) - base) : 0;
+    if (opts.scale) push *= opts.scale[s];
+    if (opts.filters?.has(s) && push > 0) push = 0;
+    contributions[s] = push;
+    x += push;
   }
   return { chance: inverseLogit(x), contributions, seedChances };
 }
+
+// ---------------------------------------------------------------------------------------------------------------
+// The switches' inputs, known by Saturday
+
+/** capByLines: each seed's share in one bet type, its graded lines spoken / (those lines + poolingLines). */
+export function lineShares(spoken: Record<SeedId, number>, poolingLines: number): Record<SeedId, number> {
+  return Object.fromEntries(SEED_IDS.map((s) => [s, ownShare(spoken[s], poolingLines)])) as Record<SeedId, number>;
+}
+
+/** vetoAsFilter: which seeds have spoken on any line so far, and which have ever put a line above fair. */
+export interface Sides { spoke: SeedId[]; raised: SeedId[] }
+export const noSides = (): Sides => ({ spoke: [], raised: [] });
+
+/** Adds one Saturday's chances to the record. Only the board is read, never an outcome. */
+export function noteSides(prev: Sides, lines: Line[], chances: SeedChances): Sides {
+  const spoke = new Set(prev.spoke);
+  const raised = new Set(prev.raised);
+  for (const line of lines) {
+    for (const s of SEED_IDS) {
+      const p = chances[s].get(line.key);
+      if (p === undefined || !Number.isFinite(p)) continue;
+      spoke.add(s);
+      if (logit(p) > logit(line.fair)) raised.add(s);
+    }
+  }
+  return { spoke: SEED_IDS.filter((s) => spoke.has(s)), raised: SEED_IDS.filter((s) => raised.has(s)) };
+}
+
+/** Seeds whose chances have only ever sat at or below fair: they spoke, and never above it. */
+export const filterSeeds = (sides: Sides): SeedId[] => sides.spoke.filter((s) => !sides.raised.includes(s));
 
 // ---------------------------------------------------------------------------------------------------------------
 // Saturday, pick
 
 export interface Gem extends Pick { seedChances: Record<SeedId, number | null>; rank: number }
 
+/** What the switches need on Saturday: lines spoken so far per bet type (capByLines) and the filter seeds (vetoAsFilter). */
+export interface PickContext { spoken?: LearnerState['spoken']; filters?: readonly SeedId[] }
+
 /**
  * Edge is the MOD's chance minus 1 / price, so the cut stays in. Odds within minPrice to maxPrice and positive edge,
  * at most perPlayer per player, best edge first, up to picksPerWeek. Ties go to the line key so a rerun matches.
  */
-export function pick(lines: Line[], chances: SeedChances, weights: Weights, rules: Rules): Gem[] {
+export function pick(lines: Line[], chances: SeedChances, weights: Weights, rules: Rules, ctx: PickContext = {}): Gem[] {
+  if (rules.capByLines && !ctx.spoken) throw new Error('capByLines needs the lines each seed has spoken on');
+  if (rules.vetoAsFilter && !ctx.filters) throw new Error('vetoAsFilter needs the filter seeds');
+  const scales = rules.capByLines
+    ? Object.fromEntries(BET_TYPES.map((b) => [b, lineShares(ctx.spoken![b], rules.poolingLines)])) as Record<BetType, Record<SeedId, number>>
+    : null;
+  const filters = rules.vetoAsFilter ? new Set(ctx.filters) : undefined;
   const candidates: Omit<Gem, 'rank'>[] = [];
   for (const line of lines) {
     if (!(line.price >= rules.minPrice && line.price <= rules.maxPrice)) continue;
-    const b = blend(line, chances, weights.byBetType[line.betType]);
+    const opts: BlendOptions = {};
+    if (scales) opts.scale = scales[line.betType];
+    if (filters) opts.filters = filters;
+    const b = blend(line, chances, weights.byBetType[line.betType], opts);
     const edge = b.chance - 1 / line.price;
     if (!(edge > 0)) continue;
     candidates.push({ key: line.key, line, chance: b.chance, edge, contributions: b.contributions, seedChances: b.seedChances });
@@ -191,10 +246,10 @@ export interface LearnerState {
   spoken: Record<BetType, Record<SeedId, number>>;
 }
 
-export function startState(): LearnerState {
+export function startState(start?: Record<SeedId, number>): LearnerState {
   return {
-    weights: startWeights(),
-    own: Object.fromEntries(BET_TYPES.map((b) => [b, evenSet()])) as Record<BetType, SeedSet>,
+    weights: startWeights(start),
+    own: Object.fromEntries(BET_TYPES.map((b) => [b, startSet(start)])) as Record<BetType, SeedSet>,
     lines: Object.fromEntries(BET_TYPES.map((b) => [b, 0])) as Record<BetType, number>,
     spoken: Object.fromEntries(BET_TYPES.map((b) => [b, Object.fromEntries(SEED_IDS.map((s) => [s, 0]))])) as LearnerState['spoken'],
   };

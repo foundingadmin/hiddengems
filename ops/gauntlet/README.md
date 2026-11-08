@@ -44,3 +44,24 @@ and 2025 Week 18, when starters rested.
 A pass needs all four: profit above the luck band (2 standard deviations of $1 flat betting at the gems' own odds),
 a profit in both 2025 and 2026, more than half its gems beating the closing price, and its two heaviest seeds
 earning at least half the profit.
+
+## The loader
+
+`world.ts` builds each week from the owned data in the private backup repository at 0 Odds API credits: the odds
+capsules (board, close and the early snapshot 3 days before) and the stamped nflverse files for 2024 to 2026.
+
+```
+git clone https://github.com/foundingadmin/hiddengems-backups /tmp/backups   # private
+BACKUPS_DIR=/tmp/backups packages/ingest/node_modules/.bin/tsx --test ops/gauntlet/world.test.ts
+```
+
+- Sunday and Monday games use the Saturday 7:47 PM Mountain board, every other game 7:47 PM Mountain the night before
+  its game day. Each game's quotes come from its own board.
+- Football data (box scores, snaps, injury reports, depth charts) stops at the week's first board. In a week with a
+  Thursday game, every other team's latest final injury report is the previous week's.
+- `fair` takes out DraftKings' own hold: both sides of a main line, the player's main line hold for a one-sided alt
+  rung, else the median main line hold for that bet type on that board.
+- An alt rung's `line` is its "60+" threshold (the book's 59.5 plus a half) and hits at or above it; a main line hits
+  above its point. `overHits` in `world.ts` applies the rule.
+- `reveal` refuses until `recordPicks` has written the week's picks to `experiments/gauntlet/ledger/<season>-wkNN-picks.json`.
+  Picks are recorded once.

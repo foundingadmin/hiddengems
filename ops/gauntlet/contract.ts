@@ -44,7 +44,8 @@ export interface Game { gameId: string; kickoff: Date; home: string; away: strin
 
 /** One player's finished game, from nflverse, only for games before this week's board. */
 export interface GameLog {
-  season: Season; week: number; gameId: string; playerId: string; name: string; team: string; opponent: string; position: string;
+  /** 2024 games feed the logs too (every season owned), though the gauntlet walks only 2025 and 2026. */
+  season: Season | 2024; week: number; gameId: string; playerId: string; name: string; team: string; opponent: string; position: string;
   rushYds: number; recYds: number; passYds: number; carries: number; targets: number; receptions: number; routes: number | null;
   snapPct: number | null; fantasyPoints: number;
 }

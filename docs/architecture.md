@@ -260,7 +260,9 @@ history or trusting files that get rewritten. Rules live in `packages/core/src/c
 - **Saturday board** (7:47 PM Denver, retried until Sunday 10:30 AM). Raw Odds API responses for every NFL player
   prop and game market (standard and alternate, 66 keys) across every US book, one file per game. The nflverse files
   that change week to week (schedule, weekly rosters, latest depth chart, injuries, snap counts, player and team
-  weekly stats, PFR advanced stats, Next Gen Stats, FTN charting, play by play). The app's games and forecasts.
+  weekly stats, PFR advanced stats, Next Gen Stats, FTN charting, play by play). Season-long files keep only the week
+  just finished and this week so far, so the capsules together rebuild the season without repeating it (play by play
+  drops from about 8 MB to about 1 MB a week). The app's games and forecasts.
 - **Close**, each game within 25 minutes of kickoff. Raw odds for the markets we grade closing line value on
   (anytime TD, volume and yardage props main and alt, game lines), `CAPSULE_CLOSE_MARKETS`.
 - **Where**. The private backup repository, `capsules/<season>/wk<nn>/{sat,close}/`, with a `manifest.json` per

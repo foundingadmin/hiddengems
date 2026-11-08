@@ -8,7 +8,7 @@ import { and, count, desc, eq, inArray, sql } from 'drizzle-orm';
 import { BOOTSTRAP, grade, jobs, runJob } from '../src';
 import { theirs } from '../src/errors';
 import { teamId } from '../src/jobs/shared';
-import { latestRows } from '../src/jobs/capsule';
+import { latestRows, seasonRows } from '../src/jobs/capsule';
 import { githubBackup, memoryBackup, sampleProviders } from '../src/providers';
 import type { Providers } from '../src/providers';
 
@@ -382,6 +382,12 @@ describe('capsule', () => {
     expect(r.status).toBe('skipped');
     expect(r.message).toMatch(/paid odds plan/);
     await db.delete(providerUsage).where(eq(providerUsage.provider, 'odds-api'));
+  });
+
+  it('keeps only the week just finished and this week so far, quotes and all', () => {
+    const csv = 'play_id,desc,week,season\n1,"Smith, 12 yd pass",7,2026\n2,"Jones run",8,2026\n3,"Thursday, kick",9,2026\n4,x,8,2025\n';
+    expect(seasonRows(csv, 2026, 8)).toBe('play_id,desc,week,season\n2,"Jones run",8,2026\n3,"Thursday, kick",9,2026\n');
+    expect(seasonRows(csv, 2026, null).split('\n').filter(Boolean)).toHaveLength(4);
   });
 
   it('keeps only the latest depth chart', () => {

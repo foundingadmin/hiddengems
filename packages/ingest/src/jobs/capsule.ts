@@ -3,7 +3,7 @@
 // that get rewritten week to week, and the app's games and forecasts. Close: raw odds per game shortly before
 // kickoff. Files go to the private backup repository. Cron calls it every 5 minutes; most calls find nothing due.
 import { createHash } from 'node:crypto';
-import { gzipSync } from 'node:zlib';
+import { gunzipSync, gzipSync } from 'node:zlib';
 import { CAPSULE_CLOSE_MARKETS, CAPSULE_MARKETS, CAPSULE_RULES, capsulePath, dueCapsules, gameId } from '@hiddengems/core';
 import { gameWeather, games, oddsSlots, providerUsage } from '@hiddengems/db';
 import { and, asc, eq, gt, inArray, lt } from 'drizzle-orm';
@@ -14,25 +14,30 @@ import { plural, teamId } from './shared';
 
 const DAY = 86_400_000;
 
-/** nflverse files that change week to week, or that a prop beyond anytime TD needs. Path under the release base. */
-export const CAPSULE_NFLVERSE = (season: number) => [
-  { name: 'schedule', path: 'schedules/games.csv' },
-  { name: 'roster_weekly', path: `weekly_rosters/roster_weekly_${season}.csv` },
-  // Twice-daily snapshots for the whole season (72 MB): keep the latest only.
-  { name: 'depth_charts', path: `depth_charts/depth_charts_${season}.csv`, latestOnly: true },
-  { name: 'injuries', path: `injuries/injuries_${season}.csv` },
-  { name: 'snap_counts', path: `snap_counts/snap_counts_${season}.csv` },
-  { name: 'stats_player_week', path: `stats_player/stats_player_week_${season}.csv` },
-  { name: 'stats_team_week', path: `stats_team/stats_team_week_${season}.csv` },
-  { name: 'pfr_pass', path: `pfr_advstats/advstats_week_pass_${season}.csv` },
-  { name: 'pfr_rush', path: `pfr_advstats/advstats_week_rush_${season}.csv` },
-  { name: 'pfr_rec', path: `pfr_advstats/advstats_week_rec_${season}.csv` },
-  { name: 'pfr_def', path: `pfr_advstats/advstats_week_def_${season}.csv` },
-  { name: 'ngs_passing', path: 'nextgen_stats/ngs_passing.csv.gz' },
-  { name: 'ngs_rushing', path: 'nextgen_stats/ngs_rushing.csv.gz' },
-  { name: 'ngs_receiving', path: 'nextgen_stats/ngs_receiving.csv.gz' },
-  { name: 'ftn_charting', path: `ftn_charting/ftn_charting_${season}.csv` },
-  { name: 'pbp', path: `pbp/play_by_play_${season}.csv.gz` },
+/**
+ * nflverse files a MOD could read, under the release base. Most are season-long files that grow every week, so a
+ * capsule keeps only the week just finished and this week so far ('week'). Past weeks never change, and the capsules
+ * together rebuild the whole season without storing Week 1 seventeen times. The schedule keeps this season ('season'); depth charts keep
+ * their latest snapshot ('snapshot').
+ */
+export type CapsuleKeep = 'week' | 'season' | 'snapshot';
+export const CAPSULE_NFLVERSE = (season: number): { name: string; path: string; keep: CapsuleKeep }[] => [
+  { name: 'schedule', path: 'schedules/games.csv', keep: 'season' },
+  { name: 'roster_weekly', path: `weekly_rosters/roster_weekly_${season}.csv`, keep: 'week' },
+  { name: 'depth_charts', path: `depth_charts/depth_charts_${season}.csv`, keep: 'snapshot' },
+  { name: 'injuries', path: `injuries/injuries_${season}.csv`, keep: 'week' },
+  { name: 'snap_counts', path: `snap_counts/snap_counts_${season}.csv`, keep: 'week' },
+  { name: 'stats_player_week', path: `stats_player/stats_player_week_${season}.csv`, keep: 'week' },
+  { name: 'stats_team_week', path: `stats_team/stats_team_week_${season}.csv`, keep: 'week' },
+  { name: 'pfr_pass', path: `pfr_advstats/advstats_week_pass_${season}.csv`, keep: 'week' },
+  { name: 'pfr_rush', path: `pfr_advstats/advstats_week_rush_${season}.csv`, keep: 'week' },
+  { name: 'pfr_rec', path: `pfr_advstats/advstats_week_rec_${season}.csv`, keep: 'week' },
+  { name: 'pfr_def', path: `pfr_advstats/advstats_week_def_${season}.csv`, keep: 'week' },
+  { name: 'ngs_passing', path: 'nextgen_stats/ngs_passing.csv.gz', keep: 'week' },
+  { name: 'ngs_rushing', path: 'nextgen_stats/ngs_rushing.csv.gz', keep: 'week' },
+  { name: 'ngs_receiving', path: 'nextgen_stats/ngs_receiving.csv.gz', keep: 'week' },
+  { name: 'ftn_charting', path: `ftn_charting/ftn_charting_${season}.csv`, keep: 'week' },
+  { name: 'pbp', path: `pbp/play_by_play_${season}.csv.gz`, keep: 'week' },
 ];
 
 /** Rows of a CSV whose first column equals its latest value (depth charts are keyed by snapshot time). */
@@ -43,6 +48,33 @@ export function latestRows(csv: string): string {
   let latest = '';
   for (let i = 1; i < lines.length; i++) if (lines[i] && key(lines[i]!) > latest) latest = key(lines[i]!);
   return [header, ...lines.slice(1).filter((l) => l && key(l) === latest)].join('\n') + '\n';
+}
+
+/** The fields at the given indexes of one CSV line, honoring quotes. */
+function fieldsAt(line: string, want: readonly number[]): string[] {
+  const max = Math.max(...want), out: string[] = [];
+  let i = 0, field = 0, cur = '', quoted = false;
+  for (; i <= line.length && field <= max; i++) {
+    const ch = line[i];
+    if (quoted) { if (ch === '"' && line[i + 1] === '"') { cur += '"'; i++; } else if (ch === '"') quoted = false; else cur += ch ?? ''; continue; }
+    if (ch === '"') quoted = true;
+    else if (ch === ',' || ch === undefined || ch === '\r') { out[field++] = cur; cur = ''; if (ch === undefined) break; }
+    else cur += ch;
+  }
+  return want.map((w) => out[w] ?? '');
+}
+
+/**
+ * A season's rows, from fromWeek on when given, by the file's season and week columns. A Saturday capsule keeps the
+ * week just finished plus anything already played this week (Thursday night), so no game falls between two capsules.
+ */
+export function seasonRows(csv: string, season: number, fromWeek: number | null): string {
+  const lines = csv.split('\n');
+  const header = fieldsAt(lines[0]!, [...Array(400).keys()]).map((h) => h.trim());
+  const si = header.indexOf('season'), wi = header.indexOf('week');
+  if (si < 0 || wi < 0) return csv;
+  const rows = lines.slice(1).filter(Boolean).map((l) => ({ l, f: fieldsAt(l, [si, wi]) })).filter((r) => Number(r.f[0]) === season);
+  return [lines[0], ...rows.filter((r) => fromWeek === null || Number(r.f[1]) >= fromWeek).map((r) => r.l)].join('\n') + '\n';
 }
 
 const sha = (b: Uint8Array) => createHash('sha256').update(b).digest('hex');
@@ -107,9 +139,8 @@ export const capsule: Job = {
         for (const f of CAPSULE_NFLVERSE(week.season)) {
           const url = `${NFLVERSE_BASE}/${f.path}`;
           try {
-            let bytes: Uint8Array;
-            if (f.path.endsWith('.gz')) bytes = await http.getBytes(url);
-            else bytes = gz(f.latestOnly ? latestRows(await http.getText(url)) : await http.getText(url));
+            const raw = f.path.endsWith('.gz') ? new TextDecoder().decode(gunzipSync(await http.getBytes(url))) : await http.getText(url);
+            const bytes = gz(f.keep === 'snapshot' ? latestRows(raw) : seasonRows(raw, week.season, f.keep === 'week' ? (week.week ?? 1) - 1 : null));
             await put(capsulePath(week.season, week.week, 'sat', `nflverse/${f.name}.csv.gz`), bytes, url);
           } catch (err) {
             failed.push(f.name);

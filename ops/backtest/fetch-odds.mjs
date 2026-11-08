@@ -109,6 +109,7 @@ if (args.includes('--probe')) {
 
 let spent = 0;
 let remaining = null;
+let checked = false;
 async function buy(url, path, note) {
   if (cached(path)) return JSON.parse(readFileSync(path, 'utf8'));
   const cost = url.includes('/odds?') ? COST.eventOdds : COST.events;
@@ -140,6 +141,14 @@ try {
     for (const e of events) {
       const board = await buy(`${BASE}/events/${e.id}/odds?${q(at)}`, oddsPath(w.week, 'board', e.id), `week ${w.week} board ${e.away_team} at ${e.home_team}`);
       guard(board, at, `week ${w.week} board ${e.id}`);
+      // First board bought: stop unless DraftKings hangs anytime TD and at least one ladder, so a thin feed costs one game.
+      if (!checked) {
+        const dk = board.data.bookmakers.find((b) => b.key === 'draftkings');
+        const keys = new Set(dk?.markets.map((m) => m.key) ?? []);
+        if (!keys.has(MARKETS[0]) || !MARKETS.slice(1).some((m) => keys.has(m))) throw new Error(`Thin board for ${e.away_team} at ${e.home_team}: DraftKings has ${[...keys].join(', ') || 'nothing'}. Stopping before the rest.`);
+        console.log(`First board looks right: DraftKings has ${[...keys].join(', ')}`);
+        checked = true;
+      }
       const closeAt = minus20(e.commence_time);
       const close = await buy(`${BASE}/events/${e.id}/odds?${q(closeAt)}`, oddsPath(w.week, 'close', e.id), `week ${w.week} close ${e.away_team} at ${e.home_team}`);
       guard(close, closeAt, `week ${w.week} close ${e.id}`);

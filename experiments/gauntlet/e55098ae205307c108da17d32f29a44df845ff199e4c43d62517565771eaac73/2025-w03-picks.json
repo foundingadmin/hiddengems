@@ -1,0 +1,437 @@
+{
+  "ref": {
+    "season": 2025,
+    "week": 3
+  },
+  "warmup": true,
+  "board": {
+    "rush_yds": 860,
+    "reception_yds": 1840,
+    "pass_yds": 803,
+    "rush_reception_yds": 518
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.10400000000000001,
+      "usage": 0.12,
+      "next_man_up": 0.1,
+      "game_script": 0.096,
+      "matchup": 0.1,
+      "follow_the_move": 0.08800000000000001,
+      "ladder_math": 0.11200000000000002,
+      "hot_hand": 0.1,
+      "cooling_off": 0.1,
+      "hidden_gems": 0.08000000000000002
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.09388451636631115,
+        "usage": 0.12,
+        "next_man_up": 0.1,
+        "game_script": 0.10611548363368886,
+        "matchup": 0.1,
+        "follow_the_move": 0.09305774181684442,
+        "ladder_math": 0.10694225818315559,
+        "hot_hand": 0.1,
+        "cooling_off": 0.1,
+        "hidden_gems": 0.08000000000000002
+      },
+      "reception_yds": {
+        "books_disagree": 0.1008703220191471,
+        "usage": 0.12,
+        "next_man_up": 0.1,
+        "game_script": 0.10695387293298522,
+        "matchup": 0.1,
+        "follow_the_move": 0.08956483899042647,
+        "ladder_math": 0.10261096605744127,
+        "hot_hand": 0.1,
+        "cooling_off": 0.1,
+        "hidden_gems": 0.08000000000000002
+      },
+      "pass_yds": {
+        "books_disagree": 0.09914836678473042,
+        "usage": 0.12,
+        "next_man_up": 0.10000000000000002,
+        "game_script": 0.10570326643053916,
+        "matchup": 0.10000000000000002,
+        "follow_the_move": 0.08314836678473045,
+        "ladder_math": 0.10714836678473044,
+        "hot_hand": 0.10000000000000002,
+        "cooling_off": 0.10000000000000002,
+        "hidden_gems": 0.08485163321526959
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.10195217179111762,
+        "usage": 0.10634781194078412,
+        "next_man_up": 0.1,
+        "game_script": 0.08780868716447049,
+        "matchup": 0.1,
+        "follow_the_move": 0.09414348462664715,
+        "ladder_math": 0.11609565641776476,
+        "hot_hand": 0.1,
+        "cooling_off": 0.1,
+        "hidden_gems": 0.09365218805921588
+      }
+    }
+  },
+  "shrinks": {
+    "rush_yds": {
+      "books_disagree": 0.15,
+      "usage": 0.5,
+      "next_man_up": 0,
+      "game_script": 0.4,
+      "matchup": 0,
+      "follow_the_move": 1,
+      "ladder_math": 1,
+      "hot_hand": 0,
+      "cooling_off": 0,
+      "hidden_gems": 0
+    },
+    "reception_yds": {
+      "books_disagree": 1,
+      "usage": 0.4,
+      "next_man_up": 1,
+      "game_script": 0.35,
+      "matchup": 0,
+      "follow_the_move": 0.55,
+      "ladder_math": 0.45,
+      "hot_hand": 0,
+      "cooling_off": 0,
+      "hidden_gems": 0.25
+    },
+    "pass_yds": {
+      "books_disagree": 0.4,
+      "usage": 0.3,
+      "next_man_up": 0,
+      "game_script": 0.2,
+      "matchup": 0,
+      "follow_the_move": 0.7,
+      "ladder_math": 1,
+      "hot_hand": 0,
+      "cooling_off": 0,
+      "hidden_gems": 1
+    },
+    "rush_reception_yds": {
+      "books_disagree": 0,
+      "usage": 0.55,
+      "next_man_up": 0,
+      "game_script": 0.35,
+      "matchup": 0,
+      "follow_the_move": 1,
+      "ladder_math": 1,
+      "hot_hand": 0,
+      "cooling_off": 0,
+      "hidden_gems": 0.75
+    }
+  },
+  "gems": [
+    {
+      "key": "2025|2025-09-21-atl-car|00-0036139|rush_yds|15.5",
+      "line": {
+        "key": "2025|2025-09-21-atl-car|00-0036139|rush_yds|15.5",
+        "gameId": "2025-09-21-atl-car",
+        "playerId": "00-0036139",
+        "player": "Rico Dowdle",
+        "team": "car",
+        "opponent": "atl",
+        "position": "RB",
+        "betType": "rush_yds",
+        "alt": false,
+        "line": 15.5,
+        "price": 1.88,
+        "fair": 0.503957783641161
+      },
+      "chance": 0.5586596176131328,
+      "edge": 0.026744723996111497,
+      "contributions": {
+        "books_disagree": -0.00022294941828572098,
+        "usage": 0.13135003976494344,
+        "next_man_up": 0,
+        "game_script": 0.08120858245268842,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": 0.007556816763727169,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0
+      },
+      "seedChances": {
+        "books_disagree": 0.503364135592771,
+        "usage": 0.7522064963889438,
+        "next_man_up": null,
+        "game_script": 0.6859206768129684,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.5216100426038106,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": null
+      },
+      "rank": 1
+    },
+    {
+      "key": "2025|2025-09-21-gb-cle|00-0040162|reception_yds|8.5",
+      "line": {
+        "key": "2025|2025-09-21-gb-cle|00-0040162|reception_yds|8.5",
+        "gameId": "2025-09-21-gb-cle",
+        "playerId": "00-0040162",
+        "player": "Dylan Sampson",
+        "team": "cle",
+        "opponent": "gb",
+        "position": "RB",
+        "betType": "reception_yds",
+        "alt": false,
+        "line": 8.5,
+        "price": 1.93,
+        "fair": 0.4907651715039578
+      },
+      "chance": 0.5340487921048297,
+      "edge": 0.015914077078922895,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.09359731908915143,
+        "next_man_up": 0,
+        "game_script": 0.06977658248797201,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": 0.007975894827335852,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.002000000000000008
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.6776589833381452,
+        "next_man_up": null,
+        "game_script": 0.6491842284972412,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.5101950725789787,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.4970141566955985
+      },
+      "rank": 2
+    },
+    {
+      "key": "2025|2025-09-21-gb-cle|00-0037267|rush_yds|14.5",
+      "line": {
+        "key": "2025|2025-09-21-gb-cle|00-0037267|rush_yds|14.5",
+        "gameId": "2025-09-21-gb-cle",
+        "playerId": "00-0037267",
+        "player": "Jerome Ford",
+        "team": "cle",
+        "opponent": "gb",
+        "position": "RB",
+        "betType": "rush_yds",
+        "alt": false,
+        "line": 14.5,
+        "price": 1.93,
+        "fair": 0.48941798941798953
+      },
+      "chance": 0.5235844622075645,
+      "edge": 0.005449747181657694,
+      "contributions": {
+        "books_disagree": 0.00036964530157788505,
+        "usage": 0.09140120758853355,
+        "next_man_up": 0,
+        "game_script": 0.04213869978644416,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": 0.0028327178543874542,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0
+      },
+      "seedChances": {
+        "books_disagree": 0.4904018967308276,
+        "usage": 0.6724621851596141,
+        "next_man_up": null,
+        "game_script": 0.5877733050648749,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.4960385651515864,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": null
+      },
+      "rank": 3
+    },
+    {
+      "key": "2025|2025-09-22-det-bal|00-0030564|reception_yds|25",
+      "line": {
+        "key": "2025|2025-09-22-det-bal|00-0030564|reception_yds|25",
+        "gameId": "2025-09-22-det-bal",
+        "playerId": "00-0030564",
+        "player": "DeAndre Hopkins",
+        "team": "bal",
+        "opponent": "det",
+        "position": "WR",
+        "betType": "reception_yds",
+        "alt": true,
+        "line": 25,
+        "price": 2.54,
+        "fair": 0.3729042444892277
+      },
+      "chance": 0.3990379575247053,
+      "edge": 0.005337170123130508,
+      "contributions": {
+        "books_disagree": 0.018460078066659027,
+        "usage": 0.05013612633427317,
+        "next_man_up": 0,
+        "game_script": 0.0457289316437839,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": -0.006022787714368705,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.0019999999999999888
+      },
+      "seedChances": {
+        "books_disagree": 0.4165944028379977,
+        "usage": 0.47452793858888803,
+        "next_man_up": null,
+        "game_script": 0.47696130819300553,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.35928404561441263,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.37876873958410445
+      },
+      "rank": 4
+    },
+    {
+      "key": "2025|2025-09-21-kc-nyg|00-0035662|reception_yds|80",
+      "line": {
+        "key": "2025|2025-09-21-kc-nyg|00-0035662|reception_yds|80",
+        "gameId": "2025-09-21-kc-nyg",
+        "playerId": "00-0035662",
+        "player": "Marquise Brown",
+        "team": "kc",
+        "opponent": "nyg",
+        "position": "WR",
+        "betType": "reception_yds",
+        "alt": true,
+        "line": 80,
+        "price": 3.76,
+        "fair": 0.2519788918205805
+      },
+      "chance": 0.2695741440423199,
+      "edge": 0.003616697233809252,
+      "contributions": {
+        "books_disagree": 0.01745151934272891,
+        "usage": -0.015122230169213102,
+        "next_man_up": 0.10866845685705247,
+        "game_script": -0.012122886735661283,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": -0.00957324243954294,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.0019999999999999753
+      },
+      "seedChances": {
+        "books_disagree": 0.28596216860291934,
+        "usage": 0.2289756198067408,
+        "next_man_up": 0.4996496732796776,
+        "game_script": 0.2312204370665466,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.23480373517435058,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.25672018162721266
+      },
+      "rank": 5
+    },
+    {
+      "key": "2025|2025-09-21-den-lac|00-0036893|rush_yds|40",
+      "line": {
+        "key": "2025|2025-09-21-den-lac|00-0036893|rush_yds|40",
+        "gameId": "2025-09-21-den-lac",
+        "playerId": "00-0036893",
+        "player": "Najee Harris",
+        "team": "lac",
+        "opponent": "den",
+        "position": "RB",
+        "betType": "rush_yds",
+        "alt": true,
+        "line": 40,
+        "price": 3.46,
+        "fair": 0.273750514740647
+      },
+      "chance": 0.29259659154991724,
+      "edge": 0.00357925050945479,
+      "contributions": {
+        "books_disagree": 0.0024494965225641987,
+        "usage": 0.05470965274127671,
+        "next_man_up": 0,
+        "game_script": 0.04648777796658678,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": -0.010776744647924203,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0
+      },
+      "seedChances": {
+        "books_disagree": 0.2789681062851923,
+        "usage": 0.37290773219947376,
+        "next_man_up": null,
+        "game_script": 0.36874843962108195,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.25417877695900487,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": null
+      },
+      "rank": 6
+    },
+    {
+      "key": "2025|2025-09-21-ind-ten|00-0032211|reception_yds|15",
+      "line": {
+        "key": "2025|2025-09-21-ind-ten|00-0032211|reception_yds|15",
+        "gameId": "2025-09-21-ind-ten",
+        "playerId": "00-0032211",
+        "player": "Tyler Lockett",
+        "team": "ten",
+        "opponent": "ind",
+        "position": "WR",
+        "betType": "reception_yds",
+        "alt": true,
+        "line": 15,
+        "price": 2.6,
+        "fair": 0.364217576618632
+      },
+      "chance": 0.387691029234853,
+      "edge": 0.0030756446194684095,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.05798787826922283,
+        "next_man_up": 0,
+        "game_script": 0.04367348240888317,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": -0.003584687813359436,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.0019999999999999844
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.48154022975972127,
+        "next_man_up": null,
+        "game_script": 0.4628770502314002,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.3561669847991707,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.3700260697153398
+      },
+      "rank": 7
+    }
+  ]
+}

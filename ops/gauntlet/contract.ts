@@ -122,6 +122,13 @@ export interface Rules {
   vetoAsFilter?: boolean;
   /** A seed's push away from fair is scaled by its graded lines spoken in that bet type / (those lines + poolingLines). */
   capByLines?: boolean;
+  /**
+   * Each seed's chance is shrunk toward fair by its own track record before the blend: logit(fair) + k times its
+   * log odds gap from fair, with k the value on 0, 0.05 ... 1 that gave the lowest log loss on every graded line the
+   * seed has spoken on in that bet type so far. Every k starts at 0, so a seed moves nothing until its own past lines
+   * show its gaps were real. How far a seed can move a pick then matches how far it has been right.
+   */
+  calibrate?: boolean;
   picksPerWeek: number;
   minPrice: number;
   maxPrice: number;

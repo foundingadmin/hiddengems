@@ -1,0 +1,217 @@
+{
+  "ref": {
+    "season": 2026,
+    "week": 2
+  },
+  "warmup": false,
+  "board": {
+    "rush_yds": 1194,
+    "reception_yds": 2117,
+    "pass_yds": 803,
+    "rush_reception_yds": 690
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.06098039277691243,
+      "usage": 0.18459262972740817,
+      "next_man_up": 0.029039302872436872,
+      "game_script": 0.24178904653742028,
+      "matchup": 0.05268502395653202,
+      "follow_the_move": 0.14508676697382164,
+      "ladder_math": 0.12989243944893247,
+      "hot_hand": 0.02949526495944337,
+      "cooling_off": 0.059302163974173205,
+      "hidden_gems": 0.0671369687729196
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.09911143244694803,
+        "usage": 0.1518161681210703,
+        "next_man_up": 0.05149560728861367,
+        "game_script": 0.19593865014983197,
+        "matchup": 0.07698282148085277,
+        "follow_the_move": 0.11414201454955565,
+        "ladder_math": 0.07114466376432114,
+        "hot_hand": 0.06707227331228248,
+        "cooling_off": 0.09115962555695901,
+        "hidden_gems": 0.08113674332956496
+      },
+      "reception_yds": {
+        "books_disagree": 0.056898202308372725,
+        "usage": 0.11736588212631478,
+        "next_man_up": 0.04236993998408504,
+        "game_script": 0.24003837986247545,
+        "matchup": 0.09123846409717995,
+        "follow_the_move": 0.09663438142111169,
+        "ladder_math": 0.12203251074923895,
+        "hot_hand": 0.06653281866180284,
+        "cooling_off": 0.10319069833137716,
+        "hidden_gems": 0.06369872245804142
+      },
+      "pass_yds": {
+        "books_disagree": 0.07060990476470386,
+        "usage": 0.08838882496154817,
+        "next_man_up": 0.04907145968841033,
+        "game_script": 0.10638327922385693,
+        "matchup": 0.09146665197688866,
+        "follow_the_move": 0.1386621403648594,
+        "ladder_math": 0.11027853445620024,
+        "hot_hand": 0.07389840001129944,
+        "cooling_off": 0.11582631946463406,
+        "hidden_gems": 0.1554144850875988
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.06997682391629786,
+        "usage": 0.08417973731733491,
+        "next_man_up": 0.07609630061473885,
+        "game_script": 0.09137910914750472,
+        "matchup": 0.08369690597068816,
+        "follow_the_move": 0.119668585344163,
+        "ladder_math": 0.22883358644828414,
+        "hot_hand": 0.06437357562072471,
+        "cooling_off": 0.08344611246135736,
+        "hidden_gems": 0.0983492631589064
+      }
+    }
+  },
+  "shrinks": {
+    "rush_yds": {
+      "books_disagree": 0.35,
+      "usage": 0.2,
+      "next_man_up": 0.2,
+      "game_script": 0.2,
+      "matchup": 0.1,
+      "follow_the_move": 0.75,
+      "ladder_math": 0.4,
+      "hot_hand": 0.05,
+      "cooling_off": 0.1,
+      "hidden_gems": 0.2
+    },
+    "reception_yds": {
+      "books_disagree": 0.05,
+      "usage": 0.15,
+      "next_man_up": 0,
+      "game_script": 0.15,
+      "matchup": 0.05,
+      "follow_the_move": 0.45,
+      "ladder_math": 0.35,
+      "hot_hand": 0.05,
+      "cooling_off": 0.1,
+      "hidden_gems": 0
+    },
+    "pass_yds": {
+      "books_disagree": 0.1,
+      "usage": 0,
+      "next_man_up": 0.2,
+      "game_script": 0,
+      "matchup": 0,
+      "follow_the_move": 1,
+      "ladder_math": 0.15,
+      "hot_hand": 0,
+      "cooling_off": 0.05,
+      "hidden_gems": 1
+    },
+    "rush_reception_yds": {
+      "books_disagree": 0.4,
+      "usage": 0.15,
+      "next_man_up": 0.25,
+      "game_script": 0.15,
+      "matchup": 0,
+      "follow_the_move": 1,
+      "ladder_math": 0.6,
+      "hot_hand": 0.1,
+      "cooling_off": 0.05,
+      "hidden_gems": 0
+    }
+  },
+  "gems": [
+    {
+      "key": "2026|2026-09-20-no-bal|00-0033906|rush_yds|30",
+      "line": {
+        "key": "2026|2026-09-20-no-bal|00-0033906|rush_yds|30",
+        "gameId": "2026-09-20-no-bal",
+        "playerId": "00-0033906",
+        "player": "Alvin Kamara",
+        "team": "no",
+        "opponent": "bal",
+        "position": "RB",
+        "betType": "rush_yds",
+        "alt": true,
+        "line": 30,
+        "price": 4.82,
+        "fair": 0.1965644467314072
+      },
+      "chance": 0.21805293974518747,
+      "edge": 0.010584060077137691,
+      "contributions": {
+        "books_disagree": 0.007208261597032454,
+        "usage": 0.060826776884973864,
+        "next_man_up": 0,
+        "game_script": 0.061462362884735534,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": -0.0002626766991373515,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.0016227348665913005
+      },
+      "seedChances": {
+        "books_disagree": 0.20830419227153182,
+        "usage": 0.2675191797530779,
+        "next_man_up": null,
+        "game_script": 0.25082352714540357,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.1959820103968783,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.19974216274885545
+      },
+      "rank": 1
+    },
+    {
+      "key": "2026|2026-09-20-cle-tb|00-0040466|rush_yds|8.5",
+      "line": {
+        "key": "2026|2026-09-20-cle-tb|00-0040466|rush_yds|8.5",
+        "gameId": "2026-09-20-cle-tb",
+        "playerId": "00-0040466",
+        "player": "Raheim Sanders",
+        "team": "cle",
+        "opponent": "tb",
+        "position": "RB",
+        "betType": "rush_yds",
+        "alt": false,
+        "line": 8.5,
+        "price": 1.85,
+        "fair": 0.5118733509234827
+      },
+      "chance": 0.5437224314175761,
+      "edge": 0.003181890877035687,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.06170573158757197,
+        "next_man_up": 0,
+        "game_script": 0.06142616731286564,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": 0.003080585162820444,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.0016227348665912961
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.6115786031297142,
+        "next_man_up": null,
+        "game_script": 0.5892823086489275,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.5226850734515278,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.5168691785234782
+      },
+      "rank": 2
+    }
+  ]
+}

@@ -1,0 +1,261 @@
+{
+  "ref": {
+    "season": 2025,
+    "week": 18
+  },
+  "warmup": true,
+  "board": {
+    "rush_yds": 606,
+    "reception_yds": 856,
+    "pass_yds": 548,
+    "rush_reception_yds": 208
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.06583387445463904,
+      "usage": 0.1975516063636115,
+      "next_man_up": 0.03386203042442608,
+      "game_script": 0.2254378014564964,
+      "matchup": 0.05529126173476202,
+      "follow_the_move": 0.13088177650080465,
+      "ladder_math": 0.13600678690167747,
+      "hot_hand": 0.029480328696610634,
+      "cooling_off": 0.05657794574583554,
+      "hidden_gems": 0.06907658772113666
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.09055916739123131,
+        "usage": 0.2134967472196626,
+        "next_man_up": 0.05000763394445849,
+        "game_script": 0.17881486605664934,
+        "matchup": 0.07828262392434072,
+        "follow_the_move": 0.12158545100491733,
+        "ladder_math": 0.06862492837067326,
+        "hot_hand": 0.056472467900263924,
+        "cooling_off": 0.07624509527414783,
+        "hidden_gems": 0.06591101891365518
+      },
+      "reception_yds": {
+        "books_disagree": 0.05707023710391828,
+        "usage": 0.09962238902011628,
+        "next_man_up": 0.04248804029377718,
+        "game_script": 0.24972059539972416,
+        "matchup": 0.105313446478219,
+        "follow_the_move": 0.08349977864282038,
+        "ladder_math": 0.1271651764840855,
+        "hot_hand": 0.07043357160331169,
+        "cooling_off": 0.10091379985252079,
+        "hidden_gems": 0.06377296512150668
+      },
+      "pass_yds": {
+        "books_disagree": 0.08557957760608295,
+        "usage": 0.09009196687022392,
+        "next_man_up": 0.05334036131874498,
+        "game_script": 0.10616030963200082,
+        "matchup": 0.09137319346691523,
+        "follow_the_move": 0.13280055443562128,
+        "ladder_math": 0.10864942418573104,
+        "hot_hand": 0.07356423523689401,
+        "cooling_off": 0.09671094877638507,
+        "hidden_gems": 0.16172942847140082
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.07370152470677471,
+        "usage": 0.08918060634697382,
+        "next_man_up": 0.07615265888352835,
+        "game_script": 0.08538397784788916,
+        "matchup": 0.08367612773508926,
+        "follow_the_move": 0.10322285275279428,
+        "ladder_math": 0.25288000351110246,
+        "hot_hand": 0.05734590237688174,
+        "cooling_off": 0.08019719246826577,
+        "hidden_gems": 0.09825915337070051
+      }
+    }
+  },
+  "shrinks": {
+    "rush_yds": {
+      "books_disagree": 0.4,
+      "usage": 0.25,
+      "next_man_up": 0.2,
+      "game_script": 0.2,
+      "matchup": 0.1,
+      "follow_the_move": 0.95,
+      "ladder_math": 0.4,
+      "hot_hand": 0.05,
+      "cooling_off": 0.05,
+      "hidden_gems": 0.1
+    },
+    "reception_yds": {
+      "books_disagree": 0,
+      "usage": 0.15,
+      "next_man_up": 0,
+      "game_script": 0.2,
+      "matchup": 0.05,
+      "follow_the_move": 0.5,
+      "ladder_math": 0.35,
+      "hot_hand": 0.05,
+      "cooling_off": 0.1,
+      "hidden_gems": 0
+    },
+    "pass_yds": {
+      "books_disagree": 0.05,
+      "usage": 0,
+      "next_man_up": 0.2,
+      "game_script": 0,
+      "matchup": 0,
+      "follow_the_move": 1,
+      "ladder_math": 0.05,
+      "hot_hand": 0,
+      "cooling_off": 0.05,
+      "hidden_gems": 1
+    },
+    "rush_reception_yds": {
+      "books_disagree": 0.55,
+      "usage": 0.2,
+      "next_man_up": 0.25,
+      "game_script": 0.2,
+      "matchup": 0,
+      "follow_the_move": 1,
+      "ladder_math": 0.65,
+      "hot_hand": 0.1,
+      "cooling_off": 0.05,
+      "hidden_gems": 0
+    }
+  },
+  "gems": [
+    {
+      "key": "2025|2026-01-03-car-tb|00-0037256|rush_yds|12.5",
+      "line": {
+        "key": "2025|2026-01-03-car-tb|00-0037256|rush_yds|12.5",
+        "gameId": "2026-01-03-car-tb",
+        "playerId": "00-0037256",
+        "player": "Rachaad White",
+        "team": "tb",
+        "opponent": "car",
+        "position": "RB",
+        "betType": "rush_yds",
+        "alt": false,
+        "line": 12.5,
+        "price": 1.88,
+        "fair": 0.503957783641161
+      },
+      "chance": 0.5555812203527866,
+      "edge": 0.023666326735765297,
+      "contributions": {
+        "books_disagree": -0.0006700702259020182,
+        "usage": 0.10852541191529165,
+        "next_man_up": 0,
+        "game_script": 0.07817933511085828,
+        "matchup": 0.019690378792457393,
+        "follow_the_move": 0,
+        "ladder_math": 0.0013818267229993735,
+        "hot_hand": -0.0003499633782057654,
+        "cooling_off": 0,
+        "hidden_gems": 0.0006591101891365494
+      },
+      "seedChances": {
+        "books_disagree": 0.5021080404672998,
+        "usage": 0.6281188196995608,
+        "next_man_up": null,
+        "game_script": 0.6113617105396949,
+        "matchup": 0.5664448785948889,
+        "follow_the_move": null,
+        "ladder_math": 0.5089908794555196,
+        "hot_hand": 0.5024085822029752,
+        "cooling_off": null,
+        "hidden_gems": 0.5064575072360007
+      },
+      "rank": 1
+    },
+    {
+      "key": "2025|2026-01-03-sea-sf|00-0037746|rush_yds|16.5",
+      "line": {
+        "key": "2025|2026-01-03-sea-sf|00-0037746|rush_yds|16.5",
+        "gameId": "2026-01-03-sea-sf",
+        "playerId": "00-0037746",
+        "player": "Brian Robinson Jr.",
+        "team": "sf",
+        "opponent": "sea",
+        "position": "RB",
+        "betType": "rush_yds",
+        "alt": false,
+        "line": 16.5,
+        "price": 1.88,
+        "fair": 0.503957783641161
+      },
+      "chance": 0.5433096872195881,
+      "edge": 0.011394793602566788,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.08681772567389529,
+        "next_man_up": 0,
+        "game_script": 0.05808964549770264,
+        "matchup": 0.010433440828278523,
+        "follow_the_move": 0,
+        "ladder_math": 0.0006184673723794512,
+        "hot_hand": 0.0012241203281833286,
+        "cooling_off": 0,
+        "hidden_gems": 0.0006591101891365494
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.6040760760018702,
+        "next_man_up": null,
+        "game_script": 0.5843582720084363,
+        "matchup": 0.5372087354481149,
+        "follow_the_move": null,
+        "ladder_math": 0.5062106179720609,
+        "hot_hand": 0.5093758694578493,
+        "cooling_off": null,
+        "hidden_gems": 0.5064575072360007
+      },
+      "rank": 2
+    },
+    {
+      "key": "2025|2026-01-03-car-tb|00-0036555|rush_yds|40",
+      "line": {
+        "key": "2025|2026-01-03-car-tb|00-0036555|rush_yds|40",
+        "gameId": "2026-01-03-car-tb",
+        "playerId": "00-0036555",
+        "player": "Chuba Hubbard",
+        "team": "car",
+        "opponent": "tb",
+        "position": "RB",
+        "betType": "rush_yds",
+        "alt": true,
+        "line": 40,
+        "price": 3.34,
+        "fair": 0.2829262110699237
+      },
+      "chance": 0.3013524095601962,
+      "edge": 0.0019512119554057628,
+      "contributions": {
+        "books_disagree": 0.008659781870915203,
+        "usage": 0.05074422777601867,
+        "next_man_up": 0,
+        "game_script": 0.028412165863612764,
+        "matchup": 0.006350370078594036,
+        "follow_the_move": 0,
+        "ladder_math": -0.0035866080174746283,
+        "hot_hand": -0.0021125012589472076,
+        "cooling_off": 0,
+        "hidden_gems": 0.0006591101891365378
+      },
+      "seedChances": {
+        "books_disagree": 0.30272249530096274,
+        "usage": 0.33351915038230734,
+        "next_man_up": null,
+        "game_script": 0.3162409636387669,
+        "matchup": 0.2996696281586263,
+        "follow_the_move": null,
+        "ladder_math": 0.2724442649411389,
+        "hot_hand": 0.2753989897522125,
+        "cooling_off": null,
+        "hidden_gems": 0.28495939734280695
+      },
+      "rank": 3
+    }
+  ]
+}

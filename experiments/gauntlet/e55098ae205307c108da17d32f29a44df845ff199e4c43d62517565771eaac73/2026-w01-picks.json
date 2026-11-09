@@ -1,0 +1,173 @@
+{
+  "ref": {
+    "season": 2026,
+    "week": 1
+  },
+  "warmup": false,
+  "board": {
+    "rush_yds": 1116,
+    "reception_yds": 2159,
+    "pass_yds": 793,
+    "rush_reception_yds": 677
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.05959415985044642,
+      "usage": 0.21647566732015558,
+      "next_man_up": 0.029039302872436872,
+      "game_script": 0.257773737067233,
+      "matchup": 0.05268502395653202,
+      "follow_the_move": 0.13088177650080465,
+      "ladder_math": 0.10880542952134198,
+      "hot_hand": 0.02949526495944337,
+      "cooling_off": 0.059302163974173205,
+      "hidden_gems": 0.05594747397743299
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.08425982275230512,
+        "usage": 0.17995447318865568,
+        "next_man_up": 0.05140196016641524,
+        "game_script": 0.19487581153840858,
+        "matchup": 0.07688149497709049,
+        "follow_the_move": 0.12156193301998564,
+        "ladder_math": 0.05952583761780361,
+        "hot_hand": 0.06691556993723671,
+        "cooling_off": 0.09102677379548992,
+        "hidden_gems": 0.07359632300660915
+      },
+      "reception_yds": {
+        "books_disagree": 0.05686251322516106,
+        "usage": 0.11670833819531214,
+        "next_man_up": 0.04234161709936051,
+        "game_script": 0.27484950170204947,
+        "matchup": 0.09115655168506548,
+        "follow_the_move": 0.08345630785272459,
+        "ladder_math": 0.1017256517725886,
+        "hot_hand": 0.06645412697173546,
+        "cooling_off": 0.10309745073271274,
+        "hidden_gems": 0.06334794076328994
+      },
+      "pass_yds": {
+        "books_disagree": 0.08700157062850263,
+        "usage": 0.09111727425261655,
+        "next_man_up": 0.048986152953068685,
+        "game_script": 0.10812242624955912,
+        "matchup": 0.09130150080979052,
+        "follow_the_move": 0.13280682160677523,
+        "ladder_math": 0.1188800099185021,
+        "hot_hand": 0.07370930971388384,
+        "cooling_off": 0.11558561192539445,
+        "hidden_gems": 0.13248932194190705
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.0697775041036713,
+        "usage": 0.10467330733502708,
+        "next_man_up": 0.07577270831511701,
+        "game_script": 0.10080587970466381,
+        "matchup": 0.08348364956466928,
+        "follow_the_move": 0.10315859041960299,
+        "ladder_math": 0.2178894351043991,
+        "hot_hand": 0.06413373131923279,
+        "cooling_off": 0.08328008410876876,
+        "hidden_gems": 0.0970251100248477
+      }
+    }
+  },
+  "shrinks": {
+    "rush_yds": {
+      "books_disagree": 0.35,
+      "usage": 0.25,
+      "next_man_up": 0.2,
+      "game_script": 0.2,
+      "matchup": 0.1,
+      "follow_the_move": 0.95,
+      "ladder_math": 0.35,
+      "hot_hand": 0.05,
+      "cooling_off": 0.1,
+      "hidden_gems": 0.2
+    },
+    "reception_yds": {
+      "books_disagree": 0,
+      "usage": 0.15,
+      "next_man_up": 0,
+      "game_script": 0.2,
+      "matchup": 0.05,
+      "follow_the_move": 0.5,
+      "ladder_math": 0.3,
+      "hot_hand": 0.05,
+      "cooling_off": 0.1,
+      "hidden_gems": 0
+    },
+    "pass_yds": {
+      "books_disagree": 0.05,
+      "usage": 0,
+      "next_man_up": 0.2,
+      "game_script": 0,
+      "matchup": 0,
+      "follow_the_move": 1,
+      "ladder_math": 0.05,
+      "hot_hand": 0,
+      "cooling_off": 0.05,
+      "hidden_gems": 1
+    },
+    "rush_reception_yds": {
+      "books_disagree": 0.4,
+      "usage": 0.2,
+      "next_man_up": 0.25,
+      "game_script": 0.2,
+      "matchup": 0,
+      "follow_the_move": 1,
+      "ladder_math": 0.6,
+      "hot_hand": 0.1,
+      "cooling_off": 0.05,
+      "hidden_gems": 0
+    }
+  },
+  "gems": [
+    {
+      "key": "2026|2026-09-13-dal-nyg|00-0039847|reception_yds|13.5",
+      "line": {
+        "key": "2026|2026-09-13-dal-nyg|00-0039847|reception_yds|13.5",
+        "gameId": "2026-09-13-dal-nyg",
+        "playerId": "00-0039847",
+        "player": "Theo Johnson",
+        "team": "nyg",
+        "opponent": "dal",
+        "position": "TE",
+        "betType": "reception_yds",
+        "alt": false,
+        "line": 13.5,
+        "price": 1.86,
+        "fair": 0.5092348284960422
+      },
+      "chance": 0.5377581087992758,
+      "edge": 0.00012370019712526492,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.02626427525673465,
+        "next_man_up": 0,
+        "game_script": 0.08477714637389296,
+        "matchup": 0,
+        "follow_the_move": 0,
+        "ladder_math": 0.003335582244257246,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.565124307176288,
+        "next_man_up": null,
+        "game_script": 0.5854999133593616,
+        "matchup": null,
+        "follow_the_move": null,
+        "ladder_math": 0.5174263130907005,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": null
+      },
+      "rank": 1
+    }
+  ]
+}

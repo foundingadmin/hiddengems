@@ -155,7 +155,7 @@ Runs 2 to 9 are the random rules batch (`batch.ts`, seed 20261108, rules in `rul
 | 7, MOD13 | `1791eeeb0e4db4ceeea4d0f20ca2d5d0b19e382afa031afd6198c8b3eb5de707` | Nov 8 2026 | Fail, 0 of 4 checks |
 | 8, MOD14 | `065f9d6a50381ec8256a502dcbf6d625e11ec0aaff24848cd95e67471e7ffb20` | Nov 8 2026 | Fail, 1 of 4 checks (beat the close only) |
 | 9, MOD15 | `b3a4104312d4c4dd1fcc70184ba115490151eb2c4925605fd5869b7f611e5ba0` | Nov 8 2026 | Fail, 1 of 4 checks (beat the close only) |
-| 10, MOD16 | `e55098ae205307c108da17d32f29a44df845ff199e4c43d62517565771eaac73` | Nov 8 2026 | Pending |
+| 10, MOD16 | `e55098ae205307c108da17d32f29a44df845ff199e4c43d62517565771eaac73` | Nov 8 2026 | Fail, 1 of 4 checks (top seeds only), +$4.10 |
 
 In runs 2 to 9 `vetoAsFilter` never named a filter seed: each of the ten seeds put some line above fair on the first
 board it spoke on, in every bet type, so MODs with it on blended exactly as they would with it off.

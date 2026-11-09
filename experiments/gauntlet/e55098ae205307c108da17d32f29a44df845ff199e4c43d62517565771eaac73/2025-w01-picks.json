@@ -1,0 +1,128 @@
+{
+  "ref": {
+    "season": 2025,
+    "week": 1
+  },
+  "warmup": true,
+  "board": {
+    "rush_yds": 842,
+    "reception_yds": 1679,
+    "pass_yds": 790,
+    "rush_reception_yds": 521
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.1,
+      "usage": 0.1,
+      "next_man_up": 0.1,
+      "game_script": 0.1,
+      "matchup": 0.1,
+      "follow_the_move": 0.1,
+      "ladder_math": 0.1,
+      "hot_hand": 0.1,
+      "cooling_off": 0.1,
+      "hidden_gems": 0.1
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.1,
+        "usage": 0.1,
+        "next_man_up": 0.1,
+        "game_script": 0.1,
+        "matchup": 0.1,
+        "follow_the_move": 0.1,
+        "ladder_math": 0.1,
+        "hot_hand": 0.1,
+        "cooling_off": 0.1,
+        "hidden_gems": 0.1
+      },
+      "reception_yds": {
+        "books_disagree": 0.1,
+        "usage": 0.1,
+        "next_man_up": 0.1,
+        "game_script": 0.1,
+        "matchup": 0.1,
+        "follow_the_move": 0.1,
+        "ladder_math": 0.1,
+        "hot_hand": 0.1,
+        "cooling_off": 0.1,
+        "hidden_gems": 0.1
+      },
+      "pass_yds": {
+        "books_disagree": 0.1,
+        "usage": 0.1,
+        "next_man_up": 0.1,
+        "game_script": 0.1,
+        "matchup": 0.1,
+        "follow_the_move": 0.1,
+        "ladder_math": 0.1,
+        "hot_hand": 0.1,
+        "cooling_off": 0.1,
+        "hidden_gems": 0.1
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.1,
+        "usage": 0.1,
+        "next_man_up": 0.1,
+        "game_script": 0.1,
+        "matchup": 0.1,
+        "follow_the_move": 0.1,
+        "ladder_math": 0.1,
+        "hot_hand": 0.1,
+        "cooling_off": 0.1,
+        "hidden_gems": 0.1
+      }
+    }
+  },
+  "shrinks": {
+    "rush_yds": {
+      "books_disagree": 0,
+      "usage": 0,
+      "next_man_up": 0,
+      "game_script": 0,
+      "matchup": 0,
+      "follow_the_move": 0,
+      "ladder_math": 0,
+      "hot_hand": 0,
+      "cooling_off": 0,
+      "hidden_gems": 0
+    },
+    "reception_yds": {
+      "books_disagree": 0,
+      "usage": 0,
+      "next_man_up": 0,
+      "game_script": 0,
+      "matchup": 0,
+      "follow_the_move": 0,
+      "ladder_math": 0,
+      "hot_hand": 0,
+      "cooling_off": 0,
+      "hidden_gems": 0
+    },
+    "pass_yds": {
+      "books_disagree": 0,
+      "usage": 0,
+      "next_man_up": 0,
+      "game_script": 0,
+      "matchup": 0,
+      "follow_the_move": 0,
+      "ladder_math": 0,
+      "hot_hand": 0,
+      "cooling_off": 0,
+      "hidden_gems": 0
+    },
+    "rush_reception_yds": {
+      "books_disagree": 0,
+      "usage": 0,
+      "next_man_up": 0,
+      "game_script": 0,
+      "matchup": 0,
+      "follow_the_move": 0,
+      "ladder_math": 0,
+      "hot_hand": 0,
+      "cooling_off": 0,
+      "hidden_gems": 0
+    }
+  },
+  "gems": []
+}

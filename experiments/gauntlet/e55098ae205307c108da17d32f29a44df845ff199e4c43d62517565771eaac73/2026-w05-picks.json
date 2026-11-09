@@ -1,0 +1,261 @@
+{
+  "ref": {
+    "season": 2026,
+    "week": 5
+  },
+  "warmup": false,
+  "board": {
+    "rush_yds": 1103,
+    "reception_yds": 1927,
+    "pass_yds": 761,
+    "rush_reception_yds": 565
+  },
+  "weights": {
+    "shared": {
+      "books_disagree": 0.06766532399293941,
+      "usage": 0.22330510327145237,
+      "next_man_up": 0.02631947978651996,
+      "game_script": 0.21937249642636125,
+      "matchup": 0.06322202874783842,
+      "follow_the_move": 0.09550055815479515,
+      "ladder_math": 0.15373690555670244,
+      "hot_hand": 0.02949526495944337,
+      "cooling_off": 0.059302163974173205,
+      "hidden_gems": 0.06208067512977454
+    },
+    "byBetType": {
+      "rush_yds": {
+        "books_disagree": 0.10369238501561254,
+        "usage": 0.22194416454359975,
+        "next_man_up": 0.049192723328844196,
+        "game_script": 0.17723609909087082,
+        "matchup": 0.0865263691334314,
+        "follow_the_move": 0.06940143162255852,
+        "ladder_math": 0.07809055240901404,
+        "hot_hand": 0.06746045138964696,
+        "cooling_off": 0.09148871956228274,
+        "hidden_gems": 0.05496710390413902
+      },
+      "reception_yds": {
+        "books_disagree": 0.06813471160541462,
+        "usage": 0.09599083230526857,
+        "next_man_up": 0.042367255941414626,
+        "game_script": 0.25575991442244594,
+        "matchup": 0.10971430548941329,
+        "follow_the_move": 0.07795099959152384,
+        "ladder_math": 0.11640481724081435,
+        "hot_hand": 0.06671546697598423,
+        "cooling_off": 0.10340713181606824,
+        "hidden_gems": 0.06355456461165242
+      },
+      "pass_yds": {
+        "books_disagree": 0.08180603335282838,
+        "usage": 0.08967141761024772,
+        "next_man_up": 0.0415797940598267,
+        "game_script": 0.1036473908228681,
+        "matchup": 0.09249332556009547,
+        "follow_the_move": 0.09349567664292584,
+        "ladder_math": 0.1284599383198417,
+        "hot_hand": 0.074361499957053,
+        "cooling_off": 0.11641583489661492,
+        "hidden_gems": 0.17806908877769828
+      },
+      "rush_reception_yds": {
+        "books_disagree": 0.06172484061839662,
+        "usage": 0.07491329197501624,
+        "next_man_up": 0.08986866744854756,
+        "game_script": 0.0758419787309972,
+        "matchup": 0.08501866872596472,
+        "follow_the_move": 0.1066538317092531,
+        "ladder_math": 0.2587650884634497,
+        "hot_hand": 0.0649306623764492,
+        "cooling_off": 0.08383174679048891,
+        "hidden_gems": 0.0984512231614369
+      }
+    }
+  },
+  "shrinks": {
+    "rush_yds": {
+      "books_disagree": 0.45,
+      "usage": 0.2,
+      "next_man_up": 0.25,
+      "game_script": 0.2,
+      "matchup": 0.1,
+      "follow_the_move": 0.5,
+      "ladder_math": 0.4,
+      "hot_hand": 0.05,
+      "cooling_off": 0.1,
+      "hidden_gems": 0.1
+    },
+    "reception_yds": {
+      "books_disagree": 0.2,
+      "usage": 0.1,
+      "next_man_up": 0,
+      "game_script": 0.15,
+      "matchup": 0.05,
+      "follow_the_move": 0.3,
+      "ladder_math": 0.3,
+      "hot_hand": 0.05,
+      "cooling_off": 0.1,
+      "hidden_gems": 0
+    },
+    "pass_yds": {
+      "books_disagree": 0.25,
+      "usage": 0,
+      "next_man_up": 0.1,
+      "game_script": 0,
+      "matchup": 0,
+      "follow_the_move": 0.85,
+      "ladder_math": 0.05,
+      "hot_hand": 0,
+      "cooling_off": 0.05,
+      "hidden_gems": 1
+    },
+    "rush_reception_yds": {
+      "books_disagree": 0.4,
+      "usage": 0.15,
+      "next_man_up": 0.3,
+      "game_script": 0.15,
+      "matchup": 0,
+      "follow_the_move": 1,
+      "ladder_math": 0.6,
+      "hot_hand": 0.1,
+      "cooling_off": 0.05,
+      "hidden_gems": 0
+    }
+  },
+  "gems": [
+    {
+      "key": "2026|2026-10-11-nyg-was|00-0031503|rush_yds|2.5",
+      "line": {
+        "key": "2026|2026-10-11-nyg-was|00-0031503|rush_yds|2.5",
+        "gameId": "2026-10-11-nyg-was",
+        "playerId": "00-0031503",
+        "player": "Jameis Winston",
+        "team": "nyg",
+        "opponent": "was",
+        "position": "QB",
+        "betType": "rush_yds",
+        "alt": false,
+        "line": 2.5,
+        "price": 1.92,
+        "fair": 0.49340369393139843
+      },
+      "chance": 0.5295036362180433,
+      "edge": 0.008670302884709935,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.06721577140499278,
+        "next_man_up": 0,
+        "game_script": 0.05001202188261798,
+        "matchup": 0.013457938060029023,
+        "follow_the_move": 0.007087837921169323,
+        "ladder_math": 0.006215316567390237,
+        "hot_hand": 0,
+        "cooling_off": 0,
+        "hidden_gems": 0.0005496710390414069
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.5686789080596798,
+        "next_man_up": null,
+        "game_script": 0.5636012593385935,
+        "matchup": 0.5322424293245046,
+        "follow_the_move": 0.518926294776104,
+        "ladder_math": 0.5132979609985462,
+        "hot_hand": null,
+        "cooling_off": null,
+        "hidden_gems": 0.49590340287644064
+      },
+      "rank": 1
+    },
+    {
+      "key": "2026|2026-10-12-buf-lar|00-0026498|rush_yds|10",
+      "line": {
+        "key": "2026|2026-10-12-buf-lar|00-0026498|rush_yds|10",
+        "gameId": "2026-10-12-buf-lar",
+        "playerId": "00-0026498",
+        "player": "Matthew Stafford",
+        "team": "lar",
+        "opponent": "buf",
+        "position": "QB",
+        "betType": "rush_yds",
+        "alt": true,
+        "line": 10,
+        "price": 4.93,
+        "fair": 0.19180398936027873
+      },
+      "chance": 0.20469342090802548,
+      "edge": 0.001853664315733361,
+      "contributions": {
+        "books_disagree": 0,
+        "usage": 0.03343887093550955,
+        "next_man_up": 0,
+        "game_script": 0.03510564493345487,
+        "matchup": 0.01031429203889771,
+        "follow_the_move": 0,
+        "ladder_math": -0.012203352700279162,
+        "hot_hand": 0.0046551452151470584,
+        "cooling_off": 0.010355402916039308,
+        "hidden_gems": -0.0005496710390413906
+      },
+      "seedChances": {
+        "books_disagree": null,
+        "usage": 0.21624792036427176,
+        "next_man_up": null,
+        "game_script": 0.22439110019994077,
+        "matchup": 0.2109636373292111,
+        "follow_the_move": null,
+        "ladder_math": 0.16873734605065374,
+        "hot_hand": 0.20272890699752175,
+        "cooling_off": 0.20996392177536122,
+        "hidden_gems": 0.19025861283693168
+      },
+      "rank": 2
+    },
+    {
+      "key": "2026|2026-10-12-buf-lar|00-0037248|rush_yds|110",
+      "line": {
+        "key": "2026|2026-10-12-buf-lar|00-0037248|rush_yds|110",
+        "gameId": "2026-10-12-buf-lar",
+        "playerId": "00-0037248",
+        "player": "James Cook",
+        "team": "buf",
+        "opponent": "lar",
+        "position": "RB",
+        "betType": "rush_yds",
+        "alt": true,
+        "line": 110,
+        "price": 4.92,
+        "fair": 0.1920731707317073
+      },
+      "chance": 0.20364842266887234,
+      "edge": 0.00039639014854714327,
+      "contributions": {
+        "books_disagree": 0.0075811263035684105,
+        "usage": 0.03135846730942983,
+        "next_man_up": 0,
+        "game_script": 0.028111451733003646,
+        "matchup": 0.00351160510478786,
+        "follow_the_move": -0.004114281617584678,
+        "ladder_math": -0.002216384812274954,
+        "hot_hand": 0.0032081456217198288,
+        "cooling_off": 0.006058961354978674,
+        "hidden_gems": -0.0005496710390413906
+      },
+      "seedChances": {
+        "books_disagree": 0.20367474144229,
+        "usage": 0.2149562033053396,
+        "next_man_up": null,
+        "game_script": 0.21789343213686216,
+        "matchup": 0.19844988757157134,
+        "follow_the_move": 0.18304118917328072,
+        "ladder_math": 0.18770723424665234,
+        "hot_hand": 0.19956119489896534,
+        "cooling_off": 0.20256027131539034,
+        "hidden_gems": 0.19052613667837662
+      },
+      "rank": 3
+    }
+  ]
+}

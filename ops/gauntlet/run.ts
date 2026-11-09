@@ -16,7 +16,8 @@ import {
   BET_TYPES, type BetType, type Pick, type Reveal, type Rules, SEED_IDS, type Seed, type SeedId, type WeekRef, type WeekWorld,
 } from './contract';
 import {
-  type Gem, type LearnerState, type SeedChances, type WeekScores, filterSeeds, learn, noSides, noteSides, pick, score, startState,
+  type Gem, type LearnerState, type SeedChances, type WeekScores, filterSeeds, learn, noSides, noteCalibration, noteSides, pick, score,
+  shrinkChances, shrinks, startCalibration, startState,
 } from './learner';
 import { writeReport } from './report';
 
@@ -60,6 +61,8 @@ export interface PicksFile {
   weights: LearnerState['weights'];
   /** vetoAsFilter only: the seeds that have only ever sat at or below fair, as of this Saturday's board. */
   filters?: SeedId[];
+  /** calibrate only: the shrink each seed had earned by this Saturday, per bet type. */
+  shrinks?: Record<BetType, Record<SeedId, number>>;
   gems: Gem[];
 }
 
@@ -95,7 +98,7 @@ export function readRules(rulesPath: string, hash: string): Rules {
   }
   if (!(rules.maxStep > 0 && rules.maxStep < 1)) throw new Error('Refusing to run: rules.maxStep must be between 0 and 1');
   if (!Array.isArray(rules.warmup)) throw new Error('Refusing to run: rules.warmup is not a list');
-  for (const k of ['vetoAsFilter', 'capByLines'] as const) {
+  for (const k of ['vetoAsFilter', 'capByLines', 'calibrate'] as const) {
     if (rules[k] !== undefined && typeof rules[k] !== 'boolean') throw new Error(`Refusing to run: rules.${k} must be true or false`);
   }
   if (rules.mod !== undefined && !/^MOD\d+$/.test(rules.mod)) throw new Error('Refusing to run: rules.mod must look like MOD8');
@@ -151,6 +154,7 @@ export async function runGauntlet(opts: RunOptions): Promise<{ dir: string; repo
 
   const seeds = [...opts.seeds].sort((a, b) => SEED_IDS.indexOf(a.id) - SEED_IDS.indexOf(b.id));
   let state = startState(rules.startWeights);
+  if (rules.calibrate) state.calibration = startCalibration();
   let sides = noSides();
   for (const ref of weeks) {
     const id = weekId(ref);
@@ -160,14 +164,15 @@ export async function runGauntlet(opts: RunOptions): Promise<{ dir: string; repo
 
     // Saturday. Every seed reads the same world; the blend reads this week's weights.
     const chances = Object.fromEntries(seeds.map((s) => [s.id, s.read(world)])) as SeedChances;
+    // calibrate: the blend, the switches and the scores read each seed shrunk to its own record so far.
+    const earned = rules.calibrate ? shrinks(state.calibration!) : undefined;
+    const used = earned ? shrinkChances(world.lines, chances, earned) : chances;
     // The switches read only what Saturday knows: lines graded before this week, and the chances on this board.
-    sides = noteSides(sides, world.lines, chances);
+    sides = noteSides(sides, world.lines, used);
     const filters = rules.vetoAsFilter ? filterSeeds(sides) : undefined;
-    const gems = pick(world.lines, chances, state.weights, rules, { spoken: state.spoken, filters });
+    const gems = pick(world.lines, used, state.weights, rules, { spoken: state.spoken, filters });
     const board = Object.fromEntries(BET_TYPES.map((b) => [b, world.lines.filter((l) => l.betType === b).length])) as Record<BetType, number>;
-    const picksFile: PicksFile = filters
-      ? { ref, warmup, board, weights: state.weights, filters, gems }
-      : { ref, warmup, board, weights: state.weights, gems };
+    const picksFile: PicksFile = { ref, warmup, board, weights: state.weights, ...(filters ? { filters } : {}), ...(earned ? { shrinks: earned } : {}), gems };
     writeOnce(join(dir, `${id}-picks.json`), picksFile);
 
     // Monday. Only now does the week's outcome exist.
@@ -180,8 +185,10 @@ export async function runGauntlet(opts: RunOptions): Promise<{ dir: string; repo
     }));
 
     // Tuesday.
-    const scores = score(world.lines, chances, reveal);
+    const scores = score(world.lines, used, reveal);
+    const calibration = rules.calibrate ? noteCalibration(state.calibration!, world.lines, chances, reveal) : undefined;
     state = learn(state, scores, rules);
+    if (calibration) state.calibration = calibration;
     writeOnce(join(dir, `${id}-results.json`), { ref, warmup, gems: results, scores, state } satisfies ResultsFile);
 
     const graded = results.filter((r) => r.outcome);

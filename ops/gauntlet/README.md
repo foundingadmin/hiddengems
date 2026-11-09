@@ -125,6 +125,20 @@ the whole gauntlet from 2025 Week 1 with every seed at an equal start, compared 
 joins live only if all three hold: its weight grows in the bet types it targets, the run beats the last one on money
 and on beating the close, and the gain shows in both seasons. It joins at the weights it earned in that run.
 
+## MOD16, influence earned
+
+MOD7 to MOD15 all lost in both seasons for one reason: a pick goes to the biggest gap from DraftKings' price, so the
+loudest seeds led the picks even after the learner had stopped trusting them. MOD16 changes that one thing.
+
+- **Calibrate.** Before the blend, each seed's chance is shrunk toward fair: logit(fair) + k times its log odds gap.
+  Each bet type keeps one k per seed, the value on 0, 0.05 ... 1 with the lowest log loss over every graded line the
+  seed has spoken on so far. Every k starts at 0, so no seed moves a pick until its own past lines show its gaps were
+  real, and a seed whose gaps were wrong stays at 0 however loud it is.
+- Everything else is MOD7's rules, seeds and learner. The luck bar is 2.6 standard deviations, since this is the tenth
+  MOD run on these weeks.
+- The idea came from watching MOD7 to MOD15 lose on these weeks, so a pass here is a candidate that still has to win on
+  weeks nobody has seen (2024, or live) before real money.
+
 ## Runs
 
 Runs 2 to 9 are the random rules batch (`batch.ts`, seed 20261108, rules in `rules/`), each run with
@@ -141,6 +155,7 @@ Runs 2 to 9 are the random rules batch (`batch.ts`, seed 20261108, rules in `rul
 | 7, MOD13 | `1791eeeb0e4db4ceeea4d0f20ca2d5d0b19e382afa031afd6198c8b3eb5de707` | Nov 8 2026 | Fail, 0 of 4 checks |
 | 8, MOD14 | `065f9d6a50381ec8256a502dcbf6d625e11ec0aaff24848cd95e67471e7ffb20` | Nov 8 2026 | Fail, 1 of 4 checks (beat the close only) |
 | 9, MOD15 | `b3a4104312d4c4dd1fcc70184ba115490151eb2c4925605fd5869b7f611e5ba0` | Nov 8 2026 | Fail, 1 of 4 checks (beat the close only) |
+| 10, MOD16 | `e55098ae205307c108da17d32f29a44df845ff199e4c43d62517565771eaac73` | Nov 8 2026 | Pending |
 
 In runs 2 to 9 `vetoAsFilter` never named a filter seed: each of the ten seeds put some line above fair on the first
 board it spoke on, in every bet type, so MODs with it on blended exactly as they would with it off.

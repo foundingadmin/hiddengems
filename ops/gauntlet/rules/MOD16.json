@@ -1,0 +1,57 @@
+{
+  "frozen": true,
+  "mod": "MOD16",
+  "calibrate": true,
+  "picksPerWeek": 7,
+  "minPrice": 1.5,
+  "maxPrice": 5,
+  "perPlayer": 1,
+  "maxStep": 0.2,
+  "poolingLines": 1000,
+  "warmup": [
+    {
+      "season": 2025,
+      "week": 1
+    },
+    {
+      "season": 2025,
+      "week": 2
+    },
+    {
+      "season": 2025,
+      "week": 3
+    },
+    {
+      "season": 2025,
+      "week": 4
+    },
+    {
+      "season": 2025,
+      "week": 5
+    },
+    {
+      "season": 2025,
+      "week": 6
+    },
+    {
+      "season": 2025,
+      "week": 7
+    },
+    {
+      "season": 2025,
+      "week": 8
+    },
+    {
+      "season": 2025,
+      "week": 18
+    }
+  ],
+  "stake": 1,
+  "purse": 100,
+  "pass": {
+    "luckBandSd": 2.6,
+    "beatCloseShare": 0.5,
+    "bothSeasons": true,
+    "topSeedsShare": 0.5
+  }
+}

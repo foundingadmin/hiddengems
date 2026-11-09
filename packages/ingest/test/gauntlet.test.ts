@@ -8,7 +8,7 @@ import {
 } from '../../../ops/gauntlet/contract';
 import {
   type SeedChances, type SeedSet, blend, evenSet, filterSeeds, inverseLogit, lineShares, logLoss, logit, noSides, noteSides, pick, pool,
-  reweight, score, startState, startWeights,
+  reweight, score, startState, startWeights, K_GRID, noteCalibration, shrinkChances, shrinks, startCalibration,
 } from '../../../ops/gauntlet/learner';
 import { type GauntletReport, luckBand } from '../../../ops/gauntlet/report';
 import { type PicksFile, WALK, runGauntlet, sha256, weekId } from '../../../ops/gauntlet/run';
@@ -435,5 +435,59 @@ describe('luck band', () => {
     // Var of one $1 gem at price d hitting with chance 1 / d is d - 1.
     expect(luckBand([2, 3, 4], 1, 2)).toBeCloseTo(2 * Math.sqrt(1 + 2 + 3), 6);
     expect(luckBand([], 1, 2)).toBe(0);
+  });
+});
+
+describe('calibrate', () => {
+  const reveal = (hits: Record<string, boolean>): Reveal => ({
+    ref: { season: 2025, week: 1 },
+    outcomes: new Map(Object.entries(hits).map(([k, hit]) => [k, { value: hit ? 80 : 20, hit }])),
+    close: new Map(),
+  });
+  const lines = Array.from({ length: 40 }, (_, i) => line({ key: `2025|g1|p${i}|rush_yds|59.5`, playerId: `p${i}`, fair: 0.4 }));
+
+  it('starts every seed at 0, so the blend reads fair and nothing is picked', () => {
+    const k = shrinks(startCalibration());
+    expect(Object.values(k.rush_yds).every((v) => v === 0)).toBe(true);
+    const loud = silence(); for (const l of lines) loud.usage.set(l.key, 0.9);
+    const used = shrinkChances(lines, loud, k);
+    expect(used.usage.size).toBe(0);
+    expect(pick(lines, used, startWeights(), { ...rules, minPrice: 1.5, maxPrice: 5 })).toHaveLength(0);
+  });
+
+  it('keeps a loud seed near 0 when its gaps were wrong, and earns a right seed most of its gap', () => {
+    const loud = silence(); const right = silence(); const hits: Record<string, boolean> = {};
+    lines.forEach((l, i) => {
+      const hit = i % 5 === 0; hits[l.key] = hit; // hits 20% while fair says 40%
+      loud.usage.set(l.key, 0.85);
+      right.books_disagree.set(l.key, 0.2);
+    });
+    let cal = startCalibration();
+    cal = noteCalibration(cal, lines, loud, reveal(hits));
+    cal = noteCalibration(cal, lines, right, reveal(hits));
+    const k = shrinks(cal);
+    expect(k.rush_yds.usage).toBe(0);
+    expect(k.rush_yds.books_disagree).toBeGreaterThanOrEqual(0.8);
+    expect(K_GRID).toHaveLength(21);
+  });
+
+  it('shrinks a chance toward fair in log odds', () => {
+    const k = shrinks(startCalibration()); k.rush_yds.usage = 0.5;
+    const c = silence(); c.usage.set(lines[0]!.key, 0.8);
+    const p = shrinkChances(lines, c, k).usage.get(lines[0]!.key)!;
+    expect(p).toBeCloseTo(inverseLogit(logit(0.4) + 0.5 * (logit(0.8) - logit(0.4))), 12);
+  });
+
+  it('runs a MOD with calibrate on and records each Saturday\'s shrinks', async () => {
+    const dir = mkdtempSync(join(scratch, 'cal-'));
+    const w = syntheticWorld();
+    const { path, hash } = frozenRules(dir, { mod: 'MOD16', calibrate: true });
+    w.setLedger(join(dir, hash));
+    const { dir: out } = await runGauntlet({ hash, rulesPath: path, outRoot: dir, world: w.source, seeds: stubSeeds(w.truth), log: () => {} });
+    const first = JSON.parse(readFileSync(join(out, `${weekId(WALK[0]!)}-picks.json`), 'utf8')) as PicksFile;
+    expect(first.gems).toHaveLength(0);
+    expect(Object.values(first.shrinks!.rush_yds).every((v) => v === 0)).toBe(true);
+    const last = JSON.parse(readFileSync(join(out, `${weekId(WALK[WALK.length - 1]!)}-picks.json`), 'utf8')) as PicksFile;
+    expect(Object.values(last.shrinks!).some((set) => Object.values(set).some((v) => v > 0))).toBe(true);
   });
 });

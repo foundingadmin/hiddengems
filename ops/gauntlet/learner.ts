@@ -233,6 +233,70 @@ export function pool(own: SeedSet, shared: SeedSet, lines: number, poolingLines:
 }
 
 // ---------------------------------------------------------------------------------------------------------------
+// calibrate: shrink each seed to its own track record
+
+/** The shrink values a seed can earn. 0 means it moves nothing; 1 means its gap from fair is taken in full. */
+export const K_GRID: readonly number[] = Array.from({ length: 21 }, (_, i) => i / 20);
+
+/** Per bet type and seed, the summed log loss its lines would have had at each value of K_GRID, so far. */
+export type Calibration = Record<BetType, Record<SeedId, number[]>>;
+
+export const startCalibration = (): Calibration =>
+  Object.fromEntries(BET_TYPES.map((b) => [b, Object.fromEntries(SEED_IDS.map((s) => [s, K_GRID.map(() => 0)]))])) as Calibration;
+
+/** The shrink each seed has earned: the grid value with the lowest summed loss, ties to the smaller. No lines, 0. */
+export function shrinks(cal: Calibration): Record<BetType, Record<SeedId, number>> {
+  const out = {} as Record<BetType, Record<SeedId, number>>;
+  for (const b of BET_TYPES) {
+    out[b] = {} as Record<SeedId, number>;
+    for (const s of SEED_IDS) {
+      const losses = cal[b][s];
+      let best = 0;
+      for (let i = 1; i < losses.length; i++) if (losses[i]! < losses[best]! - 1e-12) best = i;
+      out[b][s] = K_GRID[best]!;
+    }
+  }
+  return out;
+}
+
+/** Each seed's chances as the blend should read them, shrunk toward fair by its earned k. A k of 0 means silent. */
+export function shrinkChances(lines: Line[], chances: SeedChances, k: Record<BetType, Record<SeedId, number>>): SeedChances {
+  const byKey = new Map(lines.map((l) => [l.key, l]));
+  const out = {} as SeedChances;
+  for (const s of SEED_IDS) {
+    const m = new Map<string, number>();
+    for (const [key, p] of chances[s]) {
+      const line = byKey.get(key);
+      if (!line || !Number.isFinite(p)) continue;
+      const ks = k[line.betType][s];
+      if (ks === 0) continue;
+      const base = logit(line.fair);
+      m.set(key, inverseLogit(base + ks * (logit(p) - base)));
+    }
+    out[s] = m;
+  }
+  return out;
+}
+
+/** Adds one Monday to the record: each graded line a seed spoke on adds its loss at every grid value. */
+export function noteCalibration(cal: Calibration, lines: Line[], chances: SeedChances, reveal: Reveal): Calibration {
+  const next = Object.fromEntries(BET_TYPES.map((b) => [b, Object.fromEntries(SEED_IDS.map((s) => [s, [...cal[b][s]]]))])) as Calibration;
+  for (const line of lines) {
+    const o = reveal.outcomes.get(line.key);
+    if (!o) continue;
+    const base = logit(line.fair);
+    for (const s of SEED_IDS) {
+      const p = chances[s].get(line.key);
+      if (p === undefined || !Number.isFinite(p)) continue;
+      const gap = logit(p) - base;
+      const row = next[line.betType][s];
+      K_GRID.forEach((k, i) => { row[i]! += logLoss(inverseLogit(base + k * gap), o.hit); });
+    }
+  }
+  return next;
+}
+
+// ---------------------------------------------------------------------------------------------------------------
 // The state the walk carries from week to week
 
 export interface LearnerState {
@@ -244,6 +308,8 @@ export interface LearnerState {
   lines: Record<BetType, number>;
   /** Lines each seed has spoken on and been graded, per bet type. */
   spoken: Record<BetType, Record<SeedId, number>>;
+  /** calibrate only: each seed's loss at every shrink value so far, per bet type. */
+  calibration?: Calibration;
 }
 
 export function startState(start?: Record<SeedId, number>): LearnerState {
@@ -268,5 +334,7 @@ export function learn(state: LearnerState, scores: WeekScores, rules: Rules): Le
     spoken[b] = Object.fromEntries(SEED_IDS.map((s) => [s, state.spoken[b][s] + scores.byBetType[b][s].lines])) as Record<SeedId, number>;
     byBetType[b] = pool(own[b], shared, lines[b], rules.poolingLines);
   }
-  return { weights: { shared, byBetType }, own, lines, spoken };
+  const next: LearnerState = { weights: { shared, byBetType }, own, lines, spoken };
+  if (state.calibration) next.calibration = state.calibration;
+  return next;
 }

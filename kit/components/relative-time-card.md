@@ -1,4 +1,4 @@
-# Relative Time Card
+# Relative time card
 > Source: https://vercel.com/geist/relative-time-card (captured 2026-11-02)
 
 ## Purpose

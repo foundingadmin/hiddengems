@@ -24,8 +24,8 @@ Four 3px bars rising 4, 7, 10 and 12px, 2px apart. The first `data-level` bars f
 ## Rules
 - Red only at the highest level. If everything is red, nothing is.
 - Always show the word; the bar count and the word carry the level without color.
-- Severity is a property of an alert, not a verdict on a pick. Never use it for go, wait or stop (`.fc-signal`) or for gem tiers (`.fc-score`, whose facets it must not imitate).
+- Severity is a property of an alert, not a verdict on a record. Never use it for go, wait or stop (`.fc-signal`) or for scores (`.fc-score`, whose facets it must not imitate).
 - Sort alert lists by severity, then time, and say so in the caption.
 
-## Hidden Gems usage
-Alerts list and alert rules: a failed feed is Critical, a gap above the alert level is High, a quota crossing 80% is Medium, an injury status change is Low.
+## In practice
+Alerts list and alert rules: a failed source is Critical, a delta above the alert level is High, a quota crossing 80% is Medium, an owner change is Low.

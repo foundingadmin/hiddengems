@@ -53,13 +53,13 @@ Dimensions (measured, not written in the prose docs):
 - Pagination copy: `Previous` / `Next`. Range copy: `Page 2 of 7` or `21–40 of 142`, with an en dash.
 - Empty list: render `EmptyState` outside the table.
 
-## Hidden Gems usage
-- **Bet slate (primary surface):** `TableBody interactive striped`. Clicking a row opens a right-side `Sheet` with signal detail. Use `virtualize` once the slate passes a few hundred props.
-- Columns: Market (MiddleTruncate for long prop names), Book, Line, Odds, Model Prob, Edge, Score (`PieGauge` 13–16px plus number), Confidence (`Badge`, contrast="low"), Updated (`RelativeTimeCard`).
-- All numeric columns (odds, line, edge %, score) are right-aligned and `tabular-nums`. Put the most important number (Edge or Score) last so it inherits the default right alignment.
-- Missing book prices or unavailable markets render `–` (Facet placeholder). A missing price never renders as `0` or blank.
-- Sorting by Edge or Score uses header buttons. Persist sort and filter state in the URL, alongside `FilterParams`.
-- Use `TableFooter` only for real aggregates (e.g. slate count or average edge). Skip it otherwise.
+## In practice
+- **Board (primary surface):** `TableBody interactive striped`. Clicking a row opens a right-side `Sheet` with check detail. Use `virtualize` once the board passes a few hundred records.
+- Columns: Account (MiddleTruncate for long names), Owner, Segment, Value, Forecast, Delta, Score (`PieGauge` 13–16px plus number), Confidence (`Badge`, contrast="low"), Updated (`RelativeTimeCard`).
+- All numeric columns (value, forecast, delta, score) are right-aligned and `tabular-nums`. Put the most important number (Delta or Score) last so it inherits the default right alignment.
+- Missing source values or unscored records render `–` (Facet placeholder). A missing value never renders as `0` or blank.
+- Sorting by Delta or Score uses header buttons. Persist sort and filter state in the URL, alongside `FilterParams`.
+- Use `TableFooter` only for real aggregates (e.g. record count or average delta). Skip it otherwise.
 - For dense mode, the reference has no compact table. If the 40px row is too tall, any Facet `density="compact"` option is a Facet extension and must be documented as one.
 
 ## Facet additions `[F]`
@@ -67,20 +67,20 @@ Implemented in `css/data.css` (load after `components.css`). Specimen: `preview/
 
 ### Sortable headers
 ```html
-<th scope="col" data-align="numeric" aria-sort="descending"><button type="button" class="fc-th-sort">Gap</button></th>
+<th scope="col" data-align="numeric" aria-sort="descending"><button type="button" class="fc-th-sort">Delta</button></th>
 ```
 - The `<th>` carries `aria-sort` (`ascending` or `descending`) on the one sorted column; remove it from the others. The label is a `<button class="fc-th-sort">`.
 - Indicator: a chevron in a soft circle (the reference's AI Gateway table), drawn by CSS. It shows on the sorted column only, and at half strength on hover or keyboard focus as a preview. Ascending rotates it.
 - Numeric headers (`data-align="numeric"`) put the indicator on the inner side so the label stays aligned with the values.
 - Numbers start largest first, text A to Z, times earliest first. A second click reverses.
-- The caption states the sort in words and updates with it ("Sorted by gap, largest first."). Keep any sort select in the filter bar in sync with the headers.
+- The caption states the sort in words and updates with it ("Sorted by delta, largest first."). Keep any sort select in the filter bar in sync with the headers.
 
 ### Frozen first column
 `<table class="fc-table" data-sticky-column>` freezes the row-header column (plus the selection column when it comes first) while the rest scrolls inside `.fc-table-wrap`. A 1px `--fc-border-default` hairline marks the edge. Frozen cells repaint stripes, hover, checked and open rows, so fills never break. Set `--fc-frozen-width` on the wrap to the frozen width so keyboard focus scrolls clear of it (INT-02).
 
 ### Selection column
 ```html
-<td class="fc-cell-select"><label><input type="checkbox" class="fc-check" aria-label="Select Mike Gesicki"></label></td>
+<td class="fc-cell-select"><label><input type="checkbox" class="fc-check" aria-label="Select Northwind"></label></td>
 ```
 - 40px column, 16px box, the whole cell is the hit target (INT-04). The header cell holds "Select all" and goes `indeterminate` when some rows are checked.
 - Checked rows take `--fc-surface-fill`; the open row (the one shown in a sheet) keeps `aria-selected="true"` and gray-200. The check mark is the non-color cue.
@@ -88,28 +88,28 @@ Implemented in `css/data.css` (load after `components.css`). Specimen: `preview/
 
 ### Row actions
 ```html
-<td class="fc-cell-actions"><span class="fc-row-actions"><button class="fc-button" data-variant="tertiary" data-shape="square" data-size="small" aria-haspopup="menu" aria-expanded="false" aria-label="More actions for Mike Gesicki">…</button></span></td>
+<td class="fc-cell-actions"><span class="fc-row-actions"><button class="fc-button" data-variant="tertiary" data-shape="square" data-size="small" aria-haspopup="menu" aria-expanded="false" aria-label="More actions for Northwind">…</button></span></td>
 ```
 - Last column, header text visually hidden ("Actions"). One overflow button; put the rest in its menu.
 - With a fine pointer the buttons appear on row hover, and always while focus is in the row or the menu is open. Touch screens always show them.
-- The accessible name includes the row ("More actions for Mike Gesicki").
+- The accessible name includes the row ("More actions for Northwind").
 
 ### Tip affordance
-`.fc-has-tip` adds a 1px dotted gray-600 underline to a value or header that carries an explanation. Make it focusable (`tabindex="0"`) and point it at its tooltip with `aria-describedby`. Tooltips, time cards and menus open as `popover` elements with `.fc-float`, so a scrolling table never clips them. Tips add information (the vig basis, a small sample); never restate the value.
+`.fc-has-tip` adds a 1px dotted gray-600 underline to a value or header that carries an explanation. Make it focusable (`tabindex="0"`) and point it at its tooltip with `aria-describedby`. Tooltips, time cards and menus open as `popover` elements with `.fc-float`, so a scrolling table never clips them. Tips add information (the forecast basis, a small sample); never restate the value.
 
-**Header help (owner decision, 2026-11-02).** Data-rich tables give every derived or jargon column header a tip, so headers stay one or two words and never wrap. A sortable header puts `.fc-has-tip` and `aria-describedby` on its `.fc-th-sort` button; the underline stays and the cursor stays a pointer. The tip defines the column in under ten words ("Our estimate minus the priced chance") and never repeats the header. Plain columns (Pick, Kickoff) get none.
+**Header help.** Data-rich tables give every derived or jargon column header a tip, so headers stay one or two words and never wrap. A sortable header puts `.fc-has-tip` and `aria-describedby` on its `.fc-th-sort` button; the underline stays and the cursor stays a pointer. The tip defines the column in under ten words ("Actual minus forecast, in points") and never repeats the header. Plain columns (Account, Renewal) get none.
 
 ### Notes
 - `.fc-table-wrap` is now `position: relative`, so visually hidden header text and sticky cells stay inside the scroller instead of widening the page.
 - Headers in Facet are sentence case (house rule), not Title Case as the reference says.
 
-**Time cells (owner feedback, 2026-11-02).** A time column pairs the clock time with its day word, in mono and primary text ("Today 5:52 PM"), and the relative time under it in secondary sans ("8m ago"), generated by `stampTimes()` from the same `datetime` (`td.fc-time-cell`). Never a bare clock time in a table.
+**Time cells.** A time column pairs the clock time with its day word, in mono and primary text ("Today 5:52 PM"), and the relative time under it in secondary sans ("8m ago"), generated by `stampTimes()` from the same `datetime` (`td.fc-time-cell`). Never a bare clock time in a table.
 
-**Column widths (owner feedback, 2026-11-02).** Numeric columns hug their content (`width: 1%`). Mark the main text column's header `data-grow` (pick, message) and every other column hugs its content too, so the slack lands in one place and values never sit far from their header with a wide empty gap. A short text label that must read as one unit (a bet, a status) takes `data-nowrap` on its cells so a hugging column never breaks it across lines.
+**Column widths.** Numeric columns hug their content (`width: 1%`). Mark the main text column's header `data-grow` (account, message) and every other column hugs its content too, so the slack lands in one place and values never sit far from their header with a wide empty gap. A short text label that must read as one unit (a plan, a status) takes `data-nowrap` on its cells so a hugging column never breaks it across lines.
 
-**Row count (owner feedback, 2026-11-02).** In a selectable table, the count sits in the main column header next to the select-all box (`.fc-th-count`): "5 of 31" when nothing is checked, "2 selected" when rows are. No "Showing 5 of 31" caption line; the visible sort arrow states the sort, and the caption keeps it for screen readers only.
+**Row count.** In a selectable table, the count sits in the main column header next to the select-all box (`.fc-th-count`): "5 of 31" when nothing is checked, "2 selected" when rows are. No "Showing 5 of 31" caption line; the visible sort arrow states the sort, and the caption keeps it for screen readers only.
 
-**Divider clearance (owner rule, 2026-11-02).** Cell content never sits closer than 16px to a vertical divider, on either side: the frozen column's divider, and any column marked `data-divider`.
+**Divider clearance.** Cell content never sits closer than 16px to a vertical divider, on either side: the frozen column's divider, and any column marked `data-divider`.
 
 ### Cell detail
 ```html
@@ -117,4 +117,4 @@ Implemented in `css/data.css` (load after `components.css`). Specimen: `preview/
 ```
 - The count behind a share sits before the value in the same cell, 13px secondary with tabular figures, so every value in the column keeps one right edge.
 - Use it when the share alone hides a thin sample (a share of 7 is not a share of 70). Write the count as "n of m".
-- Gem sheet, Core sample: his share of his team's carries and targets inside the 10, season and last 3 games.
+- Detail sheet, Adoption: the account's share of seats active, this quarter and the last 3 weeks.

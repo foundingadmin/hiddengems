@@ -1,4 +1,4 @@
-# Split Button
+# Split button
 > Source: https://vercel.com/geist/split-button (captured 2026-11-02)
 
 ## Purpose
@@ -29,7 +29,7 @@ Inherits Button and Menu tokens (`--ds-shadow-menu`, 12px menu radius from mater
 - `menuButtonLabel` is a screen-reader sentence naming the action set (`More deploy options`). It becomes the trigger's `aria-label`.
 - Use `bottom-end` only when the button sits flush against a right edge.
 
-## Hidden Gems usage
-- **Export**: `Export CSV` primary with `Export CSV`, `Copy as text`, `Copy bet slip` in the menu.
-- **Track Bet**: primary `Track bet` with `Track at current line`, `Track with custom line…`.
-- Keep to `secondary` `small` in toolbars, so it does not compete with the slate.
+## In practice
+- **Export**: `Export CSV` primary with `Export CSV`, `Copy as text`, `Copy share link` in the menu.
+- **Pin Account**: primary `Pin account` with `Pin to my board`, `Pin with a note…`.
+- Keep to `secondary` `small` in toolbars, so it does not compete with the board.

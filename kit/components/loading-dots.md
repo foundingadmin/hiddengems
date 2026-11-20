@@ -22,6 +22,6 @@ Not specified. Inherits text color (inferred). Demo label is `text-copy-14 text-
 - The label names the work (`Saving`, `Deploying`). Never use it after a past-tense verb (`Saved…`).
 - Wrapper has `aria-live="polite"`. Dots are decorative (no `aria-label`). Respect reduced motion and never pair with another animation on the same line.
 
-## Hidden Gems usage
-- `Refreshing odds…` in the toolbar status area during auto-refresh.
-- `Scoring…` next to a recalculating market in the Sheet header.
+## In practice
+- `Syncing…` in the toolbar status area during auto-refresh.
+- `Scoring…` next to a recalculating account in the Sheet header.

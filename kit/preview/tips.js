@@ -2,7 +2,7 @@
 (function () {
 // Facet tips. A dotted underline (.fc-has-tip) always means a helper sits behind it, and it opens
 // on every input: hover (short delay), keyboard focus, or a tap on touch screens. This replaces
-// info icons (owner decision, 2026-11-02).
+// info icons.
 //
 //   <span class="fc-has-tip" aria-describedby="tip-gap">Gap</span>
 //   <div class="fc-tooltip fc-float" popover="manual" role="tooltip" id="tip-gap">Our estimate minus the priced chance</div>

@@ -60,7 +60,7 @@ const RADII = {
   },
 };
 
-const SYSTEM_SANS = 'ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
+const SYSTEM_SANS = 'ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif';
 const SYSTEM_MONO = 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace';
 export const FONTS = {
   geist: {

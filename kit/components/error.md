@@ -21,7 +21,7 @@ Not specified on this page. The Input's inline error (measured) uses a red octag
 ## Rules
 - Use as a block when a panel, card or route failed to load. Use `toasts.error()` for transient action failures and the Input `error` prop for field validation.
 - System errors always include a stable ID (request ID, trace ID) on a monospace line, collapsed under `<details>`. User-state errors (validation, permission) do not need one.
-- The recovery action must be concrete (`Try again` if safe to retry, otherwise a named verb such as `Reconnect GitHub`). No silent background auto-retry.
+- The recovery action must be concrete (`Try again` if safe to retry, otherwise a named verb such as `Reconnect Billing`). No silent background auto-retry.
 - Full-page route errors move focus to `Try again`.
 - Say what happened, then what to do. No `Oops` or `Unfortunately`. Use `Couldn’t` / `Can’t` for user-state errors and `Failed to` for system errors. Never title an error `Something went wrong`. Name the resource (`Couldn’t Load Deployments`). Never joke.
 - Async errors go in an `aria-live="polite"` region. Use `assertive` only for blocking errors.

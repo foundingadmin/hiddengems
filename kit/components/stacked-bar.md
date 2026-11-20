@@ -1,18 +1,18 @@
 # Stacked bar
 
-> Facet component `[F]`. Built for the agent workflow replay (Settings, Agent workflow). CSS in `css/charts.css`.
+> Facet component `[F]`. Built for run replays. CSS in `css/charts.css`.
 
 ## Purpose
 Splits one total into the shares of its parts on a single bar, so the reader sees which part takes most of it. The legend beside it prints each value.
 
 ## Anatomy
 ```html
-<div class="fc-stacked-bar" role="img" aria-label="Tokens so far by agent: triage 22k, builder 88k">
+<div class="fc-stacked-bar" role="img" aria-label="Rows so far by source: Billing 22k, CRM 88k">
   <i data-series="1" style="--value:18"></i>
   <i data-series="2" style="--value:70"></i>
 </div>
-<ul class="fc-legend" role="list" aria-label="Tokens so far by agent">
-  <li class="fc-legend-item" data-series="1"><span class="fc-legend-key" aria-hidden="true"></span><span class="fc-legend-name">triage</span><span class="fc-legend-value">22k</span></li>
+<ul class="fc-legend" role="list" aria-label="Rows so far by source">
+  <li class="fc-legend-item" data-series="1"><span class="fc-legend-key" aria-hidden="true"></span><span class="fc-legend-name">Billing</span><span class="fc-legend-value">22k</span></li>
   …
 </ul>
 ```
@@ -22,10 +22,10 @@ Splits one total into the shares of its parts on a single bar, so the reader see
 
 ## Rules
 - Always pair with an `.fc-legend` that carries each part's value; the key colors are decoration, the names carry the meaning.
-- Series colors come from `data-series` (`--fc-chart-1..6`): gray first, then blue, teal, pink. Never verdict hues or purple.
+- Series colors come from `data-series` (`--fc-chart-1..6`): gray first, then blue, teal, pink. Never verdict hues or the brand accent.
 - `role="img"` with an `aria-label` that lists every part and value, since the segments themselves are silent.
 - Widths animate over 300ms with the standard easing; reduced motion turns that off.
 - More than six parts: group the smallest into one muted segment (`data-series="muted"`).
 
-## Hidden Gems usage
-Tokens so far by agent on the agent workflow replay.
+## In practice
+Rows so far by source on a sync run replay.

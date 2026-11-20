@@ -28,8 +28,8 @@ Default, hover, selected, disabled (text `--ds-gray-800`), focus-visible (`--ds-
 - Labels are sentence case, 1–2 words, and parallel.
 - Every control needs a `label`, even icon-only ones. Add a Tooltip per control for icon-only switches.
 
-## Hidden Gems usage
-- **Odds format**: `American` / `Decimal` (`small`).
-- **Slate layout**: icon switch `Table` / `Cards` with Tooltips.
-- **Chart range** in Line History: `24H` / `3D` / `7D`.
-- Never use it for filtering many books. Use FilterParams.
+## In practice
+- **Number format**: `Compact` / `Full` (`small`).
+- **Board layout**: icon switch `Table` / `Cards` with Tooltips.
+- **Chart range** in Score history: `24H` / `3D` / `7D`.
+- Never use it for filtering many sources. Use FilterParams.

@@ -1,4 +1,4 @@
-# Pie Gauge
+# Pie gauge
 > Source: https://vercel.com/geist/pie-gauge (captured 2026-11-02)
 
 ## Purpose

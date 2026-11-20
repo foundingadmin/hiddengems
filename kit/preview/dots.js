@@ -310,7 +310,7 @@ function createStage(host, opts = {}) {
 
   /**
    * A cloud sweeps across el from one end to the other: from 'left', 'right', or a control (Element or point),
-   * heading for el's far end. Defaults are the remove sweep (docs/animation/micro-moments, Remove a leg); pass
+   * heading for el's far end. Defaults are the remove sweep (patterns/moments.md); pass
    * count, size, spread, opacity and duration for a lighter one. wipe also clips el away behind the cloud, and
    * leaves it clipped until unsweep.
    */
@@ -356,7 +356,7 @@ function createStage(host, opts = {}) {
   }
 
   /**
-   * Dots along one edge of el ripple outward from a point: the glint that answers an add on the Slips tab, and
+   * Dots along one edge of el ripple outward from a point: the glint that answers an add on a tab bar item, and
    * the shimmer on a sheet's leading edge. The edge comes from o.edge, else el's --fc-glint-edge, else top.
    * While it plays, the from element (or el) carries data-glint for CSS to answer.
    */

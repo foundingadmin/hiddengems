@@ -4,7 +4,7 @@
      @import "facet-kit/css/tailwind.css";
    Tailwind's default palette is removed so only Facet steps exist (bg-gray-100, text-gray-900,
    border-gray-400, bg-background-100, text-blue-900 ...), which mirrors how vercel.com itself
-   writes classes. */
+   writes classes. Use a relative path instead of "facet-kit" when the kit is not installed as a package. */
 
 @import "./tokens.css";
 @import "./materials.css";
@@ -99,11 +99,11 @@
   --color-background-200: var(--ds-background-200);
   --font-sans: var(--fc-font-sans);
   --font-mono: var(--fc-font-mono);
-  --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
+  --radius-xs: var(--fc-radius-xs);
+  --radius-sm: var(--fc-radius-sm);
+  --radius-md: var(--fc-radius-md);
+  --radius-lg: var(--fc-radius-lg);
+  --radius-xl: var(--fc-radius-xl);
   --shadow-border: var(--ds-shadow-border);
   --shadow-border-small: var(--ds-shadow-border-small);
   --shadow-border-medium: var(--ds-shadow-border-medium);
@@ -172,10 +172,6 @@
   --color-fc-highlight-solid: var(--fc-highlight-solid);
   --color-fc-highlight-bg: var(--fc-highlight-bg);
   --color-fc-highlight-border: var(--fc-highlight-border);
-  --color-fc-gem-tier-rough: var(--fc-gem-tier-rough);
-  --color-fc-gem-tier-cut: var(--fc-gem-tier-cut);
-  --color-fc-gem-tier-polished: var(--fc-gem-tier-polished);
-  --color-fc-gem-tier-flawless: var(--fc-gem-tier-flawless);
   --color-fc-freshness-live: var(--fc-freshness-live);
   --color-fc-freshness-recent: var(--fc-freshness-recent);
   --color-fc-freshness-stale: var(--fc-freshness-stale);
@@ -192,6 +188,10 @@
   --color-fc-chart-axis: var(--fc-chart-axis);
   --color-fc-chart-threshold: var(--fc-chart-threshold);
   --color-fc-chart-magnitude: var(--fc-chart-magnitude);
+  --color-fc-brand-fg: var(--fc-brand-fg);
+  --color-fc-brand-solid: var(--fc-brand-solid);
+  --color-fc-brand-bg: var(--fc-brand-bg);
+  --color-fc-brand-border: var(--fc-brand-border);
 }
 
 /* dark: fires for a forced dark theme and for the OS preference, matching tokens.css. */

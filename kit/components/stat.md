@@ -1,5 +1,5 @@
 # Stat
-> Facet component `[F]`. Pattern source: vercel.com marketing stat blocks and shared-hairline cells (`reference/inbox-review-2026-11-02/04-brand-marketing.md`, 3.1). Implemented in `css/components.css` (base) and `css/data.css` (figure, basis, cells).
+> Facet component `[F]`. Pattern source: vercel.com marketing stat blocks and shared-hairline cells. Implemented in `css/components.css` (base) and `css/data.css` (figure, basis, cells).
 
 ## Purpose
 One number the reader came for, kept together with what it measures and how far to trust it. Peers sit in a strip and look equal.
@@ -10,7 +10,7 @@ One number the reader came for, kept together with what it measures and how far 
   <div class="fc-stat">
     <p class="fc-stat-label">Hit rate</p>
     <p class="fc-stat-figure"><span class="fc-stat-value">55%</span><span class="fc-stat-qualifier">23 of 42</span></p>
-    <p class="fc-stat-basis">Settled picks only</p>
+    <p class="fc-stat-basis">Closed weeks only</p>
   </div>
   …
 </div>
@@ -21,7 +21,7 @@ One number the reader came for, kept together with what it measures and how far 
 | Figure | `.fc-stat-figure` | Holds value and qualifier on one baseline; wraps as a unit |
 | Value | `.fc-stat-value` | 24px semibold, tabular, primary |
 | Qualifier | `.fc-stat-qualifier` | Unit, count or direction that belongs to the number ("pts", "23 of 42", "lower"). 14px secondary |
-| Basis | `.fc-stat-basis` | Sample, window or source ("41 picks, Weeks 1 to 8"). 13px secondary |
+| Basis | `.fc-stat-basis` | Sample, window or source ("41 accounts, Weeks 1 to 8"). 13px secondary |
 | Detail | `.fc-stat-detail` | Existing free-form line; still supported |
 | Action | `.fc-stat-action` | Optional. One small CTA under the basis (`[F]`, 2026-11-03) |
 
@@ -33,7 +33,7 @@ When the stat itself says something needs doing, one small CTA sits under the ba
 <div class="fc-stat">
   <dt class="fc-stat-label">Status</dt>
   <dd class="fc-stat-figure"><span class="fc-stat-value">2 need a look</span></dd>
-  <dd class="fc-stat-basis">Rosters overdue, Results failed</dd>
+  <dd class="fc-stat-basis">CRM overdue, Billing failed</dd>
   <dd class="fc-stat-action"><button class="fc-button" data-variant="secondary" data-size="small" type="button">Fix all</button></dd>
 </div>
 ```
@@ -49,30 +49,30 @@ When the stat itself says something needs doing, one small CTA sits under the ba
 - Peers share role, size, weight and precision. Never enlarge one value because it is bigger.
 - Units and qualifiers stay beside the number. Do not move them into the label.
 - Every stat that summarises a sample carries its basis. Under 20 events, show "n of m", not a bare percentage.
-- Distinguish observed, derived and projected values in the basis ("Projected from 6 games").
+- Distinguish observed, derived and projected values in the basis ("Projected from 6 weeks").
 - Signed values use a real sign; direction words ("lower") go in the qualifier. Color only through `.fc-delta`, or `.fc-money` for profit and loss (`money.md`), never on the value itself.
 - Labels say what was measured, not a teaser. The basis is a disclosure, so it stays even when space is tight.
 - A missing value renders `–` with `aria-label="Unknown"`.
 
-## Gem rating as the value `[F]`
+## Score as the value `[F]`
 CSS in `css/components.css` (`.fc-score[data-size="stat"]`). Specimen: `preview/index.html#lf-lab`.
 
-When a stat's value is a gem rating, the gem mark replaces `.fc-stat-value` at the same role: number 600 24/32, the gem glyph one em tall, 8px between. So a gem rating beside plain stats reads as an equal peer (rule 7), and the purple intensity still rises with the number.
+When a stat's value is a score, the score mark replaces `.fc-stat-value` at the same role: number 600 24/32, the glyph one em tall, 8px between. So a score beside plain stats reads as an equal peer (rule 7), and the accent intensity still rises with the number.
 ```html
 <p class="fc-stat-figure">
-  <span class="fc-score" data-size="stat" data-live style="--rating: 37" aria-label="Gem rating 37">
+  <span class="fc-score" data-size="stat" data-live style="--rating: 37" aria-label="Score 37">
     <svg viewBox="0 0 24 22" aria-hidden="true">…</svg><span>37</span>
   </span>
-  <span class="fc-stat-qualifier">Gem</span>
+  <span class="fc-stat-qualifier">of 100</span>
 </p>
 ```
-- Keep the qualifier ("Gem") beside it: the shape and the word both say what kind of result it is, so the purple is never the only cue.
-- `data-live` keeps the glint; reduced motion stops it (ANI-01). Fool's Gold and no-gem results use their own words at the value role, not a gem.
+- Keep the qualifier ("of 100") beside it: the shape and the words both say what kind of number it is, so the accent is never the only cue.
+- `data-live` keeps the glint; reduced motion stops it (ANI-01). Void and unscored results use their own words at the value role, not a score mark.
 - Use it in a stat only. In tables and rows the default and `lg` sizes stay.
 
-## Hidden Gems usage
-- Rating lab, Try a prop: the Rating stat shows the gem at stat size beside Carat, Edge and Clarity.
-- Track record strip on History: Return on stake `+6.2%` (41 picks, Weeks 1 to 8), Hit rate `55%` `23 of 42`, Average gap `+4.0` `pts`, Beat the closing line `29` `of 41`.
-- Slate summary above the table: picks, average gap, go verdicts, odds freshness.
+## In practice
+- Score lab, Try a record: the Score stat shows the score mark at stat size beside Delta, Value and Checks.
+- Track record strip on History: Revenue vs forecast `+6.2%` (41 accounts, Weeks 1 to 8), Hit rate `55%` `23 of 42`, Average delta `+4.0` `pts`, Beat the forecast `29` `of 41`.
+- Board summary above the table: accounts, average delta, on track verdicts, source freshness.
 - Data health overview: Status carries "Fix all" (or "Fix" for one source) in `.fc-stat-action` while any source needs a look.
 - A selectable strip that drives a chart (metric tabs) is a planned extension, `data-selectable`.

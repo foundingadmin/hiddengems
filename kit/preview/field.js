@@ -2,13 +2,13 @@
 (function () {
 // Facet field: the animated hero background for marketing surfaces inside a product.
 // A low-poly lattice cut like a gemstone. A slow beam of light
-// sweeps across it; a few hidden facets flash in the brand accent (--fc-brand-solid; purple in
-// Hidden Gems, where it means a gem) as the light finds them. Everything else changes lightness only.
+// sweeps across it; a few facets flash in the brand accent (--fc-brand-solid) as the light finds
+// them. Everything else changes lightness only.
 //
 //   import { mountField } from 'facet-kit/js/field.mjs';
 //   mountField(document.querySelector('.fc-hero-field'));      // or add data-fc-field and call autoMount()
 //
-// Options: { seed, density (cell px, default 56), gems (share of facets, default 0.024),
+// Options: { seed, density (cell px, default 56), sparks (share of facets, default 0.024),
 //            cycle (ms per sweep, default 9000) }
 // Respects prefers-reduced-motion (draws one still frame), pauses off screen and in hidden tabs,
 // and re-reads colors when the theme changes. Returns { destroy() }.
@@ -37,7 +37,7 @@ const mix = (a, b, t) => ({ r: a.r + (b.r - a.r) * t, g: a.g + (b.g - a.g) * t, 
 const rgba = (c, a = 1) => `rgba(${c.r | 0}, ${c.g | 0}, ${c.b | 0}, ${a})`;
 
 function mountField(canvas, opts = {}) {
-  const o = { seed: 7, density: 56, gems: 0.024, cycle: 9000, ...opts };
+  const o = { seed: 7, density: 56, sparks: 0.024, cycle: 9000, ...opts };
   const ctx = canvas.getContext('2d');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
   const probe = document.createElement('span');
@@ -56,9 +56,9 @@ function mountField(canvas, opts = {}) {
       low: parseColor(cssVar(host, light ? '--ds-gray-100' : '--ds-gray-100'), probe),
       high: parseColor(cssVar(host, light ? '--ds-gray-300' : '--ds-gray-300'), probe),
       lit: parseColor(cssVar(host, light ? '--ds-background-100' : '--ds-gray-600'), probe),
-      tint: parseColor(cssVar(host, '--fc-brand-bg') || cssVar(host, '--fc-highlight-bg'), probe),
+      tint: parseColor(cssVar(host, '--fc-brand-bg'), probe),
       edge: parseColor(cssVar(host, '--ds-gray-alpha-200'), probe),
-      gem: parseColor(cssVar(host, '--fc-brand-solid') || cssVar(host, '--fc-highlight-solid'), probe),
+      spark: parseColor(cssVar(host, '--fc-brand-solid'), probe),
     };
   }
 
@@ -80,7 +80,7 @@ function mountField(canvas, opts = {}) {
       const flip = (i + j) % 2 === 0;
       for (const tri of flip ? [[a, b, d], [a, d, c]] : [[a, b, c], [b, d, c]]) {
         const cx = (tri[0][0] + tri[1][0] + tri[2][0]) / 3, cy = (tri[0][1] + tri[1][1] + tri[2][1]) / 3;
-        tris.push({ p: tri, cx, cy, shade: r(), gem: r() < o.gems });
+        tris.push({ p: tri, cx, cy, shade: r(), spark: r() < o.sparks });
       }
     }
   }
@@ -104,15 +104,15 @@ function mountField(canvas, opts = {}) {
       ctx.strokeStyle = rgba(C.edge, C.edge.a);
       ctx.lineWidth = 1;
       ctx.stroke();
-      if (t.gem) {
-        // A hidden gem: it flashes purple as the light passes, then fades back into the field.
-        const g = Math.max(0, 1 - Math.abs(d + beamW * 0.15) / (beamW * 0.55)); // the still frame shows only the gems in the beam
+      if (t.spark) {
+        // A spark: it flashes in the accent as the light passes, then fades back into the field.
+        const g = Math.max(0, 1 - Math.abs(d + beamW * 0.15) / (beamW * 0.55)); // the still frame shows only the sparks in the beam
         if (g > 0.01) {
           ctx.save();
           ctx.globalAlpha = Math.min(1, g * 1.1);
-          ctx.shadowColor = rgba(C.gem, 0.9);
+          ctx.shadowColor = rgba(C.spark, 0.9);
           ctx.shadowBlur = 18 * g;
-          ctx.fillStyle = rgba(C.gem);
+          ctx.fillStyle = rgba(C.spark);
           ctx.fill();
           // Inner facet: a smaller, lighter cut toward the centroid, so it reads as a stone catching light.
           ctx.shadowBlur = 0;

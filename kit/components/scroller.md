@@ -23,8 +23,8 @@ Not specified by the reference.
 - Virtualize inside the Scroller for datasets beyond a few hundred items.
 - Buttons only target direct children. Do not wrap items in extra nodes.
 - Show edge fades or shadows on clipped edges. Keep item widths and gaps consistent.
-- Tab order follows the DOM. Scroll buttons need descriptive `aria-label`s (`Scroll games left`). Focusing an off-screen item must scroll it into view.
+- Tab order follows the DOM. Scroll buttons need descriptive `aria-label`s (`Scroll segments left`). Focusing an off-screen item must scroll it into view.
 
-## Hidden Gems usage
-- **Game strip** above the slate: horizontal scroller of game chips (`KC @ LV · 4:25 PM`) with buttons.
-- **News feed** panel: vertical scroller with fixed height.
+## In practice
+- **Segment strip** above the board: horizontal scroller of segment chips (`Enterprise · 42 accounts`) with buttons.
+- **Activity feed** panel: vertical scroller with fixed height.

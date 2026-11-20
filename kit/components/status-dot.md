@@ -1,4 +1,4 @@
-# Status Dot
+# Status dot
 > Source: https://vercel.com/geist/status-dot (captured 2026-11-02)
 
 ## Purpose
@@ -31,8 +31,8 @@ Legacy `--accents-2`, `--geist-warning`, `--geist-error`, `--geist-cyan` (measur
 - Use `label` only when the dot stands alone. Do not wrap it as `Status: Ready`.
 - The component builds its own `aria-label`. Do not override it with a generic one. If adjacent text already names the state, mark the dot `aria-hidden`.
 
-## Hidden Gems usage
-- The reference would say odds freshness and line movement are not deployment states, so the strictly correct component is a subtle `Badge`. If Facet still wants a dot for compactness in table cells, define a **Facet extension** (`<StatusDot kind="feed" state="LIVE|DELAYED|STALE|SUSPENDED">`) that keeps the reference's mechanics: 10px dot, built-in title and aria-label, animation only for non-terminal states. Document it as a deviation.
-- Suggested feed mapping (Facet extension): LIVE → teal/green, static. UPDATING → amber, animated (like BUILDING). STALE → gray (like CANCELED). SUSPENDED / market pulled → red (like ERROR).
+## In practice
+- The reference would say source freshness and score movement are not deployment states, so the strictly correct component is a subtle `Badge`. If Facet still wants a dot for compactness in table cells, define a **Facet extension** (`<StatusDot kind="source" state="LIVE|DELAYED|STALE|SUSPENDED">`) that keeps the reference's mechanics: 10px dot, built-in title and aria-label, animation only for non-terminal states. Document it as a deviation.
+- Suggested source mapping (Facet extension): LIVE → teal/green, static. UPDATING → amber, animated (like BUILDING). STALE → gray (like CANCELED). SUSPENDED / source disconnected → red (like ERROR).
 - Always pair with `RelativeTimeCard` (`Updated · 2m ago`), because the dot does not show age.
-- **Ingestion pipeline jobs** (scrapers, model runs) behave like deployments (queued → building → ready / error), so the native StatusDot vocabulary fits them directly on an admin/status page.
+- **Sync jobs** (connectors, scoring runs) behave like deployments (queued → building → ready / error), so the native StatusDot vocabulary fits them directly on an admin/status page.

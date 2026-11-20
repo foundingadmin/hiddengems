@@ -8,7 +8,7 @@ A machine value to copy exactly: an ID, a cron expression, a URL, a command. Mon
 ```html
 <span class="fc-label" id="sid-l">Schedule ID</span>
 <div class="fc-snippet" role="group" aria-labelledby="sid-l">
-  <code class="fc-snippet-value">sch_odds_all_5m</code>
+  <code class="fc-snippet-value">sch_billing_all_5m</code>
   <button class="fc-button fc-snippet-copy" data-variant="tertiary" data-size="tiny" data-shape="square"
           type="button" aria-label="Copy schedule ID" data-copy>
     <svg class="fc-icon-copy" aria-hidden="true">...</svg><svg class="fc-icon-check" aria-hidden="true">...</svg>
@@ -26,8 +26,8 @@ A machine value to copy exactly: an ID, a cron expression, a URL, a command. Mon
 - Multi-line `[F]` (`data-wrap`): keeps line breaks and wraps long lines at spaces, so the whole value is visible without sideways scrolling. Use `<pre class="fc-snippet-value">` for several lines. Mono 13/20 like the one-line snippet; padding 8px top and bottom; the copy button, when present, stays on the first line.
 ```html
 <div class="fc-snippet" data-wrap>
-  <pre class="fc-snippet-value">if not clears: no rating
-rating = round(100 × clamp(carat / 10, 0, 1) × clarity / 100)</pre>
+  <pre class="fc-snippet-value">if not eligible: no score
+score = round(100 × clamp(delta / 10, 0, 1) × checks_passed / 6)</pre>
 </div>
 ```
 - Upstream props not built: `$` prompt, inverted.
@@ -44,7 +44,7 @@ Idle; copied (check icon for 2s, live region announces once, then both reset); c
 - Never type a leading `$`. One value per snippet.
 - The check is a second cue for the live announcement; never rely on the icon alone.
 
-## Hidden Gems usage
-- Rating lab formula code (multi-line, no copy button: it is pseudocode to read, not a value to paste).
-- Schedule and provider IDs, cron expressions (Advanced disclosure in the schedule editor), bet strings to paste into a book (`Kelce o64.5 rec yds −115 @DK`).
+## In practice
+- Score lab formula code (multi-line, no copy button: it is pseudocode to read, not a value to paste).
+- Schedule and source IDs, cron expressions (Advanced disclosure in the schedule editor), filter strings to paste into another tool (`segment:enterprise score>=70`).
 - Secrets use `components/secret.md`, which builds on this.

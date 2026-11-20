@@ -1,5 +1,5 @@
 # Signed money
-> Facet `[F]`.
+> Facet `[F]`. CSS in `css/flows.css`.
 
 ## Purpose
 A result in money, gain or loss, that reads correctly in grayscale and at a glance.

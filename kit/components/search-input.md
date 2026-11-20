@@ -1,4 +1,4 @@
-# Search Input
+# Search input
 > Source: https://vercel.com/geist/search-input (captured 2026-11-02)
 
 ## Purpose
@@ -26,6 +26,6 @@ Input tokens. `KeyboardInput` styling for the hint (inferred).
 - Do not embed it inside an unrelated form.
 - `⌘K` is reserved for the global command menu. Do not bind it to an in-page filter input. Show the `cmdk` hint only when the field actually opens the command menu.
 
-## Hidden Gems usage
-- **Slate quick filter**: `Search players, teams, markets` with `loading` while querying and Escape to clear. No `cmdk` hint unless it opens the global palette.
+## In practice
+- **Board quick filter**: `Search accounts, owners, segments` with `loading` while querying and Escape to clear. No `cmdk` hint unless it opens the global palette.
 - **Global search** in the top bar: `cmdk` variant that opens `CommandMenu`.

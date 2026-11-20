@@ -6,7 +6,7 @@
      @import "facet-kit/css/shadcn.css";
    Then delete the :root, .dark and @theme inline blocks that shadcn init writes, and keep
    "cssVariables": true in components.json. The Tailwind v3 format (hsl(var(--x))) cannot be bridged.
-   Nothing maps to purple; gems stay reachable only through --fc-highlight-*. Radius stays Facet's own
+   Only the focus ring maps to the accent; highlights stay reachable only through --fc-highlight-*. Radius stays Facet's own
    rounded-* scale; --radius exists only for components that read it directly. */
 
 :root, .light-theme, [data-theme="light"], .dark-theme, [data-theme="dark"] {

@@ -33,17 +33,17 @@ Hidden, shown (hover or focus), closed with Escape (focus returns to trigger).
 - One sentence or fragment, sentence case, no period on a fragment. Do not repeat the label or describe the interaction (`Click to…`).
 - Icon-only triggers still need an `aria-label`. Escape closes.
 
-## Hidden Gems usage
-- **Disabled reasons**: `Market suspended at caesars.`
-- **Metric definitions** on column headers: `Edge: model probability minus implied probability.`
-- **Badge explanations**: `High confidence: 4 of 5 signals agree.`
-- **Full values** for MiddleTruncated prop names, unless you use copy-on-click instead.
-- Add `Kbd` in text for shortcuts (`Track bet T`).
-- For richer hover content (line history mini-table, book list) use ContextCard, not Tooltip.
+## In practice
+- **Disabled reasons**: `Sync paused for Billing.`
+- **Metric definitions** on column headers: `Delta: actual minus forecast, in points.`
+- **Badge explanations**: `High confidence: 5 of 6 checks pass.`
+- **Full values** for MiddleTruncated record names, unless you use copy-on-click instead.
+- Add `Kbd` in text for shortcuts (`Pin account P`).
+- For richer hover content (score history mini-table, source list) use ContextCard, not Tooltip.
 
 ## Dotted underline rule `[F]`
 
-Owner decision, 2026-11-02. A dotted underline (`.fc-has-tip`) always means a helper sits behind the text, and nothing else uses it. It replaces info icons, so labels and headers stay short.
+A dotted underline (`.fc-has-tip`) always means a helper sits behind the text, and nothing else uses it. It replaces info icons, so labels and headers stay short.
 
 - The helper opens on hover (250ms delay), keyboard focus and tap. `js/tips.mjs` (`mountTips()`) wires every trigger and makes it focusable.
 - Point `aria-describedby` at a `.fc-tooltip.fc-float` popover, or give the trigger `data-tip="..."` and the tooltip is created.

@@ -20,7 +20,7 @@ Static. Can be `aria-hidden` when purely decorative (as in the inset demo).
 ## Rules
 - No best-practices section. From the Colors page: draw each border once. Keep dividers inside the border so alpha borders do not overlap and double up at intersections.
 
-## Hidden Gems usage
-- Between Sheet sections (Overview metrics / Signals / News).
+## In practice
+- Between Sheet sections (Overview metrics / Checks / Activity).
 - Vertical separators in the toolbar between filter, sort and view controls.
 - Use `inset` inside framed cards (e.g. summary cards with a ring border).

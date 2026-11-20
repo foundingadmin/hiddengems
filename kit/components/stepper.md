@@ -6,14 +6,14 @@ Change a small whole number by one, and show what the number means as it changes
 
 ## Anatomy
 ```html
-<label class="fc-label" for="picks">Max picks per week</label>
+<label class="fc-label" for="seats">Seats</label>
 <div class="fc-stepper-field">
   <div class="fc-stepper">
-    <button class="fc-stepper-button" type="button" data-step="-1" aria-label="Decrease max picks per week" aria-controls="picks">...</button>
-    <input class="fc-stepper-input" type="number" id="picks" value="7" min="1" max="15" step="1" aria-describedby="picks-total">
-    <button class="fc-stepper-button" type="button" data-step="1" aria-label="Increase max picks per week" aria-controls="picks">...</button>
+    <button class="fc-stepper-button" type="button" data-step="-1" aria-label="Decrease seats" aria-controls="seats">...</button>
+    <input class="fc-stepper-input" type="number" id="seats" value="7" min="1" max="15" step="1" aria-describedby="seats-total">
+    <button class="fc-stepper-button" type="button" data-step="1" aria-label="Increase seats" aria-controls="seats">...</button>
   </div>
-  <p class="fc-stepper-total" id="picks-total" aria-live="polite">Weekly exposure <strong>$350</strong>, 7 picks at $50</p>
+  <p class="fc-stepper-total" id="seats-total" aria-live="polite">Monthly cost <strong>$350</strong>, 7 seats at $50</p>
 </div>
 ```
 - 36px tall, 36px square buttons, a 56px centered number (500, tabular) between two rules. Native spinners are hidden; the input stays a typeable `spinbutton` with arrow-key support.
@@ -28,5 +28,5 @@ Minus disabled at `min`, plus disabled at `max`. Typed values are clamped on cha
 - Buttons name the field they change. Focus uses `--ds-focus-ring`.
 - A numbered list of tasks is not a stepper; use steps (`steps.md`).
 
-## Hidden Gems usage
-Max picks per week with weekly exposure; alert repeat count.
+## In practice
+Seats with monthly cost; alert repeat count.

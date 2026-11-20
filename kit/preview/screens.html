@@ -8,9 +8,10 @@
 <link rel="stylesheet" href="../css/facet.css">
 <link rel="stylesheet" href="specimen.css">
 <style>
-/* Page-only: the two-line record cell on the board. */
+/* Page-only: the two-line record cell on the board, and a score cell that keeps a void mark beside its label. */
 .sc-record { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .sc-record small { font: 400 13px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
+.sc-score { display: inline-flex; align-items: center; gap: var(--fc-space-2); white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -99,12 +100,12 @@
       <figure class="fc-stack" style="--fc-gap:12px;margin:0">
         <h2 class="text-heading-20">Where the upside sits</h2>
         <div class="fc-bar-list" id="delta-bars" role="list"></div>
-        <figcaption class="sp-caption">Scale 0 to 15 pts. Histories are 3 to 7 weeks, so deltas are directional.</figcaption>
+        <figcaption class="sp-caption">Scale 0 to 15 pts. Samples are 3 to 7 weeks, so deltas are directional.</figcaption>
       </figure>
       <div class="fc-stack" style="--fc-gap:12px">
         <h2 class="text-heading-20">Before the cutoff</h2>
         <div class="fc-note" data-type="warning"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1 15 14H1z" opacity=".25"/><path d="M7.25 6h1.5v4h-1.5zM7.25 11h1.5v1.5h-1.5z"/></svg><span>Northwind depends on its seat count holding. Billing syncs at 9:30 AM MT.</span></div>
-        <div class="fc-note" data-type="error" data-fill><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 4h1.5v5h-1.5zM7.25 10.5h1.5V12h-1.5z"/></svg><span>Quill Software's seat count and logins are unchecked.</span></div>
+        <div class="fc-note" data-type="error" data-fill><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 4h1.5v5h-1.5zM7.25 10.5h1.5V12h-1.5z"/></svg><span>Quill Software's seats and logins are unchecked.</span></div>
         <div class="fc-note"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span>Cobalt Health moved from $104.5k to $112.0k at renewal. The new value is locked.</span></div>
       </div>
     </div>
@@ -208,7 +209,7 @@
           </div>
           <nav class="fc-breadcrumbs" aria-label="Breadcrumb"><ol><li><span aria-current="page">Board</span></li></ol></nav>
           <div class="fc-topbar-actions">
-            <button class="fc-button" data-variant="tertiary" data-size="small" type="button"><svg aria-hidden="true"><use href="#sh-i-plus"/></svg><span class="fc-topbar-label">Track account</span></button>
+            <button class="fc-button" data-variant="tertiary" data-size="small" type="button"><svg aria-hidden="true"><use href="#sh-i-plus"/></svg><span class="fc-topbar-label">Pin account</span></button>
             <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="Search"><svg aria-hidden="true"><use href="#sh-i-search"/></svg></button>
           </div>
         </header>
@@ -324,7 +325,7 @@
           </div>
           <nav class="fc-breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="#sh-b-nav">Sources</a></li><li><span aria-current="page">Sync runs</span></li></ol></nav>
           <div class="fc-topbar-actions">
-            <button class="fc-button" data-variant="tertiary" data-size="small" type="button"><svg aria-hidden="true"><use href="#sh-i-plus"/></svg><span class="fc-topbar-label">Track account</span></button>
+            <button class="fc-button" data-variant="tertiary" data-size="small" type="button"><svg aria-hidden="true"><use href="#sh-i-plus"/></svg><span class="fc-topbar-label">Pin account</span></button>
             <button class="fc-button" data-variant="tertiary" data-size="small" data-shape="square" type="button" aria-label="Search"><svg aria-hidden="true"><use href="#sh-i-search"/></svg></button>
           </div>
         </header>
@@ -536,14 +537,14 @@
 
           <!-- Danger zone -->
           <div class="fc-settings-page" id="sh-set-danger" hidden>
-            <section class="fc-fieldset" data-type="warning" aria-labelledby="sh-wh-t">
+            <section class="fc-fieldset" data-type="warning" aria-labelledby="sh-disc-t">
               <div class="fc-fieldset-content">
-                <h4 class="fc-fieldset-title" id="sh-wh-t">Disconnect Warehouse</h4>
-                <p class="fc-fieldset-subtitle">Stops syncing Warehouse and removes Warehouse fields from every account.</p>
+                <h4 class="fc-fieldset-title" id="sh-disc-t">Disconnect Billing</h4>
+                <p class="fc-fieldset-subtitle">Stops syncing Billing and removes Billing fields from every account.</p>
               </div>
               <footer class="fc-fieldset-footer">
-                <p class="fc-fieldset-status" data-kind="scope">Synced Warehouse records stay in Activity. You can reconnect at any time.</p>
-                <div class="fc-fieldset-actions"><button class="fc-button" data-variant="warning" data-size="small" type="button">Disconnect Warehouse</button></div>
+                <p class="fc-fieldset-status" data-kind="scope">Synced Billing records stay in Activity. You can reconnect at any time.</p>
+                <div class="fc-fieldset-actions"><button class="fc-button" data-variant="warning" data-size="small" type="button">Disconnect Billing</button></div>
               </footer>
             </section>
 
@@ -912,7 +913,7 @@ score = round(100 × clamp(delta / 10, 0, 1) × confidence / 100)</pre></div>
         </div>
       </section>
       <div class="fc-collapse-group">
-        <details class="fc-collapse"><summary><span class="fc-collapse-title">Forecast</span><svg class="fc-collapse-chevron" aria-hidden="true"><use href="#sl-chevron"/></svg></summary><div class="fc-collapse-body"><p class="text-copy-14">Baseline, decay and source weight.</p></div></details>
+        <details class="fc-collapse"><summary><span class="fc-collapse-title">Baseline</span><svg class="fc-collapse-chevron" aria-hidden="true"><use href="#sl-chevron"/></svg></summary><div class="fc-collapse-body"><p class="text-copy-14">Decay, floor and source weight.</p></div></details>
         <details class="fc-collapse"><summary><span class="fc-collapse-title">Model</span><svg class="fc-collapse-chevron" aria-hidden="true"><use href="#sl-chevron"/></svg></summary><div class="fc-collapse-body"><p class="text-copy-14">Usage read, recalibration and priors.</p></div></details>
       </div>
     </div>
@@ -957,7 +958,7 @@ const renderBoard = (mode = 'cascade') => { body.innerHTML = accounts.map((r, i)
     <td data-align="numeric"><span class="fc-delta" data-direction="positive">${delta}</span></td>
     <td><span class="fc-signal-strip" role="img" aria-label="${aria}">${r.sig.map(s => `<i data-signal="${s}"></i>`).join('')}</span></td>
     <td><span class="fc-signal" data-signal="${r.v}">${label[r.v]}</span></td>
-    <td>${score(r.s, MOTION[mode](i))}</td>
+    <td><span class="sc-score">${score(r.s, MOTION[mode](i))}</span></td>
   </tr>`;
 }).join(''); };
 renderBoard();

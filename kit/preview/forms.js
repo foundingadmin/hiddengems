@@ -2,13 +2,13 @@
 (function () {
 // Facet form helpers.
 //
-// Option helpers (owner decision, 2026-11-02): a helper that explains one option shows only while that
+// Option helpers: a helper that explains one option shows only while that
 // option is chosen, so helper text never outlives its context. The helper keeps one line reserved while
 // empty, so choosing an option never shifts the form; option helpers stay one line long. Put the explanation on the option; the
 // select's aria-describedby points at the helper element, which is filled and shown or hidden to match.
 //
 //   <select class="fc-select" aria-describedby="days-h">
-//     <option data-helper="Game days are Sunday, Monday and Thursday." selected>Game days</option>
+//     <option data-helper="Business days are Monday to Friday." selected>Business days</option>
 //     <option>Every day</option>
 //   </select>
 //   <p class="fc-helper" id="days-h"></p>

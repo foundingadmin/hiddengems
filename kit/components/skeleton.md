@@ -26,8 +26,8 @@ Shimmer gradient `--ds-gray-100` → `--ds-gray-200` → `--ds-gray-100` (measur
 - Match final dimensions so nothing shifts on load. Mirror the final shape: pill for avatars, rounded for buttons and chips, squared for image tiles.
 - Set `aria-busy="true"` on the loading region and `aria-live="polite"` on the destination. Respect `prefers-reduced-motion` (`animated={false}`). No focusable controls inside.
 
-## Hidden Gems usage
-- **Slate loading**: 10–15 skeleton rows sized to the real columns (e.g. market 60% width, odds 48px, score pill 13px circle).
+## In practice
+- **Board loading**: 10–15 skeleton rows sized to the real columns (e.g. account 60% width, value 48px, score pill 13px circle).
 - **Gauge loading** in the Sheet: `pill` skeleton at gauge size (64px), or Gauge `indeterminate` if a value is coming.
-- **Entity skeleton** variant for signals and news lists.
+- **Entity skeleton** variant for checks and activity lists.
 - Turn off animation on the auto-refresh cycle. Re-skeletoning every refresh is distracting. Keep stale data visible with a freshness indicator instead.

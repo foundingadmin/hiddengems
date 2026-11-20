@@ -1,6 +1,6 @@
 // GENERATED from js/time.mjs by scripts/build.mjs. Do not edit by hand.
 (function () {
-// Facet time: the one source of truth for relative times and durations (owner decisions, 2026-11-02).
+// Facet time: the one source of truth for relative times and durations.
 //
 // Values use compact units, no space, at most two units, largest first:
 //   durations       4.1s, 30s, 1m 20s, 2h 5m

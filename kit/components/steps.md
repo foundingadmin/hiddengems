@@ -1,5 +1,5 @@
 # Steps
-> Facet `[F]`. Promoted from the approved wireframes (`DesktopHandoff`, `Handoff`; `docs/wireframes/hg-wire.css`). CSS in `css/slip.css`. Specimen: `preview/index.html#slips`.
+> Facet `[F]`. CSS in `css/flows.css`.
 
 ## Purpose
 A short ordered task the reader carries out in turn, often outside the app. Not the stepper (`stepper.md`), which changes a number by one.
@@ -9,9 +9,9 @@ A short ordered task the reader carries out in turn, often outside the app. Not 
 <ol class="fc-steps">
   <li>
     <div class="fc-step-body">
-      <h2 class="text-heading-16">Open your slip in DraftKings</h2>
-      <p class="text-copy-14">Both legs land in your DraftKings bet slip. The link only adds the picks.</p>
-      <a class="fc-button" data-variant="secondary" href="…" target="_blank" rel="noopener noreferrer">Open DraftKings ↗</a>
+      <h2 class="text-heading-16">Create a read-only key in Billing</h2>
+      <p class="text-copy-14">The key reads invoices and plans. It cannot change anything.</p>
+      <a class="fc-button" data-variant="secondary" href="…" target="_blank" rel="noopener noreferrer">Open Billing ↗</a>
     </div>
   </li>
 </ol>
@@ -31,9 +31,9 @@ States are optional. A handoff where every step stays open uses none.
 
 ## Rules
 - Three to five steps. More than that is a flow, not a list.
-- Headings name the action ("Mark it placed"); the line under it says what happens or why.
+- Headings name the action ("Paste the key"); the line under it says what happens or why.
 - An action that leaves the app ends in ↗ and opens a new tab (`link-action.md`).
-- Gray only. Done is not a gem or a brand moment.
+- Gray only. Done is not a highlight or a brand moment.
 
-## Hidden Gems usage
-Send to DraftKings: open the slip in DraftKings, set the parlay and stake, mark it placed.
+## In practice
+Connect a source: create a read-only key in Billing, paste the key, run the first sync.

@@ -30,11 +30,11 @@ A native dropdown for picking one value from a short, fixed list.
 - Validate on blur. Error strings name the field and end with a period (`Select a framework.`).
 - Do not wrap a labelled Select in a Tooltip. Put help on a sibling icon button.
 
-## Hidden Gems usage
-- **Week selector** (`Week 9`), **Sort By** (`Edge`, `Score`, `Kickoff`), **Odds format** if Switch does not fit.
-- Use `small` in the slate toolbar to match 32px buttons and inputs.
-- Sportsbook choice has more than 10 options and is multi-valued, so it belongs in FilterParams or MultiSelect, not Select.
+## In practice
+- **Week selector** (`Week 9`), **Sort By** (`Delta`, `Score`, `Renewal date`), **Number format** if Switch does not fit.
+- Use `small` in the board toolbar to match 32px buttons and inputs.
+- Account owner choice has more than 10 options and is multi-valued, so it belongs in FilterParams or MultiSelect, not Select.
 
 ## Option helpers `[F]`
 
-Owner decision, 2026-11-02. Helper text must never outlive its context. A helper that explains one option shows only while that option is chosen: put the text on the option (`data-helper`) and point the select's `aria-describedby` at an `.fc-helper`; `bindOptionHelpers()` in `js/forms.mjs` fills it and empties it to match. The helper keeps its one line reserved while empty, so choosing an option never shifts the form (owner feedback); option helpers are one line, at most: write them as a fragment that names only what the option leaves out ("Sunday, Monday and Thursday" under Game days), and CSS truncates rather than wraps as a guard. Options that explain themselves ("Every day") carry no helper. Helpers that apply to every option stay static.
+Helper text must never outlive its context. A helper that explains one option shows only while that option is chosen: put the text on the option (`data-helper`) and point the select's `aria-describedby` at an `.fc-helper`; `bindOptionHelpers()` in `js/forms.mjs` fills it and empties it to match. The helper keeps its one line reserved while empty, so choosing an option never shifts the form; option helpers are one line, at most: write them as a fragment that names only what the option leaves out ("Monday to Friday, no holidays" under Business days), and CSS truncates rather than wraps as a guard. Options that explain themselves ("Every day") carry no helper. Helpers that apply to every option stay static.

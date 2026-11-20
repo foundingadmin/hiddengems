@@ -1,4 +1,4 @@
-# Middle Truncate
+# Middle truncate
 > Source: https://vercel.com/geist/middle-truncate (captured 2026-11-02)
 
 ## Purpose

@@ -1,4 +1,4 @@
-# Multi Select
+# Multi select
 > Source: https://vercel.com/geist/multi-select (captured 2026-11-02)
 
 ## Purpose

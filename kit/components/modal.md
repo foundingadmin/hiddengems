@@ -11,6 +11,7 @@ A blocking dialog for a decision the user must make before going back to the pag
 - Becomes a bottom sheet on mobile viewports.
 
 ## Facet markup `[F]`
+CSS in `css/flows.css`.
 ```html
 <dialog class="fc-modal" aria-labelledby="m-h">
   <div class="fc-modal-body">

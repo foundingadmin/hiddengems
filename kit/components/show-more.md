@@ -1,4 +1,4 @@
-# Show More
+# Show more
 > Source: https://vercel.com/geist/show-more (captured 2026-11-02)
 
 ## Purpose
@@ -24,7 +24,7 @@ Inferred: `--ds-gray-400` rule, `text-label-12` (typography page: label-12 is us
 - Render small hidden sets in the DOM so find-in-page works. Lazy-load only large ones.
 - Trigger is a `<button>` with `aria-expanded` and `aria-controls`. After expanding, move focus to the first new row.
 
-## Hidden Gems usage
-- **Signals list** in the Sheet: show the top 5 signals, then `Show 7 More`.
-- **Book prices** per market: show the best 3 books, then `Show 9 More`.
-- Collapsed slate preview on a landing or summary card, as in the reference's virtualized-table demo.
+## In practice
+- **Activity list** in the Sheet: show the latest 5 entries, then `Show 7 More`.
+- **Accounts** per owner: show the top 3 accounts, then `Show 9 More`.
+- Collapsed board preview on a landing or summary card, as in the reference's virtualized-table demo.

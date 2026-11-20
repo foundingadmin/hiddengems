@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Facet brand setup</title>
+<!-- Source of onboarding/index.html. scripts/build.mjs inlines Facet's CSS, the fonts and scripts/brand-core.mjs,
+     so the built page is one file that opens from disk, as an attachment or as a hosted page. Edit this file. -->
+<style>/*__FACET_CSS__*/</style>
+<style>
+/* Page-owned layout. Everything visual comes from Facet tokens. */
+html { scroll-behavior: smooth; }
+body { background: var(--fc-surface-subtle); }
+.ob { display: grid; grid-template-columns: minmax(0, 30rem) minmax(0, 1fr); min-height: 100dvh; }
+.ob-form { display: flex; flex-direction: column; gap: var(--fc-space-10); padding: var(--fc-space-10) var(--fc-space-8) 0; background: var(--fc-surface-canvas); box-shadow: inset -1px 0 0 var(--fc-border-default); }
+.ob-intro { display: flex; flex-direction: column; gap: var(--fc-space-3); }
+.ob-eyebrow { display: inline-flex; align-items: center; gap: var(--fc-space-2); color: var(--fc-text-secondary); }
+.ob-eyebrow svg { width: 16px; height: 16px; color: var(--fc-brand-solid); }
+.ob-intro p { color: var(--fc-text-secondary); max-width: 40ch; }
+.ob-form > :nth-last-child(2) { margin-bottom: var(--fc-space-2); }
+.ob-section { display: flex; flex-direction: column; gap: var(--fc-space-6); }
+.ob-section > header { display: flex; align-items: baseline; gap: var(--fc-space-3); padding-bottom: var(--fc-space-3); box-shadow: inset 0 -1px 0 var(--fc-border-default); }
+.ob-step { color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }
+.ob-q { display: flex; flex-direction: column; gap: var(--fc-space-2); min-width: 0; margin: 0; padding: 0; border: 0; }
+.ob-q > legend, .ob-q > .ob-q-label { padding: 0; margin-bottom: var(--fc-space-2); color: var(--fc-text-primary); }
+.ob-q-hint { color: var(--fc-text-secondary); }
+.ob-tiles { display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); gap: var(--fc-space-2); }
+.ob-tile { position: relative; display: flex; flex-direction: column; align-items: center; gap: var(--fc-space-2); padding: var(--fc-space-3) var(--fc-space-2) var(--fc-space-2); border-radius: var(--fc-radius-md); box-shadow: inset 0 0 0 1px var(--fc-border-default); background: var(--fc-surface-canvas); color: var(--fc-text-secondary); cursor: pointer; text-align: center; transition: box-shadow var(--fc-duration-fast) ease, background-color var(--fc-duration-fast) ease; }
+.ob-tile:hover { box-shadow: inset 0 0 0 1px var(--fc-border-active); }
+.ob-tile > input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.ob-tile:has(input:checked) { box-shadow: inset 0 0 0 2px var(--fc-control-on); color: var(--fc-text-primary); }
+.ob-tile:has(input:checked) .ob-tile-name { font-weight: 550; }
+.ob-tile:has(input:checked)::after { content: ""; position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; border-radius: 50%; background: var(--fc-control-on); }
+.ob-tile:has(input:focus-visible) { box-shadow: var(--ds-focus-ring); }
+.ob-tile:has(input:disabled) { opacity: .45; cursor: not-allowed; }
+.ob-glyph { display: grid; place-items: center; width: 100%; height: 40px; }
+.ob-g-button { width: 52px; height: 24px; background: var(--fc-surface-contrast); }
+.ob-g-card { width: 52px; height: 34px; background: var(--fc-surface-canvas); box-shadow: 0 0 0 1px var(--fc-border-hover); }
+.ob-g-card[data-depth="flat"] { box-shadow: 0 0 0 1px var(--fc-border-hover); }
+.ob-g-card[data-depth="subtle"] { box-shadow: 0 0 0 1px var(--fc-border-alpha), 0 2px 3px color-mix(in srgb, var(--ds-black) 10%, transparent); }
+.ob-g-card[data-depth="raised"] { box-shadow: 0 0 0 1px var(--fc-border-alpha), 0 2px 3px color-mix(in srgb, var(--ds-black) 12%, transparent), 0 10px 14px -4px color-mix(in srgb, var(--ds-black) 26%, transparent); }
+.ob-g-stroke { display: flex; align-items: center; gap: var(--fc-space-2); width: 52px; height: 34px; padding: 0 var(--fc-space-2); border-radius: var(--fc-radius-sm); color: var(--fc-text-primary); }
+.ob-g-stroke svg { width: 16px; height: 16px; flex: none; }
+.ob-g-stroke i { flex: 1; height: 0; }
+.ob-g-swatches { display: flex; }
+.ob-g-swatches i { width: 16px; height: 28px; }
+.ob-g-swatches i:first-child { border-radius: var(--fc-radius-xs) 0 0 var(--fc-radius-xs); }
+.ob-g-swatches i:last-child { border-radius: 0 var(--fc-radius-xs) var(--fc-radius-xs) 0; }
+.ob-g-mode { width: 52px; height: 34px; border-radius: var(--fc-radius-sm); box-shadow: 0 0 0 1px var(--fc-border-hover); }
+.ob-g-mode[data-mode="light"] { background: var(--ds-white); }
+.ob-g-mode[data-mode="dark"] { background: var(--ds-black); }
+.ob-g-mode[data-mode="both"] { background: linear-gradient(115deg, var(--ds-white) 50%, var(--ds-black) 50%); }
+.ob-g-type { font-size: 20px; line-height: 28px; font-weight: 550; color: var(--fc-text-primary); letter-spacing: -0.4px; }
+.ob-field-row { display: flex; align-items: center; gap: var(--fc-space-2); }
+.ob-well { position: relative; flex: none; width: var(--fc-control-medium); height: var(--fc-control-medium); border-radius: var(--fc-radius-sm); box-shadow: inset 0 0 0 1px var(--fc-border-alpha); overflow: hidden; }
+.ob-well input { position: absolute; inset: -8px; width: calc(100% + 16px); height: calc(100% + 16px); padding: 0; border: 0; cursor: pointer; }
+.ob-presets { display: flex; flex-wrap: wrap; gap: var(--fc-space-2); }
+.ob-preset { width: 24px; height: 24px; padding: 0; border: 0; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--fc-border-alpha); }
+.ob-preset[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--fc-surface-canvas), 0 0 0 4px var(--fc-text-primary); }
+.ob-ramp { display: grid; grid-template-columns: repeat(10, 1fr); height: 20px; border-radius: var(--fc-radius-xs); overflow: hidden; box-shadow: 0 0 0 1px var(--fc-border-alpha); }
+.ob-logo-row { display: flex; align-items: center; gap: var(--fc-space-3); min-width: 0; }
+.ob-logo-row > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--fc-text-secondary); }
+.ob-error { color: var(--fc-status-error-fg); }
+.ob-fixed { display: flex; flex-direction: column; gap: var(--fc-space-3); padding: var(--fc-space-4); border-radius: var(--fc-radius-md); background: var(--fc-surface-subtle); box-shadow: inset 0 0 0 1px var(--fc-border-default); }
+.ob-fixed ul { display: flex; flex-direction: column; gap: var(--fc-space-2); margin: 0; padding: 0; list-style: none; color: var(--fc-text-secondary); }
+.ob-fixed li { display: flex; align-items: center; flex-wrap: wrap; gap: var(--fc-space-2) var(--fc-space-3); }
+.ob-export { position: sticky; bottom: 0; z-index: 5; display: flex; flex-direction: column; gap: var(--fc-space-2); margin: 0 calc(-1 * var(--fc-space-8)); padding: var(--fc-space-3) var(--fc-space-8); background: var(--fc-surface-canvas); box-shadow: inset 0 1px 0 var(--fc-border-default), inset -1px 0 0 var(--fc-border-default); }
+.ob-export-row { display: flex; align-items: center; flex-wrap: wrap; gap: var(--fc-space-2) var(--fc-space-3); }
+.ob-export-row > details { display: contents; }
+.ob-export-row > details > summary { order: 3; margin-left: auto; color: var(--fc-text-secondary); cursor: pointer; list-style: none; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; }
+.ob-export-row > details > summary::-webkit-details-marker { display: none; }
+.ob-export-row > details > textarea { order: 5; }
+.ob-export > span { color: var(--fc-text-secondary); }
+.ob-export textarea { width: 100%; height: 11rem; margin-top: var(--fc-space-2); padding: var(--fc-space-3); border: 0; border-radius: var(--fc-radius-sm); box-shadow: inset 0 0 0 1px var(--fc-border-default); background: var(--fc-surface-subtle); color: var(--fc-text-primary); font: 400 12px/18px var(--fc-font-mono); resize: vertical; }
+
+.ob-stage { position: sticky; top: 0; align-self: start; display: flex; flex-direction: column; gap: var(--fc-space-4); height: 100dvh; padding: var(--fc-space-8); overflow: auto; }
+.ob-stage-head { display: flex; align-items: center; justify-content: space-between; gap: var(--fc-space-4); }
+.ob-stage-head > div { display: flex; align-items: center; gap: var(--fc-space-4); min-width: 0; }
+.ob-stage-foot { display: flex; flex-wrap: wrap; gap: var(--fc-space-2) var(--fc-space-6); color: var(--fc-text-secondary); }
+
+/* The preview: one small product screen built from real Facet parts. It carries its own theme and the brand's
+   custom properties, so nothing outside it changes. */
+.pv { container: pv / inline-size; flex: none; border-radius: var(--fc-radius-lg); background: var(--fc-surface-canvas); color: var(--fc-text-primary); box-shadow: var(--ds-shadow-border-medium); overflow: hidden; font-family: var(--fc-font-sans); }
+.pv-top { display: flex; align-items: center; gap: var(--fc-space-4); height: 48px; padding: 0 var(--fc-space-4); box-shadow: inset 0 -1px 0 var(--fc-border-default); }
+.pv-brand { display: inline-flex; align-items: center; gap: var(--fc-space-2); min-width: 0; }
+.pv-brand img { height: 20px; width: auto; max-width: 140px; }
+.pv-mark { display: grid; place-items: center; width: 24px; height: 24px; border-radius: var(--fc-radius-sm); background: var(--fc-surface-contrast); color: var(--fc-text-inverse); font: 600 13px/1 var(--fc-font-sans); }
+.pv-top .fc-tabs { margin-right: auto; }
+.pv-top .fc-input { width: 11rem; }
+.pv-main { display: flex; flex-direction: column; gap: var(--fc-space-5); padding: var(--fc-space-5); }
+.pv-moment { display: flex; align-items: center; justify-content: space-between; gap: var(--fc-space-4); padding: var(--fc-space-4) var(--fc-space-5); border-radius: var(--fc-radius-lg); background: var(--fc-brand-bg); box-shadow: inset 0 0 0 1px var(--fc-brand-border); }
+.pv-moment p { color: var(--fc-text-secondary); }
+.pv-moment mark { background: color-mix(in srgb, var(--fc-brand-solid) 28%, transparent); color: inherit; }
+.pv-dots { display: inline-flex; gap: 5px; margin-right: var(--fc-space-3); vertical-align: middle; }
+.pv-dots i { width: 8px; height: 8px; border-radius: 50%; }
+.pv-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--fc-space-3); }
+.pv-row > :nth-child(2) { margin-right: auto; }
+.pv-cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--fc-space-5); align-items: start; }
+.pv-table { padding: var(--fc-space-1) var(--fc-space-3) var(--fc-space-2); }
+.pv-table :is(td, th) { vertical-align: middle; }
+.pv-side { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--fc-space-5); align-items: start; }
+.pv-menu { position: static; animation: none; min-width: 0; max-width: none; }
+.pv-controls { display: flex; flex-direction: column; gap: var(--fc-space-4); padding: var(--fc-space-4); }
+.pv-controls label { display: flex; align-items: center; gap: var(--fc-space-2); }
+.pv-controls .fc-input { box-shadow: var(--ds-focus-border); }
+.pv-controls a { color: var(--fc-text-link); }
+.pv [data-hide-narrow] { display: none; }
+@container pv (min-width: 760px) {
+  .pv-cols { grid-template-columns: minmax(0, 1fr) 15rem; }
+  .pv-side { grid-template-columns: minmax(0, 1fr); }
+  .pv [data-hide-narrow] { display: table-cell; }
+}
+
+@media (max-width: 1000px) {
+  .ob { grid-template-columns: minmax(0, 1fr); }
+  .ob-stage { position: static; order: -1; height: auto; padding: var(--fc-space-4); overflow: visible; }
+  .ob-form { padding: var(--fc-space-8) var(--fc-space-4) 0; box-shadow: inset 0 1px 0 var(--fc-border-default); }
+  .ob-export { margin: 0 calc(-1 * var(--fc-space-4)); padding: var(--fc-space-4); }
+  .pv-top .fc-tabs { display: none; }
+  .pv-top .fc-input { margin-left: auto; }
+}
+@media (max-width: 520px) {
+  .ob-tiles { --cols: 2 !important; }
+  .pv-top .fc-input { display: none; }
+  .pv-moment { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+<div class="ob">
+
+  <form class="ob-form" id="form" autocomplete="off" onsubmit="return false">
+    <div class="ob-intro">
+      <span class="ob-eyebrow text-label-13"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 22 12 12 22 2 12Z"/></svg>Facet</span>
+      <h1 class="text-heading-32">Brand setup</h1>
+      <p class="text-copy-16">Ten choices set the look. Meaning and density stay as designed.</p>
+    </div>
+
+    <section class="ob-section" aria-labelledby="s1">
+      <header><span class="ob-step text-label-13">1</span><h2 class="text-heading-20" id="s1">Identity</h2></header>
+      <div class="ob-q">
+        <label class="fc-label ob-q-label" for="name">Product name</label>
+        <input class="fc-input" id="name" name="name" maxlength="40" placeholder="Acme" spellcheck="false">
+      </div>
+      <div class="ob-q">
+        <span class="fc-label ob-q-label" id="logo-l">Logo</span>
+        <div class="ob-logo-row">
+          <button type="button" class="fc-button" data-variant="secondary" id="logo-pick">Choose SVG</button>
+          <span class="text-label-13" id="logo-name">No file yet</span>
+          <button type="button" class="fc-button" data-variant="tertiary" data-size="small" id="logo-clear" hidden>Remove</button>
+        </div>
+        <input type="file" id="logo-file" accept=".svg,image/svg+xml" hidden aria-labelledby="logo-l">
+        <p class="text-label-13 ob-error" id="logo-error" role="alert" hidden></p>
+      </div>
+      <div class="ob-q">
+        <label class="fc-label ob-q-label" for="accent">Brand color</label>
+        <div class="ob-field-row">
+          <span class="ob-well"><input type="color" id="accent-well" aria-label="Pick a brand color"></span>
+          <input class="fc-input fc-mono" id="accent" name="accent" placeholder="#8e4ec6" maxlength="7" spellcheck="false" aria-describedby="accent-note">
+          <button type="button" class="fc-button" data-variant="tertiary" id="accent-clear">Use default</button>
+        </div>
+        <div class="ob-presets" id="presets" role="group" aria-label="Starting points"></div>
+        <div class="ob-ramp" id="ramp" aria-hidden="true"></div>
+        <div class="fc-note" id="accent-note" data-type="info"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span id="accent-note-text"></span></div>
+      </div>
+    </section>
+
+    <section class="ob-section" aria-labelledby="s2">
+      <header><span class="ob-step text-label-13">2</span><h2 class="text-heading-20" id="s2">Color</h2></header>
+      <fieldset class="ob-q" data-group="neutrals"><legend class="fc-label">Grays</legend><div class="ob-tiles"></div></fieldset>
+      <fieldset class="ob-q" data-group="modes"><legend class="fc-label">Themes</legend><div class="ob-tiles" style="--cols: 3"></div></fieldset>
+    </section>
+
+    <section class="ob-section" aria-labelledby="s3">
+      <header><span class="ob-step text-label-13">3</span><h2 class="text-heading-20" id="s3">Shape</h2></header>
+      <fieldset class="ob-q" data-group="controls"><legend class="fc-label">Buttons and inputs</legend><div class="ob-tiles"></div></fieldset>
+      <fieldset class="ob-q" data-group="surfaces"><legend class="fc-label">Cards and panels</legend><div class="ob-tiles" style="--cols: 3"></div></fieldset>
+      <fieldset class="ob-q" data-group="stroke"><legend class="fc-label">Lines and icons</legend><div class="ob-tiles" style="--cols: 2"></div></fieldset>
+    </section>
+
+    <section class="ob-section" aria-labelledby="s4">
+      <header><span class="ob-step text-label-13">4</span><h2 class="text-heading-20" id="s4">Depth and type</h2></header>
+      <fieldset class="ob-q" data-group="depth"><legend class="fc-label">Shadows</legend><div class="ob-tiles" style="--cols: 3"></div></fieldset>
+      <fieldset class="ob-q" data-group="type"><legend class="fc-label">Typeface</legend><div class="ob-tiles"></div>
+        <p class="text-label-13 ob-q-hint" id="type-hint"></p></fieldset>
+    </section>
+
+    <div class="ob-fixed">
+      <h2 class="text-label-14"><strong>Stays as designed</strong></h2>
+      <ul class="text-label-13">
+        <li><span class="fc-signal" data-signal="go">Go</span><span class="fc-signal" data-signal="wait">Wait</span><span class="fc-signal" data-signal="stop">Stop</span><span class="fc-delta" data-direction="positive">+4.2</span><span class="fc-delta" data-direction="negative">−1.8</span></li>
+        <li>Status, verdict, delta and freshness colors</li>
+        <li>The type scale and tabular numbers</li>
+        <li>Spacing, control heights and row heights</li>
+      </ul>
+    </div>
+
+    <div class="ob-export">
+      <div class="ob-export-row">
+        <button type="button" class="fc-button" id="copy">Copy for Claude</button>
+        <button type="button" class="fc-button" data-variant="secondary" id="download">Download</button>
+        <details>
+          <summary class="text-label-13">Config</summary>
+          <textarea id="out" readonly aria-label="Brand config" spellcheck="false"></textarea>
+        </details>
+      </div>
+      <span class="text-label-13" id="copy-status" role="status">Paste it into your Claude session.</span>
+    </div>
+  </form>
+
+  <aside class="ob-stage" aria-label="Preview">
+    <div class="ob-stage-head">
+      <h2 class="text-label-14"><strong>Preview</strong></h2>
+      <div>
+        <div class="fc-segmented" data-size="small" role="radiogroup" aria-label="Preview theme" id="pv-theme">
+          <button type="button" role="radio" aria-checked="true" data-theme-choice="light">Light</button>
+          <button type="button" role="radio" aria-checked="false" data-theme-choice="dark">Dark</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pv" id="preview" data-theme="light">
+      <div class="pv-top">
+        <span class="pv-brand"><span id="pv-logo"></span><span class="text-label-14"><strong id="pv-name">Acme</strong></span></span>
+        <div class="fc-tabs" data-variant="secondary" role="tablist" aria-label="Sample navigation"><button type="button" class="fc-tab" role="tab" aria-selected="true" tabindex="-1">Board</button><button type="button" class="fc-tab" role="tab" aria-selected="false" tabindex="-1">Accounts</button><button type="button" class="fc-tab" role="tab" aria-selected="false" tabindex="-1">Sources</button></div>
+        <input class="fc-input" data-size="small" type="search" placeholder="Search accounts…" aria-label="Sample search" tabindex="-1">
+      </div>
+      <div class="pv-main">
+        <div class="pv-moment" data-surface="marketing">
+          <div>
+            <h3 class="text-heading-20"><span class="pv-dots" aria-hidden="true"><i style="background:var(--fc-illus-1)"></i><i style="background:var(--fc-illus-2)"></i><i style="background:var(--fc-illus-3)"></i><i style="background:var(--fc-illus-4)"></i></span>Good morning, Maya</h3>
+            <p class="text-copy-14"><mark>Three new highlights</mark> since Friday.</p>
+          </div>
+          <button type="button" class="fc-button" data-shape="rounded" tabindex="-1">Review</button>
+        </div>
+        <div class="pv-row">
+          <h3 class="text-heading-20">Board</h3>
+          <span class="fc-status"><span class="fc-status-dot" data-state="live"></span><time data-relative>Synced 2m ago</time></span>
+          <button type="button" class="fc-button" data-variant="secondary" data-size="small" tabindex="-1">Export</button>
+          <button type="button" class="fc-button" data-size="small" tabindex="-1">New account</button>
+        </div>
+        <div class="fc-stat-strip" data-variant="cells" role="group" aria-label="Sample totals">
+          <div class="fc-stat"><p class="fc-stat-label">Pipeline</p><p class="fc-stat-value">$1.24M</p></div>
+          <div class="fc-stat"><p class="fc-stat-label">Average score</p><p class="fc-stat-value">71</p></div>
+          <div class="fc-stat"><p class="fc-stat-label">At risk</p><p class="fc-stat-value">3</p></div>
+        </div>
+        <div class="pv-cols">
+          <div class="fc-card pv-table">
+            <div class="fc-table-wrap">
+              <table class="fc-table">
+                <thead><tr><th scope="col" class="fc-cell-select"><span class="fc-visually-hidden">Select</span></th><th scope="col">Account</th><th scope="col">Score</th><th scope="col">Verdict</th><th scope="col" data-hide-narrow>Checks</th><th scope="col" data-align="numeric">vs forecast</th><th scope="col" data-align="numeric">Value</th></tr></thead>
+                <tbody id="pv-rows"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="pv-side">
+            <div class="fc-dropdown pv-menu" role="menu" aria-label="Sample menu">
+              <span class="fc-dropdown-item" role="menuitemradio" aria-checked="true">Score</span>
+              <span class="fc-dropdown-item" role="menuitemradio" aria-checked="false">Delta</span>
+              <span class="fc-dropdown-item" role="menuitemradio" aria-checked="false">Value</span>
+            </div>
+            <div class="fc-card pv-controls">
+              <label class="text-label-14"><input type="checkbox" class="fc-toggle" checked tabindex="-1">Auto sync</label>
+              <label class="text-label-14"><input type="checkbox" class="fc-check" checked tabindex="-1">Notify me</label>
+              <input class="fc-input" data-size="small" value="Northwind" aria-label="Sample focused input" tabindex="-1" readonly>
+              <span><span class="fc-badge" data-variant="accent" data-contrast="low">Highlight</span> <a class="text-label-13" href="#preview" tabindex="-1">View all</a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ob-stage-foot text-label-13">
+      <span class="fc-status" id="checks"><span class="fc-status-dot" data-state="live"></span><span id="checks-text"></span></span>
+      <span id="font-note" hidden>This typeface previews when the page is online.</span>
+    </div>
+  </aside>
+</div>
+
+<script type="application/json" id="ob-base">/*__BASE__*/</script>
+<script type="application/json" id="ob-current">/*__CURRENT__*/</script>
+<script>
+(function () {
+/*__BRAND_CORE__*/
+
+const BASE = JSON.parse(document.getElementById('ob-base').textContent);
+const CURRENT = JSON.parse(document.getElementById('ob-current').textContent);
+const $ = (s, r = document) => r.querySelector(s);
+const state = { ...normalize(CURRENT).config };
+let logoSvg = null, logoMono = null, logoFile = '', pvTheme = 'light';
+
+// ---- option tiles ----
+const SCORE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path class="fc-score-fill" d="M12 2 22 12 12 22 2 12Z"/></svg>';
+const CHECK_ICON = (w) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 4.5-5.5"/></svg>`;
+const grayOf = (neutrals) => {
+  const d = derive({ ...state, neutrals, stroke: 'fine' }, BASE);
+  const g = (s) => (d.grays ? d.grays.gray.light[s] : BASE.color.gray[s].$value);
+  return [g('200'), g('600'), g('900'), g('1000')];
+};
+const GLYPH = {
+  neutrals: (v) => `<span class="ob-g-swatches">${grayOf(v).map((c) => `<i style="background:${c}"></i>`).join('')}</span>`,
+  modes: (v) => `<span class="ob-g-mode" data-mode="${v}"></span>`,
+  controls: (v) => `<span class="ob-g-button" style="border-radius:${{ square: 2, soft: 6, round: 10, pill: 999 }[v]}px"></span>`,
+  surfaces: (v) => `<span class="ob-g-card" style="border-radius:${{ square: 3, soft: 9, round: 14 }[v]}px"></span>`,
+  stroke: (v) => `<span class="ob-g-stroke" style="box-shadow: inset 0 0 0 1px var(${v === 'fine' ? '--ds-gray-400' : '--ds-gray-600'})">${CHECK_ICON(v === 'fine' ? 1.5 : 2)}<i style="border-top: 1px solid var(${v === 'fine' ? '--ds-gray-400' : '--ds-gray-600'})"></i></span>`,
+  depth: (v) => `<span class="ob-g-card" data-depth="${v}" style="border-radius:6px"></span>`,
+  type: (v) => `<span class="ob-g-type" style="font-family:${FONTS[v].sans.replace(/"/g, "'")}">Ag12</span>`,
+};
+function drawTiles() {
+  for (const set of document.querySelectorAll('.ob-q[data-group]')) {
+    const group = set.dataset.group;
+    $('.ob-tiles', set).innerHTML = OPTIONS[group].map((v) =>
+      `<label class="ob-tile"><input type="radio" name="${group}" value="${v}"${state[group] === v ? ' checked' : ''}><span class="ob-glyph">${GLYPH[group](v)}</span><span class="ob-tile-name text-label-13">${LABELS[group][v]}</span></label>`).join('');
+  }
+}
+
+// ---- accent ----
+const PRESETS = [['Blue', '#2f6fed'], ['Indigo', '#4f46e5'], ['Sky', '#0284c7'], ['Teal', '#0d9488'], ['Magenta', '#c026d3'], ['Pink', '#db2777'], ['Ink', '#1e293b']];
+$('#presets').innerHTML = PRESETS.map(([n, c]) => `<button type="button" class="ob-preset" style="background:${c}" data-color="${c}" aria-label="${n}" aria-pressed="false" title="${n}"></button>`).join('');
+function setAccent(hex, from) {
+  state.accent = hex;
+  if (from !== 'text') $('#accent').value = hex || '';
+  $('#accent').removeAttribute('aria-invalid');
+  render();
+}
+$('#accent').addEventListener('input', (e) => {
+  const raw = e.target.value.trim();
+  if (!raw) return setAccent(null, 'text');
+  const hex = parseHex(raw);
+  if (hex && (raw.length === 7 || raw.length === 4 || (raw.length === 6 && !raw.startsWith('#')))) setAccent(hex, 'text');
+  else e.target.setAttribute('aria-invalid', 'true');
+});
+$('#accent-well').addEventListener('input', (e) => setAccent(e.target.value));
+$('#accent-clear').addEventListener('click', () => setAccent(null));
+$('#presets').addEventListener('click', (e) => { const b = e.target.closest('[data-color]'); if (b) setAccent(b.dataset.color); });
+
+// ---- name, logo, tiles ----
+$('#name').addEventListener('input', (e) => { state.name = e.target.value.trim() || DEFAULTS.name; render(); });
+$('#logo-pick').addEventListener('click', () => $('#logo-file').click());
+$('#logo-file').addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const res = sanitizeSvg(await file.text());
+  const err = $('#logo-error');
+  if (!res.ok) { err.textContent = res.errors.join(' '); err.hidden = false; return; }
+  err.hidden = true;
+  logoSvg = res.svg; logoMono = res.mono ? res.monoSvg : null; logoFile = file.name;
+  render();
+});
+$('#logo-clear').addEventListener('click', () => { logoSvg = logoMono = null; logoFile = ''; $('#logo-file').value = ''; render(); });
+$('#form').addEventListener('change', (e) => {
+  const t = e.target;
+  if (t.type === 'radio' && OPTIONS[t.name]) { state[t.name] = t.value; if (t.name === 'type') loadFont(t.value); render(); }
+});
+$('#pv-theme').addEventListener('click', (e) => { const b = e.target.closest('[data-theme-choice]'); if (b && !b.disabled) { pvTheme = b.dataset.themeChoice; render(); } });
+
+// Inter and Plex are not vendored; fetch them for the preview only when chosen.
+const loaded = new Set();
+function loadFont(type) {
+  const fams = FONTS[type].families;
+  $('#font-note').hidden = FONTS[type].vendored || !fams.length;
+  if (FONTS[type].vendored || !fams.length || loaded.has(type)) return;
+  loaded.add(type);
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = 'https://fonts.googleapis.com/css2?' + fams.map((f) => `family=${f.replace(/ /g, '+')}:wght@400;500;600;700`).join('&') + '&display=swap';
+  document.head.appendChild(link);
+}
+
+// ---- sample rows ----
+const ROWS = [
+  ['Northwind', 92, 'go', 'On track', ['go', 'go', 'go', 'go', 'go', 'wait'], 'positive', '+4.2 pts', '$48.2k', true],
+  ['Halcyon Foods', 81, 'go', 'On track', ['go', 'go', 'wait', 'go', 'go', 'go'], 'positive', '+1.1 pts', '$31.0k'],
+  ['Cobalt Health', 64, 'wait', 'Watch', ['go', 'wait', 'wait', 'go', 'none', 'go'], 'negative', '−1.8 pts', '$22.4k'],
+  ['Juniper Labs', 38, 'stop', 'At risk', ['stop', 'wait', 'stop', 'go', 'wait', 'none'], 'negative', '−6.3 pts', '$9.6k'],
+];
+$('#pv-rows').innerHTML = ROWS.map(([name, score, sig, word, checks, dir, delta, value, on], i) => `<tr${on ? ' aria-selected="true"' : ''}>
+  <td class="fc-cell-select"><input type="checkbox" class="fc-check" aria-label="Select ${name}" tabindex="-1"${on ? ' checked' : ''}></td>
+  <th scope="row">${name}</th>
+  <td><span class="fc-score" style="--rating: ${score}; --fc-score-delay: ${(ROWS.length - i) * 180}ms" data-live aria-label="Score ${score}">${SCORE}<span>${score}</span></span></td>
+  <td><span class="fc-signal" data-signal="${sig}">${word}</span></td>
+  <td data-hide-narrow><span class="fc-signal-strip" aria-label="Six checks">${checks.map((c) => `<i data-signal="${c}"></i>`).join('')}</span></td>
+  <td data-align="numeric"><span class="fc-delta" data-direction="${dir}">${delta}</span></td>
+  <td data-align="numeric">${value}</td></tr>`).join('');
+
+// ---- render ----
+function packet() {
+  const { config } = normalize(state);
+  const out = { ...config };
+  if (logoSvg) { out.logo = 'logo.svg'; out.logoSvg = logoSvg; }
+  return out;
+}
+function render() {
+  const { config } = normalize(state);
+  const d = derive(config, BASE);
+  const vars = cssVars(d);
+  const theme = config.modes === 'both' ? pvTheme : config.modes;
+  const pv = $('#preview');
+  pv.removeAttribute('style');
+  pv.dataset.theme = theme;
+  for (const [k, v] of Object.entries({ ...vars.root, ...vars[theme] })) pv.style.setProperty(k, v);
+  if (!d.radius.button) pv.style.removeProperty('--fc-radius-button');
+
+  for (const b of document.querySelectorAll('#pv-theme [data-theme-choice]')) {
+    b.setAttribute('aria-checked', String(b.dataset.themeChoice === theme));
+    b.disabled = config.modes !== 'both' && b.dataset.themeChoice !== config.modes;
+  }
+  // accent field, presets, ramp, note
+  const hex = d.accent.hex;
+  $('#accent-well').value = hex;
+  if (document.activeElement !== $('#accent')) $('#accent').value = config.accent || '';
+  for (const b of document.querySelectorAll('.ob-preset')) b.setAttribute('aria-pressed', String(b.dataset.color === config.accent));
+  $('#ramp').innerHTML = Object.values(d.accent.scale[theme]).map((c) => `<i style="background:${c}"></i>`).join('');
+  $('#accent-note').dataset.type = d.accent.role === 'identity' ? 'warning' : 'info';
+  $('#accent-note-text').textContent = d.accent.note;
+  $('#accent-clear').disabled = !config.accent;
+  // grays depend on the accent when tinted
+  for (const i of document.querySelectorAll('.ob-q[data-group="neutrals"] .ob-tile')) $('.ob-glyph', i).innerHTML = GLYPH.neutrals($('input', i).value);
+  $('#type-hint').textContent = d.font.vendored ? '' : d.font.load;
+  // name and logo
+  $('#pv-name').textContent = config.name;
+  const ink = d.grays ? d.grays.gray[theme]['1000'] : (theme === 'dark' ? BASE.color.gray['1000'].$extensions.facet.dark : BASE.color.gray['1000'].$value);
+  const art = logoMono ? logoMono.replace(/currentColor/g, ink) : logoSvg;
+  $('#pv-logo').innerHTML = art
+    ? `<img alt="" src="data:image/svg+xml;charset=utf-8,${encodeURIComponent(art)}">`
+    : `<span class="pv-mark" aria-hidden="true">${(config.name[0] || 'A').toUpperCase()}</span>`;
+  $('#pv-name').parentElement.hidden = Boolean(art);
+  $('#logo-name').textContent = logoSvg ? logoFile : 'No file yet';
+  $('#logo-clear').hidden = !logoSvg;
+  // checks
+  const failed = d.checks.filter((c) => !c.pass);
+  $('#checks .fc-status-dot').dataset.state = failed.length ? 'failed' : 'live';
+  $('#checks-text').textContent = failed.length
+    ? `Contrast below target: ${failed.map((c) => `${c.pair}, ${c.mode}`).join('; ')}`
+    : `All ${d.checks.length} contrast pairs pass`;
+  $('#copy').disabled = $('#download').disabled = failed.length > 0;
+  $('#out').value = JSON.stringify(packet(), null, 2);
+}
+
+// ---- export ----
+const said = (msg) => { $('#copy-status').textContent = msg; };
+$('#copy').addEventListener('click', async () => {
+  const text = 'Apply this Facet brand config (node scripts/brand.mjs apply):\n\n' + JSON.stringify(packet(), null, 2);
+  try { await navigator.clipboard.writeText(text); said('Copied. Paste it into your Claude session.'); }
+  catch {
+    const out = $('#out');
+    out.closest('details').open = true;
+    out.focus(); out.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch {}
+    said(ok ? 'Copied. Paste it into your Claude session.' : 'Copy the selected config, then paste it into your Claude session.');
+  }
+});
+$('#download').addEventListener('click', () => {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(packet(), null, 2) + '\n'], { type: 'application/json' }));
+  a.download = 'brand-packet.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  said('Saved brand-packet.json. Attach it in your Claude session.');
+});
+
+$('#name').value = state.name === DEFAULTS.name ? '' : state.name;
+drawTiles();
+loadFont(state.type);
+render();
+})();
+</script>
+</body>
+</html>

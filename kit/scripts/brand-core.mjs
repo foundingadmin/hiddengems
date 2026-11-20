@@ -37,7 +37,7 @@ export const DEFAULTS = {
 
 // What each choice means, in the words the onboarding page and the CLI both print.
 export const LABELS = {
-  neutrals: { neutral: 'Neutral gray', cool: 'Cool gray', warm: 'Warm gray', tinted: 'Tinted with the accent' },
+  neutrals: { neutral: 'Neutral', cool: 'Cool', warm: 'Warm', tinted: 'Accent tint' },
   modes: { both: 'Light and dark', light: 'Light only', dark: 'Dark only' },
   controls: { square: 'Square', soft: 'Soft', round: 'Round', pill: 'Pill buttons' },
   surfaces: { square: 'Square', soft: 'Soft', round: 'Round' },
@@ -274,23 +274,29 @@ function buildAccent(config, prim) {
 
 // ---------------------------------------------------------------- grays
 const TINT = { cool: { h: 255, c: 0.011 }, warm: { h: 70, c: 0.009 } };
+const mixL = (a, b, t) => hexOfOklch({ L: oklchOf(a).L + (oklchOf(b).L - oklchOf(a).L) * t, C: 0, h: 0 });
 function buildGrays(config, prim, accent) {
   let tint = TINT[config.neutrals] || null;
   if (config.neutrals === 'tinted') {
     const a = oklchOf(accent.hex);
     tint = a.C >= 0.04 ? { h: a.h, c: 0.01 } : null;
   }
-  if (!tint) return null;
-  // Lightness never moves, so every contrast pair in the system holds; only a trace of hue is added.
+  const defined = config.stroke === 'defined';
+  if (!tint && !defined) return null;
+  // A tint never moves lightness, so every contrast pair in the system holds; only a trace of hue is added.
   const tinted = (hex, weight = 1) => {
+    if (!tint) return hex;
     const { L } = oklchOf(hex);
     const c = tint.c * weight * (L > 0.85 ? 0.5 : 1) * (L < 0.3 ? 0.7 : 1);
     return hexOfOklch({ L, C: c, h: tint.h });
   };
   const gray = { light: {}, dark: {} };
-  for (const step of STEPS) {
-    gray.light[step] = tinted(prim.color.gray[step].$value);
-    gray.dark[step] = tinted(dk(prim.color.gray[step]));
+  for (const mode of ['light', 'dark']) {
+    const base = Object.fromEntries(STEPS.map((s) => [s, mode === 'dark' ? dk(prim.color.gray[s]) : prim.color.gray[s].$value]));
+    // Defined strokes: the border steps (400 resting, 500 hover) each move one notch toward the next. Fills (100 to
+    // 300) and text (900, 1000) never move.
+    if (defined) Object.assign(base, { 400: base['500'], 500: mixL(base['500'], base['600'], 0.5) });
+    for (const step of STEPS) gray[mode][step] = tinted(base[step]);
   }
   const bg = prim.color.background;
   const background = {
@@ -358,13 +364,6 @@ export function derive(config, prim) {
       'highlight.bg': { value: '{color.blue.200}' },
       'highlight.border': { value: '{color.blue.400}' },
       'badge.accent': { value: '{color.blue.800}' },
-    });
-  }
-  if (config.stroke === 'defined') {
-    Object.assign(semantic, {
-      'border.default': { value: '{color.gray.500}' },
-      'border.hover': { value: '{color.gray.600}' },
-      'border.active': { value: '{color.gray.700}' },
     });
   }
 
@@ -456,7 +455,7 @@ export function report(d) {
   const lines = [
     `Brand: ${c.name}`,
     `Accent: ${d.accent.note}`,
-    `Neutrals: ${L.neutrals[c.neutrals]}${c.neutrals === 'tinted' && !d.grays ? ' (accent is near gray, so grays stay neutral)' : ''}`,
+    `Grays: ${L.neutrals[c.neutrals]}${c.neutrals === 'tinted' && !d.grays ? ' (accent is near gray, so grays stay neutral)' : ''}`,
     `Modes: ${L.modes[c.modes]}`,
     `Corners: controls ${L.controls[c.controls].toLowerCase()}, surfaces ${L.surfaces[c.surfaces].toLowerCase()}`,
     `Depth: ${L.depth[c.depth]}. Stroke: ${L.stroke[c.stroke]}`,

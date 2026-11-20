@@ -1,4 +1,4 @@
-# Vercel Web Interface Guidelines, Facet digest
+# Interface guidelines digest
 
 A faithful, tightened paraphrase of Vercel's Web Interface Guidelines, kept rule for rule and grouped by the source's own sections. Rule IDs (for example `INT-11`) are Facet additions so components, reviews and lint findings can cite a rule precisely. They are not part of the source.
 
@@ -193,22 +193,22 @@ The source labels these as Vercel brand and product preferences, not universal r
 
 ---
 
-## Hidden Gems emphasis
+## Emphasis for data products
 
-The 15 rules that matter most for a dense NFL betting research dashboard, with Facet-specific notes. Notes marked "Facet" are our interpretation, not Vercel text.
+The 15 rules that matter most for a dense dashboard, with Facet-specific notes. Notes marked "Facet" are our interpretation, not Vercel text.
 
-1. **CON-08 Tabular numbers.** Every odds, line, spread, total, ROI, hit-rate and count column uses `tabular-nums`. Facet: Geist Sans `tnum` only equalizes digits (600 units each); `+` (558), hyphen (419), U+2212 minus (520) and `.`/`,` (201) stay proportional, so right-align numeric columns and reserve a fixed sign slot (or set American odds in Geist Mono) so `+150` and `-110` align. Verified by inspecting the font files; see `reference/vercel-ecosystem.md`.
-2. **INT-11 / INT-24 URL as state, deep-link everything.** Week, team, market, sportsbook, sort, column set, filters and the selected game live in search params (nuqs). A shared link reproduces the exact view.
-3. **INT-12 Optimistic updates.** Watchlist, pins, saved filters and notes update instantly, reconcile with the server, and roll back or offer Undo on failure.
+1. **CON-08 Tabular numbers.** Every amount, rate, score, delta and count column uses `tabular-nums`. Facet: the sans face's `tnum` only equalizes digits; `+`, hyphen, U+2212 minus and `.`/`,` stay proportional, so right-align numeric columns and reserve a fixed sign slot (or set signed values in the mono face) so `+150` and `-110` align.
+2. **INT-11 / INT-24 URL as state, deep-link everything.** Period, segment, source, sort, column set, filters and the selected record live in search params. A shared link reproduces the exact view.
+3. **INT-12 Optimistic updates.** Pins, saved filters and notes update instantly, reconcile with the server, and roll back or offer Undo on failure.
 4. **INT-01 / INT-29 Keyboard everywhere.** Table navigation, filter toggles and a command palette follow APG grid/listbox/combobox patterns; shortcuts show platform symbols and survive non-QWERTY layouts.
 5. **INT-02 Focus never hidden.** Sticky table headers, sticky first columns and toolbars must not cover the focused cell. Facet: pair with `scroll-padding-top`/`scroll-margin` equal to the sticky header height.
-6. **ANI-01 / ANI-03 / ANI-09 Reduced, compositor-only motion.** Line-movement flashes and row reorders animate only `opacity`/`transform`, list properties explicitly, and degrade to an instant change under reduced motion.
-7. **CON-09 + DES-05 Redundant status cues, accessible charts.** Line moves, value edges and win/loss never rely on green/red alone: add arrows, signs or text, and use color-blind-safe chart palettes.
-8. **PRF-08 Virtualize large lists.** Any table that can exceed 50 rows (props, historical lines, player logs) is virtualized or uses `content-visibility: auto`.
+6. **ANI-01 / ANI-03 / ANI-09 Reduced, compositor-only motion.** Value flashes and row reorders animate only `opacity`/`transform`, list properties explicitly, and degrade to an instant change under reduced motion.
+7. **CON-09 + DES-05 Redundant status cues, accessible charts.** Changes, deltas and outcomes never rely on green/red alone: add arrows, signs or text, and use color-blind-safe chart palettes.
+8. **PRF-08 Virtualize large lists.** Any table that can exceed 50 rows (records, history, logs) is virtualized or uses `content-visibility: auto`.
 9. **CON-02 + INT-10 Stable skeletons with minimum duration.** Skeletons match final row height and column widths; background refetches do not flash a spinner (show delay plus minimum visible time).
-10. **INT-28 Announce async updates politely.** Toasts and validation use polite `aria-live`. Facet: never announce every odds tick; announce only user-relevant summaries (for example "3 lines moved on your watchlist").
-11. **CON-15 + AGT-02 Locale-aware, hydration-safe time.** Kickoff times, timestamps and currency use `Intl.*` in the viewer's time zone, guarded against server/client mismatch.
-12. **CON-05 + CON-04 All states designed, no dead ends.** Empty (no games this week), sparse (early-week markets), dense (Sunday slate), stale-data and error states each offer a next step.
-13. **CON-14 + AGT-03 Resilient content.** Long player names, team abbreviations and sportsbook names truncate cleanly (`min-w-0`, `truncate`) with the full value available on focus/hover.
+10. **INT-28 Announce async updates politely.** Toasts and validation use polite `aria-live`. Facet: never announce every data tick; announce only user-relevant summaries (for example "3 pinned accounts changed").
+11. **CON-15 + AGT-02 Locale-aware, hydration-safe time.** Deadlines, timestamps and currency use `Intl.*` in the viewer's time zone, guarded against server/client mismatch.
+12. **CON-05 + CON-04 All states designed, no dead ends.** Empty (nothing this period), sparse (early data), dense (a full board), stale-data and error states each offer a next step.
+13. **CON-14 + AGT-03 Resilient content.** Long record names, abbreviations and source names truncate cleanly (`min-w-0`, `truncate`) with the full value available on focus/hover.
 14. **CON-20 Semantics before ARIA.** Data grids start from a native `<table>` with `<th scope>`; add ARIA grid roles only when interactive cell navigation needs them.
 15. **INT-04 + DES-07 Targets and interaction contrast in dense rows.** Compact rows still give controls at least a 24px hit area, and hover/active/focus states raise contrast over rest so the active row is unmistakable.

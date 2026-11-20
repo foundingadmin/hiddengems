@@ -72,7 +72,7 @@ Labels that sit together and describe the same thing share one root word, so the
 
 Sample roots: **sync** (data in from a source), **run** (a scheduled job), **pin** (an account you follow), **connect** (a source). Reloading a view is not a sync; it is "Reload".
 
-## Undo, Cancel and Reset
+## Undo, cancel and reset
 
 Three words that all seem to mean "go back". Each has one job.
 
@@ -92,7 +92,7 @@ Prefer undo to confirm. A confirmation interrupts every time; an undo costs noth
 | Level | When | How | Examples |
 |---|---|---|---|
 | **None** | The opposite action reverses it | Act at once | Toggle, filter, sort, Pause and Resume, Run now, Save (edit again to change), Pin account |
-| **Undo toast** | One item removed that can be restored | Act at once, then a toast "Account removed. Undo" that stays until the next action or 8 seconds | Remove an account from a list, dismiss an alert, unpin an account |
+| **Undo toast** | One item removed that can be restored | Act at once, then a toast "Account removed. Undo" that stays until the next action or 5 seconds | Remove an account from a list, dismiss an alert, unpin an account |
 | **Confirm dialog** | It cannot be undone, or it changes something outside the product | A dialog naming the consequence; Cancel is focused, the button repeats verb and object | Disconnect Billing (syncs stop), Rotate key (the old key stops working), Reset to defaults |
 | **Typed confirmation** | It permanently deletes data, or many items at once | The dialog asks you to type the name before the button enables | Delete outcome history, Delete all saved views |
 

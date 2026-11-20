@@ -1,4 +1,4 @@
-# Context Menu
+# Context menu
 > Source: https://vercel.com/geist/context-menu (captured 2026-11-02)
 
 ## Purpose

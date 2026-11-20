@@ -112,6 +112,7 @@ never guessed. Recorded decisions are in `.claude/agents/corpus/decisions.md`.
 ## Repo layout
 
 - `packages/facet/` design system (self-contained, reusable in other projects). This repo is Facet's only source of truth: read `packages/facet` directly, including the specimen pages in `packages/facet/preview`. There are no published copies to consult or keep in sync.
+- `kit/` the Facet kit: a detached copy of Facet for other projects, with the Hidden Gems domain removed and a brand layer added (`kit/START-HERE.md`). Hidden Gems does not use it. A Facet change that other projects should get is made again in `kit/`; nothing syncs the two. `node kit/scripts/pack.mjs` zips it.
 - `packages/core/` domain rules, `packages/db/` schema and client, `packages/ingest/` providers and jobs
 - `apps/web/` Hidden Gems app (Next.js, deploys on Vercel with Root Directory `apps/web`)
 - `docs/` project documentation

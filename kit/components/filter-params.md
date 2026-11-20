@@ -1,4 +1,4 @@
-# Filter Params
+# Filter params
 > Source: https://vercel.com/geist/filter-params (captured 2026-11-02)
 
 ## Purpose

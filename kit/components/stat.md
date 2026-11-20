@@ -61,7 +61,7 @@ When a stat's value is a score, the score mark replaces `.fc-stat-value` at the 
 ```html
 <p class="fc-stat-figure">
   <span class="fc-score" data-size="stat" data-live style="--rating: 37" aria-label="Score 37">
-    <svg viewBox="0 0 24 22" aria-hidden="true">…</svg><span>37</span>
+    <svg viewBox="0 0 24 24" aria-hidden="true">…</svg><span>37</span>
   </span>
   <span class="fc-stat-qualifier">of 100</span>
 </p>

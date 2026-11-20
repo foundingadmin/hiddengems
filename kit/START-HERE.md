@@ -16,9 +16,9 @@ Facet is a design system for data and dashboard heavy products: tokens, CSS comp
 
 Facet ships neutral. Ten choices fit it to a project. Run this once, right after installing, unless the person says to keep the defaults.
 
-Say one sentence about what is coming ("Ten quick choices set the look; everything about meaning and density stays as designed"), then use whichever path your surface supports. Prefer the page.
+Say one sentence about what is coming ("Ten quick choices set the look; everything about meaning and density stays as designed"), then use whichever way your surface supports. Prefer the page.
 
-### Path A, the page
+### With the page
 
 `onboarding/index.html` is one self-contained file with every question and a live preview.
 
@@ -26,7 +26,7 @@ Say one sentence about what is coming ("Ten quick choices set the look; everythi
 2. They choose, press **Copy for Claude** and paste the result into the chat (or attach the downloaded `brand-packet.json`).
 3. Save what they pasted (the JSON object only) to a temporary file and run `node scripts/brand.mjs apply <file>`. The packet may carry the logo; the command installs it.
 
-### Path B, in chat
+### In chat
 
 Use this when you cannot show the page. Ask the questions in `onboarding/questions.md`, in that order and with those options, using your question tool if you have one. Then run one command, for example:
 
@@ -36,7 +36,7 @@ node scripts/brand.mjs set name="Northwind" accent=#2f6fed modes=both controls=r
 
 For the logo, ask them to attach an SVG, then run `node scripts/brand.mjs logo <path>`.
 
-### After either path
+### After either one
 
 - Relay the summary the command prints. If it says the brand color is kept for identity only, tell the person plainly: their color is too close to a status color (or to gray), so focus rings, checked controls and highlights stay blue, and their color still carries selection, marketing surfaces and illustrations.
 - If the command refuses the config, fix the input and run it again. Never edit generated CSS to get around a refusal.

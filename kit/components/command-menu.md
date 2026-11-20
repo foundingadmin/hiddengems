@@ -1,4 +1,4 @@
-# Command Menu
+# Command menu
 > Source: https://vercel.com/geist/command-menu (captured 2026-11-02)
 
 ## Purpose

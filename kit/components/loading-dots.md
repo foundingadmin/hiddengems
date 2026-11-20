@@ -1,4 +1,4 @@
-# Loading Dots
+# Loading dots
 > Source: https://vercel.com/geist/loading-dots (captured 2026-11-02)
 
 ## Purpose

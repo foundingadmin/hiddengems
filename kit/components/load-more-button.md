@@ -1,4 +1,4 @@
-# Load More Button
+# Load more button
 > Source: https://vercel.com/geist/load-more-button (captured 2026-11-02)
 
 ## Purpose

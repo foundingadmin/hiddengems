@@ -1,4 +1,4 @@
-# JSON View
+# JSON view
 > Source: https://vercel.com/geist/json-view (captured 2026-11-02)
 
 ## Purpose

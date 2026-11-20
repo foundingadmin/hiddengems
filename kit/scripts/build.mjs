@@ -449,6 +449,8 @@ write('css/shadcn.css', shadcn);
   const src = readFileSync(join(root, 'js/time.mjs'), 'utf8').replace(/^export /gm, '');
   const forms = readFileSync(join(root, 'js/forms.mjs'), 'utf8').replace(/^export /gm, '');
   write('preview/forms.js', `// GENERATED from js/forms.mjs by scripts/build.mjs. Do not edit by hand.\n(function () {\n${forms}\nwindow.FacetForms = { bindOptionHelpers, bindSliders, sliderShare };\n})();\n`);
+  const sheet = readFileSync(join(root, 'js/sheet.mjs'), 'utf8').replace(/^export /gm, '');
+  write('preview/sheet.js', `// GENERATED from js/sheet.mjs by scripts/build.mjs. Do not edit by hand.\n(function () {\n${sheet}\nwindow.FacetSheet = { dismissible, scrollBodyTo };\n})();\n`);
   write('preview/time.js', `// GENERATED from js/time.mjs by scripts/build.mjs. Do not edit by hand.\n(function () {\n${src}\nwindow.FacetTime = { formatDuration, formatAgo, formatUntil, formatRelative, stampTimes };\n})();\n`);
 }
 

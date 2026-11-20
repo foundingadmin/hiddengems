@@ -1,4 +1,4 @@
-# Context Card
+# Context card
 > Source: https://vercel.com/geist/context-card (captured 2026-11-02)
 
 ## Purpose

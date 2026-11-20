@@ -1,4 +1,4 @@
-# Empty State
+# Empty state
 > Source: https://vercel.com/geist/empty-state (captured 2026-11-02)
 
 ## Purpose

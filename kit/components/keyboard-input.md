@@ -1,4 +1,4 @@
-# Keyboard Input
+# Keyboard input
 > Source: https://vercel.com/geist/keyboard-input (captured 2026-11-02)
 
 ## Purpose

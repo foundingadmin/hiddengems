@@ -332,7 +332,7 @@
     "live": {
       "$type": "color",
       "$value": "{color.green.700}",
-      "$description": "Pulled within the live window."
+      "$description": "Synced within the live window."
     },
     "recent": {
       "$type": "color",
@@ -347,7 +347,7 @@
     "failed": {
       "$type": "color",
       "$value": "{color.red.700}",
-      "$description": "The last refresh failed; values are the last good pull."
+      "$description": "The last refresh failed; values are the last good sync."
     },
     "unknown": {
       "$type": "color",

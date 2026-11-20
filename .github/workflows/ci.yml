@@ -22,6 +22,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       # Generated Facet files must match their sources.
       - run: node packages/facet/scripts/build.mjs && git diff --exit-code -- packages/facet
+      # The Facet kit (kit/) is committed with its neutral brand: generated files must match, and its rules must hold.
+      - run: node kit/scripts/build.mjs && git diff --exit-code -- kit && node --test kit/scripts/*.test.mjs
       - run: pnpm typecheck
       # Tests run against an in-memory Postgres (PGlite) with the sample provider: no secrets needed.
       - run: pnpm test
@@ -31,3 +33,11 @@ jobs:
       - if: github.event_name == 'pull_request'
         run: node ops/sprint/lint-words.mjs origin/${{ github.base_ref }}
       - run: pnpm --filter web build
+      # The kit as one zip, for starting another project (kit/START-HERE.md).
+      - if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: node kit/scripts/pack.mjs
+      - if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: facet-kit
+          path: kit/dist/*.zip

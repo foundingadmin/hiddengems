@@ -14,7 +14,7 @@
 <div class="sp-nav">
   <div class="fc-page sp-header">
     <a class="sp-mark" href="index.html">
-      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 3h12l4 6-10 12L2 9z" opacity=".35"/><path d="M12 21 7.5 9h9z"/></svg>
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 22 12 12 22 2 12Z" opacity=".35"/><path d="M12 7 17 12 12 17 7 12Z"/></svg>
       <strong class="text-label-16">Facet</strong>
     </a>
     <nav class="sp-primary" aria-label="Guides">
@@ -80,12 +80,12 @@
       </fieldset>
       <div class="sp-notes">
         <div class="fc-note" data-type="info"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span>A chart that plots verdicts or highlights borrows the signal and highlight colors.</span></div>
-        <div class="fc-note"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span>Badges come in every hue, but one in the accent always means a highlight.</span></div>
+        <div class="fc-note"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span>Badges come in every hue, but an accent one always means a highlight.</span></div>
         <div class="fc-note"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><circle cx="8" cy="8" r="7" opacity=".25"/><path d="M7.25 7h1.5v5h-1.5zM7.25 4h1.5v1.5h-1.5z"/></svg><span>The accent is the project's brand color, violet by default. Signal hues never follow the brand.</span></div>
       </div>
       <hr class="fc-separator">
       <div class="sp-dodont">
-        <figure><figcaption><span class="fc-guide" data-guide="do" data-critical>Do</span></figcaption><div class="sp-wrap"><span id="score-do"></span> <span class="fc-badge" data-variant="purple" data-contrast="low">Highlight</span> <input type="checkbox" class="fc-toggle" checked aria-label="Auto sync"> <input type="checkbox" class="fc-check" checked aria-label="Selected account"></div></figure>
+        <figure><figcaption><span class="fc-guide" data-guide="do" data-critical>Do</span></figcaption><div class="sp-wrap"><span id="score-do"></span> <span class="fc-badge" data-variant="accent" data-contrast="low">Highlight</span> <input type="checkbox" class="fc-toggle" checked aria-label="Auto sync"> <input type="checkbox" class="fc-check" checked aria-label="Selected account"></div></figure>
         <figure><figcaption><span class="fc-guide" data-guide="dont" data-critical>Don't</span></figcaption><div class="sp-wrap" inert aria-label="Example of misuse"><button class="fc-button sp-misuse" type="button">Add account</button><a class="sp-misuse-link">View sources</a></div><p class="sp-caption">A button or link in the accent reads as a highlight. Actions stay neutral. The accent marks highlights and your choices.</p></figure>
         <figure><figcaption><span class="fc-guide" data-guide="do" data-critical>Do</span></figcaption><div class="sp-wrap"><span class="fc-delta" data-direction="positive">9 pts</span><span class="fc-signal" data-signal="wait">Watch</span></div></figure>
         <figure><figcaption><span class="fc-guide" data-guide="dont" data-critical>Don't</span></figcaption><div class="sp-wrap"><span class="sp-misuse-amber">Q4 target</span><span class="sp-misuse-green">+$48.2k</span></div><p class="sp-caption">Amber for emphasis or green for money reads as a verdict that was never made.</p></figure>
@@ -882,7 +882,7 @@
     const sheet = $('#data-sheet');
     // The easy exits (components/sheet.md, "Leaving a sheet"): outside click, and drag down on phone.
     // Modules do not load from file://, so the page opened from disk keeps Escape and the close button only.
-    if (location.protocol !== 'file:') import('../js/sheet.mjs').then(({ dismissible }) => dismissible(sheet, { dismiss: () => sheet.close() }));
+    if (window.FacetSheet) window.FacetSheet.dismissible(sheet, { dismiss: () => sheet.close() });
     let opener = null, current = null;
     const CHECKS = [
       ['Usage', 'Seats active in the last 30 days'],
@@ -2981,6 +2981,7 @@ score = round(100 × clamp(delta / 10, 0, 1) × clarity / 100)</pre></div>
 <script src="forms.js"></script>
 <script src="dots.js"></script>
 <script src="undo.js"></script>
+<script src="sheet.js"></script>
 <script src="specimen.js"></script>
 <script>
 // Moments specimen (patterns/moments.md): the newest unread card's orbit runs on a stage inside its strip; the
@@ -3038,10 +3039,10 @@ const rowId = k => 'tok-' + (familyOf(k) || k);
 const HUES = [
   { key: 'background', name: 'Background', job: 'The canvas', use: 'Background 2 only for subtle separation', never: 'Cards on cards', steps: [100, 200] },
   { key: 'gray', name: 'Gray', job: 'Everything by default', use: 'Text, surfaces, borders, primary buttons, chart series 1', never: 'Carrying meaning by itself' },
-  { key: 'purple', name: 'Purple', job: 'The brand accent', use: 'Highlights and score intensity; focus, selection and checked controls through the brand slot', never: 'Links, buttons, emphasis, chart series, status, decoration', accent: true },
+  { key: 'accent', name: 'Accent', job: 'Highlights, and the brand', use: 'Highlight designation and score intensity; focus, selection and checked controls through the brand slot', never: 'Links, buttons, chart series, status, decoration', accent: true },
   { key: 'green', name: 'Green', job: 'Go, good for the reader', use: 'Positive delta, success, live data', never: 'Money or wins because they look nice' },
-  { key: 'amber', name: 'Amber', job: 'Wait, and caution', use: 'Warnings, stale data', never: 'Emphasis, chart series' },
-  { key: 'red', name: 'Red', job: 'Stop, bad for the reader', use: 'Negative delta, errors, failed data, destructive actions', never: 'Decoration, top records, urgency' },
+  { key: 'amber', name: 'Amber', job: 'Wait, and caution', use: 'Warnings, stale data', never: 'Highlighting, emphasis, chart series' },
+  { key: 'red', name: 'Red', job: 'Stop, bad for the reader', use: 'Negative delta, errors, failed data, destructive actions', never: 'Decoration, hot items, urgency' },
   { key: 'blue', name: 'Blue', job: 'Information', use: 'Links, info notes, recent data, chart series 2', never: 'Verdicts, highlights, success, focus, selected controls' },
   { key: 'teal', name: 'Teal', job: 'Chart series only', use: 'Series 3, when direct labels and grays are not enough' },
   { key: 'pink', name: 'Pink', job: 'Chart series only', use: 'Series 4, when direct labels and grays are not enough' },
@@ -3100,7 +3101,7 @@ document.getElementById('ledger').innerHTML = GROUPS.map(([g, label]) => {
 }).join('');
 const roles = ['heading-48','heading-40','heading-32','heading-24','heading-20','heading-16','heading-14','label-16','label-14','label-13','label-12','label-13-mono','copy-18','copy-16','copy-14','copy-13','copy-13-mono','button-14'];
 document.getElementById('type-roles').innerHTML = roles.map(r => `<div><code>text-${r}</code><span class="text-${r}">${r.startsWith('label') ? 'Halcyon Foods, Mid-market, $36.0k' : r.startsWith('copy') ? 'Both of its missed weeks came during a billing migration, so the usage check comes first.' : 'Northwind carries the widest delta'}</span></div>`).join('');
-const badgeVariants = ['gray','blue','green','amber','red','purple','inverted'];
+const badgeVariants = ['gray','blue','green','amber','red','accent','inverted'];
 document.getElementById('badges-solid').innerHTML = badgeVariants.map(v => `<span class="fc-badge" data-variant="${v}">${v}</span>`).join('');
 document.getElementById('badges-solid').insertAdjacentHTML('beforeend', '<a class="fc-badge" data-variant="pill" href="#data">Billing</a>');
 document.getElementById('badges-low').innerHTML = badgeVariants.slice(0, 6).map(v => `<span class="fc-badge" data-contrast="low" data-variant="${v}">${v}</span>`).join('');

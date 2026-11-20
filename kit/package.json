@@ -1,0 +1,33 @@
+{
+  "name": "facet-kit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Facet: a design system for dense, decision-grade data. Tokens, CSS components, a Tailwind v4 bridge and a brand layer.",
+  "type": "module",
+  "license": "UNLICENSED",
+  "sideEffects": [
+    "*.css"
+  ],
+  "exports": {
+    "./css/*": "./css/*",
+    "./js/*": "./js/*",
+    "./tokens/*": "./tokens/*",
+    "./fonts/*": "./fonts/*",
+    "./brand/*": "./brand/*"
+  },
+  "files": [
+    "css",
+    "js",
+    "tokens",
+    "fonts",
+    "brand",
+    "DESIGN.md",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "brand": "node scripts/brand.mjs",
+    "test": "node --test scripts/*.test.mjs",
+    "pack": "node scripts/pack.mjs"
+  }
+}

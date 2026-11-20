@@ -1,0 +1,103 @@
+# Filter params
+> Source: https://vercel.com/geist/filter-params (captured 2026-11-02)
+
+## Purpose
+A filter bar backed by URL parameters. It shows the active constraints as pills, and they survive refresh and can be shared as a link.
+
+## Anatomy
+- `FilterParamsBar` taking `params: FilterParam[]` and optional `ai`.
+- Each `FilterParam`: `key` (display name), `type`, `label(value)` (pill text, including the "all" fallback), `encode(value) → URL params`, `decode(params) → value`, plus type-specific fields.
+- Helpers: `encodeDateRangeValue` / `decodeDateRangeValue`, `useSearchParamState`, `useFilterParam`.
+
+## Variants & sizes
+- `type: 'select'` with `options`.
+- `type: 'multi-select'` with `options` and `optionLabel`. The example label reads `3 Statuses` or `All Statuses`.
+- `type: 'date-range'` with `presets: [{ label, range() }]`. The label falls back to `Any Time`.
+- `type: 'readonly'`: shows page context that cannot be changed or removed. Uses `onLoad` for the authoritative value and an optional `note` shown in a hover card.
+- `suggestion: () => value`: an optional suggested starting value. It stays optional until the user picks it.
+- `ai: { isThinking, onQuery, onAbort }`: natural-language filter suggestions.
+- No size or variant props.
+
+## States
+No filters / all. Filter applied (pill). Suggestion offered. Readonly. AI thinking (abortable).
+
+## Tokens
+Not specified by the reference. Inferred: Badge/pill and Menu/Combobox tokens, `text-label-13` / `text-label-14`.
+
+## Rules
+- Use on list or search pages where active constraints should be visible, linkable and kept on refresh.
+- Short filter names. Option labels should make sense without reopening the menu.
+- Each filter encodes only the URL params it owns, so removing one pill never clears unrelated state.
+- Suggestions are useful defaults, never replacements for explicit choices.
+- Labels must name both the constraint and the value clearly for screen readers.
+
+## In practice
+- **Main board filter bar**:
+  - `Source` (multi-select, label `All Sources` / `3 Sources`).
+  - `Segment` (multi-select: Enterprise, Mid-market, Startup).
+  - `Region` (select or multi-select).
+  - `Confidence` (multi-select High / Medium / Low).
+  - `Min Delta` (select: `Any Delta`, `≥ 2 pts`, `≥ 5 pts`).
+  - `Renewal` (date-range with presets `This Week`, `This Month`, `This Quarter`).
+- `readonly` filter for `Quarter` / `Week` context set by the route, with a `note` explaining it.
+- `suggestion` for `Segment: Enterprise` on first load, so it does not count as a user choice.
+- The `ai` slot fits "show me startup accounts with a positive delta" queries later.
+- Use one URL key per filter (`sources`, `segments`, `minDelta`) so links to a filtered board are shareable.
+
+## Facet implementation `[F]`
+Implemented in `css/data.css` as `.fc-filter-bar`. Specimen: `preview/index.html#data`.
+
+### Order
+Search, Add filter, readonly context, applied chips, suggestions, then the sort control at the end. Everything wraps; the sort stays at the right edge. On phones, the phone row below keeps it to one line.
+
+### Parts
+| Part | Markup | Notes |
+|---|---|---|
+| Bar | `<div class="fc-filter-bar" role="search" aria-label="Filter accounts">` | 8px gap, wraps |
+| Search | `.fc-filter-search` > icon + `.fc-input[data-size="small"]` | Full width on phones, 240px from 640px. Placeholder ends with `…` |
+| Add filter | `.fc-button[data-variant="secondary"][data-size="small"][data-shape="rounded"]` + filter icon | 32px pill, opens the filter menu (`aria-haspopup="menu"`) |
+| Applied chip | `.fc-filter-chip` (group) > `.fc-filter-edit` (key + values) + `.fc-filter-remove` | Key in `--fc-text-secondary`, value in primary 500. Several values sit in one pill, split by a hairline |
+| Suggestion | `button.fc-filter-chip[data-state="suggested"]` + plus icon | Dashed edge, muted value. Clicking applies it |
+| Readonly | `.fc-filter-chip[data-state="readonly"]` + optional `.fc-filter-info` | No remove. The info button's tooltip says where the value comes from |
+| Removable `[F]` | `.fc-filter-chip` (group) > `.fc-filter-key` + `.fc-filter-value` + `.fc-filter-remove` | Key, value and remove only, no edit menu: for a filter set by a link (`?source=`). The remove sits 4px from the pill's end, as on an applied chip |
+| Sort | `.fc-filter-sort` > sort icon + `.fc-select[data-size="small"]` | Synced with the sorted table header |
+
+### Removable chip `[F]`
+A filter that arrives in a link and has nothing to edit (one value, chosen elsewhere) shows as key, value and remove.
+```html
+<span class="fc-filter-chip" role="group" aria-label="Source filter">
+  <span class="fc-filter-key">Source</span>
+  <span class="fc-filter-value">Billing</span>
+  <a class="fc-filter-remove" href="/data/logs" aria-label="Show all sources"><svg aria-hidden="true">…</svg></a>
+</span>
+```
+- The remove is a link when removing is navigation (it drops the key from the URL, INT-27), a button otherwise. Its name says what you get ("Show all sources") or what goes ("Remove source filter") (CON-19).
+- States: rest, remove hover (gray circle), remove focus (focus ring, INT-02). The 24px remove target is the only control (INT-04).
+- In practice: Logs, `?source=` from a Data health row.
+
+### Phone row `[F]`
+Under 768px a bar of chips would wrap to three rows; the phone row keeps one.
+```html
+<div class="fc-filter-bar" data-phone="scroll" role="search" aria-label="Filter highlights">
+  <label class="fc-filter-search" data-open>…</label>
+  <button class="fc-button" data-variant="secondary" data-size="small" data-shape="rounded" aria-haspopup="menu">
+    <svg aria-hidden="true">…</svg><span class="fc-filter-add-label">Add filter</span>
+  </button>
+  <div class="fc-filter-scroll">readonly, applied and suggested chips, then .fc-filter-sort</div>
+</div>
+```
+- From 768px `.fc-filter-scroll` is `display: contents`, so the bar is unchanged.
+- Under 768px the chips are one row that scrolls sideways, with the sort first. Add filter shrinks to its icon at the row's end, outside the scroller, so its menu is not clipped; its name stays "Add filter".
+- Search hides until `data-open` is set. Open it from the top bar's search button and keep it open while it holds a query.
+- In practice: the board's All highlights list.
+
+### Accessibility
+- The remove button names the filter: `aria-label="Remove source filter"`. After removal, focus moves to the next chip or to Add filter.
+- A suggestion's name says what it does: `aria-label="Add filter Segment, Enterprise"`.
+- The chip group has `aria-label="Source filter"`; the edit button reads key then value.
+
+### URL state
+- One query key per filter, owned by that filter: `?week=8&source=crm&segment=enterprise,startup&sort=delta&dir=desc&record=northwind`. Removing a chip deletes only its key.
+- Use `history.replaceState` for typing in search (debounced) and `pushState` for chip, sort and sheet changes, so Back undoes one decision at a time.
+- Suggestions and readonly context are not written to the URL until the user applies them; readonly values come from the route.
+- Restore every chip, the sort and the open record from the URL on load, before the first paint where possible.

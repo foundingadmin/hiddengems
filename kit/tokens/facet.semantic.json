@@ -1,0 +1,605 @@
+{
+  "$description": "Facet semantic layer. Every value is an alias to a Facet primitive ({color.<scale>.<step>}) or to another semantic token ({brand.solid}). Light/dark switching happens in the primitive layer, so aliases never need a dark override unless the step itself changes per theme ($extensions.facet.dark). Rule: product code uses these names first, primitives second, raw values never. The brand layer (brand/brand.json, scripts/brand-core.mjs) builds the accent scale these aliases read and may re-point focus, checked controls and highlights; it never touches status, signal, delta or freshness.",
+  "text": {
+    "primary": {
+      "$type": "color",
+      "$value": "{color.gray.1000}",
+      "$description": "Body copy, values and icons."
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": "{color.gray.900}",
+      "$description": "Labels, metadata and supporting copy. The lowest step allowed for readable text."
+    },
+    "disabled": {
+      "$type": "color",
+      "$value": "{color.gray.700}",
+      "$description": "Disabled controls only, never meaningful copy."
+    },
+    "inverse": {
+      "$type": "color",
+      "$value": "{color.background.100}",
+      "$description": "Copy on a gray-1000 fill, such as primary buttons and selected tabs."
+    },
+    "link": {
+      "$type": "color",
+      "$value": "{color.blue.900}",
+      "$description": "Inline links."
+    }
+  },
+  "surface": {
+    "canvas": {
+      "$type": "color",
+      "$value": "{color.background.100}",
+      "$description": "Pages and components. Use in most instances."
+    },
+    "subtle": {
+      "$type": "color",
+      "$value": "{color.background.200}",
+      "$description": "Sparingly, for sidebars, wells and the table header band."
+    },
+    "fill": {
+      "$type": "color",
+      "$value": "{color.gray.100}",
+      "$description": "Resting fill for chips, rows and small controls."
+    },
+    "fill-hover": {
+      "$type": "color",
+      "$value": "{color.gray.200}",
+      "$description": "Hovered fill. On a canvas-colored component, hover uses gray-100 instead."
+    },
+    "fill-active": {
+      "$type": "color",
+      "$value": "{color.gray.300}",
+      "$description": "Pressed and selected fill."
+    },
+    "contrast": {
+      "$type": "color",
+      "$value": "{color.gray.1000}",
+      "$description": "Primary buttons and the selected segmented control."
+    },
+    "contrast-hover": {
+      "$type": "color",
+      "$value": "{color.gray.900}",
+      "$description": "Primary button hover."
+    }
+  },
+  "border": {
+    "default": {
+      "$type": "color",
+      "$value": "{color.gray.400}",
+      "$description": "Dividers and resting edges. Solid gray, never alpha, by default."
+    },
+    "hover": {
+      "$type": "color",
+      "$value": "{color.gray.500}",
+      "$description": "Edges under the pointer."
+    },
+    "active": {
+      "$type": "color",
+      "$value": "{color.gray.600}",
+      "$description": "Pressed or focused edges."
+    },
+    "alpha": {
+      "$type": "color",
+      "$value": "{color.gray-alpha.400}",
+      "$description": "Only where an edge must blend with a tinted surface. Overlapping alpha edges darken where they cross."
+    }
+  },
+  "focus": {
+    "$description": "Keyboard focus. Follows the brand accent, so focus is a branded moment in every Facet product.",
+    "color": {
+      "$type": "color",
+      "$value": "{brand.solid}",
+      "$description": "Focus rings and focus halos."
+    }
+  },
+  "status": {
+    "info": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.blue.900}",
+        "$description": "Info text and icons."
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.blue.700}",
+        "$description": "Info dot or solid mark."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.blue.200}",
+        "$description": "Info note fill."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.blue.400}",
+        "$description": "Info note border."
+      },
+      "$description": "Info notes and messages."
+    },
+    "success": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.green.900}",
+        "$description": "Success text and icons."
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.green.700}",
+        "$description": "Success dot or solid mark."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.green.200}",
+        "$description": "Success note fill."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.green.400}",
+        "$description": "Success note border."
+      },
+      "$description": "Success notes and passed checks."
+    },
+    "warning": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.amber.900}",
+        "$description": "Warning text and icons."
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.amber.700}",
+        "$description": "Warning dot or solid mark."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.amber.200}",
+        "$description": "Warning note fill."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.amber.400}",
+        "$description": "Warning note border."
+      },
+      "$description": "Warning notes and caution states."
+    },
+    "error": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.red.900}",
+        "$description": "Error text and icons."
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.red.700}",
+        "$description": "Error dot or solid mark."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.red.200}",
+        "$description": "Error note fill."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.red.400}",
+        "$description": "Error note border and invalid input ring."
+      },
+      "$description": "Errors, failed data and invalid input."
+    },
+    "neutral": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.gray.900}",
+        "$description": "Neutral status text."
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.gray.700}",
+        "$description": "Neutral status dot."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.gray.200}",
+        "$description": "Neutral status fill."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.gray.400}",
+        "$description": "Neutral status border."
+      },
+      "$description": "Status with no meaning attached."
+    }
+  },
+  "signal": {
+    "$description": "The verdict language (go / wait / stop / none). Always paired with a non-color cue: a word, a glyph, or a position. Color alone never carries the verdict. The words are the product's own (On track, Watch, At risk). Never follows the brand.",
+    "go": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.green.900}",
+        "$description": "The go word and go-colored text."
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.green.700}",
+        "$description": "Go dot in the verdict and the signal strip."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.green.200}",
+        "$description": "Go pill fill."
+      },
+      "$description": "Go verdict: word, dot and pill."
+    },
+    "wait": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.amber.900}",
+        "$description": "The wait word."
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.amber.700}",
+        "$description": "Wait dot."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.amber.200}",
+        "$description": "Wait pill fill."
+      },
+      "$description": "Wait verdict: word, dot and pill."
+    },
+    "stop": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.red.900}",
+        "$description": "The stop word."
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.red.700}",
+        "$description": "Stop dot."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.red.200}",
+        "$description": "Stop pill fill."
+      },
+      "$description": "Stop verdict: word, dot and pill."
+    },
+    "none": {
+      "fg": {
+        "$type": "color",
+        "$value": "{color.gray.900}",
+        "$description": "The unchecked word."
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{color.gray.600}",
+        "$description": "Unchecked dot or hollow ring."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{color.gray.200}",
+        "$description": "Unchecked pill fill."
+      },
+      "$description": "Unchecked verdict: word, dot or hollow ring, and pill."
+    }
+  },
+  "delta": {
+    "$description": "A signed gap against a baseline (target, forecast, benchmark). Positive and negative are about whether the gap is good for the reader, never about the number going up or down.",
+    "positive": {
+      "$type": "color",
+      "$value": "{color.green.900}",
+      "$description": "Gap in the reader's favor (with an up arrow and a plus sign)."
+    },
+    "negative": {
+      "$type": "color",
+      "$value": "{color.red.900}",
+      "$description": "Gap against the reader (with a down arrow and a minus sign)."
+    },
+    "neutral": {
+      "$type": "color",
+      "$value": "{color.gray.900}",
+      "$description": "No meaningful gap."
+    }
+  },
+  "highlight": {
+    "$description": "What the product surfaces: a highlighted record, and the score mark's intensity ramp. Reads the brand accent by default. Never links, buttons, chart series or decoration.",
+    "fg": {
+      "$type": "color",
+      "$value": "{brand.fg}",
+      "$description": "Highlight text and labels."
+    },
+    "solid": {
+      "$type": "color",
+      "$value": "{brand.solid}",
+      "$description": "The score mark at full intensity and solid highlight fills."
+    },
+    "bg": {
+      "$type": "color",
+      "$value": "{brand.bg}",
+      "$description": "Highlight badge and tint fill."
+    },
+    "border": {
+      "$type": "color",
+      "$value": "{brand.border}",
+      "$description": "Highlight badge or panel border."
+    }
+  },
+  "freshness": {
+    "$description": "How recent a data point is (a sync, a report). Mirrors the status dot semantics. Never follows the brand.",
+    "live": {
+      "$type": "color",
+      "$value": "{color.green.700}",
+      "$description": "Synced within the live window."
+    },
+    "recent": {
+      "$type": "color",
+      "$value": "{color.blue.700}",
+      "$description": "Recent but not live."
+    },
+    "stale": {
+      "$type": "color",
+      "$value": "{color.amber.700}",
+      "$description": "Old enough to re-check before acting."
+    },
+    "failed": {
+      "$type": "color",
+      "$value": "{color.red.700}",
+      "$description": "The last refresh failed; values are the last good sync."
+    },
+    "unknown": {
+      "$type": "color",
+      "$value": "{color.gray.600}",
+      "$description": "No timestamp available."
+    }
+  },
+  "chart": {
+    "$description": "Series colors in a fixed order, monochrome first. Verdict hues and the brand accent are never series colors.",
+    "1": {
+      "$type": "color",
+      "$value": "{color.gray.1000}",
+      "$description": "First series. Gray-1000, monochrome first."
+    },
+    "2": {
+      "$type": "color",
+      "$value": "{color.blue.700}",
+      "$description": "Second series."
+    },
+    "3": {
+      "$type": "color",
+      "$value": "{color.teal.700}",
+      "$description": "Third series."
+    },
+    "4": {
+      "$type": "color",
+      "$value": "{color.pink.700}",
+      "$description": "Fourth series."
+    },
+    "5": {
+      "$type": "color",
+      "$value": "{color.gray.700}",
+      "$description": "Fifth series, back to gray."
+    },
+    "6": {
+      "$type": "color",
+      "$value": "{color.gray.500}",
+      "$description": "Sixth series, lighter gray."
+    },
+    "muted": {
+      "$type": "color",
+      "$value": "{color.gray.600}",
+      "$description": "De-emphasized series, comparison baseline."
+    },
+    "grid": {
+      "$type": "color",
+      "$value": "{color.gray.300}",
+      "$description": "Chart gridlines."
+    },
+    "axis": {
+      "$type": "color",
+      "$value": "{color.gray.500}",
+      "$description": "Chart axes and ticks."
+    },
+    "threshold": {
+      "$type": "color",
+      "$value": "{color.gray.900}",
+      "$description": "Threshold and reference lines, always dashed and labelled."
+    },
+    "magnitude": {
+      "$type": "color",
+      "$value": "{color.gray.300}",
+      "$description": "Share-of-total fill behind a ranked value."
+    }
+  },
+  "badge": {
+    "$description": "Solid badge fills, measured per theme on the vercel.com reference badge (it uses different steps in light and dark). Text is white except amber (black).",
+    "gray": {
+      "$type": "color",
+      "$value": "{color.gray.900}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.gray.500}"
+        }
+      }
+    },
+    "blue": {
+      "$type": "color",
+      "$value": "{color.blue.800}"
+    },
+    "amber": {
+      "$type": "color",
+      "$value": "{color.amber.700}"
+    },
+    "red": {
+      "$type": "color",
+      "$value": "{color.red.900}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.red.800}"
+        }
+      }
+    },
+    "pink": {
+      "$type": "color",
+      "$value": "{color.pink.900}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.pink.600}"
+        }
+      }
+    },
+    "green": {
+      "$type": "color",
+      "$value": "{color.green.900}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.green.600}"
+        }
+      }
+    },
+    "teal": {
+      "$type": "color",
+      "$value": "{color.teal.900}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.teal.600}"
+        }
+      }
+    },
+    "accent": {
+      "$type": "color",
+      "$value": "{color.accent.900}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.accent.500}"
+        }
+      }
+    }
+  },
+  "control": {
+    "$description": "Parts of controls that must stay legible in both themes.",
+    "thumb": {
+      "$type": "color",
+      "$value": "{color.background.100}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.gray.1000}"
+        }
+      },
+      "$description": "Toggle and slider thumbs. Light in both themes."
+    },
+    "thumb-ring": {
+      "$type": "color",
+      "$value": "{color.gray-alpha.400}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.gray-alpha.600}"
+        }
+      },
+      "$description": "Hairline around a thumb."
+    },
+    "on": {
+      "$type": "color",
+      "$value": "{brand.solid}",
+      "$description": "Checked and on controls: toggle, checkbox, radio, choicebox, menu checks. Follows the brand accent."
+    },
+    "on-fg": {
+      "$type": "color",
+      "$value": "{color.background.100}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.gray.1000}"
+        }
+      },
+      "$description": "Check marks and thumbs on an on control. Light in both themes."
+    }
+  },
+  "action": {
+    "$description": "Action fills with a fixed meaning.",
+    "destructive": {
+      "$type": "color",
+      "$value": "{color.red.800}",
+      "$description": "Destructive buttons, such as delete."
+    },
+    "destructive-hover": {
+      "$type": "color",
+      "$value": "{color.red.900}",
+      "$description": "Destructive button hover."
+    }
+  },
+  "brand": {
+    "$description": "The product's one accent, built from brand/brand.json. Focus rings, text selection, checked and on controls, highlights and marketing surfaces read from it, so one brand color rebrands every interaction. The scale it points at ({color.accent.*}) is generated by scripts/brand-core.mjs with fixed lightness steps, so contrast holds for any hue.",
+    "fg": {
+      "$type": "color",
+      "$value": "{color.accent.900}",
+      "$description": "Brand text and marks."
+    },
+    "solid": {
+      "$type": "color",
+      "$value": "{color.accent.700}",
+      "$extensions": {
+        "facet": {
+          "dark": "{color.accent.800}"
+        }
+      },
+      "$description": "Brand fills: focus rings, checked and on controls, the hero field sparkle. One step deeper in dark mode (800), so light marks on it never glare."
+    },
+    "bg": {
+      "$type": "color",
+      "$value": "{color.accent.200}",
+      "$description": "Brand tints."
+    },
+    "border": {
+      "$type": "color",
+      "$value": "{color.accent.400}",
+      "$description": "Brand edges."
+    }
+  },
+  "illus": {
+    "$description": "Dot illustration tones for moments (js/dots.mjs, patterns/moments.md). 1 to 4 are a ramp built from the brand slot, so a rebrand carries them: 1 leans toward the primary text color (the brightest dot on dark, the deepest on light), 4 is the brand fill. Dots that travel use only these four. The context ramp is gray, for dots that stand for things other than the brand.",
+    "1": {
+      "$type": "color",
+      "$value": "color-mix(in srgb, {brand.fg} 55%, {color.gray.1000})",
+      "$description": "The lead dot of a cloud or orbit."
+    },
+    "2": {
+      "$type": "color",
+      "$value": "{brand.fg}",
+      "$description": "The body of a cloud."
+    },
+    "3": {
+      "$type": "color",
+      "$value": "color-mix(in srgb, {brand.fg} 30%, {brand.solid})",
+      "$description": "The body of a cloud, one step deeper."
+    },
+    "4": {
+      "$type": "color",
+      "$value": "{brand.solid}",
+      "$description": "The deepest dot, and the fill a cloud settles into."
+    },
+    "context": {
+      "1": {
+        "$type": "color",
+        "$value": "{color.gray.1000}",
+        "$description": "Context dots, strongest."
+      },
+      "2": {
+        "$type": "color",
+        "$value": "{color.gray.900}",
+        "$description": "Context dots."
+      },
+      "3": {
+        "$type": "color",
+        "$value": "{color.gray.700}",
+        "$description": "Context dots, quiet."
+      },
+      "4": {
+        "$type": "color",
+        "$value": "{color.gray.500}",
+        "$description": "Context dots, quietest."
+      }
+    }
+  }
+}

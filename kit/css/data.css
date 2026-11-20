@@ -1,0 +1,844 @@
+/* Facet data display additions [F]. Loads after components.css:
+     <link rel="stylesheet" href="facet.css"><link rel="stylesheet" href="data.css">
+   Covers: table anatomy (sort, frozen column, selection, row actions, tip affordance),
+   filter bar, pie gauge, middle truncate, relative time card, entity, sheet, stat with basis.
+   Specs: components/table.md ("Facet additions"), filter-params.md, pie-gauge.md,
+   middle-truncate.md, relative-time-card.md, entity.md, sheet.md, stat.md.
+   Measurements marked [G] come from the vercel.com reference captures (SOURCES.md); everything
+   else is a Facet call. */
+
+/* ================================================================== Table additions [F] */
+
+/* The wrap is the containing block, so visually hidden header text and sticky cells
+   stay inside the scroller instead of widening the page at 390px. */
+.fc-table-wrap { position: relative; }
+
+/* Sortable header. The <th> carries aria-sort; the label is a <button class="fc-th-sort">.
+   The indicator (chevron in a soft circle) shows only on the sorted column, and as a
+   preview on hover or keyboard focus. Numeric headers put it on the inner (left) side
+   so the label still lines up with the right-aligned values. */
+.fc-th-sort {
+  --_ind: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill-opacity='.16'/%3E%3Cpath d='M5 6.75l3 3 3-3' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--fc-space-1);
+  margin: -4px -6px;
+  padding: 4px 6px;
+  border: 0;
+  border-radius: var(--fc-radius-xs);
+  background: none;
+  color: inherit;
+  font: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--fc-duration-fast) ease, background-color var(--fc-duration-fast) ease;
+}
+/* The indicator centers on the label; the label alone sets the baseline, so sorted and
+   plain headers line up whichever side the indicator sits on. */
+.fc-th-sort::after {
+  content: "";
+  flex: 0 0 auto;
+  align-self: center;
+  width: 16px;
+  height: 16px;
+  background: currentColor;
+  opacity: 0;
+  -webkit-mask: var(--_ind) center / contain no-repeat;
+          mask: var(--_ind) center / contain no-repeat;
+  transition: opacity var(--fc-duration-fast) ease, transform var(--fc-duration-fast) ease;
+}
+.fc-th-sort:hover { color: var(--fc-text-primary); background-color: var(--ds-gray-alpha-100); }
+.fc-th-sort:focus-visible { box-shadow: var(--ds-focus-ring); }
+.fc-th-sort:hover::after,
+.fc-th-sort:focus-visible::after { opacity: .5; }
+th[aria-sort="ascending"] > .fc-th-sort,
+th[aria-sort="descending"] > .fc-th-sort { color: var(--fc-text-primary); }
+th[aria-sort="ascending"] > .fc-th-sort::after,
+th[aria-sort="descending"] > .fc-th-sort::after { opacity: 1; }
+th[aria-sort="ascending"] > .fc-th-sort::after { transform: rotate(180deg); }
+th[data-align="numeric"] > .fc-th-sort,
+th.fc-numeric > .fc-th-sort { flex-direction: row-reverse; }
+
+/* Selection column. <td class="fc-cell-select"><input type="checkbox" class="fc-check" aria-label="Select Northwind"></td>
+   The cell is the hit target (INT-04): it centers a 16px box in a 40px column. */
+.fc-table .fc-cell-select {
+  width: var(--fc-control-large);
+  min-width: var(--fc-control-large);
+  max-width: var(--fc-control-large);
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+}
+.fc-table .fc-cell-select > label { display: grid; place-items: center; min-height: var(--fc-control-small); cursor: pointer; }
+.fc-check {
+  --_check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.25l2.75 2.75L12 5.5' fill='none' stroke='black' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --_dash: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8h7' fill='none' stroke='black' stroke-width='1.75' stroke-linecap='round'/%3E%3C/svg%3E");
+  appearance: none;
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  border-radius: var(--fc-radius-xs);
+  background: var(--fc-surface-canvas);
+  box-shadow: inset 0 0 0 1px var(--fc-border-hover);
+  vertical-align: middle;
+  cursor: pointer;
+  transition: background-color var(--fc-duration-fast) ease, box-shadow var(--fc-duration-fast) ease;
+}
+.fc-check::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background: var(--fc-control-on-fg);
+  -webkit-mask: var(--_check) center / contain no-repeat;
+          mask: var(--_check) center / contain no-repeat;
+  opacity: 0;
+}
+.fc-check:hover { box-shadow: inset 0 0 0 1px var(--fc-border-active); }
+.fc-check:checked,
+.fc-check:indeterminate { background: var(--fc-control-on); box-shadow: none; }
+.fc-check:checked::before { opacity: 1; }
+.fc-check:indeterminate::before { opacity: 1; -webkit-mask-image: var(--_dash); mask-image: var(--_dash); }
+.fc-check:focus-visible { box-shadow: inset 0 0 0 1px var(--fc-border-hover), var(--ds-focus-ring); }
+.fc-check:checked:focus-visible,
+.fc-check:indeterminate:focus-visible { box-shadow: var(--ds-focus-ring); }
+.fc-check:disabled { background: var(--fc-surface-fill); box-shadow: inset 0 0 0 1px var(--fc-border-default); }
+
+/* Checked rows take the fill step; the open (inspected) row keeps aria-selected="true"
+   and gray-200 from components.css. The check mark is the second cue. */
+.fc-table tbody tr:has(> .fc-cell-select :checked),
+.fc-table tbody tr[data-checked] { background: var(--fc-surface-fill); }
+
+/* Row actions. <td class="fc-cell-actions"><button class="fc-button" data-variant="tertiary"
+   data-shape="square" data-size="small" aria-label="More actions for Northwind">...</button></td>
+   Always visible on touch. With a fine pointer the buttons appear on row hover, and always
+   while any control in the row has focus or a menu is open (aria-expanded). */
+.fc-table .fc-cell-actions {
+  width: 1%;
+  padding-block: 0;
+  text-align: right;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+/* Row action. A row's one own action (Add, Remove) in a table row that has a stretched .fc-row-link: lifted
+   above the link so the button takes its own clicks while the rest of the row still opens the record.
+   <td><span class="fc-row-action"><button class="fc-button" …>Add</button></span></td> */
+.fc-row-action { position: relative; z-index: 2; }
+.fc-row-actions { display: inline-flex; align-items: center; justify-content: flex-end; gap: var(--fc-space-1); }
+@media (hover: hover) and (pointer: fine) {
+  .fc-table .fc-row-actions { opacity: 0; transition: opacity var(--fc-duration-instant) ease; }
+  .fc-table tr:hover .fc-row-actions,
+  .fc-table tr:focus-within .fc-row-actions,
+  .fc-table .fc-row-actions:has([aria-expanded="true"]) { opacity: 1; }
+}
+
+/* Frozen first column. Freezes the row-header column (plus the selection column when
+   present) while the rest scrolls inside .fc-table-wrap; a hairline marks the edge.
+   Row fills live on the frozen cells too, so stripes, hover and selection never show a gap. */
+.fc-table[data-sticky-column] { --_select-w: var(--fc-control-large); }
+.fc-table[data-sticky-column] tr { --_cell-bg: var(--fc-surface-canvas); }
+.fc-table[data-sticky-column][data-striped] tbody tr:nth-child(odd) { --_cell-bg: var(--fc-surface-subtle); }
+.fc-table[data-sticky-column] tbody tr:has(> .fc-cell-select :checked),
+.fc-table[data-sticky-column] tbody tr[data-checked] { --_cell-bg: var(--fc-surface-fill); }
+.fc-table[data-sticky-column][data-interactive] tbody tr:hover { --_cell-bg: var(--fc-surface-fill); }
+.fc-table[data-sticky-column] tbody tr[aria-selected="true"] { --_cell-bg: var(--fc-surface-fill-hover); }
+.fc-table[data-sticky-column] tr > :first-child,
+.fc-table[data-sticky-column] tr > .fc-cell-select + * {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--_cell-bg);
+  transition: background-color var(--fc-duration-instant) ease;
+}
+.fc-table[data-sticky-column] tr > .fc-cell-select + * { left: var(--_select-w); }
+.fc-table[data-sticky-column] tr > :first-child:not(.fc-cell-select),
+.fc-table[data-sticky-column] tr > .fc-cell-select + * { box-shadow: inset -1px 0 0 var(--fc-border-default); }
+/* Divider clearance: content never sits closer than 16px to a vertical divider, on
+   either side. Covers the frozen column's divider and any column marked data-divider. */
+.fc-table[data-sticky-column] tr > :is(:first-child:not(.fc-cell-select), .fc-cell-select + *) { padding-right: var(--fc-space-4); }
+.fc-table[data-sticky-column] tr > :is(:first-child:not(.fc-cell-select), .fc-cell-select + *) + * { padding-left: var(--fc-space-4); }
+.fc-table :is(th, td)[data-divider] { box-shadow: inset 1px 0 0 var(--fc-border-default); padding-left: var(--fc-space-4); }
+.fc-table :is(th, td):has(+ [data-divider]) { padding-right: var(--fc-space-4); }
+.fc-table[data-sticky-column] thead tr > :first-child,
+.fc-table[data-sticky-column] thead tr > .fc-cell-select + * { z-index: 3; }
+/* Keyboard focus never lands under the frozen column (INT-02). Set --fc-frozen-width to its rendered width. */
+.fc-table-wrap:has(> .fc-table[data-sticky-column]) { scroll-padding-inline-start: var(--fc-frozen-width, 0px); }
+
+/* Tip affordance: a dotted underline always means a helper sits behind it,
+   opening on hover, keyboard focus or tap (js/tips.mjs). Never use it for anything else, and use it
+   instead of info icons. */
+.fc-has-tip {
+  /* Round dots, drawn rather than a dotted text-decoration, which renders as short hash marks. */
+  --_dot: var(--ds-gray-600);
+  --_dots: radial-gradient(circle at 1px 1px, var(--_dot) 0.85px, transparent 1.15px);
+  text-decoration: none;
+  background-image: var(--_dots);
+  background-size: 4px 2px;
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  background-origin: content-box;
+  cursor: help;
+}
+.fc-has-tip:hover { --_dot: var(--fc-text-secondary); }
+/* The dots span the text only, never the whole control. When the trigger is wider
+   than its words (a sortable header button with its arrow), wrap the words in .fc-tip-label. */
+.fc-has-tip:has(> .fc-tip-label) { background-image: none; }
+.fc-tip-label {
+  --_dot: var(--ds-gray-600);
+  background: radial-gradient(circle at 1px 1px, var(--_dot) 0.85px, transparent 1.15px) 0 100% / 4px 2px repeat-x;
+}
+.fc-has-tip:hover > .fc-tip-label { --_dot: var(--fc-text-secondary); }
+.fc-has-tip:focus-visible { border-radius: var(--fc-radius-xs); }
+/* Contained values (pills, badges, chips) never underline their text: the dotted line runs under the
+   container instead, 3px below its edge, so it reads as a helper rather than a rendering glitch. */
+.fc-has-tip:is(.fc-delta[data-variant="pill"], .fc-badge, .fc-filter-chip) { position: relative; background-image: none; }
+/* ...in the container's own color, so the helper reads as belonging to that badge. */
+.fc-has-tip:is(.fc-delta[data-variant="pill"], .fc-badge, .fc-filter-chip)::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  bottom: -5px;
+  height: 2px;
+  --_dot: currentColor;
+  background: radial-gradient(circle at 1px 1px, currentColor 0.85px, transparent 1.15px) 0 0 / 4px 2px repeat-x;
+}
+/* Count in the main column header [F]: sits next to the select-all box, so it reads
+   "5 of 31" when nothing is checked and "2 selected" when rows are. Replaces a "Showing 5 of 31" caption. */
+.fc-th-count { margin-left: var(--fc-space-2); font: 400 12px/16px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* A sortable header can carry help too: the underline stays, the cursor says it still sorts. */
+.fc-th-sort.fc-has-tip { cursor: pointer; }
+
+/* Time cell [F]: a time column shows the clock time with its day word (mono),
+   and the relative time under it (sans, secondary), the same pairing as schedule runs. */
+.fc-time-cell > time { display: block; white-space: nowrap; }
+.fc-time-cell > time:first-child { color: var(--fc-text-primary); }
+.fc-time-cell-rel { font-size: 13px; line-height: 18px; color: var(--fc-text-secondary); }
+
+/* Floating layer. Tooltips, time cards and menus open as popovers (top layer, never clipped by
+   a scrolling table) and are placed by script next to their trigger. This resets the UA popover box. */
+.fc-float[popover] {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  border: 0;
+  overflow: visible;
+  color: var(--fc-text-primary);
+}
+.fc-float[popover]:not(:popover-open) { display: none; }
+
+/* ================================================================== Filter bar [F]
+   Order: search, Add filter, context (readonly), applied chips, suggestions, sort at the end.
+   Add filter reuses .fc-button data-variant="secondary" data-size="small" data-shape="rounded". */
+.fc-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--fc-space-2);
+  min-width: 0;
+}
+.fc-filter-search { position: relative; flex: 1 1 100%; min-width: 0; }
+.fc-filter-search > svg {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  color: var(--fc-text-secondary);
+  pointer-events: none;
+}
+.fc-filter-search > .fc-input { padding-left: var(--fc-space-8); }
+@media (min-width: 640px) { .fc-filter-search { flex: 0 1 240px; } }
+
+/* Chip: an applied filter (key + one or more values + remove), a suggestion (dashed, not
+   applied), or readonly context (no remove, optional info). 32px pill [G]. */
+.fc-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  height: var(--fc-control-small);
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--fc-radius-full);
+  background: var(--fc-surface-canvas);
+  box-shadow: 0 0 0 1px var(--fc-border-default);
+  color: var(--fc-text-primary);
+  font: 400 14px/20px var(--fc-font-sans);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.fc-filter-chip svg { flex: 0 0 auto; width: 16px; height: 16px; color: var(--fc-text-secondary); }
+.fc-filter-key { color: var(--fc-text-secondary); }
+.fc-filter-value { color: var(--fc-text-primary); font-weight: 500; overflow: hidden; text-overflow: ellipsis; }
+.fc-filter-value + .fc-filter-value { padding-left: 6px; box-shadow: inset 1px 0 0 var(--fc-border-default); }
+
+/* Applied chip: the chip is a group holding an edit button and a remove button. */
+.fc-filter-chip:has(> .fc-filter-edit) { gap: 0; padding: 0; }
+.fc-filter-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  height: 100%;
+  padding: 0 6px 0 12px;
+  border: 0;
+  border-radius: var(--fc-radius-full) 0 0 var(--fc-radius-full);
+  background: none;
+  color: inherit;
+  font: inherit;
+  white-space: nowrap;
+  transition: background-color var(--fc-duration-fast) ease;
+}
+.fc-filter-edit:hover { background: var(--fc-surface-fill); }
+.fc-filter-edit:focus-visible { box-shadow: var(--ds-focus-ring); border-radius: var(--fc-radius-full); }
+.fc-filter-remove,
+.fc-filter-info {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: var(--fc-control-tiny);
+  height: var(--fc-control-tiny);
+  margin-right: var(--fc-space-1);
+  padding: 0;
+  border: 0;
+  border-radius: var(--fc-radius-full);
+  background: none;
+  color: var(--fc-text-secondary);
+  transition: background-color var(--fc-duration-fast) ease, color var(--fc-duration-fast) ease;
+}
+.fc-filter-remove:hover,
+.fc-filter-info:hover { background: var(--ds-gray-alpha-200); color: var(--fc-text-primary); }
+.fc-filter-remove:focus-visible,
+.fc-filter-info:focus-visible { box-shadow: var(--ds-focus-ring); }
+.fc-filter-chip .fc-filter-remove svg,
+.fc-filter-chip .fc-filter-info svg { width: 14px; height: 14px; color: currentColor; }
+.fc-filter-info { margin-right: -6px; }
+/* Removable chip [F]: key, value and remove, with no edit menu (a filter set by a link, such as ?source=).
+   <span class="fc-filter-chip" role="group" aria-label="Source filter"><span class="fc-filter-key">Source</span>
+   <span class="fc-filter-value">Results</span><a class="fc-filter-remove" href="?" aria-label="Show all sources">x</a></span>
+   The remove sits 4px from the pill's end, as it does on an editable chip. */
+.fc-filter-chip:has(> .fc-filter-remove):not(:has(> .fc-filter-edit)) { padding-right: 0; }
+
+/* Suggestion: the whole chip is a button that applies the value. Dashed edge, muted value [G]. */
+button.fc-filter-chip { cursor: pointer; transition: background-color var(--fc-duration-fast) ease; }
+button.fc-filter-chip:hover { background: var(--fc-surface-fill); }
+button.fc-filter-chip:focus-visible { box-shadow: var(--ds-focus-ring); }
+.fc-filter-chip[data-state="suggested"] {
+  box-shadow: none;
+  outline: 1px dashed var(--fc-border-hover);
+  outline-offset: -1px;
+  padding-left: 10px;
+}
+.fc-filter-chip[data-state="suggested"] .fc-filter-value { color: var(--fc-text-secondary); }
+.fc-filter-chip[data-state="suggested"]:focus-visible { outline: 0; }
+.fc-filter-chip[data-state="readonly"] { padding-right: 6px; }
+.fc-filter-chip[data-state="readonly"]:not(:has(.fc-filter-info)) { padding-right: 12px; }
+
+/* Sort control, pushed to the end of the bar. */
+.fc-filter-sort { position: relative; margin-left: auto; flex: 0 0 auto; }
+.fc-filter-sort > svg {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  color: var(--fc-text-secondary);
+  pointer-events: none;
+}
+.fc-filter-sort > .fc-select { width: auto; padding-left: var(--fc-space-8); }
+
+/* Phone row [F]: <div class="fc-filter-bar" data-phone="scroll"> with the chips and sort in .fc-filter-scroll.
+   Wide, the wrapper is invisible and the bar wraps as above. Under 768px the chips are one row that scrolls
+   sideways, sort first; search hides until opened ([data-open], from a header search button) and Add filter
+   (.fc-filter-add-label around its text) shrinks to its icon at the row's end, outside the scroller so its
+   menu is not clipped. */
+.fc-filter-scroll { display: contents; }
+@media (max-width: 767px) {
+  .fc-filter-bar[data-phone="scroll"] { flex-wrap: wrap; }
+  .fc-filter-bar[data-phone="scroll"] > .fc-filter-search:not([data-open]) { display: none; }
+  .fc-filter-bar[data-phone="scroll"] > .fc-filter-search { flex-basis: 100%; }
+  .fc-filter-bar[data-phone="scroll"] > :not(.fc-filter-search, .fc-filter-scroll) { order: 1; flex: 0 0 auto; }
+  .fc-filter-bar[data-phone="scroll"] .fc-filter-scroll {
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    gap: var(--fc-space-2);
+    min-width: 0;
+    margin: calc(var(--fc-space-1) * -1);
+    padding: var(--fc-space-1);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .fc-filter-bar[data-phone="scroll"] .fc-filter-scroll::-webkit-scrollbar { display: none; }
+  .fc-filter-bar[data-phone="scroll"] .fc-filter-scroll > * { flex: 0 0 auto; max-width: none; }
+  .fc-filter-bar[data-phone="scroll"] .fc-filter-sort { order: -1; margin-left: 0; }
+  .fc-filter-bar[data-phone="scroll"] .fc-button:has(> .fc-filter-add-label) { width: var(--fc-control-small); padding: 0; justify-content: center; }
+  .fc-filter-bar[data-phone="scroll"] .fc-filter-add-label {
+    position: absolute;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0; border: 0;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+}
+
+/* ================================================================== Pie gauge [G geometry]
+   <span class="fc-pie" style="--value:67" aria-hidden="true"></span> 4 of 6
+   Ring at 10% of the box, wedge 50% of the box, filling clockwise from 12 o'clock.
+   Inherits currentColor; data-signal maps to a verdict color only when the bands are defined. */
+.fc-pie {
+  --_s: 16px;
+  --_v: clamp(0, var(--value, 0), 100);
+  position: relative;
+  display: inline-block;
+  flex: 0 0 auto;
+  width: var(--_s);
+  height: var(--_s);
+  border-radius: var(--fc-radius-full);
+  box-shadow: inset 0 0 0 calc(var(--_s) * .1) currentColor;
+  vertical-align: -0.2em;
+}
+.fc-pie::after {
+  content: "";
+  position: absolute;
+  inset: 25%;
+  border-radius: var(--fc-radius-full);
+  background: conic-gradient(currentColor calc(var(--_v) * 1%), transparent 0);
+}
+.fc-pie[data-size="13"] { --_s: 13px; }
+.fc-pie[data-size="24"] { --_s: 24px; }
+.fc-pie[data-size="32"] { --_s: 32px; }
+.fc-pie[data-signal="go"]   { color: var(--fc-signal-go-fg); }
+.fc-pie[data-signal="wait"] { color: var(--fc-signal-wait-fg); }
+.fc-pie[data-signal="stop"] { color: var(--fc-signal-stop-fg); }
+/* Pie plus its number as one unit, 8px apart [G]. */
+.fc-pie-value { display: inline-flex; align-items: baseline; gap: var(--fc-space-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fc-pie-value > .fc-pie { align-self: center; }
+
+/* ================================================================== Middle truncate [F]
+   Two spans split in markup: the start ellipsizes, the end always shows.
+   <span class="fc-truncate" title="full string"><span class="fc-truncate-start">Brightline Logistics, </span><span class="fc-truncate-end">EMEA (incl. UK)</span></span>
+   Keep the space at the end of the start span (white-space: pre holds it) so it is cut with
+   the start. Cap the width with --fc-truncate-max or a <colgroup>. */
+.fc-truncate {
+  display: inline-flex;
+  min-width: 0;
+  max-width: var(--fc-truncate-max, 100%);
+  white-space: pre;
+  vertical-align: bottom;
+}
+.fc-truncate-start { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.fc-truncate-end { flex: 0 0 auto; }
+.fc-truncate[data-mono] { font-family: var(--fc-font-mono); font-feature-settings: "liga" 0, "calt" 0; }
+
+/* ================================================================== Relative time card [G layout]
+   Trigger: <time class="fc-time fc-has-tip" datetime="..." tabindex="0" aria-describedby="id">2 min ago</time>
+   Card: a .fc-float popover listing the exact time in the viewer's zone, then UTC.
+   Times are mono (base.css). */
+.fc-time-card {
+  min-width: 248px;
+  max-width: calc(100vw - 2 * var(--fc-space-4));
+  padding: var(--fc-space-2) var(--fc-space-3);
+  border-radius: var(--fc-radius-card);
+  background: var(--fc-surface-canvas);
+  box-shadow: var(--ds-shadow-tooltip);
+  font: 400 13px/20px var(--fc-font-sans);
+  font-variant-numeric: tabular-nums;
+}
+.fc-time-card-head { margin: 0 0 var(--fc-space-1); color: var(--fc-text-secondary); }
+.fc-time-rows {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr) max-content;
+  align-items: center;
+  gap: var(--fc-space-1) var(--fc-space-2);
+  margin: 0;
+}
+.fc-time-row { display: contents; }
+.fc-time-row[hidden] { display: none; }
+.fc-time-row > dd { margin: 0; }
+.fc-time-zone {
+  justify-self: start;
+  padding: 0 var(--fc-space-1);
+  border-radius: var(--fc-radius-xs);
+  background: var(--fc-surface-fill);
+  color: var(--fc-text-secondary);
+  font: 400 12px/18px var(--fc-font-sans);
+}
+.fc-time-date { color: var(--fc-text-primary); white-space: nowrap; font-family: var(--fc-font-mono); }
+.fc-time-clock { color: var(--fc-text-secondary); text-align: right; white-space: nowrap; font-family: var(--fc-font-mono); }
+
+/* ================================================================== Entity [G]
+   A descriptive row: leading visual (.fc-icon-tile, avatar or checkbox), title, description,
+   then one or two actions. Rows share hairlines inside .fc-entity-list. */
+.fc-entity-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-radius: var(--fc-radius-md);
+  box-shadow: 0 0 0 1px var(--fc-border-default);
+  overflow: hidden;
+}
+.fc-entity {
+  display: flex;
+  align-items: center;
+  gap: var(--fc-space-4);
+  min-height: 72px;
+  padding: var(--fc-space-4);
+  background: var(--fc-surface-canvas);
+  min-width: 0;
+}
+.fc-entity-list > .fc-entity + .fc-entity { box-shadow: inset 0 1px 0 var(--fc-border-default); }
+button.fc-entity { width: 100%; border: 0; text-align: left; font: inherit; color: inherit; cursor: pointer; transition: background-color var(--fc-duration-fast) ease; }
+button.fc-entity:hover { background: var(--fc-surface-fill); }
+.fc-entity-content { display: flex; flex: 1 1 auto; flex-direction: column; min-width: 0; }
+.fc-entity-title,
+.fc-entity-desc { margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fc-entity-title { font: 600 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
+.fc-entity-desc { display: flex; align-items: center; gap: 6px; font: 400 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }
+.fc-entity-desc .fc-status-dot { width: 8px; height: 8px; }
+.fc-entity-meta { flex: 0 0 auto; font: 400 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fc-entity-actions { display: flex; flex: 0 0 auto; align-items: center; gap: var(--fc-space-2); margin-left: auto; }
+/* Narrow screens: descriptions wrap rather than cut a state word, secondary meta steps aside. */
+@media (max-width: 480px) {
+  .fc-entity { gap: var(--fc-space-3); padding: var(--fc-space-3); }
+  .fc-entity-desc { white-space: normal; align-items: baseline; }
+  .fc-entity-desc .fc-status-dot { align-self: flex-start; margin-top: 6px; }
+  .fc-entity-meta { display: none; }
+}
+
+/* ================================================================== Sheet [G anatomy, F behavior]
+   <dialog class="fc-sheet" aria-labelledby="title-id"> opened with showModal(): the page behind
+   is inert, Escape closes, focus returns to the trigger. Inset floating panel, 12px from the
+   edges, 16px radius, 512px wide, 24px padding [G]; modal material shadow. */
+.fc-sheet {
+  position: fixed;
+  z-index: var(--fc-z-drawer);
+  inset: var(--fc-space-3) var(--fc-space-3) var(--fc-space-3) auto;
+  display: flex;
+  flex-direction: column;
+  width: min(512px, calc(100% - 2 * var(--fc-space-3)));
+  height: auto;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--fc-radius-xl);
+  background: var(--fc-surface-canvas);
+  box-shadow: var(--ds-shadow-modal);
+  color: var(--fc-text-primary);
+  /* clip, not hidden: a hidden box can still be scrolled by code (scrollIntoView, focus), which pushed the
+     header and its close button out of view. Only .fc-sheet-body scrolls. */
+  overflow: clip;
+}
+dialog.fc-sheet:not([open]) { display: none; }
+.fc-sheet[data-side="left"] { inset: var(--fc-space-3) auto var(--fc-space-3) var(--fc-space-3); }
+.fc-sheet::backdrop {
+  background: var(--ds-overlay-backdrop-color);
+  opacity: var(--ds-overlay-backdrop-opacity);
+}
+.fc-sheet-backdrop { position: fixed; inset: 0; z-index: var(--fc-z-drawer); background: var(--ds-overlay-backdrop-color); opacity: var(--ds-overlay-backdrop-opacity); }
+:root:has(dialog.fc-sheet:modal) { overflow: hidden; }
+
+.fc-sheet-header { display: flex; flex-direction: column; gap: var(--fc-space-3); padding: var(--fc-space-6) var(--fc-space-6) 0; }
+.fc-sheet-titlebar { display: flex; align-items: flex-start; gap: var(--fc-space-4); }
+.fc-sheet-titles { display: flex; flex: 1 1 auto; flex-direction: column; gap: var(--fc-space-1); min-width: 0; }
+.fc-sheet-title { margin: 0; overflow-wrap: anywhere; }
+.fc-sheet-subtitle { margin: 0; color: var(--fc-text-secondary); }
+.fc-sheet-close { flex: 0 0 auto; margin: -4px -8px 0 0; }
+/* Phone grab handle [F]: <div class="fc-sheet-handle" aria-hidden="true"> first in .fc-sheet-header of a
+   data-phone="full" sheet. Shows under 768px; dragging it or the header down closes the sheet (js/sheet.mjs). */
+.fc-sheet-handle { display: none; }
+@media (max-width: 767px) {
+  .fc-sheet[data-phone="full"] .fc-sheet-header { touch-action: none; }
+  /* The way out on phone gets a full 44px target (INT-04). */
+  .fc-sheet[data-phone="full"] .fc-sheet-close { min-width: calc(var(--fc-space-10) + var(--fc-space-1)); min-height: calc(var(--fc-space-10) + var(--fc-space-1)); }
+  .fc-sheet[data-phone="full"] .fc-sheet-handle {
+    display: block;
+    align-self: center;
+    width: var(--fc-space-10);
+    height: var(--fc-space-1);
+    margin: calc(-1 * var(--fc-space-3)) 0 var(--fc-space-1);
+    border-radius: var(--fc-radius-full);
+    background: var(--fc-border-active);
+  }
+}
+.fc-sheet-badges { display: flex; flex-wrap: wrap; align-items: center; gap: var(--fc-space-2); }
+/* The sheet's one action (Add to list, for example) rides the pinned header, at the end of the badges row, so it is in reach at
+   any scroll without a footer. */
+.fc-sheet-badges > .fc-sheet-action { margin-left: auto; }
+.fc-sheet-tabs { flex: 0 0 auto; margin-top: var(--fc-space-2); padding-inline: var(--fc-space-6); }
+.fc-sheet-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: var(--fc-space-6);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.fc-sheet-body:focus-visible { box-shadow: inset 0 0 0 2px var(--fc-focus-color); border-radius: 0; }
+.fc-sheet-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--fc-space-2);
+  margin-top: auto;
+  padding: var(--fc-space-4) var(--fc-space-6) var(--fc-space-6);
+  box-shadow: inset 0 1px 0 var(--fc-border-default);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .fc-sheet[open] { animation: fc-sheet-in var(--fc-duration-overlay) var(--fc-ease-standard); }
+  .fc-sheet[data-side="left"][open] { animation-name: fc-sheet-in-left; }
+  .fc-sheet[open]::backdrop { animation: fc-backdrop-in var(--fc-duration-overlay) var(--fc-ease-standard); }
+}
+/* Edge glint hook (patterns/moments.md): the edge js/dots.mjs shimmers along as the sheet opens, the one facing
+   the page. A full-screen phone sheet shimmers along its top. */
+.fc-sheet { --fc-glint-edge: left; }
+.fc-sheet[data-side="left"] { --fc-glint-edge: right; }
+@media (max-width: 767px) { .fc-sheet[data-phone="full"] { --fc-glint-edge: top; } }
+@keyframes fc-sheet-in { from { transform: translateX(var(--fc-space-4)); opacity: 0; } }
+@keyframes fc-sheet-in-left { from { transform: translateX(calc(-1 * var(--fc-space-4))); opacity: 0; } }
+@keyframes fc-backdrop-in { from { opacity: 0; } }
+/* Spring motion [F] (patterns/moments.md, Drawer). data-motion="spring" opens the sheet from off its side (from
+   the bottom for a full-screen phone sheet) on the spring over --fc-duration-sheet, and closes it back out over
+   --fc-duration-overlay on the exit easing, no spring. A dialog closes at once, so the caller sets data-closing,
+   waits for the sheet's animationend, then calls close(). Reduced motion: no slide, open and close at once.
+   While js/dots.mjs ripples dots along its leading edge (data-glint), the sheet lets them past its bounds. */
+.fc-sheet[data-motion="spring"] { --_sheet-off: translateX(calc(100% + var(--fc-space-3))); }
+.fc-sheet[data-motion="spring"][data-side="left"] { --_sheet-off: translateX(calc(-100% - var(--fc-space-3))); }
+@media (max-width: 767px) { .fc-sheet[data-motion="spring"][data-phone="full"] { --_sheet-off: translateY(100%); } }
+.fc-sheet[data-glint] { overflow: visible; }
+@media (prefers-reduced-motion: no-preference) {
+  .fc-sheet[data-motion="spring"][open] { animation: fc-sheet-spring-in var(--fc-duration-sheet) var(--fc-ease-emphasized); }
+  .fc-sheet[data-motion="spring"][open]::backdrop { animation: fc-backdrop-in var(--fc-duration-sheet) var(--fc-ease-standard); }
+  .fc-sheet[data-motion="spring"][data-closing] { animation: fc-sheet-spring-out var(--fc-duration-overlay) var(--fc-ease-exit) forwards; }
+  .fc-sheet[data-motion="spring"][data-closing]::backdrop { animation: fc-backdrop-out var(--fc-duration-overlay) var(--fc-ease-exit) forwards; }
+}
+@keyframes fc-sheet-spring-in { from { transform: var(--_sheet-off); } }
+@keyframes fc-sheet-spring-out { to { transform: var(--_sheet-off); } }
+@keyframes fc-backdrop-out { to { opacity: 0; } }
+
+/* ================================================================== Stat with basis [F]
+   One reading unit: label, figure (value plus qualifier), basis (sample, window, source).
+   <div class="fc-stat"><p class="fc-stat-label">Hit rate</p>
+     <p class="fc-stat-figure"><span class="fc-stat-value">55%</span><span class="fc-stat-qualifier">23 of 42</span></p>
+     <p class="fc-stat-basis">Closed accounts, Weeks 1 to 8</p></div>
+   Existing .fc-stat-value and .fc-stat-detail keep working. */
+.fc-stat { justify-content: flex-start; }
+.fc-stat > * { margin: 0; }
+.fc-stat-figure { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 6px; min-width: 0; }
+.fc-stat-qualifier { font: 400 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }
+.fc-stat-basis { font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; text-wrap: pretty; }
+/* Action slot [F]: one small CTA under the basis, for when the stat itself says something needs doing
+   ("Fix all"). It sits at its own width at the start of the cell, never stretched, and leaves 12px of air above
+   it (4px stack gap plus 8px) so the basis still reads with its number.
+   <dd class="fc-stat-action"><button class="fc-button" data-variant="secondary" data-size="small" type="button">Fix all</button></dd> */
+.fc-stat > .fc-stat-action {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--fc-space-2);
+  min-width: 0;
+  margin-top: var(--fc-space-2);
+}
+.fc-stat-action > :is(.fc-button, .fc-link-action) { max-width: 100%; }
+
+/* Shared hairline cells: every edge drawn once, the strip wraps into rows without a card per metric.
+   Each cell paints a 1px spread into the 1px gap; the strip clips the outside and draws one rounded ring. */
+.fc-stat-strip[data-variant="cells"] {
+  position: relative;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: 1px;
+  border-radius: var(--fc-radius-card);
+  overflow: hidden;
+}
+.fc-stat-strip[data-variant="cells"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--fc-border-default);
+  pointer-events: none;
+}
+.fc-stat-strip[data-variant="cells"] > .fc-stat {
+  padding: var(--fc-space-4) var(--fc-space-5);
+  box-shadow: 0 0 0 1px var(--fc-border-default);
+}
+
+/* ================================================================== Sheet sections [F]
+   A detail sheet read as one scroll: pinned header and tabs, each tab jumps to its section.
+   <nav class="fc-tabs fc-sheet-tabs" aria-label="…"><a class="fc-tab" href="#s1" aria-current="true">…</a></nav>
+   <div class="fc-sheet-body"><section class="fc-sheet-section" id="s1">…</section>…</div>
+   The tab for the section in view carries aria-current="true". data-phone="full" takes the whole
+   screen under 768px, where an inset panel would leave a sliver of page. */
+.fc-sheet-tabs .fc-tab[aria-current="true"] { color: var(--fc-text-primary); border-bottom-color: var(--fc-text-primary); }
+.fc-sheet-section { display: flex; flex-direction: column; gap: var(--fc-space-4); padding-bottom: var(--fc-space-8); scroll-margin-top: var(--fc-space-4); }
+.fc-sheet-section + .fc-sheet-section { padding-top: var(--fc-space-8); border-top: 1px solid var(--fc-border-default); }
+.fc-sheet-section:last-child { padding-bottom: 0; }
+.fc-sheet-section > :is(h2, h3, h4, p) { margin: 0; }
+@media (max-width: 767px) {
+  .fc-sheet[data-phone="full"] { inset: 0; width: 100%; border-radius: 0; }
+  .fc-sheet[data-phone="full"] .fc-sheet-header { padding: var(--fc-space-4) var(--fc-space-4) 0; }
+  .fc-sheet[data-phone="full"] .fc-sheet-tabs { padding-inline: var(--fc-space-4); }
+  .fc-sheet[data-phone="full"] .fc-sheet-body { padding: var(--fc-space-5) var(--fc-space-4); }
+  .fc-sheet[data-phone="full"] .fc-sheet-footer { padding: var(--fc-space-3) var(--fc-space-4) var(--fc-space-4); }
+}
+
+/* ================================================================== Outcome log [F]
+   One cell per period, oldest first: filled for a hit, hollow for a miss, dashed for a skip, a short
+   label under each. The overall rate sits beside it and leads, because it outranks the recent run.
+   Gray only: a hit is a result, not a highlight, so the accent stays out (DESIGN.md, Hue allocation).
+   <div class="fc-outcome-log">
+     <p class="fc-outcome-log-rate"><span class="fc-outcome-log-value">5 of 8</span><span class="fc-outcome-log-label">This quarter</span></p>
+     <ol class="fc-outcome-log-cells" aria-label="Last 9 weeks, oldest first">
+       <li data-result="hit"><span aria-hidden="true">W1</span><span class="fc-visually-hidden">Week 1, target met</span></li>
+       <li data-result="miss">…</li><li data-result="skip">Off</li>
+     </ol>
+   </div>
+   <ul class="fc-outcome-log-key"><li data-result="hit">Met</li><li data-result="miss">Missed</li><li data-result="skip">Paused</li></ul> */
+.fc-outcome-log { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--fc-space-3) var(--fc-space-6); }
+.fc-outcome-log-rate { display: flex; flex: 0 0 auto; flex-direction: column; gap: var(--fc-space-1); margin: 0; }
+.fc-outcome-log-value { font: 600 16px/24px var(--fc-font-sans); letter-spacing: -0.32px; color: var(--fc-text-primary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fc-outcome-log-label { font: 400 13px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
+.fc-outcome-log-cells { display: flex; flex: 1 1 16rem; gap: var(--fc-space-2); min-width: 0; margin: 0; padding: 0; list-style: none; }
+.fc-outcome-log-cells > li {
+  display: flex;
+  flex: 0 1 var(--fc-space-10);
+  flex-direction: column;
+  align-items: center;
+  gap: var(--fc-space-1);
+  min-width: 0;
+  font: 400 12px/16px var(--fc-font-sans);
+  color: var(--fc-text-secondary);
+  white-space: nowrap;
+}
+.fc-outcome-log-cells > li::before,
+.fc-outcome-log-key > li::before {
+  content: "";
+  flex: 0 0 auto;
+  width: var(--fc-space-4);
+  height: var(--fc-space-4);
+  border-radius: var(--fc-radius-xs);
+  box-shadow: inset 0 0 0 1.5px var(--ds-gray-700);
+}
+.fc-outcome-log-cells > li[data-result="hit"]::before,
+.fc-outcome-log-key > li[data-result="hit"]::before { background: var(--fc-text-primary); box-shadow: none; }
+.fc-outcome-log-cells > li[data-result="skip"]::before,
+.fc-outcome-log-key > li[data-result="skip"]::before { box-shadow: none; outline: 1.5px dashed var(--fc-border-active); outline-offset: -1.5px; }
+.fc-outcome-log-key { display: flex; flex-wrap: wrap; gap: var(--fc-space-1) var(--fc-space-4); margin: 0; padding: 0; list-style: none; font: 400 12px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
+.fc-outcome-log-key > li { display: inline-flex; align-items: center; gap: var(--fc-space-1_5); }
+.fc-outcome-log-key > li::before { width: var(--fc-space-3); height: var(--fc-space-3); }
+/* Cloudy [F]: a thin sample (under 3 periods) reads as if seen through haze. The marks blur and
+   fade, a rate's value drops to secondary gray and softens; the cell labels and the rate label stay sharp, and the
+   rate label says how many periods there are, so the haze is never the only cue. Reduced transparency drops the blur. */
+.fc-outcome-log-rate[data-cloudy] .fc-outcome-log-value { color: var(--fc-text-secondary); filter: blur(0.5px); }
+.fc-outcome-log-cells[data-cloudy] > li::before { filter: blur(1.5px); opacity: 0.55; }
+@media (prefers-reduced-transparency: reduce) {
+  .fc-outcome-log-rate[data-cloudy] .fc-outcome-log-value { filter: none; }
+  .fc-outcome-log-cells[data-cloudy] > li::before { filter: none; opacity: 0.4; }
+}
+
+/* ================================================================== Toggle chips [F]
+   Conditions that each turn on or off, any number at once (the conditions that split a record, for example). A real button with
+   aria-pressed whose name never changes. Off: the suggestion chip's dashed edge and a plus, secondary text.
+   On: a checked control, so the brand edge, tint and check (DESIGN.md, Brand accent), primary text.
+   <div class="fc-toggle-chips" role="group" aria-label="Conditions this week">
+     <button type="button" class="fc-toggle-chip" aria-pressed="true"><svg aria-hidden="true">check</svg>Home</button>
+     <button type="button" class="fc-toggle-chip" aria-pressed="false"><svg aria-hidden="true">plus</svg>Short week</button>
+   </div> */
+.fc-toggle-chips { display: flex; flex-wrap: wrap; gap: var(--fc-space-2); }
+.fc-toggle-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  height: var(--fc-control-small);
+  padding: 0 12px 0 10px;
+  border: 0;
+  border-radius: var(--fc-radius-full);
+  background: var(--fc-surface-canvas);
+  outline: 1px dashed var(--fc-border-hover);
+  outline-offset: -1px;
+  color: var(--fc-text-secondary);
+  font: 500 14px/20px var(--fc-font-sans);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--fc-duration-fast) ease, color var(--fc-duration-fast) ease;
+}
+.fc-toggle-chip svg { flex: 0 0 auto; width: 16px; height: 16px; }
+.fc-toggle-chip:hover { background: var(--fc-surface-fill); color: var(--fc-text-primary); }
+.fc-toggle-chip[aria-pressed="true"] {
+  outline: 0;
+  background: color-mix(in srgb, var(--fc-control-on) 6%, var(--fc-surface-canvas));
+  box-shadow: 0 0 0 1px var(--fc-control-on);
+  color: var(--fc-text-primary);
+}
+.fc-toggle-chip[aria-pressed="true"] svg { color: var(--fc-control-on); }
+.fc-toggle-chip[aria-pressed="true"]:hover { background: color-mix(in srgb, var(--fc-control-on) 12%, var(--fc-surface-canvas)); }
+.fc-toggle-chip:focus-visible { outline: 0; box-shadow: var(--ds-focus-ring); }
+
+/* ================================================================== Rank track [F]
+   Where one record sits from 1 to N: a dot on a hairline, both ends labelled.
+   The words beside it state the rank, so the track is aria-hidden.
+   <span class="fc-rank-track" aria-hidden="true" style="--at: 0.13">
+     <span>1</span><span class="fc-rank-track-rail"><span class="fc-rank-track-mark"></span></span><span>32</span>
+   </span> */
+.fc-rank-track {
+  display: grid;
+  grid-template-columns: auto minmax(var(--fc-space-16), 1fr) auto;
+  align-items: center;
+  gap: var(--fc-space-2);
+  max-width: calc(var(--fc-space-32) * 2);
+  font: 400 12px/16px var(--fc-font-sans);
+  color: var(--fc-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.fc-rank-track-rail { position: relative; height: var(--fc-space-3); }
+.fc-rank-track-rail::before { content: ""; position: absolute; left: 0; right: 0; top: calc(50% - 0.5px); height: 1px; background: var(--fc-border-active); }
+.fc-rank-track-mark {
+  position: absolute;
+  top: calc(50% - var(--fc-space-1));
+  left: calc(var(--at, 0) * 100%);
+  width: var(--fc-space-2);
+  height: var(--fc-space-2);
+  margin-left: calc(var(--fc-space-1) * -1);
+  border-radius: var(--fc-radius-full);
+  background: var(--fc-text-primary);
+}
+
+/* ================================================================== Effect marker [F]
+   Whether a note adds to or costs a score: an arrow plus a word, gray. Not a delta or a change, so never delta
+   green or red; the word carries the meaning and the arrow is decoration with empty alt text.
+   <span class="fc-effect" data-effect="add">Adds</span> <span class="fc-effect" data-effect="cost">Costs</span> */
+.fc-effect {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--fc-space-1);
+  font: 500 14px/20px var(--fc-font-sans);
+  color: var(--fc-text-primary);
+  white-space: nowrap;
+}
+.fc-effect::before { color: var(--fc-text-secondary); }
+.fc-effect[data-effect="add"]::before { content: "\2191" / ""; }
+.fc-effect[data-effect="cost"]::before { content: "\2193" / ""; }
+
+/* Context only [F]: a description row that informs but never moves the rating reads gray, value included,
+   tagged with a gray "Context only" badge so the tone is never the only cue. */
+.fc-description > div[data-context] > dd { font-weight: 400; color: var(--fc-text-secondary); }
+[data-context] .fc-rank-track-mark,
+[data-context] .fc-outcome-log-cells > li[data-result="hit"]::before { background: var(--fc-text-secondary); }
+/* A value with its tag on one line, its helper and any marks under it. */
+.fc-factor-value { display: flex; flex-wrap: wrap; align-items: center; gap: var(--fc-space-1) var(--fc-space-2); }
+.fc-description dd > :is(.fc-rank-track, .fc-outcome-log-cells) { margin-top: var(--fc-space-2); }
+/* A helper that carries freshness (status dot plus relative time) sits where <small> would. */
+.fc-description dd > .fc-freshness { margin-top: var(--fc-space-1); }
+
+/* Cell detail [F]: the count behind a share, before the value in the same cell, so the values keep one
+   right edge. <td data-align="numeric"><span class="fc-cell-detail">11 of 18</span>61%</td> */
+.fc-table .fc-cell-detail { margin-right: var(--fc-space-2); font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); font-variant-numeric: tabular-nums; }

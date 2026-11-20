@@ -1,89 +1,85 @@
 # Facet
 
-A design system for dense, decision-grade data. Built by Founding Creative; first used by Hidden Gems.
+A design system for dense, decision-grade data: dashboards, boards, monitors and the settings behind them. Tokens, CSS components, a Tailwind v4 bridge, written rules and specimen pages, with no runtime dependencies.
 
-Facet's foundations are captured from vercel.com's production design system, not approximated, and Facet and adds a thin semantic layer for verdicts, value gaps, tiers and data freshness. It is framework-agnostic CSS first, with a Tailwind v4 bridge and a JS token export, so it drops into a Claude artifact, a static page or a Next.js app unchanged.
+Its foundations are captured from vercel.com's production design system, not approximated, with a semantic layer for verdicts, deltas, scores and data freshness on top. A small brand layer fits it to a project without touching what makes it work for data.
 
-**Start with [`DESIGN.md`](DESIGN.md).** Then open [`preview/index.html`](preview/index.html) in a browser.
+**Handing this to a coding agent:** give it this folder and point it at [`START-HERE.md`](START-HERE.md).
+**Reading it yourself:** start with [`DESIGN.md`](DESIGN.md), then open [`preview/index.html`](preview/index.html).
 
 ## What's inside
 
 ```
-packages/facet/
-  DESIGN.md                 The rulebook. Read first.
-  SOURCES.md                Where every value came from, and the truth hierarchy.
-  tokens/                   Source of truth (DTCG-style JSON). Edit here, then build.
-    primitives.tokens.json    Primitives: color scales (light, dark, P3), shadows, sizes, motion
-    typography.tokens.json    The 30 type roles
-    facet.semantic.json       Facet semantic aliases (text, surface, border, status, signal, edge, gem, freshness, chart)
-  css/                      Generated + hand-written CSS
-    facet.css                 One import for everything (plain HTML, artifacts)
-    tokens.css                GENERATED: --ds-* primitives and --fc-* semantics, light/dark/P3
-    typography.css            GENERATED: .text-heading-*, .text-label-*, .text-copy-*, .text-button-*
-    materials.css             GENERATED: .material-* elevation presets
-    tailwind.css              GENERATED: Tailwind v4 @theme bridge (Facet palette only)
-    base.css                  Fonts, reset, focus, selection, reduced motion, layout primitives
-    components.css            .fc-* components (measured from the vercel.com reference) and Hidden Gems pieces
-  js/tokens.mjs             GENERATED: resolved hex values per theme for canvas/SVG charts
-  js/dots.mjs               The moments engine: dot clouds, sweeps, ripples, orbits (patterns/moments.md)
-  js/undo.mjs               The Undo toast countdown
-  fonts/                    Sans + Mono variable WOFF2 (SIL OFL 1.1, license included)
-  foundations/              Color, typography, content, layout/materials/motion/icons
-  components/               56 component specs synthesized from vercel.com reference docs, with Hidden Gems usage
-  patterns/                 Hidden Gems composition patterns (slate, verdicts, tiers, freshness, states, moments)
-  guidelines/               Vercel Web Interface Guidelines digest (rule IDs for reviews)
-  reference/                Raw captures (computed tokens, P3 values, component measurements),
-                            Vercel ecosystem notes, and inbox/ for third-party material
-  preview/index.html        Design guide: foundations and components
-  preview/screens.html      Screens guide: the slate, app frame and settings
-  preview/content.html      Content guide: how to write for a Facet product
-  scripts/
-    build.mjs               tokens/*.json -> css/*.css + js/tokens.mjs (zero dependencies)
-    sync-primitives.mjs       Re-sync primitives from vercel.com (needs Playwright)
-    lint-color.mjs          Color guard: fails on raw colors and hue steps outside Facet
+START-HERE.md             For the coding agent: install, brand setup, wiring.
+AGENT-RULES.md            Rules to paste into the project's agent instructions.
+DESIGN.md                 The rulebook. Read before designing a screen.
+SOURCES.md                Where every value came from, and the truth hierarchy.
+brand/                    The project's look
+  brand.json                The choices (accent, grays, themes, corners, depth, stroke, typeface, logo)
+  README.md                 What can change, what cannot, and why
+onboarding/               Brand setup
+  index.html                GENERATED: one self-contained page with every choice and a live preview
+  onboarding.src.html       Its source
+  questions.md              The same questions for a chat
+tokens/                   Source of truth (DTCG-style JSON). Edit here, then build.
+  primitives.tokens.json    Color scales (light, dark, P3), shadows, sizes, motion
+  typography.tokens.json    The 30 type roles
+  facet.semantic.json       Semantic aliases (text, surface, border, status, signal, delta, highlight, freshness, chart, brand)
+css/
+  facet.css                 One import for everything
+  tokens.css                GENERATED: --ds-* primitives and --fc-* semantics, with the brand applied
+  fonts.css                 GENERATED: font faces for the chosen typeface
+  typography.css            GENERATED: .text-heading-*, .text-label-*, .text-copy-*, .text-button-*
+  materials.css             GENERATED: .material-* elevation presets
+  tailwind.css              GENERATED: Tailwind v4 @theme bridge (Facet palette only)
+  shadcn.css                GENERATED: shadcn/ui variable bridge
+  base.css                  Reset, focus, selection, reduced motion, layout primitives
+  components.css            Buttons, badges, inputs, tabs, tables, notes, the score mark, toasts and more
+  data.css charts.css lists.css forms.css shell.css settings.css surfaces.css flows.css
+                            Layers by screen type; import the ones a screen needs
+js/
+  tokens.mjs                GENERATED: resolved hex values per theme for canvas and SVG charts
+  dots.mjs undo.mjs         The moments engine and the Undo countdown (patterns/moments.md)
+  field.mjs tips.mjs time.mjs forms.mjs sheet.mjs
+fonts/                    Sans + Mono variable WOFF2 (SIL OFL 1.1, license included)
+foundations/              Color, typography, content, layout, materials and motion
+components/               One spec per component: anatomy, states, rules, usage
+patterns/                 Compositions: the board, data operations, settings, failures, moments
+guidelines/               Web Interface Guidelines digest (rule IDs for reviews)
+preview/                  Specimen pages: index.html (Design), screens.html (Screens), content.html (Content)
+scripts/
+  build.mjs                 tokens + brand -> generated CSS and JS (zero dependencies)
+  brand.mjs                 The brand CLI: show, options, set, apply, logo, check, reset
+  brand-core.mjs            The brand rules, shared by the build, the CLI and the onboarding page
+  lint-color.mjs            Color guard: fails on raw colors and hue steps in app code
+  pack.mjs                  Zips this folder for handing to another project
 ```
 
-## Use it
+## Change the look
 
-**Plain HTML / Claude artifact**
-
-```html
-<link rel="stylesheet" href="packages/facet/css/facet.css">
-<table class="fc-table" data-interactive>...</table>
+```bash
+node scripts/brand.mjs set accent=#2f6fed controls=round depth=flat
 ```
 
-**Next.js + Tailwind v4** (in `apps/web/app/globals.css`)
+Or open `onboarding/index.html`, choose, and apply the result with `node scripts/brand.mjs apply`. Options and their reasons are in [`brand/README.md`](brand/README.md).
 
-```css
-@import "tailwindcss";
-@import "facet-kit/css/tailwind.css";
-@import "facet-kit/css/base.css";
-@import "facet-kit/css/typography.css";
-@import "facet-kit/css/components.css";
-```
+## Change the system
 
-Load fonts with the `geist` package in the root layout (`import { GeistSans } from 'geist/font/sans'`), and put `GeistSans.variable` and `GeistMono.variable` on `<html>`. Facet reads `--font-geist-sans` / `--font-geist-mono` automatically.
-
-**Theme:** light by default, follows the OS, force with `data-theme="dark|light"` (or `.dark-theme` / `.light-theme`) on `<html>` or any subtree.
-
-## Change it
+Edit `tokens/*.json` or the hand-written CSS, never the generated files, then:
 
 ```bash
 node scripts/build.mjs
+node --test scripts/*.test.mjs
 ```
 
-Edit `tokens/*.json`, never the generated files. Primitives (`primitives.tokens.json` colors and shadows, `typography.tokens.json`) mirror vercel.com; change them only by re-syncing:
+## Hand it to another project
 
 ```bash
-node scripts/sync-primitives.mjs && node scripts/build.mjs
+node scripts/pack.mjs
 ```
 
-Review that diff like a design decision.
-
-## Reuse it in another project
-
-Copy `packages/facet/` as a folder (it has no runtime dependencies), or consume it as a workspace package. Hidden Gems specifics live only in `facet.semantic.json` (signal, edge, gem, freshness), the `[F]` section of `components.css`, and `patterns/board.md`; replace those three for a new domain and keep everything else.
+writes `dist/facet-kit-<version>.zip` with the brand reset to neutral. Unzip it in the new project and follow `START-HERE.md`.
 
 ## Licensing and brand
 
-The fonts are SIL OFL 1.1 (license in `fonts/`). Token values are facts captured from a public stylesheet; component specs are our own synthesis with source links. Facet is not affiliated with or endorsed by Vercel: never use Vercel logos, the Vercel name, or Vercel authorship styling in products built with it.
+The fonts are SIL OFL 1.1 (license in `fonts/`). Token values are facts captured from a public stylesheet; component specs are our own synthesis. Facet is not affiliated with or endorsed by Vercel: never use Vercel logos, the Vercel name, or Vercel authorship styling in products built with it.

@@ -4887,7 +4887,7 @@ tr[data-clickable]:hover .fc-log-open .fc-button { color: var(--fc-text-primary)
    <div class="fc-choicebox-group"> of <label class="fc-choicebox"><input type="radio">
    <span class="fc-choicebox-body"><span class="fc-choicebox-title">..</span>
    <span class="fc-choicebox-detail">..</span></span></label>.
-   Selected = blue ring (interaction blue, the focus color) + filled radio mark, never the ring alone. */
+   Selected = accent ring (the focus color) + filled radio mark, never the ring alone. */
 .fc-choicebox-fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 .fc-choicebox-fieldset > legend { padding: 0; }
 .fc-choicebox-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: var(--fc-space-3); }
@@ -5534,6 +5534,14 @@ tr[data-clickable]:hover .fc-log-open .fc-button { color: var(--fc-text-primary)
   .fc-dropdown, .fc-sidenav { animation: none; }
   .fc-sidenav-item, .fc-scope-trigger, .fc-range-select { transition: none; }
 }
+
+/* ------------------------------------------------------------------ Logo [F]
+   The product's own mark, from brand/. As an image: <img class="fc-logo" src="…/brand/logo.svg" alt="Acme">.
+   A one-color logo inlined from brand/logo.mono.svg takes the text color, so it follows the theme:
+   <span class="fc-logo" role="img" aria-label="Acme"><svg …/></span>. Height is fixed, width follows the artwork. */
+.fc-logo { display: inline-flex; flex: none; height: var(--fc-logo-height, 20px); width: auto; color: var(--fc-text-primary); }
+.fc-logo > svg { height: 100%; width: auto; }
+.fc-logo[data-size="large"] { --fc-logo-height: 28px; }
 
 /* Facet settings layer [F]
    Pattern doc: patterns/settings.md.

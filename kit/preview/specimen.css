@@ -24,8 +24,6 @@ section:not([class^="fc-"]) { display: flex; flex-direction: column; gap: 24px; 
 .sp-intro p { color: var(--fc-text-secondary); }
 .sp-two { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px; align-items: start; }
 @media (max-width: 960px) { .sp-two { grid-template-columns: 1fr; } }
-.sp-pick { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.sp-pick small { color: var(--fc-text-secondary); font-size: 13px; line-height: 16px; }
 .sp-mono { font-variant-numeric: tabular-nums; white-space: nowrap; }
 .sp-caption { font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); }
 
@@ -45,7 +43,7 @@ section:not([class^="fc-"]) { display: flex; flex-direction: column; gap: 24px; 
 .sp-band-head { display: flex; flex-direction: column; gap: 6px; padding-right: 20px; min-width: 0; }
 .sp-band-head h3 { display: flex; align-items: center; gap: 8px; }
 .sp-band-job { font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-primary); }
-.sp-band.is-gem .sp-band-job { color: var(--fc-highlight-fg); }
+.sp-band.is-accent .sp-band-job { color: var(--fc-highlight-fg); }
 .sp-band-dl { display: flex; flex-direction: column; gap: 6px; margin: 4px 0 0; }
 .sp-band-dl dt { font: 400 12px/16px var(--fc-font-sans); color: var(--fc-text-secondary); }
 .sp-band-dl dd { margin: 0; font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-primary); }
@@ -64,7 +62,7 @@ section:not([class^="fc-"]) { display: flex; flex-direction: column; gap: 24px; 
 .sp-rules strong { color: var(--fc-text-primary); font-weight: 500; }
 .sp-count { font: 400 12px/16px var(--fc-font-sans); color: var(--fc-text-secondary); text-decoration: none; font-variant-numeric: tabular-nums; }
 .sp-count:hover { color: var(--fc-text-primary); text-decoration: underline; }
-.sp-band.is-gem .sp-count { color: var(--fc-highlight-fg); }
+.sp-band.is-accent .sp-count { color: var(--fc-highlight-fg); }
 .sp-ledger td:last-child { white-space: normal; min-width: 240px; color: var(--fc-text-primary); }
 .sp-tok { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; }
 .sp-sws { display: inline-flex; gap: 3px; }
@@ -101,7 +99,7 @@ mark.sp-dup { background: none; color: inherit; text-decoration: underline wavy 
 .sp-ntype { display: flex; flex-direction: column; gap: 2px; font: 400 13px/18px var(--fc-font-sans); color: var(--fc-text-secondary); }
 .sp-ncell { min-width: 0; }
 .sp-motionbar { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
-.sp-gemfocal { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.sp-scorefocal { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .sp-two-up { grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 360px)); }
 .sp-ncell-label { display: none; }
 .sp-ncell .fc-note-action { pointer-events: none; }
@@ -117,8 +115,8 @@ legend.fc-fieldset-title + * { clear: both; }
 .sp-dodont { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
 .sp-dodont figure { margin: 0; display: flex; flex-direction: column; gap: 12px; padding: 16px; border-radius: 12px; box-shadow: var(--ds-shadow-border); }
 /* Deliberate misuse samples, drawn with primitives on purpose to show what not to do. */
-.sp-misuse { --_bg: var(--ds-purple-700); --_fg: #fff; --_bg-hover: var(--ds-purple-700); pointer-events: none; } /* facet-allow-color: misuse demo */
-.sp-misuse-link { color: var(--ds-purple-900); text-decoration: underline; text-underline-offset: 3px; pointer-events: none; } /* facet-allow-color: misuse demo */
+.sp-misuse { --_bg: var(--fc-brand-solid); --_fg: #fff; --_bg-hover: var(--fc-brand-solid); pointer-events: none; } /* facet-allow-color: misuse demo */
+.sp-misuse-link { color: var(--fc-brand-fg); text-decoration: underline; text-underline-offset: 3px; pointer-events: none; } /* facet-allow-color: misuse demo */
 .sp-misuse-amber { font: 600 16px/24px var(--fc-font-sans); color: var(--ds-amber-900); } /* facet-allow-color: misuse demo */
 .sp-misuse-green { font: 600 16px/24px var(--fc-font-sans); color: var(--ds-green-900); font-variant-numeric: tabular-nums; } /* facet-allow-color: misuse demo */
 .sp-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
@@ -164,7 +162,7 @@ legend.fc-fieldset-title + * { clear: both; }
 .sp-glance-card:hover > .fc-link-action { color: var(--fc-text-primary); }
 .sp-glance-num { display: block; font: 500 12px/16px var(--fc-font-mono); color: var(--fc-brand-fg); letter-spacing: 0.4px; }
 .sp-lessonhead .sp-glance-num { margin-bottom: 8px; }
-/* No containers around examples (owner feedback): the column headers and the row rules already frame them. */
+/* No containers around examples: the column headers and the row rules already frame them. */
 .sp-more { margin-top: -8px; }
 .sp-more > summary { display: inline-flex; align-items: center; gap: 6px; padding: 6px 0; cursor: pointer; list-style: none; font: 500 14px/20px var(--fc-font-sans); color: var(--fc-text-secondary); border-radius: var(--fc-radius-xs); }
 .sp-more > summary::-webkit-details-marker { display: none; }
@@ -186,7 +184,7 @@ legend.fc-fieldset-title + * { clear: both; }
 /* Exceptions read as small cards, not a list wall. */
 .sp-keep .fc-description { grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)) !important; gap: 12px; }
 .sp-keep .fc-description > div { padding: 16px; border-radius: 12px; background: var(--fc-surface-subtle); }
-/* Color bands: swatches stretch to the height of the band's text column (owner feedback). */
+/* Color bands: swatches stretch to the height of the band's text column. */
 .sp-band:not(.sp-band-header) { align-items: stretch; }
 .sp-band .sp-cell { min-height: 100%; }
 .sp-band .sp-sw { flex: 1 1 auto; min-height: 40px; }

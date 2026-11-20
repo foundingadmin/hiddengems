@@ -76,6 +76,17 @@ The scope is the thing every page on the screen is filtered by, here the week.
 - A value every option shares goes in a `.fc-dropdown-label` group heading ("Closed"), not on every row.
 - The week lives in the URL (`?week=8`), never only in client state (INT-11, DESIGN.md rule 10).
 
+## Logo
+
+The product's mark comes from `brand/` and sits at the start of the side nav head or the top bar, 20px tall (`.fc-logo`, `data-size="large"` for 28px).
+
+```html
+<img class="fc-logo" src="brand/logo.svg" alt="Acme">
+<span class="fc-logo" role="img" aria-label="Acme"><!-- brand/logo.mono.svg inlined --></span>
+```
+
+Use the image for a multi-color logo. Inline `logo.mono.svg` for a one-color logo: it is drawn in `currentColor`, so it follows the theme. Never recolor a logo with the accent or a status hue, and never place it on a tinted surface.
+
 ## Rules
 - The top bar holds scope, page identity and at most two global actions. Search lives there as an icon button or in the rail; page actions belong in the page header.
 - The rail holds 5 to 12 items per level. Past that, drill in.

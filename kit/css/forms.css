@@ -116,7 +116,7 @@
    <div class="fc-choicebox-group"> of <label class="fc-choicebox"><input type="radio">
    <span class="fc-choicebox-body"><span class="fc-choicebox-title">..</span>
    <span class="fc-choicebox-detail">..</span></span></label>.
-   Selected = blue ring (interaction blue, the focus color) + filled radio mark, never the ring alone. */
+   Selected = accent ring (the focus color) + filled radio mark, never the ring alone. */
 .fc-choicebox-fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 .fc-choicebox-fieldset > legend { padding: 0; }
 .fc-choicebox-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: var(--fc-space-3); }

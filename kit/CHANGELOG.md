@@ -1,49 +1,14 @@
 # Facet changelog
 
-## Unreleased
+Record every change to the system here: tokens, classes, rules. Brand changes for one project live in `brand/brand.json` and need no entry.
 
-Added, for the loupe (Hidden Gems F2.2)
-- Toggle chips (`.fc-toggle-chips`, `.fc-toggle-chip[aria-pressed]`): conditions that each turn on or off and combine (`components/toggle-chip.md`).
-- Cloudy game log (`data-cloudy` on `.fc-outcome-log-cells` and `.fc-outcome-log-rate`) for samples under 3 games (`components/outcome-log.md`).
-- List rows with an `.fc-row-link` fill on hover without `data-interactive`, so link rows and plain rows can share a list (`components/list.md`).
+## 1.0.0
 
-Added, for the agent workflow page
-- Stacked bar (`.fc-stacked-bar`): shares of one total on a single bar, beside a legend (`components/stacked-bar.md`).
-- Step list (`.fc-step-list`, `.fc-step`): replay steps with the current one marked (`components/step-list.md`).
-- Flow map (`.fc-flow-map`, `.fc-flow-node`, `.fc-flow-edge`, `.fc-flow-label`, `.fc-flow-map-zoom`): who hands what to whom, with pan, zoom and a replay state per edge and node (`components/flow-map.md`).
+The first standalone kit.
 
-Added, for micro moments (`patterns/moments.md`)
-- Dots engine (`js/dots.mjs`, types in `js/dots.d.mts`): stages and the cloud, fly, dust, sweep, unsweep, ripple and orbit primitives, with the no-touch rule tested in `scripts/dots.test.mjs`.
-- Tokens: `--fc-illus-1` to `4` (brand ramp) and `--fc-illus-context-1` to `4` (gray); `--fc-ease-emphasized`, `--fc-ease-exit`, `--fc-duration-sheet`, `--fc-duration-undo`, `--fc-z-stage`. The build now resolves `color-mix` between two token references.
-- Gem card states `data-unread` (tint and sheen) and `data-selected` (`components/highlight-card.md`).
-- Toast (`.fc-toast-region`, `.fc-toast`) and the Undo countdown (`.fc-toast-dots`, `js/undo.mjs`) (`components/toast.md`).
-- Edge glint hooks (`--fc-glint-edge`, `[data-glint]`) on the tab bar, rail items and the sheet.
-- Sheet spring motion (`.fc-sheet[data-motion="spring"]`, `[data-closing]`): opens from off its side on the spring, closes on the exit easing (`components/sheet.md`).
-- Rail slip leg count pop (`.fc-railslip-count[data-pop]`, `--fc-duration-pop`) and the on-slip phone row (`.fc-score-item[data-checked]`).
-- `unsweep({ reveal })` for an element rendered again after its sweep; unsweep now honors `delay` for the wipe too.
-- Swipe to remove on editable legs (`.fc-leg-swipe`, `--fc-swipe`, `data-swipe`, token `--fc-leg-swipe-width`), moved
-  only by transform, and the × in the stop tokens on hover and while its leg leaves (`data-leaving`) (`components/cert.md`).
-- Motion foundation names the closing slip leg (height and padding, 220ms) as an exception to opacity and transform only.
-
-Changed
-- `.fc-legs` spaces legs with half the gap above and below each leg instead of `row-gap`, so a closing leg takes its
-  space with it. Same look.
-
-## 0.2.0 (2026-11-03)
-
-Minor: batch 2 added parts, and no existing part changed its API.
-
-Added, in [#24](https://github.com/foundingadmin/hiddengems/pull/24)
-- Slider (`.fc-slider`, `bindSliders` in `js/forms.mjs`), collapse and collapse group (`.fc-collapse`).
-- Scatter chart (`.fc-chart[data-kind="scatter"]`, point, ring, range band, axis title, legend key shapes).
-- Log table variant, row link, log data and inline row detail (`patterns/data-ops.md`).
-- Compact description and wide pair, gem mark at stat size, multi-line snippet, removable filter chip, feed source slot.
-
-Curation, in [#29](https://github.com/foundingadmin/hiddengems/pull/29)
-- Specimens added for the small and sparse scatter and the narrow log table with inline log data.
-- Screens page gains the data logs and rating lab compositions.
-- Known drift, reported not fixed: many sub-element classes (for example `.fc-gauge-*`, `.fc-sheet-*`, `.fc-meter-*`) are documented by their parent part rather than named in a doc, and a few CSS classes have no specimen (`.fc-highlight-card`, `.fc-spinner`, `.fc-strip`, `.fc-reasons`, `.fc-price`, `.fc-section-head`).
-
-## 0.1.0
-
-First captured state of the system.
+- Brand layer: `brand/brand.json`, `scripts/brand-core.mjs`, `scripts/brand.mjs` and the onboarding page set the accent, gray temperature, themes, corner radii, depth, stroke, typeface and logo. Status, verdict, delta and freshness colors, the type scale and density are fixed.
+- Accent scale `--ds-accent-*`, generated from one brand color on fixed lightness steps, behind `--fc-brand-*`. A brand color near a status hue or near gray is kept for identity only.
+- Role tokens for the brand to steer: `--fc-radius-card`, `--fc-radius-button`, `--fc-elevation-card`, `--fc-icon-stroke`. Materials and the Tailwind radius scale read the radius tokens.
+- Semantic names: `--fc-delta-*` (a signed gap against a baseline) and `--fc-highlight-*` (what the product surfaces).
+- Parts: the score mark (`.fc-score`), highlight card (`.fc-highlight-card`), reasons list (`.fc-reasons`), score row (`.fc-score-row`), outcome log (`.fc-outcome-log`), the accent badge (`data-variant="accent"`) and the logo (`.fc-logo`).
+- Layers: `css/fonts.css` (generated, per typeface) and `css/flows.css` (numbered steps, signed money, row links in lists, chat, modal, quiet text action).

@@ -414,3 +414,11 @@
   .fc-dropdown, .fc-sidenav { animation: none; }
   .fc-sidenav-item, .fc-scope-trigger, .fc-range-select { transition: none; }
 }
+
+/* ------------------------------------------------------------------ Logo [F]
+   The product's own mark, from brand/. As an image: <img class="fc-logo" src="…/brand/logo.svg" alt="Acme">.
+   A one-color logo inlined from brand/logo.mono.svg takes the text color, so it follows the theme:
+   <span class="fc-logo" role="img" aria-label="Acme"><svg …/></span>. Height is fixed, width follows the artwork. */
+.fc-logo { display: inline-flex; flex: none; height: var(--fc-logo-height, 20px); width: auto; color: var(--fc-text-primary); }
+.fc-logo > svg { height: 100%; width: auto; }
+.fc-logo[data-size="large"] { --fc-logo-height: 28px; }
